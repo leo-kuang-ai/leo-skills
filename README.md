@@ -15,7 +15,18 @@
 
 ## 安装与使用
 
-从 GitHub 拉取并软链 `evidence-first-writing` 到本机 Claude Code 技能目录（`~/.claude/skills/`）：
+### 方式一（推荐）：Claude Code `/plugin`
+
+仓库已配置插件市场，一条命令远程安装：
+
+```text
+/plugin marketplace add sunrain520/leo-skills
+/plugin install evidence-first-writing
+```
+
+更新：`/plugin update evidence-first-writing`；卸载：`/plugin uninstall evidence-first-writing`。
+
+### 方式二：Git clone + 软链到 `~/.claude/skills/`
 
 ```sh
 git clone https://github.com/sunrain520/leo-skills.git ~/.claude/skills/leo-skills

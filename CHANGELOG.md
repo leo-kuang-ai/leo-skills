@@ -27,6 +27,11 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **evidence-first-writing/README.md** — document `/plugin` remote install as the
+  recommended path (verified end-to-end on Claude Code), alongside git clone +
+  symlink and project-level installs; add Codex trigger usage.
+- **README.md** — lead the install section with the `/plugin` commands and keep
+  the git-clone method as the alternative.
 - **TECHNICAL_DESIGN.md** — add a cross-host adaptation section: the
   convention-normalization + per-host-thin-shell + degradation-contract
   principles, a host capability matrix, and deferred evolution directions

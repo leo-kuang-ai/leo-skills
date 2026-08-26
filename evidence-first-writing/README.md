@@ -10,7 +10,23 @@
 
 ## 安装
 
-### Claude Code：个人级（本机所有项目可用）
+> 官方推荐用 Claude Code 的 `/plugin` 系统远程安装（已实测通过）。Git clone + 软链是备选。
+
+### 方式一：Claude Code `/plugin`（推荐，已实测）
+
+仓库已配置 Claude Code 插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
+
+```text
+/plugin marketplace add sunrain520/leo-skills
+/plugin install evidence-first-writing
+```
+
+- `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；
+- `plugin install` 把 skill 装到 `~/.claude/plugins/cache/leo-skills/evidence-first-writing/0.1.0/`，并注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
+- 更新：推送新版本后执行 `/plugin update evidence-first-writing`（或先 `/plugin marketplace update` 再 update）；
+- 卸载：`/plugin uninstall evidence-first-writing`。
+
+### 方式二：Git clone + 软链（备选）
 
 从 GitHub 拉取本仓库并软链该 skill 到 `~/.claude/skills/`：
 
@@ -28,10 +44,7 @@ cp -R /tmp/leo-skills/evidence-first-writing ~/.claude/skills/
 rm -rf /tmp/leo-skills
 ```
 
-> 若希望用一条 `/plugin` 命令远程安装，需仓库提供 Claude Code 插件市场（`.claude-plugin/marketplace.json`）；
-> 当前仓库尚未配置，可按需补充。
-
-### Claude Code：项目级（跟随仓库，团队共享）
+### 方式三：项目级（跟随仓库，团队共享）
 
 在项目根目录建立（例如 `git submodule add https://github.com/sunrain520/leo-skills.git .claude/skills/leo-skills`
 再软链），或直接提交：
@@ -48,6 +61,11 @@ rm -rf /tmp/leo-skills
 ### Codex / OpenAI 代理
 
 `agents/openai.yaml` 声明了该能力，供 Codex/OpenAI 格式的 Agent 按 `interface` 字段加载为「证据优先写作」工具。
+Codex 不依赖插件系统，在 Codex 会话中直接用代理触发语：
+
+```text
+$evidence-first-writing 识别我的写作意图和文章类型，进入合适 workflow 完成文章。
+```
 
 ## 验证安装
 

@@ -17,7 +17,7 @@
 仓库已配置 Claude Code 插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
 
 ```text
-/plugin marketplace add sunrain520/leo-skills
+/plugin marketplace add leo-kuang-ai/leo-skills
 /plugin install evidence-first-writing
 ```
 
@@ -31,7 +31,7 @@
 从 GitHub 拉取本仓库并软链该 skill 到 `~/.claude/skills/`：
 
 ```sh
-git clone https://github.com/sunrain520/leo-skills.git ~/.claude/skills/leo-skills
+git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
 ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
 ```
 
@@ -39,14 +39,14 @@ ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/eviden
 只装单独一份、不保留仓库的临时做法：
 
 ```sh
-git clone --depth 1 https://github.com/sunrain520/leo-skills.git /tmp/leo-skills
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git /tmp/leo-skills
 cp -R /tmp/leo-skills/evidence-first-writing ~/.claude/skills/
 rm -rf /tmp/leo-skills
 ```
 
 ### 方式三：项目级（跟随仓库，团队共享）
 
-在项目根目录建立（例如 `git submodule add https://github.com/sunrain520/leo-skills.git .claude/skills/leo-skills`
+在项目根目录建立（例如 `git submodule add https://github.com/leo-kuang-ai/leo-skills.git .claude/skills/leo-skills`
 再软链），或直接提交：
 
 ```text

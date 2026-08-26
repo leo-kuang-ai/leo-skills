@@ -31,7 +31,7 @@
 仓库已配置插件市场，一条命令远程安装：
 
 ```text
-/plugin marketplace add sunrain520/leo-skills
+/plugin marketplace add leo-kuang-ai/leo-skills
 /plugin install evidence-first-writing
 ```
 
@@ -40,7 +40,7 @@
 ### 方式二：Git clone + 软链到 `~/.claude/skills/`
 
 ```sh
-git clone https://github.com/sunrain520/leo-skills.git ~/.claude/skills/leo-skills
+git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
 ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
 ```
 
@@ -62,29 +62,6 @@ python3 -m unittest discover -s evidence-first-writing/tests -p 'test_*.py'
 
 评测定义位于 `evidence-first-writing/evals/`。生成的评测工作区会被 Git
 有意忽略。
-
-## English
-
-Reusable agent skills for evidence-first technical and editorial writing.
-
-The included `evidence-first-writing` skill routes writing requests, preserves
-source facts, and produces technically grounded drafts. See
-[evidence-first-writing/SKILL.md](evidence-first-writing/SKILL.md) for the
-complete workflow.
-
-The `leo-ppt-generator` skill turns requirements, visual mockups, images, or
-PDFs into editable PowerPoint decks (image-based, editable, hybrid, and
-upgrade routes). See [leo-ppt-generator/SKILL.md](leo-ppt-generator/SKILL.md)
-for triggers, routing, and gating order, and its
-[install.sh](leo-ppt-generator/install.sh) /
-[install.ps1](leo-ppt-generator/install.ps1) for local installation.
-
-To install as a personal Claude Code skill from GitHub:
-
-```sh
-git clone https://github.com/sunrain520/leo-skills.git ~/.claude/skills/leo-skills
-ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
-```
 
 ## License
 

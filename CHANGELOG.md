@@ -14,12 +14,12 @@ adheres to a loose semantic-versioning convention.
   editable, hybrid, and upgrade routes). During migration the over-the-air
   self-update logic was removed — the `check`/`update` subcommands, download
   helpers, and remote constants that fetched version info and installer scripts
-  from `sunrain520/leo-ppt-generator` are gone, and the runtime health check is
+  from `leo-kuang-ai/leo-ppt-generator` are gone, and the runtime health check is
   now a local-only comparison. `install.sh` / `install.ps1` were adapted to
   local-only mode (default source is the script's own directory, `--ref`/`-Ref`
   remote fetch dropped) and moved inside `leo-ppt-generator/` rather than the
   project root. (user-visible)。作者: leokuang
-- Add `.claude-plugin/marketplace.json`: enables `/plugin marketplace add sunrain520/leo-skills` and
+- Add `.claude-plugin/marketplace.json`: enables `/plugin marketplace add leo-kuang-ai/leo-skills` and
   `/plugin install evidence-first-writing` for remote Claude Code installation.
 - Add `evidence-first-writing/README.md`: install (Claude Code personal/project
   and Codex), usage, cross-host adaptation, references map, and test/eval

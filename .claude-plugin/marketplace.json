@@ -3,7 +3,7 @@
   "name": "leo-skills",
   "description": "Leo skills: evidence-first-writing and leo-ppt-generator",
   "owner": {
-    "name": "sunrain520"
+    "name": "leo-kuang-ai"
   },
   "plugins": [
     {
@@ -12,7 +12,7 @@
       "version": "0.1.0",
       "source": "./evidence-first-writing",
       "author": {
-        "name": "sunrain520"
+        "name": "leo-kuang-ai"
       }
     },
     {
@@ -21,7 +21,7 @@
       "version": "0.1.0",
       "source": "./leo-ppt-generator",
       "author": {
-        "name": "sunrain520"
+        "name": "leo-kuang-ai"
       }
     }
   ]

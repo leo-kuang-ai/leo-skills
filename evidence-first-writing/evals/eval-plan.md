@@ -46,6 +46,8 @@ Prompt：审查现有文章，并明确禁止改写。
 
 Judge：文件系统哈希，加报告结构的确定性检查。
 
+当前配置使用 `evals/scripts/check-audit-readonly.sh`，允许“意义膨胀/夸大/宣传性”和“模糊归因/没有来源/不可证伪”等语义等价 finding，但仍要求原句、动作和只读边界。
+
 ## Case 4：证据不足
 
 Prompt：根据只报告相关性的来源写出强因果结论。
@@ -271,7 +273,7 @@ Judge：状态分层、版本字段与禁止因果声明的确定性检查。
 
 检查：
 
-- 技术 How-to 路由 `tutorial`，要求前置条件、可运行步骤和验证；
+- 技术 How-to 路由 `how-to`，要求前置条件、可运行步骤和验证；
 - 事故复盘路由 `case-retrospective`，区分当时已知与事后信息；
 - 管理报告路由 `formal-report`，明确决策者、建议 owner、期限和验收；
 - 观点评论路由 `argument`，要求 thesis、最强反方和边界；
@@ -334,3 +336,11 @@ Judge：状态字段、权限边界和禁止 claim 的确定性断言。
 ## Claim ceiling
 
 上述用例通过，只能证明 Skill 在固定 fixture 上具备本地流程行为，不能证明发表效果更好、能够普遍检测 AI，或能忠实还原所有作者和渠道的声音。后者需要真实作者 A/B 使用和读者结果。
+
+## 运行分组
+
+- `routing-smoke`：路由、裸主题、声音跳过和只读边界；低成本、优先回归。
+- `evidence-regression`：相关性/因果、Humanizer 不变量、Deep 证据链和独立审查；需要较长超时。
+- `docs-regression`：How-to、Reference、Explanation 的技术真值与 `not_run` 披露。
+
+宿主限流、上下文超时和 Skill 行为失败必须分别统计。没有 `result.json` 或 case-level error evidence 时，不得把运行中进程或部分输出计入 PASS/FAIL。

@@ -8,7 +8,7 @@ skills:
     path: .
 
 engine:
-  name: codex
+  name: claude_code
 
 cases:
   files:
@@ -27,6 +27,11 @@ cases:
     - evals/cases/complete-humanizer-catalog.yaml
     - evals/cases/nonarticle-lifecycle.yaml
     - evals/cases/deep-independent-review-status.yaml
+    - evals/cases/depth-quick-revise.yaml
+    - evals/cases/post-publish-no-causal.yaml
+    - evals/cases/copywriting-route.yaml
+    - evals/cases/rejects-causal-overclaim.yaml
+    - evals/cases/personal-context-no-write.yaml
   defaults:
     timeout_seconds: 180
     max_turns: 4

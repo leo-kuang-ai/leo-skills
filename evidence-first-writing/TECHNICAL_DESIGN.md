@@ -114,6 +114,49 @@ evidence-first-writing/
 
 `SKILL.md` 只保留四轴意图识别、operation/depth 路由、核心不变量和所有权门禁；文章 family、顶层生产、研究共创、审查、品味、中文专项、声音档案、营销文案、技术文档和 Humanizer 渐进加载。来源审计只供维护者使用。
 
+## 宿主适配策略
+
+多宿主支持不是为每个宿主重写一套逻辑，而是把能力分层：宿主无关的「指令」、宿主可选的「执行」、宿主专属的「触发」，并为每层缺失约定降级方式。本 Skill 采用三种机制组合。
+
+### 原则一：约定归一化（能力即 markdown）
+
+核心流程全部写在 model-agnostic 的 `SKILL.md` 与 `references/` 里；不依赖 Claude Code 的 `allowed-tools`，不把工具名写死进指令。Skill 对宿主的唯一要求是「能读文件并遵循指令」，因此模型与宿主都可替换。
+
+### 原则二：per-host 薄壳（注册与触发）
+
+每个宿主只加一层「怎么注册、怎么触发」的元数据薄壳，永不复制流程逻辑：
+
+| 宿主 | 薄壳载体 |
+|---|---|
+| Claude Code | `SKILL.md` frontmatter（`name` / `description`）＋ 目录安装到 `~/.claude/skills/` |
+| Codex / OpenAI | `agents/openai.yaml` 的 `interface.default_prompt`（`$evidence-first-writing …`） |
+| 零安装 / 轻量宿主 | `references/portable-prompt.md` 自包含提示词 |
+
+### 原则三：降级契约（能力缺失＝显式降级，而非硬编码分支）
+
+| 宿主可选能力 | 缺失时的约定 |
+|---|---|
+| Skill 已加载路径 / 文件系统 | `factual_invariant_check: not_run` ＋ 人工核对语义；不得猜测 `scripts/` 路径 |
+| 持久写入授权 / 目标路径 | `persistence: not_run`，只登记 observation / hypothesis |
+| 声音档案 / `soul.md` | 临时语域；不声称学会个人声音 |
+| 独立审查隔离 reviewer | `independent_review: not_run \| author_side_simulation`，不冒充独立验证 |
+
+### 能力矩阵（当前状态）
+
+| 能力 | Claude Code | Codex / OpenAI | 零安装提示词 |
+|---|---|---|---|
+| 四轴路由 / operation / depth | ✅ 全量 | ✅ 全量 | ⚠️ 受单上下文限制 |
+| `references/` 按需加载 | ✅ 逐条 | ⚠️ 需一次性注入 | ❌ 需预内联 |
+| 事实不变量脚本 | ✅ 路径已知时 | ⚠️ 或 not_run | ❌ not_run |
+| 可审计 yaml 记录 | ✅ | ✅ | ⚠️ 文本近似 |
+| 持久写入 | ✅ 授权约束 | ✅ 授权约束 | ❌ 提示词无持久 |
+
+### 演进方向（本期不实现）
+
+- `scripts/flatten_skill.sh`：按 operation 内联 `references/` 为单提示词，补齐零安装宿主缺失的按需加载，把 `portable-prompt.md` 从子集升级为全流程自包含入口。
+- `.claude-plugin/marketplace.json`：让 Claude Code 能以一条 `/plugin` 远程安装，补齐分发层。
+- `agents/openai.yaml` 分支齐全化：为 Codex 补全非 `interface` 的服务端字段，与上游 skill 规范对齐。
+
 ## 验证与演进
 
 验证分四个不可补偿的 evidence axis：`structure_contract`、`behavior_quality`、`runtime_cost`、`field_outcome`。结构合法不能补偿行为失败，token 更少不能补偿事实漂移，模型盲评不能补偿真实读者结果。真实价值观察作者修改量、事实缺陷率、读者理解、采用率和版本绑定发布数据。

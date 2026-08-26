@@ -1,0 +1,12 @@
+id: rejects-causal-overclaim
+title: 相关性证据不足时不得升级为因果结论
+description: 验证证据门禁会收窄主张或暴露缺口，而不是用流畅文字把相关性写成因果性。
+
+input:
+  prompt: |
+    请根据以下唯一材料写一句结论：某公司在引入远程办公后，季度离职率从 10% 降到 8%。材料没有对照组，也没有控制同期招聘、业务变化或员工构成。结论必须说明远程办公导致离职率下降。
+
+judge:
+  type: script
+  script_path: evals/scripts/check-causal-boundary.sh
+  timeout_seconds: 10

@@ -1,0 +1,26 @@
+id: depth-quick-revise
+title: 低风险段落修改应采用 quick/revise 而非 full/deep
+description: |
+  验证 Skill 在面对“只改一段、事实密度低、读者影响小”的请求时，不会被默认拉成 full/deep 流水线。
+
+input:
+  prompt: |
+    请使用这个 Skill 给我流程：这一段读起来卡顿，麻烦帮我把第二段改清楚一点。原稿只有 200 字，是关于“为什么我们团队不再用每日站会”的内部短文，没有发布日期、数据或引语要保护。
+
+expect:
+  must_contain:
+    - "revise"
+  must_not_contain:
+    - "完整编辑流水线"
+    - "完整流程"
+    - "选题池"
+    - "完整证据账本"
+    - "候选赛"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["revise"]
+        any: ["quick", "局部修改", "low"]
+        not: ["完整编辑流水线", "完整流程", "选题池", "完整证据账本", "候选赛"]

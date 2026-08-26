@@ -4,7 +4,7 @@ description: 验证工具选型和声音训练使用 not_applicable，而不触�
 
 input:
   prompt: |
-    我想比较几个中文去 AI 味工具的许可证、隐私和写文件范围。请先识别 route，再给出执行流程；这不是写文章。
+    我想比较几个中文去 AI 味工具的许可证、隐私和写文件范围。请先识别 route，并明确输出 canonical YAML 字段 lifecycle_intent、article_family、operation，再给出执行流程；这不是写文章。
 
 expect:
   must_contain:

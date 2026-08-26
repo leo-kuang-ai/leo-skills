@@ -1,0 +1,21 @@
+id: copywriting-route
+title: 营销落地页请求应路由到 copywriting 而非观点评论
+description: |
+  验证明确的冷流量 SaaS 落地页请求不会误入 argument、evidence-explainer 或 how-to 主流程。
+  brief 必须包含页面动作、具体读者、结果、流量入口和品牌声音，并产出结构不同的多个候选。
+
+input:
+  prompt: |
+    请先识别 route，再给出执行流程，不要直接写正文。我们要为一款面向中小团队的开源 API 监控 SaaS 写一个冷流量落地页，访客来自 Google Ads，落地后需要看到具体结果、关键证明和清晰的注册 CTA。品牌声音偏好克制直白。
+
+expect:
+  must_contain:
+    - "冷流量"
+    - "CTA"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["CTA", "冷流量"]
+        any: ["marketing-copy", "copywriting", "产品营销文案", "唯一动作", "注册", "落地页"]

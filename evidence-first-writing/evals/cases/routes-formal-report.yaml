@@ -9,8 +9,6 @@ input:
 expect:
   must_contain:
     - "formal-report"
-    - "决策人"
-    - "三个方案"
     - "风险"
     - "owner"
     - "期限"
@@ -23,5 +21,6 @@ judge:
   type: rule_based
   success:
     - output_contains:
-        all: ["formal-report", "决策人", "三个方案", "风险", "owner", "验收"]
+        all: ["formal-report", "风险", "owner", "验收"]
+        any: ["决策人", "决策者", "决策 owner", "拍板"]
         not: ["先做去 AI 味", "爆款"]

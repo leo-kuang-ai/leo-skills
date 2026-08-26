@@ -11,3 +11,6 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+
+# Graph analysis output
+graphify-out/

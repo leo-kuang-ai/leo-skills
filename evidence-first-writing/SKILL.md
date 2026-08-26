@@ -9,12 +9,14 @@ description: 先识别写作意图、文章类型、证据风险和协作方式�
 
 ## 入口意图识别（第一步）
 
-任何写作任务先读取 [references/intent-routing.md](references/intent-routing.md)，在内部冻结四轴 route：
+任何写作任务先读取 [references/intent-routing.md](references/intent-routing.md)，在内部冻结四轴 route。完成路由后，凡是需要向用户展示 route、计划或编辑说明，必须使用 canonical route 字段，不得只用自然语言同义词替代：
 
 1. `lifecycle_intent`：新写、调研、定主张/结构、起草、修订、审查、去模板、声音建模或发布复盘；
 2. `article_family`：观点评论、研究解释、教程、How-to、技术 Reference、技术 Explanation、案例复盘、个人叙事、Newsletter/平台文章、正式报告、产品营销文案，或 `not_applicable`；
 3. `evidence_risk`：事实密度、影响范围、时效性和发布不可逆性；
 4. `collaboration_modifier`：直接执行、逐节共创、声音档案、渠道适配和是否落盘。
+
+对外 route card 至少包含 `lifecycle_intent`、`article_family`、`evidence_risk`、`operation` 和 `depth` 五个字段；字段值必须来自 `intent-routing.md` 的枚举。自然语言解释可以补充，但不能覆盖或改写这些 canonical 值。
 
 用户明确指定的类型优先。高置信度时用一句话说明采用的 workflow 后直接执行；中等置信度时声明有边界的推断并继续；只有两个候选会产生不同交付物或证据门禁时，才问一个决定性问题。不要展示冗长类型菜单。
 
@@ -54,6 +56,8 @@ operation 决定做什么，depth 决定做多深：
 
 推断足以完成请求的最窄 operation。不要为局部修改强制运行完整流程。
 
+> **post-publish 因果红线（硬性拒绝）：** 复盘时禁止把单篇内容的表现升级为可复用规则，即使作者明确要求写入也**必须拒绝**。单篇真实、版本绑定的指标只能作为观察；至少两个可比项目重复出现、且反例已检查，才允许进入「规则候选」并写入稳定声音档案或标题公式。未满足时，回复必须做三件事：① 明确不会写入档案；② 把该表现记成 `stable_rule: none` 或 `hypothesis`，并说明这只是单一观察、不是因果结论；③ 告诉作者需要什么才可升级（两个可比复现 + 反例检查）。不得在未满足时使用「已写入」「已记住」「下次优先考虑」等表述。
+
 ## 建立写作合同
 
 起草前确认主题、读者、希望读者采取的行动或形成的新理解、体裁/渠道、作者立场、范围、约束、已有来源和声音样本。只询问会实质改变结果的问题；其他缺口用有边界的假设继续，并显式说明。
@@ -84,6 +88,10 @@ operation 决定做什么，depth 决定做多深：
 
 门禁失败时，不得靠把文字写顺来掩盖问题。应暴露阻塞、收窄主张、补充证据，或返回拥有该错误的阶段。
 
+任何 `full/deep` 的执行计划和实际运行记录都必须单列“改写后事实回归”阶段，位于声音、line edit、Humanizer 和其他正文修改之后、发布放行之前。起草前事实预审、法务审查或一般校对不能替代这一阶段。若未执行，记录 `factual_regression: not_run`，不得称为可发布。
+
+阶段名称也必须保留 canonical owner：`fact_review`、`development_edit`、`reader_review`、`taste_voice`、`copy_proof`、`factual_regression`。中文名称可以作为解释，但不得让“分层编辑/分层审查”等同义词替代阶段 owner。
+
 运行 `full`、`research`、`shape`、`draft`、`coauthor` 或 `hooks` 时，读取 [references/workflow-contract.md](references/workflow-contract.md) 了解各阶段输入、协作循环、Hook 和退出条件。
 
 运行 `revise`、`audit`、`humanize`，或执行 `full` 的最后三个阶段时，读取 [references/editorial-review.md](references/editorial-review.md)。
@@ -98,13 +106,19 @@ operation 决定做什么，depth 决定做多深：
 
 用户询问 Humanizer 怎么选、需要安装什么工具或要求复用文章中的工具清单时，读取 [references/tool-selection.md](references/tool-selection.md)。工具是可选执行器，不替代本 Skill 的事实与授权合同；使用前核对当前维护状态、许可证和真实输入输出。
 
+这类工具比较是非文章 lifecycle，canonical route 必须明确写出 `lifecycle_intent: tool-select`、`article_family: not_applicable`、`operation: tool-select`。不得回退成泛化 `research` route；调研只是该 operation 的内部阶段。
+
 用户不要安装 Skill、只要一段可复制提示词时，读取并返回 [references/portable-prompt.md](references/portable-prompt.md) 的模板，按本轮体裁和材料裁剪。用户要求建立个人说明书、长期让 AI 了解自己，或配置 `AGENTS.md`/`CLAUDE.md` 时，读取 [references/personal-context.md](references/personal-context.md)；任何持久写入都需要用户明确授权和目标路径。
+
+`post-publish` 只能把单篇结果记录为观察和待验证假设。未取得曝光量时不得计算打开率；不足两个口径可比项目且未检查反例时，不得形成稳定规则。写入声音档案、记忆或任何文件需要用户明确授权和目标路径；不得把分析请求推断为持久化授权，也不得声称已验证标题公式。当用户要求写入但未明确授权时，必须先拒绝持久写入并停在 `persistence: not_run`。
 
 ## 保护作者声音
 
 有条件时，从 2-5 份有代表性、属于用户或已获授权的样本中提炼声音。稳定个人特征与渠道特征分开记录。优先观察句子节奏、具体程度、立场、词汇、段落推进和不确定性表达，不要只收集口头禅。
 
 没有样本时，按用户要求使用临时语域，并明确它不是从作者文本中学得的个人声音。
+
+跳过声音建模时，编辑说明至少披露三件事：没有读取或没有提供档案/样本；本轮使用临时语域；不能声称已还原或学会个人声音。用户明确跳过时可以继续写作，不得把“未建模”变成阻塞。
 
 ## 按风险顺序修改
 

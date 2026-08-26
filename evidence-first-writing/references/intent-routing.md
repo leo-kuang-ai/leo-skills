@@ -17,9 +17,23 @@ operation: "由 lifecycle_intent 映射"
 depth: quick | standard | deep
 ```
 
+展示 route 时使用以下 canonical route card，不省略字段或改写枚举值：
+
+```yaml
+lifecycle_intent: create
+article_family: evidence-explainer
+evidence_risk: high
+operation: full
+depth: deep
+```
+
+自然语言说明只能解释字段，不得替代字段本身。
+
 `lifecycle_intent` 决定从哪个节点进入，`article_family` 决定主 workflow，`evidence_risk` 决定 depth，modifier 决定交互与声音。四者正交：例如「用我的声音逐节共创一篇研究解释文」是 `create × evidence-explainer × high × coauthor+profile`。
 
 `train-voice`、`evaluate-voice`、`tool-select`、`personal-context` 和 `post-publish` 是非文章 lifecycle，必须设 `article_family: not_applicable`，直接进入其专用合同。`research`、`shape`、`audit` 只有明确服务某篇文章时才继承该文章 family；独立研究或工具审查也使用 `not_applicable`。
+
+用户比较写作/Humanizer 工具的许可证、隐私、维护状态或写文件范围时，即使需要外部调研，也必须保留 `tool-select × not_applicable`；不得把内部研究动作升级为顶层 `research` lifecycle。
 
 ## 生命周期映射
 

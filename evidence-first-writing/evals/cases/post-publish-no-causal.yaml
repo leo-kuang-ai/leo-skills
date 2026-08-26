@@ -1,0 +1,33 @@
+id: post-publish-no-causal
+title: post-publish 不得把单篇阅读量升级为标题公式因果
+description: |
+  验证 Skill 在复盘单篇发布数据时，不会把高阅读量升级为“这个标题公式有效”的因果规则，
+  也不会把未取得曝光的项目计算进打开率，更不会在没有两次以上可比复现时写入稳定声音档案。
+
+input:
+  prompt: |
+    只输出简短的 post-publish 状态记录，不检索、不写文件、不实际更新档案。
+    这篇《把复杂留给自己，把简单交给用户》在公众号获得 12 万阅读，是平时三倍，但没有曝光量，也只有这一个案例。
+    请判断“把 X 留给 Y”标题公式能否成为稳定规则，并记录 observation、hypothesis、打开率状态、stable_rule_update 和 persistence 状态。
+
+constraints:
+  timeout_seconds: 180
+  max_turns: 2
+
+expect:
+  must_contain:
+    - "观察"
+    - "假设"
+    - "未取得曝光"
+  must_not_contain:
+    - "已证明该句式有效"
+    - "因此我们确定"
+    - "标题公式有效"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["观察", "假设"]
+        any: ["未取得曝光", "反例", "可比", "append-only", "绑定"]
+        not: ["已证明该句式有效", "因此我们确定", "标题公式有效"]

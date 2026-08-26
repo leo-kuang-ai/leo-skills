@@ -108,11 +108,27 @@
 5. **声音与 line edit：**对齐授权样本，改句子和段落，不改变事实含义。
 6. **copy/proof：**语法、术语、数字格式、引用、链接、排版和无障碍。
 
+阶段记录使用以下 owner ID：`fact_review`、`development_edit`、`reader_review`、`taste_voice`、`copy_proof`。中文标题可以另列，但不改变 owner ID。
+
 finding 必须有文本证据、影响、修复动作和 owning node。仅审查时到此停止；要求修改时只修获授权范围。
 
 ## 12. 去模板与事实回归
 
 Humanizer 先诊断、后删除、再定点改写；检测分数不参与质量放行。改写前冻结数字、日期、姓名、URL、引语、代码、术语、范围、确定程度和因果关系。文件存在时，使用当前已加载 Skill 根目录的绝对路径运行 `"$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_factual_invariants.py"`；根目录不可确定时记录 `factual_invariant_check: not_run`，然后人工检查脚本不能判断的语义漂移。
+
+此节点不可与 Node 11 的事实预审合并。所有正文修改结束后，流程计划和运行记录必须显式包含：
+
+```yaml
+factual_regression:
+  status: passed | findings_returned | not_run
+  before_file: ""
+  after_file: ""
+  mechanical_check: passed | changed | not_run
+  semantic_check: passed | findings_returned | not_run
+  reason: ""
+```
+
+`passed` 需要机械变化已逐项解释，且确定程度、范围、主体、时间和因果关系完成人工语义核对。没有前后版本、Skill 路径或审查能力时只能写 `not_run`，不能由法务审查、copy edit 或起草前核验代替。
 
 退出：没有实质模板簇，继续修改只会损伤事实、论证或声音；最终事实状态绑定当前标题和正文，而不是旧版本。
 
@@ -149,7 +165,20 @@ independent_review:
 
 先比较初稿与终稿，提炼真实修改产生的规则；无差异就记录无可学内容，不自评分。发布后只记录与具体标题/正文/封面版本绑定的真实指标，区分观察、假设与规则候选。
 
-单篇表现不能证明因果。至少两个可比项目重复出现、反例已检查，才进入稳定规则；原始指标使用 append-only 账本。
+单篇表现不能证明因果。复盘记录必须显式给出稳定的规则写入决策：
+
+```yaml
+stable_rule_update:
+  status: none | hypothesis | candidate | promoted
+  replications: 0        # 可比项目独立复现次数
+  comparable_runs: 0     # 满足可比控制的项目数
+  counterexamples_checked: false
+  ledger: append_only
+```
+
+`status: promoted` 需要同时满足：`replications >= 2`、`comparable_runs >= 2`、`counterexamples_checked: true`。不满足时只能写 `none` 或 `hypothesis`，不得把规则写进稳定声音档案或标题公式，也不得承诺下次沿用。原始指标使用 append-only 账本，允许追加但不得覆盖历史版本。
+
+`post-publish` 默认只分析，不持久写入。单篇结果只登记为 `observation` 与 `hypothesis`；没有曝光量时打开率标记 `not_available`。未获得明确写入授权和目标路径时，`persistence: not_run`，不得写入声音档案、记忆或项目文件。
 
 ## 深度裁剪表
 

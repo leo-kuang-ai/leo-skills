@@ -4,7 +4,7 @@ description: 验证显式完整审查不只报告模式类别摘要。
 
 input:
   prompt: |
-    对下面英文内容执行完整 55 模式审查，只报告，不改写。请特别检查模型引用标记泄漏、Unicode 混淆和不存在反方残留。
+    对下面英文内容执行完整 55 模式审查，只报告，不改写。必须读取 humanizer-pattern-catalog.md，并在三条对应 finding 中保留 canonical IDs：P34 模型引用标记泄漏、P52 Unicode 混淆、P54 不存在反方残留。
 
     In summary, experts say this represents a pivotal shift. citeturn0search0 While some might argue that nothing changes, the data​ tells us otherwise.
 

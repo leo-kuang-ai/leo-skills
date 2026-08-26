@@ -10,8 +10,6 @@ input:
 
 expect:
   must_contain:
-    - "意义膨胀"
-    - "模糊归因"
     - "原句"
     - "动作"
   must_not_contain:
@@ -20,8 +18,6 @@ expect:
     - "改写后："
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["意义膨胀", "模糊归因"]
-        not: ["第一版改写", "第二版改写", "改写后："]
+  type: script
+  script_path: evals/scripts/check-audit-readonly.sh
+  timeout_seconds: 10

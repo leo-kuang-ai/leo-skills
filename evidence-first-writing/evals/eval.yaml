@@ -1,0 +1,39 @@
+schema_version: v1alpha1
+
+environment:
+  type: none
+
+skills:
+  - source: local_path
+    path: .
+
+engine:
+  name: codex
+
+cases:
+  files:
+    - evals/cases/deep-editorial-pipeline.yaml
+    - evals/cases/humanize-preserves-facts.yaml
+    - evals/cases/source-grounded-tool-routing.yaml
+    - evals/cases/audit-does-not-rewrite.yaml
+    - evals/cases/voice-profile-skip.yaml
+    - evals/cases/routes-technical-howto.yaml
+    - evals/cases/routes-incident-retrospective.yaml
+    - evals/cases/routes-formal-report.yaml
+    - evals/cases/routes-technical-reference.yaml
+    - evals/cases/routes-technical-explanation.yaml
+    - evals/cases/routes-ambiguous-single-question.yaml
+    - evals/cases/routes-mixed-family.yaml
+    - evals/cases/complete-humanizer-catalog.yaml
+    - evals/cases/nonarticle-lifecycle.yaml
+    - evals/cases/deep-independent-review-status.yaml
+  defaults:
+    timeout_seconds: 180
+    max_turns: 4
+    expect:
+      must_not_contain:
+        - "TODO"
+  parallelism: 1
+
+report:
+  formats: [json]

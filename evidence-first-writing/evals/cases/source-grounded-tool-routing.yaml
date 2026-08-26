@@ -1,0 +1,26 @@
+id: source-grounded-tool-routing
+title: 工具分类必须服从当前源码证据
+description: 验证 Skill 不会把视觉 taste 工具误称为文字审美工具，也不会把缺许可证或缺源码项目说成已验证。
+
+input:
+  prompt: |
+    我想给中文文章配一套工具：检测 AI 痕迹、清理套路、校准声音、判断文字审美、跑全流程。请根据当前 Skill 的上游源码审计给出选择，并明确哪些项目不能被当前源码证明。
+
+expect:
+  must_contain:
+    - "taste-skill"
+    - "前端"
+    - "HC3"
+    - "许可证"
+    - "shuorenhua"
+    - "源码"
+  must_not_contain:
+    - "taste-skill 是经过验证的文字审美工具"
+    - "HC3 可以直接判定作者身份"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["taste-skill", "前端", "HC3", "许可证", "shuorenhua", "源码"]
+        not: ["taste-skill 是经过验证的文字审美工具", "HC3 可以直接判定作者身份"]

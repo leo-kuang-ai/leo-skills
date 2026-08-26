@@ -1,0 +1,24 @@
+id: routes-mixed-family
+title: 混合请求保留一个主 Family
+description: 验证平台和个人经历只作为修饰，不覆盖事故复盘主 workflow。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。把我们这次支付事故复盘写成公众号文章，并带一点我的个人经历。
+
+expect:
+  must_contain:
+    - "case-retrospective"
+    - "newsletter-platform"
+    - "时间线"
+    - "当时"
+  must_not_contain:
+    - "营销漏斗"
+    - "虚构故事"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["case-retrospective", "newsletter-platform", "时间线"]
+        not: ["营销漏斗", "虚构故事"]

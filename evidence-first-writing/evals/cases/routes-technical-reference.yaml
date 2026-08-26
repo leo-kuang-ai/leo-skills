@@ -1,0 +1,26 @@
+id: routes-technical-reference
+title: API Reference 路由到技术参考流程
+description: 验证 API 和配置查询不会误入教程或研究解释 workflow。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。我要写一份支付 API 的 Reference，列出认证、请求字段、响应字段、错误码和版本兼容性。
+
+expect:
+  must_contain:
+    - "technical-reference"
+    - "Schema"
+    - "字段"
+    - "错误码"
+    - "版本"
+  must_not_contain:
+    - "教程叙事"
+    - "营销漏斗"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["technical-reference", "字段", "错误码", "版本"]
+        any: ["Schema", "实现"]
+        not: ["营销漏斗"]

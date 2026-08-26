@@ -1,0 +1,100 @@
+# 来源分析
+
+本文件记录设计 Skill 时使用的证据，不属于普通写作任务需要加载的运行指令。
+
+对 `/Users/kuang/leo-ppt-verify/参考` 九个仓库的全源码审计、commit、许可证、测试和迁移判断见 [upstream-source-audit.md](upstream-source-audit.md)。
+
+## 用户提供的文章
+
+### zhouluobo，2026-08-24
+
+标题：`我给Codex找了6个写作Skill，终于不用一条提示词硬写到底了`
+
+链接：https://x.com/zhouluobo/status/2091846529321664695
+
+经原文确认并进入设计的要点：
+
+- 写作同时包含调研、定主线/结构、声音、事实核对和终稿校对；交给一条通用提示词会收敛到最常见的生成路径。
+- 编排者应保留作者控制权，让不同阶段拥有不同工作。
+- 上下文收集和陌生读者测试能暴露作者看不到的隐含前提。
+- 声音需要从代表性样本中提炼稳定个人特征与渠道特征，而不是只收集口头禅。
+- 产物类型决定结构和验证方式；技术教程需要运行示例并回到实现核对参数。
+- 去 AI 模板感位于写作末端，且不得修改事实或编造经历、数字和引用。
+
+### noahduck283，2026-06-22
+
+标题：`去AI 去味全网最全指南：从识别到榨干（附中英文skill实测清单）`
+
+链接：https://x.com/noahduck283/status/2069030402048893317
+
+经原文确认并进入设计的要点：
+
+- AI 模板感被归因于三类上游失败：素材编造、思考过度完整/假装、默认风格；只换词无法修复。
+- 写作前需确认体裁、意图、读者已有认知、语域以及经历与事实的来源。
+- 先诊断再编辑，先删除低信息文本再改写，用有支持的动作和细节替换抽象词。
+- 代替读者制造误解属于结构性越位，不能用它表演洞见。
+- 去模板修改应定点进行，保留明确判断和自然长句，不靠故意犯错或加俚语表演「人味」，无实质问题时应停止。
+- 检测结果只是线索，不是最终裁判；长期改进依赖稳定的个人声音画像。
+
+## 上游 Skill 复核
+
+为区分文章评价和上游真实行为，本轮读取了以下当前源码：
+
+- `CommandCodeAI/agent-skills/.../content-research-writer/SKILL.md`：协作式大纲、来源收集、分节反馈、引用和声音保护。
+- `anthropics/skills/.../doc-coauthoring/SKILL.md`：上下文迁移、逐节精修和无前文上下文的读者测试。
+- `mblode/agent-skills/.../docs-writing/SKILL.md`：先分类产物，再把可运行示例与有效链接作为退出标准，而不仅是文字流畅。
+- `Aboudjem/humanizer-skill/.../skills/humanizer/SKILL.md`：模式簇检测、误报保护、定点编辑、声音画像和禁止编造事实。
+
+规则数量的漂移很重要：第一篇文章写 53 种 Humanizer 模式，第二篇写 43 种，本轮在 2026-08-26 读取的当前上游源码写 55 种。因此本 Skill 不固化模式数量，也不把检测分数设为发布门禁。
+
+## 条件化集成与未转化为强制要求的内容
+
+- 中文高频词表已作为逐项检查清单集成，但不是无上下文禁词表；准确术语、引语和作者有意表达必须保留。
+- 约 20% 删除已作为默认压缩目标集成，但事实、论证、必要上下文和作者声音优先；它不是必须达成的发布门禁。
+- 中文段落、空格、引号、破折号、分隔符、标题层级和项目符号规则已作为发布渠道默认集成；用户模板、技术体裁和已验证作者声音可以覆盖，避免变成跨体裁硬禁令。
+- 用 burstiness 阈值证明人类作者身份：节奏只能作为线索，存在误报。
+- 强制安装文章列出的外部 Skill：本技能包必须独立可用。
+- 没有真正隔离的审查者时，声称已完成 fresh-agent 独立审查。
+
+## 文章能力覆盖矩阵
+
+以下是对 zhouluobo 文章明确介绍能力的当前映射：
+
+| 文章能力 | 当前实现 |
+|---|---|
+| Content Research Writer：调研、引用、证据型大纲 | `workflow-contract.md` 的调研问题、claim-source 账本、论证图和证据锚点 |
+| Content Research Writer：Hook 优化 | `workflow-contract.md` 的 Hook 分析、三种结构候选、推荐与承诺核验 |
+| Content Research Writer：逐节反馈 | `workflow-contract.md` 的逐节共创与局部迭代 |
+| Doc Co-Authoring：背景倾倒与追问 | `coauthor` 的上下文倾倒和 5-10 个真实缺口问题 |
+| Doc Co-Authoring：逐节提问、发散、筛选、精修 | `coauthor` 的逐节精修循环，允许用户跳过机械筛选 |
+| Doc Co-Authoring：陌生读者测试 | 通用编辑审查与 `coauthor` 的读者测试，严格区分独立测试和作者侧模拟 |
+| Ghostwriter：`soul.md` 与渠道档案 | `voice-profiles.md` 定义可选持久化格式、覆盖关系和运行时读取 |
+| Ghostwriter：无档案时的处理 | 提示用户输入 2-5 个案例，可临时校准、生成档案或直接跳过；跳过不阻塞写作 |
+| Train Ghostwriter：从案例提炼档案 | `train-voice` 的授权、作者归属、样本清理、低支持标记和写入授权 |
+| Evaluate Ghostwriter：baseline/profile 盲评 | `evaluate-voice` 的相同模型/任务、新会话、留出答案隔离和人类 A/B 标签 |
+| Copywriting：页面目标、读者、产品结果、流量入口 | `copywriting.md` 的五项写前合同及 write/edit/state-copy 路由 |
+| Copywriting：多个候选与推荐 | 新写流程要求页面 3 个、单行 2 个结构不同候选并推荐 |
+| Docs Writing：Diataxis 四类 | `technical-docs.md` 的 tutorial/how-to/reference/explanation 分类 |
+| Docs Writing：代码、链接、参数核验 | `technical-docs.md` 的可执行发布门禁及 `not_run` 披露 |
+| Humanizer：detect/rewrite/edit | `humanizer-patterns.md` 的三模式和中文专项七类报告 |
+| Humanizer：模式库、命名 voice、评分、迭代 | 当前 55 类模式族、五种临时 voice、0-100 诊断分与最多三轮收敛 |
+| Humanizer：事实保护 | 通用冻结/回归合同、中文两轮改写和完整模式误报保护 |
+
+这是能力合同覆盖，不表示已复制外部仓库的脚本、词表全文、CLI 或所有实现细节，也不表示行为评测已通过。每项真实效果仍以本地 fixture、盲评和实际用户结果为准。
+
+## 第二篇文章逐章覆盖矩阵
+
+| 原文章节/图片条目 | 当前实现 |
+|---|---|
+| 写之前想清楚方向：体裁、意图、读者、语气、素材来源 | `workflow-contract.md` 五项写作 brief，信息不足时收窄 |
+| 22 条高频特征清单 | `chinese-editorial-protocol.md` 逐条列出并要求上下文判断 |
+| burstiness 自测与句长变化 | 中文协议检查连续句长和结构；`humanizer-patterns.md` 将量化指标限定为线索 |
+| 反代入式表达与越位检查 | 中文协议的四问反代入检查与真实误解门禁 |
+| 检测、删、具体化、校准声音、反查 | 中文七类报告及两轮改写协议，结尾做事实回归 |
+| 格式排版清单 | 中文协议的段落、空格、引号、破折号、分隔符、三级标题和项目符号默认 |
+| 中英文 Humanizer 工具选择 | `tool-selection.md` 按语言、渠道和失败环节选择，并要求维护/许可证/隐私核验 |
+| 无工具时的完整提示词 | `portable-prompt.md` 可直接复制，并要求随中文协议同步维护 |
+| 长期个人说明书 | `personal-context.md` 的逐题访谈、隐私边界、审阅和维护流程 |
+| 配置聊天产品或 `AGENTS.md`/`CLAUDE.md` | `personal-context.md` 的按宿主最小投射与明确写授权 |
+
+文章列出的 Humanizer 星标数、模式数和维护状态属于时效性信息，只记录选型逻辑，不固化为当前事实。

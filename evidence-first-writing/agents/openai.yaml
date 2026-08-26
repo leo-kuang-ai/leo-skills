@@ -1,0 +1,4 @@
+interface:
+  display_name: "证据优先写作"
+  short_description: "识别文章类型并路由调研、写作、编辑与验证流程"
+  default_prompt: "使用 $evidence-first-writing 识别我的写作意图和文章类型，进入合适 workflow 完成文章。"

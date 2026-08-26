@@ -1,0 +1,13 @@
+# Local evaluation workspaces and generated reports
+evidence-first-writing-workspace/
+evidence-first-writing-rerun-workspace/
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Local tooling and editor files
+.DS_Store
+.venv/
+venv/
+*.egg-info/

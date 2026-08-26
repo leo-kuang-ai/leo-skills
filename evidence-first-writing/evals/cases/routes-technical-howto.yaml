@@ -1,0 +1,25 @@
+id: routes-technical-howto
+title: 技术 How-to 路由到任务与验证流程
+description: 验证明确的操作型请求不会进入观点评论或营销流程。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。我要写一篇技术 How-to，教已有 Python 基础的读者使用我们当前 CLI 导出审计报告。文章要包含命令、参数和失败排查。
+
+expect:
+  must_contain:
+    - "how-to"
+    - "前置条件"
+    - "运行"
+    - "参数"
+  must_not_contain:
+    - "marketing-copy"
+    - "转化漏斗"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["how-to", "前置条件", "参数"]
+        any: ["排障", "恢复", "排查"]
+        not: ["marketing-copy", "转化漏斗"]

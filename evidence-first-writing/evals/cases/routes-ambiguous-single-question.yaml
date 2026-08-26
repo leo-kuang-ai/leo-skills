@@ -1,0 +1,18 @@
+id: routes-ambiguous-single-question
+title: 模糊请求只问一个 workflow 分叉问题
+description: 验证入口不会直接写稿或发出多问题问卷。
+
+input:
+  prompt: |
+    帮我写一篇关于 AI 教育的文章。
+
+expect:
+  must_not_contain:
+    - "正文如下"
+    - "编辑说明"
+    - "##"
+
+judge:
+  type: script
+  script_path: evals/scripts/check-single-routing-question.sh
+  timeout_seconds: 10

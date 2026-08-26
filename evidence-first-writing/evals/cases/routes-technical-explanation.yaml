@@ -1,0 +1,25 @@
+id: routes-technical-explanation
+title: 架构解释路由到技术 Explanation 流程
+description: 验证机制和权衡解释不被强行要求 Quickstart 或完整参数表。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。我要解释为什么系统采用事件驱动架构，而不是同步 RPC。文章要讨论机制、权衡、替代方案和边界。
+
+expect:
+  must_contain:
+    - "technical-explanation"
+    - "机制"
+    - "代价"
+    - "替代方案"
+    - "边界"
+  must_not_contain:
+    - "必须提供 Quickstart"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["technical-explanation", "机制", "替代方案", "边界"]
+        any: ["权衡", "代价"]
+        not: ["必须提供 Quickstart"]

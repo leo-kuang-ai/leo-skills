@@ -1,0 +1,19 @@
+id: deep-editorial-pipeline
+title: 高风险文章应采用完整编辑主链
+description: 验证事实密集且准备公开发布的文章不会被降级为直接起草和末端去 AI 味。
+
+input:
+  prompt: |
+    我要公开发布一篇关于新劳动政策影响的深度文章，文中会使用政策日期、企业数据、员工访谈和金额。先不要写正文，请使用这个 Skill 给出一步一步的执行流程、每个门禁和主要产物。目标是高质量且可以接受外部质疑。
+
+expect:
+  must_not_contain:
+    - "AI 分数达标即可发布"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["deep", "证据账本", "事实回归"]
+        any: ["分层审查", "分层编辑", "发展编辑"]
+        not: ["直接写正文", "AI 分数达标即可发布"]

@@ -1,0 +1,24 @@
+id: nonarticle-lifecycle
+title: 非文章 lifecycle 不要求文章类型
+description: 验证工具选型和声音训练使用 not_applicable，而不触发文章类型问卷。
+
+input:
+  prompt: |
+    我想比较几个中文去 AI 味工具的许可证、隐私和写文件范围。请先识别 route，再给出执行流程；这不是写文章。
+
+expect:
+  must_contain:
+    - "tool-select"
+    - "not_applicable"
+    - "许可证"
+    - "隐私"
+  must_not_contain:
+    - "请选择文章类型"
+    - "观点评论"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["tool-select", "not_applicable", "许可证", "隐私"]
+        not: ["请选择文章类型"]

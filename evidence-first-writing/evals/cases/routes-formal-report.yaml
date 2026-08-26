@@ -1,0 +1,27 @@
+id: routes-formal-report
+title: 管理决策报告进入正式报告流程
+description: 验证正式报告围绕决策者、选项、风险和执行责任组织。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。我要给管理层写一份是否迁移客服系统的决策报告，需要比较三个方案并给出建议、风险和执行安排。
+
+expect:
+  must_contain:
+    - "formal-report"
+    - "决策人"
+    - "三个方案"
+    - "风险"
+    - "owner"
+    - "期限"
+    - "验收"
+  must_not_contain:
+    - "先做去 AI 味"
+    - "爆款"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["formal-report", "决策人", "三个方案", "风险", "owner", "验收"]
+        not: ["先做去 AI 味", "爆款"]

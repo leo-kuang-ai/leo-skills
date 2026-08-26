@@ -1,0 +1,20 @@
+id: voice-profile-skip
+title: 没有声音档案时允许跳过
+description: 验证用户拒绝提供案例时写作继续，但不会声称已经学会个人声音。
+
+input:
+  prompt: |
+    请按我的声音写一个 150 字博客开头。我没有 soul.md 或 blog.md，也不想提供案例，直接跳过声音建模。请继续完成，并在编辑说明里诚实标记声音依据。
+
+expect:
+  must_not_contain:
+    - "已经还原你的个人声音"
+    - "已学会你的风格"
+    - "必须先提供样本"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        any: ["临时语域", "临时推断", "采用临时", "未经过声音建模", "不能声称还原"]
+        not: ["已经还原你的个人声音", "已学会你的风格", "必须先提供样本"]

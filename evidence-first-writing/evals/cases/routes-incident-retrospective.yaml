@@ -1,0 +1,25 @@
+id: routes-incident-retrospective
+title: 事故复盘保持时间线与事后偏差边界
+description: 验证公众号渠道不会覆盖案例复盘的主 workflow。
+
+input:
+  prompt: |
+    请先识别 route，再给出写作流程，不要写正文。我要把上周支付系统事故复盘写成公众号文章，会加入我当时的真实经历，但不能泄露客户信息。
+
+expect:
+  must_contain:
+    - "case-retrospective"
+    - "时间线"
+    - "当时"
+    - "决策"
+    - "个人经历"
+  must_not_contain:
+    - "普遍规律已经得到证明"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["case-retrospective", "时间线", "当时", "决策"]
+        any: ["事后", "hindsight", "当时已知"]
+        not: ["普遍规律已经得到证明"]

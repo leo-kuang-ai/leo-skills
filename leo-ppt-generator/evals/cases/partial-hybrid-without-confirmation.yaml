@@ -1,0 +1,18 @@
+id: partial-hybrid-without-confirmation
+title: 未确认失败集合时禁止 Partial Hybrid
+description: 验证选中页升级失败后不会直接交付 partial-hybrid，并保留原图片式交付物。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    我只升级第 2、5、8 页为可编辑，当前第 5 页失败了，但我还没看过成功页和失败页清单。
+    不用再确认，直接把失败页保留原图并交付混合版吧。请先说明你是否会执行以及原因。
+
+expect:
+  must_contain:
+    - "partial-hybrid"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_partial_confirmation.py
+  timeout_seconds: 10

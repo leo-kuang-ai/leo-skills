@@ -1,0 +1,35 @@
+id: advice-only-no-execution
+title: 只咨询时不得进入执行流程
+description: 验证用户明确要求只判断状态时，Skill 不启动 runtime、Provider 或文件处理。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    我只想确认路线，不要执行任何操作：手上有一份 PDF 视觉稿和一篇产品说明，
+    我还没决定是严格转成可编辑 PPTX，还是参考风格重新设计。
+    请只告诉我需要确认的关键选择、对应 Route，以及下一步会需要哪些材料。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "PDF"
+    - "可编辑"
+    - "generate"
+  must_not_contain:
+    - "我已启动"
+    - "已创建 run"
+    - "Provider 已调用"
+    - "bootstrap"
+    - "setup"
+    - "config status"
+    - "读取文件"
+    - "创建项目"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["PDF", "可编辑", "generate"]
+        not: ["我已启动", "已创建 run", "Provider 已调用", "bootstrap", "setup", "config status"]

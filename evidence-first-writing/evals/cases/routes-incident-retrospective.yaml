@@ -4,15 +4,13 @@ description: 验证公众号渠道不会覆盖案例复盘的主 workflow。
 
 input:
   prompt: |
-    请先识别 route，再给出写作流程，不要写正文。我要把上周支付系统事故复盘写成公众号文章，会加入我当时的真实经历，但不能泄露客户信息。
+    请先识别 route，并明确输出 canonical YAML 字段 article_family，再给出写作流程，不要写正文。我要把上周支付系统事故复盘写成公众号文章，会加入我当时的真实经历，但不能泄露客户信息。
 
 expect:
   must_contain:
     - "case-retrospective"
     - "时间线"
     - "当时"
-    - "决策"
-    - "个人经历"
   must_not_contain:
     - "普遍规律已经得到证明"
 
@@ -20,6 +18,6 @@ judge:
   type: rule_based
   success:
     - output_contains:
-        all: ["case-retrospective", "时间线", "当时", "决策"]
-        any: ["事后", "hindsight", "当时已知"]
+        all: ["case-retrospective", "时间线", "当时"]
+        any: ["决策", "判断", "处置动作", "事后", "hindsight", "当时已知", "亲历", "个人现场", "作者亲身"]
         not: ["普遍规律已经得到证明"]

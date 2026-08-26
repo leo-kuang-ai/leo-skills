@@ -11,9 +11,6 @@ expect:
     - "AI 分数达标即可发布"
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["deep", "证据账本", "事实回归"]
-        any: ["分层审查", "分层编辑", "发展编辑"]
-        not: ["直接写正文", "AI 分数达标即可发布"]
+  type: script
+  script_path: evals/scripts/check-deep-pipeline.sh
+  timeout_seconds: 10

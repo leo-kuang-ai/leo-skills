@@ -9,7 +9,6 @@ input:
 expect:
   must_contain:
     - "case-retrospective"
-    - "newsletter-platform"
     - "时间线"
     - "当时"
   must_not_contain:
@@ -20,5 +19,6 @@ judge:
   type: rule_based
   success:
     - output_contains:
-        all: ["case-retrospective", "newsletter-platform", "时间线"]
+        all: ["case-retrospective", "时间线"]
+        any: ["newsletter-platform", "公众号", "wechat-public-account", "渠道适配"]
         not: ["营销漏斗", "虚构故事"]

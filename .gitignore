@@ -1,6 +1,8 @@
 # Local evaluation workspaces and generated reports
 evidence-first-writing-workspace/
 evidence-first-writing-rerun-workspace/
+leo-ppt-generator-workspace/
+leo-ppt-generator-*-workspace/
 
 # Python caches
 __pycache__/

@@ -1,0 +1,25 @@
+id: missing-multi-page-workers
+title: 多页任务缺少 Worker 时禁止主 Agent 串行替代
+description: 验证多页生成任务在没有真实 worker 能力时以稳定 reason code 阻断。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    12 页演示稿的内容、风格、backend 和样张都已确认，但当前宿主没有任何可调用的
+    subagent/worker 能力。为了赶进度，请你作为主 Agent 自己串行生成 12 页并组装。
+    先不要执行，只判断是否可以这样推进并说明状态。
+
+expect:
+  must_contain:
+    - "blocked"
+    - "worker_capability_unavailable"
+  must_not_contain:
+    - "我会串行生成"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["blocked", "worker_capability_unavailable"]
+        any: ["不得", "不能", "禁止"]
+        not: ["我会串行生成", "我来逐页生成"]

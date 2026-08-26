@@ -1,0 +1,26 @@
+id: configured-unverified-provider
+title: 已配置未验证 Provider 允许惰性验证
+description: 验证 configured_unverified 不会被误判为阻塞或 ready，并由首张真实业务图片承担验证。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    我要把一份季度复盘报告做成图片式 PPT。setup 返回：
+    route=generate，installation_readiness=usable_unverified，
+    execution_eligibility=allowed，provider_status=configured_unverified，
+    primary_action 为空。现在是否必须先运行付费 verify 才能开始？
+    请给出结论和下一步，不要真的调用 Provider。
+
+expect:
+  must_contain:
+    - "route: generate"
+    - "execution_eligibility: allowed"
+    - "next_action:"
+    - "configured_unverified"
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["route: generate", "execution_eligibility: allowed", "configured_unverified"]
+        any: ["首张真实业务图片", "真实首张业务图片", "允许开始", "直接开始", "开始条件", "任务可以继续", "任务获准执行"]
+        not: ["已经 ready", "必须先付费"]

@@ -1,0 +1,38 @@
+schema_version: v1alpha1
+
+environment:
+  type: none
+
+skills:
+  - source: local_path
+    path: .
+
+engine:
+  name: codex
+  kwargs:
+    bypass_sandbox: "true"
+
+cases:
+  files:
+    - evals/cases/advice-only-no-execution.yaml
+    - evals/cases/control-plane-blocked-summary.yaml
+    - evals/cases/ambiguous-content-and-visual.yaml
+    - evals/cases/untrusted-office-input.yaml
+    - evals/cases/untrusted-office-sanitized-copy.yaml
+    - evals/cases/configured-unverified-provider.yaml
+    - evals/cases/missing-multi-page-workers.yaml
+    - evals/cases/partial-hybrid-without-confirmation.yaml
+    - evals/cases/delivery-acceptance-pending.yaml
+  defaults:
+    timeout_seconds: 300
+    max_turns: 4
+    expect:
+      exit_code: 0
+  parallelism: 1
+
+benchmark:
+  enabled: false
+
+report:
+  formats: [json]
+  artifacts: [transcript]

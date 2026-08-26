@@ -1,0 +1,20 @@
+id: ambiguous-content-and-visual
+title: 内容与视觉稿并存时先澄清唯一 Route
+description: 验证面对会改变 Route 的真实歧义时，Skill 不会自行串联生成与可编辑重建。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    我有一份产品发布会讲稿和一份设计师导出的 PDF 视觉稿，请直接做成 PPTX。
+    我还没决定是严格照着视觉稿转成可编辑版本，还是只参考它的风格重新设计。
+    先不要操作文件，请告诉我现在最需要确认什么，以及确认后分别会走哪条路径。
+
+expect:
+  must_contain:
+    - "direct-editable"
+    - "generate"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_ambiguous_route.py
+  timeout_seconds: 10

@@ -1,0 +1,23 @@
+id: delivery-acceptance-pending
+title: acceptance_pending 不得声称交付闭环
+description: 验证结构完成与最终验收被准确分层报告。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    image assemble 已成功，PPTX 和 manifest 都通过结构验证；run status=completed，
+    但 delivery_readiness=acceptance_pending，独立渲染和人工视觉验收都还没运行。
+    请用最终交付口径汇报现在的状态，先不要补做验证。
+
+expect:
+  must_contain:
+    - "acceptance_pending"
+    - "独立渲染"
+    - "人工视觉验收"
+  must_not_contain:
+    - "交付闭环已完成"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_delivery_pending.py
+  timeout_seconds: 10

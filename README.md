@@ -13,6 +13,17 @@
 触发条件和完整工作流；[evidence-first-writing/README.md](evidence-first-writing/README.md)
 介绍完整的安装步骤与使用方法。
 
+### `leo-ppt-generator`
+
+把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint：支持图片版 PPT、
+可编辑版 PPT、hybrid 与升级路线。技能包包含运行时（`runtime/`）、
+参考风格库（`references/styles/`）、补丁与评测用例，并提供
+[install.sh](leo-ppt-generator/install.sh)（macOS/Linux）与
+[install.ps1](leo-ppt-generator/install.ps1)（Windows）本地安装脚本。
+
+详见 [leo-ppt-generator/SKILL.md](leo-ppt-generator/SKILL.md)，了解
+触发条件、路由与门禁顺序。
+
 ## 安装与使用
 
 ### 方式一（推荐）：Claude Code `/plugin`
@@ -60,6 +71,13 @@ The included `evidence-first-writing` skill routes writing requests, preserves
 source facts, and produces technically grounded drafts. See
 [evidence-first-writing/SKILL.md](evidence-first-writing/SKILL.md) for the
 complete workflow.
+
+The `leo-ppt-generator` skill turns requirements, visual mockups, images, or
+PDFs into editable PowerPoint decks (image-based, editable, hybrid, and
+upgrade routes). See [leo-ppt-generator/SKILL.md](leo-ppt-generator/SKILL.md)
+for triggers, routing, and gating order, and its
+[install.sh](leo-ppt-generator/install.sh) /
+[install.ps1](leo-ppt-generator/install.ps1) for local installation.
 
 To install as a personal Claude Code skill from GitHub:
 

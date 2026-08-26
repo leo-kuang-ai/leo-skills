@@ -1,0 +1,29 @@
+id: control-plane-blocked-summary
+title: 阻断状态必须使用统一控制面摘要
+description: 验证多页 worker 不可用时，响应包含完整五字段且只有一个恢复动作。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    12 页 PPT 的内容、风格、backend 和样张都已确认，但当前宿主没有可调用的 worker。
+    请只汇报当前状态和唯一下一步，不要执行任何操作，也不要自行串行生成。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "route: generate"
+    - "status: blocked"
+    - "reason_code: worker_capability_unavailable"
+    - "execution_eligibility: blocked"
+    - "next_action:"
+  must_not_contain:
+    - "已创建 run"
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["route: generate", "status: blocked", "reason_code: worker_capability_unavailable", "execution_eligibility: blocked", "next_action:"]
+        not: ["已创建 run", "我会串行生成"]

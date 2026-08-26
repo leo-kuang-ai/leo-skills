@@ -1,20 +1,19 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "leo-skills",
+  "description": "Leo skills: evidence-first-writing and future additions",
   "owner": {
     "name": "sunrain520"
-  },
-  "metadata": {
-    "description": "Leo skills: evidence-first-writing and future additions",
-    "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "evidence-first-writing",
       "description": "先识别写作意图、文章类型、证据风险和协作方式，再编排调研、论证、起草、编辑、个人声音、技术验证、营销文案和去AI模板感",
-      "source": "./",
-      "skills": [
-        "./evidence-first-writing"
-      ]
+      "version": "0.1.0",
+      "source": "./evidence-first-writing",
+      "author": {
+        "name": "sunrain520"
+      }
     }
   ]
 }

@@ -14,20 +14,7 @@ constraints:
   timeout_seconds: 180
   max_turns: 2
 
-expect:
-  must_contain:
-    - "观察"
-    - "假设"
-    - "未取得曝光"
-  must_not_contain:
-    - "已证明该句式有效"
-    - "因此我们确定"
-    - "标题公式有效"
-
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["观察", "假设"]
-        any: ["未取得曝光", "反例", "可比", "append-only", "绑定"]
-        not: ["已证明该句式有效", "因此我们确定", "标题公式有效"]
+  type: script
+  script_path: evals/scripts/check-post-publish-boundary.sh
+  timeout_seconds: 10

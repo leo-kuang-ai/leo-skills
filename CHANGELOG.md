@@ -8,6 +8,8 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- Add `.claude-plugin/marketplace.json`: enables `/plugin marketplace add sunrain520/leo-skills` and
+  `/plugin install evidence-first-writing` for remote Claude Code installation.
 - Add `evidence-first-writing/README.md`: install (Claude Code personal/project
   and Codex), usage, cross-host adaptation, references map, and test/eval
   commands.

@@ -1,0 +1,25 @@
+id: voice-channel-conflict
+title: soul.md 与渠道档案冲突时渠道规则优先且隐私不入稿
+description: |
+  验证同时提供 soul.md 核心规则与 blog.md 渠道档案且两者存在渠道范围冲突时：
+  冲突被显式识别并按「渠道档案在渠道冲突上优先」处理；档案中的默认数字与
+  私密信息不进入新稿。对齐 eval-plan Case 7B 的确定性子集。
+
+input:
+  prompt: |
+    我的 soul.md 核心规则（节选）：全渠道不用感叹号；不提具体收入数字；第一人称、先给结论再给证据。
+    我的 blog.md 渠道档案（节选）：博客结尾用一句行动号召收尾；允许口语和轻松语气；行动号召可以用感叹号增强。
+    请用我的声音写一篇博客开头（150 字左右），主题：我是怎么复盘一次线上事故的。只写开头，并简短说明你如何处理两份档案规则之间的关系。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        any: ["冲突", "覆盖", "优先", "以渠道", "渠道规则", "渠道档案优先"]
+    - output_contains:
+        any: ["soul.md", "核心规则", "渠道档案"]
+        not: ["月收入", "存款", "收入 4 万"]

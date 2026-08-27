@@ -32,6 +32,17 @@ cases:
     - evals/cases/copywriting-route.yaml
     - evals/cases/rejects-causal-overclaim.yaml
     - evals/cases/personal-context-no-write.yaml
+    - evals/cases/post-publish-no-causal-unprompted.yaml
+    - evals/cases/full-article-evidence-chain.yaml
+    - evals/cases/chinese-protocol-context-judgment.yaml
+    - evals/cases/chinese-22-rules-hit-and-preserve.yaml
+    - evals/cases/voice-channel-conflict.yaml
+    - evals/cases/train-voice-provisional.yaml
+    - evals/cases/docs-truth-param-check.yaml
+    - evals/cases/dev-edit-before-polish.yaml
+    - evals/cases/taste-findings-not-visual.yaml
+    - evals/cases/personal-context-authorized-write.yaml
+    - evals/cases/bare-topic-fork-two-turns.yaml
   defaults:
     timeout_seconds: 180
     max_turns: 4

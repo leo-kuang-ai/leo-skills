@@ -1,0 +1,21 @@
+id: dev-edit-before-polish
+title: 发展编辑 finding 先于句子润色
+description: |
+  验证修订一篇文笔顺滑但论点模糊、段落可换序、结论缺 warrant 的文章时，
+  首批 finding 指向论点/结构/论证层而不是禁词、标点或句长；修复路径返回
+  对应 owner 而不是用「更自然」掩盖论证失败。对齐 eval-plan Case 16 的确定性子集。
+
+input:
+  prompt: |
+    这篇文章文笔顺滑，但我总觉得说了等于没说。请先给出你的审查 finding，再修订。
+
+    远程办公改变了协作方式。工具让沟通更顺畅。团队需要新的习惯。每个人的节奏不同。信任是远程团队的基石。好的远程团队都懂得尊重边界。所以，远程办公优于坐班。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
+judge:
+  type: script
+  script_path: evals/scripts/check-dev-edit-first.sh
+  timeout_seconds: 10

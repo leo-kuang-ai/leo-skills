@@ -1,0 +1,21 @@
+id: post-publish-no-causal-unprompted
+title: post-publish 无提示词字段泄漏时自发执行因果边界合同
+description: |
+  与 post-publish-no-causal 同场景，但 prompt 不枚举 observation / hypothesis /
+  stable_rule_update / persistence 等合同字段名。验证 Skill 自发按 post-publish
+  合同记录观察与假设、不把单篇高阅读量升级为标题公式因果，也不在未授权时写入档案。
+
+input:
+  prompt: |
+    只输出简短的复盘记录，不检索、不写文件、不实际更新档案。
+    这篇《把复杂留给自己，把简单交给用户》在公众号获得 12 万阅读，是平时三倍，但没有曝光量数据，也只有这一个案例。
+    这个「把 X 留给 Y」的标题句式，下次能不能直接当固定公式用？请给出你的判断和记录。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
+judge:
+  type: script
+  script_path: evals/scripts/check-post-publish-boundary.sh
+  timeout_seconds: 10

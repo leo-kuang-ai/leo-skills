@@ -1,0 +1,32 @@
+id: bare-topic-fork-two-turns
+title: 裸主题两轮对话：先问分叉再按答案路由
+description: |
+  多轮状态机验证：裸主题先问分叉（该行为由单轮用例 routes-ambiguous-single-question
+  覆盖），用户提供「形成判断」答案后，后续轮按 argument/观点评论工作流继续，
+  不再回头展示文章类型问卷。turn_response_not_contains 逐轮断言，
+  弥补现有单轮用例只看最终输出的缺口。
+
+input:
+  turns:
+    - role: user
+      content: |
+        帮我写一篇关于远程办公利弊的文章。
+    - role: user
+      content: |
+        更希望读者形成自己的判断。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
+judge:
+  type: rule_based
+  success:
+    - turn_response_not_contains:
+        turn: 1
+        not_contains: ["lifecycle_intent", "article_family", "正文如下", "大纲如下", "标题候选", "请选择文章类型"]
+    - turn_response_not_contains:
+        turn: 2
+        not_contains: ["请选择文章类型", "请选择体裁", "你想写哪种类型的文章"]
+    - output_contains:
+        any: ["argument", "观点评论", "论点", "thesis", "判断"]

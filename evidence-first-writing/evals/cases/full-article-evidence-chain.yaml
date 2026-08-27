@@ -1,0 +1,34 @@
+id: full-article-evidence-chain
+title: 完整证据型短文保留冲突与披露编辑说明
+description: |
+  验证从带冲突的来源包写研究解释文时：核心数字可映射到来源、冲突被保留而不是
+  静默取平均或采信一方、终稿附带编辑说明披露未核验主张。对齐 eval-plan Case 1
+  的确定性子集（盲审编辑 Judge 未自动化，见 claim ceiling）。
+
+input:
+  prompt: |
+    请根据下面这份来源包写一篇 600-800 字中文研究解释文（evidence-explainer），说明星野云 2026 年第二季度的 P1 故障情况。不得编造材料之外的数字或事实。
+
+    【原始报告 E101】2026 年第二季度，星野云生产环境共发生 4 次 P1 级故障，平均恢复时长 47 分钟，其中 3 次由变更发布引起。
+    【冲突的二手报道】某科技媒体写道：「星野云 Q2 仅出现 2 次 P1 故障，恢复均在 20 分钟以内。」
+    【授权声音样本一】先把恢复时长压下来，再谈别的。数字难看没关系，装作没看见才难看。
+    【授权声音样本二】我的习惯是先给结论，再给证据；反过来写，我自己都不信。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["47 分钟"]
+    - output_contains:
+        any: ["4 次", "四次"]
+    - output_contains:
+        any: ["2 次", "两次"]
+    - output_contains:
+        any: ["冲突", "矛盾", "不一致", "分歧", "无法同时成立"]
+    - output_contains:
+        any: ["编辑说明", "披露", "未解决", "待核", "假设"]
+        not: ["平均恢复时长 20 分钟", "5 次 P1", "6 次 P1"]

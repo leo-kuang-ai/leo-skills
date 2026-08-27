@@ -35,6 +35,22 @@ adheres to a loose semantic-versioning convention.
     `personal-context-no-write`.
   - Judge scripts under `evals/scripts/`: `check-single-routing-question.sh`,
     `check-causal-boundary.sh`, `check-audit-readonly.sh`, `check-voice-skip.sh`.
+- Add negation-tolerant script judges referenced by migrated eval cases:
+  - `evidence-first-writing/evals/scripts/check-formal-report-route.sh` —
+    formal-report routing gate with synonym alternatives (`owner||责任人`,
+    `期限||上线窗口||决策节点||周期`, `三个方案||三方案||方案 A`) and route-pollution
+    negatives.
+  - `evidence-first-writing/evals/scripts/check-tool-evidence-routing.sh` —
+    tool-select evidence-status gate covering taste-skill / HC3 / shuorenhua /
+    ai-flavor-remover with unfalsifiable-claim negatives.
+- Add the spec-first host runtime mirrors to version control
+  (`.agents/skills/`, `.claude/{commands,hooks,settings.json,skills,spec-first}`,
+  `.codex/hooks+hooks.json+spec-first`, `.kiro/{skills,steering,spec-first}`;
+  scratch/local subsets stay git-ignored), so fresh clones carry the full
+  using-spec-first entry governance without re-running init.
+- Add docs/image.png reference to the root README: a Humanizer tool-chain
+  selection cheat sheet ("想做什么 → 对应方法" mapping plus open-source tool
+  comparison) embedded under the evidence-first-writing section. (user-visible)
 
 ### Changed
 
@@ -110,3 +126,68 @@ adheres to a loose semantic-versioning convention.
     single literal token, and scope the "serial generation" promise check to a
     first-person main-agent claim not attributed to a worker (describing the
     correct `真实 worker … → 逐页生成` recovery path must not false-fire).
+- **AGENTS.md** — rewrite the repository-level guidelines to match `CLAUDE.md`
+  and the current two-skill reality: set the Chinese default for docs with English
+  identifiers, the MIT license, and the mandatory Keep-a-Changelog /
+  `(user-visible)` change log; document the current layout (`evidence-first-writing/`,
+  `leo-ppt-generator/`, `docs/`, git-ignored `*-workspace/` and `graphify-out/`);
+  replace the stale "no commit history establishes a convention" with the actual
+  scoped-commit and one-concern-per-commit rules; and add the concrete
+  unit-test / skill-up eval / factual-invariant checker commands (both skills'
+  `evals/eval.yaml`, engine default `claude_code`). Also advise negation-aware
+  assertions for safety-gate evals.
+- **.gitignore** — consolidate the ad-hoc per-skill workspace rules into a
+  single `*-workspace/` (matches the CLAUDE.md "eval workspaces are git-ignored"
+  convention and covers current/future skills), and add Python tool caches
+  (`.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`, `.coverage`, `htmlcov/`),
+  `env/`, `.idea/`, `*.log`, plus Windows desktop files (`Thumbs.db`,
+  `Desktop.ini`) since the installer targets Windows.
+- **SKILL.md** — generalize the causality red line beyond post-publish: when the
+  material contains only a single before/after change, time ordering, or
+  correlation without controls, counterfactuals, or confounder handling, the
+  Skill must refuse the "X 导致 Y" sentence even under explicit user request,
+  rather than hedging with "证据有限" after the fact.
+- **evals/cases/routes-formal-report.yaml** — migrate from brittle substring
+  rule judges to the script judge `check-formal-report-route.sh` and drop
+  `owner` / `期限` as hard `must_contain` tokens so synonym phrasings no longer
+  false-fail.
+- **evals/cases/routes-technical-reference.yaml** — drop the ambiguous negative
+  `"教程叙事"` (which fired on legitimate contrast explanations) and extend the
+  judge's `not:` list to enum-level route pollution (`article_family: tutorial`,
+  `marketing-copy`).
+- **evals/cases/source-grounded-tool-routing.yaml** — replace the inline
+  rule-based judge with the script judge `check-tool-evidence-routing.sh`; drop
+  the redundant `expect` block that duplicated the same substrings.
+- **evals/scripts/check-audit-readonly.sh** — merge the two problem-category
+  gates into one synonym-tolerant list (addings 宣传、缺乏可验证依据、过度泛化、
+  绝对化、不可核验 variants) so equivalent problem namings no longer fail the
+  readonly-audit gate.
+- **evals/scripts/check-single-routing-question.sh** — accept `实践` / `步骤`
+  as additional second-reader-task markers for the bare-topic fork question.
+- **evals/verification-summary.md** — record the fixed-model full regression
+  (iteration-17/18 A/A on bare-topic routing, iteration-19 first full
+  `14 PASS / 6 FAIL`, iteration-31 focused `2 PASS`, iteration-32 final full
+  `20 PASS / 0 FAIL / 0 ERROR` on Codex `gpt-5.6-terra`) and pin the final
+  verification command; keep unfixed-model runs archived as provider-drift
+  evidence.
+- **references/intent-routing.md** — close the canonical-value gap between
+  SKILL.md's operation list and this file's enums: declare the full
+  canonical `operation` enum (17 values) instead of "由 lifecycle_intent 映射",
+  and add a 跨族 operation section defining when `coauthor`, `hooks`, `voice`,
+  `copywriting`, and `docs` apply (family/modifier-scoped operations that own no
+  lifecycle) plus the priority rule forbidding out-of-enum values.
+- **CLAUDE.md** — sync to the two-skill reality: rewrite the repo structure
+  section (both skill packages, docs/, marketplace manifest), add
+  leo-ppt-generator eval commands alongside the writing-skill suite, split the
+  architecture section into 架构一（写作）与 架构二（PPT：Gate 0 信任门禁、
+  advise/execute、Route 表、控制面五行合同、交付红线）, fix relative paths in
+  the key-files table and add leo-ppt-generator rows.
+- **README.md** — add an evaluation evidence boundary note next to the dev
+  commands: the `20 PASS / 0 FAIL` conclusion is conditioned on the fixed
+  `codex × gpt-5.6-terra` engine; `post-publish-no-causal` still fails under
+  the DeepSeek flash proxy behind `claude_code` pending real-Claude
+  re-verification. Cite `verification-summary.md` / `known-issues.md`. (user-visible)
+- **AGENTS.md / CLAUDE.md** — inject the spec-first managed governance block
+  (`<!-- spec-first:lang:start/end -->`): absolute Chinese-language policy and
+  the workflow-entry governance pointer to the installed `using-spec-first`
+  skill.

@@ -1,22 +1,67 @@
-# Repository Guidelines
+# 仓库约定 Repository Guidelines
 
-## Project Structure & Module Organization
+## 语言与治理
 
-This repository is a collection of independent skill packages. Place each skill in its own top-level directory, using a lowercase kebab-case name such as `document-review/` or `release-notes/`. Do not create runtime dependencies between sibling skills unless the shared contract is documented explicitly.
+- **默认语言**：文档、注释、README 使用简体中文；技术术语、文件路径、标识符保持英文。
+- **许可证**：MIT，详见 `LICENSE`。
+- **变更记录纪律**：所有源文件变更必须同步更新根目录 `CHANGELOG.md`（Keep a Changelog 格式）；面向用户的变更在条目后追加 `(user-visible)`。
+- 各技能包在 `SKILL.md` 或包级 `README.md` 中自行声明触发条件、工作流、约束与本包命令。Claude Code 专属开发指引（技能架构、门禁、评测命令）见 `CLAUDE.md`，与本文件保持一致。
 
-A typical package should contain:
+## 项目结构与模块组织
 
-- `SKILL.md`: entry point, trigger conditions, workflow, and constraints.
-- `scripts/`: executable helpers used by the skill.
-- `references/`: supporting instructions or domain material loaded on demand.
-- `assets/` or `templates/`: reusable files copied into generated outputs.
-- `tests/` or `evals/`: package-local behavior checks and fixtures.
+本仓库是若干个独立技能包的集合。每个技能放在自己的顶层目录，使用小写 kebab-case 名称，如 `evidence-first-writing/`、`leo-ppt-generator/`。除非共享契约已在文档中显式声明，否则不要在兄弟技能之间建立运行时依赖。
 
-Keep generated output, caches, credentials, and temporary evaluation workspaces out of the repository.
+当前顶层目录与产物：
 
-## Build, Test, and Development Commands
+- `evidence-first-writing/` — 证据优先写作技能。
+- `leo-ppt-generator/` — 图片式 / 可编辑 / 升级 PPTX 生成技能。
+- `docs/` — 仓库级文档。
+- `*-workspace/` — 评测运行的生成产物（设计上被 git-ignore）。
+- `graphify-out/` — 图结构生成产物。
 
-There is currently no repository-wide build or test runner. Each skill must document its own commands in `SKILL.md` or a package-local `README.md`. Useful repository-level checks include:
+一个典型技能包应包含：
+
+- `SKILL.md`：入口、触发条件、工作流、约束。
+- `scripts/`：技能使用的可执行辅助脚本。
+- `references/`：按需加载的支持说明或领域材料。
+- `assets/` 或 `templates/`：复制到生成产物的可复用文件。
+- `tests/` 或 `evals/`：包级行为检查与 fixture（`evals/eval.yaml` 为 skill-up 评测入口）。
+
+不要将生成产物、缓存、凭据、本地配置或临时评测工作区提交进仓库。
+
+## 构建 / 测试 / 评测命令
+
+仓库没有统一的构建或测试运行器；请从对应技能目录运行包级命令。
+
+### 技能单元测试（Python，evidence-first-writing）
+
+```sh
+python3 -m unittest discover -s evidence-first-writing/tests -p 'test_*.py'
+python3 -m unittest evidence-first-writing.tests.test_factual_invariants
+```
+
+### 评测套件（skill-up CLI）
+
+两技能均以 `evals/eval.yaml` 为入口，引擎默认 `claude_code`：
+
+```sh
+cd evidence-first-writing && skill-up run evals/eval.yaml
+cd leo-ppt-generator && skill-up run evals/eval.yaml
+cd <skill> && skill-up report evals/eval.yaml
+cd <skill> && skill-up list-cases evals/eval.yaml
+```
+
+评测生成的工作区被 git-ignore，可自由重跑。
+
+### 证据事实不变量检查器（evidence-first-writing，独立运行）
+
+跨宿主使用需设置 `EVIDENCE_FIRST_WRITING_SKILL_DIR` 指向 `evidence-first-writing/`；未设置时自动降级。
+
+```sh
+python3 evidence-first-writing/scripts/check_factual_invariants.py before.md after.md
+```
+
+### 仓库级检查
 
 ```sh
 find . -mindepth 2 -maxdepth 2 -name SKILL.md
@@ -24,20 +69,39 @@ rg -n "TODO|FIXME" --glob '!AGENTS.md'
 git diff --check
 ```
 
-Run package-specific formatting, tests, and evaluations from that package's directory before submitting changes.
+提交前，请从对应技能目录运行包级格式化、测试与评测，并确认通过。
 
-## Coding Style & Naming Conventions
+## 编码风格与命名
 
-Use two spaces for YAML and JSON, and follow the formatter standard for any implementation language. Prefer ASCII filenames and UTF-8 content. Use `lowercase-kebab-case` for skill directories, `snake_case` for shell variables, and descriptive fixture names. Keep instructions direct and imperative. Scripts should fail clearly, avoid machine-specific absolute paths, and expose required configuration through documented environment variables.
+- YAML 和 JSON 使用两个空格缩进；实现语言遵循其 formatter 标准。
+- 优先使用 ASCII 文件名与 UTF-8 内容；目录用 `lowercase-kebab-case`，shell 变量用 `snake_case`，fixture 名要有描述性。
+- 指示直接、祈使式。脚本应清晰失败、避免机器特定的绝对路径，并通过文档化环境变量暴露所需配置。
+- 新代码注释使用英文，仅解释非常规意图。
 
-## Testing Guidelines
+## 测试准则
 
-Tests belong to the skill they validate. Cover trigger behavior, the primary successful workflow, invalid input, and important safety boundaries. Name cases after observable behavior, for example `rejects-missing-source`. Never treat installation or static validation alone as proof that a skill works; record the exact command and result for behavioral evaluations.
+测试属于其校验的技能。应覆盖触发行为、主成功工作流、无效输入与重要的安全边界。用例按可观察行为命名，例如 `rejects-missing-source`。不要仅把安装或静态校验当作技能可工作的证明；行为评测需记录确切命令与结果。安全门禁类断言应使用"否定感知"的匹配（如 judge 脚本对 `未读取文件` / `不会：- …` 等表述做否定过滤），避免对健康响应误判。
 
-## Commit & Pull Request Guidelines
+## 提交与合并请求
 
-No commit history currently establishes a convention. Use short, imperative subjects with an optional package scope, for example `document-review: add PDF fixture`. Keep commits limited to one skill or one repository-level concern. Pull requests should identify affected packages, explain behavior changes, list verification commands and results, and link relevant issues. Include screenshots or sample artifacts only when output presentation changes.
+- 提交信息：短祈使句，可选包作用域，如 `evidence-first-writing: add post-publish eval case`。
+- 每次提交限定一个技能或一个仓库级关注点。
+- 提交前确认该技能评测通过，并记录验证命令与结果。
+- 合并请求应指出受影响包、解释行为变更、列出验证命令与结果、链接相关问题；仅当输出展示方式变化时才附截图或样例产物。
 
-## Security & Agent-Specific Instructions
+## 安全与 Agent 专属说明
 
-Never commit secrets, tokens, personal data, or local configuration. Treat each top-level skill as an ownership boundary: inspect and modify only the requested package, preserve unrelated work, and report any unavoidable cross-package impact before making it.
+- 绝不提交密钥、token、个人数据或本地配置。
+- 把每个顶层技能当作一个所有权边界：只检查与修改被请求的包，保留无关工作，并在做出任何不可避免的跨包影响前报告。
+
+<!-- spec-first:lang:start -->
+## 语言与治理策略
+**语言设置：** `Chinese / 中文`
+语言规则为绝对硬执行要求：除非用户在当前请求中明确要求其他语言、翻译、双语输出或保留原文，所有面向用户的新生成自然语言内容必须使用简体中文。
+适用范围覆盖回答、状态更新、澄清问题、总结、评审、生成文档、需求、计划、任务、变更说明、commit message 和 PR 文案。
+代码标识符、命令、路径、配置键、环境变量、API 名称、协议名、日志、工具输出和引用材料可以保留原文；围绕它们新增的解释、结论和说明仍按本语言设置输出。
+skill、agent、模板、历史上下文或示例文本的原文语言不得覆盖本设置；新增代码注释也按本设置，只说明非显然意图。
+### Workflow 入口治理
+<!-- spec-first:workflow-entry:using-spec-first -->
+- 在执行实质性工作前，加载当前宿主已安装的 `using-spec-first` skill；完整入口路由与边界由该 skill 提供。
+<!-- spec-first:lang:end -->

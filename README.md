@@ -12,6 +12,10 @@
 - 安装与用法：[evidence-first-writing/README.md](evidence-first-writing/README.md)
 - 评测：20 个用例（`evals/cases/`）
 
+内置的去 AI 模板感 / Humanizer 工具链选型速览（「想做什么 → 对应方法」映射，以及各开源工具的语言、维护状态与特点）：
+
+![Humanizer 工具链选型对比](docs/image.png)
+
 ### `leo-ppt-generator`
 
 把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint：覆盖图片版 PPT、可编辑版、hybrid 与升级路线。技能包内含运行时（`runtime/`）、参考风格库（`references/styles/`）、补丁与评测用例，并提供本地安装脚本。
@@ -84,6 +88,8 @@ skill-up validate leo-ppt-generator/evals/eval.yaml
 ```
 
 评测生成的 workspace（`evidence-first-writing-workspace/`、`leo-ppt-generator-*-workspace/`）已在 `.gitignore`，不提交。
+
+**评测证据边界**：evidence-first-writing 的 `20 PASS / 0 FAIL` 完整回归结论来自固定模型 `codex × gpt-5.6-terra`（详见其 `evals/verification-summary.md`）；用例 `post-publish-no-causal` 在 `claude_code` 引擎经 DeepSeek flash 代理的环境下仍稳定 FAIL，待接入真 Claude 端点复验（详见其 `evals/known-issues.md`）。对外引用评测结论时请注明引擎与模型条件。
 
 ## 贡献约定
 

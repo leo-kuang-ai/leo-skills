@@ -93,6 +93,8 @@ python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_factual_invariants.py" 
   - Owner：research
 ```
 
+字段标签「证据 / 问题 / 动作 / Owner」逐字使用：不得改写、加粗、翻译或替换成同义词（如「原句」「引用」「摘录」）——下游的人工审计与机器判读都按这些字段词定位信息。「证据」字段必须逐字引用原稿文本。
+
 Owner 取 `brief`、`research`、`analysis`、`outline`、`draft`、`voice` 或 `format`。把问题退回所有者，不要用句子润色掩盖问题。
 
 ## 退出条件

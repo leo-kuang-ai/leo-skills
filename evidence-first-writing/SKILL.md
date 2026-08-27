@@ -104,6 +104,8 @@ operation 决定做什么，depth 决定做多深：
 
 运行 `copywriting` 时读取 [references/copywriting.md](references/copywriting.md)。运行 `docs` 时读取 [references/technical-docs.md](references/technical-docs.md)。不要把营销文案框架用于技术文档，也不要把 Diataxis 强加给普通观点文章。
 
+选题价值验证或发布前选题复核时读取 [references/topic-momentum.md](references/topic-momentum.md)（四问合同与情绪真实性门禁）。写作涉及持续经营读者或情绪定位时读取 [references/reader-profile.md](references/reader-profile.md)；无档案时按 brief 推断并在编辑说明声明 `reader_model: inferred`。维护选题池、配方候选或系列规划时读取 [references/content-assets.md](references/content-assets.md)；配方升格条件与 post-publish 红线一致，单篇表现只能入 hypothesis 层。
+
 用户明确要求完整 Humanizer 模式审查、英文去 AI 味、量化线索、`detect/rewrite/edit` 模式或多轮收敛时，读取 [references/humanizer-patterns.md](references/humanizer-patterns.md)。普通中文任务优先使用中文专项协议，不必加载完整模式目录。
 
 用户询问 Humanizer 怎么选、需要安装什么工具或要求复用文章中的工具清单时，读取 [references/tool-selection.md](references/tool-selection.md)。工具是可选执行器，不替代本 Skill 的事实与授权合同；使用前核对当前维护状态、许可证和真实输入输出。
@@ -112,7 +114,16 @@ operation 决定做什么，depth 决定做多深：
 
 用户不要安装 Skill、只要一段可复制提示词时，读取并返回 [references/portable-prompt.md](references/portable-prompt.md) 的模板，按本轮体裁和材料裁剪。用户要求建立个人说明书、长期让 AI 了解自己，或配置 `AGENTS.md`/`CLAUDE.md` 时，读取 [references/personal-context.md](references/personal-context.md)；任何持久写入都需要用户明确授权和目标路径。
 
-`post-publish` 只能把单篇结果记录为观察和待验证假设。未取得曝光量时不得计算打开率；不足两个口径可比项目且未检查反例时，不得形成稳定规则。写入声音档案、记忆或任何文件需要用户明确授权和目标路径；不得把分析请求推断为持久化授权，也不得声称已验证标题公式。当用户要求写入但未明确授权时，必须先拒绝持久写入并停在 `persistence: not_run`。
+`post-publish` 只能把单篇结果记录为观察和待验证假设。未取得曝光量时不得计算打开率；不足两个口径可比项目且未检查反例时，不得形成稳定规则。写入声音档案、记忆或任何文件需要用户明确授权和目标路径；不得把分析请求推断为持久化授权，也不得声称已验证标题公式。当用户要求写入但未明确授权时，必须先拒绝持久写入并停在 `persistence: not_run`。复盘输出必须附带机器可读的状态块，结论为空也要显式给出（字段与 editorial-pipeline.md Node 14 对齐）：
+
+```yaml
+observation: 本次单篇的版本绑定观察
+hypothesis: 待验证假设；无则 none
+stable_rule_update: none   # 未满足 2 复现 + 2 可比 + 反例已查时只能 none 或 hypothesis
+persistence: not_run       # 未获明确写入授权时的固定值
+```
+
+渠道数据可得时，复盘同时记录 observation 清单（完读断点、被引用句、评论高频词），唯一用途是喂 [references/reader-profile.md](references/reader-profile.md) 与 [references/topic-momentum.md](references/topic-momentum.md) 的证据链；禁止任何段落级归因表述。
 
 ## 保护作者声音
 

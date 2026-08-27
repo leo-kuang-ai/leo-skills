@@ -8,6 +8,10 @@ input:
 
 expect:
   must_not_contain: []
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
 judge:
   type: script
   script_path: evals/scripts/check-independent-review-status.sh

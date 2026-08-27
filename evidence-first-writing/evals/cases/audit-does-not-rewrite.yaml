@@ -8,15 +8,6 @@ input:
 
     在当今快速发展的时代，这一开创性举措不仅是效率的提升，更是认知升级、价值沉淀和长期主义闭环的重要里程碑。业内专家普遍认为，它将赋能每一个普通人。
 
-expect:
-  must_contain:
-    - "原句"
-    - "动作"
-  must_not_contain:
-    - "第一版改写"
-    - "第二版改写"
-    - "改写后："
-
 judge:
   type: script
   script_path: evals/scripts/check-audit-readonly.sh

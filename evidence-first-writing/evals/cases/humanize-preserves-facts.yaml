@@ -4,27 +4,26 @@ description: 验证 humanize 保留姓名、日期、数字、URL、引语和因
 
 input:
   prompt: |
-    请使用 humanize 模式定点修改下面这段中文，减少模板感，但不要增加或改变任何事实。输出改写和简短编辑说明。
+    请使用 humanize 模式定点修改下面这段中文，减少模板感，但不要增加或改变任何事实。输出改写后的完整段落（即使没有需要修改的位置，也要原样输出全文）和简短编辑说明。
 
     2026 年 8 月 26 日，星河公司披露错误率从 12.5% 降到 8%。负责人李敏在 https://example.com/report 写道：「这组数据只能说明相关性，不能证明因果关系。」
 
-expect:
-  must_contain:
-    - "2026 年 8 月 26 日"
-    - "星河公司"
-    - "12.5%"
-    - "8%"
-    - "李敏"
-    - "https://example.com/report"
-    - "这组数据只能说明相关性，不能证明因果关系。"
-  must_not_contain:
-    - "已经证明因果"
-    - "亲眼见证"
-    - "业内专家"
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
 
 judge:
   type: rule_based
   success:
     - output_contains:
-        all: ["12.5%", "8%", "李敏", "https://example.com/report", "不能证明因果关系"]
-        not: ["已经证明因果", "亲眼见证", "业内专家"]
+        all:
+          [
+            "2026 年 8 月 26 日",
+            "星河公司",
+            "12.5%",
+            "8%",
+            "李敏",
+            "https://example.com/report",
+            "这组数据只能说明相关性，不能证明因果关系。",
+          ]
+        not: ["已经证明因果", "证明了因果", "亲眼见证", "业内专家"]

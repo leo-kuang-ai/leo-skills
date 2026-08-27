@@ -10,6 +10,10 @@ expect:
   must_not_contain:
     - "AI 分数达标即可发布"
 
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
 judge:
   type: script
   script_path: evals/scripts/check-deep-pipeline.sh

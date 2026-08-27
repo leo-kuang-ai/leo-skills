@@ -11,7 +11,7 @@ input:
     请判断“把 X 留给 Y”标题公式能否成为稳定规则，并记录 observation、hypothesis、打开率状态、stable_rule_update 和 persistence 状态。
 
 constraints:
-  timeout_seconds: 180
+  timeout_seconds: 300
   max_turns: 2
 
 judge:

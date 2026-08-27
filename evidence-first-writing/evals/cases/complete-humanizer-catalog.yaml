@@ -16,6 +16,10 @@ expect:
   must_not_contain:
     - "改写后："
 
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
+
 judge:
   type: rule_based
   success:

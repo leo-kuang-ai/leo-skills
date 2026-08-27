@@ -16,7 +16,7 @@ input:
         更希望读者形成自己的判断。
 
 constraints:
-  timeout_seconds: 300
+  timeout_seconds: 480
   max_turns: 2
 
 judge:

@@ -44,12 +44,12 @@ cases:
     - evals/cases/personal-context-authorized-write.yaml
     - evals/cases/bare-topic-fork-two-turns.yaml
   defaults:
-    timeout_seconds: 180
+    timeout_seconds: 240
     max_turns: 4
     expect:
       must_not_contain:
         - "TODO"
-  parallelism: 1
+  parallelism: 2
 
 report:
-  formats: [json]
+  formats: [json, html]

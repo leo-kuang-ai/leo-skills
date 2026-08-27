@@ -368,6 +368,16 @@ skill-up run evals/eval.yaml --include-case-name 'routes-technical-*' \
   --include-case-name docs-truth-param-check
 ```
 
+## 多会话互斥
+
+共享 provider 代理配额的并发 `skill-up run` 会以引擎超时形式产生噪声（2026-08-27 iteration-51 前 10 分钟实测，与外部会话并发后出现 2 个假 ERROR）。串行执行用：
+
+```sh
+bash evals/scripts/guarded-run.sh [skill-up run args...]
+```
+
+守卫检测到并发 `skill-up run` 即拒绝启动，并把发起时间、父进程与参数追加到 workspace 的 `runs.log`，便于把 iteration 目录归属到发起会话。
+
 ## 计划用例的实现映射
 
 上述 24 个计划用例中，以下已落地为确定性评测（均为可断言子集，标注的残差不可子串验证）：

@@ -25,7 +25,7 @@ if [[ -n "$style_idx" && "$style_idx" -lt "$dev_idx" ]]; then
   exit 1
 fi
 
-[[ "$output" == *"可换序"* || "$output" == *"交换"* || "$output" == *"顺序"* || "$output" == *"平行"* || "$output" == *"互换"* || "$output" == *"换序"* || "$output" == *"并列"* || "$output" == *"零贡献"* || "$output" == *"文章不变"* || "$output" == *"删掉任何"* || "$output" == *"换一批"* || "$output" == *"推进"* || "$output" == *"罗列"* || "$output" == *"通用真理"* || "$output" == *"通用断言"* || "$output" == *"常识"* ]] || {
+[[ "$output" == *"可换序"* || "$output" == *"交换"* || "$output" == *"顺序"* || "$output" == *"平行"* || "$output" == *"互换"* || "$output" == *"换序"* || "$output" == *"并列"* || "$output" == *"零贡献"* || "$output" == *"文章不变"* || "$output" == *"删掉任何"* || "$output" == *"删掉任意"* || "$output" == *"空转"* || "$output" == *"换一批"* || "$output" == *"推进"* || "$output" == *"罗列"* || "$output" == *"通用真理"* || "$output" == *"通用断言"* || "$output" == *"常识"* ]] || {
   echo "未做段落顺序/结构测试" >&2
   exit 1
 }

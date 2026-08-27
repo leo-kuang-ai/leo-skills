@@ -15,7 +15,6 @@ constraints:
 expect:
   must_contain:
     - "PDF"
-    - "可编辑"
     - "generate"
 
 judge:

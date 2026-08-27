@@ -1,7 +1,8 @@
 """机器协议 schema 的只读加载器。
 
-提供对 ``schemas/*.json`` 的确定性加载，供 CLI、验证与测试共同消费。
-Schema 文件随 runtime 包发布（见 pyproject package-data）。
+``schemas/*.json`` 随 runtime 包发布（见 pyproject package-data）。本加载器是
+这些 schema 的确定性读取入口；包内暂无调用方，按对外保留 API 维护——新增
+schema 消费点应优先复用它，而不是各自 ``open()`` 读取。
 """
 
 from __future__ import annotations

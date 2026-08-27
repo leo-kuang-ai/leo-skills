@@ -26,6 +26,9 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 此分支禁止读取、复制、预检、隔离或净化文件；“警告后继续”“先扫描”“净化后继续”
 都不构成可信确认。用户明确确认来源可信后，下一轮才可进入 CLI preflight；确认仍不能
 绕过旧 `.ppt`、宏、嵌入对象、external relationship、远程模板或损坏结构检查。
+宿主可运行脚本时，上述固定块必须经 `render-control-summary.py --fixed gate0`
+原样产生（该模式不读取任何文件）；无法运行脚本时按固定块手写，并显式记录降级
+`gate0_render: handwritten`。
 
 ## 交互模式门禁
 
@@ -85,7 +88,9 @@ reason code 需要解释或恢复时读取。执行前未命中的 references �
 个字段，再补充解释：
 
 能取得 CLI JSON 时，必须先将其通过 `scripts/render-control-summary.py` 渲染；不得由
-Agent 手工改写字段。渲染器只输出五行摘要，不读取文件、不访问网络、不产生副作用。
+Agent 手工改写字段。渲染器只输出五行摘要，不读取文件、不访问网络、不产生副作用；
+Gate 0 与 worker 缺失两类固定阻断块在宿主可运行脚本时同样必须经
+`--fixed gate0` / `--fixed worker-unavailable` 产生，不得手写改写。
 
 ```text
 route: <generate|direct-editable|upgrade-full|upgrade-selected|未选择>
@@ -132,7 +137,8 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。
 - 多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
 - 多页 worker 缺失、未知或调用失败时，先原样输出下面五行，再结束本轮；不得先写
-  “当前无法生成”等自然语言，也不得由主 Agent 静默串行替代：
+  “当前无法生成”等自然语言，也不得由主 Agent 静默串行替代（宿主可运行脚本时以
+  `render-control-summary.py --fixed worker-unavailable` 输出）：
 
   ```text
   route: generate

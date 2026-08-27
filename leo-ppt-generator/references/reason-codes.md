@@ -11,7 +11,6 @@
 | `backend_contract_exists` | 目标 backend contract 已存在且未授权覆盖 | 是 | 选择新路径，或确认替换后显式传 `--overwrite` |
 | `backend_contract_unwritable` | backend contract 目标路径无法安全写入 | 是 | 检查父目录权限与目标类型，改用可写普通文件路径 |
 | `backend_model_invalid` | model 为空或不是有效字符串 | 是 | 使用 registry 默认 model，或提供非空 model |
-| `assembly_precondition_failed` | 页数、顺序、尺寸、validation、notes 或 hash 不一致 | 是 | 修复具体前置条件后重新 finalize |
 | `unknown_route` | route 不在四条有限定义中 | 否 | 返回受支持 route，不注入任意步骤 |
 | `unknown_step` | step 不属于当前 route 的固定定义 | 否 | 重新读取机器协议和 route definition |
 | `revision_conflict` | `run.json` 或领域状态的 expected revision 已漂移 | 是 | 重新读取当前状态并做 reconciliation |

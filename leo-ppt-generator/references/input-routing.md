@@ -14,6 +14,11 @@ mask、reference image 等任务级能力由 setup 额外声明并交给 backend
 PaddleOCR 不是 route 或图片 Provider。它只在 editable 阶段实际需要在线文字 hints 时
 延迟披露，缺失时保留本地 `builtin-ink` 降级路径。
 
+受支持的输入扩展名以 runtime 白名单为准：文本类 `.md`/`.txt` 进入 `generate`；
+`.png`/`.jpg`/`.jpeg`/`.pdf` 与已确认可信的 `.ppt`/`.pptx` 进入重建/升级路线。
+`.webp`/`.gif`/`.bmp`/`.tiff` 等格式尚未纳入白名单：应请用户先转换为受支持格式，
+不得猜测 route 或隐式调用转换工具。
+
 同时存在内容与视觉稿时，先问一个会改变 route 的问题：视觉稿是严格保留布局并
 转可编辑，还是只作为新演示文稿的风格/素材参考。不要自行串联两条 route。
 

@@ -1,11 +1,15 @@
 # Editable CLI Helper
 
 本文件是对象级可编辑能力的命令手册。所有命令都通过当前受管 runtime 的唯一入口
-执行。先从 Skill 安装目录解析绝对路径：
+执行。入口绝对路径的权威来源是 `runtime_manager.py ensure|doctor` 成功结果中的
+`cli_reference`（与 `references/first-use.md` 一致）；只有确实拿不到该 JSON 时，
+才退回到 print-cli：
 
 ```bash
 LEO_PPT="$(python "$SKILL_DIR/scripts/runtime_manager.py" print-cli)"
 ```
+
+不得从 PATH 猜测 CLI 路径。
 
 后续命令一律使用：
 

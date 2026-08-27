@@ -12,7 +12,7 @@ Required slide image: 2560x1440 (16:9 2K)
 Slide job file: <absolute deck dir>/prompts/slide_<NN>.json
 Output target owned by parent: <absolute deck dir>/origin_image/slide_<NN>.png
 Selected image backend: <built-in image tool OR CLI/API fallback>
-Absolute leo-ppt CLI: <absolute leo-ppt CLI path supplied by parent from runtime_manager.py print-cli>
+Absolute leo-ppt CLI: <absolute leo-ppt CLI path supplied by parent from runtime_manager cli_reference>
 Sample generation method copied from the approved sample:
 - backend_used: <exact backend label recorded by parent>
 - tool_name: <built-in image tool OR absolute leo-ppt CLI path + upstream codex-ppt -- image>

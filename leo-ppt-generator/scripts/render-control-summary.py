@@ -12,6 +12,24 @@ from typing import Any
 ROUTES = {"generate", "direct-editable", "upgrade-full", "upgrade-selected"}
 ELIGIBILITY = {"allowed", "blocked", "retryable", "unknown"}
 
+# SKILL.md 固定阻断块的机器化出口：宿主可运行脚本时必须由此产生，禁止手写改写。
+FIXED_BLOCKS = {
+    "gate0": (
+        "route: direct-editable\n"
+        "status: blocked\n"
+        "reason_code: untrusted_office_input\n"
+        "input_handling: not_opened\n"
+        "next_action: 提供可信确认，或改用 PDF/逐页图片"
+    ),
+    "worker-unavailable": (
+        "route: generate\n"
+        "status: blocked\n"
+        "reason_code: worker_capability_unavailable\n"
+        "execution_eligibility: blocked\n"
+        "next_action: 提供可调用的 worker 能力后从逐页派发阶段恢复"
+    ),
+}
+
 
 def _text(value: Any, default: str) -> str:
     return value.strip() if isinstance(value, str) and value.strip() else default
@@ -43,7 +61,15 @@ def render(payload: dict[str, Any]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Render a stable Leo control-plane summary.")
     parser.add_argument("json_file", nargs="?", help="JSON file; defaults to stdin.")
+    parser.add_argument(
+        "--fixed",
+        choices=sorted(FIXED_BLOCKS),
+        help="直接输出一个固定阻断块；不读取任何文件或 stdin。",
+    )
     args = parser.parse_args()
+    if args.fixed:
+        print(FIXED_BLOCKS[args.fixed])
+        return 0
     try:
         raw = open(args.json_file, encoding="utf-8").read() if args.json_file else sys.stdin.read()
         payload = json.loads(raw)

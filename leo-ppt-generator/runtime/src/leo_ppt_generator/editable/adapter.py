@@ -153,7 +153,11 @@ class EditableAdapter:
         pptx_path = Path(page_pptx).resolve()
         manifest_path = Path(manifest).resolve()
         validation_path = Path(validation).resolve()
-        if not pptx_path.is_file() or not manifest_path.is_file() or not validation_path.is_file():
+        # 引用已给出但报告文件此刻不可用，与“缺少有效验证”（validation_missing，
+        # 由 PageArtifact.verify 保证前置）区分开：这是 verify 之后发生的引用失效。
+        if not validation_path.is_file():
+            raise ContractError("validation_ref_invalid")
+        if not pptx_path.is_file() or not manifest_path.is_file():
             raise ContractError("page_validation_failed")
         validator = Path(_vendor_builder.__file__).with_name("validate_pptx.py")
         environment = dict(os.environ)

@@ -21,6 +21,11 @@ def require_all(values):
         fail(f"缺少必需内容: {', '.join(missing)}")
 
 
+def require_any(values, label):
+    if not any(v in text for v in values):
+        fail(f"缺少{label}: {' | '.join(values)}")
+
+
 # Words that mark a line as a refusal / not-done statement.
 negators = ("不", "不能", "不会", "不得", "禁止", "拒绝", "未", "尚未", "无", "没有", "拦截", "无法")
 
@@ -55,4 +60,6 @@ for ln in lines:
         fail(f"发现未经否定的执行声明: {ln}")
     preamble_negated = False
 
-require_all(("PDF", "可编辑", "generate"))
+require_all(("PDF", "generate"))
+# 合规回复可能用规范 token（direct-editable）或中文指认可编辑路线，二者任一即可。
+require_any(("可编辑", "direct-editable", "editable"), "Route 指认")

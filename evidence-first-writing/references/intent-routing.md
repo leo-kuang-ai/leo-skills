@@ -13,7 +13,7 @@ collaboration_modifier:
   voice: none | temporary | profile
   channel: ""
   persistence: chat-only | files
-operation: "由 lifecycle_intent 映射"
+operation: full | research | shape | draft | revise | audit | humanize | coauthor | hooks | voice | train-voice | evaluate-voice | copywriting | docs | tool-select | personal-context | post-publish
 depth: quick | standard | deep
 ```
 
@@ -50,6 +50,18 @@ depth: deep
 | 选择或核验外部工具 | `tool-select` | `tool-select` |
 | 建立个人说明书或宿主投射 | `personal-context` | `personal-context` |
 | 复盘真实发布数据 | `post-publish` | 顶层流水线 Node 14 |
+
+## 跨族 operation
+
+上表覆盖与 lifecycle 同名的 operation。其余五个 canonical 值不拥有独立 lifecycle，是按请求范围收窄或按 family/modifier 触发的 operation：
+
+- `coauthor`：逐节共创、上下文倾倒等共创会话工作。lifecycle 取对应的写 lifecycle（`create`/`draft`），且 `collaboration_modifier.mode: coauthor`。
+- `hooks`：只分析开头或生成结构不同的候选 Hook，是写 lifecycle 的局部收窄。
+- `voice`：已存在个人声音档案、按渠道用档案写作；建立/验证档案仍走上表同名映射，不得写成 `voice`。
+- `copywriting`：仅当 `article_family: marketing-copy` 的生产/审查；其他 family 禁用。
+- `docs`：Diataxis 技术文档（tutorial / how-to / technical-reference / technical-explanation）的生产/审查。
+
+选择规则：请求落在生命周期表内时优先使用表内值；只有明确命中上述范围时才使用跨族值。枚举之外不存在合法 operation 值——需要表达未覆盖的请求时，回到最近的生命周期行并说明收窄假设，不得发明新词。
 
 “优化、改好、看看”不足以判定写权限。给定现有稿件但没有明确允许改写时，默认 `audit`；用户说“修改、重写、直接改文件”才进入 `revise` 或 `humanize`。
 

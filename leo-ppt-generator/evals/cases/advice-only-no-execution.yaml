@@ -17,19 +17,8 @@ expect:
     - "PDF"
     - "可编辑"
     - "generate"
-  must_not_contain:
-    - "我已启动"
-    - "已创建 run"
-    - "Provider 已调用"
-    - "bootstrap"
-    - "setup"
-    - "config status"
-    - "读取文件"
-    - "创建项目"
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["PDF", "可编辑", "generate"]
-        not: ["我已启动", "已创建 run", "Provider 已调用", "bootstrap", "setup", "config status"]
+  type: script
+  script_path: evals/fixtures/scripts/judge_advice_only.py
+  timeout_seconds: 10

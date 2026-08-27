@@ -14,8 +14,6 @@ expect:
     - "acceptance_pending"
     - "独立渲染"
     - "人工视觉验收"
-  must_not_contain:
-    - "交付闭环已完成"
 
 judge:
   type: script

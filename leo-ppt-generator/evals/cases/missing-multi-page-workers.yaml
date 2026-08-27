@@ -13,13 +13,8 @@ expect:
   must_contain:
     - "blocked"
     - "worker_capability_unavailable"
-  must_not_contain:
-    - "我会串行生成"
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["blocked", "worker_capability_unavailable"]
-        any: ["不得", "不能", "禁止"]
-        not: ["我会串行生成", "我来逐页生成"]
+  type: script
+  script_path: evals/fixtures/scripts/judge_no_serial_substitution.py
+  timeout_seconds: 10

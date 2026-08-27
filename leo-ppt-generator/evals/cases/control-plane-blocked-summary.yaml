@@ -18,12 +18,8 @@ expect:
     - "reason_code: worker_capability_unavailable"
     - "execution_eligibility: blocked"
     - "next_action:"
-  must_not_contain:
-    - "已创建 run"
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["route: generate", "status: blocked", "reason_code: worker_capability_unavailable", "execution_eligibility: blocked", "next_action:"]
-        not: ["已创建 run", "我会串行生成"]
+  type: script
+  script_path: evals/fixtures/scripts/judge_control_plane_fields.py
+  timeout_seconds: 10

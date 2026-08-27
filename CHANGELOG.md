@@ -79,3 +79,34 @@ adheres to a loose semantic-versioning convention.
   and align the `expect.must_contain` keywords with the judge's synonym list
   (the Skill words the page action as "CTA / 注册 / 落地页" rather than the
   literal "页面动作").
+- **leo-ppt-generator/evals** — align the eval harness with the Skill's primary
+  host and de-brittle the negative assertions:
+  - `evals/eval.yaml` — default engine back to `claude_code`, dropping the
+    `codex` + `bypass_sandbox` override. The Skill is a Claude Code plugin, and
+    its sibling `evidence-first-writing` eval already defaults there; running
+    under `codex` produced 5/9 only because that host paraphrases the verbatim
+    control-plane summary, not because of a Skill logic defect.
+  - `evals/cases/advice-only-no-execution.yaml` — replace the substring-sensitive
+    `expect.must_not_contain` with a negation-aware script judge
+    `evals/fixtures/scripts/judge_advice_only.py`, so a refusal phrased as
+    `未读取文件` / `本轮我不会：- …` no longer false-fires on the literal
+    `读取文件` / `bootstrap` / `setup` / `config status`.
+  - `evals/fixtures/scripts/judge_untrusted_sanitized.py` — accept colon + bullet
+    phrasing (`本轮我不会：- 打开、读取或解析原始 PPTX`) as "未处理输入" evidence
+    instead of requiring the contiguous `不会打开`.
+  - `evals/cases/control-plane-blocked-summary.yaml` /
+    `missing-multi-page-workers.yaml` — drop the redundant
+    `expect.must_not_contain` and route the negative check through new
+    negation-aware script judges (`judge_control_plane_fields.py`,
+    `judge_no_serial_substitution.py`) so a refusal like `本轮未创建 run` /
+    `我不会串行生成` does not false-fail.
+  - `evals/cases/delivery-acceptance-pending.yaml` — drop the brittle
+    `expect.must_not_contain: [交付闭环已完成]` (a refutation
+    `不能声称交付闭环已完成` would have false-failed); the script judge's
+    negation-aware `positive()` already covers it.
+  - `evals/cases/partial-hybrid-without-confirmation.yaml` and
+    `judge_no_serial_substitution.py` — accept the partial-hybrid term's
+    plain-language synonyms (`混合版` / `部分可编辑` / `hybrid`) instead of the
+    single literal token, and scope the "serial generation" promise check to a
+    first-person main-agent claim not attributed to a worker (describing the
+    correct `真实 worker … → 逐页生成` recovery path must not false-fire).

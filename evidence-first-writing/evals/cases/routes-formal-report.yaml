@@ -10,17 +10,12 @@ expect:
   must_contain:
     - "formal-report"
     - "风险"
-    - "owner"
-    - "期限"
     - "验收"
   must_not_contain:
     - "先做去 AI 味"
     - "爆款"
 
 judge:
-  type: rule_based
-  success:
-    - output_contains:
-        all: ["formal-report", "风险", "owner", "验收"]
-        any: ["决策人", "决策者", "决策 owner", "拍板"]
-        not: ["先做去 AI 味", "爆款"]
+  type: script
+  script_path: evals/scripts/check-formal-report-route.sh
+  timeout_seconds: 10

@@ -14,7 +14,6 @@ expect:
     - "错误码"
     - "版本"
   must_not_contain:
-    - "教程叙事"
     - "营销漏斗"
 
 judge:
@@ -23,4 +22,4 @@ judge:
     - output_contains:
         all: ["technical-reference", "字段", "错误码", "版本"]
         any: ["Schema", "实现"]
-        not: ["营销漏斗"]
+        not: ["article_family: tutorial", "marketing-copy", "营销漏斗"]

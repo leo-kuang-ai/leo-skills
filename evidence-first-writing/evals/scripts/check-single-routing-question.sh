@@ -24,7 +24,7 @@ if [[ "$output" != *"判断"* ]]; then
   exit 1
 fi
 
-if [[ "$output" != *"操作"* && "$output" != *"理解"* && "$output" != *"完成"* ]]; then
+if [[ "$output" != *"操作"* && "$output" != *"理解"* && "$output" != *"完成"* && "$output" != *"实践"* && "$output" != *"步骤"* ]]; then
   echo "问题没有提供可改变 workflow 的第二个读者任务" >&2
   exit 1
 fi

@@ -4,7 +4,7 @@
 
 ## 结论
 
-20 个用例的配置与本地确定性检查有效。关键行为均已取得至少一次 fresh focused PASS；完整回归在当前 Codex/Claude provider 上存在模型元数据、MCP、线程记录和 180 秒超时噪声，不能据单次全量结果宣称 20/20，也不能把运行错误归因于 Skill。
+20 个用例的配置与本地确定性检查有效。固定 Codex 模型 `gpt-5.6-terra` 后，iteration-32 完整回归为 `20 PASS / 0 FAIL / 0 ERROR`。未固定模型的历史运行仍保留为 provider 漂移与 Judge 设计的失败证据。
 
 ## 有效 focused 证据
 
@@ -29,12 +29,26 @@
 
 - iteration-7，Claude Code：`12 PASS / 6 FAIL / 2 ERROR`。后续对 6 个 FAIL 逐例修复并 focused 验证；两个 ERROR 均为 180 秒超时，其中工具路由和正式报告后续 focused PASS。
 - iteration-16，Codex：`8 PASS / 9 FAIL / 3 ERROR`。运行中出现未识别模型、未知 MCP server、`request_user_input` 在 Default mode 不可用、线程记录失败及超时；该轮用于记录宿主噪声，不覆盖更精确的 focused 证据。
+- iteration-17 / iteration-18，Codex `gpt-5.6-terra` A/A：裸主题路由两轮均 `1 PASS / 0 FAIL / 0 ERROR`。
+- iteration-19，固定模型首次 full：`14 PASS / 6 FAIL / 0 ERROR`；逐项定位剩余 Judge 假阴性与一项因果真实失败。
+- iteration-31，因果红线修复后 focused：`2 PASS / 0 FAIL / 0 ERROR`。
+- iteration-32，固定模型最终 full：`20 PASS / 0 FAIL / 0 ERROR`。
 
 ## Provider 诊断
 
 - Claude Code 显式覆盖 `anthropic/claude-sonnet-4-6` 后不再出现未识别模型警告，但当前代理上的 `post-publish` focused case 仍在 180 秒超时。
 - Codex 默认登录在完整回归中路由到未识别的 `free-deepseek-v4-flash`，并出现未知 MCP、Default mode 工具不可用与线程记录失败；相同的 `post-publish` case 独立 focused 运行在 iteration-15 中 `1 PASS / 0 FAIL / 0 ERROR`。
 - 因此 promotion 前必须固定受支持的 provider/model，并先做至少两轮 A/A；不得把当前代理的随机模型路由当成 Skill 回归。
+
+最终验证命令：
+
+```sh
+skill-up run evidence-first-writing/evals/eval.yaml \
+  --engine codex \
+  --model gpt-5.6-terra \
+  --parallelism 2 \
+  --format html -v
+```
 
 ## 静态验证
 

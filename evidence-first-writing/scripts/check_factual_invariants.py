@@ -20,8 +20,13 @@ PATTERNS = {
     ),
     "inline_code": re.compile(r"`([^`\n]+)`"),
     "chinese_quotes": re.compile(r"「([^」\n]+)」"),
+    "curly_quotes": re.compile(r"“([^”\n]+)”"),
     "double_quotes": re.compile(r'(?<![\w])"([^"\n]+)"'),
 }
+
+# URLs sit inside CJK prose where trailing full-width punctuation and Chinese
+# characters are not part of the address; stop at the first non-ASCII char.
+_NON_ASCII = re.compile(r"[^\x00-\x7f]")
 
 
 def extract(text: str) -> dict[str, Counter[str]]:
@@ -30,6 +35,8 @@ def extract(text: str) -> dict[str, Counter[str]]:
         values = []
         for match in pattern.finditer(text):
             value = match.group(1) if match.lastindex else match.group(0)
+            if name == "urls":
+                value = _NON_ASCII.split(value, maxsplit=1)[0]
             values.append(value.strip())
         result[name] = Counter(value for value in values if value)
     return result

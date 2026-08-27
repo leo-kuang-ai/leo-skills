@@ -340,7 +340,58 @@ Judge：状态字段、权限边界和禁止 claim 的确定性断言。
 ## 运行分组
 
 - `routing-smoke`：路由、裸主题、声音跳过和只读边界；低成本、优先回归。
-- `evidence-regression`：相关性/因果、Humanizer 不变量、Deep 证据链和独立审查；需要较长超时。
+- `evidence-regression`：相关性/因果、Humanizer 不变量、Deep 证据链、独立审查与编辑质量；该组用例统一 `timeout_seconds: 300`。
 - `docs-regression`：How-to、Reference、Explanation 的技术真值与 `not_run` 披露。
+
+分组通过 `--include-case-name`（可多次传参、支持 glob）选择：
+
+```sh
+# routing-smoke
+skill-up run evals/eval.yaml --include-case-name 'routes-*' \
+  --include-case-name nonarticle-lifecycle --include-case-name copywriting-route \
+  --include-case-name depth-quick-revise --include-case-name voice-profile-skip \
+  --include-case-name audit-does-not-rewrite --include-case-name source-grounded-tool-routing \
+  --include-case-name personal-context-no-write
+
+# evidence-regression
+skill-up run evals/eval.yaml --include-case-name 'post-publish-*' \
+  --include-case-name rejects-causal-overclaim --include-case-name humanize-preserves-facts \
+  --include-case-name deep-editorial-pipeline --include-case-name deep-independent-review-status \
+  --include-case-name complete-humanizer-catalog --include-case-name full-article-evidence-chain \
+  --include-case-name 'chinese-*' --include-case-name voice-channel-conflict \
+  --include-case-name train-voice-provisional --include-case-name dev-edit-before-polish \
+  --include-case-name taste-findings-not-visual --include-case-name personal-context-authorized-write \
+  --include-case-name bare-topic-fork-two-turns
+
+# docs-regression
+skill-up run evals/eval.yaml --include-case-name 'routes-technical-*' \
+  --include-case-name docs-truth-param-check
+```
+
+## 计划用例的实现映射
+
+上述 24 个计划用例中，以下已落地为确定性评测（均为可断言子集，标注的残差不可子串验证）：
+
+| 计划用例 | 实现 case | 未自动化残差 |
+|---|---|---|
+| Case 1 完整证据型文章 | `full-article-evidence-chain` | 盲审编辑 Judge（论证与声音质量） |
+| Case 6 中文上下文判断 | `chinese-protocol-context-judgment` | 误报率人工复审 |
+| Case 7B 渠道冲突 | `voice-channel-conflict` | 文件读取范围哈希 |
+| Case 8 声音训练盲评 | `train-voice-provisional` | baseline/profile 会话隔离与 A/B 标签计数 |
+| Case 10 技术真值 | `docs-truth-param-check` | 真实 CLI fixture 执行与链接解析 |
+| Case 12 二十二条排版 | `chinese-22-rules-hit-and-preserve` | 排版结构与改写后不变量的逐项比对 |
+| Case 16 发展编辑先于润色 | `dev-edit-before-polish` | owner 回退路径的执行验证 |
+| Case 17 编辑品味 | `taste-findings-not-visual` | 3-7 条 finding 计数与编辑委员会盲审 |
+| Case 18 机械脚本 | `tests/test_factual_invariants.py` 单元测试 | 无 |
+
+Case 7A 已由 `voice-profile-skip` 覆盖；Case 20 的四个 family 分别由 `routes-technical-howto`、`routes-incident-retrospective`、`routes-formal-report` 与既有 argument 路由断言覆盖。
+
+## 超出原计划的补充用例（2026-08-27）
+
+| 补充能力 | 实现 case | 断言层级 |
+|---|---|---|
+| 明确授权后的最小投射写入 | `personal-context-authorized-write` | 文件级：`files_exist` AGENTS.md、`files_not_exist` 私密档案、`file_contains` 必含 unittest；负向拦截授权外推（自行写入跨项目记忆） |
+| 裸主题两轮状态机 | `bare-topic-fork-two-turns` | 逐轮：`turn_response_not_contains` 断言首轮无 route card/正文、次轮不回退类型问卷 |
+| 无字段泄漏的 post-publish 合同 | `post-publish-no-causal-unprompted` | 与泄漏版同一 judge，验证自发合同词汇（当前 GLM flash 下稳定 FAIL，见 known-issues） |
 
 宿主限流、上下文超时和 Skill 行为失败必须分别统计。没有 `result.json` 或 case-level error evidence 时，不得把运行中进程或部分输出计入 PASS/FAIL。

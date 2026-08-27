@@ -21,6 +21,20 @@ adheres to a loose semantic-versioning convention.
   development-edit findings (thesis/structure/warrant) precede sentence-polish terms
   in the output, plus presence of the paragraph-swap test and the evidence-to-claim
   link.
+- `evidence-first-writing/evals/cases/personal-context-authorized-write.yaml` —
+  first positive-path permission case: with explicit write authorization the Skill
+  must read existing AGENTS.md, write the minimal repo-relevant projection, create
+  no other files, and NOT extend the authorization to unauthorized persistence
+  (self-writing a cross-project memory). Asserted at the filesystem level
+  (`expect.files_exist` / `files_not_exist` / `file_contains`) plus output gates
+  catching scope-creep claims observed in a real run (`另存了一份` / `已写入记忆`).
+  (user-visible)
+- `evidence-first-writing/evals/cases/bare-topic-fork-two-turns.yaml` — first
+  multi-turn case: bare topic → fork question (turn 1 must NOT emit a route card
+  or draft) → user answers 「形成判断」 → turn 2 proceeds on the argument workflow
+  without re-showing a type questionnaire. Uses the harness's per-turn
+  `turn_response_not_contains` assertions, discovered and verified via
+  `skill-up debug judge`. (user-visible)
 - Nine new `evidence-first-writing` eval cases closing the gap between the 24 planned
   and the 20 implemented cases (deterministic subsets only; residues documented):
   `full-article-evidence-chain`, `chinese-protocol-context-judgment`,
@@ -33,6 +47,9 @@ adheres to a loose semantic-versioning convention.
   docs-regression, and a plan-case → implemented-case mapping table listing exactly
   which planned capabilities remain unautomated (blind editorial judges, real CLI
   fixtures, blind-eval isolation, finding counts).
+- 新增 `leo-ppt-generator/evals/known-issues.md`：记录四轮 control-plane 用例
+  F·F·P·F 稳定性账目、GLM 代理环境事实（model_name 为空、unrecognized_model 告警）、
+  判官口径变更史与真机复验待办，避免后续轮次误读为回归。
 - 新增 `leo-ppt-generator/tests/boundary/test_vendor_state.py` 与
   `tests/upstream/core-tests.yaml`：`upstreams.yaml` / `patches/README.md`
   引用的回归证明工件现已真实存在并可执行
@@ -99,6 +116,23 @@ adheres to a loose semantic-versioning convention.
   `check-post-publish-boundary.sh` — catch paraphrased over-claims (`证明了因果`,
   `该公式有效`) in addition to the literal banned phrasings; verified locally that
   negation-safe refusals (`不能证明因果关系`, `不写入稳定档案`) still pass.
+- `evidence-first-writing` judge sensitivity red-team (16 adversarial probes against
+  all 10 script judges; 13 caught, 3 misses fixed, then 6/6 historical PASS
+  responses replay-accepted): `check-causal-boundary.sh` gate 2 tightened from
+  bare negation words to refusal-verb-bound forms (an "assert causation, then
+  append caveats" response no longer passes); `check-post-publish-boundary.sh`
+  bans `已被验证` / `已被证明` / `已验证` / `确定有效` over-claim variants;
+  `check-independent-review-status.sh` catches the `status: PASS` case variant.
+  Follow-up A/A then exposed that the tightened causal regex false-rejected
+  compliant Chinese that inserts an object between modal and verb
+  (`无法将这一下降归因于`) — relaxed to a 0-8 char gap with `归因` / `确认` /
+  `因果结论` verbs, re-verified by replaying 5/5 historical responses (accept)
+  plus the adversarial probe (reject). `docs-truth-param-check` drops the
+  `qstat --verbose` command-level negatives that false-fired on
+  quote-then-reject explanations, and gains the observed compliant phrasings
+  (`未采用` / `输出中没有` / `删除`); `evals/known-issues.md` now pins the
+  replay-on-tightening discipline and the quantified A/A flake rates
+  (dev-edit 1/3, chinese-protocol 1/3, docs-truth 2/3 pre-fix).
 - `evidence-first-writing/evals/cases/humanize-preserves-facts.yaml` — fold the
   stricter 7-token invariant list (date, company, verbatim quote sentence) into the
   rule_based judge and drop the duplicated `expect` block (same single-source
@@ -112,6 +146,31 @@ adheres to a loose semantic-versioning convention.
   rule that the pattern count is a drifting snapshot, never a fixed fact or gate.
 - `evidence-first-writing/evals/eval.yaml` — register the nine new cases
   (suite grows 20 → 29).
+- `evidence-first-writing` judge/prompt de-brittling after the iteration-34 full
+  run (all six FAILs were compliant behavior + paraphrase drift, verified against
+  the actual responses): `check-post-publish-boundary.sh` ties the open-rate
+  status marker to the open-rate mention via regex (accepts `open-rate status` /
+  flipped Chinese word order) instead of fixed phrases;
+  `check-dev-edit-first.sh` anchors the structure-test gate on contract
+  vocabulary (`推进` from the taste dimensions) plus observed compliant
+  phrasings (`零贡献` / `文章不变` / `删掉任何`); `chinese-22-rules-hit-and-preserve`
+  adds `预设反驳` / `扣帽子` / `可能以为`; `taste-findings-not-visual` adds
+  `争夺` / `罗列` / `清单` / `塞入`; and `humanize-preserves-facts` now asks for
+  the full rewritten paragraph verbatim so a correct stop-condition response
+  still reprints the frozen invariants.
+- `evidence-first-writing/evals/cases/chinese-protocol-context-judgment.yaml` —
+  fixture fix: the draft's closing line 「这不是流程的胜利，是人的胜利」 was itself a
+  second reversal-aphorism, making the "no real problem → stop" verdict genuinely
+  ambiguous (two runs correctly flagged it as a cluster finding). The ending is
+  replaced with a concrete forward-looking sentence so the stop-condition contract
+  is unambiguous; verdict synonyms extended (`不需要硬改` / `模板感低` / `整体干净`).
+- `evidence-first-writing/evals/cases/docs-truth-param-check.yaml` — accept
+  `不在真实 --help` / `usage 行` / `已剔除` / `无法运行` for the param-reconciliation
+  gate (iteration-38 compliant phrasing).
+- `evidence-first-writing/evals/known-issues.md` — add the paraphrase-drift
+  handling discipline (substance present + vocabulary missed → record, stop
+  chasing words; missing substance → real defect) with the dev-edit and
+  chinese-protocol cases as first applications.
 - `evidence-first-writing/evals/known-issues.md` — record the iteration-33 GLM-flash
   PASS of `post-publish-no-causal` as provider evidence narrowing the DeepSeek-era
   stable FAIL, update the environment description (deepseek proxy → bigmodel GLM
@@ -120,6 +179,17 @@ adheres to a loose semantic-versioning convention.
   correct reasoning but no canonical contract vocabulary (`hypothesis` /
   `stable_rule_update` / `persistence`) — assertions deliberately kept strict.
   Real-Claude 3/3 remains the closure standard for both items.
+- `evidence-first-writing/evals/verification-summary.md` — record the 29-case
+  suite expansion, the GLM-flash provider arc (iteration-33 `19/20` with one
+  assertion brittleness, iteration-34 `23/29`, iteration-38 `24/4/1` with all
+  non-designed failures resolved via focused re-verification through
+  iteration-41), the steady-state expectation (`28/29` with one deliberately
+  strict case), and the seven newly-covered capability rows.
+- **leo-ppt-generator/SKILL.md** — 针对 iter-2/iter-4 实测失守行为的三处合同强化：
+  Gate 0 的“禁止读取”明确限定于用户输入文件（`--fixed` 不读取文件，本分支亦须优先
+  使用）；机器直出要求显式覆盖 `advise` 模式并给出顺序合同精确定义（五字段块必须在
+  回复最前，至多允许一行 `interaction_mode:` 元数据在前）；新增红线禁止以枚举宿主
+  Agent/子代理清单来解释 worker 缺失原因。(user-visible)
 - **leo-ppt-generator/scripts/render-control-summary.py + SKILL.md** — 两处固定控制面块
  （Gate 0 Office 信任块与 worker 缺失块）新增机器直出模式：
   `render-control-summary.py --fixed gate0 | --fixed worker-unavailable`
@@ -142,6 +212,12 @@ adheres to a loose semantic-versioning convention.
 
 ### Fixed
 
+- **leo-ppt-generator/evals** — 判官 v2 升级：judge_control_plane_fields.py 从“五字段
+  包含即可”升级为位置合同（五字段块必须位于回复最前，至多允许一行反引号包裹的
+  `interaction_mode:` 元数据在前）+ 值域合同（前四字段整行逐字匹配、全回复恰一行
+  `next_action:`）+ 保留反伪造扫描 + 新增宿主清单泄漏红线；case yaml 删除重复的
+  `expect.must_contain`，判官成为唯一断言源。离线回归基线：四轮真实回复 + 四个
+  合成样本 8/8 分类正确。
 - **runtime/src/leo_ppt_generator/editable/adapter.py +
   references/reason-codes.md** — 收敛 reason-code 协议漂移：
   `validate_page_artifact` 在验证报告引用存在但文件不可用时改抛

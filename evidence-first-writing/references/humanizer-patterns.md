@@ -6,7 +6,7 @@
 
 ## 模式族
 
-本文件是模式族概览。用户请求“完整 55 模式审查”时，必须继续读取 [humanizer-pattern-catalog.md](humanizer-pattern-catalog.md)，逐项检查与报告；只读本文件时不得声称已完成 55 项审查。
+本文件是模式族概览。用户请求完整模式审查（当前 55 类）时，必须继续读取 [humanizer-pattern-catalog.md](humanizer-pattern-catalog.md)，逐项检查与报告；只读本文件时不得声称已完成完整模式审查。
 
 完整模式审查的每条命中必须同时输出 catalog 中的 canonical pattern ID（如 `P34`）和名称；只写自然语言名称不算完成逐项目录审查。
 

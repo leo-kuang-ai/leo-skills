@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .codex/hooks/session-start",
+            "commandWindows": "\".codex\\hooks\\session-start.cmd\""
+          }
+        ]
+      }
+    ]
+  }
+}

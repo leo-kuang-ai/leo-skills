@@ -8,6 +8,110 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **evidence-first-writing 创作者化能力层（v2 方案，10 项）** — 把 skill 从「单篇生产
+  质控机」扩展为「内容经营闭环」，全部与因果/事实/授权红线兼容，势能承诺一律使用
+  概率语言，不承诺阅读量数字。(user-visible)
+  - 新增 `references/topic-momentum.md`：选题四问合同（时机张力 / 既有叙事定位 /
+    势能类型 / 情绪定位，情绪必须附真实性证据）+ momentum card + 情绪真实性门禁
+    （情绪命名 ≠ 情绪制造；情绪曲线须「命名 → 复杂化 → 给出口」三段完整，只唤起
+    不给出口的焦虑文按操纵处理）。
+  - 新增 `references/reader-profile.md`：与作者侧 voice-profiles 对称的读者侧持久
+    档案；`misunderstands` 与 `active_emotions` 强制证据链（「反代入四问」的正向
+    建设），provisional/verified 分级，无档案时声明 `reader_model: inferred`。
+  - 新增 `references/content-assets.md`：选题池、配方候选区（hypothesis → promoted
+    分级沉淀，升格条件与 Node 14 `stable_rule_update` 完全一致——因果红线从「禁止
+    沉淀」显式化为「分级沉淀」）、系列规划、测试-放大循环；持久化沿用
+    personal-context 授权机制。
+  - `references/chinese-editorial-protocol.md`：第 13/21 条新增**论点压缩句判据**
+    （删句测试：脱离上下文仍成立且删除后 thesis 受损 → 保留并打磨，不按模板感
+    删除），修复装饰金句规则误伤传播资产的问题；`references/editorial-taste.md`
+    记忆点维度同步交叉引用（论点压缩句是记忆点的传播形态）。
+  - `references/article-workflows.md`：新增「骨架选择」节——论证骨架之外提供
+    悬念前置 / 双线交织 / 问题-恶化-转折三种叙事骨架，硬规则为每节「知道 / 不知道
+    / 想知道」+ 关键信息释放计划（可以延迟陈述，不得误导）。
+  - `references/editorial-pipeline.md`：N2 接入四问合同；N7 接入情绪真实性门禁；
+    N9 首屏合同（折叠线渠道前三行完成具体开场 + 身份锚定 + 未兑现承诺，兑现位置
+    超全文 2/3 记 finding）；N13 分发包（3-5 张金句卡片必须是论点压缩句并注明兑现
+    位置、转发语声明三选一传播自利理由、评论预埋默认关闭）；Node 14 观察清单
+    （completion_breakpoints / quoted_sentences / comment_keywords 只作
+    reader-profile 与 topic-momentum 的证据输入，禁止段落级归因）+ 配方沉淀分级。
+  - `SKILL.md`：三个新 reference 的按需读取路由 + post-publish 观察清单条款。
+- **leo-ppt-generator 全生命周期体验落地（docs/plans/2026-08-27-001）** —
+  按生命周期方案完成 U1–U9：受管 runtime 与 Skill 备份的保留策略核心
+  （`runtime_manager.py prune-runtimes|prune-backups`，四闸 containment：
+  白名单触发 / lstat 校验 / 整批熔断 / rollback 恢复点下限，14 项安装器
+  单测含符号链接 fixture 与恢复点边界）；`--uninstall [--purge-data]`
+  程序面/数据面分层拆除（钥匙串零触碰断言、父目录 skills 护栏防误删源码树）；
+  `--host codex|agents|claude` 统一宿主选择并兼容既有 `--agents`，
+  冲突组合显式报错；装后 onboarding 报告全面中文化且 PS1 补齐对等能力；
+  bootstrap 失败在 stdout JSON 契约外新增 stderr 中文伴随行；
+  CLI `provider prefer/remove`、`credential remove` 输出一行影响提示
+  （仅 stderr，不改变 JSON 协议形状）；README 宿主矩阵/故障排查/卸载四步、
+  first-use 离场三件套与配置变更三问、UPDATES.md 变更速览。(user-visible)
+
+- `docs/plans/2026-08-27-001-feat-leo-ppt-lifecycle-ux-plan.md` — 上项工作的
+  implementation-ready unified plan（R1–R17 / U1–U9 / 高风险信任链与验证合同）。
+
+- `docs/leo-ppt-generator-lifecycle-ux-plan.md` — 全生命周期用户体验优化方案：
+  以首次安装/首次配置/日常使用/非首次更新/配置变更五场景（附卸载缺失场景）
+  盘点安装器与 CLI 真实交互面后给出 L1–L16b 分档方案；量化实证本机累积
+  23 份 Skill 备份（46MB）与 24 个受管 runtime（4.3GB）零回收，确定
+  备份保留策略（L9，含 containment 与 rollback 恢复点下限纪律）为第一优先项，
+  并提出宿主别名、onboarding 中文化、人话短语库单一来源等跨场景主题。
+
+- `docs/leo-ppt-generator-ux-review.md` — 用户体验多智能体评审：三个独立审查
+  视角（黄金路径旅程、失败与阻断旅程含 6 份真实评测回复实证、行业心智模型
+  对照）交叉印证，产出三大结构性问题（确认序列六轮才见首图、worker 缺失无
+  解释死局、机器词表全程裸奔）与三档建议（Q 合同零改动快赢 8 项 / P 需拍板
+  合同语义微调 5 项 / E 评测配套 3 项），全部设计在四条硬约束之内。
+
+- **leo-ppt-generator** — 落地优化评审 A1–A3 与 C1/C2（依据
+  `docs/leo-ppt-generator-optimization-review.md`）：SKILL.md 明确手写降级披露行
+  （`gate0_render` / `worker_render: handwritten`）必须置于五字段块之后，消除与
+  判官位置合同的互斥；upstream-capabilities.yaml 头部声明 proof/proof_case 属
+  上游开发仓 worktree、包内不可复跑（C2 标注路线）；九项文档一致性修复——
+  manifest-schema/page-decision-tree 三处悬空章节名改指现行 reference、
+  风格计数按盘面实证修正（35+12、02 轴 46、05 轴 3+映射、配对表 84 组并补
+  124 口径）、execution-contract 注明 `--backend-contract` 等全局旗标须位于上游名
+  之前、first-use 的 `config provider select` 改为实际存在的 `prefer` 并把
+  "两问上限"划界为准备阶段、cli-helper 补顶层 `upgrade inspect|import-baseline|
+  propose|finalize` 命令段、patches/README 的 0001 归属改为开发仓 proof 并
+  移除包内不存在的重放测试引用、worker 返回合同按 vendor record 必填参数对齐；
+  README 记录 description 安全冗余偏离官方 ~100 token 建议的理由（C1）。
+  判官离线回归与 `git diff --check` 通过。(user-visible)
+
+- `docs/leo-ppt-generator-optimization-review.md` — 最终版优化建议文档：三源证据
+  （14 轮 skill-up 实测、全包内容一致性审查、全网调研）支撑的 14 节点逐节点
+  分析、对抗性审查与分档建议（立即采纳 A1–A3 / 建议采纳 B1–B3 / 待确认
+  C1–C2 / 暂缓 D1–D2 / 否决 E1–E2）；确认判官-合同互斥（handwritten 披露行
+  vs 位置合同）与 upstream-capabilities.yaml 12 处死引用为最高优先修复项。
+
+- **leo-ppt-generator/SKILL.md** — 消除"禁工具"与"固定块必须脚本渲染"的合同
+  歧义：advise 模式的工具禁令显式豁免 `render-control-summary.py --fixed
+  gate0|worker-unavailable`（不读文件、无副作用，输出固定块不构成执行动作，
+  用户"不要执行任何操作"不得据此改回手写）；worker-unavailable 固定块补上与
+  Gate 0 对齐的手写降级披露 `worker_render: handwritten`。(user-visible)
+- **leo-ppt-generator/evals** — 新增 3 个 execute 层行为用例补齐编排层覆盖空白
+  （此前 9 用例全部为 advise/状态汇报型）：`mixed-advise-execute-advise-wins`
+  （混合请求以咨询为准、首行 `interaction_mode: advise`）、
+  `execute-keeps-confirmation-gates`（执行授权不能豁免内容与样张确认门）、
+  `single-page-requires-cli-allowance`（单页仍需 CLI 返回
+  `single_unit_current_agent_allowed`）。三个判官延续 v2 惯例：判官为唯一断言
+  源、否定感知匹配、引号回述剥离；离线回归 6/6（含修复一个"没有开始生成"
+  拒绝句被误判的假阳性）。扩容首轮（iter-13）：mixed-advise 与 single-page
+  PASS；execute-keeps-confirmation-gates FAIL 为真实合同失守——模型拒绝杜撰
+  源数据但在授权压力下放弃样张确认门，与 control-plane 的模型纪律缺口分属
+  两类信号。 (user-visible)
+- **leo-ppt-generator/evals/cases/control-plane-blocked-summary.yaml** — 携带
+  `tags: [model_gating]` 语义分层标记（已验证 skill-up 容忍该键）：带标记用例
+  的 FAIL 反映被评模型指令遵循边界，未标记用例的 FAIL 才构成技能合同回归。
+- **leo-ppt-generator/tests/boundary/test_editable_patch_regressions.py** —
+  patch 0004/0006 的包内聚焦回归落地：confirmed 公式清单缺席即质量合同违规
+  （含非 list 清单与未确认候选两个守卫断言）；legacy `.ppt` 规范化把请求 dpi
+  透传给 `render_pdf_pages`（LibreOffice 转换器经 mock，不依赖真实 Office 栈）。
+  runtime venv 下 5/5 通过；`tests/upstream/core-tests.yaml` 同步把两项从
+  pending 出账为已实现用例，editable 侧 pending 清零。
+
 - `evidence-first-writing/scripts/check_factual_invariants.py` — track curly Chinese
   quotes `“…”` as a `curly_quotes` invariant category (the most common quote style in
   user manuscripts was previously invisible to the checker), and stop URL values at
@@ -49,7 +153,10 @@ adheres to a loose semantic-versioning convention.
   fixtures, blind-eval isolation, finding counts).
 - 新增 `leo-ppt-generator/evals/known-issues.md`：记录四轮 control-plane 用例
   F·F·P·F 稳定性账目、GLM 代理环境事实（model_name 为空、unrecognized_model 告警）、
-  判官口径变更史与真机复验待办，避免后续轮次误读为回归。
+  判官口径变更史与真机复验待办，避免后续轮次误读为回归；同日 S1–S5 五轮全量复测后
+  账目扩至十点序列（v2 口径下五连 F，其余 8 用例 5×0 翻红，全套 411–533s），确认
+  control-plane 失败形态本身稳定（叙述先行、五字段块缺失、无泄漏），定性为被评
+  模型的指令遵循能力边界而非技能合同缺陷。
 - 新增 `leo-ppt-generator/tests/boundary/test_vendor_state.py` 与
   `tests/upstream/core-tests.yaml`：`upstreams.yaml` / `patches/README.md`
   引用的回归证明工件现已真实存在并可执行
@@ -67,7 +174,7 @@ adheres to a loose semantic-versioning convention.
   now a local-only comparison. `install.sh` / `install.ps1` were adapted to
   local-only mode (default source is the script's own directory, `--ref`/`-Ref`
   remote fetch dropped) and moved inside `leo-ppt-generator/` rather than the
-  project root. (user-visible)。作者: leokuang
+  project root. (user-visible)
 - Add `.claude-plugin/marketplace.json`: enables `/plugin marketplace add leo-kuang-ai/leo-skills` and
   `/plugin install evidence-first-writing` for remote Claude Code installation.
 - Add `evidence-first-writing/README.md`: install (Claude Code personal/project
@@ -212,6 +319,64 @@ adheres to a loose semantic-versioning convention.
 
 ### Fixed
 
+- **evidence-first-writing/evals/cases/chinese-22-rules-hit-and-preserve.yaml +
+  evals/scripts/check-dev-edit-first.sh** — v2 判据落地后的两处判官同义词收口：
+  论点压缩句判据使检测报告从「类别标签式」转向「决策日志式」，chinese-22 两处
+  any-list 扩同义（翻译腔类 + 深邃/拥抱；删除类 + 压缩/动作或例子），it-66 响应
+  经人工核对实质全部在场（删句测试被正确执行：装饰金句删除、承载论点内容保留）；
+  dev-edit 判官结构测试词表 +「删掉任意」（第五次措辞重掷「删掉任意一句，全文
+  毫发无损」，历史失败响应重放 exit 0，单测 7/7 保持）。负向断言均未削弱。
+  it-69 全量后同批收口：`check-single-routing-question.sh` 第二读者任务词表 +
+  「做完」、`chinese-protocol-context-judgment` 停止句表 +「不需要去模板」
+  （均为首掷，历史重放/聚焦复验 PASS；`chinese-22` 编辑判断轮换按纪律记档
+  不追词）。it-71 全量后 `taste-findings-not-visual` 词表同批收口（弯引号字符
+  + 倾倒/净信息量；it-72 再掷「并列」按纪律记档，两轮实质均在场）。
+- **evidence-first-writing/evals/eval.yaml + evals/cases/bare-topic-fork-two-turns.yaml** —
+  parallelism 1 → 2 固化：iteration-64 首次 p=2 全量 `30 PASS / 1 FAIL / 0 ERROR`
+  （套件历史最佳），墙钟 24m49s 较 p=1 的 ~45m30s 缩短 45%、零引擎超时；并发使
+  两轮 resume 路径拉长至 398 s，该用例超时 420 → 480 s。证据边界：单轮全量、
+  无外部并发；出现争用噪声优先回退 parallelism 1 而非继续加超时。
+- **evidence-first-writing/evals/cases/chinese-protocol-context-judgment.yaml + SKILL.md** —
+  安全网复跑后的二轮收敛：停止判定 any-list 补「不需要改 / 不用改 / 无需改动」
+  （iteration-57 新同义重掷「整体没有成簇的 AI 模板感，不需要改」，扩词后复验
+  PASS）；post-publish 状态块由行内枚举升级为 fenced YAML 示例——flash 级模型在
+  两种强度下均不自发输出状态块（累计七轮稳定 FAIL，定性模型稳健性问题，记入
+  known-issues，断言保持严格）；`bare-topic-fork-two-turns` 超时五样本分布
+  [221/271/298/299/309] s 确认 420 s 定值（36% 余量），parallelism 2 固化时因
+  并发拉长（实测 398 s）再上调至 480 s。
+- **evidence-first-writing/tests/test_judges.py + tests/fixtures/judge_replay/** —
+  判官历史重放机器化：六个 `evals/scripts/check-*.sh` 判官各配真实历史响应与
+  合成正反 fixture，冻结为 unittest 回归（`python3 -m unittest discover -s
+  evidence-first-writing/tests`）。落实 known-issues 的「收紧判定必须附带历史响应
+  重放」纪律——后续改判官不再依赖人工重放。
+- **evidence-first-writing/SKILL.md + references/chinese-editorial-protocol.md +
+  references/editorial-review.md** — 技能侧输出合同稳定化（消除 flash 级模型措辞
+  重掷的判官假阴性）：post-publish 复盘强制附带 observation / hypothesis /
+  stable_rule_update / persistence 状态块；中文七类检测报告逐类表态「命中/未命中」
+  （未命中只写状态行，不制造 finding）；Finding 字段标签「证据/问题/动作/Owner」
+  逐字使用，不得加粗或换同义词。(user-visible)
+- **evidence-first-writing/evals/scripts/guarded-run.sh（新增）+ evals/eval-plan.md** —
+  多会话评测互斥：检测到并发 `skill-up run` 即拒绝启动（并发共享代理配额会以引擎
+  超时形式产生假 ERROR，iteration-51 实测），并把发起时间/父进程/参数追加到
+  workspace `runs.log` 便于 iteration 归属。
+- **evidence-first-writing/evals/eval.yaml** — `defaults.timeout_seconds` 180 → 240
+  （两轮全量 55 个 PASS 样本中位数 71 s、P90 123 s，`routes-technical-explanation`
+  实测 147 s 已占旧预算 82%）；report 默认格式增加 html。README.md / CLAUDE.md 的
+  用例计数同步 20 → 31。
+- **evidence-first-writing/evals/cases/bare-topic-fork-two-turns.yaml** — `timeout_seconds`
+  300 → 420：干净环境的全量实测两轮 resume 路径耗时 299 s，余量为零，并在与外部会话
+  共享代理配额时产生一次 `context deadline exceeded` 假 ERROR（iteration-51，首轮输出
+  实质正确）；放宽后 31 例全量 A/A 中该用例 PASS（iteration-54）。
+- **evidence-first-writing/evals/scripts/check-audit-readonly.sh** — 证据标签接受集加入
+  第四个同义词「证据」。GLM flash 连续两轮（iteration-54/55）将逐字引用的原句标为
+  `证据：` / `**证据**：` 而非 `原句/引用/原文`，实质完全合规却被判官 FAIL；修复经
+  历次失败响应重放（exit 0）与无标签负例（exit 1）双向自测，并在线聚焦复验 PASS
+  （iteration-56）。负向断言（只读边界、可执行动作、高影响问题类别）未削弱。
+- **evidence-first-writing/evals/verification-summary.md + evals/known-issues.md** — 落盘
+  31 例两轮全量 A/A 证据链（iteration-51/53/54/55/56）：两轮全部 ERROR 均为引擎 180 s
+  超时且聚焦复验 PASS；唯一跨轮稳定 FAIL 仍为 `post-publish-no-causal-unprompted`
+  （自发合同词汇缺口，断言按设计保持严格，已扩至四轮记录）；
+  `chinese-22-rules-hit-and-preserve` 单轮漏报反代入 finding，不可复现（记档不追词）。
 - **leo-ppt-generator/evals** — 判官 v2 升级：judge_control_plane_fields.py 从“五字段
   包含即可”升级为位置合同（五字段块必须位于回复最前，至多允许一行反引号包裹的
   `interaction_mode:` 元数据在前）+ 值域合同（前四字段整行逐字匹配、全回复恰一行

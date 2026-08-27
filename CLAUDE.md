@@ -30,7 +30,7 @@ python3 -m unittest evidence-first-writing.tests.test_factual_invariants
 ```
 
 ### 评测套件（skill-up CLI）
-两技能均以各自 `evals/eval.yaml` 为评测入口（引擎 `claude_code`）：evidence-first-writing 20 个用例、leo-ppt-generator 9 个用例。
+两技能均以各自 `evals/eval.yaml` 为评测入口（引擎 `claude_code`）：evidence-first-writing 31 个用例、leo-ppt-generator 9 个用例。
 ```sh
 cd evidence-first-writing && skill-up run evals/eval.yaml
 cd leo-ppt-generator && skill-up run evals/eval.yaml

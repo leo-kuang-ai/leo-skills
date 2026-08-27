@@ -10,7 +10,7 @@
 
 - 入口：[evidence-first-writing/SKILL.md](evidence-first-writing/SKILL.md)
 - 安装与用法：[evidence-first-writing/README.md](evidence-first-writing/README.md)
-- 评测：20 个用例（`evals/cases/`）
+- 评测：31 个用例（`evals/cases/`）
 
 内置的去 AI 模板感 / Humanizer 工具链选型速览（「想做什么 → 对应方法」映射，以及各开源工具的语言、维护状态与特点）：
 

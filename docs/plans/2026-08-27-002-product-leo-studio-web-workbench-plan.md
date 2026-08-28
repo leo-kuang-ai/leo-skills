@@ -16,7 +16,7 @@ title: Leo Studio Web 工作台 - Plan
 ## Goal Capsule
 
 - **目标**：实现 Product Contract R1–R8 定义的 Leo Studio web 工作台——把两个 skill 的门禁式生产管线产品化为可用的多阶段异步 web 应用。
-- **推荐方案**：独立仓库 `leo-studio`，三进程架构（Next.js 前端 / FastAPI 编排 / headless `claude` CLI runtime worker）。skill 目录只读挂载进 runtime 工作区，适配层作为唯一翻译点（thin-glue），复用 `render-control-summary.py` 渲染控制面。V0.5 简化基座：PostgreSQL + 进程内队列 + 轮询。
+- **推荐方案**：独立仓库 `leo-studio`，三进程架构（Next.js + shadcn/TanStack/TipTap 前端 / FastAPI 编排 / headless `claude` CLI runtime worker）。skill 目录只读挂载进 runtime 工作区，适配层作为唯一翻译点（thin-glue），复用 `render-control-summary.py` 渲染控制面。V0.5 简化基座：PostgreSQL + 进程内队列 + 轮询。
 - **权威层级**：Product Contract（本文件下方，字节级保留）为 WHAT 唯一源；当前用户为产品确认人；`assumption` 标注的决定未经确认，沿用 Product Contract 记录。
 - **决策焦点**：runtime 会话语义（`--resume` 断点续跑）、适配层解析合同（控制面/路由卡/阻断块）、门禁往返协议（awaiting_user ↔ 用户决策）、PPTX 导出保真。
 - **验证焦点**：两包 skill evals 作为行为回归门禁（skill-up）；适配层解析器以 evals 用例为 fixture；端到端跑真实写作任务与 generate 演示任务；安全断言（密钥掩码、越权、Gate 0 未确认文件不可读）。
@@ -156,21 +156,22 @@ Product Contract unchanged (byte-preserved upstream source slice).
 ### Key Technical Decisions
 
 - **KTD1 目标仓库与形态（new）**：新建独立仓库 `leo-studio`，不在 leo-skills 内混入应用代码——leo-skills 的所有权边界是 skill 包，web 应用是消费方。拒绝在 leo-skills 内新建顶层目录的方案：会破坏"每个顶层目录是一个技能包"的仓库约定。skill 以 git 依赖（子模块或 vendored copy + 版本号）供 runtime 只读挂载，`LEO_SKILLS_DIR` 环境变量指向。
-- **KTD2 三进程架构（compose / thin-glue）**：`apps/web`（Next.js 14+ App Router、TS、Tailwind、TipTap）+ `apps/api`（FastAPI、SQLAlchemy、Alembic）+ `worker/`（runtime 子进程管理）。api 层只拥有编排与状态（项目/任务/门禁/资产），不复制任何 skill 领域规则；skill 语义的权威始终在两包 SKILL.md 及其 references。胶水层职责限定：任务翻译、会话调度、失败传播、事件观测。
+- **KTD2 三进程架构（compose / thin-glue）**：`apps/web`（前端栈见 KTD9）+ `apps/api`（FastAPI、SQLAlchemy、Alembic）+ `worker/`（runtime 子进程管理）。api 层只拥有编排与状态（项目/任务/门禁/资产），不复制任何 skill 领域规则；skill 语义的权威始终在两包 SKILL.md 及其 references。胶水层职责限定：任务翻译、会话调度、失败传播、事件观测。
 - **KTD3 Runtime = headless `claude` CLI 子进程（reuse）**：以 `claude -p --output-format stream-json --resume <session_id> --permission-mode acceptEdits` 在每任务独立 workdir 中驱动 skill；会话 ID 持久化于任务记录，实现断点续跑（R3.3）。skill 通过 workdir 内 `.claude/skills/` 只读符号链接挂载。V0.5 不引入 Agent SDK 包装，CLI 已满足流式输出与 resume 原语；SDK 化留作 V1 优化项。合规（Q3）仅影响对外部署，不影响内部 V0.5。
 - **KTD4 控制面解析复用（reuse）**：`render-control-summary.py`（含 `--fixed gate0` / `--fixed worker-unavailable` 固定块）是控制面五字段的权威渲染器；适配层调用它而非自行解析。route card 字段枚举取自 `intent-routing.md`（V0.5 内联为 contracts 常量并标注来源与同步责任）。Gate 0 阻断块在 Web 层的呈现与该脚本输出逐字段对应。
 - **KTD5 简化基座（V0.5，吸收"过度复杂"结论；2026-08-28 用户决定直接采用 PostgreSQL）**：PostgreSQL 16 + 进程内 asyncio 队列 + 前端轮询（2s）——Redis 与 SSE 仍推迟；单 worker 串行。选 PG 而非 SQLite：route_card / decision_history / 事件 payload 原生 JSONB，V1 多用户并发写零平移成本；代价是本地与 CI 各需一个 PG 实例（docker compose / CI service）。数据层 Alembic 从第一天面向 PG。队列与推送各有接口抽象（`QueuePort` / `EventPort`），U9 落地 SSE 时替换实现而非改调用方。无 OAuth、无多租户隔离强化（单用户内部部署，登录仅一道共享门）。
-- **KTD6 任务状态机（new）**：`created → queued → running → awaiting_user → running → … → delivered | blocked | failed | cancelled`。`blocked` 为终态并透传 reason_code；`awaiting_user` 挂起时 worker 进程可退出，靠 `--resume` + 决策历史重建（状态快照存 `tasks.decision_history` JSONB）。门禁往返协议：worker 检测到门禁语义（写作 Brief/样张确认等由 skill 输出中的显式停点标记或适配层预设的阶段-门禁映射决定）即退出并落 `gates` 行，前端提交决策后新起子进程续跑。
-- **KTD7 密钥与上传安全（new）**：API key 以 AES-256-GCM 加密落库，主密钥来自环境变量 `LEO_MASTER_KEY`（KMS 留 V1）；读取路径永不回明文，日志字段白名单。未确认上传存隔离前缀 `uploads/unconfirmed/`，runtime workdir 挂载白名单不含该前缀——Gate 0 的"不读取"由文件系统边界而非提示词保证。
-- **KTD8 预览与导出保真（extend on skill 产出）**：PPTX → 页面图片预览用 LibreOffice headless（`worker/preview/`），产物即 R2.5 样张与 QA 的输入；导出保真检查（R2.6 验收）为脚本化门槛：python-pptx 校验文本框/形状可选中、嵌入字体清单、与 manifest 版式记录比对，进 U10 质控流水线。
-- **KTD9 前端设计系统（reuse）**：`leo-studio` 内落 `docs/DESIGN.md`（自 leo-skills `docs/prototypes/DESIGN.md` 移植为仓库内权威），tokens 进 `apps/web/src/styles/tokens.css`；组件以原型 `leo-studio-interactive.html` 为 pattern 起点重构为 React 组件（非复制粘贴）。
+- **KTD6 任务状态机（new）**：`created → queued → running → awaiting_user → running → … → delivered | blocked | failed | cancelled`。`blocked` 为终态并透传 reason_code；`awaiting_user` 挂起时 worker 进程可退出，靠 `--resume` + 决策历史重建（状态快照存 `tasks.decision_history` JSONB）。门禁往返协议：门禁检测以适配层的**阶段-门禁映射表为主机制**——按 depth 与 operation 声明必经门禁，阶段推进时强制校验；skill 输出中的显式停点标记仅作增强信号（命中可提前停，不命中不放松校验）。worker 到达映射声明的门禁点即退出并落 `gates` 行，前端提交决策后新起子进程续跑。
+- **KTD7 密钥与上传安全（new）**：API key 以 AES-256-GCM 加密落库，主密钥来自环境变量 `LEO_MASTER_KEY`（KMS 留 V1）；读取路径永不回明文，日志字段白名单。**密钥传递边界**：BYOK 密钥不进入任务 workdir 的子进程环境（headless agent 具备命令执行能力，环境变量可被读取，上传内容驱动的提示注入可致外泄）；模型请求经 api 侧受限代理转发，或注入任务级短时凭据，二选一在 U8 实施时定并记入 ops 文档。**提示注入边界**：用户上传内容一律以文件路径引用进入任务上下文，不将原文拼入提示词。未确认上传存隔离前缀 `uploads/unconfirmed/`，runtime workdir 挂载白名单不含该前缀——Gate 0 的"不读取"由文件系统边界而非提示词保证。
+- **KTD8 预览与导出保真（extend on skill 产出）**：PPTX → 页面图片预览用 LibreOffice headless（`worker/preview/`），转换在沙箱容器或独立低权进程运行（LibreOffice 解析用户上传文件是历史 RCE 向量；信任确认是用户背书而非净化），产物落盘后才进主进程；产物即 R2.5 样张与 QA 的输入；导出保真检查（R2.6 验收）为脚本化门槛：python-pptx 校验文本框/形状可选中、嵌入字体清单、与 manifest 版式记录比对，进 U10 质控流水线。
+- **KTD9 前端技术栈与设计系统（reuse，2026-08-28 细化）**：Next.js 14+（App Router，React 18）+ TypeScript；组件层 shadcn/ui + Radix 原语 + Tailwind（选无头可换肤组合而非成品库——DESIGN.md 双谱系 tokens 需完全控皮肤，Ant Design 类成品库视觉强绑定企业风）；数据层 TanStack Query（轮询→SSE 换协议不换调用方，task_events seq 游标天然匹配）+ Zustand（全局 UI 态）；编辑器 TipTap（mark/decoration 实现四类证据标注与因果红线 inline 警告）。明确不采用：现成 admin 模板系统（CRUD 心智与管线工位相反）、CSS-in-JS 运行时。`docs/DESIGN.md`（自 leo-skills `docs/prototypes/DESIGN.md` 移植为仓库内权威）tokens 进 `apps/web/src/styles/tokens.css`；组件以原型 `leo-studio-v4.html` 区块为 pattern 重构（RouteCard/Pipeline/EvidenceLedger/GateCard/BlockedCard/ControlBar），非复制 CSS。
 - **KTD10 执行方向**：适配层解析器 test-first（fixture 先行）；状态机与安全断言 test-first；工位页面 smoke 优先（Playwright 走关键路径），不追求组件单测全覆盖。
 
 ### Implementation Scope Boundaries（plan-local）
 
 - V0.5 落：U1–U6、U10（写作端到端 + 引擎 + 质控）；U7 只落 generate 单 Route + Gate 0。
 - V0.7 落：U7 全量（四 Route）、U9（SSE 替换轮询）、OAuth 登录通道。
-- V1 落：U8 BYOK 面向用户化（V0.5 仅系统级 Provider 配置）、资产库完善、多租户强化。
+- V1 落：U8 BYOK 面向用户化（V0.5 仅系统级 Provider 配置）、资产库完善（含 R4.2 来源库引用格式导出子项）、多租户强化（含 R6.4 角色模型 owner/member 机制化——V0.5 单用户部署不实现，仅保留对象归属断言）。
+- 显式延后点名：R2.2 第三通道"引用写作工位产物生成演示"随 R5 联动管线一并 V2。
 - 计划内不做（呼应 Product Contract Non-goals + KTD5）：分享链接（R8）、品牌模板（R4.4）、联动管线（R5）——均为 V2，不设 U-ID。
 
 ### Evidence & Limitations
@@ -247,7 +248,7 @@ sequenceDiagram
 ```text
 leo-studio/
 ├─ apps/web/                # Next.js 工位前端
-│  └─ src/{app,components,styles/tokens.css,lib}
+│  └─ src/{app,components/ui,styles/tokens.css,lib,stores}
 ├─ apps/api/                # FastAPI 编排
 │  └─ src/leo_studio/{api,core,models,adapters,ports}
 ├─ worker/                  # runtime 子进程 + 适配层 + 预览
@@ -268,8 +269,8 @@ leo-studio/
 - **Requirements**：支撑全部（基础设施）。
 - **Dependencies**：无。
 - **Files**：`apps/web/*`、`apps/api/*`、`worker/*`、`packages/contracts/*`、`docs/DESIGN.md`、`.env.example`、`Makefile`。
-- **Approach**：pnpm + uv 管理两端依赖；`LEO_SKILLS_DIR`、`LEO_MASTER_KEY`、`LEO_ARTIFACTS_DIR`、`DATABASE_URL` 进 `.env.example` 并文档化；`docker-compose.yml` 提供 PostgreSQL 16（本地 `make dev` 一键起全栈，CI 用 service 容器）；DESIGN.md 移植入库；CI 占位（lint + 单测）。
-- **Test scenarios**：`make dev` 一键起 web/api/worker 三进程冒烟；缺失 `LEO_SKILLS_DIR` 时启动即清晰报错（exit 非 0 + 明确信息）。
+- **Approach**：pnpm + uv 管理两端依赖；前端依 KTD9 初始化 shadcn/ui、TanStack Query、Zustand、TipTap，DESIGN.md tokens 落 `apps/web/src/styles/tokens.css`（DESIGN.md 含 UX 交互合同 §11 一并移植）；`LEO_SKILLS_DIR`、`LEO_MASTER_KEY`、`LEO_SECRET`（JWT 签名，U2 消费）、`LEO_ARTIFACTS_DIR`、`DATABASE_URL` 进 `.env.example` 并文档化；`docker-compose.yml` 提供 PostgreSQL 16（本地 `make dev` 一键起全栈，CI 用 service 容器）；CI 占位（lint + 单测）。
+- **Test scenarios**：`make dev` 一键起 web/api/worker 三进程冒烟；缺失 `LEO_SKILLS_DIR` 时启动即清晰报错（exit 非 0 + 明确信息）；tokens.css 变量名与 DESIGN.md §2 一一对应（CI 脚本校验）。
 - **Verification**：三进程健康检查端点 200；README 记录启动步骤。
 - **Execution note**：`Test expectation: none -- 脚手架，行为由 U2+ 覆盖`（冒烟脚本除外）。
 
@@ -299,7 +300,7 @@ leo-studio/
 - **Requirements**：R3.3（断点续跑）、D4/KTD3、KTD7（挂载白名单）。
 - **Dependencies**：U1、U3。
 - **Files**：`worker/src/leo_worker/runner.py`、`workspace.py`、`worker/tests/test_runner.py`。
-- **Approach**：每任务 mktemp workdir + `.claude/skills` 只读链接（仅两 skill 目录）；`claude -p --output-format stream-json --resume <sid>`；token/时长预算超限 kill 并落 failed(budget_exceeded)；session_id 存 task。挂载白名单硬编码排除 `uploads/unconfirmed/`。
+- **Approach**：每任务 mktemp workdir + `.claude/skills` 只读链接（仅两 skill 目录）；`claude -p --output-format stream-json --resume <sid>`；token/时长预算超限 kill 并落 failed(budget_exceeded)；子进程异常退出（非零 exit、无 reason code）落 failed(worker_abnormal) 并同样保留已完成阶段产物；session_id 存 task。挂载白名单硬编码排除 `uploads/unconfirmed/`。
 - **Test scenarios**：workdir 内可见且仅可见两 skill；任务结束 workdir 归档到 artifacts/；预算超限进程被 kill 且已完成阶段产物保留；`--resume` 二次调用沿用同 session_id；未确认上传路径在子进程可见集中不存在。
 - **Verification**：真实 `claude -p` 冒烟（echo 级 prompt）双进程串联成功。
 - **Execution note**：隔离与 kill 语义 test-first（可 monkeypatch 子进程）。
@@ -310,18 +311,18 @@ leo-studio/
 - **Requirements**：R3.1（事件侧）、R2.4、R2.3（blocked 块）、R1.1（route card 回显）。
 - **Dependencies**：U3、U4。
 - **Files**：`worker/src/leo_worker/adapter/{control_plane,route_card,stop_points}.py`、`packages/contracts/schemas.py`、`worker/tests/fixtures/`（取自两包 evals cases）、`worker/tests/test_adapter.py`。
-- **Approach**：control_plane 直接调 `render-control-summary.py`（subprocess，输入为 CLI JSON envelope）；route card 枚举常量源注 `intent-routing.md` 并列同步清单；停点检测采用"阶段-门禁映射表 + 输出标记"双通道（表驱动，新增门禁改表不改代码）。evals cases YAML 抽样进 fixtures，防措辞漂移。
-- **Test scenarios**：gate0 固定块解析出五字段且与 `--fixed gate0` 输出逐字段相等；正常控制面五字段解析；route card 各字段枚举值合法；未知字段降级为 log 事件不抛错；evals fixture 全量解析通过率 100%；停点映射表命中后产出 gates(pending) 行。
+- **Approach**：control_plane 直接调 `render-control-summary.py`（subprocess，输入为 CLI JSON envelope）；route card 枚举常量源注 `intent-routing.md` 并列同步清单；停点检测以阶段-门禁映射表为主（表驱动，新增门禁改表不改代码），输出标记仅作增强信号。**必经门禁校验**：任务进入 delivered 前校验该 depth 下映射表声明的全部门禁均已发生（gates 行存在且已决策）；缺失即不交付，转 awaiting_user 并标记 `gate_missed` 异常事件——防止解析未命中时管线静默跑完、绕过用户决策。evals cases YAML 抽样进 fixtures，防措辞漂移。
+- **Test scenarios**：gate0 固定块解析出五字段且与 `--fixed gate0` 输出逐字段相等；正常控制面五字段解析；route card 各字段枚举值合法；未知字段降级为 log 事件不抛错；evals fixture 全量解析通过率 100%；停点映射表命中后产出 gates(pending) 行；构造"该停未停"的 fixture（跳过 Brief 门禁直跑终稿）时任务不得 delivered，须转 awaiting_user 并落 gate_missed 事件。
 - **Execution note**：test-first——fixtures 先于实现提交。
 
 ### U6. 写作工位端到端
 
 - **Goal**：写作管线从 route card 到终稿交付的可用闭环。
-- **Requirements**：R1.1、R1.2、R1.3（粘贴+md 上传）、R1.5、R1.6、R1.7、R1.8（挂载 soul.md 文件级）；R3.4（轮询档）；R4.3。
+- **Requirements**：R1.1、R1.2、R1.3（粘贴+md 上传）、R1.4（证据模式档位）、R1.5、R1.6、R1.7、R1.8（挂载 soul.md 文件级）；R3.4（轮询档）；R4.3。
 - **Dependencies**：U3、U5、U2。
 - **Files**：`apps/api/src/leo_studio/api/write.py`、`apps/web/src/app/write/[id]/*`、`components/{RouteCard,Pipeline,EvidenceLedger,GateCard,CausalWarn}.tsx`、`tests/e2e/write.spec.ts`。
-- **Approach**：RouteCard 表单驱动 U5 枚举；裸主题低置信渲染"决定性问题"单选且提交前禁用起草；证据账本为 api 聚合的 ledger JSON（分类计数+来源行）+ TipTap 四色 mark；因果红线条目由适配层透传，前端只渲染不提供忽略入口；门禁卡内联 + 决策 toast 留痕。`check_factual_invariants.py` 挂为终稿前检查步骤（before/after 比对）。
-- **Test scenarios**：route card 提交创建任务并回显 canonical 字段；裸主题路径阻止起草入口；管线推进至门禁并暂停；决策后续跑至 delivered；终稿下载 md；四色标注与账本计数一致；因果警告存在时无"强制写入"按钮（DOM 断言）；e2e 全流程 Playwright 通过。
+- **Approach**：RouteCard 表单驱动 U5 枚举，含证据模式档位（严格接地 / 开放调研，随 evidence_risk 联动，严格接地的来源缺口显式报告）；裸主题低置信渲染"决定性问题"单选且提交前禁用起草；证据账本为 api 聚合的 ledger JSON（分类计数+来源行）+ TipTap 四色 mark；因果红线条目由适配层透传，前端只渲染不提供忽略入口；门禁卡按 DESIGN.md §11 分级（快速门禁默认展开、可"稍后处理"并保持 awaiting_user + 导航橙点；旧门禁折叠为留痕行）。failed 状态按 §11 UX 合同展示已完成阶段产物 + 断点续跑入口。`check_factual_invariants.py` 挂为终稿前检查步骤（before/after 比对）。
+- **Test scenarios**：route card 提交创建任务并回显 canonical 字段；裸主题路径阻止起草入口；管线推进至门禁并暂停；决策后续跑至 delivered；终稿下载 md；四色标注与账本计数一致；因果警告存在时无"强制写入"按钮（DOM 断言）；门禁"稍后处理"后任务保持 awaiting_user 且导航出现提醒点；failed(budget_exceeded) 卡展示已完成进度并提供续跑入口；e2e 全流程 Playwright 通过。
 - **Verification**：以真实 `evidence-first-writing` skill 跑一篇 standard 短文（主题自选）全流程成功，门禁至少触发一次。
 
 ### U7. PPT 工位（V0.5 generate + Gate 0）
@@ -330,7 +331,7 @@ leo-studio/
 - **Requirements**：R2.1、R2.2（粘贴+md）、R2.3、R2.4、R2.5、R2.6、R4.3。
 - **Dependencies**：U5、U6（复用管线组件）、U4（预览）。
 - **Files**：`apps/api/src/leo_studio/api/deck.py`、`uploads.py`、`worker/src/leo_worker/preview/convert.py`、`apps/web/src/app/deck/[id]/*`、`components/{RoutePicker,SlideGrid,ControlBar,BlockedCard}.tsx`、`tests/e2e/deck.spec.ts`、`tests/e2e/test_gate0.py`。
-- **Approach**：上传入 `uploads/unconfirmed/`（不入 workdir）；PPTX 上传未确认 → BlockedCard 渲染 `--fixed gate0` 输出；确认动作写 trust 留痕并解锁 preflight；generate 流程样张先行（预览图）→ 门禁 → 批量 → QA → delivered；下载端点流式返回 PPTX + manifest。导出保真脚本 `worker/src/leo_worker/preview/fidelity_check.py`（python-pptx 断言）。
+- **Approach**：V0.5 仅 `generate` Route 可执行，其余三入口呈现但置灰并标注"V0.7 开放"（R2.1 入口卡完整交付，可执行性分版本）；空状态呈现"选 Route 开始"引导（DESIGN.md §11 五态矩阵）；上传入 `uploads/unconfirmed/`（不入 workdir）；PPTX 上传未确认 → BlockedCard 渲染 `--fixed gate0` 输出；确认动作写 trust 留痕并解锁 preflight；generate 流程样张先行（预览图）→ 门禁 → 批量 → QA → delivered；下载端点流式返回 PPTX + manifest。导出保真脚本 `worker/src/leo_worker/preview/fidelity_check.py`（python-pptx 断言）。
 - **Test scenarios**：未确认 PPTX 上传后任务立即 blocked 且文件未被任何子进程打开（workdir 白名单断言）；确认后进入 generate 后续阶段；样张门禁往返；delivered 后下载的 PPTX 可被 python-pptx 打开且文本框可枚举（保真冒烟）；中间产物（页面 png/manifest）可下载；控制条五字段与任务状态一致。
 - **Verification**：真实 skill 跑 generate 全流程产出可打开 PPTX；Gate 0 演示脚本可复现 blocked→确认→续跑。
 
@@ -340,7 +341,7 @@ leo-studio/
 - **Requirements**：R7.1–R7.4、R6.5。
 - **Dependencies**：U3、U4。
 - **Files**：`apps/api/src/leo_studio/api/providers.py`、`core/crypto.py`、`models/usage.py`、`apps/web/src/app/settings/*`、`tests/api/test_providers.py`。
-- **Approach**：KTD7 加密；Provider 行（name/base_url/key_cipher/model/enabled）；任务启动时快照解析进 runner 环境变量；测试连接端点发最小请求；用量按任务记 token/时长（从 stream-json 统计）。V0.5 仅管理员配置页，用户级多 Provider UI 留 V1。
+- **Approach**：KTD7 加密；Provider 行（name/base_url/key_cipher/model/enabled）；任务启动时解析配置快照，密钥按 KTD7 边界传递（受限代理或任务级短时凭据，实施时二选一并记 ops 文档），不进 workdir 子进程环境；测试连接端点发最小请求；用量按任务记 token/时长（从 stream-json 统计）。V0.5 仅管理员配置页，用户级多 Provider UI 留 V1。
 - **Test scenarios**：保存后 GET 返回掩码（`sk-••••3f9a` 形）；日志/错误栈中检索不到明文 key（负向断言）；删除需确认且运行中任务不受影响；快照变更后新任务用新配置；测试连接失败返回结构化错误；用量聚合数值与 stream-json 统计一致。
 - **Execution note**：加密与掩码 test-first。
 
@@ -368,7 +369,7 @@ leo-studio/
 ## Verification Contract
 
 - **单测/集成**：`apps/api` 与 `worker` 用 `pytest`（`make test-api`、`make test-worker`）；前端组件不强制单测，关键路径由 e2e 覆盖。
-- **e2e**：Playwright（`make test-e2e`）：登录→写作全流程（含一次门禁）、generate 全流程（含样张门禁与下载）、Gate 0 blocked→确认。
+- **e2e**：Playwright（`make test-e2e`）：登录→空状态/三步向导（含裸主题决定性问题的禁用语义）→写作全流程（含一次门禁与"稍后处理"）、failed 断点续跑状态、generate 全流程（含样张门禁与下载）、Gate 0 blocked→确认。
 - **行为回归门禁**：`scripts/run_skill_evals.sh` 跑两包 `evals/eval.yaml`（skill-up），红即禁止该 skill 版本挂载与合并（KTD10/U10）。这是本计划"skill 不重写"决策的守护机制。
 - **导出保真**：`scripts/export_fidelity_gate.py` 对交付 PPTX 断言对象可编辑、字体清单、版式记录一致（R2.6 验收）。
 - **安全断言**：密钥掩码/日志无明文（负向检索）、越权 404、Gate 0 未确认文件不可达、登录限流。

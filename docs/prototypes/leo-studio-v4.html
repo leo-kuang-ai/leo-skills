@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leo Studio v4 — 完整状态原型</title>
+<style>
+:root{
+  --bg:#fff;--bg2:#f5f5f7;--text:#1d1d1f;--t2:#6e6e73;--t3:#86868b;
+  --hair:#e8e8ed;--line:#d2d2d7;--accent:#0071e3;--accent-h:#0077ed;--link:#0066cc;
+  --ok:#34c759;--warn:#ff9500;--danger:#ff3b30;
+  --fact:#0071e3;--src:#ac8e3e;--judg:#8944ab;--pers:#00a06d;
+  --ease:cubic-bezier(.25,.1,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+/* 导航 */
+.nav{position:sticky;top:0;z-index:90;height:48px;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08);display:none;align-items:center;padding:0 max(22px,calc((100% - 1080px)/2));gap:4px}
+.nav.show{display:flex}
+.nav .logo{font-weight:700;font-size:17px;margin-right:14px}.nav .logo b{color:var(--accent)}
+.nav a{color:var(--t3);font-size:12.5px;padding:6px 11px;border-radius:8px;text-decoration:none;position:relative}
+.nav a:hover{color:var(--text)}.nav a.on{color:var(--text);background:rgba(0,0,0,.05)}
+.nav a .wd{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--warn);display:none}
+.nav a.wait .wd{display:block}
+.nav .av{margin-left:auto;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--judg));color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+/* 页面 */
+.page{display:none;min-height:calc(100vh - 48px)}.page.active{display:block;animation:vin .32s var(--ease)}
+@keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stag{animation:fu .32s var(--ease) both}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.pill{border:none;border-radius:980px;padding:12px 26px;font-size:16px;transition:all .12s}
+.pill:active{transform:scale(.97)}
+.pill.blue{background:var(--accent);color:#fff}.pill.blue:hover{background:var(--accent-h)}
+.pill.gray{background:#e8e8ed;color:var(--text)}.pill.gray:hover{background:#dcdce1}
+.pill.small{padding:7px 16px;font-size:13px}
+.pill.danger{background:var(--danger);color:#fff}
+.pill:disabled{opacity:.4;cursor:not-allowed}
+/* 登录 */
+.auth{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg2)}
+.auth-card{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.08);padding:44px 48px;width:400px}
+.auth-card h2{font-size:28px;font-weight:700;text-align:center}
+.auth-card .s{color:var(--t2);font-size:14px;text-align:center;margin:8px 0 26px}
+.fld{margin-bottom:15px}.fld label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.fld input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;outline:none;transition:all .12s}
+.fld input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+.auth-card .pill{width:100%}
+/* 空状态 */
+.empty-hero{text-align:center;padding:80px 22px 30px}
+.empty-hero .ico{font-size:52px;margin-bottom:14px}
+.empty-hero h1{font-size:34px;font-weight:700;letter-spacing:-.01em}
+.empty-hero p{color:var(--t2);margin-top:8px;font-size:17px}
+.entry-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px auto 0;max-width:860px}
+.entry{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:26px;cursor:pointer;transition:all .2s var(--ease);text-align:left}
+.entry:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.entry .ic{font-size:26px;margin-bottom:10px}
+.entry b{font-size:16px;display:block;margin-bottom:5px}
+.entry span{font-size:12.5px;color:var(--t2);line-height:1.5;display:block}
+.entry.demo{border-style:dashed;background:var(--bg2)}
+/* dashboard */
+.section{padding:44px 0}
+.h2{font-size:30px;font-weight:700;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.tile{background:#fff;border-radius:18px;padding:28px;display:flex;flex-direction:column;cursor:pointer;border:1px solid transparent;transition:all .2s var(--ease)}
+.tile:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.tile .k{font-size:12px;color:var(--t3);font-weight:600}
+.tile h3{font-size:22px;font-weight:650;margin:5px 0 7px;letter-spacing:-.01em}
+.tile p{color:var(--t2);font-size:13px;flex:1}
+.tile .ft{display:flex;justify-content:space-between;font-size:12.5px;color:var(--t3);margin-top:12px}
+.st{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot.run{background:var(--accent);animation:pulse 1.2s infinite}
+.dot.done{background:var(--ok)}.dot.wait{background:var(--warn)}.dot.fail{background:var(--danger)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,113,227,.35)}50%{box-shadow:0 0 0 5px rgba(0,113,227,0)}}
+.pb{display:flex;gap:4px;margin-top:12px}.pb i{flex:1;height:4px;border-radius:2px;background:var(--hair)}
+.pb i.d{background:var(--ok)}.pb i.c{background:var(--accent)}
+/* 向导 */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:9vh}
+.ov.show{display:flex;animation:fin .15s}@keyframes fin{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.12);width:560px;max-width:94vw;padding:30px 34px;max-height:78vh;overflow-y:auto;animation:fu .2s var(--ease)}
+.modal h3{font-size:21px;font-weight:700}
+.modal .ms{font-size:13px;color:var(--t2);margin:4px 0 20px}
+.wsteps{display:flex;gap:6px;margin-bottom:22px}
+.wsteps i{flex:1;height:4px;border-radius:2px;background:var(--hair);transition:background .3s}
+.wsteps i.on{background:var(--accent)}
+.wsel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wcard{border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:all .12s}
+.wcard:hover{border-color:var(--t3)}
+.wcard.sel{border-color:var(--accent);background:rgba(0,113,227,.04)}
+.wcard .ic{font-size:24px;margin-bottom:8px}
+.wcard b{font-size:15px;display:block}
+.wcard span{font-size:12px;color:var(--t2)}
+.seg{display:inline-flex;background:var(--hair);border-radius:9px;padding:2px}
+.seg button{border:none;background:none;border-radius:7px;padding:6px 16px;font-size:13px;transition:all .12s}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.fld .hint{font-size:11.5px;color:var(--t3);margin-top:4px}
+.q-card{border:1px solid rgba(255,149,0,.4);background:rgba(255,149,0,.05);border-radius:12px;padding:14px 16px;margin-top:6px}
+.q-card b{font-size:13.5px;display:block;margin-bottom:8px}
+.q-card .opt{display:block;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;margin-bottom:6px;cursor:pointer;transition:all .12s}
+.q-card .opt:hover{border-color:var(--accent)}
+.q-card .opt.sel{border-color:var(--accent);background:rgba(0,113,227,.06);font-weight:500}
+.modal .foot{display:flex;justify-content:space-between;margin-top:22px}
+/* 工位 */
+.sh{display:flex;align-items:center;gap:13px;padding:24px 0 16px;border-bottom:1px solid var(--hair);margin-bottom:22px;flex-wrap:wrap}
+.sh h2{font-size:28px;font-weight:700;letter-spacing:-.01em}
+.tag{font-size:12px;padding:4px 12px;border-radius:980px;background:var(--bg2);color:var(--t2)}
+.sh .acts{margin-left:auto;display:flex;gap:9px}
+.cols{display:grid;grid-template-columns:200px 1fr 250px;gap:24px;align-items:start}
+.panel{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:18px}
+.panel h5{font-size:11.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:10px}
+.step{display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:9px;font-size:13.5px;color:var(--t2);transition:all .2s}
+.step .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;background:#fff}
+.step.done{color:var(--text)}.step.done .n{border-color:var(--ok);color:var(--ok);background:rgba(52,199,89,.08)}
+.step.cur{background:var(--bg2);color:var(--text);font-weight:500}.step.cur .n{border-color:var(--accent);color:var(--accent);animation:pulse 1.2s infinite}
+.step.fail{color:var(--danger)}.step.fail .n{border-color:var(--danger);color:var(--danger)}
+.doc{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:32px 38px;font-size:15.5px;line-height:1.85;color:#3a3a3c}
+.doc h1{font-size:25px;color:var(--text);margin-bottom:16px}
+.doc p{margin-bottom:13px}
+mark{border-radius:4px;padding:1px 4px;border-bottom:2px solid transparent}
+mark.f{background:rgba(0,113,227,.09);border-color:var(--fact)}
+mark.s{background:rgba(172,142,62,.1);border-color:var(--src)}
+mark.j{background:rgba(137,68,171,.09);border-color:var(--judg)}
+mark.p{background:rgba(0,160,109,.1);border-color:var(--pers)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--t2);margin-bottom:12px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px}
+.gatebox{border:1px solid rgba(0,113,227,.35);background:rgba(0,113,227,.04);border-radius:12px;padding:16px 18px;margin-top:18px;font-size:14px}
+.gatebox b{display:block;font-size:14.5px;margin-bottom:6px}
+.gatebox .row{display:flex;gap:9px;margin-top:12px}
+.gate-fold{border:1px solid var(--hair);background:var(--bg2);border-radius:12px;padding:11px 15px;font-size:13px;color:var(--t2);margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.failbanner{border:1px solid rgba(255,59,48,.35);background:rgba(255,59,48,.04);border-radius:12px;padding:14px 17px;margin-top:16px;font-size:13.5px}
+.failbanner b{color:var(--danger)}
+.failbanner .mono{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--t2)}
+.cnts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.cnt{background:var(--bg2);border-radius:10px;padding:9px 11px;font-size:10.5px;color:var(--t2)}
+.cnt b{display:block;font-size:18px;font-weight:650;color:var(--text);font-variant-numeric:tabular-nums}
+.srcrow{background:var(--bg2);border-radius:10px;padding:9px 11px;margin-bottom:7px;font-size:12px}
+.srcrow .s{color:var(--t3);font-size:11px;display:flex;justify-content:space-between;margin-top:2px}
+.ps{font-size:10px;padding:2px 8px;border-radius:980px}
+.ps.ok{background:rgba(52,199,89,.12);color:var(--ok)}.ps.pd{background:rgba(255,149,0,.12);color:var(--warn)}
+/* deck */
+.routes{display:grid;gap:8px}
+.route{border:1px solid var(--hair);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .12s}
+.route.sel{border-color:var(--accent);background:rgba(0,113,227,.04)}
+.route b{font-size:13px;display:flex;justify-content:space-between}
+.route b code{font-size:10px;color:var(--accent)}
+.route span{font-size:11px;color:var(--t2);display:block;margin-top:2px}
+.slides{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.slide{aspect-ratio:16/9;border-radius:10px;border:1px solid var(--hair);background:linear-gradient(140deg,#eef1f7,#e2e7f2);padding:12px;position:relative}
+.slide .n{font-size:9px;color:var(--t3)}
+.slide .t{font-size:12px;font-weight:600;margin:3px 0}
+.slide.skel{background:var(--bg2);border:none;overflow:hidden}
+.slide.skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:sh 1.4s infinite}
+@keyframes sh{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.cbar{margin-top:14px;background:var(--bg2);border-radius:12px;padding:11px 14px;display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;font-variant-numeric:tabular-nums}
+.cf{background:#fff;border-radius:8px;padding:5px 11px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.cf b{color:var(--t3);font-weight:400;margin-right:6px}
+.cf .run{color:var(--accent)}.cf .w{color:var(--warn)}.cf .g{color:var(--ok)}.cf .r{color:var(--danger)}
+.blocked{margin-top:14px;border:1px solid rgba(255,59,48,.35);background:rgba(255,59,48,.03);border-radius:12px;padding:16px 18px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.8;color:#b3261e}
+.blocked .c{color:var(--danger);font-weight:700}
+.blocked .acts{font-family:inherit;margin-top:10px;display:flex;gap:9px;font-family:-apple-system,"PingFang SC",sans-serif}
+/* toast */
+#toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{background:rgba(29,29,31,.92);color:#fff;border-radius:980px;padding:10px 22px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:fu .2s var(--ease)}
+.toast.out{opacity:0;transition:opacity .25s}
+@media(max-width:900px){.cols{grid-template-columns:1fr}.slides{grid-template-columns:1fr 1fr}.grid,.entry-cards,.wsel{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="nav" id="nav">
+  <span class="logo">Leo<b>Studio</b></span>
+  <a data-nav="dash" href="#" onclick="go('dash');return false">项目台</a>
+  <a data-nav="write" id="nav-write" href="#" onclick="go('write');return false">写作<span class="wd"></span></a>
+  <a data-nav="deck" href="#" onclick="go('deck');return false">演示</a>
+  <a style="cursor:pointer" onclick="go('set')">设置</a>
+  <span class="av" onclick="go('set')">K</span>
+</div>
+
+<!-- 登录 -->
+<div id="login" class="page active"><div class="auth"><div class="auth-card stag">
+  <h2>登录 Leo Studio</h2><div class="s">可信的内容生产管线。</div>
+  <div class="fld"><label>电子邮箱</label><input placeholder="name@example.com"></div>
+  <div class="fld"><label>密码</label><input type="password" placeholder="任意输入（原型）"></div>
+  <button class="pill blue" onclick="go('dash');toast('欢迎回来')">登录</button>
+</div></div></div>
+
+<!-- 项目台（空状态 → 项目列表可切换） -->
+<div id="dash" class="page">
+  <div id="dash-empty">
+    <div class="empty-hero stag">
+      <div class="ico">📝</div>
+      <h1>让每一个论断，都经得起核查。</h1>
+      <p>写文章讲证据分级，做演示讲交付路线。先从 3 分钟的第一个项目开始。</p>
+    </div>
+    <div class="entry-cards">
+      <div class="entry stag" style="animation-delay:40ms" onclick="openWizard('write')"><div class="ic">✍️</div><b>写一篇文章</b><span>证据账本 · 因果红线 · 声音档案。从主题到可发布终稿。</span></div>
+      <div class="entry stag" style="animation-delay:80ms" onclick="openWizard('deck')"><div class="ic">📊</div><b>做一份演示</b><span>四条 Route · 样张先行 · 可编辑 PPTX 交付。</span></div>
+      <div class="entry demo stag" style="animation-delay:120ms" onclick="demoProject()"><div class="ic">👀</div><b>先看示例项目</b><span>预览一篇带证据标注的成稿与门禁留痕，无需等待生成。</span></div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div id="dash-list" class="section" style="display:none"><div class="wrap">
+    <div style="display:flex;align-items:center;gap:14px"><div class="h2">你的项目。</div>
+      <button class="pill blue small" style="margin-left:auto" onclick="openWizard()">＋ 新建项目</button></div>
+    <div class="grid" id="projGrid"></div>
+    <div style="height:60px"></div>
+  </div></div>
+</div>
+
+<!-- 写作工位 -->
+<div id="write" class="page"><div class="wrap">
+  <div class="sh">
+    <h2>为什么"证据优先"是 AI 写作的唯一出路</h2><span class="tag">观点评论 · standard</span>
+    <div class="acts">
+      <button class="pill gray small" onclick="toast('版本与门禁决策时间线（占位）')">历史</button>
+      <button class="pill gray small" onclick="toast('导出 Markdown（占位）')">导出</button>
+      <button class="pill blue small" id="w-run" onclick="runWrite()">▶ 运行管线</button>
+    </div>
+  </div>
+  <div class="cols">
+    <div class="panel"><h5>阶段</h5><div id="w-steps"></div>
+      <h5 style="margin-top:14px">本阶段操作</h5>
+      <div class="step">hooks · 候选开头</div><div class="step">humanize · 去模板感</div>
+    </div>
+    <div>
+      <div class="legend"><span><i style="background:var(--fact)"></i>已核实事实</span><span><i style="background:var(--src)"></i>有来源解释</span><span><i style="background:var(--judg)"></i>作者判断</span><span><i style="background:var(--pers)"></i>亲身经历</span></div>
+      <div class="doc">
+        <h1>为什么"证据优先"是 AI 写作的唯一出路</h1>
+        <p class="rv" id="wp1">过去一年，<mark class="f">生成式 AI 辅助写作在创作者中的渗透率快速上升</mark>，但<mark class="s">多家平台报告 AI 内容的虚假引用比例显著偏高</mark>。问题不在于模型不会写，而在于它太会写了。</p>
+        <p class="rv" id="wp2"><mark class="j">解法不是更强的模型，而是把"证据分级"变成流程的一等公民。</mark></p>
+        <p class="rv" id="wp3"><mark class="p">我踩过这个坑：一个"可靠"的统计数字最终被读者指出是编造的。</mark></p>
+        <div id="w-extra"></div>
+      </div>
+    </div>
+    <div class="panel"><h5>证据账本</h5>
+      <div class="cnts"><div class="cnt"><b id="cf">0</b>已核实事实</div><div class="cnt"><b id="cs">0</b>有来源解释</div><div class="cnt"><b id="cj">0</b>作者判断</div><div class="cnt"><b id="cp">0</b>亲身经历</div></div>
+      <div class="srcrow"><div>平台 AI 内容治理报告 2025</div><div class="s"><span>reuters.com</span><span class="ps ok">已核查</span></div></div>
+      <div class="srcrow"><div>AI 虚假引用率研究</div><div class="s"><span>arxiv.org</span><span class="ps ok">已核查</span></div></div>
+      <div class="srcrow"><div>创作者工具调研（转引）</div><div class="s"><span>blog.example.com</span><span class="ps pd">待核查</span></div></div>
+    </div>
+  </div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- PPT 工位 -->
+<div id="deck" class="page"><div class="wrap">
+  <div class="sh">
+    <h2>Q3 产品复盘演示稿</h2><span class="tag">generate · 16:9 · 商务深蓝</span>
+    <div class="acts">
+      <button class="pill gray small" onclick="resetDeck()">重置</button>
+      <button class="pill blue small" id="d-run" onclick="runDeck()">▶ 开始生成</button>
+      <button class="pill small" id="d-dl" style="background:var(--ok);color:#fff" disabled onclick="toast('⬇ PPTX 下载开始')">⬇ 下载 PPTX</button>
+    </div>
+  </div>
+  <div class="cols" style="grid-template-columns:220px 1fr">
+    <div class="panel"><h5>Route</h5>
+      <div class="routes" id="d-routes"></div>
+      <h5 style="margin-top:16px">步骤</h5><div id="d-steps"></div>
+    </div>
+    <div>
+      <div class="slides" id="d-slides"></div>
+      <div class="cbar" id="d-cbar"></div>
+    </div>
+  </div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- 设置（简） -->
+<div id="set" class="page"><div class="wrap" style="padding-top:36px">
+  <div class="h2">设置</div>
+  <div class="panel" style="margin-top:20px;max-width:640px">
+    <h5>账户</h5>
+    <div class="step">kuang@example.com · 已验证</div>
+    <div class="step">导出全部数据 / 删除账户（双段确认）</div>
+    <h5 style="margin-top:14px">模型配置</h5>
+    <div class="step">写作：Claude Sonnet · 演示：GPT-5</div>
+    <div class="step">自定义 Provider（BYOK）：2 个，密钥已加密</div>
+  </div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- 新建项目向导 -->
+<div class="ov" id="wz-ov">
+  <div class="modal">
+    <h3 id="wz-title">新建项目</h3><div class="ms" id="wz-sub">三步创建，随时可回退。</div>
+    <div class="wsteps"><i id="ws1" class="on"></i><i id="ws2"></i><i id="ws3"></i></div>
+    <div id="wz-body"></div>
+    <div class="foot">
+      <button class="pill gray small" id="wz-back" onclick="wzBack()">上一步</button>
+      <button class="pill blue small" id="wz-next" onclick="wzNext()">下一步</button>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $(id).classList.add('active');
+  const auth=id==='login';
+  $('nav').classList.toggle('show',!auth);
+  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));
+  window.scrollTo(0,0);
+}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;$('toasts').appendChild(t);setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300)},2600);}
+function tick(el,to){const f=+el.textContent||0,t0=performance.now();(function s(t){const p=Math.min(1,(t-t0)/450);el.textContent=Math.round(f+(to-f)*p);if(p<1)requestAnimationFrame(s)})(t0);}
+
+/* ---------- 项目台 ---------- */
+let HAS_PROJECTS=false;
+function showDashList(){HAS_PROJECTS=true;$('dash-empty').style.display='none';$('dash-list').style.display='block';renderProjects();}
+function demoProject(){showDashList();go('write');toast('示例项目：成稿与账本已预置');}
+const PROJECTS=[
+  {k:'写作 · 观点评论',t:'为什么"证据优先"是 AI 写作的唯一出路',p:'证据覆盖率 87% · 1 门禁待决策',st:'wait',stx:'1 门禁待决策',time:'2 小时前',steps:6,d:3,c:3,view:'write'},
+  {k:'演示 · generate',t:'Q3 产品复盘演示稿',p:'样张已出，等待确认',st:'run',stx:'运行中',time:'刚刚',steps:6,d:2,c:2,view:'deck'},
+  {k:'写作 · 教程',t:'知识库搭建指南',p:'预算超限中断，前 4 阶段产物保留',st:'fail',stx:'failed · 可续跑',time:'昨天',steps:6,d:4,c:-1,view:'write'},
+];
+function renderProjects(){
+  $('projGrid').innerHTML=PROJECTS.map((p,i)=>`
+  <div class="tile stag" style="animation-delay:${i*40}ms" onclick="${p.st==='fail'?'showDashList();go(\'write\');showWriteFailed()':`go('${p.view}')`}">
+    <span class="k">${p.k}</span><h3>${p.t}</h3><p>${p.p}</p>
+    <div class="pb">${Array.from({length:p.steps},(_,k)=>`<i class="${k<p.d?'d':k===p.c?'c':''}"></i>`).join('')}</div>
+    <div class="ft"><span class="st"><i class="dot ${p.st}"></i>${p.stx}</span><span>${p.time}</span></div>
+  </div>`).join('');
+}
+function openWizard(kind){wz={step:1,kind:kind||null};renderWz();$('wz-ov').classList.add('show');}
+
+/* ---------- 向导 ---------- */
+let wz={step:1,kind:null};
+const WZ_STAGES={write:['Brief 门禁','调研','主张/结构','草稿','分层审查','终稿'],deck:['风格选定','版式设计','样张确认','批量生产','视觉 QA','交付 PPTX']};
+function renderWz(){
+  const s=wz.step;
+  [1,2,3].forEach(n=>$('ws'+n).classList.toggle('on',n<=s));
+  $('wz-back').style.visibility=s===1?'hidden':'visible';
+  $('wz-next').textContent=s===3?'创建项目':'下一步';
+  $('wz-next').disabled=false;
+  if(s===1){
+    $('wz-title').textContent='选择工位';$('wz-sub').textContent='两个工位共享同一套门禁与留痕机制。';
+    $('wz-body').innerHTML=`<div class="wsel">
+      <div class="wcard ${wz.kind==='write'?'sel':''}" onclick="wz.kind='write';renderWz()"><div class="ic">✍️</div><b>写作</b><span>证据账本 · 因果红线 · 声音档案</span></div>
+      <div class="wcard ${wz.kind==='deck'?'sel':''}" onclick="wz.kind='deck';renderWz()"><div class="ic">📊</div><b>演示</b><span>四条 Route · 可编辑 PPTX</span></div></div>`;
+    $('wz-next').disabled=!wz.kind;
+  }
+  if(s===2){
+    $('wz-title').textContent='Route Card';$('wz-sub').textContent='这些字段直接驱动管线分支，创建后仍可修改。';
+    $('wz-body').innerHTML=`
+      <div class="fld"><label>主题 / 标题</label><input id="wz-q" placeholder="例如：为什么证据优先是 AI 写作的唯一出路" oninput="wzCheck()"></div>
+      ${wz.kind==='write'?`
+      <div class="fld"><label>证据模式</label>
+        <div class="seg"><button class="on" onclick="segPick(this,'严格接地')">严格接地（仅用我的来源）</button><button onclick="segPick(this,'开放调研')">开放调研</button></div>
+        <div class="hint">严格接地：缺口会显式报告，不自动检索补充。</div></div>
+      <div class="fld" id="wz-qcard" style="display:none"><label>决定性问题（低置信主题需先回答）</label>
+        <div class="q-card"><b>你更希望读者形成一个判断，还是照着完成一件事？</b>
+          <div class="opt" onclick="pickQ(this)">形成一个判断（观点评论）</div>
+          <div class="opt" onclick="pickQ(this)">照着完成一件事（教程/How-to）</div></div></div>`:`
+      <div class="fld"><label>交付形式</label>
+        <div class="seg"><button class="on" onclick="segPick(this,'16:9')">16:9 演示</button><button onclick="segPick(this,'4:3')">4:3</button></div></div>`}
+      <div class="fld"><label>深度</label>
+        <div class="seg"><button onclick="segPick(this,'quick')">quick</button><button class="on" onclick="segPick(this,'standard')">standard</button><button onclick="segPick(this,'deep')">deep</button></div></div>`;
+    wzCheck();
+  }
+  if(s===3){
+    const q=($('wz-q')||{value:'未命名'}).value.trim()||'未命名项目';
+    $('wz-title').textContent='确认创建';$('wz-sub').textContent('管线将按以下阶段推进，门禁到达时会暂停等你。');
+    $('wz-body').innerHTML=`<div class="panel" style="border:1px solid var(--hair)"><h5>${wz.kind==='write'?'写作管线':'演示管线'}</h5>
+      ${WZ_STAGES[wz.kind].map(x=>`<div class="step"><span class="n"></span>${x}</div>`).join('')}</div>
+      <div class="fld" style="margin-top:16px"><label>项目标题</label><input value="${q}" id="wz-title-input"></div>`;
+  }
+}
+function segPick(btn){btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function pickQ(el){el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');wzCheck();}
+function wzCheck(){
+  const q=$('wz-q');if(!q)return;
+  const bare=q.value.trim().length>0&&q.value.trim().length<12&&!q.value.includes('？');
+  $('wz-qcard').style.display=bare?'block':'none';
+  const answered=!bare||document.querySelector('.q-card .opt.sel');
+  $('wz-next').disabled=!answered;
+  $('wz-next').textContent=!answered?'回答后继续':'下一步';
+}
+function wzNext(){
+  if(wz.step<3){wz.step++;renderWz();return;}
+  const title=($('wz-title-input')||{value:'未命名项目'}).value;
+  const kind=wz.kind;
+  $('wz-ov').classList.remove('show');
+  if(!HAS_PROJECTS)showDashList();
+  PROJECTS.unshift({k:kind==='write'?'写作 · 新建':'演示 · generate',t:title,p:'管线待启动',st:'done',stx:'待启动',time:'刚刚',steps:6,d:0,c:-1,view:kind==='write'?'write':'deck'});
+  renderProjects();
+  toast(`「${title}」已创建 · 决策与产物将长期留痕`);
+  go(kind==='write'?'write':'deck');
+}
+function wzBack(){if(wz.step>1){wz.step--;renderWz();}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('wz-ov').classList.remove('show');});
+
+/* ---------- 写作管线（含门禁分级 + failed 演示） ---------- */
+const WST=['Brief 门禁','调研','主张/结构','草稿','分层审查','终稿'];
+const wt={idx:0,status:'idle'};
+function renderWSteps(failAt=-1){
+  $('w-steps').innerHTML=WST.map((s,i)=>{
+    const fail=i===failAt?'fail':'';
+    const cls=i<wt.idx?'done':(i===wt.idx&&wt.status!=='idle'?'cur':'')+fail;
+    return `<div class="step ${cls}"><span class="n">${failAt===i?'!':i<wt.idx?'✓':''}</span>${s}</div>`;
+  }).join('');
+}
+function runWrite(){
+  if(wt.status==='running'||wt.status==='awaiting')return;
+  wt.status='running';$('w-run').disabled=true;$('w-run').textContent='运行中…';
+  document.querySelectorAll('.rv').forEach(e=>e.classList.remove('in'));
+  ['cf','cs','cj','cp'].forEach(id=>$(id).textContent='0');
+  (async()=>{
+    await wait(500);wt.idx=1;renderWSteps();$('wp1').classList.add('in');tick($('cf'),6);tick($('cs'),3);
+    await wait(800);wt.idx=2;renderWSteps();$('wp2').classList.add('in');tick($('cj'),3);
+    await wait(700);wt.idx=3;renderWSteps();$('wp3').classList.add('in');tick($('cp'),1);tick($('cs'),5);
+    await wait(500);wt.idx=4;wt.status='awaiting';renderWSteps();
+    $('nav-write').classList.add('wait');
+    $('w-extra').innerHTML=`
+      <div class="gatebox"><b>⛳ 快速门禁 · 草稿 → 分层审查 <span style="font-weight:400;font-size:12px;color:var(--t3)">⌘⏎ 提交首选项</span></b>
+        草稿完成（1,820 字 · 覆盖率 87%），2 条来源待核查。
+        <div class="row"><button class="pill blue small" onclick="resolveGate('先核查来源')">先核查来源</button>
+        <button class="pill gray small" onclick="resolveGate('直接进入审查')">直接进审查</button>
+        <button class="pill gray small" onclick="deferGate()">稍后处理</button></div></div>
+      <div class="gate-fold"><span>⛳ 已留痕 — Brief 门禁 · 读者与边界已于创建时确认</span><span style="color:var(--ok)">✓</span></div>`;
+    toast('管线到达门禁，等你决策（可稍后处理）');
+  })();
+}
+function resolveGate(c){
+  $('w-extra').innerHTML=`<div class="gate-fold"><span>⛳ 已留痕 — ${c} · ${new Date().toLocaleTimeString('zh-CN',{hour12:false})}</span><span style="color:var(--ok)">✓</span></div>`;
+  wt.status='running';$('nav-write').classList.remove('wait');
+  (async()=>{
+    await wait(900);wt.idx=5;renderWSteps();
+    document.querySelectorAll('.ps.pd').forEach(p=>{p.className='ps ok';p.textContent='已核查'});
+    await wait(800);wt.idx=6;renderWSteps();wt.status='delivered';
+    $('w-run').disabled=false;$('w-run').textContent='✓ 已交付';
+    toast('✓ 终稿已交付，可导出');
+  })();
+}
+function deferGate(){
+  $('w-extra').querySelector('.gatebox .row').innerHTML='<span style="font-size:13px;color:var(--t2)">已推迟 — 任务保持等待，导航栏橙点提醒，随时回来决策。</span>';
+  toast('已推迟决策（留痕：用户暂离）');
+}
+/* failed 演示：从项目台第三张卡进入时展示 */
+function showWriteFailed(){
+  wt.idx=4;wt.status='failed';renderWSteps(4);
+  $('w-run').disabled=false;$('w-run').textContent='▶ 断点续跑';
+  $('w-extra').innerHTML=`
+    <div class="failbanner"><b>阶段失败 — 分层审查中断</b><br>
+      <span class="mono">reason_code: budget_exceeded · 已用 token 1.9M / 1.5M 预算</span><br>
+      前 4 个阶段产物已保留：草稿（1,820 字）、来源地图、证据账本。可从"分层审查"继续，无需重跑。
+      <div style="margin-top:10px"><button class="pill blue small" onclick="runWrite()">▶ 从断点续跑</button>
+      <button class="pill gray small" onclick="toast('已调高本任务预算（占位）')">调高预算后续跑</button></div></div>`;
+}
+renderWSteps();
+
+/* ---------- Deck ---------- */
+const DROUTES=[
+  {c:'generate',n:'从内容生成',d:'文章/大纲 → 成套演示稿',steps:['风格选定','版式设计','样张确认','批量生产','视觉 QA','交付 PPTX'],gate:3},
+  {c:'direct-editable',n:'重建为可编辑',d:'需 Gate 0 信任确认',steps:['Gate 0 信任确认','页面解析','对象重建','视觉 QA','交付'],gate:0},
+  {c:'upgrade-full',n:'全量升级',d:'image-deck → 可编辑',steps:['Baseline','批量重建','QA','交付'],gate:-1},
+  {c:'upgrade-selected',n:'指定页升级',d:'只升级勾选页',steps:['选择页面','重建所选','QA','交付'],gate:-1}];
+const dt={r:0,idx:0,status:'idle'};
+function renderDeck(){
+  $('d-routes').innerHTML=DROUTES.map((r,i)=>`<div class="route ${i===dt.r?'sel':''}" onclick="pickRoute(${i})"><b>${r.n} <code>${r.c}</code></b><span>${r.d}</span></div>`).join('');
+  const R=DROUTES[dt.r];
+  $('d-steps').innerHTML=R.steps.map((s,i)=>{
+    const cls=i<dt.idx?'done':i===dt.idx&&dt.status!=='idle'?'cur':'';
+    return `<div class="step ${cls}"><span class="n">${i<dt.idx?'✓':''}</span>${s}</div>`;}).join('');
+  const st={idle:['待启动',''],running:['running','run'],awaiting:['awaiting_user','w'],delivered:['delivered','g']}[dt.status];
+  const stage=dt.status==='idle'?'—':(R.steps[Math.min(dt.idx,R.steps.length-1)]||'—');
+  $('d-cbar').innerHTML=`<span class="cf"><b>route</b>${R.c}</span><span class="cf"><b>status</b><span class="${st[1]}">${st[0]}</span></span><span class="cf"><b>stage</b>${stage}</span><span class="cf"><b>worker</b><span class="${dt.status==='running'?'run':'g'}">${dt.status==='running'?'busy':'ready'}</span></span><span class="cf"><b>reason_code</b>—</span>`;
+}
+function pickRoute(i){if(dt.status==='running'||dt.status==='awaiting'){toast('任务进行中，暂不能切换');return;}dt.r=i;dt.idx=0;dt.status='idle';$('d-run').disabled=false;$('d-run').textContent='▶ 开始生成';$('d-dl').disabled=true;renderDeck();renderSlides('empty');}
+function renderSlides(state){
+  const mk=(n,t,b,cls)=>`<div class="slide ${cls}"><div class="n">${String(n).padStart(2,'0')}</div><div class="t">${t}</div><div style="font-size:9.5px;color:var(--t2)">${b}</div></div>`;
+  if(state==='empty'){$('d-slides').innerHTML='<div class="slide" style="border-style:dashed;background:none;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:11px">选好 Route，点"开始生成"</div>';return;}
+  if(state==='loading'){$('d-slides').innerHTML=[1,2,3,4,5,6].map(n=>`<div class="slide skel"></div>`).join('');return;}
+  if(state==='samples'){$('d-slides').innerHTML=mk(1,'Q3 产品复盘','增长 · 留存 · 主张','')+mk(2,'三个关键判断','事实与判断分列','')+mk(3,'留存曲线对比','样张 · 待确认','');return;}
+  const ts=['获客漏斗','留存队列','收入构成','NPS 驱动','里程碑','下季 OKR','附录'];
+  $('d-slides').innerHTML=mk(1,'Q3 产品复盘','','')+mk(2,'三个关键判断','','')+mk(3,'留存曲线对比','','')+ts.map((t,i)=>mk(i+4,t,'')).join('');
+}
+function resetDeck(){pickRoute(dt.r);toast('已重置');}
+function runDeck(){
+  if(dt.status==='running'||dt.status==='awaiting')return;
+  if(dt.status==='delivered'){toast('已交付，可下载或重置');return;}
+  dt.status='running';$('d-run').disabled=true;$('d-run').textContent='运行中…';
+  const R=DROUTES[dt.r];renderDeck();
+  (async()=>{
+    if(R.c==='direct-editable'){
+      await wait(400);dt.status='awaiting';renderDeck();
+      $('d-slides').innerHTML=`<div style="grid-column:1/-1" class="blocked">
+        route: <span class="c">direct-editable</span> · status: <span class="c">blocked</span> · reason_code: <span class="c">untrusted_office_input</span><br>
+        input_handling: not_opened · next_action: 提供可信确认，或改用 PDF / 逐页图片
+        <div class="acts"><button class="pill blue small" onclick="gate0()">我确认来源可信（留痕）</button>
+        <button class="pill gray small" onclick="toast('改用 PDF / 图片（占位）')">改用 PDF / 图片</button></div></div>`;
+      toast('Gate 0：来源未确认，任务阻断');return;
+    }
+    renderSlides('loading');await wait(600);dt.idx=1;renderDeck();
+    await wait(600);dt.idx=2;renderDeck();renderSlides('samples');
+    await wait(500);dt.idx=3;dt.status='awaiting';renderDeck();
+    const g=document.createElement('div');g.style.gridColumn='1/-1';
+    g.innerHTML=`<div class="gatebox"><b>⛳ 快速门禁 · 样张确认</b>样张 3 页已出，确认后批量生产。
+      <div class="row"><button class="pill blue small" onclick="deckGate()">确认样张</button>
+      <button class="pill gray small" onclick="toast('已推迟决策（占位）')">稍后处理</button></div></div>`;
+    $('d-slides').appendChild(g);
+    toast('样张已出，等待确认');
+  })();
+}
+function gate0(){toast('来源确认已留痕 → 进入 preflight（占位）');dt.status='running';const R=DROUTES[dt.r];
+  (async()=>{for(let i=dt.idx;i<R.steps.length;i++){await wait(650);dt.idx=i+1;renderDeck();}finishDeck();})();}
+function deckGate(){
+  toast('已留痕 — 确认样张');dt.status='running';const R=DROUTES[dt.r];
+  (async()=>{dt.idx=R.gate+1;renderDeck();renderSlides('full');await wait(900);dt.idx=R.steps.length-1;renderDeck();await wait(500);finishDeck();})();}
+function finishDeck(){dt.status='delivered';renderDeck();$('d-run').disabled=false;$('d-run').textContent='✓ 已交付';$('d-dl').disabled=false;toast('✓ PPTX 已交付，可下载');}
+renderDeck();renderSlides('empty');
+</script>
+</body>
+</html>

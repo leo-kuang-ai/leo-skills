@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leo Studio v5 — 产品逻辑打磨版</title>
+<style>
+:root{--bg:#fff;--bg2:#f5f5f7;--text:#1d1d1f;--t2:#6e6e73;--t3:#86868b;--hair:#e8e8ed;--line:#d2d2d7;--accent:#0071e3;--link:#0066cc;--ok:#34c759;--warn:#ff9500;--danger:#ff3b30;--fact:#0071e3;--src:#ac8e3e;--judg:#8944ab;--pers:#00a06d;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+.nav{position:sticky;top:0;z-index:90;height:48px;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08);display:none;align-items:center;padding:0 max(22px,calc((100% - 1100px)/2));gap:4px}
+.nav.show{display:flex}.nav .logo{font-weight:700;font-size:17px;margin-right:14px}.nav .logo b{color:var(--accent)}
+.nav a{color:var(--t3);font-size:12.5px;padding:6px 11px;border-radius:8px;text-decoration:none;position:relative}
+.nav a:hover{color:var(--text)}.nav a.on{color:var(--text);background:rgba(0,0,0,.05)}
+.nav a .wd{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--warn);display:none}
+.nav a.wait .wd{display:block}
+.nav .av{margin-left:auto;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--judg));color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page{display:none;min-height:calc(100vh - 48px)}.page.active{display:block;animation:vin .32s var(--ease)}
+@keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stag{animation:fu .32s var(--ease) both}@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+.pill{border:none;border-radius:980px;padding:12px 26px;font-size:16px;transition:all .12s}.pill:active{transform:scale(.97)}
+.pill.blue{background:var(--accent);color:#fff}.pill.blue:hover{background:#0077ed}
+.pill.gray{background:#e8e8ed;color:var(--text)}.pill.gray:hover{background:#dcdce1}
+.pill.small{padding:7px 16px;font-size:13px}.pill:disabled{opacity:.4;cursor:not-allowed}
+/* 登录 */
+.auth{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg2)}
+.auth-card{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.08);padding:44px 48px;width:410px}
+.auth-card h2{font-size:27px;font-weight:700;text-align:center}
+.auth-card .vp{font-size:13px;color:var(--t2);text-align:center;margin:10px 0 24px;line-height:1.6}
+.auth-card .vp b{color:var(--text)}
+.fld{margin-bottom:15px}.fld label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.fld input,.fld textarea,.fld select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;outline:none;font-family:inherit;transition:all .12s}
+.fld input:focus,.fld textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+.fld .hint{font-size:11.5px;color:var(--t3);margin-top:5px;line-height:1.5}
+.err{font-size:12.5px;color:var(--danger);margin:-8px 0 12px;display:none}.err.show{display:block}
+.auth-card .pill{width:100%}
+/* dashboard */
+.tabs{display:flex;gap:6px;margin:22px 0 4px;flex-wrap:wrap}
+.tabs button{border:none;background:var(--bg2);border-radius:980px;padding:7px 16px;font-size:13px;color:var(--t2)}
+.tabs button.on{background:var(--text);color:#fff}
+.tabs .cnt{font-size:11px;opacity:.7;margin-left:4px}
+.h2{font-size:29px;font-weight:700;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px}
+.tile{background:#fff;border-radius:18px;padding:26px 28px;display:flex;flex-direction:column;cursor:pointer;border:1px solid transparent;transition:all .2s var(--ease)}
+.tile:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.tile.urgent{border-color:rgba(255,149,0,.5)}
+.tile .k{font-size:12px;color:var(--t3);font-weight:600;display:flex;justify-content:space-between}
+.tile h3{font-size:21px;font-weight:650;margin:5px 0 7px}
+.tile p{color:var(--t2);font-size:13px}
+.action-line{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 13px;border-radius:10px;font-size:13px;font-weight:500}
+.action-line.wait{background:rgba(255,149,0,.1);color:#9a6b00}
+.action-line.fail{background:rgba(255,59,48,.08);color:#b3261e}
+.action-line.run{background:rgba(0,113,227,.07);color:var(--accent)}
+.action-line.done{background:var(--bg2);color:var(--t2);font-weight:400}
+.pb{display:flex;gap:4px;margin-top:12px}.pb i{flex:1;height:4px;border-radius:2px;background:var(--hair)}
+.pb i.d{background:var(--ok)}.pb i.c{background:var(--accent)}
+.tile .ft{display:flex;justify-content:space-between;font-size:12px;color:var(--t3);margin-top:10px}
+/* wizard */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:7vh}
+.ov.show{display:flex;animation:fin .15s}@keyframes fin{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.12);width:600px;max-width:94vw;padding:28px 32px;max-height:82vh;overflow-y:auto}
+.modal h3{font-size:20px;font-weight:700}.modal .ms{font-size:13px;color:var(--t2);margin:4px 0 18px}
+.wsteps{display:flex;gap:6px;margin-bottom:20px}.wsteps i{flex:1;height:4px;border-radius:2px;background:var(--hair)}.wsteps i.on{background:var(--accent)}
+.seg{display:inline-flex;background:var(--hair);border-radius:9px;padding:2px;flex-wrap:wrap}
+.seg button{border:none;background:none;border-radius:7px;padding:6px 14px;font-size:13px}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.conseq{font-size:12px;color:var(--t2);margin-top:8px;padding:8px 12px;background:var(--bg2);border-radius:9px;line-height:1.5}
+.conseq b{color:var(--text)}
+.q-card{border:1px solid rgba(255,149,0,.4);background:rgba(255,149,0,.05);border-radius:12px;padding:13px 15px;margin-top:6px}
+.q-card b{font-size:13.5px;display:block;margin-bottom:3px}
+.q-card .why{font-size:11.5px;color:var(--t3);margin-bottom:8px;line-height:1.5}
+.q-card .opt{display:block;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;margin-bottom:6px;cursor:pointer;background:#fff}
+.q-card .opt:hover{border-color:var(--accent)}.q-card .opt.sel{border-color:var(--accent);background:rgba(0,113,227,.05);font-weight:500}
+.srcdrop{border:1.5px dashed var(--line);border-radius:12px;padding:14px;margin-top:8px;background:var(--bg2)}
+.srcdrop textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px;font-size:13px;min-height:64px;font-family:inherit}
+.srcdrop .chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chip{font-size:11.5px;background:#fff;border:1px solid var(--hair);border-radius:980px;padding:4px 11px;display:inline-flex;gap:5px;align-items:center}
+.chip .x{cursor:pointer;color:var(--t3)}
+.modal .foot{display:flex;justify-content:space-between;margin-top:20px}
+/* 工位 */
+.sh{display:flex;align-items:center;gap:12px;padding:22px 0 15px;border-bottom:1px solid var(--hair);margin-bottom:20px;flex-wrap:wrap}
+.sh h2{font-size:27px;font-weight:700;letter-spacing:-.01em}
+.tag{font-size:12px;padding:4px 12px;border-radius:980px;background:var(--bg2);color:var(--t2)}
+.protect{font-size:11.5px;padding:4px 11px;border-radius:980px;background:rgba(52,199,89,.1);color:#1e7d43;display:none;font-weight:500}
+.protect.show{display:inline-block}
+.sh .acts{margin-left:auto;display:flex;gap:9px}
+.cols{display:grid;grid-template-columns:195px 1fr 255px;gap:22px;align-items:start}
+.panel{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:16px}
+.panel h5{font-size:11.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:10px}
+.step{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:9px;font-size:13px;color:var(--t2);transition:all .2s}
+.step .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;background:#fff}
+.step.done{color:var(--text)}.step.done .n{border-color:var(--ok);color:var(--ok);background:rgba(52,199,89,.08)}
+.step.cur{background:var(--bg2);color:var(--text);font-weight:500}.step.cur .n{border-color:var(--accent);color:var(--accent);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,113,227,.3)}50%{box-shadow:0 0 0 5px rgba(0,113,227,0)}}
+.doc{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:30px 36px;font-size:15.5px;line-height:1.85;color:#3a3a3c}
+.doc h1{font-size:24px;color:var(--text);margin-bottom:15px}
+.doc p{margin-bottom:13px}
+mark{border-radius:4px;padding:1px 4px;border-bottom:2px solid transparent;cursor:pointer;transition:background .2s,box-shadow .2s}
+mark.f{background:rgba(0,113,227,.09);border-color:var(--fact)}
+mark.s{background:rgba(172,142,62,.1);border-color:var(--src)}
+mark.j{background:rgba(137,68,171,.09);border-color:var(--judg)}
+mark.p{background:rgba(0,160,109,.1);border-color:var(--pers)}
+mark.hl{background:rgba(255,149,0,.22);box-shadow:0 0 0 2px rgba(255,149,0,.35)}
+.legend{display:flex;gap:13px;font-size:12px;color:var(--t2);margin-bottom:11px;flex-wrap:wrap}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px}
+.rtabs{display:flex;gap:4px;margin-bottom:10px}
+.rtabs button{flex:1;border:none;background:var(--bg2);border-radius:8px;padding:6px 4px;font-size:11.5px;color:var(--t2)}
+.rtabs button.on{background:var(--text);color:#fff}
+.rpane{display:none}.rpane.on{display:block;animation:fu .25s var(--ease)}
+.srcrow{background:var(--bg2);border-radius:10px;padding:9px 11px;margin-bottom:7px;font-size:12px;cursor:pointer;border:1px solid transparent;transition:all .15s}
+.srcrow:hover{border-color:var(--line)}
+.srcrow.sel{border-color:var(--warn);background:rgba(255,149,0,.07)}
+.srcrow .t{margin-bottom:2px}
+.srcrow .s{color:var(--t3);font-size:11px;display:flex;justify-content:space-between}
+.cnts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.cnt{background:var(--bg2);border-radius:10px;padding:8px 10px;font-size:10.5px;color:var(--t2)}
+.cnt b{display:block;font-size:17px;font-weight:650;color:var(--text);font-variant-numeric:tabular-nums}
+.findrow{background:var(--bg2);border-radius:10px;padding:9px 11px;margin-bottom:7px;font-size:12px}
+.findrow .lv{font-size:10px;padding:1px 7px;border-radius:980px;margin-right:6px}
+.lv.hi{background:rgba(255,59,48,.12);color:var(--danger)}.lv.mid{background:rgba(255,149,0,.12);color:#9a6b00}.lv.lo{background:rgba(52,199,89,.12);color:#1e7d43}
+.gatebox{border:1px solid rgba(0,113,227,.35);background:rgba(0,113,227,.04);border-radius:12px;padding:15px 17px;margin-top:16px;font-size:14px}
+.gatebox b{display:block;font-size:14.5px;margin-bottom:5px}
+.opt2{display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 14px;font-size:13.5px;font-weight:500;transition:all .12s;text-align:left}
+.opt2 small{font-weight:400;font-size:11.5px;color:var(--t2)}
+.opt2:hover{border-color:var(--accent)}
+.opt2.primary{border-color:var(--accent);background:rgba(0,113,227,.05)}
+.gatebox .row{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+.gate-fold{border:1px solid var(--hair);background:var(--bg2);border-radius:12px;padding:10px 14px;font-size:12.5px;color:var(--t2);margin-top:9px;display:flex;justify-content:space-between}
+/* deck */
+.routes{display:grid;gap:8px}
+.route{border:1px solid var(--hair);border-radius:12px;padding:11px 13px;cursor:pointer;transition:all .12s}
+.route.sel{border-color:var(--accent);background:rgba(0,113,227,.04)}
+.route b{font-size:13px;display:flex;justify-content:space-between}
+.route b code{font-size:10px;color:var(--accent)}
+.route .need{font-size:11px;color:var(--warn);margin-top:4px}
+.route span{font-size:11px;color:var(--t2);display:block;margin-top:2px}
+.route.dis{opacity:.55;cursor:not-allowed}
+.slides{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.slide{aspect-ratio:16/9;border-radius:10px;border:1.5px solid var(--hair);background:linear-gradient(140deg,#eef1f7,#e2e7f2);padding:12px;position:relative;transition:border-color .2s}
+.slide .n{font-size:9px;color:var(--t3)}.slide .t{font-size:12px;font-weight:600;margin:3px 0}
+.slide.samp.ok{border-color:var(--ok)}
+.slide.samp.no{border-color:var(--danger);opacity:.75}
+.samplebar{display:flex;gap:6px;margin-top:7px}
+.samplebar button{border:none;border-radius:980px;font-size:10px;padding:3px 10px;background:var(--bg2);color:var(--t2)}
+.samplebar button.y.on{background:var(--ok);color:#fff}
+.samplebar button.n.on{background:var(--danger);color:#fff}
+.cbar{margin-top:13px;background:var(--bg2);border-radius:12px;padding:10px 13px;display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;font-variant-numeric:tabular-nums;align-items:center}
+.cf{background:#fff;border-radius:8px;padding:5px 11px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.cf b{color:var(--t3);font-weight:400;margin-right:6px}
+.dlwrap{position:relative}
+.menu{position:absolute;top:110%;right:0;background:#fff;border:1px solid var(--hair);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);padding:6px;display:none;z-index:50;width:230px}
+.menu.show{display:block;animation:fu .18s var(--ease)}
+.menu button{display:block;width:100%;border:none;background:none;text-align:left;padding:9px 12px;border-radius:8px;font-size:13px}
+.menu button:hover{background:var(--bg2)}
+.menu button small{display:block;color:var(--t3);font-size:11px;margin-top:1px}
+#toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{background:rgba(29,29,31,.92);color:#fff;border-radius:980px;padding:10px 22px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:fu .2s var(--ease);max-width:80vw}
+.toast.out{opacity:0;transition:opacity .25s}
+.setrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--hair);font-size:14px;flex-wrap:wrap}
+.setrow:first-of-type{border-top:none}
+.rec{font-size:10.5px;background:rgba(52,199,89,.12);color:#1e7d43;border-radius:980px;padding:2px 9px}
+.health{font-size:11.5px;color:var(--t3)}
+.switch{position:relative;width:44px;height:26px;flex-shrink:0;display:inline-block}
+.switch input{opacity:0;width:0;height:0}
+.switch i{position:absolute;inset:0;background:#e8e8ed;border-radius:980px;transition:.2s;cursor:pointer}
+.switch i::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);top:2px;left:2px;transition:.2s}
+.switch input:checked+i{background:var(--ok)}
+.switch input:checked+i::after{left:20px}
+.switch input:disabled+i{opacity:.5;cursor:not-allowed}
+.setwrap{display:grid;grid-template-columns:210px 1fr;gap:28px;padding:30px 0 70px;align-items:start}
+.setnav{position:sticky;top:70px}
+.setnav .me{display:flex;gap:11px;align-items:center;margin-bottom:16px}
+.setnav .me .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--judg));color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.setnav .me b{font-size:13.5px;display:block}.setnav .me span{font-size:11.5px;color:var(--t3)}
+.setnav a{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:9px;font-size:13px;color:var(--text);text-decoration:none;margin-bottom:2px}
+.setnav a.on{background:var(--accent);color:#fff}
+.setnav a:not(.on):hover{background:var(--bg2)}
+.sgroup{background:#fff;border:1px solid var(--hair);border-radius:16px;overflow:hidden;margin-bottom:18px}
+.sgroup .gt{padding:14px 20px 6px;font-size:12.5px;color:var(--t3)}
+.srow{display:flex;align-items:center;gap:14px;padding:12px 20px;border-top:1px solid var(--hair);font-size:14px;min-height:52px;flex-wrap:wrap}
+.srow .lbl{flex:1;min-width:170px}
+.srow .lbl b{display:block;font-size:14px;font-weight:500}
+.srow .lbl span{font-size:12px;color:var(--t3);line-height:1.45;display:block;margin-top:1px}
+.srow input[type=text],.srow input[type=password],.srow select,.srow input[type=number]{border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13.5px;outline:none;min-width:150px;font-family:inherit}
+.srow input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.12)}
+.lockrow{background:rgba(52,199,89,.05)}
+.lock{font-size:11px;background:#fff;border:1px solid rgba(52,199,89,.4);color:#1e7d43;border-radius:980px;padding:3px 10px;display:inline-flex;gap:4px;align-items:center}
+.policy{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex:1;min-width:260px}
+.pol{border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;cursor:pointer;transition:all .12s;background:#fff}
+.pol.on{border-color:var(--accent);background:rgba(0,113,227,.04)}
+.pol b{font-size:13px;display:block}.pol span{font-size:11px;color:var(--t2);display:block;margin-top:2px;line-height:1.4}
+.evalok{font-size:11px;color:#1e7d43;background:rgba(52,199,89,.1);border-radius:980px;padding:2px 9px}
+.ver{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--t2)}
+@media(max-width:900px){.cols{grid-template-columns:1fr}.slides{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="nav" id="nav">
+  <span class="logo">Leo<b>Studio</b></span>
+  <a data-nav="dash" href="#" onclick="go('dash');return false">项目台</a>
+  <a data-nav="write" id="nav-write" href="#" onclick="go('write');return false">写作<span class="wd"></span></a>
+  <a data-nav="deck" href="#" onclick="go('deck');return false">演示</a>
+  <a style="cursor:pointer" onclick="go('set')">设置</a>
+  <span class="av" onclick="go('set')">K</span>
+</div>
+
+<!-- 登录 -->
+<div id="login" class="page active"><div class="auth"><div class="auth-card stag">
+  <h2>Leo Studio</h2>
+  <div class="vp"><b>不代写，只管线。</b><br>每个论断标注证据类别，每个门禁等你决策，每次修改长期留痕。</div>
+  <div class="fld"><label>电子邮箱</label><input id="li-e" placeholder="name@example.com"></div>
+  <div class="fld"><label>密码</label><input id="li-p" type="password" placeholder="任意输入（原型）"></div>
+  <div class="err" id="li-err">连续失败次数过多，请 15 分钟后再试，或通过邮箱找回。</div>
+  <button class="pill blue" onclick="doLogin()">登录</button>
+  <div style="text-align:center;font-size:12.5px;color:var(--t3);margin-top:16px">没有账户？立即注册 · 忘记密码</div>
+</div></div></div>
+
+<!-- 项目台 -->
+<div id="dash" class="page"><div class="wrap">
+  <div style="display:flex;align-items:center;gap:14px;padding-top:30px">
+    <div class="h2">需要你做什么</div>
+    <button class="pill blue small" style="margin-left:auto" onclick="openWizard()">＋ 新建项目</button>
+  </div>
+  <div class="tabs" id="dash-tabs">
+    <button class="on" onclick="dashFilter('all',this)">全部<span class="cnt" id="tc-all"></span></button>
+    <button onclick="dashFilter('wait',this)">待我决策<span class="cnt" id="tc-wait"></span></button>
+    <button onclick="dashFilter('run',this)">运行中<span class="cnt" id="tc-run"></span></button>
+    <button onclick="dashFilter('write',this)">写作</button>
+    <button onclick="dashFilter('deck',this)">演示</button>
+  </div>
+  <div class="grid" id="projGrid"></div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- 写作工位 -->
+<div id="write" class="page"><div class="wrap">
+  <div class="sh">
+    <h2>为什么"证据优先"是 AI 写作的唯一出路</h2><span class="tag">观点评论 · standard</span>
+    <span class="protect" id="w-protect">✋ 手动修改保护 · 后续阶段不覆盖</span>
+    <div class="acts">
+      <button class="pill gray small" id="w-edit" onclick="protectOn()">编辑正文</button>
+      <button class="pill gray small" onclick="toast('版本 × 门禁决策时间线（占位）')">历史</button>
+      <button class="pill blue small" id="w-run" onclick="runWrite()">▶ 运行管线</button>
+    </div>
+  </div>
+  <div class="cols">
+    <div class="panel"><h5>阶段</h5><div id="w-steps"></div>
+      <h5 style="margin-top:12px">本阶段操作</h5>
+      <div class="step">hooks · 候选开头</div><div class="step">humanize · 去模板感</div>
+    </div>
+    <div>
+      <div class="legend" id="w-legend" style="display:none">
+        <span><i style="background:var(--fact)"></i>已核实事实</span><span><i style="background:var(--src)"></i>有来源解释</span><span><i style="background:var(--judg)"></i>作者判断</span><span><i style="background:var(--pers)"></i>亲身经历</span>
+        <span style="margin-left:auto;color:var(--t3)">点击正文标注可查看来源</span>
+      </div>
+      <div class="doc" id="w-doc">
+        <h1>为什么"证据优先"是 AI 写作的唯一出路</h1>
+        <p class="rv" id="wp1">过去一年，<mark class="f" data-src="1" onclick="srcFlash(1)">生成式 AI 辅助写作在创作者中的渗透率快速上升</mark>，但<mark class="s" data-src="2" onclick="srcFlash(2)">多家平台报告 AI 内容的虚假引用比例显著偏高</mark>。问题不在于模型不会写，而在于它太会写了。</p>
+        <p class="rv" id="wp2"><mark class="j" onclick="toast('作者判断：无需外部来源，但需与全文立场一致')">解法不是更强的模型，而是把"证据分级"变成流程的一等公民。</mark></p>
+        <p class="rv" id="wp3"><mark class="p" onclick="toast('亲身经历：作者第一手材料，不可由 AI 生成')">我踩过这个坑：一个"可靠"的统计数字最终被读者指出是编造的。</mark></p>
+        <div id="w-extra"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="rtabs" id="w-rtabs">
+        <button id="rt-src" onclick="rpane('src')">来源地图</button>
+        <button id="rt-led" onclick="rpane('led')">证据账本</button>
+        <button id="rt-fd" onclick="rpane('fd')">审查发现</button>
+      </div>
+      <div class="rpane on" id="rp-src">
+        <div style="font-size:11.5px;color:var(--t3);margin-bottom:8px">点击来源 → 高亮它支撑的正文论断</div>
+        <div class="srcrow" id="sr1" onclick="srcFlash(1)"><div class="t">平台 AI 内容治理报告 2025</div><div class="s"><span>reuters.com</span><span>支撑 1 处</span></div></div>
+        <div class="srcrow" id="sr2" onclick="srcFlash(2)"><div class="t">AI 虚假引用率研究</div><div class="s"><span>arxiv.org</span><span>支撑 1 处</span></div></div>
+        <div class="srcrow" id="sr3" onclick="srcFlash(3)"><div class="t">创作者工具调研（转引）</div><div class="s"><span>blog.example.com</span><span class="ps" style="color:var(--warn)">待核查</span></div></div>
+      </div>
+      <div class="rpane" id="rp-led">
+        <div class="cnts"><div class="cnt"><b id="cf">0</b>已核实事实</div><div class="cnt"><b id="cs">0</b>有来源解释</div><div class="cnt"><b id="cj">0</b>作者判断</div><div class="cnt"><b id="cp">0</b>亲身经历</div></div>
+        <div style="font-size:11.5px;color:var(--t3)">覆盖率 <b id="ledcov">0%</b> · 待核查来源在调研面板标记</div>
+      </div>
+      <div class="rpane" id="rp-fd">
+        <div class="findrow"><span class="lv hi">红线</span>因果句缺对照证据，已改写为关联表述（第 3 段）</div>
+        <div class="findrow"><span class="lv mid">结构</span>第 2 段与第 4 段论点重叠，建议合并</div>
+        <div class="findrow"><span class="lv lo">声音</span>与 soul.md v3 一致性 92%</div>
+      </div>
+    </div>
+  </div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- PPT 工位 -->
+<div id="deck" class="page"><div class="wrap">
+  <div class="sh">
+    <h2>Q3 产品复盘演示稿</h2><span class="tag">generate · 16:9 · 商务深蓝</span>
+    <div class="acts">
+      <button class="pill gray small" onclick="resetDeck()">重置</button>
+      <button class="pill blue small" id="d-run" onclick="runDeck()">▶ 开始生成</button>
+      <div class="dlwrap">
+        <button class="pill small" id="d-dl" style="background:var(--ok);color:#fff" disabled onclick="toggleMenu(event)">⬇ 下载 ▾</button>
+        <div class="menu" id="dl-menu">
+          <button onclick="pickDl('PPTX（对象级可编辑 · 字体已嵌入）')"><b>PPTX</b><small>对象级可编辑 · 字体已嵌入 · 12 页</small></button>
+          <button onclick="pickDl('PDF（打印版）')"><b>PDF</b><small>版式与预览一致</small></button>
+          <button onclick="pickDl('页面图片 ZIP（12×PNG）')"><b>页面图片包</b><small>用于嵌入其他文档</small></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cols" style="grid-template-columns:225px 1fr">
+    <div class="panel"><h5>Route（V0.5 开放 generate）</h5>
+      <div class="routes" id="d-routes"></div>
+      <h5 style="margin-top:14px">步骤</h5><div id="d-steps"></div>
+    </div>
+    <div>
+      <div class="slides" id="d-slides"></div>
+      <div class="cbar" id="d-cbar"></div>
+    </div>
+  </div>
+  <div style="height:60px"></div>
+</div></div>
+
+<!-- 设置 -->
+<div id="set" class="page"><div class="wrap"><div class="setwrap">
+  <div class="setnav">
+    <div class="me"><div class="av">K</div><div><b>柯</b><span>kuang@example.com</span></div></div>
+    <a href="#" class="on" data-s="acc" onclick="setGo('acc',this);return false">👤 账户</a>
+    <a href="#" data-s="nfy" onclick="setGo('nfy',this);return false">🔔 通知</a>
+    <a href="#" data-s="mdl" onclick="setGo('mdl',this);return false">🧠 模型与预算</a>
+    <a href="#" data-s="pipe" onclick="setGo('pipe',this);return false">⛳ 管线与门禁</a>
+    <a href="#" data-s="deckp" onclick="setGo('deckp',this);return false">📊 演示偏好</a>
+    <a href="#" data-s="sys" onclick="setGo('sys',this);return false">⚙️ 系统与数据</a>
+  </div>
+  <div>
+    <div class="spage" id="sp-acc">
+      <div class="sgroup"><div class="gt">个人信息</div>
+        <div class="srow"><div class="lbl"><b>姓名</b><span>显示在协作与导出信息中</span></div><input type="text" value="柯"></div>
+        <div class="srow"><div class="lbl"><b>电子邮箱</b><span>已验证 ✓</span></div><input type="text" value="kuang@example.com"></div>
+      </div>
+      <div class="sgroup"><div class="gt">安全</div>
+        <div class="srow"><div class="lbl"><b>修改密码</b><span>上次修改 2026-06-12</span></div><button class="pill gray small" onclick="toast('修改密码（占位）')">修改</button></div>
+        <div class="srow"><div class="lbl"><b>两步验证</b><span>验证器 App</span></div><label class="switch"><input type="checkbox" checked onchange="toast('两步验证已'+(this.checked?'开启':'关闭'))"><i></i></label></div>
+        <div class="srow"><div class="lbl"><b>登录设备</b><span>2 台活跃</span></div><button class="pill gray small" onclick="toast('设备管理（占位）')">管理</button></div>
+      </div>
+    </div>
+    <div class="spage" id="sp-nfy" style="display:none">
+      <div class="sgroup"><div class="gt">通知（邮箱）</div>
+        <div class="srow"><div class="lbl"><b>门禁到达</b><span>管线暂停等你决策时——建议即时，否则任务会一直停着</span></div>
+          <div class="seg"><button class="on">即时</button><button onclick="segT(this,'每日汇总')">每日汇总</button></div></div>
+        <div class="srow"><div class="lbl"><b>任务失败</b><span>预算超限、阻断等异常</span></div><label class="switch"><input type="checkbox" checked disabled><i></i></label><span style="font-size:11px;color:var(--t3)">不可关</span></div>
+        <div class="srow"><div class="lbl"><b>交付完成</b><span>终稿 / PPTX 就绪</span></div><label class="switch"><input type="checkbox" checked onchange="toast('已'+(this.checked?'订阅':'退订'))"><i></i></label></div>
+        <div class="srow"><div class="lbl"><b>用量月报</b><span>每月 1 日汇总 token、任务与门禁决策数</span></div><label class="switch"><input type="checkbox" onchange="toast('已'+(this.checked?'订阅':'退订'))"><i></i></label></div>
+      </div>
+    </div>
+    <div class="spage" id="sp-mdl" style="display:none">
+      <div class="sgroup"><div class="gt">默认模型</div>
+        <div class="srow"><div class="lbl"><b>写作工位</b><span>evidence-first-writing 管线</span></div><span class="rec">推荐 · 长文一致性最佳</span><b style="margin-left:auto">Claude Sonnet</b></div>
+        <div class="srow"><div class="lbl"><b>演示工位</b><span>leo-ppt-generator 管线</span></div><span style="font-size:11.5px;color:var(--t3)">版式密度见长</span><b style="margin-left:auto">GPT-5</b></div>
+      </div>
+      <div class="sgroup"><div class="gt">自定义 Provider（BYOK）</div>
+        <div class="srow"><div class="lbl"><b>自定义 A · OpenAI 兼容</b><span>api.openai.com/v1 · gpt-5-turbo</span></div><span class="ver">sk-••••3f9a</span><span class="health">✓ 2 小时前 · 380ms</span><label class="switch"><input type="checkbox" checked><i></i></label></div>
+        <div class="srow"><div class="lbl"><b>自定义 B · 本地推理</b><span>localhost:11434 · qwen3-32b</span></div><span class="ver">无需密钥</span><span class="health" style="color:var(--warn)">⚠ 3 天未测试</span><button class="pill gray small" onclick="this.previousElementSibling.previousElementSibling.innerHTML='⏳ 测试中…';setTimeout(()=>{this.previousElementSibling.previousElementSibling.innerHTML='✓ 刚刚 · 210ms';toast('连接正常')},900)">测试</button><label class="switch"><input type="checkbox"><i></i></label></div>
+        <div class="srow"><div class="lbl"><b>添加 Provider</b><span>密钥加密存储，永不下发浏览器</span></div><button class="pill blue small" onclick="toast('添加表单（占位）')">＋ 添加</button></div>
+      </div>
+      <div class="sgroup"><div class="gt">预算（与失败续跑闭环）</div>
+        <div class="srow"><div class="lbl"><b>单任务 token 上限</b><span>超限任务转 failed(budget_exceeded)，已完成阶段保留，可调高后续跑</span></div><input type="number" value="1500000" style="width:130px"> <span style="font-size:12px;color:var(--t3)">tok</span></div>
+        <div class="srow"><div class="lbl"><b>单任务时长上限</b></div><input type="number" value="30" style="width:90px"> <span style="font-size:12px;color:var(--t3)">分钟</span></div>
+        <div class="srow"><div class="lbl"><b>月度用量提醒</b><span>达到阈值发提醒</span></div><input type="number" value="80" style="width:80px"> <span style="font-size:12px;color:var(--t3)">%</span></div>
+        <div class="srow"><div class="lbl"><b>任务级覆盖</b><span>发起任务时可临时改预算与模型</span></div><label class="switch"><input type="checkbox" checked onchange="toast('任务级覆盖已'+(this.checked?'开启':'关闭'))"><i></i></label></div>
+      </div>
+    </div>
+    <div class="spage" id="sp-pipe" style="display:none">
+      <div class="sgroup"><div class="gt">门禁策略</div>
+        <div class="srow"><div class="lbl"><b>门禁密度</b><span>控制管线暂停的频率——快速门禁指单选即可决策的门禁，审阅门禁指需读内容的门禁</span></div>
+          <div class="policy">
+            <div class="pol on" onclick="polPick(this)"><b>标准</b><span>该停就停，作者全程掌舵（默认）</span></div>
+            <div class="pol" onclick="polPick(this)"><b>精简</b><span>快速门禁自动通过并留痕，仅停审阅级门禁</span></div>
+            <div class="pol" onclick="polPick(this)"><b>严格</b><span>全部手动确认，含来源核查节点</span></div>
+          </div></div>
+      </div>
+      <div class="sgroup"><div class="gt">写作默认</div>
+        <div class="srow"><div class="lbl"><b>默认证据模式</b></div><div class="seg"><button onclick="segT(this,'严格接地')">严格接地</button><button class="on">开放调研</button></div></div>
+        <div class="srow"><div class="lbl"><b>默认深度</b></div><div class="seg"><button onclick="segT(this,'quick')">quick</button><button class="on">standard</button><button onclick="segT(this,'deep')">deep</button></div></div>
+        <div class="srow"><div class="lbl"><b>声音档案默认挂载</b><span>soul.md v3 · 12 篇样本训练</span></div><label class="switch"><input type="checkbox" checked><i></i></label></div>
+      </div>
+      <div class="sgroup"><div class="gt">产品硬规则</div>
+        <div class="srow lockrow"><div class="lbl"><b>因果红线</b><span>无对照证据不得断言"X 导致 Y"——无论任何设置，红线始终生效</span></div><span class="lock">🔒 不可关闭</span></div>
+        <div class="srow lockrow"><div class="lbl"><b>证据不升级</b><span>作者判断不会被标成"已核实事实"，四类内容严格分离</span></div><span class="lock">🔒 不可关闭</span></div>
+        <div class="srow lockrow"><div class="lbl"><b>Gate 0 信任确认</b><span>来源未确认的 Office 文件永远不被读取，唯一出路是你显式确认</span></div><span class="lock">🔒 不可关闭</span></div>
+      </div>
+    </div>
+    <div class="spage" id="sp-deckp" style="display:none">
+      <div class="sgroup"><div class="gt">演示默认</div>
+        <div class="srow"><div class="lbl"><b>画幅比例</b></div><div class="seg"><button class="on">16:9</button><button onclick="segT(this,'4:3')">4:3</button></div></div>
+        <div class="srow"><div class="lbl"><b>默认风格</b><span>风格画廊 · 最近使用：商务深蓝</span></div><button class="pill gray small" onclick="toast('风格画廊（占位）')">选择…</button></div>
+        <div class="srow"><div class="lbl"><b>导出默认格式</b></div><div class="seg"><button class="on">PPTX</button><button onclick="segT(this,'PDF')">PDF</button><button onclick="segT(this,'图片包')">图片包</button></div></div>
+        <div class="srow"><div class="lbl"><b>样张确认</b><span>逐页采用/重做是默认且唯一模式——单页瑕疵不应重跑全稿</span></div><span class="lock" style="border-color:var(--hair);color:var(--t3)">默认逐页</span></div>
+      </div>
+    </div>
+    <div class="spage" id="sp-sys" style="display:none">
+      <div class="sgroup"><div class="gt">Skill 版本（升级需过 evals 门禁）</div>
+        <div class="srow"><div class="lbl"><b>evidence-first-writing</b><span>当前挂载版本</span></div><span class="ver">v2.4.1</span><span class="evalok">✓ evals 通过 · 3 天前</span><button class="pill gray small" onclick="toast('检查更新：先跑 evals，通过后才切换挂载')">检查更新</button></div>
+        <div class="srow"><div class="lbl"><b>leo-ppt-generator</b><span>当前挂载版本</span></div><span class="ver">v1.8.0</span><span class="evalok">✓ evals 通过 · 1 周前</span><button class="pill gray small" onclick="toast('检查更新：先跑 evals，通过后才切换挂载')">检查更新</button></div>
+      </div>
+      <div class="sgroup"><div class="gt">Runtime</div>
+        <div class="srow"><div class="lbl"><b>claude CLI</b><span>headless 运行时</span></div><span class="ver">2.1.247</span><span class="health">锁定升级，变更走 CI 冒烟</span></div>
+        <div class="srow"><div class="lbl"><b>Worker 并发</b><span>V0.5 串行；V1 按队列深度扩展</span></div><span class="ver">1</span></div>
+      </div>
+      <div class="sgroup"><div class="gt">数据</div>
+        <div class="srow"><div class="lbl"><b>产物保留</b><span>内部部署默认永久；V1 计费版分档</span></div><div class="seg"><button class="on">永久</button><button onclick="segT(this,'1 年')">1 年</button><button onclick="segT(this,'90 天')">90 天</button></div></div>
+        <div class="srow"><div class="lbl"><b>来源自动入库</b><span>核查通过的来源自动进入资产库供复用</span></div><label class="switch"><input type="checkbox" checked onchange="toast('自动入库已'+(this.checked?'开启':'关闭'))"><i></i></label></div>
+        <div class="srow"><div class="lbl"><b>导出全部数据</b><span>项目、门禁决策、产物与资产</span></div><button class="pill gray small" onclick="toast('导出任务已开始（占位）')">导出</button></div>
+        <div class="srow"><div class="lbl"><b>删除账户</b><span>永久删除，需输入密码确认</span></div><button class="pill small" style="background:var(--danger);color:#fff" onclick="confirmDel()">删除…</button></div>
+      </div>
+    </div>
+  </div>
+</div></div></div>
+
+<!-- 向导 -->
+<div class="ov" id="wz-ov"><div class="modal">
+  <h3 id="wz-title"></h3><div class="ms" id="wz-sub"></div>
+  <div class="wsteps"><i id="ws1" class="on"></i><i id="ws2"></i><i id="ws3"></i></div>
+  <div id="wz-body"></div>
+  <div class="foot"><button class="pill gray small" id="wz-back" onclick="wzBack()">上一步</button><button class="pill blue small" id="wz-next" onclick="wzNext()">下一步</button></div>
+</div></div>
+
+<div id="toasts"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');$('nav').classList.toggle('show',id!=='login');document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));window.scrollTo(0,0);}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;$('toasts').appendChild(t);setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300)},2800);}
+function tick(el,to){const f=+el.textContent||0,t0=performance.now();(function s(t){const p=Math.min(1,(t-t0)/450);el.textContent=Math.round(f+(to-f)*p);if(p<1)requestAnimationFrame(s)})(t0);}
+
+/* ---------- 登录 ---------- */
+let fails=0;
+function doLogin(){
+  if(fails>=5){$('li-err').classList.add('show');return;}
+  fails++;go('dash');toast('欢迎回来');
+}
+
+/* ---------- 项目台：注意力优先 ---------- */
+const PROJECTS=[
+  {id:1,kind:'write',k:'写作 · 观点评论',t:'为什么"证据优先"是 AI 写作的唯一出路',st:'wait',action:'1 个门禁待决策：草稿完成后先核查 2 条待核查来源，还是直接进审查？',steps:6,d:3,c:3,time:'等待 26 分钟',view:'write'},
+  {id:2,kind:'deck',k:'演示 · generate',t:'Q3 产品复盘演示稿',st:'run',action:'样张生成中（第 2/3 张）——无需等待，可先处理其他项目。',steps:6,d:2,c:2,time:'运行 3 分钟',view:'deck'},
+  {id:3,kind:'write',k:'写作 · 教程',t:'知识库搭建指南',st:'fail',action:'预算超限中断于"分层审查"。前 4 阶段产物已保留，可续跑。',steps:6,d:4,c:-1,time:'昨天',view:'write'},
+  {id:4,kind:'write',k:'写作 · 教程',t:'用 Claude Code 搭建个人知识库',st:'done',action:'已交付 · 证据覆盖率 92%，可导出或转演示。',steps:6,d:6,c:-1,time:'3 天前',view:'write'},
+];
+const ORDER={wait:0,fail:1,run:2,done:3};
+let dashSel='all';
+function dashFilter(f,btn){dashSel=f;document.querySelectorAll('#dash-tabs button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderDash();}
+function renderDash(){
+  const list=PROJECTS.filter(p=>dashSel==='all'||p.st===dashSel||p.kind===dashSel).sort((a,b)=>ORDER[a.st]-ORDER[b.st]);
+  $('projGrid').innerHTML=list.map((p,i)=>`
+  <div class="tile stag ${p.st==='wait'?'urgent':''}" style="animation-delay:${i*35}ms" onclick="go('${p.view}')">
+    <span class="k"><span>${p.k}</span><span>${p.time}</span></span>
+    <h3>${p.t}</h3>
+    <div class="action-line ${p.st}">${p.action}</div>
+    <div class="pb">${Array.from({length:p.steps},(_,k)=>`<i class="${k<p.d?'d':k===p.c?'c':''}"></i>`).join('')}</div>
+  </div>`).join('')||'<div style="color:var(--t3);padding:30px 0">该筛选下暂无项目</div>';
+  $('tc-all').textContent=PROJECTS.length;
+  $('tc-wait').textContent=PROJECTS.filter(p=>p.st==='wait').length;
+  $('tc-run').textContent=PROJECTS.filter(p=>p.st==='run').length;
+}
+renderDash();
+
+/* ---------- 向导：分支 + 后果标签 ---------- */
+let wz={step:1,kind:null,mode:'开放调研',depth:'standard',sources:[],q:''};
+function openWizard(){wz={step:1,kind:null,mode:'开放调研',depth:'standard',sources:[],q:''};renderWz();$('wz-ov').classList.add('show');}
+const DEPTHS={quick:['≈2 分钟','适合已有材料的短文与局部修改'],standard:['≈8 分钟','默认：调研 → 草稿 → 分层审查'],deep:['≈25 分钟','发布级：加选题验证、压力测试、来源账本全量']};
+function renderWz(){
+  const s=wz.step;
+  [1,2,3].forEach(n=>$('ws'+n).classList.toggle('on',n<=s));
+  $('wz-back').style.visibility=s===1?'hidden':'visible';
+  $('wz-next').disabled=false;
+  if(s===1){
+    $('wz-title').textContent='选择工位';$('wz-sub').textContent='两个工位共享同一套门禁与留痕机制。';
+    $('wz-body').innerHTML=`<div class="seg" style="display:grid;grid-template-columns:1fr 1fr;gap:0;background:none;padding:0">
+      <button class="${wz.kind==='write'?'on':''}" style="padding:18px;border:1.5px solid ${wz.kind==='write'?'var(--accent)':'var(--hair)'};border-radius:14px;margin:5px;background:${wz.kind==='write'?'rgba(0,113,227,.04)':'#fff'}" onclick="wz.kind='write';renderWz()"><b style="font-size:15px">✍️ 写作</b><div style="font-size:12px;color:var(--t2);margin-top:4px">证据账本 · 因果红线 · 声音档案</div></button>
+      <button class="${wz.kind==='deck'?'on':''}" style="padding:18px;border:1.5px solid ${wz.kind==='deck'?'var(--accent)':'var(--hair)'};border-radius:14px;margin:5px;background:${wz.kind==='deck'?'rgba(0,113,227,.04)':'#fff'}" onclick="wz.kind='deck';renderWz()"><b style="font-size:15px">📊 演示</b><div style="font-size:12px;color:var(--t2);margin-top:4px">Route 制 · 样张先行 · 可编辑 PPTX</div></button></div>`;
+    $('wz-next').disabled=!wz.kind;
+  }
+  if(s===2){
+    $('wz-title').textContent='Route Card';$('wz-sub').textContent='这些字段直接驱动管线分支与门禁密度。';
+    let body=`<div class="fld"><label>${wz.kind==='write'?'主题或标题':'演示主题或内容来源'}</label><input id="wz-q" value="${wz.q}" placeholder="${wz.kind==='write'?'例如：为什么证据优先是 AI 写作的唯一出路':'例如：Q3 产品复盘（可稍后粘贴内容）'}" oninput="wz.q=this.value;wzCheck()"></div>`;
+    if(wz.kind==='write'){
+      body+=`<div class="fld"><label>证据模式</label>
+        <div class="seg"><button class="${wz.mode==='严格接地'?'on':''}" onclick="wz.mode='严格接地';renderWz()">严格接地</button><button class="${wz.mode==='开放调研'?'on':''}" onclick="wz.mode='开放调研';renderWz()">开放调研</button></div>
+        <div class="conseq">${wz.mode==='严格接地'?'<b>仅使用你提供的来源生成</b>；材料缺口会显式报告，不会自动检索补充——引用可控性最高。':'允许管线检索外部来源，但每条外部引用都进入证据账本并标注核查状态。'}</div></div>`;
+      if(wz.mode==='严格接地'){
+        body+=`<div class="srcdrop"><b style="font-size:13px">提供来源（至少 1 条）</b>
+          <div style="font-size:11.5px;color:var(--t3);margin:4px 0 8px">严格接地模式下这是管线唯一的证据来源。</div>
+          <textarea id="wz-src" placeholder="粘贴 URL 或来源文本，每行一条" oninput="wzSrcLive(this.value)"></textarea>
+          <div class="chips" id="wz-chips"></div></div>`;
+      }
+    }else{
+      body+=`<div class="fld"><label>比例</label><div class="seg"><button class="on">16:9</button><button>4:3</button></div></div>
+      <div class="fld"><label>内容（可稍后在工位粘贴/上传）</label><textarea placeholder="粘贴文章 / 大纲，或留空稍后提供" style="min-height:70px"></textarea></div>`;
+    }
+    body+=`<div class="fld"><label>深度</label>
+      <div class="seg">${['quick','standard','deep'].map(d=>`<button class="${wz.depth===d?'on':''}" onclick="wz.depth='${d}';renderWz()">${d}</button>`).join('')}</div>
+      <div class="conseq"><b>${wz.depth} · ${DEPTHS[wz.depth][0]}</b> — ${DEPTHS[wz.depth][1]}</div></div>
+    <div id="wz-qzone"></div>`;
+    $('wz-body').innerHTML=body;
+    wzCheck();
+  }
+  if(s===3){
+    const t=wz.q.trim()||'未命名项目';
+    $('wz-title').textContent='确认创建';$('wz-sub').textContent('预计 '+DEPTHS[wz.depth][0].replace('≈','约 ')+'；每个门禁会暂停等你。');
+    const stages=wz.kind==='write'?['Brief 门禁','调研','主张/结构','草稿','分层审查','终稿']:['风格选定','版式设计','样张确认','批量生产','视觉 QA','交付 PPTX'];
+    $('wz-body').innerHTML=`<div class="panel" style="border:1px solid var(--hair)"><h5>${wz.kind==='write'?'写作管线':'演示管线'}${wz.mode==='严格接地'?' · 严格接地（'+wz.sources.length+' 条来源）':''}</h5>
+      ${stages.map(x=>`<div class="step"><span class="n"></span>${x}</div>`).join('')}</div>
+      <div class="fld" style="margin-top:14px"><label>项目标题</label><input value="${t}" id="wz-title-input"></div>`;
+  }
+}
+function wzSrcLive(v){
+  wz.sources=v.split('\n').map(x=>x.trim()).filter(Boolean);
+  $('wz-chips').innerHTML=wz.sources.map((x,i)=>`<span class="chip">${x.slice(0,26)}${x.length>26?'…':''}<span class="x" onclick="event.target.parentNode.remove()">✕</span></span>`).join('');
+  wzCheck();
+}
+function wzCheck(){
+  const q=$('wz-q');if(!q)return;
+  const bare=q.value.trim().length>0&&q.value.trim().length<12&&!q.value.includes('？')&&q.value.includes('的')===false||q.value.trim().length<8;
+  const needQ=wz.kind==='write'&&bare;
+  if(needQ){
+    if(!$('wz-qzone').innerHTML.trim()){
+      $('wz-qzone').innerHTML=`<div class="q-card"><b>先回答一个问题</b><div class="why">主题信息还不足以安全开写——回答后我们才知道该走哪条工作流（这是产品的硬规则，不是聊天寒暄）。</div>
+        <div class="opt" onclick="pickQ(this)">希望读者<b>形成一个判断</b>（观点/评论）</div>
+        <div class="opt" onclick="pickQ(this)">希望读者<b>照着完成一件事</b>（教程/How-to）</div></div>`;
+    }
+  }else $('wz-qzone').innerHTML='';
+  const strictOk=wz.mode!=='严格接地'||wz.sources.length>0;
+  const answered=!needQ||document.querySelector('.q-card .opt.sel');
+  $('wz-next').disabled=!(answered&&strictOk);
+  $('wz-next').textContent=!strictOk?'请先提供至少 1 条来源':!answered?'回答后继续':'下一步';
+}
+function pickQ(el){el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');wzCheck();}
+function wzNext(){
+  if(wz.step<3){wz.step++;renderWz();return;}
+  const title=($('wz-title-input')||{value:'未命名项目'}).value;
+  const kind=wz.kind;
+  $('wz-ov').classList.remove('show');
+  PROJECTS.unshift({id:Date.now(),kind,k:(kind==='write'?'写作':'演示')+' · 新建',t:title,st:'done',action:'管线待启动——回到工位点"运行"即可开始。',steps:6,d:0,c:-1,time:'刚刚',view:kind==='write'?'write':'deck'});
+  renderDash();toast(`「${title}」已创建 · 决策与产物将长期留痕`);
+  go(kind==='write'?'write':'deck');
+}
+function wzBack(){if(wz.step>1){wz.step--;renderWz();}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('wz-ov').classList.remove('show');$('dl-menu').classList.remove('show');}});
+
+/* ---------- 写作工位 ---------- */
+const WST=['Brief 门禁','调研','主张/结构','草稿','分层审查','终稿'];
+const wt={idx:0,status:'idle'};
+function rpane(id){document.querySelectorAll('.rpane').forEach(p=>p.classList.remove('on'));$('rp-'+id).classList.add('on');['src','led','fd'].forEach(k=>$('rt-'+k).classList.toggle('on',k===id));}
+function autoRpane(){rpane(wt.idx>=5?'fd':wt.idx>=3?'led':'src');}
+function srcFlash(n){
+  document.querySelectorAll('#w-doc mark').forEach(m=>m.classList.remove('hl'));
+  document.querySelectorAll('.srcrow').forEach(r=>r.classList.remove('sel'));
+  if(n===3){toast('该来源待核查——严格接地模式下此论断将标为缺口');$('sr3').classList.add('sel');return;}
+  const marks=document.querySelectorAll(`#w-doc mark[data-src="${n}"]`);
+  marks.forEach(m=>m.classList.add('hl'));
+  $('sr'+n).classList.add('sel');
+  toast(marks.length?`高亮了该来源支撑的 ${marks.length} 处论断`:'该来源未支撑正文论断');
+}
+function protectOn(){$('w-protect').classList.add('show');$('w-edit').textContent='✓ 已保护';$('w-edit').disabled=true;toast('手动修改保护已开启：后续阶段生成的内容不会覆盖你改过的段落');}
+function renderWSteps(){
+  $('w-steps').innerHTML=WST.map((s,i)=>{
+    const cls=i<wt.idx?'done':i===wt.idx&&wt.status!=='idle'?'cur':'';
+    return `<div class="step ${cls}"><span class="n">${i<wt.idx?'✓':''}</span>${s}</div>`;}).join('');
+}
+function runWrite(){
+  if(wt.status==='running'||wt.status==='awaiting')return;
+  wt.status='running';$('w-run').disabled=true;$('w-run').textContent='运行中…';
+  document.querySelectorAll('.rv').forEach(e=>e.classList.remove('in'));['cf','cs','cj','cp'].forEach(id=>$(id).textContent='0');
+  (async()=>{
+    await wait(450);wt.idx=1;renderWSteps();autoRpane();$('wp1').classList.add('in');tick($('cf'),6);tick($('cs'),3);
+    await wait(750);wt.idx=2;renderWSteps();$('wp2').classList.add('in');tick($('cj'),3);
+    await wait(650);wt.idx=3;renderWSteps();autoRpane();$('w-legend').style.display='flex';$('wp3').classList.add('in');tick($('cp'),1);tick($('cs'),5);$('ledcov').textContent='87%';
+    await wait(450);wt.idx=4;wt.status='awaiting';renderWSteps();$('nav-write').classList.add('wait');
+    $('w-extra').innerHTML=`
+      <div class="gatebox"><b>⛳ 快速门禁 · 草稿 → 分层审查</b>草稿完成（1,820 字 · 覆盖率 87%），2 条来源待核查。
+        <div class="row">
+          <button class="opt2 primary" onclick="resolveGate('先核查来源')">先核查来源<small>+2 分钟 · 全部来源进入"已核查"，可信度最高</small></button>
+          <button class="opt2" onclick="resolveGate('直接进入审查')">直接进审查<small>更快 · 待核查状态会保留并写进交付说明</small></button>
+          <button class="opt2" onclick="deferGate()">稍后处理<small>任务保持等待 · 导航栏橙点提醒</small></button>
+        </div></div>
+      <div class="gate-fold"><span>⛳ 已留痕 — Brief 门禁 · 创建时确认</span><span style="color:var(--ok)">✓</span></div>`;
+    toast('到达门禁——选项都标了代价，按你的优先级选');
+  })();
+}
+function resolveGate(c){
+  $('w-extra').innerHTML=`<div class="gate-fold"><span>⛳ 已留痕 — ${c} · ${new Date().toLocaleTimeString('zh-CN',{hour12:false})}</span><span style="color:var(--ok)">✓</span></div>`;
+  wt.status='running';$('nav-write').classList.remove('wait');
+  (async()=>{
+    await wait(800);wt.idx=5;renderWSteps();autoRpane();
+    document.querySelectorAll('#rp-src .srcrow .s span:last-child').forEach(x=>{});
+    $('sr3').querySelector('.s').innerHTML='<span>blog.example.com</span><span style="color:var(--ok)">已核查</span>';
+    await wait(700);wt.idx=6;renderWSteps();wt.status='delivered';
+    $('w-run').disabled=false;$('w-run').textContent='✓ 已交付';
+    toast('✓ 终稿已交付 · 你的手动修改已保留');
+  })();
+}
+function deferGate(){$('w-extra').querySelector('.gatebox .row').innerHTML='<span style="font-size:13px;color:var(--t2)">已推迟——任务保持等待，随时回来决策。</span>';toast('已推迟决策（留痕：用户暂离）');}
+renderWSteps();
+
+/* ---------- PPT 工位：逐页样张 ---------- */
+const DROUTES=[
+  {c:'generate',n:'从内容生成',d:'文章/大纲 → 成套演示稿',need:'需要：主题或内容',steps:['风格选定','版式设计','样张确认','批量生产','视觉 QA','交付'],gate:3,on:true},
+  {c:'direct-editable',n:'重建为可编辑',d:'图片/PDF/可信 PPTX → 对象级 PPTX',need:'需要：可信文件 + Gate 0 确认',steps:['Gate 0','解析','重建','QA','交付'],gate:0,on:false},
+  {c:'upgrade-full',n:'全量升级',d:'image-deck 整体升级',need:'需要：既有 image-deck',steps:['Baseline','重建','QA','交付'],gate:-1,on:false},
+  {c:'upgrade-selected',n:'指定页升级',d:'只升级勾选页',need:'需要：既有 deck + 页码选择',steps:['选页','重建','QA','交付'],gate:-1,on:false}];
+const dt={r:0,idx:0,status:'idle',appr:[null,null,null]};
+function renderDeck(){
+  $('d-routes').innerHTML=DROUTES.map((r,i)=>`<div class="route ${i===dt.r?'sel':''} ${r.on?'':'dis'}" onclick="${r.on?`pickRoute(${i})`:`toast('V0.7 开放，当前版本仅 generate')`}"><b>${r.n} <code>${r.c}</code></b><span>${r.d}</span><div class="need">${r.need}</div></div>`).join('');
+  const R=DROUTES[dt.r];
+  $('d-steps').innerHTML=R.steps.map((s,i)=>{const cls=i<dt.idx?'done':i===dt.idx&&dt.status!=='idle'?'cur':'';return `<div class="step ${cls}"><span class="n">${i<dt.idx?'✓':''}</span>${s}</div>`;}).join('');
+  const st={idle:['待启动',''],running:['running','color:var(--accent)'],awaiting:['awaiting_user','color:var(--warn)'],delivered:['delivered','color:var(--ok)']}[dt.status];
+  const stage=dt.status==='idle'?'—':(R.steps[Math.min(dt.idx,R.steps.length-1)]||'—');
+  $('d-cbar').innerHTML=`<span class="cf"><b>route</b>${R.c}</span><span class="cf"><b>status</b><span style="${st[1]}">${st[0]}</span></span><span class="cf"><b>stage</b>${stage}</span><span class="cf"><b>已用</b>~1.1M tok</span><span class="cf"><b>worker</b><span style="${dt.status==='running'?'color:var(--accent)':''}">${dt.status==='running'?'busy':'ready'}</span></span>`;
+}
+function pickRoute(i){if(dt.status==='running'||dt.status==='awaiting'){toast('任务进行中，暂不能切换');return;}dt.r=i;dt.idx=0;dt.status='idle';dt.appr=[null,null,null];$('d-run').disabled=false;$('d-run').textContent='▶ 开始生成';$('d-dl').disabled=true;renderDeck();renderSlides('empty');
+function setGo(id,a){document.querySelectorAll('.spage').forEach(p=>p.style.display='none');$('sp-'+id).style.display='block';document.querySelectorAll('.setnav a').forEach(x=>x.classList.remove('on'));a.classList.add('on');}
+function polPick(el){el.parentElement.querySelectorAll('.pol').forEach(x=>x.classList.remove('on'));el.classList.add('on');toast('门禁策略：'+el.querySelector('b').textContent+'（快速门禁'+(el.querySelector('b').textContent==='标准'?'该停就停':el.querySelector('b').textContent==='精简'?'自动通过并留痕':'全部手动')+'）');}
+function segT(el){el.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
+function confirmDel(){if(confirm('确认删除账户？所有项目、门禁决策与产物将被永久删除，且不可恢复。'))toast('需输入密码二次确认（占位）');}}
+function mkSample(n,t,b,st){
+  const cls=st===true?'ok':st===false?'no':'';
+  return `<div class="slide samp ${cls}"><div class="n">${String(n).padStart(2,'0')} · 样张</div><div class="t">${t}</div><div style="font-size:9.5px;color:var(--t2)">${b}</div>
+    <div class="samplebar">
+      <button class="y ${st===true?'on':''}" onclick="appr(${n-1},true)">✓ 采用</button>
+      <button class="n ${st===false?'on':''}" onclick="appr(${n-1},false)">✗ 重做</button>
+    </div></div>`;
+}
+function appr(i,v){dt.appr[i]=v;renderSamples();const pend=dt.appr.filter(x=>x===null).length;const no=dt.appr.filter(x=>x===false).length;
+  if(pend===0){$('d-confirm').disabled=false;$('d-confirm').textContent=no?`确认并重做被拒的 ${no} 页`:'确认全部样张';toast(no?`将只重做被拒的 ${no} 页，采用页不重跑`:'全部样张已决策');}}
+function renderSamples(){
+  const t=['Q3 产品复盘','三个关键判断','留存曲线对比'];
+  const b=['增长 · 留存 · 下季度主张','事实与判断分列呈现','DAU/WAU 对比'];
+  $('d-slides').innerHTML=t.map((x,i)=>mkSample(i+1,x,b[i],dt.appr[i])).join('')+`
+    <div style="grid-column:1/-1"><div class="gatebox" style="margin-top:4px"><b>⛳ 快速门禁 · 逐页确认样张</b>每页独立判定——被拒的页只会重做它自己。
+      <div class="row"><button class="pill blue small" id="d-confirm" onclick="confirmSamples()" disabled>确认样张</button>
+      <button class="pill gray small" onclick="toast('已推迟决策（占位）')">稍后处理</button></div></div></div>`;
+}
+function confirmSamples(){
+  const no=dt.appr.filter(x=>x===false).length;
+  toast(no?`已留痕：${3-no} 页采用 · ${no} 页重做`:'已留痕：全部采用');
+  dt.status='running';const R=DROUTES[dt.r];
+  (async()=>{
+    $('d-slides').innerHTML='<div style="grid-column:1/-1;color:var(--t2);font-size:13px;padding:20px 0">批量生产中…（重做页单独重渲染）</div>';
+    await wait(900);dt.idx=R.gate+1;renderDeck();
+    const ts=['获客漏斗','留存队列','收入构成','NPS 驱动','里程碑','下季 OKR','附录'];
+    $('d-slides').innerHTML=[1,2,3].map(i=>`<div class="slide samp ok"><div class="n">${String(i).padStart(2,'0')}</div><div class="t">${['Q3 产品复盘','三个关键判断','留存曲线对比（重做·新布局）'][i-1]}</div></div>`).join('')
+      +ts.map((x,i)=>`<div class="slide"><div class="n">${String(i+4).padStart(2,'0')}</div><div class="t">${x}</div></div>`).join('');
+    await wait(800);dt.idx=R.steps.length-1;renderDeck();
+    await wait(500);dt.idx=R.steps.length;dt.status='delivered';renderDeck();
+    $('d-run').disabled=false;$('d-run').textContent='✓ 已交付';$('d-dl').disabled=false;
+    toast('✓ PPTX 已交付 · 对象级可编辑、字体已嵌入');
+  })();
+}
+function renderSlides(state){
+  if(state==='empty'){$('d-slides').innerHTML='<div class="slide" style="border-style:dashed;background:none;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:11px">选好 Route，点"开始生成"</div>';return;}
+  if(state==='loading'){$('d-slides').innerHTML=[1,2,3].map(()=>'<div class="slide" style="background:var(--bg2)"></div>').join('');return;}
+}
+function resetDeck(){pickRoute(dt.r);toast('已重置');}
+function runDeck(){
+  if(dt.status==='running'||dt.status==='awaiting')return;
+  if(dt.status==='delivered'){toast('已交付，可下载或重置');return;}
+  dt.status='running';$('d-run').disabled=true;$('d-run').textContent='运行中…';
+  const R=DROUTES[dt.r];renderDeck();
+  (async()=>{
+    renderSlides('loading');await wait(550);dt.idx=1;renderDeck();
+    await wait(550);dt.idx=2;renderDeck();
+    await wait(450);dt.idx=3;dt.status='awaiting';renderDeck();renderSamples();
+    toast('样张已出——逐页判定，被拒页只重做自己');
+  })();
+}
+function toggleMenu(e){e.stopPropagation();$('dl-menu').classList.toggle('show');}
+function pickDl(x){$('dl-menu').classList.remove('show');toast('⬇ 开始下载：'+x);}
+renderDeck();renderSlides('empty');
+</script>
+</body>
+</html>

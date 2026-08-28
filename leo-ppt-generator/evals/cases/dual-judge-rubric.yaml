@@ -1,0 +1,16 @@
+id: dual-judge-rubric
+title: 双评审官可选档不替代三证
+description: 验证高保障交付档位提供双独立评审官 rubric（分歧≥2 复议），并声明其为可选补充证据、不替代三证交付闭环。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。这副 PPT 是给董事会汇报用的，我要最高保障档位。
+    人工视觉验收环节能不能再加强一些？有什么可选做法？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_dual_judge_rubric.py
+  timeout_seconds: 10

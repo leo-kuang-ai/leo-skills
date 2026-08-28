@@ -40,7 +40,9 @@ Python、venv、runtime identity、内部目录或多条诊断命令，除非用
   节点恢复任务。
 - 首次配置或缺少 Provider profile 时运行 `config`；指定 Provider 使用
   `config provider configure --provider <provider>`；已有 profile 的切换使用
-  `config provider select --provider <provider>`。凭据只通过
+  `config provider prefer --provider <provider>`（候选排序与自动选择分别用
+  `config provider reorder` / `config provider auto`，以 `--help` 当前输出为准）。
+  凭据只通过
   `config credential set/status/remove` 管理。不得向普通用户生成历史 `auth`、顶层
   `provider configure` 或 `config change`。
 - `config reset --confirm` 只用于用户明确要求重建非敏感配置；它保留系统凭据，不得由
@@ -61,6 +63,17 @@ Python、venv、runtime identity、内部目录或多条诊断命令，除非用
 - macOS/POSIX：`"<bootstrap 返回的 cli_reference>" config`
 - Windows PowerShell：`& "<bootstrap 返回的 cli_reference>" config`
 
+**离场操作三件套（每次给出上述命令时必须同时说明）：**
+1. 为什么——密钥不允许经过聊天通道，由你本机亲手录入；
+2. 会看到什么——终端会启动一个配置向导，按提示选择 Provider 并粘贴密钥；
+   默认不会发起任何可能计费的验证；
+3. 做完说什么——回到对话发送「已配置完成」，我会复查 `config status` 并从
+   原任务节点继续。
+
+**钥匙串自检**：凭据以服务名 `leo-ppt-generator/<profile>`（如
+`leo-ppt-generator/openai-compatible`）存入系统钥匙串；在 macOS「钥匙串访问」
+或 Windows「凭据管理器」中搜索该服务名即可核对存在性，全程无需显示明文。`
+
 向导默认不发起付费验证；只有用户在真实 TTY 中明确同意时，`config verify --yes` 才执行
 generate-only smoke（默认“否”）。已存在凭据时，只有用户确认覆盖后才写入新值。
 完成后由 Agent 运行 `config status --json` 并回到原任务。状态输出只允许引用和
@@ -69,7 +82,23 @@ generate-only smoke（默认“否”）。已存在凭据时，只有用户确�
 OS store 保护边界不包括已取得同一用户会话权限的恶意进程。疑似账户或本机会话失陷
 时停止执行，撤销服务商凭据并删除本地引用，不声称 Keychain/DPAPI 仍能提供保护。
 
+## 配置变更影响面三问
+
+Agent 代用户执行 `provider prefer / remove`、`credential set/remove` 或切换
+generation method 前，必须先向用户告知以下三点（缺一不可）：
+
+1. **影响哪些 run**：已交付产物不受影响；未完成的 run 若依赖该 Provider，
+   其后续页需要重新派发；
+2. **是否触发重新验证**：切换图片 Provider 或 generation method 会使用旧的
+   样张继承失效，须重新生成并确认样张；
+3. **是否产生费用**：切换本身不计费；新 Provider 的首次真实生成将按其定价计费。
+
+CLI 侧同类操作会自带一行影响提示（stderr）；提示内容与本节一致，冲突时以本节为准。
+
 ## 必要确认上限
 
-首次流程最多询问两个真正改变结果的问题：任务/route 必要信息，以及 Provider 或样张
-确认。用户要求跳过样张时仍不能跳过；这是生成一致性与最终验收合同，不是 setup 障碍。
+首次**准备阶段**（launcher/setup/config 与 Provider 状态确认，即本页范围）最多询问
+两个真正改变结果的问题：任务/route 必要信息，以及 Provider 或样张确认。本页不含的
+内容工作流确认门——大纲、完整逐页稿、视觉方向、backend、样张等（见
+`image-deck-workflow.md`）不受此限，也不能被本上限豁免；用户要求跳过样张时仍不能
+跳过，这是生成一致性与最终验收合同，不是 setup 障碍。

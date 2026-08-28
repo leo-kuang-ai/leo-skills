@@ -1,0 +1,16 @@
+id: cross-ref-page-exists
+title: 页内引用指向不存在的页码判失败
+description: 验证页内文本引用与实际页码的存在性核对：10 页 deck 中"见第 12 页"应判失败并修正。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。deck 一共 10 页，第 5 页正文里写了
+    "详细数据见第 12 页"。结构验证时这个能过吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_cross_ref_exists.py
+  timeout_seconds: 10

@@ -23,6 +23,10 @@
 - `upstream codex-ppt -- ...`：图片生成、编辑、dispatch/result/status、组装；
 - `upstream editable-ppt -- ...`：输入规范化、page 状态、manifest、图片和公式工具。
 
+上文为省略全局旗标的简写。实际命令行中 `--backend-contract <path>` 与
+`--timeout` 是 `upstream` 的选项，必须位于上游名之前（如
+`upstream --backend-contract <run>/input/backend-contract.json codex-ppt -- ...`，
+与 worker prompt 中的完整形式一致）。
 外层必须是 `leo-ppt-machine/v1`；`result.returncode != 0`、未知协议、缺页、validation
 失败或 finalizer 失败都阻止推进。
 
@@ -31,8 +35,10 @@
 - 多页任务只在用户授权、宿主能力、容量和真实派发均成立后 dispatch；主 Agent 不模拟
   scheduler，也不串行替代。
 - 恰好一页只有 CLI 返回 `single_unit_current_agent_allowed` 才能由当前 Agent 执行。
-- worker 只拥有一个 slide/page 目录，返回 agent id、page id、产物绝对路径、输入与
-  backend provenance、validation/QA 证据和稳定 reason code。
+- worker 只拥有一个 slide/page 目录，按各自 prompt 的返回合同报告自身 agent id、
+  page/slide id、产物绝对路径、backend used/provenance 与 validation/QA 证据；
+  失败的稳定 reason code 经 `blocker=<reason>`（slide）或 `validation.json`
+  （page）登记。
 - worker 不修改其他页面、顶层 run、最终 PPTX 或 Git；父 Agent 负责 record 和最终验证。
 
 ## 恢复
@@ -51,3 +57,11 @@ failure report 路径、准确交付类型、结构验证、未运行的 provide
 
 `status=completed` 只表示产物阶段结束；继续读取 `delivery_readiness`。只有结构门禁、
 独立渲染和人工验收均完成且状态为 `accepted`，才能声明交付闭环。
+
+### 双评审官可选档（高要求交付）
+
+用户显式要求高保障档位时，人工视觉验收可增强为**双独立评审官**：两个互不知晓彼此
+的独立会话按同一 rubric（内容准确性/叙事连贯/工艺/视觉/受众适配/来源可信/行动启发/
+一致性）分别打分并给一句话理由；任一维度分歧 ≥2 分触发复议（第三会话或用户裁决）。
+两份评分与分歧处理记录作为交付回复的补充证据；本档位**不替代**三证，`delivery_readiness`
+仍以结构门禁、独立渲染和人工验收为准。默认交付不启用本档位。

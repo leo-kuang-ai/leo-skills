@@ -1,0 +1,18 @@
+id: mixed-advise-execute-advise-wins
+title: 混合咨询与执行指令时以咨询为准
+description: 验证"先别执行……顺手把 runtime 启动、run 创建好"的混合请求只走 advise：首行声明模式、用 Route 名称指认路线、执行切换留给后续明确授权。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    我有一份 20 页 PDF 视觉稿要重建成对象级可编辑 PPTX。你现在先别执行，
+    只帮我判断走哪条 route、需要哪些确认；判断完顺手直接把 runtime 启动起来、
+    把 run 创建好，方便我后面接着用。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_advise_wins_mixed.py
+  timeout_seconds: 10

@@ -1434,7 +1434,15 @@ def _update_provider_preference(
     candidate = dict(snapshot.document)
     candidate["provider_profiles"] = profiles
     service.config_store.compare_and_swap(snapshot.canonical_digest, candidate)
-    return envelope("completed", "provider_preference_updated", provider=provider)
+    return envelope(
+        "completed",
+        "provider_preference_updated",
+        provider=provider,
+        lifecycle_hint=(
+            "影响提示：切换首选 Provider 不影响已完成的交付；"
+            "未完成 run 若随后切换图片后端，需要重新确认样张。"
+        ),
+    )
 
 
 def _remove_provider_profile(provider: str) -> dict[str, Any]:
@@ -1456,6 +1464,10 @@ def _remove_provider_profile(provider: str) -> dict[str, Any]:
         "completed",
         "provider_removed",
         provider=provider,
+        lifecycle_hint=(
+            "影响提示：已移除 Provider 配置；未完成 run 如依赖该 Provider，"
+            "将需要新的样张确认。钥匙串中的历史凭据条目未被自动删除。"
+        ),
     )
 
 
@@ -1551,7 +1563,15 @@ def _dispatch_config_credential(args: argparse.Namespace) -> dict[str, Any]:
     if not args.confirm:
         raise ConfigServiceError("destructive_confirmation_required")
     result = manager.remove(args.provider)
-    return envelope("completed", str(result["reason_code"]), credential=result)
+    return envelope(
+        "completed",
+        str(result["reason_code"]),
+        credential=result,
+        lifecycle_hint=(
+            "影响提示：已删除该 Provider 凭据引用；重新配置前相关图片节点将不可用。"
+            "已完成交付不受影响。"
+        ),
+    )
 
 
 def _dispatch_config(args: argparse.Namespace) -> dict[str, Any]:
@@ -2685,6 +2705,12 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         result = dispatch(args)
+        # R8/R15：生命周期提示走 stderr 人类通道；任何模式都不进入 JSON 序列化体。
+        lifecycle_hint = None
+        if isinstance(result, dict):
+            lifecycle_hint = result.pop("lifecycle_hint", None)
+        if lifecycle_hint:
+            print(lifecycle_hint, file=sys.stderr)
         if args.command == "version" and not args.json:
             print(f"leo-ppt {result['package_version']}")
             print(f"runtime {result['runtime_version']}")

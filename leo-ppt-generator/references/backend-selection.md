@@ -43,6 +43,11 @@ Backend contract v1 示例：
 reference，并立刻用同一 loader 自校验。`validate` 的合同通过与
 `credential_reference_status` 分层报告；两者都不替代真实 provider smoke。
 
+存放口径：contract 在项目 `<project-root>/contracts/` 下创建与验证（上文
+`./backend.json` 仅为示意输出路径）；run 冻结时复制一份到 `<run>/input/
+backend-contract.json`，worker 只读取该冻结副本。三个位置是同一 contract 的
+创建、冻结、消费三个时点，不是三份独立配置。
+
 生成结果示例：
 
 ```json

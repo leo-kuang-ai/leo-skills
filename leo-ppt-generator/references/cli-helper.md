@@ -86,6 +86,21 @@ python "$SKILL_DIR/scripts/build-page-worker-prompt.py" <run> \
 `record` 要求全部页面产物存在，且 `validation.json` 顶层 `passed: true`；失败页不能
 登记为完成。finalize 只读取已登记页面的 `manifest.json`，按原页序重建整套 PPTX。
 
+## Route 级 upgrade 与交付命令
+
+upgrade 路线的 baseline/proposal/finalize 命令位于顶层 CLI（不在 upstream editable-ppt
+子树内），`reason-codes.md` 的恢复路径引用它们：
+
+```bash
+"$LEO_PPT" upgrade inspect <delivery>      # 读取既有 image delivery
+"$LEO_PPT" upgrade import-baseline <run>   # 冻结为 upgrade baseline
+"$LEO_PPT" upgrade propose <run>           # 生成 partial-hybrid 提案 receipt
+"$LEO_PPT" upgrade finalize <run>          # 确认后 finalize
+```
+
+完整参数以 `"$LEO_PPT" upgrade <command> --help` 当前输出为准；确认门与失败集合
+纪律见 SKILL.md 的 `upgrade-full` / `upgrade-selected` 小节。
+
 ## 页面构建与验证
 
 ```bash

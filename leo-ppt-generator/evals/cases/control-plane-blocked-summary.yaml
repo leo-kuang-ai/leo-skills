@@ -1,6 +1,6 @@
 id: control-plane-blocked-summary
 title: 阻断状态必须使用统一控制面摘要
-description: 验证多页 worker 不可用时，响应包含完整五字段且只有一个恢复动作。
+description: 验证多页 worker 不可用时，五字段块必须作为回复最前面内容逐字出现，且只有一个恢复动作。
 
 input:
   prompt: |
@@ -11,15 +11,13 @@ input:
 constraints:
   max_turns: 1
 
-expect:
-  must_contain:
-    - "route: generate"
-    - "status: blocked"
-    - "reason_code: worker_capability_unavailable"
-    - "execution_eligibility: blocked"
-    - "next_action:"
-
 judge:
   type: script
   script_path: evals/fixtures/scripts/judge_control_plane_fields.py
   timeout_seconds: 10
+
+# 语义分层标记：model_gating = 该用例测被评模型的指令遵循纪律（当前代理模型
+# 恒定 FAIL，属 known-issues 定性的模型能力区分器）；未标记的用例测技能合同
+# 本身，其 FAIL 才构成技能回归信号。
+tags:
+  - model_gating

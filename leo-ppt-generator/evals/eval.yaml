@@ -21,6 +21,21 @@ cases:
     - evals/cases/missing-multi-page-workers.yaml
     - evals/cases/partial-hybrid-without-confirmation.yaml
     - evals/cases/delivery-acceptance-pending.yaml
+    # execute 层行为门禁：模式切换、确认门与单页单元授权。
+    - evals/cases/mixed-advise-execute-advise-wins.yaml
+    - evals/cases/execute-keeps-confirmation-gates.yaml
+    - evals/cases/single-page-requires-cli-allowance.yaml
+    # 质量回路门禁（docs/leo-ppt-generator-quality-loop-optimization.md）：
+    # 逐页母版、修复波及复查、断言-来源三级、多轮审查协议、构建一致性、双评审官档。
+    - evals/cases/master-before-render.yaml
+    - evals/cases/master-revision-on-fix.yaml
+    - evals/cases/fix-regression-note.yaml
+    - evals/cases/assertion-source-tier.yaml
+    - evals/cases/review-protocol-convergence.yaml
+    - evals/cases/ledger-rejection-reason.yaml
+    - evals/cases/fixed-fixture-consistency.yaml
+    - evals/cases/cross-ref-page-exists.yaml
+    - evals/cases/dual-judge-rubric.yaml
   defaults:
     timeout_seconds: 300
     max_turns: 4

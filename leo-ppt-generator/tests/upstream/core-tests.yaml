@@ -10,11 +10,15 @@ suites:
       - id: "tests/boundary/test_vendor_state.py::VendorLockedStateTest::test_vendor_locked_state_serializes_concurrent_record_updates"
         contract: editable 状态写入原子化与并发锁（patch 0002）
         requires: filelock>=3.16.0（runtime/pyproject.toml 已声明）
-    pending:
-      - patch: "0004-editable-expected-formula-inventory.patch"
-        focused_test: test_confirmed_source_formula_inventory_cannot_be_omitted
-      - patch: "0006-editable-ppt-dpi-parameter.patch"
-        focused_test: test_legacy_ppt_normalization_forwards_requested_dpi
+      - id: "tests/boundary/test_editable_patch_regressions.py::ExpectedFormulaInventoryTest::test_confirmed_source_formula_inventory_cannot_be_omitted"
+        contract: confirmed 公式清单缺席 formula_inventory 即质量合同违规（patch 0004）
+        requires: PIL（vendored runtime 导入需要；runtime venv 内置，系统 python 缺失时诚实跳过）
+      - id: "tests/boundary/test_editable_patch_regressions.py::LegacyPptDpiForwardingTest::test_legacy_ppt_normalization_forwards_requested_dpi"
+        contract: legacy .ppt 规范化把请求 dpi 透传给 render_pdf_pages（patch 0006）
+        requires: PIL；LibreOffice 转换器经 mock，不依赖真实 Office 栈
+    notes: >-
+      同文件还覆盖 patch 0004 的两个守卫断言（非 list 清单、未确认候选），
+      不单独占用清单条目。
   codex-ppt-core:
     status: deferred
     reason: >-

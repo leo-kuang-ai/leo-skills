@@ -49,12 +49,13 @@ Before returning, visually check:
 - style matches the approved sample slide
 - required source images are visibly included and not replaced by a similar redraw
 - no overlapping or truncated important content
+- every content point from the job maps into a distinct on-canvas container (no point without a home, no empty container)
 - charts preserve approved values, units, labels, legends, and ordering; do not invent missing data
 
 Return only:
 backend_used=<built-in image tool OR absolute leo-ppt CLI path + upstream codex-ppt -- image>
 selected_source=/absolute/path/to/$CODEX_HOME/generated_images/.../ig_*.png
-qa_note=<one sentence>
+qa_note=<one sentence; on retry also state target-check verdict AND spillover-check verdict>
 worker_duration_seconds=<measured total worker seconds>
 backend_duration_seconds=<measured backend call seconds, or not-recorded>
 ```

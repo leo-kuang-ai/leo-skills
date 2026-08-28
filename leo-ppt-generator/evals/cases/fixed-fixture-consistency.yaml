@@ -1,0 +1,17 @@
+id: fixed-fixture-consistency
+title: 合同约定固定件位置漂移判失败
+description: 验证合同/母版约定页码右下后，成品某页页码落右上应被视觉质检判失败，固定件须逐页核对位置与字号。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。我们的内容合同约定每页右下角页码。
+    组装后检查发现第 7 页页码跑到了右上角，其余页都在右下。
+    这一页能过视觉质检吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_fixture_consistency.py
+  timeout_seconds: 10

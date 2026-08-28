@@ -18,8 +18,11 @@ stage_event() {
 
 fail_bootstrap() {
   local reason="$1" action_id="$2" command="$3" verification="$4" current_stage="$5"
-  printf '{"architecture":"%s","cli_reference":null,"details":{},"platform":"macos","primary_action":{"command":"%s","id":"%s","verification":"%s"},"protocol":"leo-ppt-bootstrap/v1","python_source":"unknown","reason_code":"%s","runtime_identity":null,"runtime_outcome":"not_ready","schema_version":1,"stage":"%s","status":"blocked"}\n' \
+  printf '{"architecture":"%s","cli_reference":null,"details":{},"platform":"macos","primary_action":{"command":"%s","id":"%s","verification":"%s"},"protocol":"leo-ppt-bootstrap/v1","python_source":"unknown","runtime_outcome":"not_ready","schema_version":1,"stage":"%s","status":"blocked"}\n' \
     "$architecture" "$command" "$action_id" "$verification" "$reason" "$current_stage"
+  # U4 人话伴随行：stderr 一行中文摘要（stdout 的 JSON 契约逐字节不变）。
+  printf 'bootstrap 启动失败：阶段「%s」被阻止。建议动作：%s；完成条件：%s\n' \
+    "$current_stage" "$command" "$verification" >&2
   exit 2
 }
 

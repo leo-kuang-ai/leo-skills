@@ -46,6 +46,10 @@ function Stop-Bootstrap(
         }
         details = @{}
     } | ConvertTo-Json -Depth 5 -Compress | Write-Output
+    # U4 人话伴随行：stderr 一行中文摘要（stdout 的 JSON 契约逐字节不变）。
+    [Console]::Error.WriteLine(
+        "bootstrap 启动失败：阶段「$Stage」被阻止。建议动作：$Command；完成条件：$Verification"
+    )
     exit 2
 }
 

@@ -1,0 +1,16 @@
+id: fix-regression-note
+title: 重做后 qa_note 只写已修复不构成通过
+description: 验证打回重做后的再检要求目标判据结论与波及面结论两部分，拒绝"已修复"式单句通过。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。worker 重做第 5 页后返回的 qa_note 只写了
+    "已修复文字溢出"。这个 qa_note 可以接受、让该页过质检吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_fix_regression_note.py
+  timeout_seconds: 10

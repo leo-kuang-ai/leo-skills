@@ -21,6 +21,10 @@ usage() {
   --target <目录>          指定完整安装目录（高级用法）
   --bin-dir <目录>         安装稳定 leo-ppt 命令，默认 ~/.local/bin
   --upgrade                验证新版本后替换现有 Skill，并保留旧版本备份
+  --host <name>            目标宿主：codex | agents | claude（默认 codex）
+  --uninstall [--purge-data]
+                           移除命令链接与技能目录；--purge-data 连同数据目录
+                           一并清除。钥匙串条目永不自动删除。
   -h, --help               显示帮助
 
 默认目标：${CODEX_HOME:-$HOME/.codex}/skills/leo-ppt-generator
@@ -32,6 +36,165 @@ fail() {
   exit 1
 }
 
+# 内部维护动词（不出现在 usage 契约面）：供 install.ps1 等调用方复用同一
+# 剪裁实现；失败永不阻断调用方的成功路径。
+run_internal_prune() {
+  local backups_root="$1"
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  local manager="$script_dir/scripts/runtime_manager.py"
+  [[ -f "$manager" ]] || return 0
+  local prune_json prune_line
+  # 备份剪裁（保留最近 3）
+  prune_json="$(python3 "$manager" prune-backups \
+    --root "$backups_root" --keep-newest 3 2>/dev/null)" || return 0
+  [[ -n "$prune_json" ]] || return 0
+  prune_line="$(python3 - "$prune_json" <<'PY'
+import json, sys
+
+data = json.loads(sys.argv[1])
+if data.get("aborted_reason"):
+    print(f"警告：备份保留清理整批跳过（{data['aborted_reason']}）；未删除任何内容。")
+elif data.get("removed_count"):
+    count = data["removed_count"]
+    freed = data["total_bytes_freed"]
+    mb = freed / (1024 * 1024)
+    unit = f"{mb:.1f} MB" if mb >= 0.1 else f"{freed} B"
+    print(f"保留清理：已删除 {count} 项历史备份，释放 {unit}")
+PY
+)" || return 0
+  [[ -n "$prune_line" ]] && printf '%s\n' "$prune_line"
+  # 受管 runtime 剪裁（除 current 外保留最近 2）
+  local rt_json rt_line
+  rt_json="$(python3 "$manager" prune-runtimes --keep-newest 2 2>/dev/null)" || return 0
+  [[ -n "$rt_json" ]] || return 0
+  rt_line="$(python3 - "$rt_json" <<'PY'
+import json, sys
+
+data = json.loads(sys.argv[1])
+if data.get("aborted_reason"):
+    print(f"警告：runtime 保留清理整批跳过（{data['aborted_reason']}）；未删除任何内容。")
+elif data.get("removed_count"):
+    count = data["removed_count"]
+    freed = data["total_bytes_freed"]
+    mb = freed / (1024 * 1024)
+    unit = f"{mb:.1f} MB" if mb >= 0.1 else f"{freed} B"
+    print(f"保留清理：已删除 {count} 个旧受管 runtime，释放 {unit}")
+PY
+)" || return 0
+  [[ -n "$rt_line" ]] && printf '%s\n' "$rt_line"
+}
+
+if [[ "${1:-}" == "--internal-prune-skill-backups" ]]; then
+  shift
+  [[ $# -ge 1 ]] || fail "--internal-prune-skill-backups 缺少备份根目录"
+  run_internal_prune "$1"
+  exit 0
+fi
+
+if [[ "${1:-}" == "--internal-run-onboard" ]]; then
+  shift
+  [[ $# -ge 1 ]] || fail "--internal-run-onboard 缺少安装目录"
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  manager="$script_dir/scripts/runtime_manager.py"
+  [[ -f "$manager" ]] || { printf '{"status":"blocked","reason_code":"config_check_unavailable"}\n'; exit 0; }
+  python3 "$manager" onboard --route generate 2>/dev/null || \
+    printf '{"status":"blocked","reason_code":"config_check_unavailable"}\n'
+  exit 0
+fi
+
+# 单一事实来源：冲突检查与默认目标解析（正常流程与内部测试动词共用）。
+resolve_install_scope() {
+  : "${target:=}" "${host_kind:=}" "${agents_mode:=0}"
+  if [[ -n "$target" && "$agents_mode" == "1" ]]; then
+    fail "--agents 与 --target 不能同时使用"
+  fi
+  if [[ -n "$target" && -n "$host_kind" ]]; then
+    fail "--host 与 --target 不能同时使用"
+  fi
+  if [[ -n "$host_kind" && "$agents_mode" == "1" && "$host_kind" != "agents" ]]; then
+    fail "--agents 与 --host $host_kind 冲突"
+  fi
+  if [[ -z "$target" ]]; then
+    if [[ -n "$host_kind" ]]; then
+      case "$host_kind" in
+        codex) target="${CODEX_HOME:-$HOME/.codex}/skills/$SKILL_NAME" ;;
+        agents) target="$HOME/.agents/skills/$SKILL_NAME" ;;
+        claude) target="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/$SKILL_NAME" ;;
+      esac
+    elif [[ "$agents_mode" == "1" ]]; then
+      target="$HOME/.agents/skills/$SKILL_NAME"
+    else
+      target="${CODEX_HOME:-$HOME/.codex}/skills/$SKILL_NAME"
+    fi
+  fi
+  [[ "$(basename "$target")" == "$SKILL_NAME" ]] || \
+    fail "安装目录末级名称必须是 $SKILL_NAME"
+}
+
+# R17：--uninstall 默认只拆程序面；--purge-data 显式清数据；钥匙串永不自动触碰。
+if [[ "${1:-}" == "--uninstall" ]]; then
+  shift
+  purge_data=0
+  uninstall_bin_dir=""
+  while (($# > 0)); do
+    case "$1" in
+      --purge-data) purge_data=1; shift ;;
+      --bin-dir)
+        (($# >= 2)) || fail "--bin-dir 缺少值"
+        uninstall_bin_dir="$2"
+        shift 2
+        ;;
+      *) fail "未知选项：$1" ;;
+    esac
+  done
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  bin_dir="${uninstall_bin_dir:-${LEO_PPT_BIN_DIR:-$HOME/.local/bin}}"
+  launcher="$bin_dir/leo-ppt"
+  if [[ -L "$launcher" ]]; then
+    rm -f "$launcher"
+    printf '已移除命令：%s\n' "$launcher"
+  elif [[ -e "$launcher" ]]; then
+    printf '跳过：%s 存在但不属于本安装（非符号链接）。\n' "$launcher"
+  fi
+  if [[ -d "$script_dir" && -f "$script_dir/SKILL.md" ]] && \
+    [[ "$(basename "$(dirname "$script_dir")")" == "skills" ]]; then
+    rm -rf "$script_dir"
+    printf '已移除技能目录：%s\n' "$script_dir"
+  else
+    printf '跳过：当前目录形态不像已安装位置（父目录须为 skills）；未做删除。\n'
+  fi
+  data_home="${LEO_PPT_HOME:-$HOME/Library/Application Support/leo-ppt-generator}"
+  if [[ "$purge_data" == "1" && -d "$data_home" ]]; then
+    rm -rf "$data_home"
+    printf '已清除数据目录：%s\n' "$data_home"
+  else
+    printf '数据目录已保留：%s\n' "$data_home"
+  fi
+  printf '钥匙串条目（服务名 leo-ppt-generator/*）不会被自动删除；如需清理，请在「钥匙串访问」中确认后手动删除。\n'
+  exit 0
+fi
+
+if [[ "${1:-}" == "--internal-print-target" ]]; then
+  shift
+  while (($# > 0)); do
+    case "$1" in
+      --host)
+        (($# >= 2)) || fail "--host 缺少值"
+        case "$2" in codex|agents|claude) host_kind="$2" ;; *) fail "未知宿主：$2" ;; esac
+        shift 2
+        ;;
+      --agents) agents_mode=1; shift ;;
+      *) fail "未知选项：$1" ;;
+    esac
+  done
+  resolve_install_scope
+  printf 'parent=%s\nname=%s\n' "$(dirname "$target")" "$(basename "$target")"
+  exit 0
+fi
+
+host_kind=""
+target=""
 agents_mode=0
 upgrade=0
 source_dir=""
@@ -63,6 +226,14 @@ while (($# > 0)); do
       upgrade=1
       shift
       ;;
+    --host)
+      (($# >= 2)) || fail "--host 缺少值"
+      case "$2" in
+        codex|agents|claude) host_kind="$2" ;;
+        *) fail "未知宿主：$2；--host 仅支持 codex|agents|claude" ;;
+      esac
+      shift 2
+      ;;
     -h|--help)
       usage
       exit 0
@@ -73,9 +244,7 @@ while (($# > 0)); do
   esac
 done
 
-if [[ -n "$target" && "$agents_mode" == "1" ]]; then
-  fail "--agents 与 --target 不能同时使用"
-fi
+resolve_install_scope
 
 platform="$(uname -s)"
 architecture="$(uname -m)"
@@ -96,16 +265,6 @@ fi
 [[ -d "$source_dir" ]] || fail "本地来源目录不存在：$source_dir"
 source_dir="$(cd "$source_dir" && pwd -P)"
 
-if [[ -z "$target" ]]; then
-  if [[ "$agents_mode" == "1" ]]; then
-    target="$HOME/.agents/skills/$SKILL_NAME"
-  else
-    target="${CODEX_HOME:-$HOME/.codex}/skills/$SKILL_NAME"
-  fi
-fi
-[[ "$(basename "$target")" == "$SKILL_NAME" ]] || \
-  fail "安装目录末级名称必须是 $SKILL_NAME"
-
 target_parent="$(dirname "$target")"
 mkdir -p "$target_parent"
 target_parent="$(cd "$target_parent" && pwd -P)"
@@ -113,7 +272,8 @@ target="$target_parent/$SKILL_NAME"
 
 codex_root="${CODEX_HOME:-$HOME/.codex}/skills"
 agents_root="$HOME/.agents/skills"
-discovery_roots=("$codex_root" "$agents_root")
+claude_root="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
+discovery_roots=("$codex_root" "$agents_root" "$claude_root")
 if [[ -n "${LEO_PPT_EXTRA_DISCOVERY_ROOTS:-}" ]]; then
   IFS=':' read -r -a extra_roots <<< "$LEO_PPT_EXTRA_DISCOVERY_ROOTS"
   for extra_root in "${extra_roots[@]}"; do
@@ -124,11 +284,11 @@ fi
 for discovery_root in "${discovery_roots[@]}"; do
   discovered="$discovery_root/$SKILL_NAME"
   if [[ "$discovered" != "$target" && -f "$discovered/SKILL.md" ]]; then
-    fail "检测到另一个活动 Skill：${discovered}；请只保留目标 ${target} 后重试"
+    fail "检测到另一个活动 Skill：${discovered}；请只保留目标 ${target} 后重试。处置：mkdir -p ~/.leo-ppt-generator-quarantine && mv '${discovered}' ~/.leo-ppt-generator-quarantine/"
   fi
   for discovered_backup in "$discovery_root"/$SKILL_NAME.backup-*/SKILL.md; do
     [[ -e "$discovered_backup" ]] || continue
-    fail "检测到可被发现的旧备份：$(dirname "$discovered_backup")；请移入非发现目录后重试"
+    fail "检测到可被发现的旧备份：$(dirname "$discovered_backup")；请移入非发现目录后重试。处置：mkdir -p ~/.leo-ppt-generator-quarantine && mv '$(dirname "$discovered_backup")' ~/.leo-ppt-generator-quarantine/"
   done
 done
 
@@ -344,6 +504,50 @@ verification_label() {
   esac
 }
 
+config_state_label() {
+  case "$configuration_state" in
+    configured) printf '已配置' ;;
+    configured_unverified|locally_configured) printf '已配置（首次生成时验证）' ;;
+    not_configured|missing) printf '尚未配置' ;;
+    invalid) printf '配置无效' ;;
+    not_checked) printf '未检查' ;;
+    *) printf '%s' "$configuration_state" ;;
+  esac
+}
+
+eligibility_label() {
+  case "$execution_eligibility" in
+    allowed) printf '允许开始任务' ;;
+    blocked) printf '当前受阻' ;;
+    retryable) printf '可重试' ;;
+    unknown) printf '待确认' ;;
+    *) printf '%s' "$execution_eligibility" ;;
+  esac
+}
+
+readiness_label() {
+  case "$installation_readiness" in
+    ready) printf '就绪' ;;
+    usable_unverified) printf '可用（待首次验证）' ;;
+    installed_not_ready) printf '已安装但未就绪' ;;
+    *) printf '%s' "$installation_readiness" ;;
+  esac
+}
+
+host_display_name() {
+  if [[ -n "$host_kind" ]]; then
+    case "$host_kind" in
+      claude) printf 'Claude Code' ;;
+      agents) printf 'agents 宿主' ;;
+      *) printf 'Codex' ;;
+    esac
+  elif [[ "$agents_mode" == "1" ]]; then
+    printf 'agents 宿主'
+  else
+    printf 'Codex'
+  fi
+}
+
 run_post_activation_onboarding() {
   printf 'install[onboarding]: 正在检查图片服务配置…\n'
   if ! "$target/scripts/leo-bootstrap.sh" onboard --route generate >"$onboarding_log"; then
@@ -364,11 +568,11 @@ run_post_activation_onboarding() {
 
 print_onboarding_report() {
   printf '安装状态：已安装\n'
-  printf '配置状态：%s\n' "$configuration_state"
+  printf '配置状态：%s\n' "$(config_state_label)"
   printf '真实验证状态：%s\n' "$(verification_label)"
-  printf '执行资格：%s\n' "$execution_eligibility"
-  printf '安装可用性：%s\n' "$installation_readiness"
-  printf '原因：%s\n' "$onboarding_reason"
+  printf '执行资格：%s\n' "$(eligibility_label)"
+  printf '安装可用性：%s\n' "$(readiness_label)"
+  printf '原因码：%s\n' "$onboarding_reason"
 
   case "$installation_readiness" in
     ready)
@@ -406,6 +610,8 @@ print_configuration_command() {
 printf '\n安装成功：%s\n' "$target"
 if [[ -n "$backup" ]]; then
   printf '旧版本备份：%s\n' "$backup"
+  # L9：升级成功即触发历史备份保留清理（失败不阻断本次交付）。
+  run_internal_prune "$target_parent/.$SKILL_NAME-backups"
 fi
 
 run_post_activation_onboarding
@@ -447,4 +653,8 @@ else
   printf '提示：%s 尚不在 PATH；加入 shell 配置后即可使用短命令：\n' "$bin_dir"
   printf "  export PATH='%s':\$PATH\n" "$bin_dir"
 fi
-printf '请重新启动 Codex，或开启下一轮对话后使用 leo-ppt-generator。\n'
+printf '请重新启动 %s，或开启下一轮对话后使用 leo-ppt-generator。\n' "$(host_display_name)"
+printf '下一步：直接说「把这份材料做成图片式 PPT」即可开始。\n'
+if [[ -n "$backup" ]]; then
+  printf '变更详情：%s\n' "$target/UPDATES.md"
+fi

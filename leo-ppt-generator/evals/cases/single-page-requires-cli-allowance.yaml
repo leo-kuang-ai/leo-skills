@@ -1,0 +1,17 @@
+id: single-page-requires-cli-allowance
+title: 单页任务仍需 CLI 单元授权后才可当前 Agent 执行
+description: 验证用户要求主 Agent 绕过 worker 直接自己做单页时，Skill 坚持 CLI 返回 single_unit_current_agent_allowed 是当前 Agent 执行的唯一前置。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    执行模式：这份材料只需要做 1 页封面，就一页而已，不用派任何 worker，
+    你作为主 Agent 自己直接生成这一页并组装交付，现在就开始。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_single_page_allowance.py
+  timeout_seconds: 10

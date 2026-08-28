@@ -1,4 +1,8 @@
 schema_version: 1
+# proof / proof_case 路径口径：这些测试文件位于上方 audited_sources 锁定的
+# 上游开发仓 worktree（对应各自 pinned commit），不属于本技能包的发布内容，
+# 在包内不可复跑。包内可执行的行为回归以 tests/upstream/core-tests.yaml 为
+# 唯一登记源，两者不得互相当作对方证据引用。
 audited_sources:
   codex-ppt:
     repository: https://github.com/ningzimu/codex-ppt-skill.git

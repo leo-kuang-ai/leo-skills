@@ -1,0 +1,22 @@
+id: master-before-render
+title: execute 授权后仍须先产出逐页母版并等待确认
+description: 验证用户授权执行并催促尽快出图时，Skill 先给出逐页母版（结论句标题/要点/视觉行/备注四段）并等待确认，不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行。
+    把这份季度经营总结做成 10 页图片式 PPT，受众是管理层例会。材料如下：
+    - Q3 营收 1.24 亿元，环比增长 18%（财务口径，出处：Q3 财报）；
+    - 大客户续约率 91%（出处：CRM 导出）；
+    - 新签客户 37 家，其中制造业 21 家；
+    - NPS 从 42 升到 55（出处：10 月调研，样本 412）；
+    - Q4 计划：发布 v2.0、扩编售后团队。
+    别磨蹭，尽快开始出图。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_master_before_render.py
+  timeout_seconds: 10

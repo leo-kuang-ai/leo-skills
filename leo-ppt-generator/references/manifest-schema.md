@@ -62,7 +62,7 @@ Key fields:
 }
 ```
 
-`image_backend` is written by `leo-ppt upstream editable-ppt -- prepare` and may be overwritten by `leo-ppt upstream editable-ppt -- run backend` when needed. Parent-level backend selection policy lives in `SKILL.md` subsection "Image Backend Selection".
+`image_backend` is written by `leo-ppt upstream editable-ppt -- prepare` and may be overwritten by `leo-ppt upstream editable-ppt -- run backend` when needed. Parent-level backend selection policy lives in `backend-selection.md`.
 
 For `backend_id: "builtin-imagegen"`, these fields are required and have fixed meanings:
 
@@ -75,7 +75,7 @@ For `backend_id: "builtin-imagegen"`, these fields are required and have fixed m
 - `fallback_policy.on`: the only events that permit leaving the built-in tool: it is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image.
 - `fallback_policy.missing_optional_parameters`: always `false`; absent optional controls never authorize fallback.
 
-Other backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `SKILL.md` subsection "Image Backend Selection"; page reconstructors execute the copied contract above.
+Other backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `backend-selection.md`; page reconstructors execute the copied contract above.
 
 ## `page_jobs.json`
 
@@ -360,7 +360,7 @@ Each imported job records at least the selected output and the backend that actu
 
 `backend` is the actual producer: `builtin-imagegen`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `leo-ppt upstream editable-ppt -- image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
 
-State and provenance record rules are described in the State Principles section of `SKILL.md` and in the asset processing examples in `cli-helper.md`.
+State and provenance record rules are described in the 项目与 Runtime section of `execution-contract.md` and in the asset processing examples in `cli-helper.md`.
 
 ## `notes_manifest.json`
 

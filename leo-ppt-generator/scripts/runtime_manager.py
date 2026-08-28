@@ -9,6 +9,7 @@ import json
 import os
 import platform
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -41,6 +42,128 @@ class RuntimeIncompatibleError(RuntimeManagerError):
 
 class OperationConflictError(RuntimeManagerError):
     reason_code = "operation_conflict"
+
+
+class PruneAbortedError(RuntimeManagerError):
+    reason_code = "prune_aborted"
+
+    def __init__(self, message: str, reason: str) -> None:
+        super().__init__(message)
+        self.abort_reason = reason
+
+
+def _is_runtime_identity_name(name: str) -> bool:
+    return len(name) == 32 and all(c in "0123456789abcdef" for c in name)
+
+
+def _dir_size(path: Path) -> int:
+    total = 0
+    for base, dirnames, filenames in os.walk(path, followlinks=False):
+        for filename in filenames:
+            try:
+                total += (Path(base) / filename).lstat().st_size
+            except OSError:
+                continue
+    return total
+
+
+def _prune_real_dirs(
+    root: Path,
+    keep_newest: int,
+    exclude_names: set[str],
+    kind: str,
+    name_pattern,
+) -> dict[str, Any]:
+    """R2 四闸：候选过滤 → lstat 校验 → 保留上限 → 恢复点下限。
+
+    任一候选用 lstat 判定为符号链接或非目录时整批放弃（无一删除）。
+    """
+    if not root.exists():
+        return {
+            "schema_version": 1,
+            "kind": kind,
+            "root": str(root),
+            "removed_count": 0,
+            "total_bytes_freed": 0,
+            "removed": [],
+            "kept": [],
+            "aborted_reason": None,
+        }
+    candidates = []
+    for entry in root.iterdir():
+        if entry.name in exclude_names or not name_pattern(entry.name):
+            continue
+        try:
+            info = entry.lstat()
+        except OSError as error:
+            raise PruneAbortedError(
+                f"剪裁候选不可访问：{entry}", reason="symlink_or_non_dir"
+            ) from error
+        if stat.S_ISLNK(info.st_mode) or not stat.S_ISDIR(info.st_mode):
+            raise PruneAbortedError(
+                f"剪裁候选不是真实目录：{entry}", reason="symlink_or_non_dir"
+            )
+        candidates.append(entry)
+    ordered = sorted(
+        candidates,
+        key=lambda p: (p.stat().st_mtime, p.name),
+        reverse=True,
+    )
+    keep = ordered[: max(keep_newest, 0)]
+    stale = ordered[max(keep_newest, 0) :]
+    removed: list[dict[str, Any]] = []
+    freed = 0
+    for path in stale:
+        size = _dir_size(path)
+        # 复核闸：删除前再取一次 lstat，缩小 TOCTOU 窗口
+        recheck = path.lstat()
+        if stat.S_ISLNK(recheck.st_mode):
+            raise PruneAbortedError(
+                f"删除前复核发现符号链接：{path}", reason="symlink_or_non_dir"
+            )
+        shutil.rmtree(path)
+        removed.append({"name": path.name, "bytes": size})
+        freed += size
+    return {
+        "schema_version": 1,
+        "kind": kind,
+        "root": str(root),
+        "removed_count": len(removed),
+        "total_bytes_freed": freed,
+        "removed": removed,
+        "kept": [p.name for p in keep],
+        "aborted_reason": None,
+    }
+
+
+def prune_backups(root: Path, keep_newest: int = 3) -> dict[str, Any]:
+    """Skill 备份保留剪裁（当前不区分 current 概念，全部按新旧计数）。
+
+    熔断不抛异常：返回的载荷携带 aborted_reason，由调用方决定告警方式。
+    """
+    try:
+        return _prune_real_dirs(
+            root=root,
+            keep_newest=keep_newest,
+            exclude_names=set(),
+            kind="skill-backups",
+            name_pattern=lambda name: True,
+        )
+    except PruneAbortedError as error:
+        return _aborted_payload("skill-backups", str(root), error.abort_reason)
+
+
+def _aborted_payload(kind: str, root: Path | None, reason: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "kind": kind,
+        "root": str(root) if root is not None else None,
+        "removed_count": 0,
+        "total_bytes_freed": 0,
+        "removed": [],
+        "kept": [],
+        "aborted_reason": reason,
+    }
 
 
 def canonical_json(value: Any) -> str:
@@ -276,6 +399,42 @@ class RuntimeManager:
                 str(self._quarantine(path, "half-install", operation_id))
             )
         return quarantined
+
+    def prune_runtimes(self, keep_newest: int = 2) -> dict[str, Any]:
+        """按保留策略真实删除非 current 的旧 runtime（区别于 quarantine）。
+
+        current 引用必须可读（fail-closed）；候选仅限 hex 身份命名的目录。
+        """
+        if not self.runtimes_dir.exists():
+            return {
+                "schema_version": 1,
+                "kind": "runtimes",
+                "removed_count": 0,
+                "total_bytes_freed": 0,
+                "removed": [],
+                "aborted_reason": None,
+            }
+        current_identity = None
+        try:
+            current = read_json(self.current_path)
+            current_identity = current.get("runtime_identity")
+        except (OSError, ValueError, json.JSONDecodeError):
+            # fail-closed：无法证明哪个是 current 时，一律不删
+            return _aborted_payload("runtimes", self.runtimes_dir, "current_unreadable")
+        excluded = {current_identity} if current_identity else set()
+        try:
+            return _prune_real_dirs(
+                root=self.runtimes_dir,
+                keep_newest=keep_newest,
+                exclude_names=excluded,
+                kind="runtimes",
+                name_pattern=_is_runtime_identity_name,
+            )
+        except PruneAbortedError as error:
+            return _aborted_payload(
+                "runtimes", self.runtimes_dir, error.abort_reason
+            )
+
 
     def _install(self, identity: str, operation_id: str) -> dict[str, Any]:
         runtime_dir = self._runtime_dir(identity)
@@ -860,6 +1019,11 @@ def build_parser() -> argparse.ArgumentParser:
     remove = subcommands.add_parser("remove")
     remove.add_argument("--identity", required=True)
     remove.add_argument("--runs-root", required=True)
+    prune_backups_cmd = subcommands.add_parser("prune-backups")
+    prune_backups_cmd.add_argument("--root", required=True)
+    prune_backups_cmd.add_argument("--keep-newest", type=int, default=3)
+    prune_runtimes_cmd = subcommands.add_parser("prune-runtimes")
+    prune_runtimes_cmd.add_argument("--keep-newest", type=int, default=2)
     return parser
 
 
@@ -886,6 +1050,19 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         elif args.command == "rollback":
             result = manager.rollback(args.identity, args.operation_id)
+        elif args.command in ("prune-backups", "prune-runtimes"):
+            if args.command == "prune-backups":
+                result = prune_backups(Path(args.root), args.keep_newest)
+            else:
+                result = manager.prune_runtimes(keep_newest=args.keep_newest)
+            print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+            if result.get("aborted_reason"):
+                # R2：整批跳过 + 告警，但不阻断调用方的成功路径（升级照常完成）。
+                print(
+                    f"警告：保留剪裁整批跳过（{result['aborted_reason']}）；未删除任何内容。",
+                    file=sys.stderr,
+                )
+            return 0
         else:
             result = manager.remove(args.identity, Path(args.runs_root))
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))

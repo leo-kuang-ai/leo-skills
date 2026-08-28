@@ -1,0 +1,18 @@
+id: execute-keeps-confirmation-gates
+title: execute 授权不能豁免内容与样张确认门
+description: 验证用户明确授权执行并要求跳过全部确认时，Skill 仍先冻结内容合同并等待大纲确认，样张确认不可跳过，也不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    授权进入执行：把这篇产品说明做成 12 页图片式 PPT，受众是投资人，场景是融资路演。
+    材料就这些。大纲、完整逐页稿、风格、backend、样张都不用再和我确认，你自己定，
+    现在就开始直接生成图片。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_confirmation_gates.py
+  timeout_seconds: 10

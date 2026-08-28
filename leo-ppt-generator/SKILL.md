@@ -28,7 +28,9 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 绕过旧 `.ppt`、宏、嵌入对象、external relationship、远程模板或损坏结构检查。
 宿主可运行脚本时，上述固定块必须经 `render-control-summary.py --fixed gate0`
 原样产生（该模式不读取任何文件）；无法运行脚本时按固定块手写，并显式记录降级
-`gate0_render: handwritten`。
+`gate0_render: handwritten`。本分支的“禁止读取”只针对用户输入文件与重建动作；
+`--fixed` 模式自身不读取任何文件，因此即使在本分支也必须优先使用，不得以
+“不碰任何东西”为由改回手写。
 
 ## 交互模式门禁
 
@@ -37,6 +39,11 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 - `advise`：用户只要求判断、解释、比较路线、汇报状态或说明下一步，或明确说“先不要
   执行”。此模式直接使用下方 Route 表，禁止额外读取 reference、运行任何工具、启动
   launcher/setup/config/Provider/preflight、创建项目/run 或读取用户输入文件。
+  唯一的工具豁免是 `scripts/render-control-summary.py --fixed gate0` /
+  `--fixed worker-unavailable`：该模式不读取任何文件、无副作用，输出固定块不构成
+  执行动作，用户“不要执行任何操作”的表述不得据此改回手写。宿主确实无法运行脚本时
+  才手写固定块，并显式记录降级 `gate0_render: handwritten` 或
+  `worker_render: handwritten`。
 - `execute`：用户明确要求制作、转换、升级、继续既有任务，且已授权进入执行流程。只有
   此模式才按“首次使用”和对应 Route 读取后续资源。
 - 同一请求同时包含咨询和执行指令时，以咨询为准，先回答是否可以执行；不得因为请求
@@ -74,13 +81,16 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | --- | --- | --- |
 | `execute` Route 判断 | `references/input-routing.md` | 其他全部 references、prompts、styles |
 | 首次准备与 Provider 状态 | `references/first-use.md`、`references/backend-selection.md` | workflow、manifest、worker、styles |
-| `generate` 执行 | `image-deck-workflow.md`、`backend-selection.md`、`visual-qa.md` | styles 直到风格已选；`slide-worker.md` 直到样张通过 |
+| 跨 Route runtime/恢复/交付与 CLI 用法 | `references/execution-contract.md`、`references/cli-helper.md`（在对应 Route 进入后） | reason-codes 直到已有 reason code |
+| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`backend-selection.md`、`visual-qa.md` | styles 直到风格已选；`slide-worker.md` 直到样张通过 |
 | `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 直到真实 worker 已确认 |
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
 
 `references/styles/` 约束为按需索引：先读 `style-library.md`，选定风格、论证模式和版式
 后只读对应的单个风格文件；禁止预加载整个 styles 目录。`reason-codes.md` 只在已有
 reason code 需要解释或恢复时读取。执行前未命中的 references 不得因为“可能有用”而读取。
+
+所有场景（含 advise、材料缺失、worker 缺失）的回复都必须先输出下节「控制面响应合同」的五字段块，再写任何解释。
 
 ## 控制面响应合同
 
@@ -90,7 +100,14 @@ reason code 需要解释或恢复时读取。执行前未命中的 references �
 能取得 CLI JSON 时，必须先将其通过 `scripts/render-control-summary.py` 渲染；不得由
 Agent 手工改写字段。渲染器只输出五行摘要，不读取文件、不访问网络、不产生副作用；
 Gate 0 与 worker 缺失两类固定阻断块在宿主可运行脚本时同样必须经
-`--fixed gate0` / `--fixed worker-unavailable` 产生，不得手写改写。
+`--fixed gate0` / `--fixed worker-unavailable` 产生，不得手写改写。该要求对
+`advise` 与 `execute` 一律适用：advise 只是禁止执行动作，不是免除控制面输出。
+顺序属合同本体：五字段块必须是回复的最前面内容，至多允许其前一行
+`interaction_mode:` 元数据，其后才允许解释。手写降级披露行
+（`gate0_render: handwritten` / `worker_render: handwritten`）属于解释部分，
+必须置于五字段块之后单独成行，不得插入块前——前置即违反位置合同。
+execute 开始后的首次状态汇报应附带本地版本与人话就绪度一句；若检测到自上次
+交付以来发生过更新，如实提示"首轮生成将重新验证服务"。
 
 ```text
 route: <generate|direct-editable|upgrade-full|upgrade-selected|未选择>
@@ -132,13 +149,27 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
 ## 不变边界
 
-- 在会改变结果前确认大纲、完整内容、风格、图片 backend、样张或升级页集合。
+- 在会改变结果前确认大纲、完整内容、风格、图片 backend、样张或升级页集合；execute 授权或用户的"不用确认"要求不豁免该确认序列，样张确认尤其不可跳过。
+- 逐页母版是内容真值工件：每页四段——结论句标题、要点（≤6 条、每条 ≤2 行）、
+  视觉行（容器清单 + 每个要点落位声明）、备注；内容层失败先改母版再重建受影响页，
+  不绕过母版直接改图（见 `references/deck-master.md`）。
+- 数字与断言三级标注：引用（有出处）/ 估算（标"估算"或"经验值"）/ 示意（标"示意"，
+  不得用图表版式）；三级之外来源不足一律标 `unknown` 求证，不得直接写入页面。材料
+  整体缺失属于输入层的 unknown：同样必须先输出控制面五字段块（如
+  `input_material_missing`）再解释，不得以自然语言"要材料"开头；并在解释中重申
+  确认序列（大纲/母版/样张）不因用户的跳过授权而豁免。
+- 打回重做后的再检必须同时写出目标判据结论与波及面结论（如改文字→复查密度与
+  截断）；qa_note 只写"已修复"不构成通过。
 - 只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。
 - 多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
+- 宿主能力缺失只能用 CLI 结论或对应固定块的 `reason_code` 表述；不得枚举、点名或
+  诊断宿主的 Agent/子代理清单、注册表或目录来解释缺失原因，也不得据此提出改造
+  宿主的步骤建议。
 - 多页 worker 缺失、未知或调用失败时，先原样输出下面五行，再结束本轮；不得先写
   “当前无法生成”等自然语言，也不得由主 Agent 静默串行替代（宿主可运行脚本时以
-  `render-control-summary.py --fixed worker-unavailable` 输出）：
+  `render-control-summary.py --fixed worker-unavailable` 输出；无法运行脚本时手写
+  并显式记录 `worker_render: handwritten`）：
 
   ```text
   route: generate
@@ -172,7 +203,11 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
 确认完整内容、风格、backend 和一个样张后，按需读取 [风格库](references/style-library.md)
 和 [slide worker prompt](prompts/slide-worker.md)。style/layout 必须由确定性模板生成；
-缺页、未完成状态或任一页 QA 失败都阻止组装。
+缺页、未完成状态或任一页 QA 失败都阻止组装。组装复验时逐页核对合同约定的版面
+固定件（页码/页脚位置与字号一致），页内文本引用与实际页码核对存在。用户要求高保障
+档位时，启用 [视觉质检规范](references/visual-qa.md) 第六节多轮审查协议（镜头池轮换，
+连续两轮无 P1/P2 才收敛；台账记录，驳回须给依据）与交付双评审官可选档
+（见 [执行合同](references/execution-contract.md)，分歧 ≥2 分复议，不替代三证）。
 
 ### direct-editable
 

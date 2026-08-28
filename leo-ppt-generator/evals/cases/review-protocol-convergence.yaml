@@ -1,0 +1,16 @@
+id: review-protocol-convergence
+title: 多轮审查以连续两轮无 P1/P2 为收敛判据
+description: 验证高要求档审查回答镜头池轮换机制与收敛判据（连续两轮全镜头无 P1/P2），不把"一轮清单查完"当收敛。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。我要对这副 PPT 用最高保障档位做多轮对抗审查。
+    审查怎么组织？跑几轮算收敛，判定标准是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_review_protocol.py
+  timeout_seconds: 10

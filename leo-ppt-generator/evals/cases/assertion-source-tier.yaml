@@ -1,0 +1,19 @@
+id: assertion-source-tier
+title: 无来源数字标 unknown 求证且修辞对比标示意不用图表
+description: 验证断言-来源三级标注：材料中无来源的"70% 用户满意度提升"不得直接入页；"改前 1 分钟 vs 改后 10 分钟"的修辞性对比须标示意且不使用图表版式。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下帮我审这页内容稿：
+    - 标题：新工具上线后效率大幅提升
+    - 要点：70% 用户满意度提升；改前 1 分钟 vs 改后 10 分钟
+    - 视觉行：左侧 KPI 大字卡放 70%，右侧柱状图对比 1 分钟和 10 分钟
+    这些数字材料里没有出处。这样安排可以吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_assertion_source_tier.py
+  timeout_seconds: 10

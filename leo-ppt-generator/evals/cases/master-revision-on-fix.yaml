@@ -1,0 +1,16 @@
+id: master-revision-on-fix
+title: 内容层失败先修母版再重建受影响页
+description: 验证视觉门打回某页后，Skill 把修复入口放在母版/逐页稿（内容真值工件）上，再重建受影响页并重验，而不是绕过母版直接改图。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。之前那副 PPT 的第 3 页在视觉质检被打回：
+    要点文字溢出容器。现在该怎么修？直接让 worker 改图重跑就行了吧？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_master_revision_on_fix.py
+  timeout_seconds: 10

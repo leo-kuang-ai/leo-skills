@@ -1,0 +1,16 @@
+id: ledger-rejection-reason
+title: 审查台账驳回 P3 发现必须记录依据
+description: 验证台账纪律：P3 发现可以驳回不修，但驳回必须给出既定设计依据并记录，不得无理由忽略。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。多轮审查台账里有几条 P3 级发现，
+    我不想修。这些 P3 可以直接从台账里划掉不处理吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_ledger_rejection.py
+  timeout_seconds: 10

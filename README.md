@@ -1,6 +1,6 @@
 # Leo Skills
 
-可复用的智能体技能集合，兼容 Claude Code 与 Codex / OpenAI 双宿主，覆盖证据优先写作、内容编辑与 PPT 演示生成。
+可复用的智能体技能集合，兼容 Claude Code 与 Codex / OpenAI 双宿主，覆盖证据优先写作、内容编辑、PPT 演示生成，以及公众号 / 小红书 / 视频创作工具箱。
 
 ## 包含技能
 
@@ -24,7 +24,36 @@
 - 本地安装：[install.sh](leo-ppt-generator/install.sh)（macOS/Linux）、[install.ps1](leo-ppt-generator/install.ps1)（Windows）
 - 评测：9 个用例（`evals/cases/`）
 
+### `creator-buddy`
+
+公众号 / 小红书 / 视频全栈创作工具箱（vendored 集成）。根目录总控 Skill 负责路由：先做平台情报（全域内容搜索、爆款检测、赛道分析、博主与文章拆解），再把选题做成成品（定位、长短文写作、标题、封面、配图、排版、视频脚本、剪辑、B-roll、字幕、配音配乐），共 32 个子技能分三组，保持上游内部结构原样。
+
+- 入口：[creator-buddy/SKILL.md](creator-buddy/SKILL.md)；相对路径命令从 `creator-buddy/` 目录执行
+- 上游同步方式：[creator-buddy/UPSTREAM.md](creator-buddy/UPSTREAM.md)
+- 平台凭据（`GUAIKEI_API_TOKEN` 等）走本地环境变量，不入库
+
 ## 安装与使用
+
+三个插件（`evidence-first-writing` / `leo-ppt-generator` / `creator-buddy`）统一按以下方式安装；各插件 README 的安装节与此保持一致。
+
+### 快速安装（复制即装）
+
+终端粘贴即装，无需进会话逐条输入：
+
+```sh
+# Claude Code：一行装齐三个插件（官方 marketplace 通道，等价于方式一）
+claude plugin marketplace add leo-kuang-ai/leo-skills \
+  && claude plugin install evidence-first-writing@leo-skills \
+  && claude plugin install leo-ppt-generator@leo-skills \
+  && claude plugin install creator-buddy@leo-skills
+
+# 通用 agents 目录（Codex / Cursor 等兼容宿主）：clone + 软链
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.agents/skills/leo-skills \
+  && cd ~/.agents/skills/leo-skills \
+  && for p in evidence-first-writing leo-ppt-generator creator-buddy; do ln -s "$PWD/$p" ~/.agents/skills/"$p"; done
+```
+
+> Codex 专用目录：把第二段里两处 `~/.agents/skills` 换成 `~/.codex/skills` 即可。
 
 ### 方式一：Claude Code `/plugin`（推荐，已实测）
 
@@ -32,20 +61,21 @@
 
 ```text
 /plugin marketplace add leo-kuang-ai/leo-skills
-/plugin install evidence-first-writing     # 或 leo-ppt-generator
+/plugin install evidence-first-writing     # 或 leo-ppt-generator / creator-buddy
 ```
 
 - `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；
-- `plugin install` 把技能装到 `~/.claude/plugins/cache/leo-skills/<技能>/0.1.0/`，注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
+- `plugin install` 把技能装到 `~/.claude/plugins/cache/leo-skills/<技能>/<版本>/`，注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
 - 更新：推送新版本后 `/plugin update <技能>`（或先 `/plugin marketplace update` 再 update）；
 - 卸载：`/plugin uninstall <技能>`。
 
-### 方式二：Git clone + 软链到 `~/.claude/skills/`
+### 方式二：Git clone + 软链到 `~/.claude/skills/`（开发者 / 非 Claude Code 宿主）
 
 ```sh
 git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
 ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
 ln -s ~/.claude/skills/leo-skills/leo-ppt-generator     ~/.claude/skills/leo-ppt-generator
+ln -s ~/.claude/skills/leo-skills/creator-buddy         ~/.claude/skills/creator-buddy
 ```
 
 软链让 Claude Code 能识别技能，改动即时生效；`git -C ~/.claude/skills/leo-skills pull` 即可更新。
@@ -56,7 +86,7 @@ ln -s ~/.claude/skills/leo-skills/leo-ppt-generator     ~/.claude/skills/leo-ppt
 
 ### 验证
 
-在 Claude Code 会话中输入 `/skills`，应看到 `evidence-first-writing` 与 `leo-ppt-generator`；或用触发语直接发起请求。
+在 Claude Code 会话中输入 `/skills`，应看到 `evidence-first-writing`、`leo-ppt-generator` 与 `creator-buddy`；或用触发语直接发起请求。
 
 ## 使用示例
 
@@ -66,6 +96,9 @@ ln -s ~/.claude/skills/leo-skills/leo-ppt-generator     ~/.claude/skills/leo-ppt
 
 # PPT 生成（Codex 触发语）
 $leo-ppt-generator 把这份 PDF 视觉稿转成可编辑 PPTX，保留照片式风格。
+
+# 全域内容搜索与创作（creator-buddy 总控）
+小红书 Codex 最近有什么爆款？结合公众号近期热门给我几个短文选题。
 ```
 
 ## 宿主适配

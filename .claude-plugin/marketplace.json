@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "leo-skills",
-  "description": "Leo skills: evidence-first-writing and leo-ppt-generator",
+  "description": "Leo skills: evidence-first-writing, leo-ppt-generator and creator-buddy",
   "owner": {
     "name": "leo-kuang-ai"
   },
@@ -20,6 +20,15 @@
       "description": "把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint；支持图片版PPT、可编辑版、hybrid与升级路线",
       "version": "0.2.0",
       "source": "./leo-ppt-generator",
+      "author": {
+        "name": "leo-kuang-ai"
+      }
+    },
+    {
+      "name": "creator-buddy",
+      "description": "公众号/小红书/视频全栈创作工具箱总控：全域内容搜索与爆款分析，路由到定位、写作、标题、封面配图、排版与视频创作等 32 个子技能（vendored 集成）",
+      "version": "1.0.0",
+      "source": "./creator-buddy",
       "author": {
         "name": "leo-kuang-ai"
       }

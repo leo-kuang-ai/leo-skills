@@ -1,0 +1,12 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "creator-buddy",
+  "version": "1.0.0",
+  "description": "公众号/小红书/视频全栈创作工具箱总控：全域内容搜索与爆款分析，路由到定位、写作、标题、封面配图、排版与视频创作等 32 个子技能（vendored 集成）",
+  "author": {
+    "name": "leo-kuang-ai"
+  },
+  "skills": [
+    "./"
+  ]
+}

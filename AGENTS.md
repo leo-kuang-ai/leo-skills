@@ -15,9 +15,12 @@
 
 - `evidence-first-writing/` — 证据优先写作技能。
 - `leo-ppt-generator/` — 图片式 / 可编辑 / 升级 PPTX 生成技能。
+- `creator-buddy/` — vendored 创作工具箱插件（公众号 / 小红书 / 视频，上游来源与同步见 `creator-buddy/UPSTREAM.md`）。
 - `docs/` — 仓库级文档。
 - `*-workspace/` — 评测运行的生成产物（设计上被 git-ignore）。
 - `graphify-out/` — 图结构生成产物。
+
+`creator-buddy/` 是 vendored 所有权边界：根目录总控 `SKILL.md` + `gzh-Skills/`、`xhs-Skills/`、`video-Skills/` 三组共 32 个子技能；内部跨组引用（共享文风档案、视觉系统、脚本复用等）在该边界内豁免"兄弟技能不建立运行时依赖"与 kebab-case 命名约束；`SKILL.md` 中的相对路径命令一律从 `creator-buddy/` 目录执行。除已在 `UPSTREAM.md` 登记的本土化改写（README 系列、文风档案模板化）外不修改上游文件，本地适配通过新增文件（`.claude-plugin/plugin.json`、`LICENSE`、`UPSTREAM.md`）完成；上游同步整目录覆盖并保留本地改写，见 `creator-buddy/UPSTREAM.md`。该包暂不接入 skill-up 评测门禁（上游为 skillhub `evals/evals.json` 格式）。
 
 一个典型技能包应包含：
 

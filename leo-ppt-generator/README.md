@@ -19,9 +19,33 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 首次执行会自动检查受管 runtime、宿主能力和 Provider 状态。用户不需要手工初始化 runtime，
 也不应在聊天中粘贴 API 密钥。
 
-### 安装与宿主矩阵
+### 安装
 
-| 宿主 | 安装命令（在包根目录执行） | 默认安装位置 |
+#### 快速安装（复制即装）
+
+```sh
+# Claude Code
+claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install leo-ppt-generator@leo-skills
+
+# 其他宿主：clone 后用包级安装器（默认 Codex；--agents / --host 见下方方式二）
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git /tmp/leo-skills \
+  && cd /tmp/leo-skills/leo-ppt-generator && bash install.sh
+```
+
+#### 方式一：Claude Code `/plugin`（推荐）
+
+仓库已配置插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
+
+```text
+/plugin marketplace add leo-kuang-ai/leo-skills
+/plugin install leo-ppt-generator
+```
+
+更新：`/plugin update leo-ppt-generator`（或先 `/plugin marketplace update`）；卸载：`/plugin uninstall leo-ppt-generator`。
+
+#### 方式二：包级安装器（跨宿主，在包根目录执行）
+
+| 宿主 | 安装命令 | 默认安装位置 |
 |---|---|---|
 | Codex（默认） | `bash install.sh` | `${CODEX_HOME:-~/.codex}/skills` |
 | agents 通用目录 | `bash install.sh --agents` 或 `--host agents` | `~/.agents/skills` |

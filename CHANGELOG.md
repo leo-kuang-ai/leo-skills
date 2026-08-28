@@ -8,6 +8,73 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **docs/plans: Leo Studio 方案一致性整合** — Goal Capsule/KTD2/U1/Output Structure/
+  U6/U7/验证合同 8 处同步近期决策（PostgreSQL、KTD9 前端栈、DESIGN.md §11 UX 交互
+  合同）：U1 增 tokens CI 校验，U6/U7 增门禁分级"稍后处理"与 failed 断点续跑场景，
+  e2e 覆盖空状态/向导/裸主题禁用语义。(user-visible)
+- **docs/plans: KTD9 前端技术栈细化（用户确认采用成熟框架）** — Next.js 14+ App
+  Router + shadcn/ui/Radix/Tailwind + TanStack Query + Zustand + TipTap，并记录两项
+  明确不采用（admin 模板、CSS-in-JS 运行时）与原型→组件映射清单。(user-visible)
+- **docs/prototypes: DESIGN.md UX 交互合同与 v4 完整状态原型** — DESIGN.md 新增第 11
+  节（首次成功路径/五态矩阵/门禁疲劳渐进披露/failed-blocked UX 合同）；
+  `leo-studio-v4.html` 落地：onboarding 三步向导（含裸主题决定性问题与禁用语义）、
+  新用户空状态与示例项目入口、failed(budget_exceeded) 断点续跑状态、门禁分级与
+  "稍后处理"、Gate 0 阻断交互。(user-visible)
+- **docs/plans: Leo Studio 数据库选型改为 PostgreSQL（用户决定）** — KTD5 简化基座
+  由 SQLite（WAL）改为 PostgreSQL 16：JSONB 原生、V1 多用户零平移；本地 docker
+  compose 与 CI service 承载；Redis 仍不引入。U1 补 DATABASE_URL 与 compose，U3 补
+  Alembic/PG 方言与 testcontainers 测试约束。(user-visible)
+- **docs/plans: Leo Studio 计划增富为 implementation-ready（技术方案）** —
+  Product Contract 字节级保留，新增 Planning Contract（10 条 KTD：独立新仓库
+  leo-studio、三进程架构、headless claude CLI runtime 复用 render-control-summary.py、
+  V0.5 SQLite+进程内队列+轮询简化基座、AES-GCM 密钥加密与 Gate 0 文件系统级隔离）、
+  High-Level Technical Design（组件拓扑/任务状态机/门禁往返时序 mermaid 与仓库
+  Output Structure）、Implementation Units U1–U10（含测试场景与验证标准）、
+  Verification Contract（skill evals 双门禁 + 导出保真 gate）、Definition of Done、
+  风险与系统影响面。(user-visible)
+- **leo-ppt-generator 质量回路优化（七项，依据
+  `docs/leo-ppt-generator-quality-loop-optimization.md`）** — 由方法论 deck 的
+  20 轮多 agent 审查、5 评审官测评与 18 页验收审查反哺 (user-visible)
+  - 新增 `references/deck-master.md`：逐页内容母版成为 generate 路线的内容真值
+    工件（每页四段：结论句标题/要点/视觉行含落位声明/备注）；审查与修复前移到
+    母版层，内容层失败先改母版再重建受影响页。
+  - `references/image-deck-workflow.md`：步骤 1 数字与断言三级标注（引用/估算/
+    示意；示意不得用图表版式）；步骤 3 逐页稿升级为母版四段结构；步骤 12 组装
+    复验增加固定件逐页一致与页内引用存在性核对。
+  - `references/visual-qa.md`：打回重做后再检须覆盖「目标判据 + 波及面」双结论；
+    对抗清单新增断言-来源等级找茬问句；判据表新增固定件一致与交叉引用两行；
+    新增第六节多轮审查协议（镜头池轮换、连续两轮无 P1/P2 收敛、台账与驳回依据，
+    高要求可选档）。
+  - `references/execution-contract.md`：交付章节新增双独立评审官可选档（分歧
+    ≥2 复议；补充证据，不替代三证）。
+  - `prompts/slide-worker.md`：自查清单新增要点-容器落位声明（无落位要点或空
+    容器即失败）；重做场景 qa_note 须写目标判据与波及面双结论。
+  - `SKILL.md`：generate 执行行挂载 `deck-master.md` 按需读取。
+  - `evals`：新增 9 个质量回路用例（母版先行/母版修复/波及复查/断言三级/审查
+    协议收敛/台账驳回依据/固定件一致/交叉引用/双评审官）与 9 个 judge 脚本，
+    共享 `judge_common.py` 否定感知工具；judge 拒绝类断言改直接短语匹配（否定
+    过滤自指矛盾，离线双向自检 9/9 通过），known-issues.md 同步记录。评测侧
+    发现并修复三项工程问题：skill-up judge 沙盒单文件执行（judge 必须自包含）、
+    claude_code 引擎从安装副本加载（仓库改动需 install.sh 同步后进评测）、judge
+    长短语断言对模型措辞随机性脆弱（收敛为语义组模式）。六轮收敛后新 9 用例
+    全绿；回归抽样 advice-only 与 confirmation-gates 恢复 PASS（后者经 SKILL.md
+    两处锚定：材料缺失分支先出控制面块并重申确认序列、确认序列不因用户跳过
+    授权豁免）；control-plane-blocked-summary 维持已归档 model_gating 口径。
+    修复期间另修旧判官 judge_confirmation_gates.py 的动词表缺口（"发给我"类
+    材料请求动作未被识别）。
+
+- **docs/plans: Leo Studio web 工作台 requirements-only 统一计划**（2026-08-28 完善）—
+  新增业界同类调研摘要（Gamma / NotebookLM / Elicit / WPS AI 等中文市场评测）并据此
+  优化需求：输入多通道（R1.3/R2.2）、证据模式显式化（R1.4 严格接地 vs 开放调研）、
+  导出保真验收标准（R2.6）、来源库引用格式导出（R4.2）、品牌模板（R4.4，V2）、
+  发布与分享衔接 post-publish 红线（R8，V2）、credits 计费待决问题（Q6）；Non-goals
+  明确不做导出水印与 .docx 导出。(user-visible)
+- **docs/prototypes: Leo Studio 设计系统与原型三件套** — `DESIGN.md`（Stitch DESIGN.md
+  格式，Apple 壳 + Linear 工位双谱系，含动效令牌与 Do/Don't）；静态原型
+  `leo-studio-prototype.html`（暗色）与 `leo-studio-apple.html`（Apple 风，含登录/
+  注册/设置/模型配置）；动态交互原型 `leo-studio-interactive.html`（任务引擎模拟：
+  阶段推进、门禁暂停留痕、Gate 0 blocked、⌘K 命令面板、BYOK Provider 管理）。(user-visible)
+
 - **evidence-first-writing 创作者化能力层（v2 方案，10 项）** — 把 skill 从「单篇生产
   质控机」扩展为「内容经营闭环」，全部与因果/事实/授权红线兼容，势能承诺一律使用
   概率语言，不承诺阅读量数字。(user-visible)
@@ -51,6 +118,14 @@ adheres to a loose semantic-versioning convention.
 
 - `docs/plans/2026-08-27-001-feat-leo-ppt-lifecycle-ux-plan.md` — 上项工作的
   implementation-ready unified plan（R1–R17 / U1–U9 / 高风险信任链与验证合同）。
+
+- `docs/leo-ppt-generator-quality-loop-optimization.md` — 质量回路优化方案：由
+  方法论 deck 的 20 轮多 agent 审查（约 200 条发现）、5 评审官 × 8 维测评与 18 页
+  逐页验收审查反哺而成，先明确与现状的边界（大纲确认/unknown/revision/对抗式审查
+  等已有能力不重复），再给出六个实测验证的增量：P0 逐页内容母版工件（审查前移，
+  修复成本 1 vs N）与修复波及复查；P1 断言-来源三级标注（引用/估算/示意）、多轮
+  审查协议（镜头池轮换+NONE 收敛判据+台账）、构建一致性核对（固定件与交叉引用）；
+  P2 双评审官可选协议与要点-容器落位声明，每项含证据、落点文件与 eval 验收用例。
 
 - `docs/leo-ppt-generator-lifecycle-ux-plan.md` — 全生命周期用户体验优化方案：
   以首次安装/首次配置/日常使用/非首次更新/配置变更五场景（附卸载缺失场景）
@@ -210,6 +285,11 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **插件版本发布** — `evidence-first-writing` 与 `leo-ppt-generator` 的
+  `plugin.json` 版本 0.1.0 → 0.2.0：写作技能发布创作者化能力层（选题四问、
+  读者模型、内容资产、论点压缩句、分发包），PPT 技能发布全生命周期管理
+  （U1–U9）；description 同步补充能力关键词，`/plugin update` 现在有明确的
+  版本锚点。(user-visible)
 - `evidence-first-writing/evals/scripts/check-audit-readonly.sh` — accept `引用` /
   `原文` as synonyms of `原句` for the quoted-evidence gate; a compliant audit that
   labels quotes as 「引用：」 no longer false-fails (iteration-33's only FAIL was

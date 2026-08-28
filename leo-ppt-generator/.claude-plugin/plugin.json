@@ -1,10 +1,12 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "leo-ppt-generator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint；支持图片版PPT、可编辑版、hybrid与升级路线",
   "author": {
     "name": "leo-kuang-ai"
   },
-  "skills": ["./"]
+  "skills": [
+    "./"
+  ]
 }

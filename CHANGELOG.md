@@ -8,6 +8,30 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **docs: spec-first 公众号 W1 二轮推进（手册定稿 + 站外首答）** — 《spec-first 中文实战手册》v0.9 → **v1.0 定稿**（docs/spec-first-gzh-manual-v1.0.md）：两处待补全部补齐——17 workflow 全清单表（权威源 = npm v1.15.1 Runtime Capability Catalog）与 spec-first vs Spec Kit vs OpenSpec 三框架对比表（2026-08 官方页面口径）；三数字 17/35/26 经本地 catalog 与官网 Reference 双重验证成立（26 为 skill-local agents 参考页计数，顶层 source agents 已并入 skill-local 架构）；同工序导出 A4 六页 PDF（章节间嵌公众号码 + 文末大码，Chrome headless 打印，中文渲染经视觉验证通过）。知乎首答草稿落盘（docs/zhihu-answer-01-sdd-practice.md，SDD 实践题，约 820 字 + 双版本钩子段 + 发布待办）。「手册」关键词回复手动文案与链接投放建议追加至运营方案执行记录（后台自动写入不可行的定论不变）。(user-visible)
+- **docs: spec-first 公众号 W1 内容资产（自主推进）** — W1 长文《Spec-First 全景：17 个 workflow 怎么串成一条链》全文初稿（约 1600 字，标题 A/B 与发布待办）写入运营方案附录 A；钩子资产《spec-first 中文实战手册》v0.9 落盘（两处待补标记当日已由二轮推进补齐并升级 v1.0，见上条）；知乎题库确认 3 个高流量目标问题（SDD 实践体验 / OpenSpec 与 SDD 未来 / 多 AI 协同交付）。(user-visible)
+- **docs: 统一三插件安装规范** — 全仓 README 安装节统一为同一标准：首选 `/plugin marketplace add leo-kuang-ai/leo-skills` + `/plugin install <插件名>`，备选 git clone + 软链，包级安装器（leo-ppt-generator `install.sh`）作为包特有方式保留；移除安装说明中硬编码的陈旧版本号（0.1.0 → `<版本>`）；leo-ppt-generator README 补 marketplace 首选方式；creator-buddy 备选方式对齐软链规范；xhs-hotnotes 文档移除 skillhub 渠道追踪参数；方式二定位措辞统一为「开发者 / 非 Claude Code 宿主」；新增「快速安装（复制即装）」段——每宿主一段可直接粘贴的命令（Claude Code 走 `claude plugin` CLI 官方 marketplace 通道，agents 目录走 clone + 软链），并把 creator-buddy 插件清单迁移至规范位置 `.claude-plugin/plugin.json`（三插件与 marketplace 均经 `claude plugin validate` 校验通过）。(user-visible)
+- **creator-buddy: 集成为 vendored 创作工具箱插件（上游 creator-buddy @ edf46c5）** — 以单一顶层目录整体迁入总控 Skill + 32 个子技能（公众号 / 小红书 / 视频三组，与上游字节一致，仅排除 .git）；本地新增 .claude-plugin/plugin.json / LICENSE / UPSTREAM.md，注册 marketplace 条目并先只暴露总控入口（skills: ["./"]）；AGENTS.md 声明 vendored 所有权边界（内部跨组引用与命名豁免、暂不接 skill-up 评测）；README 补安装与使用说明。随后本土化：README 系列（根 / gzh / xhs）移除原作者个人信息与上游安装指引、安装方式改指本仓库，`gzh-Skills/references/my-voice.md` 原作者文风档案转为待填模板，插件 author 元数据改为 leo-kuang-ai；`LICENSE` 版权行按 MIT 再分发要求保留。(user-visible)
+- **docs/plans: spec-first 公众号运营方案（战略锚点 + 执行计划）** — 基于产品与生态证据拍板五项运营决策（官方声音缺位诊断、只写一手实践打法、重度 AI Coding 开发者主读者、前 8 周双周长文节奏、docs/plans 落盘位）；含内容三轨、首月排期、三件套草案（带字数校验）、90 天路线图与红线；后经 owner 授权只读后台补充实测基线（834 用户/34 原创/未认证/英文简介），并据此将执行从冷启动基建修正为优化现有三件套；owner 全权授权后已执行菜单改名发布（spec→看内容），简介与自动回复交付了字数校验过的粘贴版文案，并产出基于真实分享率数据的首月 8 篇文章规划。(user-visible)
+- **docs/prototypes: v5 设置页完整设计（六组配置）** — 配置分四层：个人偏好（账户/
+  通知，门禁到达即时或汇总、失败通知不可关）、算力成本（默认模型带推荐、Provider 健康
+  度、单任务 token/时长预算与 failed 续跑闭环、月度提醒阈值）、管线与门禁（门禁策略
+  三档标准/精简/严格、默认证据模式与深度、三条硬规则锁定项展示）、系统治理（skill
+  版本 × evals 门禁状态、runtime 锁定、产物保留与来源自动入库）；明确不放假配置
+  （深色/语言）。(user-visible)
+- **docs/prototypes: v5 产品逻辑打磨版原型** — 逐页深化：项目台改为注意力优先排序
+  （待决策>失败>运行中）+ 筛选标签 + 每卡"需要你做什么"行动行；向导加深度后果标签
+  （时长+适用）与严格接地分支（来源上传步骤）、决定性问题"为什么要问"说明；写作工位
+  右栏随阶段自适应三面板、来源↔正文双向高亮联动、门禁选项带代价标注、"手动修改保护"
+  所有权可视化；PPT 工位 Route 卡标注"需要准备什么"、逐页样张批准/拒绝（被拒页只重做
+  自己）、下载菜单（PPTX/PDF/图片包含保真说明）；设置页模型推荐理由与 Provider 健康
+  度。(user-visible)
+- **docs/plans: Leo Studio 计划审查修复（12 项 findings 全量处置）** — P1 密钥传递
+  边界与提示注入边界入 KTD7/U8（BYOK 密钥不进 workdir 子进程环境）；门禁检测收敛
+  为阶段-门禁映射表主机制 + delivered 前必经门禁校验（gate_missed 防静默绕过，
+  KTD6/U5 含新测试场景）；U6 补 R1.4 证据模式档位承接；U1 环境契约补 LEO_SECRET；
+  KTD8 预览沙箱化；U4 补 worker_abnormal 崩溃映射；范围边界显式点名 R6.4/R4.2 导出/
+  R2.2 第三通道延后；U7 注明 V0.5 仅 generate 可执行。(user-visible)
 - **docs/plans: Leo Studio 方案一致性整合** — Goal Capsule/KTD2/U1/Output Structure/
   U6/U7/验证合同 8 处同步近期决策（PostgreSQL、KTD9 前端栈、DESIGN.md §11 UX 交互
   合同）：U1 增 tokens CI 校验，U6/U7 增门禁分级"稍后处理"与 failed 断点续跑场景，

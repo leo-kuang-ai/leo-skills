@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leo Studio — 动态交互原型</title>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f5f5f7; --text:#1d1d1f; --text2:#6e6e73; --text3:#86868b;
+  --hairline:#e8e8ed; --line:#d2d2d7;
+  --accent:#0071e3; --accent-hover:#0077ed; --link:#0066cc;
+  --ok:#34c759; --warn:#ff9500; --danger:#ff3b30;
+  --ev-fact:#0071e3; --ev-sourced:#ac8e3e; --ev-judgment:#8944ab; --ev-personal:#00a06d;
+  --ease:cubic-bezier(.25,.1,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit}
+
+/* ============ 导航 ============ */
+.nav{position:sticky;top:0;z-index:100;height:48px;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08);display:none;align-items:center;padding:0 max(22px,calc((100% - 1080px)/2));gap:6px}
+.nav.show{display:flex}
+.nav .logo{font-weight:700;font-size:17px;margin-right:16px}
+.nav .logo b{color:var(--accent)}
+.nav a{color:var(--text3);font-size:12.5px;padding:6px 11px;border-radius:8px;text-decoration:none;transition:color .12s,background .12s;position:relative}
+.nav a:hover{color:var(--text)}
+.nav a.on{color:var(--text);background:rgba(0,0,0,.05)}
+.nav a .wdot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--warn);display:none}
+.nav a.wait .wdot{display:block}
+.nav .avatar{margin-left:14px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--ev-judgment));color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav .kbd-hint{margin-left:auto;margin-right:10px;font-size:11px;color:var(--text3);border:1px solid var(--hairline);border-radius:6px;padding:3px 8px;background:#fff}
+.nav .kbd-hint b{font-weight:600}
+
+/* ============ 页面与切换 ============ */
+.page{display:none;min-height:calc(100vh - 48px)}
+.page.active{display:block;animation:viewin .32s var(--ease)}
+@keyframes viewin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* 阶梯入场 */
+.stag{animation:fadeup .32s var(--ease) both}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ============ 通用 ============ */
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.pill{border:none;border-radius:980px;padding:12px 26px;font-size:16px;transition:background .12s,transform .12s,opacity .12s}
+.pill:active{transform:scale(.97)}
+.pill.blue{background:var(--accent);color:#fff}
+.pill.blue:hover{background:var(--accent-hover)}
+.pill.gray{background:#e8e8ed;color:var(--text)}
+.pill.gray:hover{background:#dcdce1}
+.pill.green{background:var(--ok);color:#fff}
+.pill.small{padding:7px 16px;font-size:13px}
+.pill:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ============ 登录注册 ============ */
+.auth{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg2);padding:40px 22px}
+.auth-card{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.08);padding:44px 48px;width:400px;max-width:100%;animation:fadeup .32s var(--ease)}
+.auth-card h2{font-size:28px;font-weight:700;text-align:center;letter-spacing:-.01em}
+.auth-card .sub{color:var(--text2);font-size:14px;text-align:center;margin:8px 0 26px}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;outline:none;transition:border-color .12s,box-shadow .12s}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+.auth-card .pill{width:100%;margin-top:6px}
+.auth-sep{display:flex;align-items:center;gap:12px;color:var(--text3);font-size:12px;margin:18px 0}
+.auth-sep::before,.auth-sep::after{content:"";flex:1;height:1px;background:var(--hairline)}
+.oauth{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.oauth button{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 0;font-size:13px;transition:background .12s}
+.oauth button:hover{background:var(--bg2)}
+.auth-foot{text-align:center;font-size:13px;color:var(--text2);margin-top:22px}
+.auth-foot a{color:var(--link);text-decoration:none}
+
+/* ============ Hero 与瓦片 ============ */
+.hero{text-align:center;padding:84px 22px 60px;background:linear-gradient(180deg,#fbfbfd,#fff)}
+.hero h1{font-size:56px;font-weight:700;letter-spacing:-.02em;line-height:1.08}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--ev-judgment));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text2);font-size:20px;margin-top:14px}
+.hero .cta{margin-top:26px;display:flex;gap:26px;justify-content:center;align-items:center}
+.linkpill{color:var(--link);font-size:18px;text-decoration:none}
+.linkpill:hover{text-decoration:underline}
+.section{padding:52px 0}
+.section.alt{background:var(--bg2)}
+.h2{font-size:32px;font-weight:700;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+.tile{background:#fff;border-radius:18px;padding:32px 32px;min-height:200px;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.tile:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.tile .k{font-size:12px;color:var(--text3);font-weight:600}
+.tile h3{font-size:24px;font-weight:650;letter-spacing:-.01em;margin:6px 0 8px}
+.tile p{color:var(--text2);font-size:13.5px;flex:1}
+.tile .foot{display:flex;justify-content:space-between;font-size:12.5px;color:var(--text3);margin-top:14px}
+.st{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot.run{background:var(--accent);animation:pulse 1.2s infinite}
+.dot.done{background:var(--ok)} .dot.wait{background:var(--warn)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,113,227,.35)}50%{box-shadow:0 0 0 5px rgba(0,113,227,0)}}
+.progressbar{display:flex;gap:4px;margin-top:14px}
+.progressbar i{flex:1;height:4px;border-radius:2px;background:var(--hairline);transition:background .3s}
+.progressbar i.done{background:var(--ok)} .progressbar i.cur{background:var(--accent)}
+
+/* ============ 工位 ============ */
+.studio-head{display:flex;align-items:center;gap:14px;padding:26px 0 18px;border-bottom:1px solid var(--hairline);margin-bottom:24px;flex-wrap:wrap}
+.studio-head h2{font-size:30px;font-weight:700;letter-spacing:-.01em}
+.tag{font-size:12px;padding:4px 12px;border-radius:980px;background:var(--bg2);color:var(--text2);font-weight:500}
+.studio-head .acts{margin-left:auto;display:flex;gap:10px}
+.cols{display:grid;grid-template-columns:200px 1fr 250px;gap:24px;align-items:start}
+.cols.two{grid-template-columns:220px 1fr}
+.panel{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:18px}
+.panel h5{font-size:11.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:10px}
+.step{display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:9px;font-size:13.5px;color:var(--text2);transition:background .2s,color .2s}
+.step .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;background:#fff;transition:all .2s}
+.step.done{color:var(--text)} .step.done .n{border-color:var(--ok);color:var(--ok);background:rgba(52,199,89,.08)}
+.step.cur{background:var(--bg2);color:var(--text);font-weight:500} .step.cur .n{border-color:var(--accent);color:var(--accent);animation:pulse 1.2s infinite}
+.step .gate{margin-left:auto;font-size:11px;color:var(--warn)}
+
+/* 编辑器 */
+.doc{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:36px 42px;font-size:15.5px;line-height:1.85;color:#3a3a3c}
+.doc h1{font-size:26px;color:var(--text);margin-bottom:18px;letter-spacing:-.01em}
+.doc p{margin-bottom:14px}
+.doc .reveal{opacity:0;transform:translateY(8px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.doc .reveal.in{opacity:1;transform:none}
+mark{border-radius:4px;padding:1px 4px;border-bottom:2px solid transparent}
+mark.fact{background:rgba(0,113,227,.09);border-color:var(--ev-fact)}
+mark.src{background:rgba(172,142,62,.1);border-color:var(--ev-sourced)}
+mark.judg{background:rgba(137,68,171,.09);border-color:var(--ev-judgment)}
+mark.pers{background:rgba(0,160,109,.1);border-color:var(--ev-personal)}
+.legend{display:flex;gap:15px;font-size:12px;color:var(--text2);margin-bottom:12px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:-1px}
+.causal{border:1px dashed rgba(255,149,0,.5);background:rgba(255,149,0,.05);color:#9a6b00;border-radius:12px;padding:12px 16px;font-size:13px;margin:12px 0}
+.gatebox{border:1px solid rgba(0,113,227,.35);background:rgba(0,113,227,.04);border-radius:12px;padding:16px 18px;margin-top:20px;font-size:14px;animation:fadeup .2s var(--ease)}
+.gatebox b{display:block;font-size:14.5px;margin-bottom:6px}
+.gatebox .row{display:flex;gap:10px;margin-top:12px}
+.gate-resolved{border:1px solid var(--hairline);background:var(--bg2);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text2);margin-top:20px}
+
+/* 账本 */
+.cnts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.cnt{background:var(--bg2);border-radius:10px;padding:9px 11px;font-size:10.5px;color:var(--text2)}
+.cnt b{display:block;font-size:18px;font-weight:650;color:var(--text);font-variant-numeric:tabular-nums}
+.srcrow{background:var(--bg2);border-radius:10px;padding:9px 11px;margin-bottom:7px;font-size:12px}
+.srcrow .t{margin-bottom:2px}
+.srcrow .s{color:var(--text3);font-size:11px;display:flex;justify-content:space-between}
+.pillst{font-size:10px;padding:2px 8px;border-radius:980px}
+.pillst.ok{background:rgba(52,199,89,.12);color:var(--ok)} .pillst.pend{background:rgba(255,149,0,.12);color:var(--warn)}
+
+/* PPT */
+.routes{display:grid;gap:8px}
+.route{border:1px solid var(--hairline);border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s}
+.route:hover{border-color:var(--line)}
+.route.sel{border-color:var(--accent);background:rgba(0,113,227,.04)}
+.route b{font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.route b code{font-size:10px;color:var(--accent);font-weight:500}
+.route span{font-size:11px;color:var(--text2);display:block;margin-top:2px;line-height:1.4}
+.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.slide{aspect-ratio:16/9;border-radius:10px;border:1px solid var(--hairline);background:linear-gradient(140deg,#eef1f7,#e2e7f2);padding:11px;display:flex;flex-direction:column;position:relative;transition:opacity .3s var(--ease),transform .3s var(--ease),box-shadow .15s}
+.slide.pop{animation:slidein .32s var(--ease) both}
+@keyframes slidein{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.slide .num{font-size:9px;color:var(--text3)}
+.slide .t{font-size:11.5px;font-weight:600;margin:3px 0}
+.slide .b{font-size:9px;color:var(--text2);line-height:1.35}
+.slide .qa{position:absolute;top:7px;right:9px;font-size:9px;color:var(--ok)}
+.slide.samp{border-color:rgba(52,199,89,.45)}
+.slide.empty{border-style:dashed;background:none;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:10.5px}
+.controlbar{margin-top:16px;background:var(--bg2);border-radius:12px;padding:11px 14px;display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;font-variant-numeric:tabular-nums}
+.cf{background:#fff;border-radius:8px;padding:5px 11px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:color .2s}
+.cf b{color:var(--text3);font-weight:400;margin-right:6px}
+.cf .v-run{color:var(--accent)} .cf .v-wait{color:var(--warn)} .cf .v-ok{color:var(--ok)}
+
+/* ============ 设置 ============ */
+.settings{display:grid;grid-template-columns:220px 1fr;gap:30px;padding:36px 0 70px}
+.setnav{position:sticky;top:72px}
+.setnav .me{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+.setnav .me .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--ev-judgment));color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+.setnav .me b{font-size:14px;display:block}
+.setnav .me span{font-size:12px;color:var(--text3)}
+.setnav a{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:9px;font-size:13.5px;color:var(--text);text-decoration:none;margin-bottom:2px}
+.setnav a.on{background:var(--accent);color:#fff}
+.setnav a:not(.on):hover{background:var(--bg2)}
+.group{background:#fff;border:1px solid var(--hairline);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.gtitle{padding:15px 20px 6px;font-size:13px;color:var(--text3)}
+.row{display:flex;align-items:center;gap:14px;padding:12px 20px;border-top:1px solid var(--hairline);font-size:14px;min-height:52px;flex-wrap:wrap}
+.row .lbl{flex:1;min-width:180px}
+.row .lbl b{display:block;font-size:14px;font-weight:500}
+.row .lbl span{font-size:12px;color:var(--text3)}
+.row input[type=text],.row input[type=password],.row select{border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13.5px;outline:none;min-width:200px}
+.row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.12)}
+.switch{position:relative;width:44px;height:26px;flex-shrink:0;display:inline-block}
+.switch input{opacity:0;width:0;height:0}
+.switch i{position:absolute;inset:0;background:#e8e8ed;border-radius:980px;transition:.2s;cursor:pointer}
+.switch i::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);top:2px;left:2px;transition:.2s}
+.switch input:checked+i{background:var(--ok)}
+.switch input:checked+i::after{left:20px}
+.modelpick{display:flex;gap:8px;flex-wrap:wrap}
+.modelpick button{border:1px solid var(--line);background:#fff;border-radius:980px;padding:6px 14px;font-size:12.5px;transition:all .12s}
+.modelpick button.on{border-color:var(--accent);color:var(--accent);background:rgba(0,113,227,.05)}
+.keymask{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--text2);background:var(--bg2);border-radius:7px;padding:6px 10px}
+.testbtn{position:relative;min-width:74px;text-align:center}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--hairline);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.okbadge{color:var(--ok);font-size:12.5px;font-weight:500}
+.usagebar{height:8px;border-radius:4px;background:var(--hairline);overflow:hidden;margin:8px 0 4px;width:100%}
+.usagebar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ev-judgment));transition:width 1s var(--ease)}
+
+/* ============ 模态 / 命令面板 / Toast ============ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:14vh;animation:fadein .15s}
+.overlay.show{display:flex}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.12);width:440px;max-width:92vw;padding:28px 30px;animation:fadeup .2s var(--ease);max-height:74vh;overflow-y:auto}
+.modal h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.modal .ms{font-size:13px;color:var(--text2);margin-bottom:20px}
+.modal .foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.seg{display:inline-flex;background:var(--hairline);border-radius:9px;padding:2px}
+.seg button{border:none;background:none;border-radius:7px;padding:6px 16px;font-size:13px;transition:all .12s}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+/* 命令面板 */
+.palette{background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.14);width:520px;max-width:92vw;overflow:hidden;animation:fadeup .18s var(--ease)}
+.palette input{width:100%;border:none;outline:none;font-size:16px;padding:16px 20px;border-bottom:1px solid var(--hairline)}
+.palette .list{max-height:320px;overflow-y:auto;padding:8px}
+.pa-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;font-size:14px;cursor:pointer}
+.pa-item:hover,.pa-item.sel{background:var(--bg2)}
+.pa-item .k{margin-left:auto;font-size:11px;color:var(--text3);border:1px solid var(--hairline);border-radius:5px;padding:1px 6px}
+.pa-item .ic{width:20px;text-align:center}
+/* toast */
+#toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center}
+.toast{background:rgba(29,29,31,.92);color:#fff;border-radius:980px;padding:10px 22px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:fadeup .2s var(--ease);display:flex;gap:8px;align-items:center}
+.toast.out{opacity:0;transition:opacity .25s}
+
+.foot{background:var(--bg2);border-top:1px solid var(--hairline);padding:26px 0 40px;font-size:12px;color:var(--text3);display:none}
+.foot.show{display:block}
+.foot .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+
+@media (max-width:900px){.cols,.cols.two{grid-template-columns:1fr}.slides{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.hero h1{font-size:40px}.settings{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ================= 导航 ================= -->
+<div class="nav" id="nav">
+  <span class="logo">Leo<b>Studio</b></span>
+  <a data-nav="dash" href="#" onclick="go('dash');return false">项目台</a>
+  <a data-nav="write" href="#" onclick="go('write');return false">写作<span class="wdot"></span></a>
+  <a data-nav="deck" href="#" onclick="go('deck');return false">演示<span class="wdot"></span></a>
+  <a data-nav="assets" href="#" onclick="go('assets');return false">资产库</a>
+  <a data-nav="set-account" href="#" onclick="go('set-account');return false">设置</a>
+  <span class="kbd-hint" onclick="openPalette()" style="cursor:pointer"><b>⌘K</b> 命令</span>
+  <span class="avatar" onclick="go('set-account')">K</span>
+</div>
+
+<!-- ================= 登录 ================= -->
+<div id="login" class="page active">
+  <div class="auth"><div class="auth-card">
+    <h2>登录 Leo Studio</h2>
+    <div class="sub">可信的内容生产管线，从这里继续。</div>
+    <div class="field"><label>电子邮箱</label><input id="li-email" type="email" placeholder="name@example.com"></div>
+    <div class="field"><label>密码</label><input id="li-pass" type="password" placeholder="任意输入即可（原型）"></div>
+    <button class="pill blue" onclick="doLogin()">登录</button>
+    <div class="auth-sep">或通过以下方式继续</div>
+    <div class="oauth">
+      <button onclick="doLogin()"> Apple</button><button onclick="doLogin()">Google</button><button onclick="doLogin()">GitHub</button>
+    </div>
+    <div class="auth-foot">没有账户？<a href="#" onclick="go('register');return false">立即注册</a></div>
+  </div></div>
+</div>
+
+<!-- ================= 注册 ================= -->
+<div id="register" class="page">
+  <div class="auth"><div class="auth-card">
+    <h2>创建账户</h2>
+    <div class="sub">几分钟内开始你的第一个可信项目。</div>
+    <div class="field"><label>姓名</label><input type="text" placeholder="你的名字"></div>
+    <div class="field"><label>电子邮箱</label><input type="email" placeholder="name@example.com"></div>
+    <div class="field"><label>密码（至少 8 位）</label><input type="password"></div>
+    <button class="pill blue" onclick="toast('验证邮件已发送（原型示意）');doLogin()">注册并发送验证邮件</button>
+    <div class="auth-foot">已有账户？<a href="#" onclick="go('login');return false">直接登录</a></div>
+  </div></div>
+</div>
+
+<!-- ================= 项目台 ================= -->
+<div id="dash" class="page">
+  <div class="hero">
+    <h1>证据先行，<br><em>把门禁交还给作者。</em></h1>
+    <p>写文章讲证据分级，做演示讲交付路线。每一个论断，都经得起核查。</p>
+    <div class="cta">
+      <button class="pill blue" onclick="openNewProject()">＋ 新建项目</button>
+      <a class="linkpill" href="#" onclick="go('write');return false">继续最近的项目 ›</a>
+    </div>
+  </div>
+  <div class="section alt"><div class="wrap">
+    <div class="h2">你的项目。</div>
+    <p style="color:var(--text2);margin-top:6px">历史长期保存，随时回溯每个门禁决策。按 <b>⌘K</b> 唤起命令面板。</p>
+    <div class="grid" id="projGrid"></div>
+    <div style="height:60px"></div>
+  </div></div>
+</div>
+
+<!-- ================= 写作工位 ================= -->
+<div id="write" class="page">
+  <div class="wrap">
+    <div class="studio-head">
+      <h2 id="w-title">为什么"证据优先"是 AI 写作的唯一出路</h2>
+      <span class="tag">观点评论 · standard</span>
+      <div class="acts">
+        <button class="pill gray small" onclick="toast('版本与门禁决策时间线（原型占位）')">历史</button>
+        <button class="pill gray small" onclick="toast('导出 Markdown / 平台格式（原型占位）')">导出</button>
+        <button class="pill blue small" id="w-run" onclick="runWrite()">▶ 运行管线</button>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="panel">
+        <h5>阶段</h5>
+        <div id="w-steps"></div>
+        <h5 style="margin-top:14px">本阶段操作</h5>
+        <div class="step">hooks · 候选开头</div>
+        <div class="step">humanize · 去模板感</div>
+        <div class="step">audit · 只审不改</div>
+      </div>
+      <div>
+        <div class="legend">
+          <span><i style="background:var(--ev-fact)"></i>已核实事实</span>
+          <span><i style="background:var(--ev-sourced)"></i>有来源解释</span>
+          <span><i style="background:var(--ev-judgment)"></i>作者判断</span>
+          <span><i style="background:var(--ev-personal)"></i>亲身经历</span>
+        </div>
+        <div class="doc" id="w-doc">
+          <h1>为什么"证据优先"是 AI 写作的唯一出路</h1>
+          <p class="reveal" id="wp1">过去一年，<mark class="fact">生成式 AI 辅助写作在内容创作者中的渗透率快速上升</mark>，但与之相伴的是另一个事实：<mark class="src">多家平台报告 AI 生成内容的虚假引用比例显著高于人工内容</mark>。问题不在于模型不会写，而在于它太会写了——流畅掩盖了事实的空洞。</p>
+          <p class="reveal" id="wp2"><mark class="judg">我认为，解法不是更强的模型，而是把"证据分级"变成写作流程的一等公民。</mark>当每一个论断都被迫声明自己属于哪一类，编造就失去了藏身之处。</p>
+          <p class="reveal" id="wp3"><mark class="pers">我自己就踩过这个坑：去年一篇 AI 辅助的行业分析里，一个"可靠"的统计数字最终被读者指出是模型编造的。</mark></p>
+          <div class="causal reveal" id="w-causal">⚠ 因果红线 — 本段仅有时间先后关系，缺少对照与反事实证据，不得断言"AI 使用导致内容质量下降"。已改为关联表述；如需因果句请补充对照研究。</div>
+          <div id="w-gate-slot"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h5>证据账本</h5>
+        <div class="cnts">
+          <div class="cnt"><b id="c-fact">0</b>已核实事实</div>
+          <div class="cnt"><b id="c-src">0</b>有来源解释</div>
+          <div class="cnt"><b id="c-judg">0</b>作者判断</div>
+          <div class="cnt"><b id="c-pers">0</b>亲身经历</div>
+        </div>
+        <h5>来源地图</h5>
+        <div id="w-srcs" style="min-height:30px"></div>
+        <h5 style="margin-top:12px">声音档案</h5>
+        <div class="srcrow"><div class="t">🎧 soul.md · v3</div><div class="s"><span>已挂载</span></div></div>
+      </div>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+</div>
+
+<!-- ================= PPT 工位 ================= -->
+<div id="deck" class="page">
+  <div class="wrap">
+    <div class="studio-head">
+      <h2>Q3 产品复盘演示稿</h2>
+      <span class="tag" id="d-route-tag">generate · 16:9 · 商务深蓝</span>
+      <div class="acts">
+        <button class="pill gray small" onclick="toast('run 事件流回放（原型占位）')">运行日志</button>
+        <button class="pill gray small" onclick="resetDeck()">重置</button>
+        <button class="pill blue small" id="d-run" onclick="runDeck()">▶ 开始生成</button>
+        <button class="pill green small" id="d-dl" onclick="toast('⬇ PPTX 下载开始（含页面图片 / manifest）')" disabled>⬇ 下载 PPTX</button>
+      </div>
+    </div>
+    <div class="cols two">
+      <div class="panel">
+        <h5>Route</h5>
+        <div class="routes" id="d-routes"></div>
+        <h5 style="margin-top:16px">步骤</h5>
+        <div id="d-steps"></div>
+      </div>
+      <div>
+        <div class="slides" id="d-slides"></div>
+        <div class="controlbar" id="d-control"></div>
+      </div>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+</div>
+
+<!-- ================= 资产库 ================= -->
+<div id="assets" class="page">
+  <div class="section"><div class="wrap">
+    <div class="h2">资产库</div>
+    <p style="color:var(--text2);margin:6px 0 0">跨项目的长期资产。</p>
+    <div class="grid">
+      <div class="tile stag" style="animation-delay:0ms"><span class="k">声音档案</span><h3>🎧 soul.md · v3</h3><p>12 篇样本训练，盲评通过。挂载于 2 个项目。</p><div class="foot"><span>更新于上周</span><span>›</span></div></div>
+      <div class="tile stag" style="animation-delay:40ms"><span class="k">来源库</span><h3>📚 已核查来源 46 条</h3><p>可复用于新文章的证据账本，持续累积。</p><div class="foot"><span>持续累积</span><span>›</span></div></div>
+      <div class="tile stag" style="animation-delay:80ms"><span class="k">样式库</span><h3>🎨 风格画廊</h3><p>商务深蓝 / 极简黑白 / 杂志编辑风，含代表样张。</p><div class="foot"><span>12 个风格</span><span>›</span></div></div>
+      <div class="tile stag" style="animation-delay:120ms"><span class="k">产物</span><h3>📦 历史交付物</h3><p>PPTX / Markdown 全部可下载，按项目版本化。</p><div class="foot"><span>含中间产物</span><span>›</span></div></div>
+    </div>
+    <div style="height:60px"></div>
+  </div></div>
+</div>
+
+<!-- ================= 设置：账户 ================= -->
+<div id="set-account" class="page"><div class="wrap"><div class="settings">
+  <div class="setnav">
+    <div class="me"><div class="av">K</div><div><b>柯</b><span>kuang@example.com</span></div></div>
+    <a data-nav="set-account" class="on" href="#" onclick="go('set-account');return false"><span class="ic">👤</span>账户</a>
+    <a data-nav="set-model" href="#" onclick="go('set-model');return false"><span class="ic">🧠</span>模型配置</a>
+    <a data-nav="set-usage" href="#" onclick="go('set-usage');return false"><span class="ic">📊</span>用量</a>
+    <a href="#" onclick="logout();return false"><span class="ic">⎋</span>退出登录</a>
+  </div>
+  <div>
+    <div class="group"><div class="gtitle">个人信息</div>
+      <div class="row"><div class="lbl"><b>姓名</b><span>显示在协作与导出信息中</span></div><input type="text" value="柯"></div>
+      <div class="row"><div class="lbl"><b>电子邮箱</b><span>已验证 ✓</span></div><input type="text" value="kuang@example.com"></div>
+    </div>
+    <div class="group"><div class="gtitle">安全</div>
+      <div class="row"><div class="lbl"><b>修改密码</b><span>上次修改于 2026-06-12</span></div><button class="pill gray small">修改</button></div>
+      <div class="row"><div class="lbl"><b>两步验证</b><span>通过验证器 App</span></div><label class="switch"><input type="checkbox" checked onchange="toast('两步验证已'+(this.checked?'开启':'关闭'))"><i></i></label></div>
+    </div>
+    <div class="group"><div class="gtitle">数据</div>
+      <div class="row"><div class="lbl"><b>导出全部数据</b><span>项目、门禁决策、产物与资产</span></div><button class="pill gray small" onclick="toast('导出任务已开始（原型占位）')">导出</button></div>
+      <div class="row"><div class="lbl"><b>删除账户</b><span>永久删除，需输入密码确认</span></div><button class="pill small" style="background:var(--danger);color:#fff" onclick="confirmModal('删除账户','此操作不可撤销，所有项目与资产将被永久删除。','永久删除',()=>toast('账户删除流程（原型占位）'))">删除…</button></div>
+    </div>
+  </div>
+</div></div></div>
+
+<!-- ================= 设置：模型配置 ================= -->
+<div id="set-model" class="page"><div class="wrap"><div class="settings">
+  <div class="setnav">
+    <div class="me"><div class="av">K</div><div><b>柯</b><span>kuang@example.com</span></div></div>
+    <a data-nav="set-account" href="#" onclick="go('set-account');return false"><span class="ic">👤</span>账户</a>
+    <a data-nav="set-model" class="on" href="#" onclick="go('set-model');return false"><span class="ic">🧠</span>模型配置</a>
+    <a data-nav="set-usage" href="#" onclick="go('set-usage');return false"><span class="ic">📊</span>用量</a>
+    <a href="#" onclick="logout();return false"><span class="ic">⎋</span>退出登录</a>
+  </div>
+  <div>
+    <div class="group"><div class="gtitle">默认模型</div>
+      <div class="row"><div class="lbl"><b>写作工位</b><span>evidence-first-writing 管线</span></div><div class="modelpick" data-pick="write"></div></div>
+      <div class="row"><div class="lbl"><b>演示工位</b><span>leo-ppt-generator 管线</span></div><div class="modelpick" data-pick="deck"></div></div>
+      <div class="row"><div class="lbl"><b>任务级覆盖</b><span>发起任务时可临时选择其他已启用模型</span></div><label class="switch"><input type="checkbox" checked onchange="toast('任务级覆盖已'+(this.checked?'开启':'关闭'))"><i></i></label></div>
+    </div>
+    <div class="group"><div class="gtitle">自定义 Provider（BYOK）</div>
+      <div id="providerRows"></div>
+      <div class="row"><div class="lbl"><b>添加 Provider</b><span>OpenAI-compatible Base URL + API Key + 模型名</span></div><button class="pill blue small" onclick="openAddProvider()">＋ 添加</button></div>
+    </div>
+    <p style="font-size:12px;color:var(--text3);padding:0 4px">密钥加密存储，保存后仅显示掩码，永不下发浏览器或写入日志。配置变更不影响运行中任务。</p>
+  </div>
+</div></div></div>
+
+<!-- ================= 设置：用量 ================= -->
+<div id="set-usage" class="page"><div class="wrap"><div class="settings">
+  <div class="setnav">
+    <div class="me"><div class="av">K</div><div><b>柯</b><span>kuang@example.com</span></div></div>
+    <a data-nav="set-account" href="#" onclick="go('set-account');return false"><span class="ic">👤</span>账户</a>
+    <a data-nav="set-model" href="#" onclick="go('set-model');return false"><span class="ic">🧠</span>模型配置</a>
+    <a data-nav="set-usage" class="on" href="#" onclick="go('set-usage');return false"><span class="ic">📊</span>用量</a>
+    <a href="#" onclick="logout();return false"><span class="ic">⎋</span>退出登录</a>
+  </div>
+  <div>
+    <div class="group"><div class="gtitle">本月用量</div>
+      <div class="row"><div class="lbl"><b>Token 消耗</b><div class="usagebar"><i id="usage-fill"></i></div><span style="font-size:11px">4.2M / 10M（托管通道）</span></div></div>
+      <div class="row"><div class="lbl"><b>任务数</b><span>写作 18 · 演示 6</span></div></div>
+    </div>
+    <div class="group"><div class="gtitle">按项目</div>
+      <div class="row"><div class="lbl"><b>为什么"证据优先"…</b><span>1.6M tokens · 4 个任务</span></div></div>
+      <div class="row"><div class="lbl"><b>Q3 产品复盘演示稿</b><span>1.1M tokens · 2 个任务</span></div></div>
+    </div>
+  </div>
+</div></div></div>
+
+<!-- ================= 页脚 ================= -->
+<div class="foot" id="foot"><div class="wrap">
+  <div>Leo Studio · 可信的内容生产管线 · DESIGN.md 驱动</div>
+  <div><a href="#" onclick="go('dash');return false" style="color:var(--text2);text-decoration:none;margin-right:16px">项目台</a><a href="#" onclick="go('write');return false" style="color:var(--text2);text-decoration:none;margin-right:16px">写作</a><a href="#" onclick="go('deck');return false" style="color:var(--text2);text-decoration:none">演示</a></div>
+</div></div>
+
+<!-- ================= 命令面板 ================= -->
+<div class="overlay" id="palette-ov" onclick="if(event.target===this)closeOverlay('palette-ov')">
+  <div class="palette">
+    <input id="pa-input" placeholder="输入命令或页面…" oninput="renderPalette()" onkeydown="if(event.key==='Enter'){const s=document.querySelector('.pa-item.sel');if(s)s.click()}">
+    <div class="list" id="pa-list"></div>
+  </div>
+</div>
+
+<!-- ================= 通用确认模态 ================= -->
+<div class="overlay" id="confirm-ov" onclick="if(event.target===this)closeOverlay('confirm-ov')">
+  <div class="modal">
+    <h3 id="cf-title"></h3>
+    <div class="ms" id="cf-msg"></div>
+    <div class="foot">
+      <button class="pill gray small" onclick="closeOverlay('confirm-ov')">取消</button>
+      <button class="pill small" id="cf-btn" style="background:var(--danger);color:#fff"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 新建项目模态 ================= -->
+<div class="overlay" id="newproj-ov" onclick="if(event.target===this)closeOverlay('newproj-ov')">
+  <div class="modal">
+    <h3>新建项目</h3>
+    <div class="ms">选择工位与路线，创建后会出现在项目台。</div>
+    <div class="field"><label>类型</label>
+      <div class="seg" id="np-type">
+        <button class="on" data-v="写作">写作</button>
+        <button data-v="演示">演示</button>
+      </div>
+    </div>
+    <div class="field"><label>标题</label><input id="np-title" type="text" placeholder="例如：为什么证据优先是唯一出路"></div>
+    <div class="field"><label>深度 / 交付</label>
+      <select id="np-depth"><option>quick · 轻量</option><option selected>standard · 标准</option><option>deep · 精品</option></select>
+    </div>
+    <div class="foot">
+      <button class="pill gray small" onclick="closeOverlay('newproj-ov')">取消</button>
+      <button class="pill blue small" onclick="createProject()">创建项目</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 添加 Provider 模态 ================= -->
+<div class="overlay" id="provider-ov" onclick="if(event.target===this)closeOverlay('provider-ov')">
+  <div class="modal">
+    <h3>添加自定义 Provider</h3>
+    <div class="ms">OpenAI-compatible 端点。密钥保存后仅显示掩码。</div>
+    <div class="field"><label>名称</label><input id="pv-name" type="text" placeholder="例如：自定义 C"></div>
+    <div class="field"><label>Base URL</label><input id="pv-url" type="text" placeholder="https://api.example.com/v1"></div>
+    <div class="field"><label>API Key</label><input id="pv-key" type="password" placeholder="sk-…"></div>
+    <div class="field"><label>默认模型</label><input id="pv-model" type="text" placeholder="例如：glm-4.7-flash"></div>
+    <div class="foot">
+      <button class="pill gray small" onclick="closeOverlay('provider-ov')">取消</button>
+      <button class="pill blue small" onclick="addProvider()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+/* ================================================================
+   Leo Studio 动态原型引擎
+   状态 → 渲染 → 模拟任务（阶段推进 / 门禁暂停 / 控制面实时变化）
+================================================================ */
+const $=id=>document.getElementById(id);
+const pages=['login','register','dash','write','deck','assets','set-account','set-model','set-usage'];
+const authPages=['login','register'];
+
+/* ---------- 视图切换 ---------- */
+function go(id){
+  pages.forEach(p=>$(p).classList.remove('active'));
+  $(id).classList.add('active');
+  const isAuth=authPages.includes(id);
+  $('nav').classList.toggle('show',!isAuth);
+  $('foot').classList.toggle('show',!isAuth);
+  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===id));
+  window.scrollTo(0,0);
+  if(id==='set-usage')setTimeout(()=>$('usage-fill').style.width='42%',80);
+  if(id==='assets')restagger();
+}
+function restagger(){document.querySelectorAll('#assets .stag').forEach(el=>{el.style.animation='none';el.offsetHeight;el.style.animation='';});}
+function doLogin(){toast('欢迎回来');go('dash');}
+function logout(){go('login');toast('已退出登录');}
+
+/* ---------- Toast ---------- */
+function toast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  $('toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),300)},2600);
+}
+function openOverlay(id){$(id).classList.add('show');const inp=$(id).querySelector('input');if(inp)setTimeout(()=>inp.focus(),50);}
+function closeOverlay(id){$(id).classList.remove('show');}
+function confirmModal(title,msg,btn,fn){
+  $('cf-title').textContent=title;$('cf-msg').textContent=msg;$('cf-btn').textContent=btn;
+  $('cf-btn').onclick=()=>{closeOverlay('confirm-ov');fn();};
+  openOverlay('confirm-ov');
+}
+
+/* ---------- 命令面板 ---------- */
+const PA_ACTIONS=[
+  {ic:'🗂',t:'打开 项目台',k:'',fn:()=>go('dash')},
+  {ic:'✍️',t:'打开 写作工位',k:'',fn:()=>go('write')},
+  {ic:'📊',t:'打开 演示工位',k:'',fn:()=>go('deck')},
+  {ic:'▶',t:'运行 写作管线',k:'',fn:()=>{go('write');runWrite();}},
+  {ic:'▶',t:'运行 演示生成',k:'',fn:()=>{go('deck');runDeck();}},
+  {ic:'⬇',t:'下载 PPTX',k:'',fn:()=>{$('d-dl').disabled?toast('PPTX 尚未交付，先运行生成'):toast('⬇ PPTX 下载开始')}},
+  {ic:'＋',t:'新建项目',k:'',fn:()=>{go('dash');openNewProject();}},
+  {ic:'🧠',t:'模型配置',k:'',fn:()=>go('set-model')},
+  {ic:'👤',t:'账户设置',k:'',fn:()=>go('set-account')},
+  {ic:'⎋',t:'退出登录',k:'',fn:logout},
+];
+function openPalette(){openOverlay('palette-ov');$('pa-input').value='';renderPalette();}
+function renderPalette(){
+  const q=$('pa-input').value.trim().toLowerCase();
+  const list=PA_ACTIONS.filter(a=>!q||a.t.toLowerCase().includes(q));
+  $('pa-list').innerHTML=list.map((a,i)=>`<div class="pa-item${i===0?' sel':''}" onclick="closeOverlay('palette-ov');PA_ACTIONS[${PA_ACTIONS.indexOf(a)}].fn()"><span class="ic">${a.ic}</span>${a.t}${a.k?`<span class="k">${a.k}</span>`:''}</div>`).join('')||'<div class="pa-item" style="color:var(--text3)">无匹配命令</div>';
+}
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('palette-ov').classList.contains('show')?closeOverlay('palette-ov'):openPalette();}
+  if(e.key==='Escape')document.querySelectorAll('.overlay.show').forEach(o=>o.classList.remove('show'));
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){const b=document.querySelector('.gatebox .row .pill');if(b)b.click();}
+});
+
+/* ---------- 项目台 ---------- */
+let PROJECTS=[
+  {type:'写作 · 教程',title:'用 Claude Code 搭建个人知识库',desc:'已交付终稿 · 证据覆盖率 92%',st:'done',stTxt:'已交付 · 可导出',time:'3 天前',steps:6,done:6,cur:-1,view:'write'},
+  {type:'演示 · upgrade-selected',title:'年度总结 Deck',desc:'指定 3 页升级为可编辑',st:'done',stTxt:'PPTX 已下载',time:'上周',steps:4,done:4,cur:-1,view:'deck'},
+];
+function renderProjects(){
+  $('projGrid').innerHTML=PROJECTS.map((p,i)=>`
+  <div class="tile stag" style="animation-delay:${i*40}ms" ${p.view?`onclick="go('${p.view}')"`:''}>
+    <span class="k">${p.type}</span>
+    <h3>${p.title}</h3>
+    <p>${p.desc}</p>
+    <div class="progressbar">${Array.from({length:p.steps},(_,k)=>`<i class="${k<p.done?'done':k===p.cur?'cur':''}"></i>`).join('')}</div>
+    <div class="foot"><span class="st"><i class="dot ${p.st}"></i>${p.stTxt}</span><span>${p.time}</span></div>
+  </div>`).join('');
+}
+function openNewProject(){openOverlay('newproj-ov');}
+document.querySelectorAll('#np-type button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#np-type button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+function createProject(){
+  const type=$('np-type').querySelector('.on').dataset.v;
+  const title=$('np-title').value.trim()||'未命名项目';
+  const depth=$('np-depth').value;
+  PROJECTS.unshift({type:type==='写作'?`写作 · ${depth.split(' ')[0]}`:`演示 · generate`,title,desc:'新建项目，管线尚未启动',st:'wait',stTxt:'待启动',time:'刚刚',steps:6,done:0,cur:-1,view:type==='写作'?'write':'deck'});
+  $('np-title').value='';
+  closeOverlay('newproj-ov');
+  renderProjects();
+  toast(`项目「${title}」已创建，决策与产物将长期保存`);
+}
+
+/* ---------- 写作工位：阶段引擎 ---------- */
+const W_STAGES=['Brief 门禁','调研 · 来源地图','主张 / 结构','草稿','分层审查','终稿'];
+const wTask={idx:0,status:'idle'};// idx: 已完成的阶段数; status: idle|running|awaiting|delivered
+function renderWSteps(){
+  $('w-steps').innerHTML=W_STAGES.map((s,i)=>{
+    const cls=i<wTask.idx?'done':i===wTask.idx&&wTask.status!=='idle'?'cur':'';
+    const gate=(i===4&&wTask.idx===4&&wTask.status==='awaiting')?'⛳':'';
+    return `<div class="step ${cls}"><span class="n">${i<wTask.idx?'✓':''}</span>${s}<span class="gate">${gate}</span></div>`;
+  }).join('');
+}
+function setNavWait(view,on){const a=document.querySelector(`[data-nav="${view}"]`);if(a)a.classList.toggle('wait',on);}
+function tick(el,to,dur=500){
+  const from=parseInt(el.textContent)||0;const t0=performance.now();
+  (function f(t){const p=Math.min(1,(t-t0)/dur);el.textContent=Math.round(from+(to-from)*p);if(p<1)requestAnimationFrame(f);})(t0);
+}
+function runWrite(){
+  if(wTask.status==='running'||wTask.status==='awaiting')return;
+  if(wTask.status==='delivered'){toast('管线已交付，刷新页面可重跑');return;}
+  $('w-run').disabled=true;$('w-run').textContent='运行中…';
+  wTask.status='running';renderWSteps();
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  (async()=>{
+    await wait(600); wTask.idx=1; renderWSteps();                       // 调研
+    $('w-srcs').innerHTML=`
+      <div class="srcrow"><div class="t">平台 AI 内容治理报告 2025</div><div class="s"><span>reuters.com</span><span class="pillst ok">已核查</span></div></div>`;
+    await wait(900); wTask.idx=2; renderWSteps();                        // 主张
+    $('w-srcs').innerHTML+=`
+      <div class="srcrow"><div class="t">AI 内容虚假引用率研究</div><div class="s"><span>arxiv.org</span><span class="pillst ok">已核查</span></div></div>`;
+    await wait(400); wTask.idx=3; renderWSteps();                        // 草稿开始
+    $('wp1').classList.add('in'); tick($('c-fact'),6);tick($('c-src'),3);
+    await wait(900); $('wp2').classList.add('in'); tick($('c-judg'),3);
+    await wait(900); $('wp3').classList.add('in'); tick($('c-pers'),1);tick($('c-src'),5);
+    $('w-srcs').innerHTML+=`
+      <div class="srcrow"><div class="t">创作者工具调研（二手转引）</div><div class="s"><span>blog.example.com</span><span class="pillst pend">待核查</span></div></div>`;
+    await wait(600); $('w-causal').classList.add('in');
+    await wait(500); wTask.idx=4; wTask.status='awaiting'; renderWSteps(); // 门禁
+    $('w-gate-slot').innerHTML=`
+      <div class="gatebox">
+        <b>⛳ 门禁 · 草稿 → 分层审查</b>
+        草稿完成（1,820 字，证据覆盖率 87%）。证据账本中有 2 条来源待核查。
+        <div class="row">
+          <button class="pill blue small" onclick="resolveWGate('先核查来源，再进审查')">先核查来源</button>
+          <button class="pill gray small" onclick="resolveWGate('直接进入分层审查')">直接进入审查</button>
+        </div>
+      </div>`;
+    setNavWait('write',true);
+    toast('管线到达门禁，等待你的决策');
+  })();
+}
+function resolveWGate(choice){
+  $('w-gate-slot').innerHTML=`<div class="gate-resolved">⛳ 已留痕 — ${choice} · ${new Date().toLocaleTimeString('zh-CN',{hour12:false})}</div>`;
+  wTask.status='running';setNavWait('write',false);renderWSteps();
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  (async()=>{
+    await wait(1000); wTask.idx=5; renderWSteps();                       // 审查
+    document.querySelectorAll('#w-srcs .pillst.pend').forEach(p=>{p.className='pillst ok';p.textContent='已核查';});
+    await wait(900); wTask.idx=6; renderWSteps();                        // 终稿
+    wTask.status='delivered';
+    $('w-run').disabled=false;$('w-run').textContent='✓ 已交付';
+    toast('✓ 终稿已交付，可导出（证据账本覆盖 87%）');
+  })();
+}
+renderWSteps();
+
+/* ---------- PPT 工位：阶段引擎 ---------- */
+const D_ROUTES=[
+  {code:'generate',name:'从内容生成',desc:'文章 / 报告 / 大纲 → 成套演示稿',tag:'generate · 16:9 · 商务深蓝',steps:['风格选定','版式设计','样张确认','批量生产','视觉 QA','交付 PPTX'],gateAt:3},
+  {code:'direct-editable',name:'重建为可编辑',desc:'图片 / PDF / 可信 PPTX → 对象级 PPTX',tag:'direct-editable · 对象级',steps:['Gate 0 信任确认','页面解析','对象重建','视觉 QA','交付 PPTX'],gateAt:0},
+  {code:'upgrade-full',name:'全量升级',desc:'image-deck 整体升级为可编辑',tag:'upgrade-full · 全量',steps:['Baseline 证据','批量重建','视觉 QA','交付 PPTX'],gateAt:-1},
+  {code:'upgrade-selected',name:'指定页升级',desc:'只升级勾选页面',tag:'upgrade-selected · 3 页',steps:['选择页面','重建所选','视觉 QA','交付 PPTX'],gateAt:-1},
+];
+const dTask={route:0,idx:0,status:'idle'};
+function renderDRoutes(){
+  $('d-routes').innerHTML=D_ROUTES.map((r,i)=>`
+    <div class="route ${i===dTask.route?'sel':''}" onclick="switchRoute(${i})">
+      <b>${r.name} <code>${r.code}</code></b><span>${r.desc}</span>
+    </div>`).join('');
+}
+function renderDSteps(){
+  const r=D_ROUTES[dTask.route];
+  $('d-steps').innerHTML=r.steps.map((s,i)=>{
+    const cls=i<dTask.idx?'done':i===dTask.idx&&dTask.status!=='idle'?'cur':'';
+    const gate=(i===r.gateAt&&dTask.idx===r.gateAt+0&&dTask.status==='awaiting')?'⛳':'';
+    return `<div class="step ${cls}"><span class="n">${i<dTask.idx?'✓':''}</span>${s}<span class="gate">${gate}</span></div>`;
+  }).join('');
+}
+function renderSlides(state){ // state: empty|samples|full|qa|done
+  const mk=(n,t,b,cls,qa)=>`<div class="slide ${cls} pop" style="animation-delay:${(n%12)*35}ms">${qa?`<span class="qa">${qa}</span>`:''}<div class="num">${String(n).padStart(2,'0')}</div><div class="t">${t}</div><div class="b">${b}</div></div>`;
+  if(state==='empty'){$('d-slides').innerHTML='<div class="slide empty">等待任务启动</div>';return;}
+  if(state==='samples'){
+    $('d-slides').innerHTML=mk(1,'Q3 产品复盘','增长 · 留存 · 下季度主张','samp','✓ QA')+mk(2,'三个关键判断','事实与判断分列呈现','samp','✓ QA')+mk(3,'留存曲线对比','点击放大查看样张','','待确认');
+    return;
+  }
+  if(state==='full'){
+    let h=mk(1,'Q3 产品复盘','增长 · 留存 · 下季度主张','samp','')+mk(2,'三个关键判断','事实与判断分列','samp','')+mk(3,'留存曲线对比','DAU/WAU 对比','samp','');
+    const titles=['获客漏斗','留存队列','收入构成','NPS 驱动','产品里程碑','下季 OKR','资源与风险','附录'];
+    titles.forEach((t,i)=>h+=mk(i+4,t,'批量生成页 · 等待 QA','',''));
+    $('d-slides').innerHTML=h;return;
+  }
+  if(state==='qa'||state==='done'){
+    const done=state==='done';
+    let h=mk(1,'Q3 产品复盘','增长 · 留存 · 下季度主张','samp','✓ QA')+mk(2,'三个关键判断','事实与判断分列','samp','✓ QA')+mk(3,'留存曲线对比','DAU/WAU 对比','samp','✓ QA');
+    const titles=['获客漏斗','留存队列','收入构成','NPS 驱动','产品里程碑','下季 OKR','资源与风险','附录'];
+    titles.forEach((t,i)=>h+=mk(i+4,t,done?'视觉 QA 通过':'批量生成页',done?'samp':'',done?'✓ QA':'✓ QA'));
+    $('d-slides').innerHTML=h;return;
+  }
+}
+function renderControl(){
+  const r=D_ROUTES[dTask.route];
+  const map={idle:['待启动',''],running:['running','v-run'],awaiting:['awaiting_user','v-wait'],delivered:['delivered','v-ok']};
+  const [st,cls]=map[dTask.status];
+  const stage=dTask.status==='idle'?'—':(r.steps[Math.min(dTask.idx,r.steps.length-1)]||'—');
+  $('d-control').innerHTML=`
+    <span class="cf"><b>route</b>${r.code}</span>
+    <span class="cf"><b>status</b><span class="${cls}">${st}</span></span>
+    <span class="cf"><b>stage</b>${stage}</span>
+    <span class="cf"><b>worker</b><span class="${dTask.status==='running'?'v-run':'v-ok'}">${dTask.status==='running'?'busy':'ready'}</span></span>
+    <span class="cf"><b>reason_code</b>—</span>`;
+}
+function switchRoute(i){
+  if(dTask.status==='running'||dTask.status==='awaiting'){toast('任务进行中，暂不能切换 Route');return;}
+  dTask.route=i;dTask.idx=0;dTask.status='idle';
+  $('d-route-tag').textContent=D_ROUTES[i].tag;
+  $('d-run').disabled=false;$('d-run').textContent='▶ 开始生成';
+  $('d-dl').disabled=true;
+  renderDRoutes();renderDSteps();renderSlides('empty');renderControl();
+}
+function resetDeck(){if(dTask.status==='running'){toast('任务运行中，不能重置');return;}switchRoute(dTask.route);toast('已重置');}
+function runDeck(){
+  if(dTask.status==='running'||dTask.status==='awaiting')return;
+  if(dTask.status==='delivered'){toast('已交付，点击 下载 PPTX 或重置');return;}
+  dTask.status='running';$('d-run').disabled=true;$('d-run').textContent='运行中…';
+  const r=D_ROUTES[dTask.route];
+  const wait=ms=>new Promise(res=>setTimeout(res,ms));
+  renderDSteps();renderControl();
+  (async()=>{
+    for(let i=0;i<r.gateAt;i++){await wait(750);dTask.idx=i+1;renderDSteps();renderControl();}
+    if(r.code==='direct-editable'){ // Gate 0 特殊：blocked 演示
+      dTask.status='awaiting';renderDSteps();renderControl();setNavWait('deck',true);
+      $('d-slides').innerHTML=`<div style="grid-column:1/-1;border:1px solid rgba(255,59,48,.35);background:rgba(255,59,48,.03);border-radius:12px;padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.8;color:#b3261e">
+        route: <b style="color:var(--danger)">direct-editable</b> · status: <b style="color:var(--danger)">blocked</b> · reason_code: <b style="color:var(--danger)">untrusted_office_input</b><br>
+        input_handling: not_opened · next_action: 提供可信确认，或改用 PDF / 逐页图片
+        <div style="font-family:inherit;margin-top:12px;display:flex;gap:10px;font-family:-apple-system,'PingFang SC',sans-serif">
+          <button class="pill blue small" onclick="gate0Confirm()">我确认来源可信</button>
+          <button class="pill gray small" onclick="toast('改用 PDF / 图片（原型占位）')">改用 PDF / 图片</button>
+        </div></div>`;
+      toast('Gate 0：来源未确认，任务阻断');return;
+    }
+    // generate：风格→版式→样张
+    await wait(750);dTask.idx=1;renderDSteps();renderControl();
+    await wait(750);dTask.idx=2;renderDSteps();renderControl();
+    renderSlides('samples');
+    await wait(600);dTask.idx=r.gateAt;dTask.status='awaiting';renderDSteps();renderControl();setNavWait('deck',true);
+    const gc=document.createElement('div');gc.style.cssText='grid-column:1/-1';
+    gc.innerHTML=`<div class="gatebox" style="margin-top:0">
+      <b>⛳ 门禁 · 样张确认</b>样张 3 页已出（1-2 通过 QA，3 待确认）。确认后批量生产全部页面。
+      <div class="row">
+        <button class="pill blue small" onclick="resolveDeckGate('确认样张，批量生产')">确认样张</button>
+        <button class="pill gray small" onclick="resolveDeckGate('重出样张',true)">重出样张</button>
+      </div></div>`;
+    $('d-slides').appendChild(gc);
+    toast('样张已出，等待确认');
+  })();
+}
+function gate0Confirm(){
+  toast('来源确认已留痕 → 进入 CLI preflight（原型示意）');
+  dTask.status='running';setNavWait('deck',false);
+  const r=D_ROUTES[dTask.route];const wait=ms=>new Promise(res=>setTimeout(res,ms));
+  (async()=>{
+    for(let i=dTask.idx;i<r.steps.length;i++){await wait(800);dTask.idx=i+1;renderDSteps();renderControl();}
+    finishDeck();
+  })();
+}
+function resolveDeckGate(choice,retry){
+  if(retry){toast('重出样张（原型：回到版式设计）');dTask.status='running';dTask.idx=2;setNavWait('deck',false);runDeck();return;}
+  toast(`已留痕 — ${choice}`);
+  dTask.status='running';setNavWait('deck',false);
+  const r=D_ROUTES[dTask.route];const wait=ms=>new Promise(res=>setTimeout(res,ms));
+  (async()=>{
+    dTask.idx=r.gateAt+1;renderDSteps();renderControl();
+    renderSlides('full');await wait(1200);
+    dTask.idx=r.steps.length-1;renderDSteps();renderControl();
+    renderSlides('qa');await wait(900);
+    dTask.idx=r.steps.length;finishDeck();
+  })();
+}
+function finishDeck(){
+  dTask.status='delivered';renderDSteps();renderControl();
+  $('d-run').disabled=false;$('d-run').textContent='✓ 已交付';
+  $('d-dl').disabled=false;
+  toast('✓ PPTX 已交付，可下载（含页面图片 / manifest）');
+}
+renderDRoutes();renderDSteps();renderSlides('empty');renderControl();
+
+/* ---------- 模型配置 ---------- */
+let PROVIDERS=[
+  {name:'自定义 A · OpenAI 兼容',url:'https://api.openai.com/v1',model:'gpt-5-turbo',key:'sk-••••••••••••3f9a',on:true},
+  {name:'自定义 B · 本地推理',url:'http://localhost:11434/v1',model:'qwen3-32b',key:'无需密钥',on:false},
+];
+let MODEL_PICK={write:1,deck:2};
+const MODELS=['GLM-4.7','Claude Sonnet','GPT-5'];
+function renderProviders(){
+  $('providerRows').innerHTML=PROVIDERS.map((p,i)=>`
+    <div class="row">
+      <div class="lbl"><b>${p.name}</b><span>${p.url} · 模型 ${p.model}</span></div>
+      <span class="keymask">${p.key}</span>
+      <span class="testbtn" id="pv-test-${i}"><button class="pill gray small" onclick="testProvider(${i})">测试连接</button></span>
+      <label class="switch"><input type="checkbox" ${p.on?'checked':''} onchange="PROVIDERS[${i}].on=this.checked;renderModelPicks();toast('Provider 已'+(this.checked?'启用':'停用'))"><i></i></label>
+    </div>`).join('');
+  renderModelPicks();
+}
+function renderModelPicks(){
+  const all=MODELS.concat(PROVIDERS.filter(p=>p.on).map(p=>p.name.split(' ·')[0]));
+  document.querySelectorAll('.modelpick').forEach(el=>{
+    const which=el.dataset.pick;
+    el.innerHTML=all.map((m,i)=>`<button class="${i===MODEL_PICK[which]?'on':''}" onclick="MODEL_PICK['${which}']=${i};renderModelPicks();toast('默认模型已切换')">${m}</button>`).join('');
+  });
+}
+function testProvider(i){
+  const slot=$('pv-test-'+i);
+  slot.innerHTML='<span class="spinner"></span>';
+  setTimeout(()=>{
+    slot.innerHTML='<span class="okbadge">✓ 已连接 · 380ms</span>';
+    toast(`「${PROVIDERS[i].name}」连接正常`);
+  },900);
+}
+function openAddProvider(){openOverlay('provider-ov');}
+function addProvider(){
+  const name=$('pv-name').value.trim(),url=$('pv-url').value.trim(),model=$('pv-model').value.trim(),key=$('pv-key').value;
+  if(!name||!url||!model){toast('请填写名称、Base URL 与默认模型');return;}
+  const masked=key?`sk-••••••••••••${key.slice(-4)}`:'无需密钥';
+  PROVIDERS.push({name,url,model,key:masked,on:true});
+  ['pv-name','pv-url','pv-key','pv-model'].forEach(id=>$(id).value='');
+  closeOverlay('provider-ov');renderProviders();
+  toast(`Provider「${name}」已添加，密钥已加密存储`);
+}
+renderProviders();
+
+/* ---------- 初始 ---------- */
+renderProjects();
+</script>
+</body>
+</html>

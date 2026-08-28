@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leo Studio · Web 工作台原型</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#161a23; --panel2:#1c212d; --line:#2a3040;
+    --text:#e8eaf0; --muted:#8b93a7; --accent:#5b8cff; --accent2:#7ee0b0;
+    --fact:#5b8cff; --sourced:#c9a86a; --judgment:#c07ae0; --personal:#7ee0b0;
+    --warn:#e0a15b; --danger:#e06b6b; --ok:#67c98b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  /* ===== 顶栏 ===== */
+  .topbar{height:52px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 20px;gap:24px;flex-shrink:0}
+  .logo{font-weight:700;font-size:16px;letter-spacing:.5px}
+  .logo span{color:var(--accent)}
+  nav{display:flex;gap:4px;flex:1}
+  nav button{background:none;border:none;color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13.5px}
+  nav button.active{background:var(--panel2);color:var(--text)}
+  .user{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--judgment));display:flex;align-items:center;justify-content:center;font-size:13px}
+  /* ===== 页面容器 ===== */
+  .page{display:none;flex:1;overflow:hidden}
+  .page.active{display:flex}
+  /* ===== Dashboard ===== */
+  .dash{flex-direction:column;padding:28px 36px;overflow-y:auto}
+  .dash h1{font-size:20px;margin-bottom:4px}
+  .dash .sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;cursor:pointer;transition:border-color .15s}
+  .card:hover{border-color:var(--accent)}
+  .card .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--panel2);color:var(--muted)}
+  .tag.article{color:var(--fact);background:rgba(91,140,255,.12)}
+  .tag.deck{color:var(--warn);background:rgba(224,161,91,.12)}
+  .risk{font-size:11px;padding:2px 8px;border-radius:99px}
+  .risk.high{background:rgba(224,107,107,.15);color:var(--danger)}
+  .risk.mid{background:rgba(224,161,91,.15);color:var(--warn)}
+  .risk.low{background:rgba(103,201,139,.15);color:var(--ok)}
+  .card h3{font-size:14.5px;margin-bottom:8px;font-weight:600}
+  .stagebar{display:flex;gap:3px;margin-bottom:10px}
+  .stagebar i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+  .stagebar i.done{background:var(--ok)} .stagebar i.cur{background:var(--accent)}
+  .card .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+  .newproj{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--muted);min-height:120px;font-size:13px}
+  /* ===== 工位通用三栏 ===== */
+  .studio{flex-direction:column}
+  .studio-head{height:46px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0}
+  .studio-head h2{font-size:14px;font-weight:600}
+  .crumb{color:var(--muted);font-size:12px}
+  .studio-head .spacer{flex:1}
+  .btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 14px;font-size:12.5px;cursor:pointer}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.ghost{background:none}
+  .studio-body{flex:1;display:flex;overflow:hidden}
+  /* 左栏 流水线 */
+  .pipeline{width:230px;background:var(--panel);border-right:1px solid var(--line);padding:14px 10px;overflow-y:auto;flex-shrink:0}
+  .pipeline h4{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:8px 8px 10px}
+  .pstep{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13px;color:var(--muted);margin-bottom:2px}
+  .pstep .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+  .pstep.done{color:var(--text)} .pstep.done .dot{border-color:var(--ok);background:rgba(103,201,139,.15);color:var(--ok)}
+  .pstep.cur{background:var(--panel2);color:var(--text)} .pstep.cur .dot{border-color:var(--accent);color:var(--accent)}
+  .pstep .gate-ico{margin-left:auto;font-size:11px;color:var(--warn)}
+  /* ===== 写作：编辑器 + 证据账本 ===== */
+  .editor-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#12151d}
+  .editor-toolbar{height:38px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 14px;font-size:12px;color:var(--muted)}
+  .ev-legend{display:flex;gap:12px;margin-left:auto}
+  .ev-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+  .editor{flex:1;overflow-y:auto;padding:28px 44px;font-size:15px;line-height:1.9;color:var(--text)}
+  .editor h1{font-size:22px;margin-bottom:16px}
+  .editor p{margin-bottom:14px;color:#c7ccda}
+  mark{border-radius:3px;padding:1px 3px;cursor:help;border-bottom:2px solid transparent}
+  mark.fact{background:rgba(91,140,255,.14);border-color:var(--fact)}
+  mark.src{background:rgba(201,168,106,.14);border-color:var(--sourced)}
+  mark.judg{background:rgba(192,122,224,.14);border-color:var(--judgment)}
+  mark.pers{background:rgba(126,224,176,.14);border-color:var(--personal)}
+  .causal-warn{background:rgba(224,161,91,.08);border:1px dashed var(--warn);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--warn);margin:10px 0;display:flex;gap:8px;align-items:flex-start}
+  .gate-card{background:var(--panel);border:1px solid var(--accent);border-radius:10px;padding:14px 16px;margin:18px 0 0;font-size:13px}
+  .gate-card b{display:block;margin-bottom:6px;font-size:13.5px}
+  .gate-card .opts{display:flex;gap:8px;margin-top:10px}
+  /* 右栏 证据账本 */
+  .ledger{width:280px;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;flex-shrink:0;padding:14px}
+  .ledger h4{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+  .ledger .counts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .cnt{background:var(--panel2);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--muted)}
+  .cnt b{display:block;font-size:17px;margin-bottom:2px}
+  .src-item{background:var(--panel2);border-radius:8px;padding:9px 11px;margin-bottom:8px;font-size:12px}
+  .src-item .t{color:var(--text);margin-bottom:3px}
+  .src-item .s{color:var(--muted);font-size:11px;display:flex;justify-content:space-between}
+  .pill{font-size:10px;padding:1px 6px;border-radius:99px}
+  .pill.ok{background:rgba(103,201,139,.15);color:var(--ok)}
+  .pill.pend{background:rgba(224,161,91,.15);color:var(--warn)}
+  /* ===== PPT 工位 ===== */
+  .route-col{width:250px;background:var(--panel);border-right:1px solid var(--line);padding:14px;overflow-y:auto;flex-shrink:0}
+  .route-card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;font-size:12.5px;cursor:pointer}
+  .route-card.sel{border-color:var(--accent);background:rgba(91,140,255,.08)}
+  .route-card b{font-size:13px;display:flex;justify-content:space-between}
+  .route-card span{color:var(--muted);font-size:11.5px;display:block;margin-top:4px;line-height:1.5}
+  .route-card code{font-size:10.5px;color:var(--accent)}
+  .steps{margin-top:16px;font-size:12px;color:var(--muted)}
+  .steps .pstep{font-size:12px}
+  .deck-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .slides{flex:1;overflow-y:auto;padding:22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;align-content:start}
+  .slide{aspect-ratio:16/9;background:linear-gradient(135deg,#20263a,#2a3350);border-radius:8px;border:1px solid var(--line);padding:14px;display:flex;flex-direction:column;cursor:pointer;position:relative}
+  .slide:hover{border-color:var(--accent)}
+  .slide .num{font-size:10px;color:var(--muted);margin-bottom:6px}
+  .slide .t{font-size:13px;font-weight:600;margin-bottom:6px}
+  .slide .b{font-size:10.5px;color:var(--muted);line-height:1.5}
+  .slide .badges{margin-top:auto;display:flex;gap:4px}
+  .slide .badge{font-size:9px;padding:1px 5px;border-radius:3px}
+  .badge.f{background:rgba(91,140,255,.2);color:var(--fact)} .badge.j{background:rgba(192,122,224,.2);color:var(--judgment)}
+  .slide .qa{position:absolute;top:8px;right:8px;font-size:10px}
+  .slide.samp{border-color:var(--ok)}
+  .blocked-card{margin:22px;background:rgba(224,107,107,.07);border:1px solid var(--danger);border-radius:12px;padding:20px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.8;color:#f0c8c8}
+  .blocked-card .code{color:var(--danger);font-weight:700}
+  .blocked-actions{margin-top:14px;font-family:-apple-system,"PingFang SC",sans-serif}
+  /* 控制面状态条 */
+  .controlbar{background:var(--panel);border-top:1px solid var(--line);padding:10px 18px;display:flex;gap:10px;align-items:center;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;flex-wrap:wrap;flex-shrink:0}
+  .cf{background:var(--panel2);border-radius:6px;padding:4px 10px}
+  .cf b{color:var(--muted);font-weight:400;margin-right:6px}
+  .cf .v-ok{color:var(--ok)} .cf .v-run{color:var(--accent)} .cf .v-warn{color:var(--warn)}
+  .cf.log{margin-left:auto;color:var(--muted);cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Leo<span>Studio</span></div>
+  <nav>
+    <button class="active" onclick="go('dash',this)">项目台</button>
+    <button onclick="go('write',this)">写作工位</button>
+    <button onclick="go('deck',this)">PPT 工位</button>
+    <button onclick="go('assets',this)">资产库</button>
+  </nav>
+  <div class="user">K</div>
+</div>
+
+<!-- ============ Dashboard ============ -->
+<div id="dash" class="page active dash">
+  <h1>项目台</h1>
+  <div class="sub">所有项目、阶段与门禁状态 · 历史记录长期保存，可随时回溯</div>
+  <div class="proj-grid">
+    <div class="card" onclick="go('write')">
+      <div class="row"><span class="tag article">写作 · 观点评论</span><span class="risk high">evidence_risk: high</span></div>
+      <h3>为什么"证据优先"是 AI 写作的唯一出路</h3>
+      <div class="stagebar"><i class="done"></i><i class="done"></i><i class="done"></i><i class="cur"></i><i></i><i></i></div>
+      <div class="meta"><span>阶段：分层审查</span><span>1 个门禁待决策 · 2 小时前</span></div>
+    </div>
+    <div class="card" onclick="go('deck')">
+      <div class="row"><span class="tag deck">PPT · generate</span><span class="risk mid">视觉 QA 中</span></div>
+      <h3>Q3 产品复盘演示稿</h3>
+      <div class="stagebar"><i class="done"></i><i class="done"></i><i class="cur"></i><i></i><i></i></div>
+      <div class="meta"><span>阶段：样张确认</span><span>运行中 · 刚刚</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><span class="tag article">写作 · 教程</span><span class="risk low">已交付</span></div>
+      <h3>用 Claude Code 搭建个人知识库</h3>
+      <div class="stagebar"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i></div>
+      <div class="meta"><span>阶段：终稿 ✓</span><span>3 天前 · 可导出</span></div>
+    </div>
+    <div class="card">
+      <div class="row"><span class="tag deck">PPT · upgrade-selected</span><span class="risk low">已交付</span></div>
+      <h3>年度总结 Deck（升级 3 页为可编辑）</h3>
+      <div class="stagebar"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i></div>
+      <div class="meta"><span>PPTX 已下载</span><span>上周</span></div>
+    </div>
+    <div class="card newproj" onclick="alert('新建项目：选择写作 / PPT / 联动管线')">＋ 新建项目</div>
+  </div>
+</div>
+
+<!-- ============ 写作工位 ============ -->
+<div id="write" class="page studio">
+  <div class="studio-head">
+    <span class="crumb">项目 / 写作</span>
+    <h2>为什么"证据优先"是 AI 写作的唯一出路</h2>
+    <span class="tag article">观点评论 · standard · revise</span>
+    <div class="spacer"></div>
+    <button class="btn ghost" onclick="alert('历史版本与门禁决策时间线')">历史</button>
+    <button class="btn" onclick="alert('导出 Markdown / 各平台格式')">导出</button>
+    <button class="btn primary" onclick="alert('任务进入 awaiting_user 已恢复的下一阶段')">继续管线</button>
+  </div>
+  <div class="studio-body">
+    <aside class="pipeline">
+      <h4>阶段流水线</h4>
+      <div class="pstep done"><span class="dot">✓</span>Brief 门禁</div>
+      <div class="pstep done"><span class="dot">✓</span>调研 · 来源地图</div>
+      <div class="pstep done"><span class="dot">✓</span>主张 / 论证结构</div>
+      <div class="pstep cur"><span class="dot">●</span>草稿<span class="gate-ico">⛳ 门禁</span></div>
+      <div class="pstep"><span class="dot"></span>分层审查</div>
+      <div class="pstep"><span class="dot"></span>终稿</div>
+      <h4 style="margin-top:18px">本阶段操作</h4>
+      <div class="pstep">· hooks — 候选开头</div>
+      <div class="pstep">· humanize — 去模板感</div>
+      <div class="pstep">· audit — 只审不改</div>
+    </aside>
+    <main class="editor-wrap">
+      <div class="editor-toolbar">
+        自动保存 · 版本 v4
+        <div class="ev-legend">
+          <span><i style="background:var(--fact)"></i>已核实事实</span>
+          <span><i style="background:var(--sourced)"></i>有来源解释</span>
+          <span><i style="background:var(--judgment)"></i>作者判断</span>
+          <span><i style="background:var(--personal)"></i>亲身经历</span>
+        </div>
+      </div>
+      <div class="editor">
+        <h1>为什么"证据优先"是 AI 写作的唯一出路</h1>
+        <p>过去一年，<mark class="fact">生成式 AI 辅助写作的渗透率在内容创作者群体中快速上升</mark>，但与之相伴的是另一个事实：<mark class="src">多家平台报告 AI 生成内容的虚假引用比例显著高于人工内容</mark>。问题不在于模型不会写，而在于它太会写了——流畅掩盖了事实的空洞。</p>
+        <p><mark class="judg">我认为，解法不是更强的模型，而是把"证据分级"变成写作流程的一等公民。</mark>当每一个论断都被迫声明自己属于哪一类——已核实的、有来源的、我的判断、还是我亲身经历——编造就失去了藏身之处。</p>
+        <p><mark class="pers">我自己就踩过这个坑：去年一篇用 AI 辅助写的行业分析里，一个看似可靠的统计数据最终被读者指出是模型编造的，那次经历让我彻底改变了工作流。</mark></p>
+        <div class="causal-warn">⚠ <b>因果红线</b>：本段仅有时间先后关系，缺少对照与反事实证据，不得断言"AI 使用导致内容质量下降"。已改为关联表述；如需因果句，请补充对照研究来源。</div>
+        <div class="gate-card">
+          <b>⛳ 门禁 · 草稿 → 分层审查</b>
+          草稿已完成（1,820 字，证据账本覆盖 87%）。证据账本中有 <b>2 条来源待核查</b>，是否在进入审查前先处理？
+          <div class="opts">
+            <button class="btn primary" onclick="alert('决策已留痕，管线继续')">先核查来源，再进审查</button>
+            <button class="btn" onclick="alert('决策已留痕，管线继续')">直接进入分层审查</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <aside class="ledger">
+      <h4>证据账本 Evidence Ledger</h4>
+      <div class="counts">
+        <div class="cnt"><b style="color:var(--fact)">6</b>已核实事实</div>
+        <div class="cnt"><b style="color:var(--sourced)">5</b>有来源解释</div>
+        <div class="cnt"><b style="color:var(--judgment)">3</b>作者判断</div>
+        <div class="cnt"><b style="color:var(--personal)">1</b>亲身经历</div>
+      </div>
+      <h4>来源地图</h4>
+      <div class="src-item"><div class="t">平台 AI 内容治理报告 2025</div><div class="s"><span>reuters.com</span><span class="pill ok">已核查</span></div></div>
+      <div class="src-item"><div class="t">AI 生成内容虚假引用率研究</div><div class="s"><span>arxiv.org</span><span class="pill ok">已核查</span></div></div>
+      <div class="src-item"><div class="t">创作者工具使用调研（二手转引）</div><div class="s"><span>blog.example.com</span><span class="pill pend">待核查</span></div></div>
+      <h4 style="margin-top:14px">声音档案</h4>
+      <div class="src-item"><div class="t">🎧 个人档案 · soul.md v3</div><div class="s"><span>已挂载（去 AI 模板感）</span></div></div>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ PPT 工位 ============ -->
+<div id="deck" class="page studio">
+  <div class="studio-head">
+    <span class="crumb">项目 / PPT</span>
+    <h2>Q3 产品复盘演示稿</h2>
+    <span class="tag deck">generate · 16:9 · 商务深蓝</span>
+    <div class="spacer"></div>
+    <button class="btn ghost" onclick="alert('run 完整事件流回放')">运行日志</button>
+    <button class="btn" onclick="alert('重新出样张 / 换风格')">重出样张</button>
+    <button class="btn primary" onclick="alert('批量生产全部页面 → PPTX')">批量生产</button>
+    <button class="btn primary" style="background:var(--ok);border-color:var(--ok)" onclick="alert('下载 PPTX（含中间产物：页面图片 / manifest）')">⬇ 下载 PPTX</button>
+  </div>
+  <div class="studio-body">
+    <aside class="route-col">
+      <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Route</h4>
+      <div class="route-card sel"><b>从内容生成 <code>generate</code></b><span>文章 / 报告 / 笔记 / 大纲 → 成套演示稿</span></div>
+      <div class="route-card"><b>重建为可编辑 <code>direct-editable</code></b><span>图片 / PDF / 可信 PPTX → 对象级 PPTX（需 Gate 0 信任确认）</span></div>
+      <div class="route-card"><b>全量升级 <code>upgrade-full</code></b><span>既有 image-deck 整体升级为可编辑</span></div>
+      <div class="route-card"><b>指定页升级 <code>upgrade-selected</code></b><span>只升级勾选的页面</span></div>
+      <div class="steps">
+        <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px">执行步骤</h4>
+        <div class="pstep done"><span class="dot">✓</span>风格选定</div>
+        <div class="pstep done"><span class="dot">✓</span>版式设计</div>
+        <div class="pstep cur"><span class="dot">●</span>样张确认 ⛳</div>
+        <div class="pstep"><span class="dot"></span>批量生产</div>
+        <div class="pstep"><span class="dot"></span>视觉 QA</div>
+        <div class="pstep"><span class="dot"></span>交付 PPTX</div>
+      </div>
+    </aside>
+    <main class="deck-main">
+      <div class="slides">
+        <div class="slide samp"><span class="qa" style="color:var(--ok)">✓ QA</span><div class="num">01 · 封面</div><div class="t">Q3 产品复盘</div><div class="b">增长 · 留存 · 下季度主张</div></div>
+        <div class="slide samp"><span class="qa" style="color:var(--ok)">✓ QA</span><div class="num">02 · 核心结论</div><div class="t">三个关键判断</div><div class="b">证据账本随行，判断与事实分离呈现</div><div class="badges"><span class="badge f">事实×4</span><span class="badge j">判断×3</span></div></div>
+        <div class="slide"><span class="qa" style="color:var(--warn)">待确认</span><div class="num">03 · 数据页</div><div class="t">留存曲线对比</div><div class="b">（点击放大查看样张，通过视觉 QA 后批量生产）</div></div>
+        <div class="slide"><div class="num">04</div><div class="t">…</div><div class="b">等待样张确认后生成</div></div>
+        <div class="slide"><div class="num">05</div><div class="t">…</div><div class="b">等待样张确认后生成</div></div>
+        <div class="slide"><div class="num">06</div><div class="t">…</div><div class="b">等待样张确认后生成</div></div>
+      </div>
+      <!-- Gate 0 blocked 示例（direct-editable 上传未确认文件时） -->
+      <div class="blocked-card">
+        <span style="color:var(--muted)">/Gate 0 信任门禁示例（上传来源未确认的 PPTX 时整体呈现为：/</span><br>
+        route: <span class="code">direct-editable</span><br>
+        status: <span class="code">blocked</span><br>
+        reason_code: <span class="code">untrusted_office_input</span><br>
+        input_handling: not_opened<br>
+        next_action: 提供可信确认，或改用 PDF / 逐页图片
+        <div class="blocked-actions">
+          <button class="btn primary" onclick="alert('owner 显式确认已留痕 → 解锁 CLI preflight')">我确认此文件来源可信</button>
+          <button class="btn" onclick="alert('改用 PDF / 逐页图片上传')">改用 PDF / 图片</button>
+        </div>
+      </div>
+      <div class="controlbar">
+        <span class="cf"><b>route</b><span class="v-ok">generate</span></span>
+        <span class="cf"><b>status</b><span class="v-warn">awaiting_user</span></span>
+        <span class="cf"><b>stage</b><span class="v-run">sample_review</span></span>
+        <span class="cf"><b>worker</b><span class="v-ok">ready</span></span>
+        <span class="cf"><b>reason_code</b><span class="v-ok">—</span></span>
+        <span class="cf log" onclick="alert('展开 run 完整日志')">▸ 查看完整日志</span>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ 资产库（简） ============ -->
+<div id="assets" class="page dash">
+  <h1>资产库</h1>
+  <div class="sub">跨项目资产 · 长期保存</div>
+  <div class="proj-grid">
+    <div class="card"><div class="row"><span class="tag article">声音档案</span></div><h3>🎧 soul.md · 个人档案 v3</h3><div class="meta"><span>12 篇样本训练 · 盲评通过</span><span>挂载于 2 个项目</span></div></div>
+    <div class="card"><div class="row"><span class="tag article">来源库</span></div><h3>📚 已核查来源 · 46 条</h3><div class="meta"><span>可复用于新文章的证据账本</span><span>持续累积</span></div></div>
+    <div class="card"><div class="row"><span class="tag deck">样式库</span></div><h3>🎨 风格画廊</h3><div class="meta"><span>商务深蓝 / 极简黑白 / 杂志编辑风…</span><span>含代表样张</span></div></div>
+    <div class="card"><div class="row"><span class="tag deck">产物</span></div><h3>📦 历史交付物</h3><div class="meta"><span>PPTX / Markdown 全部可下载</span><span>按项目版本化</span></div></div>
+  </div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn){document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  else{const map={dash:'项目台',write:'写作工位',deck:'PPT 工位',assets:'资产库'};document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.textContent===map[id]));}
+}
+</script>
+</body>
+</html>

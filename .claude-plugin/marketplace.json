@@ -8,8 +8,8 @@
   "plugins": [
     {
       "name": "evidence-first-writing",
-      "description": "先识别写作意图、文章类型、证据风险和协作方式，再编排调研、论证、起草、编辑、个人声音、技术验证、营销文案和去AI模板感",
-      "version": "0.1.0",
+      "description": "先识别写作意图、文章类型、证据风险和协作方式，再编排调研、论证、起草、编辑、个人声音、技术验证、营销文案和去AI模板感；含选题势能四问、读者模型、内容资产与分发包的创作者化能力层",
+      "version": "0.2.0",
       "source": "./evidence-first-writing",
       "author": {
         "name": "leo-kuang-ai"
@@ -18,7 +18,7 @@
     {
       "name": "leo-ppt-generator",
       "description": "把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint；支持图片版PPT、可编辑版、hybrid与升级路线",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./leo-ppt-generator",
       "author": {
         "name": "leo-kuang-ai"

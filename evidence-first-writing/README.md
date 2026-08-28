@@ -10,7 +10,18 @@
 
 ## 安装
 
-> 官方推荐用 Claude Code 的 `/plugin` 系统远程安装（已实测通过）。Git clone + 软链是备选。
+> 官方推荐用 Claude Code 的 `/plugin` 系统远程安装（已实测通过）。开发者本人 dogfood 与非 Claude Code 宿主（如 Codex）改用 Git clone + 软链。
+
+### 快速安装（复制即装）
+
+```sh
+# Claude Code
+claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install evidence-first-writing@leo-skills
+
+# 通用 agents 目录（Codex / Cursor 等兼容宿主）
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.agents/skills/leo-skills \
+  && ln -s ~/.agents/skills/leo-skills/evidence-first-writing ~/.agents/skills/evidence-first-writing
+```
 
 ### 方式一：Claude Code `/plugin`（推荐，已实测）
 
@@ -22,11 +33,11 @@
 ```
 
 - `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；
-- `plugin install` 把 skill 装到 `~/.claude/plugins/cache/leo-skills/evidence-first-writing/0.1.0/`，并注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
+- `plugin install` 把 skill 装到 `~/.claude/plugins/cache/leo-skills/evidence-first-writing/<版本>/`，并注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
 - 更新：推送新版本后执行 `/plugin update evidence-first-writing`（或先 `/plugin marketplace update` 再 update）；
 - 卸载：`/plugin uninstall evidence-first-writing`。
 
-### 方式二：Git clone + 软链（备选）
+### 方式二：Git clone + 软链（开发者 / 非 Claude Code 宿主）
 
 从 GitHub 拉取本仓库并软链该 skill 到 `~/.claude/skills/`：
 

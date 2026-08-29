@@ -11,8 +11,8 @@ adheres to a loose semantic-versioning convention.
 - **镜像技能对通用安装器默认隐藏** (user-visible) — 四棵 spec-first 宿主镜像树
   （`.agents/`、`.claude/`、`.kiro/` 各 35，`.codex/` 无）共 105 个 SKILL.md 注入
   `metadata.internal: true`：裸 `npx skills add leo-kuang-ai/leo-skills` 的发现
-  清单回归只含三个产品技能（本地路径实测：默认清单恰好三条目，`INSTALL_INTERNAL_SKILLS=1`
-  下 38 条目可显式装镜像，裸命令试装 "Installed 3 skills"；远端复验待推送后）。
+  清单回归只含三个产品技能（本地与远端均实测：默认清单恰好三条目，`INSTALL_INTERNAL_SKILLS=1`
+  下 38 条目可显式装镜像，裸命令试装 "Installed 3 skills"；远端复验于推送后 2026-08-29 通过）。
   新增幂等脚本 `scripts/mark-mirror-skills-internal.py` 应对 `spec-first update`
   重生成覆盖（AGENTS.md 已记重放约定）；四份 README 方式一主命令回归裸命令形态
   （`-s` 降为单装变体）。镜像入库决策（f27e789）不变，clone-即得治理保留。

@@ -8,6 +8,63 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- `docs/leo-ppt-generator-master-panel-20-rounds-review.md` — 世界级大师评审团 20 轮审查纪要:
+  以 10 位设计师(Duarte/Reynolds/Vignelli/Tufte/Scher/Rams/Sagmeister/Vinh/Gallo/Bierut)的
+  公开方法论为判据的角色化评审(并行 10 agent 直读源文件,~80 条发现 + 19 条签名洞察,
+  主持人两幕 20 轮交锋决议)。关键产出:①基线验证——上轮三项 P0(data-journalism 悬空、
+  P23/P24 缺失、麦肯锡近重复)全部未修复,且麦肯锡分叉已双通道上线、`设计体系.md` 新增
+  不实「全部落地完成」宣称;②四个计划盲区新维度——确定性注入链是玻璃地板(Vinh 实测
+  `_field` 对标准冒号形态返回空、P9 空骨架静默注入、CSS 方言对生图模型零信息)、数据
+  诚实缺视觉层(估算值实心渲染、Tech Spec 装饰竖线 lie factor、KPI Tower 钳制)、叙事层
+  无程序(one_thing/三幕/时长和/哇点零合同)、例外无代价表(粗字重/多色/零要点/仪式页被
+  一刀切);③全部决议映射到既有两条实施线不另起炉灶——A 并入 W 计划既有单元、B 建议
+  新开 W4(注入链修复六项+网格物化,最高工程优先级)、C 并入多行业线(brand 契约/
+  verified_at)、D 建议新开 W5(叙事合同+禅档位+AI 图像三级标注),并给出验收口径增量。
+- `docs/plans/2026-08-29-001-feat-leo-ppt-style-system-optimization-plan.md` — 风格系统优化
+  实施计划（implementation-ready）：将风格评审十档优化点组织为三波 10 个实施单元
+  （W1 引用完整性+图表规范 / W2 护栏成文+版式补缺+token 三层化+schema/lint / W3
+  动效断言密度+趋势风格+评测）。经 spec-doc-review 三 persona（coherence/
+  feasibility/adversarial）审查，20 条 findings 全部合成修复，关键吸收：unittest
+  discover 实测 0 测试（存量 7 测试从未被执行）→ KTD9 可发现性前置修复；全库
+  palette 为散文实况（0/136 纯 HEX）→ token/护栏/lint 全链按"提取内嵌 HEX 锚点"
+  口径重设计 + 12 份内置 brief 定型迁移；护栏前移改 `--guardrail` 旗标保住缺省
+  逐字节确定性；与多行业技术方案三处撞车（visual-qa 断言判据行、user-colors 覆盖
+  通道、P23–P29 版式编号，后者本计划单方面让号改 P30–P36）逐字核实后在本计划侧
+  裁决并登记 Deferred；评测基线先行 + 补 2 个轻量 advise 用例消除空覆盖声明。
+- `docs/leo-ppt-generator-multi-industry-optimization-tech-plan.md` — 多行业优化技术
+  方案 v2（承接专家评审 30 条清单，经 5 镜头多 agent 深度审查 29 条发现全部闭环：
+  内联元数据改登记表单源、医疗红线补《广告法》16 条禁词与五档双力度、政务分级
+  细分国家秘密三级并机密绝密拒做、成稿违规改页级修复仅 hard-forbidden 保留 deck
+  级、校验下沉 image prepare 前置强制、品牌注入改 load_brand 不触碰 load_style、
+  diagram render 零新依赖自绘优先、eval 与单测职责分离防假绿、终验收全量回归
+  时点）：总体架构决策（content_rules 独立文件、数字
+  内联+登记表双记录、双层校验时机、brand 并入 style render、diagram render 走
+  strict asset、评测沿用 9+9 流程），三批次实施设计——批次 1 内容正确性（五行业
+  content_rules 契约、数字元数据合同、data_classification/PHI 分级门与 3 新
+  reason code）、批次 2 生成确定性（style render --brand 与 brand_assets 契约块、
+  防漂移三件、check_master_contract 校验器与标题连读/术语表注入）、批次 3 版式
+  资产（P23–P29 与瀑布桥图等 10 类）与 diagram render/backend×页型路由；含风险
+  缓解表与逐批验收口径。
+
+- `docs/leo-ppt-generator-style-review.md` — 风格系统评审（十位顶尖设计师视角）：
+  以 10 个设计角色（中文排印 / 编辑网格 / 色彩品牌 / 数据可视化 / 叙事 / 动效 /
+  无障碍 / 认知负荷 / AI 原生产品 / 设计系统工程）走查 styles/ 风格库全量并对照
+  2025–2026 业界趋势。核心结论：六轴正交骨架领先业界，但存在四类系统性短板——
+  图表样式规范缺失（14 个文件悬空引用不存在的 `data-journalism`，坐标轴/图例/
+  数据标签零规定）、排印参数不落地（字体族几乎全是模糊描述、行高无数值）、
+  无障碍只有半条规则（仅 4.5:1，无体系）、"风格不带 HEX" token 化宣称与 138 份
+  写死 HEX 的实现脱节。另核验既成缺陷：麦肯锡风格顶层与母版近重复且措辞已分叉、
+  P23/P24 版式被引用但文件不存在、目录/团队/引用/数据大屏版式无骨架、deck 级
+  动效空白。给出 P0/P1/P2 十档优化矩阵，并标注与多行业专家评审的四处交叉验证点
+  （断言式标题、可访问性程序化、品牌 token 链路、版式缺口）。
+- `docs/leo-ppt-generator-multi-industry-expert-review.md` — 多行业专家评审：10 位
+  PPT 专家画像（咨询/金融/发布会/VI/学术/教学/政务/医疗/工程/AI 架构）五组并行
+  分析 58 条发现，归类八大主题：行业内容规范轴缺失（content_rules）、数字元数据
+  合同（口径/期间/单位/证据等级）、敏感数据分级与行业合规门、品牌 VI 注入链路与
+  防漂移、内容骨架确定性（content render/标题连读/术语表）、版式行业深化（隔页/
+  参数表/文献/教学三件套/桥图）、技术图确定性渲染、行业正确性评测与 backend 路由；
+  给出三波优先级路线（内容正确性 → 生成确定性 → 工程与评测深化）。
+
 - **docs: spec-first 公众号 W1 二轮推进（手册定稿 + 站外首答）** — 《spec-first 中文实战手册》v0.9 → **v1.0 定稿**（docs/spec-first-gzh-manual-v1.0.md）：两处待补全部补齐——17 workflow 全清单表（权威源 = npm v1.15.1 Runtime Capability Catalog）与 spec-first vs Spec Kit vs OpenSpec 三框架对比表（2026-08 官方页面口径）；三数字 17/35/26 经本地 catalog 与官网 Reference 双重验证成立（26 为 skill-local agents 参考页计数，顶层 source agents 已并入 skill-local 架构）；同工序导出 A4 六页 PDF（章节间嵌公众号码 + 文末大码，Chrome headless 打印，中文渲染经视觉验证通过）。知乎首答草稿落盘（docs/zhihu-answer-01-sdd-practice.md，SDD 实践题，约 820 字 + 双版本钩子段 + 发布待办）。「手册」关键词回复手动文案与链接投放建议追加至运营方案执行记录（后台自动写入不可行的定论不变）。(user-visible)
 - **docs: spec-first 公众号 W1 内容资产（自主推进）** — W1 长文《Spec-First 全景：17 个 workflow 怎么串成一条链》全文初稿（约 1600 字，标题 A/B 与发布待办）写入运营方案附录 A；钩子资产《spec-first 中文实战手册》v0.9 落盘（两处待补标记当日已由二轮推进补齐并升级 v1.0，见上条）；知乎题库确认 3 个高流量目标问题（SDD 实践体验 / OpenSpec 与 SDD 未来 / 多 AI 协同交付）。(user-visible)
 - **docs: 统一三插件安装规范** — 全仓 README 安装节统一为同一标准：首选 `/plugin marketplace add leo-kuang-ai/leo-skills` + `/plugin install <插件名>`，备选 git clone + 软链，包级安装器（leo-ppt-generator `install.sh`）作为包特有方式保留；移除安装说明中硬编码的陈旧版本号（0.1.0 → `<版本>`）；leo-ppt-generator README 补 marketplace 首选方式；creator-buddy 备选方式对齐软链规范；xhs-hotnotes 文档移除 skillhub 渠道追踪参数；方式二定位措辞统一为「开发者 / 非 Claude Code 宿主」；新增「快速安装（复制即装）」段——每宿主一段可直接粘贴的命令（Claude Code 走 `claude plugin` CLI 官方 marketplace 通道，agents 目录走 clone + 软链），并把 creator-buddy 插件清单迁移至规范位置 `.claude-plugin/plugin.json`（三插件与 marketplace 均经 `claude plugin validate` 校验通过）。(user-visible)

@@ -3,6 +3,8 @@ name: spec-dogfood
 description: "Hands-off, diff-scoped browser QA of the active branch or PR. Use when a branch needs autonomous user-flow dogfooding before review or shipping: map changed flows, drive agent-browser, fix small breakages with regression tests, record human-decision blockers, and write a durable report. Do not use for collaborative UI polish, ordinary browser smoke tests, code review, implementation planning, or broad whole-app exploration."
 disable-model-invocation: true
 argument-hint: "[PR number, branch name, or blank for current branch] [--port PORT]"
+metadata:
+  internal: true
 ---
 
 # Dogfood

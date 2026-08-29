@@ -3,6 +3,8 @@ name: spec-worktree
 description: Internal helper for caller-owned git worktree isolation. Governed callers are spec-dogfood and spec-work; every caller must provide the forward invocation and intake contract.
 user-invocable: false
 allowed-tools: Bash(bash *worktree-manager.sh*)
+metadata:
+  internal: true
 ---
 
 # Worktree Isolation

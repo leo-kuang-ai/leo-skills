@@ -1,6 +1,8 @@
 ---
 name: spec-rule-miner
 description: "Use this standalone skill when the user asks to mine a repo's existing coding conventions for future AI coding, generate or refresh project rules with AGENTS.md/CLAUDE.md pointers, create Cursor or Qoder rule files from actual code evidence, or make AI-generated code follow a specific project's habits. Do not use for confirmed team policy governance, normal code review/debug/refactor work, linter/formatter configuration, generic best practices, unsupported tool rule files such as .cursorrules or .kiro/steering rules, or generated runtime mirror edits."
+metadata:
+  internal: true
 ---
 
 # Spec Rule Miner

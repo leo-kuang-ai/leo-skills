@@ -2,6 +2,8 @@
 name: spec-app-consistency-audit
 description: Audit mobile App PRD/Figma/local-source consistency across page routes, KMP/Clean Architecture, components, analytics, i18n, engineering quality, and industry lenses before runtime validation; use for cross-source App consistency, not ordinary code review, PRD authoring, build/test execution, UI polish, or product-code edits.
 argument-hint: "[mode:headless|mode:report-only] [base:<ref>] [source:<path>] [prd:<path>] [figma-context:<path>|figma-ref:<id-or-url>] [industry:<name>] [depth:deep]"
+metadata:
+  internal: true
 ---
 
 # App Consistency Audit

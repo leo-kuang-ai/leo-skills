@@ -2,6 +2,8 @@
 name: spec-runtime-setup
 description: Install, configure, verify, and refresh required harness runtime readiness facts for spec-first workflows on Claude Code, Codex, Cursor, Kiro, Qoder, or OpenCode.
 argument-hint: "[bare auto setup] [--check|--verify-only|--plan|--project-config] [--only codegraph,graphify] [--workspace-graph|--workspace-graph-status|--workspace-graph-clean] [--repos <a,b>] [--json] [--repair-host-config] [--refresh] [--repo <path>] [--requirement-workspace <repo-relative-path>]"
+metadata:
+  internal: true
 ---
 
 # Runtime Setup

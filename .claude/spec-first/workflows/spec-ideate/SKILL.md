@@ -3,6 +3,8 @@ name: spec-ideate
 description: "Generate and evaluate grounded ideas. Use when the user asks for ideas, improvements, surprising options, or AI-generated directions before choosing one to develop; use spec-brainstorm to refine the user's own idea."
 argument-hint: "[feature, focus area, or constraint] [output:md]"
 
+metadata:
+  internal: true
 ---
 
 # Generate Improvement Ideas

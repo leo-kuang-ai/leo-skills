@@ -2,6 +2,8 @@
 name: spec-work
 description: Execute a settled plan, validated task pack, spec path, or concrete implementation request end-to-end. Use spec-debug for open-ended bugs; stop when target repo, scope, source ownership, or required authorization is unresolved.
 argument-hint: "[Plan doc path or description of work. Blank to auto use latest plan doc]"
+metadata:
+  internal: true
 ---
 
 # Work Execution Command

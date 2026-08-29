@@ -2,6 +2,8 @@
 name: spec-doc-review
 description: 使用角色化 lens 审查 requirements、plans、task packs 或 specs。适用于改进既有规划与执行文档；默认 standard roster（≤3 reviewers），完整条件 roster 使用 roster:full。
 argument-hint: "[mode:headless] [mutation:report-only|mutation:apply-fixes] [output:json] [roster:lite|standard|full] [path/to/document.md]"
+metadata:
+  internal: true
 ---
 
 # Document Review

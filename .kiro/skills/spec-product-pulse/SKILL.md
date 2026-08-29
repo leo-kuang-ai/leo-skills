@@ -10,6 +10,8 @@ allowed-tools:
   - Grep
   - Bash
   - AskUserQuestion
+metadata:
+  internal: true
 ---
 
 # Product Pulse

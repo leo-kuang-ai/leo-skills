@@ -36,57 +36,60 @@
 
 三个插件（`evidence-first-writing` / `leo-ppt-generator` / `creator-buddy`）统一按以下方式安装；各插件 README 的安装节与此保持一致。
 
-### 快速安装（复制即装）
+### 方式一：一行命令（推荐，已实测）
 
-终端粘贴即装，无需进会话逐条输入：
+用通用安装器（[vercel-labs/skills](https://github.com/vercel-labs/skills)，自动识别 78+ 宿主）安装，终端粘贴：
 
 ```sh
-# Claude Code：一行装齐三个插件（官方 marketplace 通道，等价于方式一）
+# 装齐三个技能（已实测）
+npx skills add leo-kuang-ai/leo-skills
+
+# 只装一个
+npx skills add leo-kuang-ai/leo-skills -s leo-ppt-generator
+```
+
+- `-a <宿主>` 指定安装目标（如 `-a claude-code`），`-g` 装到用户级全局，`--list` 只预览不安装；
+- 仓库内置的 spec-first 宿主镜像技能已标记 `metadata.internal`，默认不出现在发现清单；需要时以 `INSTALL_INTERNAL_SKILLS=1` 显式安装；
+- 或直接在 agent 对话里说：`帮我安装这个 skill：https://github.com/leo-kuang-ai/leo-skills`。
+
+### 方式二：手动 clone（各宿主路径表）
+
+| 宿主 | 安装路径 |
+|---|---|
+| Claude Code | `~/.claude/skills/`（或官方插件市场，见下） |
+| Codex | `~/.codex/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| 通用 agents 目录 | `~/.agents/skills/`（Codex / Cursor 等兼容宿主通用） |
+| 其他 runtime | clone 到对应宿主的 `skills/` 目录 |
+
+本仓库是多技能 monorepo：clone 整仓后把三个技能目录软链进目标宿主的 skills 目录。以 Claude Code 为例（其他宿主替换两处路径即可）：
+
+```sh
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills \
+  && for p in evidence-first-writing leo-ppt-generator creator-buddy; do ln -s ~/.claude/skills/leo-skills/"$p" ~/.claude/skills/"$p"; done
+```
+
+`git -C ~/.claude/skills/leo-skills pull` 即可更新。项目级共享：`git submodule add https://github.com/leo-kuang-ai/leo-skills.git .claude/skills/leo-skills` 后同样软链，或直接提交技能目录。
+
+**Claude Code 官方插件市场（已实测，含更新与卸载闭环）：**
+
+```sh
 claude plugin marketplace add leo-kuang-ai/leo-skills \
   && claude plugin install evidence-first-writing@leo-skills \
   && claude plugin install leo-ppt-generator@leo-skills \
   && claude plugin install creator-buddy@leo-skills
-
-# 通用 agents 目录（Codex / Cursor 等兼容宿主）：clone + 软链
-git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.agents/skills/leo-skills \
-  && cd ~/.agents/skills/leo-skills \
-  && for p in evidence-first-writing leo-ppt-generator creator-buddy; do ln -s "$PWD/$p" ~/.agents/skills/"$p"; done
 ```
 
-> Codex 专用目录：把第二段里两处 `~/.agents/skills` 换成 `~/.codex/skills` 即可。
+- `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；`plugin install` 把技能装到 `~/.claude/plugins/cache/leo-skills/<技能>/<版本>/`，注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
+- 更新：推送新版本后 `/plugin update <技能>`（或先 `/plugin marketplace update` 再 update）；卸载：`/plugin uninstall <技能>`。
 
-### 方式一：Claude Code `/plugin`（推荐，已实测）
+### 方式三：作为参考资料使用
 
-仓库已配置插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
-
-```text
-/plugin marketplace add leo-kuang-ai/leo-skills
-/plugin install evidence-first-writing     # 或 leo-ppt-generator / creator-buddy
-```
-
-- `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；
-- `plugin install` 把技能装到 `~/.claude/plugins/cache/leo-skills/<技能>/<版本>/`，注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
-- 更新：推送新版本后 `/plugin update <技能>`（或先 `/plugin marketplace update` 再 update）；
-- 卸载：`/plugin uninstall <技能>`。
-
-### 方式二：Git clone + 软链到 `~/.claude/skills/`（开发者 / 非 Claude Code 宿主）
-
-```sh
-git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
-ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
-ln -s ~/.claude/skills/leo-skills/leo-ppt-generator     ~/.claude/skills/leo-ppt-generator
-ln -s ~/.claude/skills/leo-skills/creator-buddy         ~/.claude/skills/creator-buddy
-```
-
-软链让 Claude Code 能识别技能，改动即时生效；`git -C ~/.claude/skills/leo-skills pull` 即可更新。
-
-### 方式三：项目级（跟随仓库，团队共享）
-
-在项目根目录建立（例如 `git submodule add https://github.com/leo-kuang-ai/leo-skills.git .claude/skills/leo-skills` 再软链），或直接提交技能目录。
+即使 runtime 不支持自动加载，也可以直接打开对应技能目录的 `SKILL.md`，把内容粘贴进对话——技能本质是 markdown 指令，任何能读文件并遵循指令的模型都可执行。
 
 ### 验证
 
-在 Claude Code 会话中输入 `/skills`，应看到 `evidence-first-writing`、`leo-ppt-generator` 与 `creator-buddy`；或用触发语直接发起请求。
+在 Claude Code 会话中输入 `/skills`，应看到 `evidence-first-writing`、`leo-ppt-generator` 与 `creator-buddy`；或用触发语直接发起请求（见下）。
 
 ## 使用示例
 
@@ -128,7 +131,7 @@ skill-up validate leo-ppt-generator/evals/eval.yaml
 
 - 每个顶层目录是一个独立技能包（见 `AGENTS.md`）；新技能放在仓库根目录，与 `evidence-first-writing`、`leo-ppt-generator` 平级。
 - 源文件变更需同步更新 `CHANGELOG.md`（Keep a Changelog 格式）。
-- 新增可安装技能时，补其 `.claude-plugin/plugin.json` 并在 `.claude-plugin/marketplace.json` 的 `plugins[]` 追加条目。
+- 新增可安装技能时，补其 `.claude-plugin/plugin.json` 并在 `.claude-plugin/marketplace.json` 的 `plugins[]` 追加条目；该清单同时服务 Claude Code 插件市场与 `npx skills add` 通用安装器，新增技能两通道自动生效。
 
 ## License
 

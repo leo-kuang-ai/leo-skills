@@ -2,6 +2,8 @@
 name: spec-commit
 description: Internal commit helper for public workflows that already hold explicit commit authorization; creates scoped, value-communicating commits without owning push or PR landing.
 user-invocable: false
+metadata:
+  internal: true
 ---
 
 # Git Commit

@@ -2,6 +2,8 @@
 name: spec-lfg
 description: Run the full hands-off engineering pipeline from planning through a green PR. Use only when the current user explicitly requests spec-lfg or selects an option that clearly states it will commit, push, open a PR, and watch CI.
 argument-hint: "[feature description or requirements-only plan path] [target-origin:<origin>]"
+metadata:
+  internal: true
 ---
 
 CRITICAL: You MUST execute every step below IN ORDER. Do NOT skip any required step. Do NOT jump ahead to coding or implementation. The plan phase (step 1) MUST be completed and verified BEFORE any work begins. Violating this order produces bad output.

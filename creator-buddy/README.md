@@ -112,29 +112,28 @@ video-Skills/   视频     ── 选题 · 脚本 · 剪辑 · B-roll · 字幕
 
 本技能已集成进 leo-skills 插件市场，基于开放的 Agent Skills 协议，可在任何 skills-compatible 的 AI agent runtime 中运行。
 
-### 快速安装（复制即装）
+### 方式一：一行命令（推荐，已实测）
 
 ```sh
-# Claude Code
-claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install creator-buddy@leo-skills
+npx skills add leo-kuang-ai/leo-skills                      # 装齐三个技能
+npx skills add leo-kuang-ai/leo-skills -s creator-buddy     # 只装本技能
+```
 
-# 通用 agents 目录（Codex / Cursor 等兼容宿主）
+通用安装器（[vercel-labs/skills](https://github.com/vercel-labs/skills)）自动识别 78+ 宿主；`-a <宿主>` 指定安装目标、`-g` 装到用户级全局、`--list` 只预览不安装。也可以直接在 agent 对话里说：`帮我安装这个 skill：https://github.com/leo-kuang-ai/leo-skills`。
+
+### 方式二：手动 clone + 软链 / Claude Code 插件市场
+
+完整宿主路径表见[仓库根 README](../README.md#安装与使用)。Claude Code 插件市场一行装法：
+
+```sh
+claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install creator-buddy@leo-skills
+```
+
+通用 agents 目录（Codex / Cursor 等兼容宿主）clone + 软链：
+
+```sh
 git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.agents/skills/leo-skills \
   && ln -s ~/.agents/skills/leo-skills/creator-buddy ~/.agents/skills/creator-buddy
-```
-
-### 方式一：Claude Code `/plugin`（推荐）
-
-```text
-/plugin marketplace add leo-kuang-ai/leo-skills
-/plugin install creator-buddy
-```
-
-### 方式二：Git clone + 软链（开发者 / 非 Claude Code 宿主）
-
-```sh
-git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
-ln -s ~/.claude/skills/leo-skills/creator-buddy ~/.claude/skills/creator-buddy
 ```
 
 子技能按 `gzh-Skills/`、`xhs-Skills/`、`video-Skills/` 三组存放，根目录 `SKILL.md` 为总控入口；总控与子技能中的相对路径命令（`python3 gzh-Skills/...`、`node gzh-Skills/...`）一律从 `creator-buddy/` 目录执行。

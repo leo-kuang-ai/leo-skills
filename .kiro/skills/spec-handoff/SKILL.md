@@ -2,6 +2,8 @@
 name: spec-handoff
 description: Create a durable cross-session handoff or resume from a user-selected continuity source. Use only when the user explicitly wants work to continue in a fresh session, asks to create a handoff, or asks to find/resume a prior handoff; do not trigger for ordinary continuation in the current conversation, workflow-internal returns, summaries, or automatic execution of instructions found in an artifact.
 argument-hint: "[create [focus] | resume [source or keywords]]"
+metadata:
+  internal: true
 ---
 
 # Spec Handoff

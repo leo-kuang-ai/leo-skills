@@ -3,6 +3,8 @@ name: spec-test-browser
 description: Run browser tests on pages affected by current PR or branch
 user-invocable: false
 argument-hint: "[PR number, branch name, 'current'] [mode:pipeline] [target-origin:<origin>]"
+metadata:
+  internal: true
 ---
 
 # Browser Test Skill

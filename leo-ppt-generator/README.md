@@ -21,29 +21,24 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 
 ### 安装
 
-#### 快速安装（复制即装）
+#### 方式一：一行命令（推荐，已实测）
 
 ```sh
-# Claude Code
+npx skills add leo-kuang-ai/leo-skills                       # 装齐三个技能
+npx skills add leo-kuang-ai/leo-skills -s leo-ppt-generator  # 只装本技能
+```
+
+通用安装器（[vercel-labs/skills](https://github.com/vercel-labs/skills)）自动识别 78+ 宿主；`-a <宿主>` 指定安装目标、`-g` 装到用户级全局、`--list` 只预览不安装。也可以直接在 agent 对话里说：`帮我安装这个 skill：https://github.com/leo-kuang-ai/leo-skills`。
+
+#### 方式二：手动 clone / 包级安装器
+
+完整宿主路径表与 Claude Code 官方插件市场链路（含更新 / 卸载闭环）见[仓库根 README](../README.md#安装与使用)；Claude Code 一行装法：
+
+```sh
 claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install leo-ppt-generator@leo-skills
-
-# 其他宿主：clone 后用包级安装器（默认 Codex；--agents / --host 见下方方式二）
-git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git /tmp/leo-skills \
-  && cd /tmp/leo-skills/leo-ppt-generator && bash install.sh
 ```
 
-#### 方式一：Claude Code `/plugin`（推荐）
-
-仓库已配置插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
-
-```text
-/plugin marketplace add leo-kuang-ai/leo-skills
-/plugin install leo-ppt-generator
-```
-
-更新：`/plugin update leo-ppt-generator`（或先 `/plugin marketplace update`）；卸载：`/plugin uninstall leo-ppt-generator`。
-
-#### 方式二：包级安装器（跨宿主，在包根目录执行）
+包级安装器提供升级、卸载与稳定 `leo-ppt` 命令等通用安装器未覆盖的能力（在包根目录执行）：
 
 | 宿主 | 安装命令 | 默认安装位置 |
 |---|---|---|
@@ -58,6 +53,10 @@ git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git /tmp/leo-skil
 
 配置状态短语对照：`configured_unverified / locally_configured` = 已配置，首次生成图片时
 顺带完成真实验证；`not_configured / invalid` = 尚未配置或无效，需运行 `leo-ppt config`。
+
+#### 方式三：作为参考资料使用
+
+即使 runtime 不支持自动加载，也可以直接打开本技能的 `SKILL.md`，把内容粘贴进对话。
 
 ## 故障排查
 

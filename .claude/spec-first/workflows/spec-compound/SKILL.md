@@ -2,6 +2,8 @@
 name: spec-compound
 description: Document a recently solved problem or durable project vocabulary in docs/solutions/ or CONCEPTS.md. Use when capturing a learning after work.
 argument-hint: "[optional: brief context] [mode:headless] "
+metadata:
+  internal: true
 ---
 
 # spec-compound

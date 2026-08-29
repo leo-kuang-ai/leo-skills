@@ -8,6 +8,25 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **镜像技能对通用安装器默认隐藏** (user-visible) — 四棵 spec-first 宿主镜像树
+  （`.agents/`、`.claude/`、`.kiro/` 各 35，`.codex/` 无）共 105 个 SKILL.md 注入
+  `metadata.internal: true`：裸 `npx skills add leo-kuang-ai/leo-skills` 的发现
+  清单回归只含三个产品技能（本地路径实测：默认清单恰好三条目，`INSTALL_INTERNAL_SKILLS=1`
+  下 38 条目可显式装镜像，裸命令试装 "Installed 3 skills"；远端复验待推送后）。
+  新增幂等脚本 `scripts/mark-mirror-skills-internal.py` 应对 `spec-first update`
+  重生成覆盖（AGENTS.md 已记重放约定）；四份 README 方式一主命令回归裸命令形态
+  （`-s` 降为单装变体）。镜像入库决策（f27e789）不变，clone-即得治理保留。
+  计划:docs/plans/2026-08-29-005-feat-hide-mirror-skills-internal-plan.md。
+- **仓库安装文档对齐 nuwa-skill 三式结构** (user-visible) — 根 README 与三个技能包
+  README 的安装节统一为「方式一通用一行命令（`npx skills add leo-kuang-ai/leo-skills
+  -s …`，vercel-labs/skills 安装器，78+ 宿主）/ 方式二手动 clone 宿主路径表（保留
+  Claude Code 插件市场链路与 leo-ppt-generator 包级安装器为特化通道）/ 方式三粘贴
+  SKILL.md 作参考资料」；「快速安装（复制即装）」独立块并入方式一，原「项目级」
+  安装降为方式二表注。实测结论：`-s` 圈定三技能安装成功，creator-buddy 32 个子技能
+  被总控遮蔽不漏出；仓库内置 `.agents/skills/` spec-first 宿主镜像会被安装器一并
+  列出，故主命令用 `-s` 精确圈定，镜像排除的仓库侧适配另立后续工作。贡献约定补记
+  marketplace.json 双通道语义（Claude Code 插件市场 + 通用安装器）。
+  计划:docs/plans/2026-08-29-004-docs-nuwa-style-install-plan.md。
 - `docs/leo-ppt-generator-master-panel-20-rounds-review.md` — 世界级大师评审团 20 轮审查纪要:
   以 10 位设计师(Duarte/Reynolds/Vignelli/Tufte/Scher/Rams/Sagmeister/Vinh/Gallo/Bierut)的
   公开方法论为判据的角色化评审(并行 10 agent 直读源文件,~80 条发现 + 19 条签名洞察,

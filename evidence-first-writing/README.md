@@ -10,43 +10,26 @@
 
 ## 安装
 
-> 官方推荐用 Claude Code 的 `/plugin` 系统远程安装（已实测通过）。开发者本人 dogfood 与非 Claude Code 宿主（如 Codex）改用 Git clone + 软链。
+> 官方推荐用一行命令或 Claude Code `/plugin` 系统远程安装（均已实测）。开发者本人 dogfood 与非 Claude Code 宿主（如 Codex）改用 Git clone + 软链。
 
-### 快速安装（复制即装）
-
-```sh
-# Claude Code
-claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install evidence-first-writing@leo-skills
-
-# 通用 agents 目录（Codex / Cursor 等兼容宿主）
-git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.agents/skills/leo-skills \
-  && ln -s ~/.agents/skills/leo-skills/evidence-first-writing ~/.agents/skills/evidence-first-writing
-```
-
-### 方式一：Claude Code `/plugin`（推荐，已实测）
-
-仓库已配置 Claude Code 插件市场（`.claude-plugin/marketplace.json`），在 Claude Code 会话中：
-
-```text
-/plugin marketplace add leo-kuang-ai/leo-skills
-/plugin install evidence-first-writing
-```
-
-- `marketplace add` 从 GitHub clone 到 `~/.claude/plugins/marketplaces/leo-skills/`；
-- `plugin install` 把 skill 装到 `~/.claude/plugins/cache/leo-skills/evidence-first-writing/<版本>/`，并注册为用户级 Personal Skill（Claude Code 启动时自动扫描）；
-- 更新：推送新版本后执行 `/plugin update evidence-first-writing`（或先 `/plugin marketplace update` 再 update）；
-- 卸载：`/plugin uninstall evidence-first-writing`。
-
-### 方式二：Git clone + 软链（开发者 / 非 Claude Code 宿主）
-
-从 GitHub 拉取本仓库并软链该 skill 到 `~/.claude/skills/`：
+### 方式一：一行命令（推荐，已实测）
 
 ```sh
-git clone https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills
-ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
+npx skills add leo-kuang-ai/leo-skills                              # 装齐三个技能
+npx skills add leo-kuang-ai/leo-skills -s evidence-first-writing    # 只装本技能
 ```
 
-`git clone` 装下整个技能集合；软链让 Claude Code 能识别本 skill，且拉取后 `git pull` 即更新。
+通用安装器（[vercel-labs/skills](https://github.com/vercel-labs/skills)）自动识别 78+ 宿主；`-a <宿主>` 指定安装目标、`-g` 装到用户级全局、`--list` 只预览不安装。也可以直接在 agent 对话里说：`帮我安装这个 skill：https://github.com/leo-kuang-ai/leo-skills`。
+
+### 方式二：手动 clone + 软链
+
+完整宿主路径表与 Claude Code 官方插件市场链路（含更新 / 卸载）见[仓库根 README](../README.md#安装与使用)。以 Claude Code 为例：
+
+```sh
+git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills \
+  && ln -s ~/.claude/skills/leo-skills/evidence-first-writing ~/.claude/skills/evidence-first-writing
+```
+
 只装单独一份、不保留仓库的临时做法：
 
 ```sh
@@ -55,19 +38,9 @@ cp -R /tmp/leo-skills/evidence-first-writing ~/.claude/skills/
 rm -rf /tmp/leo-skills
 ```
 
-### 方式三：项目级（跟随仓库，团队共享）
+### 方式三：作为参考资料使用
 
-在项目根目录建立（例如 `git submodule add https://github.com/leo-kuang-ai/leo-skills.git .claude/skills/leo-skills`
-再软链），或直接提交：
-
-```text
-<your-project>/.claude/skills/evidence-first-writing/
-    ├── SKILL.md
-    ├── references/   # 按需加载的流程与契约
-    ├── scripts/      # 事实不变量检查脚本
-    ├── tests/        # 包级单元测试
-    └── evals/        # skill-up 评测定义
-```
+即使 runtime 不支持自动加载，也可以直接打开本技能的 `SKILL.md`，把内容粘贴进对话。
 
 ### Codex / OpenAI 代理
 

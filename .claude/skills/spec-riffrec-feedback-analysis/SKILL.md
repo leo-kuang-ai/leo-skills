@@ -1,6 +1,8 @@
 ---
 name: spec-riffrec-feedback-analysis
 description: Analyze Riffrec feedback captures from bundles or standalone recordings. Always load for `riffrec-*.zip`, `session.json` + `events.json` + `recording.webm` + `voice.webm` bundles, `.mp4`/`.mov`/`.webm` videos, `.m4a`/`.mp3`/`.wav` audio, or capture/share requests.
+metadata:
+  internal: true
 ---
 
 # Riffrec Feedback Analysis

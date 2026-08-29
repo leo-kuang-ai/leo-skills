@@ -1,6 +1,8 @@
 ---
 name: spec-write-skill
 description: 公开 workflow：创建、修改或迁移项目拥有的 Agent Skill package，或对现有/外部 package 做用户明确要求、零执行的只读验证与 readiness 报告时使用；也用于按已接受的 audit finding 修复 source skill。不要用于一次性回答、解释/总结/翻译、普通代码 review、第三方 Skill 纯安装或导入、跨仓批量修改，或直接修补 generated runtime mirrors。
+metadata:
+  internal: true
 ---
 
 # Spec Write Skill

@@ -3,6 +3,8 @@ name: spec-promote
 description: "Draft launch or promotion copy for a shipped feature."
 disable-model-invocation: true
 argument-hint: "[optional: what shipped and/or channels, e.g. 'a tweet thread and a LinkedIn post']"
+metadata:
+  internal: true
 ---
 
 # spec-promote

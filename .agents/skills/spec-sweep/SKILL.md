@@ -12,6 +12,8 @@ allowed-tools:
   - Bash
   - Agent
   - AskUserQuestion
+metadata:
+  internal: true
 ---
 
 # Feedback Sweep

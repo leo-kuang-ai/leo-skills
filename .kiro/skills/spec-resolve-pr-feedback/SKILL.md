@@ -12,6 +12,8 @@ allowed-tools:
   - Bash
   - Agent
   - AskUserQuestion
+metadata:
+  internal: true
 ---
 
 # Resolve PR Review Feedback

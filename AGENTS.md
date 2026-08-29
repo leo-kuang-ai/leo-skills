@@ -72,6 +72,8 @@ rg -n "TODO|FIXME" --glob '!AGENTS.md'
 git diff --check
 ```
 
+`spec-first update` 重生成宿主镜像（`.agents/`、`.claude/`、`.codex/`、`.kiro/`）后，须重跑 `python3 scripts/mark-mirror-skills-internal.py`，保持镜像技能对 `npx skills add` 通用安装器默认隐藏（`metadata.internal: true`）。
+
 提交前，请从对应技能目录运行包级格式化、测试与评测，并确认通过。
 
 ## 编码风格与命名

@@ -3,6 +3,8 @@ name: spec-commit-push-pr
 description: Internal landing helper for public workflows that already hold explicit commit and landing authorization; commits scoped changes, pushes, and creates or updates a PR with a value-first description.
 user-invocable: false
 argument-hint: "[PR ref] [mode:pipeline] [archive:on|off]"
+metadata:
+  internal: true
 ---
 
 # Git Commit, Push, and PR

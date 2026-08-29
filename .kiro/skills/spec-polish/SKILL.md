@@ -3,6 +3,8 @@ name: spec-polish
 description: "Start the dev server, inspect the feature in browser, and iterate on polish."
 disable-model-invocation: true
 argument-hint: "[PR number, branch name, or blank for current branch]"
+metadata:
+  internal: true
 ---
 
 # Polish

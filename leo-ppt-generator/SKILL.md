@@ -9,6 +9,11 @@ description: 生成图片式 PowerPoint（PPTX）演示文稿：从文章、报�
 live host capability、worker 派发和交付判断；`leo-ppt` 只拥有确定性准备、状态、
 验证和组装。
 
+执行主线：①Gate 0 信任检查 → ②advise/execute 判定 → ③Route 四选一 →
+④按需读取 references → ⑤🔴 确认序列（合同 → 大纲 → 母版 → 视觉方向 → 样张）
+→ ⑥生成与验证 → ⑦组装 → ⑧🔴 DELIVERY-GATE 交付闭环。各步骤规则见下文对应
+章节；主线路径之外的分支（材料缺失、worker 缺失、partial）按"不变边界"处理。
+
 ## Gate 0：Office 信任
 
 本门禁优先于 `advise/execute`、Route 和所有其他规则。只要输入是来源未知、无法确认或

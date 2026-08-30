@@ -31,7 +31,7 @@
     "rule": "restrained luxury; avoid neon, playful colors, clutter, aggressive gradients"
   },
   "typography": {
-    "title": "elegant serif or refined letterspaced sans, authoritative",
+    "title": "elegant serif (Georgia / 思源宋体) or refined letterspaced sans (Inter), authoritative",
     "body": "clean, airy, well-leaded",
     "labels": "small caps, disciplined, sparse",
     "text_quality": "exact, brand-consistent, no casual slogans"

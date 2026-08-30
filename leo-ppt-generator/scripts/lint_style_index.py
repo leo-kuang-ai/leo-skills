@@ -18,7 +18,8 @@
 
 1. 顶行三大总数（brief / 分节轴 / 规则索引）与文件系统实际一致；
 2. 总览表每个目录行的数量与实际一致；
-3. ``## 图表语法（N）`` 节标题数与表格行数、实际文件数三者一致。
+3. ``## 图表语法（N）`` 节标题数与表格行数、实际文件数三者一致；
+4. ``style-library.md`` 的分节轴总数与各轴目录括号数与实际一致（防同款漂移）。
 
 用法::
 
@@ -37,6 +38,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 STYLES_ROOT = SKILL_DIR / "references" / "styles"
 INDEX_PATH = STYLES_ROOT / "00_索引" / "_INDEX.md"
+LIBRARY_PATH = SKILL_DIR / "references" / "style-library.md"
 
 # 总览表口径：目录 -> 计数方式。
 # all = 目录下全部 .md；exclude_rules = 排除 _content_rules.md；
@@ -59,6 +61,17 @@ AXIS_COUNT_RULES: dict[str, str] = {
 BRIEF_DIRS = ("01_通用母版", "02_行业内容域", "03_场景用途结构", "05_来源_awesome-gpt-image-2")
 AXIS_DIRS = ("06_论证模式", "07_信息图类型", "08_图片渲染", "09_结构布局", "10_品牌身份",
              "11_图表语法", "12_版式库", "13_页面语义")
+# 分节轴目录 -> style-library.md 中使用的中文短名
+AXIS_NAMES = {
+    "06_论证模式": "论证模式",
+    "07_信息图类型": "信息图类型",
+    "08_图片渲染": "图片渲染",
+    "09_结构布局": "结构布局",
+    "10_品牌身份": "品牌身份",
+    "11_图表语法": "图表语法",
+    "12_版式库": "版式库",
+    "13_页面语义": "页面语义",
+}
 
 _HEADER_RE = re.compile(
     r"含 JSON 风格 (\d+) 份（(\d+) 顶层内置 \+ (\d+) 子目录参考）"
@@ -81,6 +94,37 @@ def _count_dir(name: str) -> int:
 
 def _actual_counts() -> dict[str, int]:
     return {name: _count_dir(name) for name in AXIS_COUNT_RULES}
+
+
+def _check_library(errors: list[str], actual: dict[str, int]) -> None:
+    """style-library.md 与 _INDEX 同源的数字不得单独漂移。
+
+    两处口径：规模表分节轴行的总数与中文短名分解；各轴目录列表的
+    ``目录名/`（N）`` 括号数。
+    """
+    if not LIBRARY_PATH.exists():
+        return
+    text = LIBRARY_PATH.read_text(encoding="utf-8")
+    m = re.search(r"\*\*分节轴规范\*\*.*?\|\s*(\d+) 份\s*\|([^|]*)\|", text)
+    if not m:
+        errors.append("style-library.md 分节轴规范行缺失或格式变化，无法核对")
+    else:
+        claimed_axis, breakdown = int(m.group(1)), m.group(2)
+        real_axis = sum(actual[d] for d in AXIS_DIRS)
+        if claimed_axis != real_axis:
+            errors.append(f"style-library.md 分节轴总数: 写 {claimed_axis}，实际 {real_axis}")
+        for name in AXIS_DIRS:
+            bm = re.search(rf"{AXIS_NAMES[name]} (\d+)", breakdown)
+            if bm and int(bm.group(1)) != actual[name]:
+                errors.append(
+                    f"style-library.md 规模表 {name}: 写 {bm.group(1)}，实际 {actual[name]}"
+                )
+    for name in AXIS_DIRS:
+        lm = re.search(rf"`{re.escape(name)}/?`（(\d+)）", text)
+        if lm and int(lm.group(1)) != actual[name]:
+            errors.append(
+                f"style-library.md 各轴目录 {name}: 写 {lm.group(1)}，实际 {actual[name]}"
+            )
 
 
 def main() -> int:
@@ -138,6 +182,8 @@ def main() -> int:
         ):
             if claimed != real:
                 errors.append(f"{label}: _INDEX 写 {claimed}，实际 {real}")
+
+    _check_library(errors, actual)
 
     print(f"index_consistency errors={len(errors)}")
     for item in errors:

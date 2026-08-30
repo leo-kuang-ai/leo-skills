@@ -385,6 +385,8 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **evidence-first-writing: 三个关键停止点补显性视觉标记** — SKILL.md 在裸主题分叉问询（🛑 STOP：回答前禁止起草正文或生成大纲）、post-publish 因果红线标题（🔴）、未授权持久写入拦截（🔴 STOP：拒绝写入并停 `persistence: not_run`）三处补 `🔴/🛑` 显性标记；措辞与行为合同零变化，仅强化 LLM 解析时的检查点扫描（darwin-skill dim4 基线 7/10 短板项）。验证：3 独立 judge paired 比较 3-0 better（slight）；包级单测 7/7 通过；裸主题问询停止与未授权写入拦截两场景改后子 agent 复测与基线行为一致。
+
 - **插件版本发布** — `evidence-first-writing` 与 `leo-ppt-generator` 的
   `plugin.json` 版本 0.1.0 → 0.2.0：写作技能发布创作者化能力层（选题四问、
   读者模型、内容资产、论点压缩句、分发包），PPT 技能发布全生命周期管理

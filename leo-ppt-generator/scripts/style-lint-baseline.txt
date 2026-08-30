@@ -395,16 +395,3 @@ references/styles/03_场景用途结构/路演提案/融资路演风.md#accent-n
 references/styles/03_场景用途结构/路演提案/融资路演风.md#neutral-no-hex
 references/styles/03_场景用途结构/路演提案/融资路演风.md#secondary-no-hex
 references/styles/03_场景用途结构/路演提案/融资路演风.md#typography-no-identity
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md#accent-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md#neutral-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md#primary-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md#secondary-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md#typography-no-identity
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/历史古风题材风.md#accent-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/历史古风题材风.md#neutral-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/历史古风题材风.md#typography-no-identity
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md#accent-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md#neutral-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md#primary-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md#secondary-no-hex
-references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md#typography-no-identity

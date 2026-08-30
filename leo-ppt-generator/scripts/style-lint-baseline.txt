@@ -60,14 +60,6 @@ references/styles/02_行业内容域/医疗健康/医院品牌风.md#accent-no-h
 references/styles/02_行业内容域/医疗健康/医院品牌风.md#neutral-no-hex
 references/styles/02_行业内容域/医疗健康/医院品牌风.md#secondary-no-hex
 references/styles/02_行业内容域/医疗健康/医院品牌风.md#typography-no-identity
-references/styles/02_行业内容域/咨询法律/律所专业风.md#accent-no-hex
-references/styles/02_行业内容域/咨询法律/律所专业风.md#neutral-no-hex
-references/styles/02_行业内容域/咨询法律/律所专业风.md#secondary-no-hex
-references/styles/02_行业内容域/咨询法律/律所专业风.md#typography-no-identity
-references/styles/02_行业内容域/咨询法律/战略咨询风.md#accent-no-hex
-references/styles/02_行业内容域/咨询法律/战略咨询风.md#typography-no-identity
-references/styles/02_行业内容域/咨询法律/顾问报告风.md#accent-no-hex
-references/styles/02_行业内容域/咨询法律/顾问报告风.md#typography-no-identity
 references/styles/02_行业内容域/教育学术/中小学课堂风.md#accent-no-hex
 references/styles/02_行业内容域/教育学术/中小学课堂风.md#neutral-no-hex
 references/styles/02_行业内容域/教育学术/中小学课堂风.md#secondary-no-hex

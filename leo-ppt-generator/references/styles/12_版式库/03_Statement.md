@@ -6,9 +6,9 @@
 
 **适用内容类型:** **纯定性论断 / 口号 / 章节切换**。一句话压缩到 8-12 词,**不承载任何数据或列表**。如果需要数据支撑,改用 P18 Why Now;如果是封面,用 P1。
 
-**骨架:** 左 1/3 空白 + 中段巨字陈述(8-10vw, weight 200) + 右下小字注脚 + 底部 hairline。
+**骨架:** 左 1/3 空白 + 中段巨字陈述(主标 ≤12 字,8-10vw, weight 200;多行时行距 1.1) + 右下小字注脚 + 底部 hairline。文字按「字」计量,不按「词」。
 
-**关键类:** `.h-statement`(9.6vw,letter-spacing:-.05em) `.stmt-anchor`
+**关键类:** `.h-statement`(9.2vw;CJK 正字距 +.03em,负字距仅拉丁) `.stmt-anchor`
 
 **动效 recipe:** `statement-rise` — 大字按词序错峰升起(每词延迟 180ms)+ 注脚 fade in
 

@@ -204,6 +204,23 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 - 最终回复必须包含 PPTX 与必要逐页/notes/failure report 路径、结构验证结果，以及
   provider/OCR/viewer/desktop/人工视觉验证中所有未运行项。
 
+## 红灯清单（反模式速查）
+
+以下动作一律禁止；判据全文见对应章节，命中即按该章固定块或规则处理：
+
+| 红灯动作 | 正确处置 | 出处 |
+| --- | --- | --- |
+| 读取、扫描、隔离、净化来源未知的 PPT/PPTX | Gate 0 固定阻断；"警告后继续/净化后继续"均无效 | Gate 0 |
+| 纯文档排版、单张配图/封面/图表素材、网页/表格微改 | 不属本 Skill，礼貌指路 | frontmatter 边界 |
+| 主 Agent 串行替代缺失的 worker | 固定块 `worker_capability_unavailable`，不得静默替代 | 不变边界 |
+| 手写领域状态、直接 import `_vendor`、以聊天声明充当完成证据 | 只依据 CLI versioned JSON 推进 | 不变边界 |
+| 枚举/点名宿主子代理清单来解释能力缺失 | 用固定块 `reason_code` 表述，不诊断宿主 | 不变边界 |
+| 经聊天接收 secret 或写入日志/私有认证文件 | 凭据只经宿主或 allowlist reference | 不变边界 |
+| "不用确认"跳过样张或数据分级 | 🔴 CONFIRM-GATE 序列不豁免 | 不变边界 |
+| 以 `status=completed` 声称交付闭环 | 须 `delivery_readiness=accepted` | 🔴 DELIVERY-GATE |
+| 未经当前成功/失败集合确认即交付 partial | 🔴 PARTIAL-GATE：先展示集合再明确接受 | upgrade-selected |
+| 用整页截图叠少量文本冒充对象级可编辑 | 禁止；真实 spawn 前不得记录 dispatch | 执行导航 direct-editable |
+
 ## 执行导航
 
 进入具体 Route 后才读取对应 reference；跨 Route 的 runtime、项目、worker、恢复和

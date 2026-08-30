@@ -65,7 +65,7 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | 只升级既有 image-deck 的指定页 | `upgrade-selected` |
 
 内容与视觉稿并存且用户未决定“严格保留布局”还是“仅作风格参考”时，只说明前者对应
-`direct-editable`、后者对应 `generate`，然后等待选择。回答必须先原样输出：
+`direct-editable`、后者对应 `generate`，然后等待选择。🔴 ROUTE-GATE：不得替用户预选。回答必须先原样输出：
 
 ```text
 严格保留布局: direct-editable
@@ -82,7 +82,7 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | `execute` Route 判断 | `references/input-routing.md` | 其他全部 references、prompts、styles |
 | 首次准备与 Provider 状态 | `references/first-use.md`、`references/backend-selection.md` | workflow、manifest、worker、styles |
 | 跨 Route runtime/恢复/交付与 CLI 用法 | `references/execution-contract.md`、`references/cli-helper.md`（在对应 Route 进入后） | reason-codes 直到已有 reason code |
-| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`backend-selection.md`、`visual-qa.md` | styles 直到风格已选；`slide-worker.md` 直到样张通过 |
+| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md` | styles 直到风格已选；`slide-worker.md` 直到样张通过 |
 | `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 直到真实 worker 已确认 |
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
 
@@ -119,7 +119,7 @@ next_action: <唯一下一步；无则 none>
 
 字段值必须来自当前 CLI/合同或当前用户明确输入，不得用自然语言猜测。`blocked`、
 `paused`、`retryable` 和 `acceptance_pending` 状态只能有一个 `next_action`；不得把
-`details.alternatives` 展开成多条用户步骤。`status=completed` 不等于交付完成，必须
+`details.alternatives` 展开成多条用户步骤。🔴 DELIVERY-GATE（人在回路）：`status=completed` 不等于交付完成，必须
 继续报告 `delivery_readiness`；只有 `accepted` 才能声称交付闭环。
 
 以下状态直接复用固定摘要，不要只用自然语言替代字段：
@@ -149,9 +149,23 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
 ## 不变边界
 
-- 在会改变结果前确认大纲、完整内容、风格、图片 backend、样张或升级页集合；execute 授权或用户的"不用确认"要求不豁免该确认序列，样张确认尤其不可跳过。
-- 逐页母版是内容真值工件：每页四段——结论句标题、要点（≤6 条、每条 ≤2 行）、
-  视觉行（容器清单 + 每个要点落位声明）、备注；内容层失败先改母版再重建受影响页，
+- 🔴 CONFIRM-GATE（人在回路，逐门暂停等待用户明示）：在会改变结果前确认大纲、完整内容、风格、图片 backend、样张或升级页集合，
+  以及数据分级（`data_classification`：材料含未公开/涉密样貌数据时必须定级，
+  机密/绝密直接拒做）——分级确认同样不因跳过授权而豁免；首轮冻结合同（含材料
+  缺失分支）须预告剩余确认序列「合同 → 大纲 → 逐页母版 → 视觉方向 → 样张」，
+  用户才知道确认点还有几个；
+- 模版推荐与选择：风格候选由合同信号驱动、默认推荐必须带归因一句；用户指定
+  优先序＝点名 > 参考图 > 推荐（给了参考图就跳过推荐直行，只提取视觉系统并经
+  样张并排比对验证）；错配首次必须提示一句风险与替代建议（用户预先说"别劝"也不豁免首次告知），之后尊重选择并在 style 合同记录用户选择依据、不再重复劝阻；品牌 VI 经
+  `style render --brand` 注入——`${LEO_PPT_HOME}/brands/` 用户档案优先于内置
+  10_品牌身份 预设，浅底对比度 <4.5:1 报错并给最近合规建议色；用户纠结或双参考图时提议
+  样张双生（多一张图成本先告知，点头才出，二选一落选即弃不追加第三方向）——全部寄生既有视觉方向确认与样张点，不新增
+  确认门（见 `references/style-recommendation.md`）。execute 授权或用户的"不用确认"要求不豁免该确认序列，样张确认尤其不可跳过。generate 路线的大纲与逐页母版确认对象是 `<project-root>/content/` 下的版本化文档（`outline-v<N>.md` / `deck-master-v<N>.md`）：提交确认前必须落盘并在头部携带 `confirmation` 状态标记，聊天只引用路径与变更摘要，不整篇复述；该文档门仅在 execute 模式生效。
+- 页图与交付画布必须同比例：generate 路线 slide 图片像素尺寸档必须为交付画布宽高比（默认 16:9，基准 2560×1440）。样张提交、样张方法继承与交付前都必须断言该比例；交付前必须运行 `scripts/check_deck_geometry.py`（非 0 退出阻止交付）。继承既有 sample_generation_method 前必须核验其像素尺寸档，比例不符（如历史 3:2 素材）不得继承，视为 generation method 变更，须重新生成并确认样张。
+- 逐页母版是内容真值工件：每页四段——结论句标题（按论证模式条件化）、要点
+  （按页面角色禅档位：陈述/氛围 0–1 条、论点页 ≤3、台账页 ≤6，每条 ≤2 行）、
+  视觉行（容器清单 + 每个要点落位声明 + 图像来源三级）、备注（speaker_script 与
+  engineering 分栏）；内容层失败先改母版再重建受影响页，
   不绕过母版直接改图（见 `references/deck-master.md`）。
 - 数字与断言三级标注：引用（有出处）/ 估算（标"估算"或"经验值"）/ 示意（标"示意"，
   不得用图表版式）；三级之外来源不足一律标 `unknown` 求证，不得直接写入页面。材料
@@ -226,7 +240,7 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
 ### upgrade-selected
 
-冻结选中页集合，只升级选中页。默认任一失败都不交付 partial；只有展示当前成功/失败
+冻结选中页集合，只升级选中页。默认任一失败都不交付 partial；🔴 PARTIAL-GATE：只有展示当前成功/失败
 集合并取得明确接受后才能生成 `partial-hybrid`，且不得声称全可编辑。失败集合变化时
 必须重新确认并保留旧 artifact revision。
 

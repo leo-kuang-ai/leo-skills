@@ -159,33 +159,33 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   机密/绝密直接拒做）——分级确认同样不因跳过授权而豁免；首轮冻结合同（含材料
   缺失分支）须预告剩余确认序列「合同 → 大纲 → 逐页母版 → 视觉方向 → 样张」，
   用户才知道确认点还有几个；
-- 模版推荐与选择：风格候选由合同信号驱动、默认推荐必须带归因一句；用户指定
+- **模版推荐与选择**：风格候选由合同信号驱动、默认推荐必须带归因一句；用户指定
   优先序＝点名 > 参考图 > 推荐（给了参考图就跳过推荐直行，只提取视觉系统并经
   样张并排比对验证）；错配首次必须提示一句风险与替代建议（用户预先说"别劝"也不豁免首次告知），之后尊重选择并在 style 合同记录用户选择依据、不再重复劝阻；品牌 VI 经
   `style render --brand` 注入——`${LEO_PPT_HOME}/brands/` 用户档案优先于内置
   10_品牌身份 预设，浅底对比度 <4.5:1 报错并给最近合规建议色；用户纠结或双参考图时提议
   样张双生（多一张图成本先告知，点头才出，二选一落选即弃不追加第三方向）——全部寄生既有视觉方向确认与样张点，不新增
   确认门（见 `references/style-recommendation.md`）。execute 授权或用户的"不用确认"要求不豁免该确认序列，样张确认尤其不可跳过。generate 路线的大纲与逐页母版确认对象是 `<project-root>/content/` 下的版本化文档（`outline-v<N>.md` / `deck-master-v<N>.md`）：提交确认前必须落盘并在头部携带 `confirmation` 状态标记，聊天只引用路径与变更摘要，不整篇复述；该文档门仅在 execute 模式生效。
-- 页图与交付画布必须同比例：generate 路线 slide 图片像素尺寸档必须为交付画布宽高比（默认 16:9，基准 2560×1440）。样张提交、样张方法继承与交付前都必须断言该比例；交付前必须运行 `scripts/check_deck_geometry.py`（非 0 退出阻止交付）。继承既有 sample_generation_method 前必须核验其像素尺寸档，比例不符（如历史 3:2 素材）不得继承，视为 generation method 变更，须重新生成并确认样张。
-- 逐页母版是内容真值工件：每页四段——结论句标题（按论证模式条件化）、要点
+- **比例合同**：页图与交付画布必须同比例：generate 路线 slide 图片像素尺寸档必须为交付画布宽高比（默认 16:9，基准 2560×1440）。样张提交、样张方法继承与交付前都必须断言该比例；交付前必须运行 `scripts/check_deck_geometry.py`（非 0 退出阻止交付）。继承既有 sample_generation_method 前必须核验其像素尺寸档，比例不符（如历史 3:2 素材）不得继承，视为 generation method 变更，须重新生成并确认样张。
+- **母版真值**：逐页母版是内容真值工件：每页四段——结论句标题（按论证模式条件化）、要点
   （按页面角色禅档位：陈述/氛围 0–1 条、论点页 ≤3、台账页 ≤6，每条 ≤2 行）、
   视觉行（容器清单 + 每个要点落位声明 + 图像来源三级）、备注（speaker_script 与
   engineering 分栏）；内容层失败先改母版再重建受影响页，
   不绕过母版直接改图（见 `references/deck-master.md`）。
-- 数字与断言三级标注：引用（有出处）/ 估算（标"估算"或"经验值"）/ 示意（标"示意"，
+- **三级标注**：数字与断言三级标注：引用（有出处）/ 估算（标"估算"或"经验值"）/ 示意（标"示意"，
   不得用图表版式）；三级之外来源不足一律标 `unknown` 求证，不得直接写入页面。材料
   整体缺失属于输入层的 unknown：同样必须先输出控制面五字段块（如
   `input_material_missing`）再解释，不得以自然语言"要材料"开头；并在解释中重申
   确认序列（大纲/母版/样张）不因用户的跳过授权而豁免。
-- 打回重做后的再检必须同时写出目标判据结论与波及面结论（如改文字→复查密度与
+- **再检要求**：打回重做后的再检必须同时写出目标判据结论与波及面结论（如改文字→复查密度与
   截断）；qa_note 只写"已修复"不构成通过。
-- 只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
+- **CLI 真值**：只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。
-- 多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
-- 宿主能力缺失只能用 CLI 结论或对应固定块的 `reason_code` 表述；不得枚举、点名或
+- **真实派发**：多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
+- **宿主能力表述**：宿主能力缺失只能用 CLI 结论或对应固定块的 `reason_code` 表述；不得枚举、点名或
   诊断宿主的 Agent/子代理清单、注册表或目录来解释缺失原因，也不得据此提出改造
   宿主的步骤建议。
-- 多页 worker 缺失、未知或调用失败时，先原样输出下面五行，再结束本轮；不得先写
+- **worker 缺失固定块**：多页 worker 缺失、未知或调用失败时，先原样输出下面五行，再结束本轮；不得先写
   “当前无法生成”等自然语言，也不得由主 Agent 静默串行替代（宿主可运行脚本时以
   `render-control-summary.py --fixed worker-unavailable` 输出；无法运行脚本时手写
   并显式记录 `worker_render: handwritten`）：
@@ -200,13 +200,13 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
   只有用户明确提供 worker 能力后才能离开该状态。恰好一页也必须由 CLI 返回
   `single_unit_current_agent_allowed`。
-- 凭据只由宿主或 allowlist reference 管理；不得读取私有认证文件、保存明文 secret，
+- **凭据边界**：凭据只由宿主或 allowlist reference 管理；不得读取私有认证文件、保存明文 secret，
   或把 token、完整环境和用户正文写入日志。
-- `configured_unverified` 允许开始任务；只有 `not_configured`/`invalid` 才暂停
+- **Provider 三态**：`configured_unverified` 允许开始任务；只有 `not_configured`/`invalid` 才暂停
   图片节点并只给一个 `run_cli` Primary_Action；`unknown` 不得当作 `available`。
-- 结构验证、provider、OCR、viewer、desktop、独立渲染和人工视觉证据分别报告；只有
+- **验证分报告**：结构验证、provider、OCR、viewer、desktop、独立渲染和人工视觉证据分别报告；只有
   `delivery_readiness=accepted` 才能声称交付闭环。
-- 最终回复必须包含 PPTX 与必要逐页/notes/failure report 路径、结构验证结果，以及
+- **交付披露**：最终回复必须包含 PPTX 与必要逐页/notes/failure report 路径、结构验证结果，以及
   provider/OCR/viewer/desktop/人工视觉验证中所有未运行项。
 
 ## 红灯清单（反模式速查）

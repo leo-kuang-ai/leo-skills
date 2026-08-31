@@ -4,6 +4,59 @@
 避免误把已定性问题当作回归。新增条目按轮次倒序追加。
 
 
+## 2026-08-31 能力融合 M1 批（docs/plans/2026-08-30-001 里程碑 M1）
+
+四团并行实施（α 来源保真链 / β 版式工程链 / γ 渲染 lane / δ 内核双跑）+
+集成收口。变更面：19 个新 case 注册（59→78）、+185 新单测（187→372，失败数
+与基线逐项持平：2 个存量金样 HEX）、五 lint 全绿（新增 render-templates）、
+git diff --check 清零。关键实证：style render 字节红线（sha256 前后一致）、
+δ 双跑投影 100% 相等 + pptx 跨时区 sha256 全等 + vendor 0 diff、γ SVG 链路
+位级确定 + HTML 链路像素 diff 0.000%、α overlay 位级一致、β 容量对账 66 slot
+全过。**集成事故与澄清**：upstreams.yaml 的 `upstreams:` 节消失初判为并发事故
+并短暂恢复，后经并行会话 CHANGELOG 证实为**有意移除**（sync_upstreams.py 配套
+改造），已按其意图再次移除并 `--check` 通过——多会话并行时 CHANGELOG 应作为
+共享文件异常态的第一取证点（记入教训）。M1 批评测轮（78 case）结果见后续
+条目补充。
+
+## 2026-08-31 产品 P0 优化批（docs/plans/2026-08-31-001）
+
+四项产品层优化（OPT-A block-early 表面合同 / OPT-B 确认门回合合并 /
+OPT-C 成本预估前置 / OPT-D README 成品样例），逐项带判官离线自检与在线复测。
+
+- **本地门**：新增单测 `tests/test_estimate_run_cost.py` 12/12 绿；四 lint 绿。
+  全量单测相对基线零新增失败——但**基线本身在漂移**：并行会话在途（render
+  lane/layout bank/object_builder/sources manifest），单测从 218 增至 293，
+  当轮 5 FAIL + 3 ERROR 全部属并行在途（test_object_builder_equivalence、
+  test_layout_bank、test_visual_measure_rules）与 2 金样 HEX 存量，无一归本批。
+- **OPT-A 历史重放 + 陷阱**：judge_control_plane_fields 位置合同改 block-early
+  （前 3 非空行内、先于块 ≤40 字符元数据行）；iter-26/28（叙述先行无块）仍
+  FAIL，iter-32/57/65/65/66（元数据+块）仍 PASS；合成 7 陷阱全部按预期。
+  **在线首轮（it-86）PASS**——十三点历史为 12 FAIL，本轮转绿可能与顶层锚点
+  相关，但历史存在间歇翻绿先例（iter-16），**单轮不作稳定性结论**，是否真
+  改善弱模型合规以多轮采样为准。
+- **OPT-C 首轮即绿**（it-86）：回复正确引用 `estimate_run_cost.py`、披露
+  `basis: assumed-default`、给出 72k–144k 区间与对账承诺。
+- **OPT-B 两轮校准**（it-86 FAIL → it-88 PASS）：
+  1. it-86 失败为**用例校准差**：原提示"10 页"存在页数口径歧义，触发合同
+     "口径歧义时仍先单独冻结合同"的正确分支（模型回复明确预告合并序列、
+     母版独立轮，行为正确）；修用例预置页数口径/时长/分级后复测。
+  2. it-87 失败为**判官词组缺口**（评测工程发现 #3 重演）：模型回复实为
+     教科书合规（合同+大纲同轮落盘、逐件确认、"可只确认其一"），但确认
+     请求用的是"等你回复/拍板"措辞；judge 确认组补 6 变体后，it-87 重放
+     PASS、it-86 重放正确维持 FAIL、合成 4 例回归不变，it-88 在线 PASS。
+- **并行会话协调事实**：安装副本与仓库三合同文件（SKILL.md /
+  image-deck-workflow.md / backend-selection.md）经校验和确认一致（并行
+  会话的 install 同步把本批改动顺带带入 claude 副本）；install.sh
+  `--host claude --upgrade` 因 ~/.agents 副本共存被多宿主守卫拒绝，本批
+  未隔离用户 ~/.agents 安装，仅做文件级校验确认。评测引擎读到的即仓库
+  当前树（含并行在途改动），全量轮结果解读须计入该混合态。
+- **在线子集终态（it-86 + it-88）**：control-plane-blocked-summary、
+  cost-estimate-before-dispatch、confirmation-batched-turns、
+  execute-keeps-confirmation-gates、outline-doc-before-confirm、
+  advice-only-no-execution **6/6 PASS**。
+- 全量 61 case 轮（iteration-89）结果见下方追加条目。
+
+
 ## 2026-08-30 能力融合 M0 基线轮（B-1..B-4 采集）
 
 融合工程（docs/plans/2026-08-30-001）M0 合入前的基线事实，后续轮次对照用：

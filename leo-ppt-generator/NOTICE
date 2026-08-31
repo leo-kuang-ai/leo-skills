@@ -1,45 +1,46 @@
 NOTICE for leo-ppt-generator
 =============================
 
-本技能包（leo-ppt-generator）在自研内容之外吸收了以下上游项目的代码、结构或
-思想。各来源的完整登记（pinned commit / 引用文件 / 改编方式）见包内
-`upstreams.yaml`：vendored 上游在 `upstreams:` 节，非 vendored 借源在
-`borrowed_ideas:` 节。本包自身以 MIT 许可发布（见 `LICENSE`）。
+本技能包在自研内容之外包含以下第三方来源的代码或改编内容，按各许可证要求
+保留版权与许可声明（许可合规署名）。本包自身以 MIT 许可发布（见 `LICENSE`）。
 
-Vendored 上游（upstreams: 节）
------------------------------
-- codex-ppt-skill — MIT, Copyright (c) 2026 ningzimu
-- image-to-editable-ppt-skill — MIT, Copyright (c) 2026 ningzimu
-
-Borrowed ideas（fusion-team M0 登记，借源非 vendored）
+Vendored 代码（runtime/src/leo_ppt_generator/_vendor/）
 ------------------------------------------------------
-- ian-handdrawn-ppt (team: alpha) — MIT, Copyright (c) 2026 Ian.
-  提示词合同结构借鉴；文本中文重写，署名见本条与相关文件注记。
-- banana-slides (team: alpha) — AGPL-3.0.
-  仅思想借鉴（论断式大纲规则），零文本零代码搬运，表述全部原创。
-- Paper2Any (team: beta) — Apache-2.0.
-  `paperbanana.md` 学术方法图视觉语言（NeurIPS Look）改编，见
-  `references/styles/00_索引/图表样式规范.md` 第六节章尾来源注记。
-- academic-ppt-master (team: beta) — MIT, Copyright (c) 2026 M1n-n9 and contributors.
-  学术五拍论证骨架与 dense-defense 答辩档中文改写，见
-  `references/styles/06_论证模式/学术五拍.md` 与 `references/styles/科研答辩风.md`
-  尾注署名。
-- ppt-image-first (team: beta) — Apache-2.0.
-  样张正文页锚定与风格反演三组判读思想改写，见
-  `references/style-recommendation.md` §六/§七 节尾来源注记。
-- slides-grab (team: gamma) — MIT, Copyright (c) 2026 Jeffrey.
-  交付收据指纹模型（登记条目；实装归 γ 团队）。
-- ppt-agent-skill (team: gamma) — MIT, Copyright (c) 2025 sunbigfly.
-  视觉质检检查函数族（登记条目；实装归 γ 团队）。
+- codex-ppt-skill — MIT, Copyright (c) 2026 ningzimu.
+  https://github.com/ningzimu/codex-ppt-skill.git
+- image-to-editable-ppt-skill — MIT, Copyright (c) 2026 ningzimu.
+  https://github.com/ningzimu/image-to-editable-ppt-skill.git
+  本地修改以补丁形式登记于 `patches/README.md`（0001–0007）。
 
-Guizang 来源目录（references/styles/04_来源_guizang/）
-------------------------------------------------------
-- guizang-social-card-skill — AGPL-3.0,
-  https://github.com/op7418/guizang-social-card-skill.git
-  （pinned commit cf4b810fac1c73fb65a2bb31d8c9278d82cbc4c5）。
-  该目录为其风格规则的提取与 16:9 适配改写，据用户线下授权保留；
-  许可标注见 `references/styles/04_来源_guizang/00_README.md`。
+移植 / 改编来源（版权声明按原许可保留）
+--------------------------------------
+- GordenPPTSkill — MIT（容量公式移植，scripts/check_deck_geometry.py）。
+- ppt-agent-skill — MIT, Copyright (c) 2025 sunbigfly（视觉质检检查函数族
+  改编，scripts/visual_qa.py）。
+- presentation-ai — MIT（主题提取器移植，scripts/extract_pptx_theme.py）。
+- gpt-image2-ppt-skills — Apache-2.0（sidecar 归一化模式，layout_bank.py）。
+- Paper2Any — Apache-2.0（学术方法图视觉语言改编）。
+- ppt-image-first — Apache-2.0（样张反演三组判读改编）。
+- academic-ppt-master — MIT, Copyright (c) 2026 M1n-n9 and contributors
+  （学术五拍与 dense-defense 答辩档改编）。
+- ian-handdrawn-ppt — MIT, Copyright (c) 2026 Ian（提示词合同结构借鉴）。
+- guizang-social-card-skill — AGPL-3.0（风格规则提取与 16:9 适配，
+  references/styles/04_来源_guizang/，据用户线下授权保留）。
 
-以上 MIT / Apache-2.0 来源的改编文件均按原许可要求保留版权与许可声明；
-AGPL-3.0 来源仅存在思想级借鉴或经用户线下授权的规则提取，无原文代码或
-整文搬运。授权依据：用户线下授权（R-10 口径，2026-08-30）。
+渲染 lane 依赖（vendored / 二进制依赖）
+--------------------------------------
+- mermaid — MIT. `assets/render-vendor/mermaid/mermaid.min.js`（npm
+  mermaid@11.17.2 官方 tarball，sha256 pin 见 vendor-lock.json）。vendored
+  本地单文件，浏览器实例内渲染，不走 CDN。
+- resvg — MPL-2.0. Python 绑定 `resvg-py`（0.5.0）作为二进制依赖使用；
+  **未修改其源码**（独立二进制依赖不触发宿主源码开放义务）；源码指引见
+  https://github.com/linebender/resvg。备选 Node `@resvg/resvg-js` 经独立
+  子进程 scripts/render/rasterize_svg.mjs 调用。
+- Noto Sans SC（SC 子集 OTF）— OFL-1.1.
+  `assets/render-fonts/NotoSansSC-{Regular,Bold}.otf`，来源
+  notofonts/noto-cjk；OFL 全文与 RESERVED 名称声明见目录内
+  LICENSE-OFL.txt 与 NOTICE.md。
+- playwright — Apache-2.0. 渲染执行器（playwright-python 1.62.0），
+  chromium 装入 `$LEO_PPT_HOME/render-browsers/`，不随包分发。
+- frontend-slides / presentation-skill / codex-slides — MIT
+  （机制级借源：HTTP 字体服务、lint 跳过集、容错分层）。

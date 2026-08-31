@@ -105,6 +105,3 @@
   "sample-inversion"` + `sample_refs` + 三组），spec 冻结后随 manifest 落盘；
   未反演时该键不存在。三组只描述视觉事实，与内容合同字段互不重叠。
 - **与样张双生的成本边界**：反演零图片成本、零新增等待轮次。
-
-> 来源注记：本节思想改编自 ppt-image-first `references/workflow.md` Stage 2.75
-> 风格反演（Apache-2.0），据用户线下授权；三组判读口径为中文重写表述。

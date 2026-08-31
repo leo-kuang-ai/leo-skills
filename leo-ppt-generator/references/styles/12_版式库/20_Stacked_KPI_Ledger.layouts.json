@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P20",
+  "name": "Stacked KPI Ledger",
+  "page_type": "data",
+  "visual_signature": "每行一道 hairline 分隔：左侧巨数（min(13vw,21vh) 限高）+ 中部标签 + 右侧 lucide 图标",
+  "content_capacity": {
+    "rows": {
+      "desc": "账单行（数值 + 标签 + 图标）",
+      "count_min": 4,
+      "count_max": 6
+    },
+    "row_label": {
+      "desc": "每行标签",
+      "chars_per_line": 22,
+      "max_lines": 1,
+      "max_chars": 26
+    },
+    "row_number": {
+      "desc": "每行左侧巨数（真实数值）",
+      "chars_per_line": 3,
+      "max_lines": 1,
+      "max_chars": 3
+    }
+  },
+  "best_for": [
+    "4-6 项核心数据账单（每行真实数值 + 标签 + 图标）",
+    "财务数据、KPI 仪表板、关键指标列表"
+  ],
+  "avoid_for": [
+    "无真实数值的行",
+    "需要 bar 高度对比的展示（用 P6）"
+  ],
+  "reuse_friendly": true
+}

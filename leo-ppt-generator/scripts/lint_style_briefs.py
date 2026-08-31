@@ -7,7 +7,9 @@
 子集校验。分级：
 
 - **ERROR**：必需键缺失、canvas/typography 子键缺失、layout_patterns 为空、
-  JSON 块不可解析、白名单之外的 WARNING（含新增文件——新文件不得进白名单）。
+  JSON 块不可解析、白名单之外的 WARNING（含新增文件——新文件不得进白名单）、
+  顶层内置风格缺同名 ``.layouts.json`` 路由视图（layout-bank-v1 配对纪律；
+  范围仅 11 顶层内置，126 子目录参考风格不强制——渐进轴）。
 - **WARNING**：color_palette 四角色的值内无任何 ``#RRGGBB`` 锚点；typography
   无身份字体声明（缺具体字族关键词，通用设计规范 §一.6）。存量偏差登记于
   ``scripts/style-lint-baseline.txt``（一行一条 ``相对路径#检查项``，文件头
@@ -167,6 +169,15 @@ def main(argv: list[str] | None = None) -> int:
         e, w = _lint_one(path, schema)
         errors.extend(e)
         warnings.extend(w)
+
+    # 顶层内置风格必须有同名 .layouts.json 路由视图（B1-T4；仅顶层，子目录
+    # 参考风格不强制——渐进轴，将来按批次纳入时走 baseline 收敛纪律）。
+    for path in sorted(p for p in STYLES_ROOT.glob("*.md") if _looks_like_brief(p)):
+        sidecar = path.with_name(f"{path.stem}.layouts.json")
+        if not sidecar.is_file():
+            errors.append(
+                f"style_sidecar_missing: 内置风格 {path.name} 缺同名 .layouts.json"
+            )
 
     baseline = _load_baseline()
     if args.write_baseline:

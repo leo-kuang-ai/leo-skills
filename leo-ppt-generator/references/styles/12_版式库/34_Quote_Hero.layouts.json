@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P34",
+  "name": "Quote Hero",
+  "page_type": "content",
+  "visual_signature": "页面垂直居中单列：hairline 级装饰引号（禁彩色大引号图标）+ display 引文主体（min(9.2vw,15vh) 限高，CJK 正字距、语义断行）+ 底部出处块（短 hairline + 人名 + 头衔·机构·时间）；全页留白 ≥40%",
+  "content_capacity": {
+    "quote": {
+      "desc": "引文主体（缩略须用省略号，译文注明译本）",
+      "chars_per_line": 6,
+      "max_lines": 2,
+      "max_chars": 14
+    },
+    "source": {
+      "desc": "出处块（人名 + 头衔/机构 + 时间）",
+      "chars_per_line": 29,
+      "max_lines": 3,
+      "max_chars": 104
+    }
+  },
+  "best_for": [
+    "恰好 1 条可溯源真实引用 + 出处（人名 + 头衔/机构 + 时间至少两件）",
+    "权威引用页 / 用户证言 / 文献金句"
+  ],
+  "avoid_for": [
+    "杜撰引语与假出处",
+    "自产口号（用 P3）",
+    "引用 + 数据佐证（用 P18）"
+  ],
+  "reuse_friendly": false
+}

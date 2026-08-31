@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "slide": {"width": 13.333, "height": 7.5},
+  "source": {"width_px": 1600, "height_px": 1200},
+  "text_inventory": [{"id": "title", "text": "原生表格"}, {"id": "cell", "text": "季度营收"}],
+  "visual_inventory": [],
+  "background_strategy": {"mode": "native-or-script"},
+  "quality_checks": {
+    "font_size_calibrated": true,
+    "visual_inventory_matched": true,
+    "background_strategy_checked": true,
+    "shape_corner_geometry_checked": true
+  },
+  "text_boxes": [
+    {"box_px": [100, 60, 600, 100], "text": "原生表格", "font_size": 30, "z_index": 300}
+  ],
+  "images": [],
+  "shapes": [],
+  "tables": [
+    {
+      "box_px": [100, 220, 900, 300],
+      "rows": [
+        ["财务年度汇总", ""],
+        ["季度营收", "42.8M"],
+        ["季度增速", "+18.6%"]
+      ],
+      "col_widths": [0.6, 0.4],
+      "merges": [[0, 0, 0, 1]],
+      "z_index": 150
+    }
+  ],
+  "asset_provenance": []
+}

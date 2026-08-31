@@ -1,6 +1,6 @@
 id: control-plane-blocked-summary
 title: 阻断状态必须使用统一控制面摘要
-description: 验证多页 worker 不可用时，五字段块必须作为回复最前面内容逐字出现，且只有一个恢复动作。
+description: 验证多页 worker 不可用时，五字段块必须出现在回复前 3 个非空行之内且整行逐字（block-early，先于块只允许 ≤40 字符的元数据行），且只有一个恢复动作。
 
 input:
   prompt: |

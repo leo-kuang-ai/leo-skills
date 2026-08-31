@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- leo render lane 种子模板：cover-basic（gamma M1 / D1-T2）
+  合同见同目录 README.md 与 references/render-contract.md：
+  根容器 1280x720、overflow hidden、?leo_render=1 禁动画、
+  data-leo-ready 显式就绪信号、数据只读 window.__LEO_SLIDE_DATA__、
+  字体经 /leo-fonts/ HTTP 供给（禁 file://）。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>cover-basic</title>
+<style>
+  /* 离线字体：渲染器本地 HTTP 服务（/leo-fonts/）供给，禁 file:// 直引 */
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; }
+  body {
+    font-family: "Noto Sans SC", sans-serif;
+    background: #f7f5f0;              /* 纸色底，可被 themeVariables 覆写 */
+    color: #1a1a1a;
+    position: relative;
+  }
+  .leo-slide { width: 1280px; height: 720px; padding: 96px 110px; display: flex; flex-direction: column; }
+  .kicker {
+    font-size: 24px; letter-spacing: 0.35em; color: #8a7f6a;
+    margin-bottom: 34px; font-weight: 400;
+  }
+  .title {
+    font-size: 92px; line-height: 1.16; font-weight: 700; color: #14213d;
+    max-width: 1040px;
+  }
+  .subtitle {
+    margin-top: 40px; font-size: 34px; line-height: 1.5; color: #4a4a4a;
+    max-width: 900px; font-weight: 400;
+  }
+  .footer {
+    margin-top: auto; display: flex; justify-content: space-between;
+    font-size: 22px; color: #6b6357; letter-spacing: 0.08em;
+  }
+  /* deterministic 模式兜底：?leo_render=1 时禁全部动画/过渡（合同条款 1） */
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+    animation: none !important; transition: none !important;
+  }
+</style>
+</head>
+<body>
+  <main class="leo-slide" id="leo-slide">
+    <div class="kicker" data-leo-block="kicker"></div>
+    <h1 class="title" data-leo-block="title"></h1>
+    <p class="subtitle" data-leo-block="subtitle"></p>
+    <div class="footer">
+      <span data-leo-block="footer-left"></span>
+      <span data-leo-block="footer-right"></span>
+    </div>
+  </main>
+<script>
+  // deterministic 模式（合同条款 1）：?leo_render=1 置 data-leo-render，
+  // 不注册任何时序触发逻辑；本模板无动画。
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function fill(blockId, value) {
+    var node = document.querySelector('[data-leo-block="' + blockId + '"]');
+    if (node && typeof value === "string") { node.textContent = value; }
+    else if (node && value == null) { node.textContent = ""; }
+  }
+  function applyData(data) {
+    fill("kicker", data && data.kicker);
+    fill("title", data && data.title);
+    fill("subtitle", data && data.subtitle);
+    fill("footer-left", (data && data.footer_left) || "");
+    fill("footer-right", (data && data.footer_right) || "");
+    if (data && data.background_color) {
+      document.body.style.background = data.background_color;
+    }
+  }
+  // 合同条款 3：只读注入全局，不 fetch 外部。
+  applyData(window.__LEO_SLIDE_DATA__ || {});
+  // 合同条款 2：字体与数据就绪后置显式 ready 信号（渲染器主门）。
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

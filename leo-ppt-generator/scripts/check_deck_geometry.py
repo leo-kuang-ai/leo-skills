@@ -13,12 +13,29 @@
     python3 scripts/check_deck_geometry.py <pptx> [more.pptx ...]
     python3 scripts/check_deck_geometry.py <pptx> --expect-ratio 16:9 --tolerance 0.02
     python3 scripts/check_deck_geometry.py --self-test
+    python3 scripts/check_deck_geometry.py --capacity <deck_spec.json>
 
-退出码：0 全部通过；1 几何断言失败；2 用法/文件错误；3 自测环境缺失。
+--capacity 为互斥模式（与 positional pptx 同给报用法错误）：生成前文本级
+容量预检，输入 JSON 形如::
+
+    {"style": "清爽专业风",
+     "slides": [{"page": 3, "layout": "P5",
+                 "slots": {"card_desc": "文本…"}},
+                {"page": 4, "layout": "P19",
+                 "points": ["要点一…", "要点二…"]}]}
+
+三态：ok（exit 0）/ over 软超 ≤ max_chars×1.2（exit 0 + WARN 行，建议
+降档位或换版式，绝不建议缩字号）/ overflow 硬超（exit 1 阻断定稿，输出
+逐 slot 当前 vw / 容量 vw / 替代版式候选）。软超不占退出码是刻意的：
+CI-4 的 2 语义保留给用法错误，三态用输出行区分（文档成文见
+references/layout-dispatch.md）。
+
+退出码：0 全部通过；1 几何断言失败（--capacity 模式为硬超容量）；2 用法/文件错误；3 自测环境缺失。
 """
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import struct
 import sys
@@ -31,6 +48,255 @@ NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 NS_R = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 
 EMU_PER_INCH = 914400
+
+# --------------------------------------------------------------------------- #
+# vw 容量模型（B3：生成前文本级容量预检）
+#
+# vw_of 字符宽度语义：CJK/全角 = 1.0、空格 = 0.35、ASCII = 0.5、其他 = 0.8。
+# leo_capacity_for 是 leo 版心 token 语境的换算（公式来源
+# references/styles/00_索引/版心Canon.md）。
+# --------------------------------------------------------------------------- #
+
+CANVAS_W_PX = 2560  # 16:9 生图画布基准，1vw = 25.6px
+CANVAS_H_PX = 1440  # 1vh = 14.4px
+PAGE_MARGIN_X_VW = 5  # 版心 Canon: page-margin-x
+GRID_GUTTER_VW = 2  # 版心 Canon: grid-gutter（桌面）
+GRID_COLS = 12
+FILL_MARGIN = 0.95  # 容器内边距让渡（近似上游 H_MARGIN 的 5%）
+CAPACITY_LINE_HEIGHT = 1.0  # 上游 LINE_HEIGHT：CJK 正文单倍行距
+CAPACITY_TOLERANCE = 1.2  # 上游 TOLERANCE：模型 slack，假阳校准 0-5%
+
+SIDEcar_LAYOUT_DIR = (
+    Path(__file__).resolve().parents[1]
+    / "references" / "styles" / "12_版式库"
+)
+STYLES_DIR = Path(__file__).resolve().parents[1] / "references" / "styles"
+
+
+def vw_of(text: str) -> float:
+    """文本的视觉宽度（CJK 等效单位）：CJK/全角=1.0，空格=0.35，ASCII=0.5，其他=0.8。"""
+    width = 0.0
+    for ch in text:
+        if ("\u4e00" <= ch <= "\u9fff" or "\u3000" <= ch <= "\u303f"
+                or "\uff00" <= ch <= "\uffef"):
+            width += 1.0
+        elif ch == " ":
+            width += 0.35
+        elif ch.isascii():
+            width += 0.5
+        else:
+            width += 0.8
+    return width
+
+
+def container_px(cols: int) -> float:
+    """栏数对应的容器可用宽（px），从版心 Canon token 推导。"""
+    usable_vw = 100 - 2 * PAGE_MARGIN_X_VW - GRID_GUTTER_VW
+    return (cols / GRID_COLS) * usable_vw * (CANVAS_W_PX / 100) * FILL_MARGIN
+
+
+def leo_capacity_for(cols: int, height_vh: float, font_px: float) -> tuple[int, int, int]:
+    """从版心 token 几何推导 (chars_per_line, max_lines, max_chars)。
+
+    chars_per_line = floor(可用宽 px / 字号 px)；max_lines 按容器高 vh 与
+    行高 1.0 推导；max_chars = floor(cpl × lines × 1.2)（TOLERANCE 保留）。
+    """
+    import math
+
+    if font_px <= 0:
+        raise ValueError("font_px must be positive")
+    cpl = max(1, math.floor(container_px(cols) / font_px))
+    height_px = height_vh / 100 * CANVAS_H_PX
+    max_lines = max(1, math.floor(height_px / (font_px * CAPACITY_LINE_HEIGHT)))
+    max_chars = max(1, math.floor(cpl * max_lines * CAPACITY_TOLERANCE))
+    return cpl, max_lines, max_chars
+
+
+def _load_layout_sidecars() -> dict[str, dict]:
+    """读全部版式 sidecar（layout_id -> sidecar dict）；不可解析即清晰失败。"""
+    bank: dict[str, dict] = {}
+    for path in sorted(SIDEcar_LAYOUT_DIR.glob("*.layouts.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(data, dict) and data.get("entity") == "layout":
+            bank[str(data.get("layout_id"))] = data
+    return bank
+
+
+def _style_capacity_factor(style_name: str | None) -> float:
+    if not style_name:
+        return 1.0
+    path = STYLES_DIR / f"{style_name}.layouts.json"
+    if not path.is_file():
+        return 1.0
+    data = json.loads(path.read_text(encoding="utf-8"))
+    factor = data.get("capacity_factor", {}).get("text", 1.0)
+    return float(factor) if isinstance(factor, (int, float)) else 1.0
+
+
+def _capacity_alternatives(
+    bank: dict[str, dict], layout_id: str, needed_chars: float, points: int | None
+) -> list[str]:
+    """同 page_type、能装下当前需求（数量或文本量）的替代版式候选（≤3 个）。"""
+    page_type = bank[layout_id].get("page_type")
+    candidates: list[tuple[str, int]] = []
+    for other_id, sidecar in bank.items():
+        if other_id == layout_id or sidecar.get("page_type") != page_type:
+            continue
+        capacity = sidecar.get("content_capacity", {})
+        if points is not None:
+            counts = [
+                (s.get("count_min", 0), s.get("count_max", 0))
+                for s in capacity.values()
+                if "count_min" in s
+            ]
+            if counts and not any(lo <= points <= hi for lo, hi in counts):
+                continue
+        best_text = max(
+            (s.get("max_chars", 0) for s in capacity.values()
+             if "max_chars" in s),
+            default=0,
+        )
+        if best_text >= needed_chars:
+            candidates.append((other_id, best_text))
+    candidates.sort(key=lambda kv: (-kv[1], kv[0]))
+    return [cid for cid, _ in candidates[:3]]
+
+
+def capacity_check(spec_path: Path) -> int:
+    """--capacity 模式：逐页文本级容量三态预检（ok / over / overflow）。"""
+    try:
+        spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError) as exc:
+        print(f"[ERROR] {spec_path}: 不可读（{exc}）")
+        return 2
+    except json.JSONDecodeError as exc:
+        print(f"[ERROR] {spec_path}: JSON 不可解析（{exc}）")
+        return 2
+    slides = spec.get("slides")
+    if not isinstance(slides, list) or not slides:
+        print(f"[ERROR] {spec_path}: 缺 slides 数组")
+        return 2
+    try:
+        bank = _load_layout_sidecars()
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"[ERROR] 版式 sidecar 不可读: {exc}")
+        return 2
+    if not bank:
+        print("[ERROR] 版式 sidecar 库为空（12_版式库/*.layouts.json）")
+        return 2
+    factor = _style_capacity_factor(spec.get("style"))
+    rc = 0
+    saw_soft = False
+    for slide in slides:
+        if not isinstance(slide, dict) or "layout" not in slide:
+            print("[ERROR] slides[] 每页必须含 layout 字段")
+            return 2
+        page = slide.get("page", "?")
+        layout_id = str(slide["layout"])
+        # 版式名（如 "KPI Tower"）解析到 P 码
+        if layout_id not in bank:
+            matches = [
+                lid for lid, sc in bank.items()
+                if layout_id in str(sc.get("name", ""))
+            ]
+            if len(matches) != 1:
+                print(f"[ERROR] 第 {page} 页: 未知版式 {layout_id!r}")
+                return 2
+            layout_id = matches[0]
+        sidecar = bank[layout_id]
+        capacity = sidecar.get("content_capacity", {})
+        slots_text = slide.get("slots") or {}
+        points = slide.get("points")
+        problems: list[str] = []
+        hard = False
+        soft = False
+        # ① 数量型：points 条数落在 count 区间（含 1.2 软带）
+        if isinstance(points, list):
+            for slot_name, slot in sorted(capacity.items()):
+                if "count_min" not in slot:
+                    continue
+                lo, hi = slot["count_min"], slot["count_max"]
+                n = len(points)
+                if n < lo:
+                    problems.append(
+                        f"count:{slot_name} 条数 {n} < 下限 {lo}（换版式候选 "
+                        f"{_capacity_alternatives(bank, layout_id, 0, n) or '无同型'}）"
+                    )
+                elif n > hi:
+                    band = hi * CAPACITY_TOLERANCE
+                    if n <= band:
+                        soft = True
+                        problems.append(
+                            f"over:count:{slot_name} 条数 {n} 超上限 {hi}"
+                            f"（降档删要点至 ≤{hi}，或换版式候选 "
+                            f"{_capacity_alternatives(bank, layout_id, 0, n) or '无同型'}）"
+                        )
+                    else:
+                        hard = True
+                        problems.append(
+                            f"overflow:count:{slot_name} 条数 {n} 硬超上限 {hi}"
+                            f"（降档删要点至 ≤{hi}，或换版式候选 "
+                            f"{_capacity_alternatives(bank, layout_id, 0, n) or '无同型'}）"
+                        )
+        # ② 文本型：slots 显式给文本，逐 slot 对账
+        if not isinstance(slots_text, dict):
+            print(f"[ERROR] 第 {page} 页: slots 必须是对象")
+            return 2
+        for slot_name in sorted(slots_text):
+            if slot_name not in capacity:
+                print(f"[ERROR] 第 {page} 页: 版式 {layout_id} 无 slot {slot_name!r}")
+                return 2
+        checks: list[tuple[str, str]] = [
+            (name, text) for name, text in sorted(slots_text.items())
+        ]
+        if isinstance(points, list) and points and not checks:
+            # 无显式 slots 时，points 逐条对最宽文本 slot（每要点一条的近似）
+            widest = sorted(
+                ((s.get("max_chars", 0), n) for n, s in capacity.items()
+                 if "max_chars" in s),
+                reverse=True,
+            )
+            if widest:
+                slot_name = widest[0][1]
+                checks = [(slot_name, text) for text in points]
+        for slot_name, text in checks:
+            slot = capacity.get(slot_name, {})
+            if "max_chars" not in slot:
+                print(f"[ERROR] 第 {page} 页: slot {slot_name!r} 非文本型")
+                return 2
+            limit = slot["max_chars"] * factor
+            used = vw_of(str(text))
+            if used <= limit:
+                continue
+            band = limit * CAPACITY_TOLERANCE
+            if used <= band:
+                soft = True
+                problems.append(
+                    f"over:{slot_name} {used:.1f}/{limit:.0f} vw（软超 ≤1.2×）→ "
+                    "降档位（删减要点文字）或换版式，不缩字号"
+                )
+            else:
+                hard = True
+                alts = _capacity_alternatives(bank, layout_id, used, None)
+                problems.append(
+                    f"overflow:{slot_name} {used:.1f}/{limit:.0f} vw（硬超 >1.2×）→ "
+                    f"降档（论点页 ≤3 → ≤2）或换版式候选 "
+                    f"{alts or '无同型'}，不缩字号、不省略号截断"
+                )
+        if problems:
+            level = "FAIL" if hard else "WARN"
+            saw_soft = saw_soft or soft
+            print(f"[{level}] 第 {page} 页 {layout_id}（{sidecar.get('name')}）:")
+            for p in problems:
+                print(f"  - {p}")
+            if hard:
+                rc = 1
+        else:
+            print(f"[OK] 第 {page} 页 {layout_id}（{sidecar.get('name')}）: 容量内")
+    if rc == 0:
+        note = "（含 over 软超 WARN 行，降档/换版式处理，不占退出码）" if saw_soft else ""
+        print(f"capacity precheck 完成{note}")
+    return rc
 
 
 def parse_ratio(text: str) -> float:
@@ -244,10 +510,23 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--tolerance", type=float, default=0.02, help="比例相对容差（默认 0.02）")
     ap.add_argument("--min-coverage", type=float, default=0.98, help="页图最小画布覆盖率（默认 0.98）")
     ap.add_argument("--self-test", action="store_true", help="运行内置 fixture 自测")
+    ap.add_argument(
+        "--capacity", metavar="SPEC",
+        help="互斥模式：生成前文本级容量预检（deck_spec/master JSON，"
+             "消费 12_版式库/*.layouts.json 容量表；与 positional pptx 同给报用法错误）",
+    )
     args = ap.parse_args(argv)
 
     if args.self_test:
         return self_test()
+    if args.capacity:
+        if args.pptx:
+            ap.error("--capacity 与 positional PPTX 互斥（二者只给其一）")
+        spec = Path(args.capacity)
+        if not spec.is_file():
+            print(f"[ERROR] {spec}: 文件不存在")
+            return 2
+        return capacity_check(spec)
     if not args.pptx:
         ap.error("至少提供一个 PPTX 路径")
     expect = parse_ratio(args.expect_ratio)

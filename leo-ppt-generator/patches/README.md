@@ -1,10 +1,9 @@
 # 上游补丁目录
 
-固定上游当前应用六个可由 `git apply --check` 复核的受控补丁：
+固定上游当前应用七个可由 `git apply --check` 复核的受控补丁：
 
 - `0001-codex-state-directory-barrier.patch`：状态文件替换后同步父目录；包内暂无
-  可执行聚焦回归，proof 在上游开发仓（登记于 `tests/upstream/core-tests.yaml`
-  的 codex-ppt-core deferred 项）。
+  可执行聚焦回归，proof 在上游开发仓。
 - `0002-editable-state-atomic-lock.patch`：editable 状态写入原子化并增加并发锁，聚焦
   回归为 `tests/boundary/test_vendor_state.py`。
 - `0003-codex-assembly-fidelity.patch`：图片组装默认无损并以 `contain` 保持比例，同时
@@ -18,11 +17,16 @@
 - `0006-editable-ppt-dpi-parameter.patch`：`.ppt` 经 Office 转 PDF 后使用
   `normalize_inputs(..., dpi=...)` 的函数参数，聚焦回归为
   `test_legacy_ppt_normalization_forwards_requested_dpi`。
+- `0007-codex-required-text-and-style-lock.patch`：`_build_prompt` 渲染 leo C1 合同的
+  两个独立 prompt 块——deck 级 `style_lock` 经 `_format_block("Deck Style Lock")`
+  逐字复用，每页 `required_text[]` 渲染为 `## Required Text Only` 白名单块（逐字，
+  禁块外内容性文字）；聚焦回归为
+  `tests/boundary/test_prompt_block_regression.py`（包内可执行），静默丢失检出为
+  `scripts/check_sources_manifest.py --check-job-prompts`。
 
 Office 输入信任边界属于当前项目 adapter/route 增强，单独记录为
-`assembly-and-office-boundaries.md`，不伪装成 upstream patch。每个补丁必须同时登记到
-`../upstreams.yaml`；对 pinned 上游 worktree 的枚举重放检查在开发仓执行，本包内
-暂无对应自动化。相应行为 proof 由上述聚焦测试与
-`tests/upstream/core-tests.yaml` 共同约束（两处口径不一致时以后者为准）。
+`assembly-and-office-boundaries.md`，不伪装成 upstream patch。每个补丁在本文件内
+登记；对 pinned 上游 worktree 的枚举重放检查在开发仓执行，本包内
+暂无对应自动化。相应行为 proof 由上述聚焦测试约束。
 
 禁止直接修改 vendor 副本后不生成补丁文件。

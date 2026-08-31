@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P21",
+  "name": "Tech Spec Sheet",
+  "page_type": "data",
+  "visual_signature": "左 4 行大标题；中部 3 KPI（顶部 hairline + 数字 + 单位）；右下 9 根竖线（高度绑定 9 项 approved 数值序列并直接标注）；底部巨数 + Yearly goal + 三 tag + 页码",
+  "content_capacity": {
+    "kpis": {
+      "desc": "KPI 组（hairline + 数字 + 单位）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "bars": {
+      "desc": "数据竖线（高度 ∝ 9 项 approved 真实数值序列）",
+      "count_min": 9,
+      "count_max": 9
+    },
+    "spec_number": {
+      "desc": "KPI 数值",
+      "chars_per_line": 5,
+      "max_lines": 1,
+      "max_chars": 6
+    }
+  },
+  "best_for": [
+    "产品规格 / benchmark / 性能基线（3 KPI + 9 竖线 = 12+ 数据点，deck 中数据密度最高）",
+    "模型评分、API 性能、压测结果"
+  ],
+  "avoid_for": [
+    "无 approved 数据序列时保留竖线（装饰性高低竖线 = 编形状；无序列时删竖线改 hairline 网格）",
+    "示意级数据"
+  ],
+  "reuse_friendly": true
+}

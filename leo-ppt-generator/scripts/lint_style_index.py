@@ -11,8 +11,7 @@
   + ``09_结构布局`` + ``10_品牌身份`` + ``11_图表语法``
   + ``12_版式库``（含选版式原则/常犯错误/关键类清单 3 份规则）
   + ``13_页面语义``。
-- **规则/索引文档** = ``00_索引`` 全部 + ``04_来源_guizang`` 全部
-  + ``05_来源_awesome-gpt-image-2/00_合并映射.md``。
+- **规则/索引文档** = ``00_索引`` 全部 + ``04_来源_guizang`` 全部。
 
 检查项：
 
@@ -140,11 +139,9 @@ def main() -> int:
         brief_total, top_claim, sub_claim, axis_total, rule_total = map(int, header.groups())
         actual_brief = top_level + sum(actual[d] for d in BRIEF_DIRS)
         actual_axis = sum(actual[d] for d in AXIS_DIRS)
-        merge_map = STYLES_ROOT / "05_来源_awesome-gpt-image-2" / "00_合并映射.md"
         actual_rule = (
             len(list((STYLES_ROOT / "00_索引").glob("*.md")))
             + len(list((STYLES_ROOT / "04_来源_guizang").rglob("*.md")))
-            + (1 if merge_map.exists() else 0)
         )
         for label, claimed, real in (
             ("JSON 风格 brief 总数", brief_total, actual_brief),

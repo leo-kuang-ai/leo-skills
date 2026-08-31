@@ -95,3 +95,48 @@ backend-contract.json`，worker 只读取该冻结副本。三个位置是同一
   （如表格页持续高 token 低通过 → 默认改走 direct-editable）。
 - 路线成本参考：统计积累显示某页型在某 backend 一次通过率持续低时，派发前提示
   换 backend 或改走 direct-editable（如密集表格页）。
+
+## 成本预估前置（派发前）
+
+逐页派发前必须给出本次 deck 的 token/成本预估区间，与"多一张图成本先告知"同属
+成本告知纪律。用确定性脚本生成，不得口头拍一个数：
+
+```bash
+python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
+    [--text-heavy N --image N] [--stats <run>] [--price-per-1k X]
+```
+
+- **有历史**：`--stats` 指向含 token 记录的 `backend_stats.jsonl`（或 run 目录）时，
+  按"均值 tokens/attempt × 均值 attempts/页"估每页型成本，band 上界 ×1.5 重试余量。
+- **无历史或 `not-recorded`**：退保守假设区间（chart 9000 / text-heavy 7000 /
+  image 5000 / 未分型 6000 tokens 每页，上界 ×2），输出 `basis` 字段如实标注
+  `assumed-default`；混合时标 `mixed`。假设区间不得说成测量值。
+- **对账**：交付披露时与 `backend report` 的实际 `tokens_total` 对账一句；实际超出
+  预估带上限时说明原因（如返工轮次超历史均值）。
+
+## 渲染 lane 路由（gamma M1：与图像 backend 并列的第二产物来源）
+
+确定性渲染 lane（`render page` / `render chart`，合同见
+[`render-contract.md`](render-contract.md)）接管正确性合同最重的页型。
+路由规则：
+
+- **提议条件**（满足其一，派发前提议）：
+  1. 页型命中数据密度路由的"≥6 数据点或含估算序列"档
+     （`styles/00_索引/图表样式规范.md` §五）——图表/表格/文字密集页的
+     数值逐字保真由确定性渲染承担；
+  2. `backend report` 显示某页型在当前图像 backend 一次通过率持续低
+     （既有"换 backend 或改走 direct-editable"提示的第三选项）。
+- **确认点**：render lane 提议**寄生既有第 5 步 backend 确认点**（与 backend
+  选择一并确认，不新增暂停点）；用户拒绝则维持原路由。未确认不得改走
+  render——图像 worker 的"不得本地渲染近似替代页"禁令对未经路由确认的
+  本地渲染保持有效。
+- **readiness 抑制**：`render ready` 非 `render_backend_ready`（missing/
+  unknown）时，路由提议被**抑制**并披露原因（`render_backend_missing`
+  + 安装指引）；确定性渲染不适用 Provider 三态（无凭据概念），不产生
+  credential 类 reason code。图像 lane 全功能不受影响。
+- **backend 枚举**：render 页 record 时 `--backend render:html|render:mermaid`
+  （echarts P2 占位），`--render-receipt <产物>.render.json` 并入 provenance；
+  `backend_tokens` 恒 `not-recorded`，token 聚合单独看待不混入图像成本。
+  render 页派发走 `prompts/render-worker.md`（与 slide-worker 平行）。
+- **质检**：render 页与图像页同走 `references/visual-qa.md` 2.5 步像素闸门
+  （render-worker 单页自查 + 父 Agent 批量复跑）。

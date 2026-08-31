@@ -1,0 +1,17 @@
+id: delta-m1-builder-run-freeze
+title: builder 冻结字段优先于环境变量
+description: 验证 F1-T4 选择器合同：run 创建时冻结的 builder 字段优先于 LEO_EDITABLE_BUILDER 环境变量；环境变量事后改值不得影响已创建 run 的 finalize/重建一致性。
+input:
+  prompt: |
+    使用 $leo-ppt-generator 的 direct-editable 路线。我有一个已存在的 run，
+    创建它的时候 shell 里设了 LEO_EDITABLE_BUILDER=pptx（对象级 builder）。
+    现在我把同一个终端里的 LEO_EDITABLE_BUILDER 改成了 legacy，然后对这个
+    已有 run 执行 editable finalize 重建最终 deck。请直接回答：这次 finalize
+    会用哪个 builder？环境变量的新值会不会改变这个已建 run 的构建路径？
+    我希望重建结果和创建时保持一致。
+constraints:
+  max_turns: 1
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_delta_m1_builder_freeze.py
+  timeout_seconds: 10

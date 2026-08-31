@@ -99,6 +99,12 @@ failure report 路径、准确交付类型、结构验证、未运行的 provide
 - `delivery_readiness=accepted` 隐含收据存在且 fresh（`receipt_gate` 为 passed）；
   无收据时该 gate 按 `not_run` 在 readiness 输出中披露，`delivery_readiness`
   不得为 `accepted`。收据文件自身不进入任何指纹。
+- 含图片证据的交付（generate 全部；upgrade 路线先 `python3 scripts/check_sources_manifest.py
+  --compile <run> [--out <path>]` 聚合）交付前必须运行
+  `python3 scripts/check_sources_manifest.py <run> --strict`（在技能目录内执行）：
+  退出 1（含 `source_unverifiable`——引用级无法回溯用户输入、AI 图冒充引用）
+  阻断交付；退出 2（低审查状态图等 WARN）可交付但须在交付披露中逐条列明。
+  与 `check_deck_geometry.py` 同一交付门模式，不新增人在回路门。
 
 ### 双评审官可选档（高要求交付）
 
@@ -107,3 +113,27 @@ failure report 路径、准确交付类型、结构验证、未运行的 provide
 一致性）分别打分并给一句话理由；任一维度分歧 ≥2 分触发复议（第三会话或用户裁决）。
 两份评分与分歧处理记录作为交付回复的补充证据；本档位**不替代**三证，`delivery_readiness`
 仍以结构门禁、独立渲染和人工验收为准。默认交付不启用本档位。
+
+## Editable builder 双跑（F1 迁移期）
+
+- 默认 builder 为 `legacy`（vendored zip writer，冻结不动）。对象级
+  python-pptx builder（`leo-ppt-generator/object-builder-1`）经
+  `LEO_EDITABLE_BUILDER=pptx|legacy` 切换；非法值 fail-closed 回落 legacy。
+- run 创建时（`editable prepare`）把生效值冻结进 `page_jobs.json` 的
+  `builder` 字段；finalize/重建按冻结字段分派，环境变量改值不影响已创建
+  run 的重建一致性。无字段的旧 run 视为 legacy。
+- **默认翻转的前置条件**：`tests/boundary/test_object_builder_equivalence.py`
+  等价投影套件全绿 + 全量 evals 在两种 builder 下双跑通过一个发布周期
+  （阶段 A→B）；legacy 在 P2 结束前保留为显式逃生路径。
+- vendor 命令面 `leo-ppt upstream editable-ppt -- run finalize` 内部固定
+  vendored builder，迁移期保持 legacy-only；顶层 `leo-ppt editable finalize`
+  为可切换路径。
+- 对象级路径产物身份写入 `docProps/app.xml`
+  （`Application=leo-ppt-generator/object-builder-1`）；canonical zip
+  （条目序 `[Content_Types].xml`→`_rels/.rels`→字典序、1980-01-01、
+  DEFLATED）保证同 manifest 同 builder 两次构建 sha256 相等，指纹收据
+  可直接取 final/page pptx 的 sha256。
+- manifest 可选段（`theme`/`tables[]`）仅对象级路径消费，字段合同见
+  [`manifest-schema.md`](manifest-schema.md)。
+- image sweep（清扫重派）的用法与轮次预算见
+  [`render-contract.md`](render-contract.md)（γ 集成）。

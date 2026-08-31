@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "slide": {"width": 13.333, "height": 7.5},
+  "source": {"width_px": 1080, "height_px": 1920},
+  "text_inventory": [{"id": "title", "text": "竖版源 Letterbox"}],
+  "visual_inventory": [],
+  "background_strategy": {"mode": "native-or-script"},
+  "quality_checks": {
+    "font_size_calibrated": true,
+    "visual_inventory_matched": true,
+    "background_strategy_checked": true,
+    "shape_corner_geometry_checked": true
+  },
+  "text_boxes": [
+    {"box_px": [80, 120, 900, 160], "text": "竖版源 Letterbox", "font_size": 40, "align": "left", "valign": "top", "z_index": 300}
+  ],
+  "images": [
+    {"box_px": [60, 400, 960, 1300], "path": "photo_a.png", "alt": "portrait bg", "z_index": 200}
+  ],
+  "shapes": [
+    {"type": "rect", "box_px": [0, 0, 1080, 60], "fill": "#0F766E", "stroke": "none", "z_index": 100},
+    {"type": "line", "points_px": [1000, 1800, 60, 1750], "stroke": "#111111", "stroke_width": 4, "z_index": 130}
+  ],
+  "asset_provenance": [
+    {"path": "photo_a.png", "source": "photo_a.png", "source_type": "asset-sheet-separated", "provenance_note": "asset-sheet separated from source"}
+  ]
+}

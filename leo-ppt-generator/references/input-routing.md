@@ -41,3 +41,9 @@ Office 信任判断先于 launcher、setup、preflight 和任何文件读取或�
 用户要求扫描、隔离、净化或使用处理后的副本继续，同样不构成可信确认，并在本请求中
 保持 terminal blocked；后续消息只有明确的可信来源确认才能结束该状态。用户确认可信
 也不能绕过 CLI preflight。
+
+主题提取器 `scripts/extract_pptx_theme.py` 同受本门约束：**仅 Trust Gate 通过 +
+CLI preflight 通过后运行**——它读取包内 rels/theme/slide XML，属于文件读取行为；
+blocked / untrusted 状态下以「提取主题」为由读取源文件同样是违规。提取结果只进
+deck 级 `--color` 覆盖通道，不写风格 brief palette（HEX 红线，接入细节见
+[editable-workflow.md](editable-workflow.md) 源风格主题提取节）。

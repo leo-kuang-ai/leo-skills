@@ -49,6 +49,13 @@ from .evidence import EvidenceError, record_acceptance, record_provenance, recor
 from .hybrid.assembler import HybridAssembler
 from .image_deck.adapter import ImageDeckAdapter
 from .lifecycle import CleanupConflict, Lifecycle
+from .render.chart import render_chart
+from .render.errors import RenderError
+from .render.page import parse_size, render_page
+from .render.provenance import attach_provenance_to_slide, load_render_receipt
+from .render.raster import rasterize_svg
+from .render.readiness import probe_fast as render_probe_fast
+from .render.readiness import render_ready as _render_readiness_report
 from .render.receipt import RECEIPT_RELATIVE_PATH, ReceiptError, create_delivery_receipt, verify_delivery_receipt
 from .observability import (
     command_name,
@@ -69,6 +76,7 @@ from .storage import (
     sha256_bytes,
 )
 from .styles import StyleStoreError, list_styles, load_style, save_style
+from .layout_bank import list_layout_bank, load_layout_bank, load_style_layouts
 from .templates import (
     StyleColorOverrideError,
     TemplateError,
@@ -312,6 +320,7 @@ def doctor_report(route: str | None) -> dict[str, Any]:
             "status": "required",
             "reason_code": "manual_visual_acceptance_required",
         },
+        "render_backend": _render_readiness_doctor_facet(),
         "route_contract": {"status": "passed" if route else "not_requested"},
     }
     status = "blocked" if config_error else "ready"
@@ -360,6 +369,31 @@ def doctor_report(route: str | None) -> dict[str, Any]:
 
 def _json_file(path: str | Path) -> Any:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _render_readiness_doctor_facet() -> dict[str, Any]:
+    """doctor 的 render_backend 分面：可选能力，missing 不阻断整体 status。
+
+    默认走零 driver 的文件系统级探测（``probe_fast``；不 spin playwright
+    driver，避免高频 doctor 的 asyncio teardown 噪声）；启动级真值以
+    ``render ready`` 为准，``LEO_PPT_RENDER_DOCTOR_LAUNCH=1`` 打开完整探测。
+    """
+
+    if os.environ.get("LEO_PPT_RENDER_DOCTOR_LAUNCH") == "1":
+        report = _render_readiness_report()
+    else:
+        report = render_probe_fast().to_dict()
+    return {
+        "status": report["status"].removeprefix("render_backend_"),
+        "reason_code": report["status"],
+        "optional": True,
+        "playwright_version": report.get("playwright_version"),
+        "chromium_version": report.get("chromium_version"),
+        "chromium_path": report.get("chromium_path"),
+        "fonts_present": report.get("fonts_present"),
+        "install_guide": report.get("install_guide"),
+        "warnings": report.get("warnings", []),
+    }
 
 
 def _parse_pages(value: str | None) -> set[int]:
@@ -1206,6 +1240,10 @@ def build_parser() -> argparse.ArgumentParser:
     prepare.add_argument("run_path", nargs="?")
     prepare.add_argument("--run-dir")
     prepare.add_argument("--slides")
+    prepare.add_argument(
+        "--sources",
+        help="视觉来源清单（content/sources-manifest.json）；冻结进 run input 并入 prepare_fingerprint",
+    )
     record = image_commands.add_parser("record")
     record.add_argument("run_path", nargs="?")
     record.add_argument("--run-dir")
@@ -1229,8 +1267,19 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--expected-revision", type=int)
     record.add_argument("--expected-state-hash")
     record.add_argument("--operation-id")
+    record.add_argument("--render-receipt",
+                        help="render provenance sidecar（<png>.render.json）路径；"
+                             "校验 out_sha256 一致后并入该页 slide entry 的 provenance 字段")
     record.add_argument("--worker-duration-seconds", type=_duration_seconds)
     record.add_argument("--backend-duration-seconds", type=_duration_seconds)
+    image_sweep = image_commands.add_parser(
+        "sweep", help="E4 全册清扫：非 rendered 页复位计划（--dry-run）/执行")
+    image_sweep.add_argument("run_path", nargs="?")
+    image_sweep.add_argument("--run-dir")
+    image_sweep.add_argument("--max-rounds", type=int, default=2,
+                             help="清扫轮次上限（协议 ≤2 轮；超限拒绝执行）")
+    image_sweep.add_argument("--dry-run", action="store_true",
+                             help="只输出复位计划，不改状态")
     finalize = image_commands.add_parser("finalize")
     finalize.add_argument("run_path", nargs="?")
     finalize.add_argument("--run-dir")
@@ -1241,6 +1290,36 @@ def build_parser() -> argparse.ArgumentParser:
     image_assemble.add_argument("--run-dir")
     image_assemble.add_argument("--output")
     image_assemble.add_argument("--rebuild", action="store_true")
+
+    render = subcommands.add_parser(
+        "render", help="确定性渲染 lane（gamma M1：D 柱，与图像 backend 并列）")
+    render_commands = render.add_subparsers(dest="render_command", required=True)
+    render_ready_cmd = render_commands.add_parser(
+        "ready", help="render backend readiness 三态探测（doctor 分面同源）")
+    render_ready_cmd.add_argument("--json", action="store_true")
+    render_page_cmd = render_commands.add_parser("page", help="HTML 模板 → PNG 页产物")
+    render_page_cmd.add_argument("--template", required=True,
+                                 help="assets/render-templates/<id>.html 的模板 id")
+    render_page_cmd.add_argument("--data", required=True, help="slide data JSON 路径")
+    render_page_cmd.add_argument("--out", required=True, help="PNG 输出路径")
+    render_page_cmd.add_argument("--size", default="2560x1440",
+                                 help="输出像素档（16:9；缺省 2560x1440 = dsf2）")
+    render_page_cmd.add_argument("--timeout", type=float, default=60.0,
+                                 help="单页渲染超时（秒）")
+    render_page_cmd.add_argument("--theme-file",
+                                 help="themeVariables JSON（deck colors 锚，见 render-contract.md）")
+    render_chart_cmd = render_commands.add_parser(
+        "chart", help="图表语法 → SVG（浏览器实例内 mermaid）")
+    render_chart_cmd.add_argument("--dialect", choices=("mermaid",), default="mermaid")
+    render_chart_cmd.add_argument("--source",
+                                  help="11_图表语法方言 md（抽 ```mermaid-example 块）")
+    render_chart_cmd.add_argument("--code-file", help="内联语法文件（全文）")
+    render_chart_cmd.add_argument("--out", required=True, help="SVG 输出路径")
+    render_chart_cmd.add_argument("--png", help="可选：resvg 栅格化 PNG 输出路径")
+    render_chart_cmd.add_argument("--theme-file",
+                                  help="themeVariables JSON（缺省 mermaid 默认并 WARN）")
+    render_chart_cmd.add_argument("--scale-width", type=int, default=2560,
+                                  help="栅格化 fitTo 宽度")
 
     editable = subcommands.add_parser("editable")
     editable_commands = editable.add_subparsers(dest="editable_command", required=True)
@@ -1377,6 +1456,12 @@ def build_parser() -> argparse.ArgumentParser:
     style_save.add_argument("--home")
     style_save.add_argument("--overwrite", action="store_true")
     style_save.add_argument("--rename")
+    style_layouts = style_commands.add_parser(
+        "layouts",
+        help="版式库 sidecar 只读查询（layout-bank-v1；输出含每文件 sha256 指纹）",
+    )
+    style_layouts.add_argument("--style", help="风格名：返回该风格的薄路由视图")
+    style_layouts.add_argument("--layout", help="版式 P 码（如 P6）：返回单份版式 sidecar")
 
     evidence = subcommands.add_parser("evidence")
     evidence_commands = evidence.add_subparsers(dest="evidence_command", required=True)
@@ -2182,6 +2267,70 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             worker_outcome=worker_outcome,
             next_action={"kind": "none"},
         )
+    if args.command == "render":
+        if args.render_command == "ready":
+            report = _render_readiness_report()
+            ready = report["status"] == "render_backend_ready"
+            return envelope(
+                "ready" if ready else "blocked",
+                report["status"],
+                render=report,
+                message=report.get("install_guide")
+                or "渲染依赖探测通过，允许路由提议进入 render lane",
+                suggested_actions=[]
+                if ready
+                else [
+                    "pip install playwright（或 uv pip install playwright）",
+                    'PLAYWRIGHT_BROWSERS_PATH="<LEO_PPT_HOME>/render-browsers" python -m playwright install chromium',
+                    "完成后重跑 render ready；期间 render 路由提议被抑制并披露，图像 lane 不受影响",
+                ],
+            )
+        if args.render_command == "page":
+            theme = _json_file(args.theme_file) if args.theme_file else None
+            result = render_page(
+                args.template,
+                args.data,
+                args.out,
+                size=parse_size(args.size),
+                timeout_ms=int(args.timeout * 1000),
+                theme_variables=theme,
+            )
+            return envelope(
+                "ready",
+                "render_page_completed",
+                render=result,
+                artifact_refs=[result["out"]],
+                evidence_refs=[result["sidecar"]],
+                warnings=result["warnings"],
+                message="render page 完成；record 时用 --render-receipt 并入 provenance",
+                safe_to_retry=True,
+            )
+        # render chart（dialect mermaid）
+        if not args.source and not args.code_file:
+            raise RenderError("render_data_invalid", "one of --source/--code-file required")
+        result = render_chart(
+            dialect=args.dialect,
+            source=args.source,
+            code_file=args.code_file,
+            out=args.out,
+            theme_file=args.theme_file,
+        )
+        raster = None
+        if args.png:
+            raster = rasterize_svg(
+                svg_path=args.out, out_path=args.png, width=args.scale_width
+            )
+        return envelope(
+            "ready",
+            "render_chart_completed",
+            render=result,
+            raster=raster,
+            artifact_refs=[result["out"], *([raster["out"]] if raster else [])],
+            evidence_refs=[result["sidecar"]],
+            warnings=result["warnings"],
+            message="render chart 完成（SVG 位级确定；数值/单位/标签逐字保真）",
+            safe_to_retry=True,
+        )
     if args.command == "image":
         run_path = _run_path(args)
         adapter = ImageDeckAdapter(_domain_path(run_path, "image-deck"))
@@ -2200,8 +2349,39 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             slides = _json_file(slides_path)
             if not isinstance(slides, list) or len(slides) > 50:
                 raise ContractError("input_too_large")
+            sources_manifest = None
+            if args.sources:
+                sources_root = Path(run_path).resolve()
+                sources_spec = Path(args.sources)
+                if (sources_root / "run.json").is_file():
+                    sources_target = sources_root / "input" / "sources-manifest.json"
+                    try:
+                        sources_identity = inspect_regular_file(
+                            sources_spec, max_bytes=MAX_SLIDES_CONTRACT_BYTES
+                        )
+                        if sources_target.is_file() or sources_target.is_symlink():
+                            frozen_sources = inspect_regular_file(
+                                sources_target, max_bytes=MAX_SLIDES_CONTRACT_BYTES
+                            )
+                            if frozen_sources["sha256"] != sources_identity["sha256"]:
+                                raise ContractError("sources_manifest_invalid")
+                        else:
+                            durable_copy_file(
+                                sources_identity["path"],
+                                sources_target,
+                                max_bytes=MAX_SLIDES_CONTRACT_BYTES,
+                            )
+                    except ValueError as exc:
+                        raise ContractError("sources_manifest_invalid") from exc
+                    sources_frozen = sources_target
+                else:
+                    sources_frozen = sources_spec
+                try:
+                    sources_manifest = _json_file(sources_frozen)
+                except (OSError, ValueError) as exc:
+                    raise ContractError("sources_manifest_invalid") from exc
             existed = adapter.jobs_path.is_file()
-            result = adapter.prepare(slides)
+            result = adapter.prepare(slides, sources_manifest=sources_manifest)
             state_hash = adapter.state_hash()
             _record_event(
                 run_path,
@@ -2266,6 +2446,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 lease=lease,
                 generation=generation,
             )
+            provenance_summary = None
+            if getattr(args, "render_receipt", None):
+                receipt = load_render_receipt(args.render_receipt)
+                provenance_summary = attach_provenance_to_slide(
+                    adapter.run_dir, number, receipt, backend=args.backend
+                )
             _complete_worker_operation(
                 run_path,
                 operation_id,
@@ -2283,6 +2469,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 "ready",
                 "image_recorded",
                 artifact=artifact.to_dict(),
+                provenance=provenance_summary,
                 **_operation_payload(
                     operation_id=operation_id,
                     idempotency_status=idempotency_status,
@@ -2291,6 +2478,96 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 ),
                 lease=lease,
                 generation=generation,
+            )
+        if args.image_command == "sweep":
+            deck_dir = _domain_path(run_path, "image-deck")
+            jobs_path = deck_dir / "slide_jobs.json"
+            if not jobs_path.is_file():
+                raise ContractError("image_deck_not_prepared")
+            jobs = json.loads(jobs_path.read_text(encoding="utf-8"))
+            attempts_by_page: dict[int, Any] = {}
+            stats_path = Path(run_path) / "observability" / "backend_stats.jsonl"
+            if stats_path.is_file():
+                for line in stats_path.read_text(encoding="utf-8").splitlines():
+                    try:
+                        entry = json.loads(line)
+                    except ValueError:
+                        continue
+                    slide_no = entry.get("slide")
+                    if isinstance(slide_no, int):
+                        attempts_by_page[slide_no] = entry.get("attempts", "not-recorded")
+            plan = [
+                {
+                    "slide_id": slide.get("slide_id"),
+                    "number": slide.get("number"),
+                    "status": slide.get("status"),
+                    "attempts": attempts_by_page.get(slide.get("number"), "not-recorded"),
+                    "action": "redispatch"
+                    if slide.get("status") == "pending"
+                    else "reset_and_redispatch",
+                }
+                for slide in jobs.get("slides", [])
+                if slide.get("status") != "recorded"
+            ]
+            sweep_log = Path(run_path) / "observability" / "render-sweep.jsonl"
+            applied_rounds = 0
+            if sweep_log.is_file():
+                applied_rounds = sum(
+                    1 for line in sweep_log.read_text(encoding="utf-8").splitlines() if line.strip()
+                )
+            if args.dry_run:
+                return envelope(
+                    "ready",
+                    "render_sweep_planned",
+                    sweep={
+                        "mode": "dry_run",
+                        "pages_total": len(jobs.get("slides", [])),
+                        "unrendered_pages": len(plan),
+                        "plan": plan,
+                        "rendered_pages_skipped": len(jobs.get("slides", [])) - len(plan),
+                        "rounds_applied": applied_rounds,
+                        "max_rounds": args.max_rounds,
+                    },
+                    safe_to_retry=True,
+                )
+            if applied_rounds >= args.max_rounds:
+                return envelope(
+                    "blocked",
+                    "render_sweep_rounds_exhausted",
+                    sweep={
+                        "rounds_applied": applied_rounds,
+                        "max_rounds": args.max_rounds,
+                        "unrendered_pages": len(plan),
+                        "plan": plan,
+                    },
+                    message="清扫轮次已达协议上限（≤2 轮）；剩余失败页走缺页拒绝组装/"
+                    "partial-hybrid 确认或向用户披露，不得无限复位",
+                )
+            recovery = Lifecycle(run_path).reset_failed_pages()
+            entry = {
+                "round": applied_rounds + 1,
+                "reset_units": recovery.get("reset_units", []),
+                "unrendered_pages": len(plan),
+            }
+            try:
+                sweep_log.parent.mkdir(parents=True, exist_ok=True)
+                with open(sweep_log, "a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            except OSError:
+                pass
+            return envelope(
+                "ready",
+                "render_sweep_applied",
+                sweep={
+                    "mode": "apply",
+                    "round": applied_rounds + 1,
+                    "max_rounds": args.max_rounds,
+                    "plan": plan,
+                    "recovery": recovery,
+                    "rendered_pages_skipped": len(jobs.get("slides", [])) - len(plan),
+                },
+                safe_to_retry=False,
+                next_action={"kind": "inspect_next"},
             )
         output = _delivery_output_path(run_path, args.output)
         assert_run_quota(Path(run_path).resolve(), load_runtime_config())
@@ -2657,12 +2934,30 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             **upgrade_payload,
         )
     if args.command == "style":
-        home = Path(args.home).expanduser().resolve() if args.home else None
+        _home_arg = getattr(args, "home", None)
+        home = Path(_home_arg).expanduser().resolve() if _home_arg else None
         if args.style_command == "list":
             return envelope("ready", "style_listed", styles=list_styles(home=home), safe_to_retry=True)
         if args.style_command == "load":
             result = load_style(args.name, home=home)
             return envelope("ready", "style_loaded", style=result, safe_to_retry=True)
+        if args.style_command == "layouts":
+            # 只读查询（layout-bank-v1 sidecar）；不触碰 render 组装路径。
+            if getattr(args, "layout", None):
+                return envelope(
+                    "ready", "layout_bank_loaded",
+                    layout=load_layout_bank(args.layout), safe_to_retry=True,
+                )
+            if getattr(args, "style", None):
+                return envelope(
+                    "ready", "style_layouts_loaded",
+                    style_layouts=load_style_layouts(args.style),
+                    safe_to_retry=True,
+                )
+            return envelope(
+                "ready", "layout_bank_listed",
+                layouts=list_layout_bank(), safe_to_retry=True,
+            )
         if args.style_command == "render":
             if getattr(args, "list_templates", False):
                 return envelope(

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P8",
+  "name": "Duo Compare",
+  "page_type": "content",
+  "visual_signature": "左右两半屏中间一根纵向 1px 长线分隔（scaleY 拉开）；各自 t-cat 标签 + 大字标题 + 段落/列表说明",
+  "content_capacity": {
+    "sides": {
+      "desc": "对照侧（t-cat 标签 + 大字标题 + 说明）",
+      "count_min": 2,
+      "count_max": 2
+    },
+    "side_title": {
+      "desc": "每侧大字标题",
+      "chars_per_line": 10,
+      "max_lines": 1,
+      "max_chars": 12
+    },
+    "side_desc": {
+      "desc": "每侧段落/列表说明",
+      "chars_per_line": 22,
+      "max_lines": 3,
+      "max_chars": 79
+    }
+  },
+  "best_for": [
+    "二元对照（必须正好 2 项，两侧结构同质）",
+    "旧/新工作流、传统/AI、客户视角/团队视角"
+  ],
+  "avoid_for": [
+    "三项及以上的多维对比（用 P13/P4）",
+    "数量 ≠ 2"
+  ],
+  "reuse_friendly": true
+}

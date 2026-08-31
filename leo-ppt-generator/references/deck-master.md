@@ -31,10 +31,26 @@
    不得只是论断的同义复述。**功能页豁免**：开场（封面）、目录、章节隔断、收束页
    的第一条要点不要求论断句（陈述/金句/呼应用途,角色词表对齐
    `styles/13_页面语义`）;零要点页合法跳过论断要求。
+   **容量预检（定稿前）**：母版定稿前对要点行跑
+   `python3 scripts/check_deck_geometry.py --capacity <母版/deck_spec JSON>`
+   （输入含逐页 `layout` 与要点文本/条数）。**硬超页先降档（论点页 ≤3 → ≤2）
+   或换版式,不缩字号、不省略号截断**——同级字号一致铁律与版心Canon 字阶
+   刻度离散表优先于任何「塞下再说」冲动;软超（≤1.2×）以 WARN 行提示降档或
+   换版式,不占退出码（三态与退出码语义见
+   [layout-dispatch.md](layout-dispatch.md)）。
 3. **视觉行**：该页容器清单（卡片/表格/图例条/结论条等），并声明**每个要点落入哪个
    容器**；存在无落位要点或无内容容器即失败。页面用图在此标注**来源三级**
    （实拍 / 生成-氛围 / 生成-示意，规则见通用设计规范图像铁律）。数据页数值按
    `styles/00_索引/图表样式规范.md` 置信度形状语法标注来源级。
+   **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
+   [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
+   `12_版式库/*.layouts.json` sidecar，`"$LEO_PPT" style layouts` 可查）。
+   **undecided 页固定呈现格式**：置信度 <0.5 的页在母版中标注
+   `第 <页号> 页版式待定：候选 <P码A> 或 <P码B>，理由 <一行>`，在既有母版
+   确认交互里被人工裁决——不静默任选，不新增确认门（CI-5）。
+   **强视觉版式一 deck 一次**：P1/P9/P23/P24/P34/P36（`reuse_friendly=false`）
+   全 deck 合计不超 sidecar 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
+   定稿前跑 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。
    页面用图另按 [academic-figure-evidence.md](academic-figure-evidence.md) 逐图登记
    **图行**：`图[F<N>] 模式:<处理模式> 状态:<审查状态> 焦点:<该图回答的演示问题> |
    承载:<承载元素> | 服务:<服务的比较> | 避免误读:<要避免的误读>`;`figure_id`
@@ -53,6 +69,11 @@
   终点应是「新常态」页而非普通总结。
 - **`audience_takeaway`**：一句话——听众此刻应获得/感受什么（受众是英雄,页面服务
   旅程）。
+- **`rst_relation`（可选，advisory）**：本页与前页的 RST 关系码，取 8 关系封闭词表之一
+  （`elaboration/explanation/context/purpose/evaluation/organization/joint/same-unit`，
+  见 [`rst-paging.md`](rst-paging.md)）。仅作分页依据参考，**不进母版硬校验**；标
+  `same-unit` 的内容必须整体一页，容量不足走降级顺序而非拆单元。确认摘要中呈现
+  "分页依据"一句。
 
 **deck 级合同块（deck-contract）**：学术场景（合同含论文/答辩/组会/文献汇报信号,
 或选用科研答辩风格）的母版必须在文档头部（第一页之前）携带与内容合同一致的

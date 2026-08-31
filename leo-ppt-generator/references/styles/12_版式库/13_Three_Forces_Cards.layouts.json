@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P13",
+  "name": "Three Forces Cards",
+  "page_type": "content",
+  "visual_signature": "左 5/16 ink hero 块（t-cat + 4 行标题 + 点阵装饰）；右 11/16 三张水平卡堆叠（巨编号 + 标题 + 双列段落）",
+  "content_capacity": {
+    "cards": {
+      "desc": "水平卡（巨编号 01/02/03 为编号锚点而非真实数据 + 标题 + 双列段落）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "card_title": {
+      "desc": "每卡标题",
+      "chars_per_line": 13,
+      "max_lines": 1,
+      "max_chars": 15
+    },
+    "card_desc": {
+      "desc": "每卡双列段落描述",
+      "chars_per_line": 29,
+      "max_lines": 3,
+      "max_chars": 104
+    }
+  },
+  "best_for": [
+    "3 个对等概念深化（数量 = 3，比 P5 承载更多文字）",
+    "三大反驳、三种力量、三大主张"
+  ],
+  "avoid_for": [
+    "数量 ≠ 3",
+    "需要真实数据对比的三项（用 P6/P20）"
+  ],
+  "reuse_friendly": true
+}

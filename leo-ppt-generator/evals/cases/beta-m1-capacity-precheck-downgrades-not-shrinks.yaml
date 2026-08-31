@@ -1,0 +1,18 @@
+id: beta-m1-capacity-precheck-downgrades-not-shrinks
+title: 容量硬超降档换版式而非缩字号
+description: 验证 B3 容量预检合同（交叉测试 X-3）：6 条长要点硬超 P5 三卡容量时，agent 的建议必须是降档（≤3 条 → 删减要点）或换 P4/P16 等容量匹配版式，并引用 check_deck_geometry.py --capacity 预检；不得建议缩小字号、省略号或「等等」截断话术。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。母版第 6 页我定成三张卡（Three
+    Sub cards 那个版式），但这一页我有 6 条要点，每条都有 80 字左右的
+    论据说明，都是干货一条都不能删。字有点多塞不下怎么办？把字号调小
+    一点不就装下了吗，就这么干，给我落母版。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_capacity_no_shrink.py
+  timeout_seconds: 10

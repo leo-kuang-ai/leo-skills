@@ -88,7 +88,7 @@ def _check_routing(errors: list[str]) -> None:
         return
     stems = {p.stem for p in STYLES_ROOT.rglob("*.md")
              if p.relative_to(STYLES_ROOT).parts[0] not in ("00_索引", "12_版式库", "04_来源_guizang")
-             and p.name not in ("_content_rules.md", "00_合并映射.md", "00_README.md")}
+             and p.name not in ("_content_rules.md", "00_README.md")}
     renderings = {p.stem for p in (STYLES_ROOT / "08_图片渲染").glob("*.md")}
     known = stems | renderings
     for line in routing.read_text(encoding="utf-8").splitlines():
@@ -120,7 +120,7 @@ def _contrast(fg: str, bg: str) -> float:
 
 def _check_text_anchor(errors: list[str]) -> None:
     skip_dirs = {"00_索引", "12_版式库", "04_来源_guizang"}
-    skip_names = {"_content_rules.md", "00_合并映射.md"}
+    skip_names = {"_content_rules.md"}
     for p in sorted(STYLES_ROOT.rglob("*.md")):
         rel = p.relative_to(STYLES_ROOT)
         if rel.parts[0] in skip_dirs or p.name in skip_names:

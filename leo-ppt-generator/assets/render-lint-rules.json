@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "comment": "E5 渲染器感知 lint 的规则-渲染器映射（设计 §3.10）。applies 支持精确名与 render:* 通配；skip 是显式跳过披露集。来源判定：页级读 slide_jobs.json 的 backend 字段；模板级（本表 template.* 规则）由 scripts/lint_render_templates.py 消费。跳过集改动必须走 style-lint-baseline.txt 式白名单登记纪律。",
+  "renderers": [
+    "image-model",
+    "render:html",
+    "render:mermaid",
+    "render:echarts",
+    "editable"
+  ],
+  "rules": {
+    "geometry.full_coverage": {
+      "applies": ["image-model", "render:*", "editable"],
+      "description": "页图满幅覆盖画布、无拉伸（OOXML 结构层，check_deck_geometry.py 消费）"
+    },
+    "grid.slot_alignment": {
+      "applies": ["render:*"],
+      "skip": ["image-model"],
+      "description": "版式网格双约束（lint_layout_grid.py）：图像模型页无 OOXML 几何可查，自动 skip 并输出 skipped_rules 披露"
+    },
+    "template.ready_signal": {
+      "applies": ["render:html"],
+      "fail": true,
+      "description": "模板必须实现 data-leo-ready 显式就绪信号（lint_render_templates.py ERROR 级）"
+    },
+    "template.deterministic_mode": {
+      "applies": ["render:html"],
+      "fail": true,
+      "description": "模板必须声明 ?leo_render=1 禁动画兜底（lint_render_templates.py ERROR 级）"
+    },
+    "template.no_file_fonts": {
+      "applies": ["render:html"],
+      "fail": true,
+      "description": "模板字体必须走 /leo-fonts/ HTTP 供给，禁 file:// 与远程 CDN 字体"
+    },
+    "template.canvas_contract": {
+      "applies": ["render:html"],
+      "fail": true,
+      "description": "根容器 1280x720 + overflow:hidden + data-leo-block 结构锚点"
+    },
+    "template.data_injection_only": {
+      "applies": ["render:html"],
+      "fail": true,
+      "description": "模板只读 window.__LEO_SLIDE_DATA__，不得 fetch 外部资源"
+    },
+    "chart.zero_baseline": {
+      "applies": ["render:mermaid", "render:echarts"],
+      "description": "柱状图共零基线、截断轴有断轴符号（图表样式规范；P2 机器化，M1 由 prompt/审阅承载）"
+    },
+    "chart.shape_authorization": {
+      "applies": ["render:*", "editable"],
+      "description": "任何 bar/塔/竖线高度须绑定 approved 序列（图表样式规范）"
+    },
+    "style.sample_inheritance_soft": {
+      "applies": ["image-model"],
+      "skip": ["render:*"],
+      "description": "样张继承软约束只对图像模型页适用；render 页风格由模板+themeVariables 显式承担"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P17",
+  "name": "System Diagram",
+  "page_type": "content",
+  "visual_signature": "左半屏标题 + 三段说明；右半屏 SVG 三层同心圆 + 标签外引线",
+  "content_capacity": {
+    "layers": {
+      "desc": "嵌套层（core/middle/outer 各一段说明）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "layer_desc": {
+      "desc": "每层说明",
+      "chars_per_line": 22,
+      "max_lines": 2,
+      "max_chars": 52
+    }
+  },
+  "best_for": [
+    "严格三层嵌套关系（core 内核 / middle 中间层 / outer 外圈）",
+    "技术栈层级、生态分层、影响力辐射"
+  ],
+  "avoid_for": [
+    "非三层结构（扁平用 P4，层级不清用 P5）"
+  ],
+  "reuse_friendly": true
+}

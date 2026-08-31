@@ -2,153 +2,22 @@ schema_version: 1
 verified_at: "2026-08-21"
 license_policy: preserve-upstream-license-and-notices
 
-# borrowed_ideas：非 vendored 的借源登记通道（fusion-team M0 起）。
-# 与 upstreams: 的区别：本节只登记「能力吸收」（思想改写 / 结构借鉴 / 改编），
-# 不做整仓 vendor，无 import_tree / patches / regression 义务。字段约定：
-#   id / team / project / repository / commit / license
-#   source        —— 被借的上游文件（相对上游仓路径）
-#   used_in       —— 落到本仓的用途（leo 侧文件或能力点）
-#   adaptation_note —— 改编方式与署名去向（NOTICE / 文件尾注）
-borrowed_ideas:
-  - id: BI-M0-01
-    team: alpha
-    project: ian-handdrawn-ppt
-    repository: https://github.com/helloianneo/ian-handdrawn-ppt.git
-    commit: b2cc5f303337e5470fd6ac2870d261a43b218439
-    license: {spdx: MIT, copyright: "Copyright (c) 2026 Ian", attribution_required: true}
-    source: references/prompt-patterns.md
-    used_in: "C1 slide-worker 提示词四件套（deck style lock / page role lock / Required text only / Avoid+一致性自检）与 C2 Text Fidelity Fallback 降级链的合同结构（prompts/slide-worker.md、references/image-deck-workflow.md）"
-    adaptation_note: "结构借用、文本中文重写并与 leo 合同融合；署名见 NOTICE"
-
-  - id: BI-M0-02
-    team: alpha
-    project: banana-slides
-    repository: https://github.com/Anionex/banana-slides.git
-    commit: 3256d967cdfeb7fd4ecfad59198565c3cda7dbcf
-    license: {spdx: AGPL-3.0}
-    source: backend/services/prompts.py
-    used_in: "C3 论断式大纲规则思想（deck-master.md、check_master_contract.py）：第一条要点=完整论断句+证据跟随；功能页豁免；takeaway 连读成故事线"
-    adaptation_note: "AGPL 红线：仅思想借鉴，零文本零代码搬运，表述全部原创中文；本条目即原创性声明载体"
-
-  - id: BI-M0-03
-    team: beta
-    project: Paper2Any
-    repository: https://github.com/OpenDCAI/Paper2Any.git
-    commit: 1ca1f658e811dcec4f9e3d951ce8dacd344d050c
-    license: {spdx: Apache-2.0, attribution_required: true}
-    source: dataflow_agent/promptstemplates/paperbanana.md
-    used_in: "B6 学术方法图视觉语言（NeurIPS Look 六要素）：references/styles/00_索引/图表样式规范.md 第六节——分区色 10–15% 透明度、形状语义、线型语义、变量字体分离、领域三分支、Amateur 反模式"
-    adaptation_note: "改编保留声明（章尾来源注记）；据用户线下授权"
-
-  - id: BI-M0-04
-    team: beta
-    project: academic-ppt-master
-    repository: https://github.com/M1n-n9/academic-ppt-master.git
-    commit: 6825d33f2931b8894435b9bd25c08cfce3476ff0
-    license: {spdx: MIT, copyright: "Copyright (c) 2026 M1n-n9 and contributors", attribution_required: true}
-    source: [references/modes/academic.md, references/visual-styles/academic-defense.md]
-    used_in: "B6 学术五拍论证骨架（references/styles/06_论证模式/学术五拍.md）与科研答辩风 dense-defense 答辩档（references/styles/科研答辩风.md：左 TOC 侧栏、2–4 编号面板、Numbers-not-adjectives、重绘表格）"
-    adaptation_note: "五拍骨架与答辩档措辞中文改写；文件尾注署名；据用户线下授权"
-
-  - id: BI-M0-05
-    team: beta
-    project: ppt-image-first
-    repository: https://github.com/NyxTides/ppt-image-first.git
-    commit: 87a300a559a2a55097fab337241218c6557bfa23
-    license: {spdx: Apache-2.0, attribution_required: true}
-    source: references/workflow.md
-    used_in: "B7 样张升级（正文页必选、结构页可选成本先告知）与样张反演三组判读（references/style-recommendation.md §六/§七、references/image-deck-workflow.md 步骤 6）：Stage 2 三预览取正文页一、Stage 2.75 反演三组、样张实证优先于 prompt 措辞"
-    adaptation_note: "思想改写为中文合同表述（节尾来源注记）；据用户线下授权"
-
-  - id: BI-M0-06
-    team: gamma
-    project: slides-grab
-    repository: https://github.com/NomaDamas/slides-grab.git
-    commit: b4434f12ca96097b24faded6c6003f216cd93885
-    license: {spdx: MIT, copyright: "Copyright (c) 2026 Jeffrey"}
-    source: src/design-gate-state.js
-    used_in: "E1 交付收据指纹模型（五类 sha256 指纹 / diffFingerprints 对称差 / 逐类 stale 硬阻断 / schemaVersion 强制升级），函数级移植为 Python"
-    adaptation_note: "条目按 γ 团队设计文档 §8 抄录登记；实装归 γ 团队"
-
-  - id: BI-M0-07
-    team: gamma
-    project: ppt-agent-skill
-    repository: https://github.com/Akxan/ppt-agent-skill.git
-    commit: 01825dee2ad40a8c719824252605396b9a570d57
-    license: {spdx: MIT, copyright: "Copyright (c) 2025 sunbigfly"}
-    source: scripts/visual_qa.py
-    used_in: "E2 视觉质检检查函数族（check_dimensions / blank_ratio / overflow_cutoff / contrast_zones 等与 0/1/2 汇总退出码）"
-    adaptation_note: "条目按 γ 团队设计文档 §8 抄录登记；实装归 γ 团队"
-
-upstreams:
-  codex-ppt:
-    repository: https://github.com/ningzimu/codex-ppt-skill.git
-    commit: f2ed80372f65bb05fe62dd07979b239a17ac065d
-    repository_tree: 551cb696b09ead91df2ee42ce353397f00753c33
-    import_tree: a7ecf0863b03356c447471a9678973ae26f01078
-    clean_export_sha256: e96d8134d616e8f19570f0b645a67c825628ae85122e016c99b5826ce78708c6
-    license:
-      spdx: MIT
-      file: LICENSE
-      blob: f769fc5582d3f8ee0f9eb4da5fbf95ac85834c17
-      copyright: Copyright (c) 2026 ningzimu
-    import_set:
-      - LICENSE
-      - skills/codex-ppt/SKILL.md
-      - skills/codex-ppt/requirements.txt
-      - skills/codex-ppt/docs/**
-      - skills/codex-ppt/prompts/**
-      - skills/codex-ppt/references/**
-      - skills/codex-ppt/scripts/**
-    retained_contracts:
-      - slide job preparation and per-slide prompt contract
-      - slide dispatch/result/blocker state and concurrency limit
-      - backend provenance and generated-image-only requirement
-      - missing-slide refusal before PPTX assembly
-      - speaker-notes assembly
-    patches:
-      - patches/0001-codex-state-directory-barrier.patch
-      - patches/0003-codex-assembly-fidelity.patch
-      - patches/0005-codex-chroma-key-dependency-hint.patch
-    integration_adaptations:
-      - patches/assembly-and-office-boundaries.md
-    regression:
-      manifest: tests/upstream/core-tests.yaml
-      suite: codex-ppt-core
-
-  image-to-editable-ppt:
-    repository: https://github.com/ningzimu/image-to-editable-ppt-skill.git
-    commit: fb869763127fd31ba7288d905671ffc4ea542f60
-    repository_tree: 7723bbb98311e938eb1fd53419f955eeae1eb933
-    import_tree: 5dafb6e837a82fff64a1c58efaf43792e53751b7
-    upstream_tests_tree: e919ded690ea85046d873cc19a5867ef566fc8b3
-    clean_export_sha256: f15682824f0fdaac22734be7a2d2399fd31b50a6db257b52eacfb92d7a279823
-    license:
-      spdx: MIT
-      file: LICENSE
-      blob: f769fc5582d3f8ee0f9eb4da5fbf95ac85834c17
-      copyright: Copyright (c) 2026 ningzimu
-    import_set:
-      - LICENSE
-      - skills/image-to-editable-ppt/SKILL.md
-      - skills/image-to-editable-ppt/agents/openai.yaml
-      - skills/image-to-editable-ppt/cli/**
-      - skills/image-to-editable-ppt/prompts/**
-      - skills/image-to-editable-ppt/references/**
-      - skills/image-to-editable-ppt/scripts/build-page-worker-prompt.py
-      - tests/**
-    retained_contracts:
-      - deterministic input normalization and offline text hints
-      - page worker prompt and manifest contract
-      - page dispatch/record/reset/finalize state contract
-      - object-level PPTX build and structural validation
-      - multi-page worker requirement and single-page local claim
-    patches:
-      - patches/0002-editable-state-atomic-lock.patch
-      - patches/0004-editable-expected-formula-inventory.patch
-      - patches/0006-editable-ppt-dpi-parameter.patch
-    integration_adaptations:
-      - patches/assembly-and-office-boundaries.md
-    regression:
-      manifest: tests/upstream/core-tests.yaml
-      suite: image-to-editable-ppt-core
+render_deps:
+  playwright:
+    spdx: Apache-2.0
+    pin: "1.62.0"
+    role: "D1/D2 渲染执行器（playwright-python 官方包；chromium 151.0.7922.34 装入 $LEO_PPT_HOME/render-browsers/）"
+  mermaid:
+    spdx: MIT
+    pin: "11.17.2"
+    source: npm mermaid@11.17.2 官方 tarball dist/mermaid.min.js
+    sha256: 581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8
+    role: "D2 浏览器实例内图表渲染（assets/render-vendor/mermaid/，目录内 NOTICE）"
+  resvg:
+    spdx: MPL-2.0
+    pin: "resvg-py 0.5.0"
+    role: "D3 SVG→PNG 栅格化首选路径；仅作二进制依赖使用，禁止 patch 其源码（NOTICE#resvg）；备选 Node @resvg/resvg-js 子进程 scripts/render/rasterize_svg.mjs"
+  noto-sans-sc-subset:
+    spdx: OFL-1.1
+    source: notofonts/noto-cjk Sans/SubsetOTF/SC（Regular sha256 faa6c9df…706d5ea9 / Bold c6cb5a93…764767c0）
+    role: "离线确定性字体（assets/render-fonts/，目录内 LICENSE-OFL.txt 与 NOTICE）"

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P7",
+  "name": "H Bar Chart",
+  "page_type": "data",
+  "visual_signature": "顶部大标题；下半部条形列表：文字标签 + 1px 蓝条 0→target width + 末端数字（scaleX 动画）",
+  "content_capacity": {
+    "items": {
+      "desc": "条形行（标签 + bar + 末端数值）",
+      "count_min": 5,
+      "count_max": 10
+    },
+    "item_label": {
+      "desc": "每行文字标签",
+      "chars_per_line": 31,
+      "max_lines": 2,
+      "max_chars": 74
+    },
+    "item_value": {
+      "desc": "每行末端数值",
+      "chars_per_line": 7,
+      "max_lines": 1,
+      "max_chars": 8
+    }
+  },
+  "best_for": [
+    "5-10 项可比量化数据（bar 宽度由真实百分比 / 评分 / 数值决定）",
+    "benchmark 排名、市场份额、问卷占比"
+  ],
+  "avoid_for": [
+    "无量化数据的概念列举（那是 P4/P5/P15；编造数字会被识破）",
+    "超过 10 项（拆页或改 P15）"
+  ],
+  "reuse_friendly": true
+}

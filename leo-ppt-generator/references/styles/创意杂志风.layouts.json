@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "创意杂志风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：杂志排版密度由版式承担"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P10",
+        "P12"
+      ],
+      "discouraged": [
+        "P23"
+      ]
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P30",
+        "P31",
+        "P13"
+      ],
+      "discouraged": [
+        "P16"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9",
+        "P36"
+      ],
+      "discouraged": []
+    }
+  ]
+}

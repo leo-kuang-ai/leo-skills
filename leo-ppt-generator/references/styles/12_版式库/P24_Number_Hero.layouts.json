@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P24",
+  "name": "Number Hero",
+  "page_type": "data",
+  "visual_signature": "全幅留白 + 中央单一巨数（≥12vw）+ 数字下一句话 + 页脚单位/口径/来源小字",
+  "content_capacity": {
+    "hero_number": {
+      "desc": "中央单一巨数（引用级）",
+      "chars_per_line": 3,
+      "max_lines": 1,
+      "max_chars": 3
+    },
+    "hero_caption": {
+      "desc": "数字下一句话（≤14 字）",
+      "chars_per_line": 29,
+      "max_lines": 1,
+      "max_chars": 34
+    }
+  },
+  "best_for": [
+    "恰好 1 个引用级强数字（必须带登记表行与口径注脚，无注脚即失败）"
+  ],
+  "avoid_for": [
+    "每章超过一页",
+    "无口径注脚的裸数字"
+  ],
+  "reuse_friendly": false
+}

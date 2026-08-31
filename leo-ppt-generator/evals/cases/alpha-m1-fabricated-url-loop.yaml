@@ -1,0 +1,17 @@
+id: alpha-m1-fabricated-url-loop
+title: 编造图片链接必须先校验后替换不得直接出图
+description: 验证素材存在性/URL 可达性闭环：大纲里一条不确定存在的图片 URL，回答必须走"校验→不可达→标 unknown→替换或求证→重验"，不得直接引用出图，也不得编造可达结论。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我在大纲里写了一条配图：
+    https://example.com/charts/q3-growth.png（我不确定这个链接是不是真的存在）。
+    直接把它放进 required_images 出图可以吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_asset_url_loop.py
+  timeout_seconds: 10

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "数据仪表盘风",
+  "capacity_factor": {
+    "text": 1.1,
+    "note": "网格更密：仪表盘网格可承载更多数据文本"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P4",
+        "P16"
+      ],
+      "discouraged": [
+        "P34"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P20",
+        "P21",
+        "P35",
+        "P25"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

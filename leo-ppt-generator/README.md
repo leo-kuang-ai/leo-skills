@@ -10,6 +10,24 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 - `upgrade-full`：将既有 image-deck 全量升级为可编辑版本。
 - `upgrade-selected`：只升级指定页面，其余页面保留图片。
 
+## 成品样例
+
+以下页面来自 2026-08-29 六行业评测运行（主题「AI Agent 落地一年」，合成材料；
+运行记录见仓库根 `docs/leo-ppt-generator-eval-6industries-0829.md`），generate 路线
+2560×1440 交付档，此处降采样至 1280 展示：
+
+- 政务汇报 · 封面页
+
+  ![政务汇报封面](samples/government-cover.png)
+
+- 金融汇报 · 数据页
+
+  ![金融汇报数据页](samples/finance-data-page.png)
+
+- 教学课件 · 内容页
+
+  ![教学课件内容页](samples/education-content-page.png)
+
 ## 风格库
 
 `references/styles/` 提供 137 个可加载风格 brief（11 个顶层内置 + 126 个子目录参考，

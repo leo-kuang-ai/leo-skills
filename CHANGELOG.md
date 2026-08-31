@@ -6,7 +6,112 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Removed
+
+- **leo-ppt-generator 移除全部借源登记与借鉴说明（user-visible）**：删除
+  `upstream-capabilities.yaml`、`tests/upstream/core-tests.yaml`、
+  `references/styles/05_来源_awesome-gpt-image-2/00_合并映射.md`；
+  `upstreams.yaml` 剔除 `upstreams:` 与 `borrowed_ideas:` 两节（仅存
+  schema/verified/license_policy/render_deps）；清理全部文件内借源注记
+  （学术五拍/科研答辩风/style-recommendation/图表样式规范尾注、slide-worker
+  合同段注记、visual-qa 借鉴行、layout_bank/check_deck_geometry/
+  extract_pptx_theme/visual_qa 头注、guizang README 许可标注块、电子墨水
+  可参考来源）；`NOTICE` 重写为法定署名最小集（vendored 代码、移植/改编
+  来源、渲染 lane 二进制依赖各一行版权声明，无叙事无 pin）；
+  `_INDEX.md` 规则文档计数 16→15；lint_style_index/lint_style_governance/
+  style-library/patches README/测试头注同步去引用；`sync_upstreams.py`
+  移除 per-upstream 校验循环。门禁与四条 lint 全绿，boundary 测试失败集
+  与改动前基线一致（均为既有环境缺依赖/分支在途工作）。
+
 ### Added
+
+- **leo-ppt-generator 交叉测评（darwin-skill × skill-upper，6 独立 judge × 2 轮）**
+  - 新增 `docs/leo-ppt-generator-cross-eval-6judges-0831.md`：三轴交叉（行为轴
+    skill-up 13 轮存量 + 结构轴 darwin 9 维 + paired 版本轴）。**Paired 多数决
+    6-0 better 双轮零翻转**（M0.1→M1 增量 4 clear+2 slight；pre-fusion→M1
+    全程 6 clear）——融合弧为无回退面净增益，无 revert 依据。9 维 triage 均值
+    84.3（极差 5.3 在 darwin ±8 噪声带内，再次实证"绝对分仅 triage"）；
+    dim4 检查点/dim9 红灯清单/dim6 资源整合为全票强项。交叉归因产出两个
+    P0/P1 修复建议：registry 记账规则入口零提及（6/6 judge 点名，gamma-m6
+    持续 FAIL 根因）、跨会话恢复分支未编码（post-confirm 族失败根因）。
+    runtime 中立性 gate 0 命中。darwin results.tsv 落
+    `leo-ppt-workspace/cross-eval-0831/`。诚实记录：iteration-85 记录态
+    15/18（两位 judge 独立纠正先前的 16/18 误计）。
+
+- **leo-ppt-generator 能力融合 M1 落地（渲染 lane + 版式工程链 + 来源保真链 + 内核双跑，
+  docs/plans/2026-08-30-001 里程碑 M1）** (user-visible)
+  - γ 渲染 lane：`render ready/page/chart` 三态探测与真实渲染（playwright-python +
+    chromium 151 装入 `$LEO_PPT_HOME/render-browsers/`、HTTP 字体服务禁 file://、
+    data-leo-ready 显式信号、deterministic 模板合同 + lint）；mermaid 11.17.2
+    pinned 从 11_图表语法示例块零改写渲染（数值逐字进 SVG）；resvg-py 位级栅格化
+    （同 SVG 双跑 sha256 相等）；`image record --render-receipt` provenance 并入
+    （backend_stats 出现 render:html 行）；visual_qa.py 像素闸门（0/1/2，FAIL 页
+    不进 LLM 审，实测抓到注入竞态 bug）；`image sweep` 清扫（只复位非 rendered 页）；
+    渲染器感知 lint 规则映射。tests/render/ 38 用例零 skip。
+  - β 版式工程链：layout-bank-v1 schema + 36 版式 sidecar（五字段封顶，
+    reuse_friendly=false 六版式）+ 11 风格薄路由；lint 三道新门（配对/悬空/容量
+    恒等式）；vw 容量模型进 check_deck_geometry --capacity（X-3 实证：硬超建议
+    降档/换版式绝不缩字号）；suggest_layout 确定性调度师（<0.5 undecided 交人工、
+    禁编造 id、逐字节一致）；extract_pptx_theme 纯 stdlib 移植（双跑逐字节一致）；
+    **字节红线证明：style render 输出 sha256 前后一致，compose 零改动**。
+  - α 来源保真链：sources-manifest schema + check_sources_manifest（--strict
+    引用级不可回溯/AI 图冒充引用即阻断、--compile upgrade 聚合）+
+    `image prepare --sources` 冻结（无参数旧指纹逐字节不变）；validate_assets
+    素材校验闭环（offline 零联网实证）；vendor patch 0007（Required Text Only/
+    Deck Style Lock 独立 prompt 块 + 静默丢失可检出）；TF 文字保真降级链 +
+    overlay_text.py 确定性贴字（位级一致双跑验证）；rst-paging advisory；
+    SKILL.md 补 TF-2 封闭例外/strict-sources 披露/按需读取锚点。
+  - δ 内核双跑：editable/{geometry,deterministic_zip,object_builder,_oxml,
+    object_projection}.py + config/builder_selection.py——manifest IR →
+    python-pptx 编译器，`LEO_EDITABLE_BUILDER=pptx|legacy` + run 冻结字段分派；
+    **双跑对照实证：legacy vs pptx 结构投影 100% 相等、pptx 路径同输入与跨时区
+    sha256 全等、vendor 0 diff**；tables 对象面 + theme1.xml 字体双槽（charts
+    如实后置 M2）。等价性/确定性证据以
+    tests/boundary/test_object_builder_equivalence.py（10 条）为准
+    （后续并行决策移除 vendor 回归登记文件，见 Removed 节）。
+  - 集成：eval.yaml 注册 19 个新 case（共 78）；跨团队转记行（deck-master
+    rst_relation、execution-contract strict-sources 交付门、image-deck-workflow
+    layout_reuse 引用）。**upstreams.yaml 备注**：集成中发现并行会话有意移除
+    `upstreams:` 节（sync_upstreams.py 配套改造，`--check` 通过），初次误判为
+    并发事故曾短暂恢复，已按并行会话意图再次移除；δ 架构注记以
+    execution-contract.md 双跑注记为准，patch 0007 以 patches/README.md 登记。
+  - 本地验证：372 tests / 2 存量金样失败持平（+185 新测试全绿）、五 lint
+    （briefs/layout/index/governance/render-templates）exit 0、
+    git diff --check 清零。M1 批评测轮结果见 known-issues 后续条目。
+
+### Removed
+
+- **leo-ppt-generator 移除 `upstreams.yaml` 的 `upstreams:` 节（user-visible）**：
+  vendored 上游（codex-ppt / image-to-editable-ppt）不再经该节登记。
+  `borrowed_ideas:` 节原样保留。配套清理：`scripts/sync_upstreams.py` 移除
+  per-upstream 元数据/notice/补丁校验（仅保留 vendored 树 vendor-lock 比对与
+  dependency lock 存在性检查）；vendored 署名与 pinned commit 内联进 `NOTICE`
+  （MIT 合规不受影响）；`patches/README.md` 补丁登记规则改为本文件内登记；
+  `vendor-lock.json` 按当前 vendored 树重写（46 文件），
+  `sync_upstreams.py --check` 回绿。
+
+### Added
+
+- **leo-ppt-generator 产品 P0 优化批（docs/plans/2026-08-31-001，user-visible）**
+  - 表面合同 block-early：控制面五字段块位置规则由"最前面（至多一行
+    interaction_mode）"放宽为"前 3 个非空行之内、先于块只允许 ≤40 字符
+    元数据行"，并在执行主线加顶层锚点——针对 known-issues 在案的弱模型
+    12/13 轮恒定违约；judge_control_plane_fields 同步（6 轮历史重放 +
+    7 合成陷阱全部按预期）。
+  - 确认门回合合并（user-visible）：相邻确认点可同回合呈现（合同+大纲、
+    视觉方向+样张，逐页母版独立），合并的是往返不是确认——逐件明示确认
+    才冻结；SKILL.md CONFIRM-GATE 与 image-deck-workflow 步骤 1/2 间新增
+    规则；新用例 confirmation-batched-turns + judge（6 样本离线自检）。
+  - 成本预估前置（user-visible）：新增 scripts/estimate_run_cost.py（历史
+    backend_stats 均值×重试系数 / 无历史保守假设区间，basis 如实标注
+    history/mixed/assumed-default，--price-per-1k 折算成本带）+ 12 单测；
+    SKILL.md 不变边界与 backend-selection.md 新增合同（派发前预估区间+
+    依据披露，交付时与 backend report 对账）；新用例
+    cost-estimate-before-dispatch + judge（5 样本离线自检）。
+  - README 成品样例（user-visible）：samples/ 三张 1280 降采样页（政务
+    封面/金融数据页/教育内容页，出自 2026-08-29 六行业评测运行，出处
+    docs/leo-ppt-generator-eval-6industries-0829.md），README 新增
+    「成品样例」节；eval.yaml 注册两新用例（61 case）。
 
 - **leo-ppt-generator 10 轮稳定性测评 + M0.1 校准批（user-visible）**
   - 18 case 子集 ×10 轮（iteration-75..84）：6 例 10/10 稳定、3 例 9/10

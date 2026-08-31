@@ -1,0 +1,22 @@
+id: confirmation-batched-turns
+title: 材料齐全时合同与大纲应同回合呈现（回合合并）
+description: 验证相邻确认门可同回合呈现：材料齐全且用户要求减少往返时，首轮同时给出内容合同与大纲（各自落盘引用），仍逐件请求明示确认，不得未经确认即冻结或开始生成。确认门完整性由 execute-keeps-confirmation-gates 专测。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，从下面材料做季度复盘 PPT（generate）：
+    - 成品共 10 页（封面、内容、收尾都算在这 10 页内），面向管理层，讲 15 分钟；
+    - 营收 1.24 亿元，环比 +18%，创单季新高；
+    - 新签客户 37 家，其中头部 3 家贡献 40% 增量；
+    - 客服 NPS 从 41 升到 47；
+    - 两条在研产品线预计下季度上线。
+    数据按“内部资料”定级；风格到样张轮再定。材料就这些，没有别的了。
+    别一轮一轮问我：把需要我确认的东西尽量一次放在一起给我，然后等我说确认。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_confirmation_batched.py
+  timeout_seconds: 10

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P4",
+  "name": "Six Cells",
+  "page_type": "content",
+  "visual_signature": "2×3 网格；每格上方 lucide 图标 + 编号 + 短标题 + 一行描述；单元间 hairline 分隔",
+  "content_capacity": {
+    "cells": {
+      "desc": "对等概念格（图标 + 编号 + 短标题 + 一行描述）",
+      "count_min": 6,
+      "count_max": 6
+    },
+    "cell_title": {
+      "desc": "每格短标题",
+      "chars_per_line": 6,
+      "max_lines": 1,
+      "max_chars": 7
+    },
+    "cell_desc": {
+      "desc": "每格一行描述",
+      "chars_per_line": 25,
+      "max_lines": 3,
+      "max_chars": 90
+    }
+  },
+  "best_for": [
+    "6 个对等概念 / 功能列举（数量必须 = 6）",
+    "每格仅承载图标 + 编号 + 短标题 + 一行描述的轻结构"
+  ],
+  "avoid_for": [
+    "数量 ≠ 6 的列举（过少用 P5，过多用 P15/P16）",
+    "需要展开的数据 / 段落"
+  ],
+  "reuse_friendly": true
+}

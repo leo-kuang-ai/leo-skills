@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P5",
+  "name": "Three Sub cards",
+  "page_type": "content",
+  "visual_signature": "左侧大标题 + 描述 + 顶部 hairline；右侧 3 张水平堆叠 sub-card（灰底直角）",
+  "content_capacity": {
+    "cards": {
+      "desc": "水平堆叠 sub-card（编号 + 标题 + 1-2 行描述）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "card_title": {
+      "desc": "每卡标题",
+      "chars_per_line": 13,
+      "max_lines": 1,
+      "max_chars": 15
+    },
+    "card_desc": {
+      "desc": "每卡 1-2 行描述（内容比 P4 略多）",
+      "chars_per_line": 29,
+      "max_lines": 2,
+      "max_chars": 69
+    }
+  },
+  "best_for": [
+    "3 个对等概念 / 步骤（数量必须 = 3，结构同质、无强烈数据差异）",
+    "三步流程、三类轻度对比"
+  ],
+  "avoid_for": [
+    "数据可比的三项（改用 P6 KPI Tower）",
+    "数量 ≠ 3"
+  ],
+  "reuse_friendly": true
+}

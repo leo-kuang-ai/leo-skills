@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P16",
+  "name": "Multi card Brief",
+  "page_type": "content",
+  "visual_signature": "顶部大标题（留 9vh）；下方 3×2 微卡：左上主文 + 右下小字注脚 + 中间留空；单张 accent 蓝强调",
+  "content_capacity": {
+    "cards": {
+      "desc": "微卡（主文 + 注脚）",
+      "count_min": 6,
+      "count_max": 6
+    },
+    "card_main": {
+      "desc": "每卡主文（短）",
+      "chars_per_line": 14,
+      "max_lines": 1,
+      "max_chars": 16
+    },
+    "card_footnote": {
+      "desc": "每卡小字注脚",
+      "chars_per_line": 29,
+      "max_lines": 2,
+      "max_chars": 69
+    }
+  },
+  "best_for": [
+    "6 项轻量短讯 / tip / 注脚（数量 = 6，主文短 + 小字注脚）",
+    "快讯类集合"
+  ],
+  "avoid_for": [
+    "数量 ≠ 6",
+    "多焦点强调（只允许一张 accent 蓝突出，单焦点法则）"
+  ],
+  "reuse_friendly": true
+}

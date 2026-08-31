@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "slide": {"width": 10.0, "height": 5.625},
+  "source": {"width_px": 1920, "height_px": 1080},
+  "text_inventory": [{"id": "kicker", "text": "Z 序与翻转"}, {"id": "sub", "text": "dash sysDot"}],
+  "visual_inventory": [],
+  "background_strategy": {"mode": "native-or-script"},
+  "quality_checks": {
+    "font_size_calibrated": true,
+    "visual_inventory_matched": true,
+    "background_strategy_checked": true,
+    "shape_corner_geometry_checked": true
+  },
+  "text_boxes": [
+    {"box_px": [60, 40, 500, 90], "text": "Z 序与翻转", "font_size": 30, "align": "right", "valign": "bottom", "z_index": 100},
+    {"box_px": [60, 140, 400, 80], "text": "dash sysDot", "font_size": 18, "rotation": 12.5, "z_index": 100}
+  ],
+  "images": [
+    {"box_px": [700, 60, 300, 200], "path": "chart_b.png", "alt": "chart", "z_index": 100},
+    {"box_px": [700, 300, 300, 200], "path": "chart_b.png", "alt": "same z image", "z_index": 100}
+  ],
+  "shapes": [
+    {"type": "line", "points_px": [1600, 900, 1000, 500], "stroke": "#E66B00", "stroke_width": 5, "dash": "sysDot", "z_index": 100},
+    {"type": "line", "points_px": [100, 900, 600, 850], "stroke": "#333333", "stroke_width": 2, "dash": "lgDash", "z_index": 100},
+    {"type": "ellipse", "box_px": [1500, 100, 200, 200], "fill": "none", "stroke": "#57C4B8", "stroke_width": 1, "flip_h": true, "flip_v": true, "z_index": 100},
+    {"type": "rect", "box_px": [300, 300, 160, 160], "fill": "#111111", "stroke": "none", "z_index": 90}
+  ],
+  "asset_provenance": [
+    {"path": "chart_b.png", "source": "chart_b.png", "source_type": "asset-sheet-separated", "provenance_note": "asset-sheet separated from source"}
+  ]
+}

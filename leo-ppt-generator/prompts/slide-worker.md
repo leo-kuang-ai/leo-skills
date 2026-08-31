@@ -51,6 +51,8 @@ Forbidden for final slide image creation:
 - python-pptx/PptxGenJS/native PPT layout screenshots
 - manually composited text, card, chart, or image overlays
 
+Sole exception: the parent-authorized text-fidelity-fallback (TF-2) mode after sample re-confirmation — base image still from the confirmed backend; the overlay text layer is produced deterministically by `scripts/overlay_text.py` from the required_text whitelist verbatim. Workers never perform this overlay themselves.
+
 If you cannot use the selected image backend, stop and return `blocker=<reason>` instead of creating a lower-quality replacement.
 If you cannot follow the recorded sample generation method, stop and return `blocker=<reason>` instead of switching tools.
 If the backend cannot produce the required 16:9 size, stop and return `blocker=aspect_ratio_unsupported` instead of emitting a non-16:9 image.
@@ -81,8 +83,3 @@ worker_duration_seconds=<measured total worker seconds>
 backend_duration_seconds=<measured backend call seconds, or not-recorded>
 backend_tokens=<image backend token usage for this page if reported by the backend, or not-recorded>
 ```
-
----
-
-四件套合同段（deck style lock / page role lock / required text only / avoid + 一致性自检）结构改编自
-ian-handdrawn-ppt 的 `references/prompt-patterns.md`（MIT；措辞已重写并融合进本合同，据用户线下授权）。

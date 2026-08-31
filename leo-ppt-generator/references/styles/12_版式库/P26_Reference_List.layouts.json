@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P26",
+  "name": "Reference List",
+  "page_type": "content",
+  "visual_signature": "双栏编号列表（[1] 作者. 机构/期刊. 年份.）+ 右下「附」标记，不占正式页码",
+  "content_capacity": {
+    "refs": {
+      "desc": "文献行（编号 + 作者 + 机构/期刊 + 年份）",
+      "count_min": 4,
+      "count_max": 12
+    },
+    "ref_line": {
+      "desc": "每条文献行",
+      "chars_per_line": 44,
+      "max_lines": 2,
+      "max_chars": 105
+    }
+  },
+  "best_for": [
+    "≥4 条文献/来源总账（角标 ↔ 文献一一对应，悬空即失败）"
+  ],
+  "avoid_for": [
+    "引入新论点（只收纳引用）",
+    "角标与文献不对应"
+  ],
+  "reuse_friendly": true
+}

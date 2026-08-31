@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P12",
+  "name": "Manifesto Ink Banner",
+  "page_type": "section",
+  "visual_signature": "上半屏左侧 t-cat + 大字宣言 + 右侧短段说明；下半屏 ink 通栏（负 margin 全出血）+ 反白短句 + 图标矩阵",
+  "content_capacity": {
+    "manifesto": {
+      "desc": "上半屏大字宣言",
+      "chars_per_line": 13,
+      "max_lines": 5,
+      "max_chars": 78
+    },
+    "explainer": {
+      "desc": "上半屏右侧简短说明",
+      "chars_per_line": 14,
+      "max_lines": 3,
+      "max_chars": 50
+    },
+    "banner_line": {
+      "desc": "下半屏 ink 通栏反白短句",
+      "chars_per_line": 44,
+      "max_lines": 1,
+      "max_chars": 52
+    }
+  },
+  "best_for": [
+    "章节性收束 / 阶段性宣言（deck 中段：主张 + 简短说明 + ink 通栏三段结构）"
+  ],
+  "avoid_for": [
+    "deck 终结页（那是 P9 的事）",
+    "数据承载"
+  ],
+  "reuse_friendly": true
+}

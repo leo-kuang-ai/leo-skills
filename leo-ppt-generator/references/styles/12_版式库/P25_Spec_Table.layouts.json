@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P25",
+  "name": "Spec Table",
+  "page_type": "data",
+  "visual_signature": "表头行（角色区分底色）+ 斑马纹数据行 + 单位列右对齐；列宽按内容类型分配（参数名 30% / 值 45% / 备注 25%）；最小字号 24px",
+  "content_capacity": {
+    "rows": {
+      "desc": "数据行",
+      "count_min": 3,
+      "count_max": 8
+    },
+    "columns": {
+      "desc": "列（行列表头 schema 必填）",
+      "count_min": 2,
+      "count_max": 6
+    },
+    "cell": {
+      "desc": "单元格文本",
+      "chars_per_line": 29,
+      "max_lines": 3,
+      "max_chars": 104
+    }
+  },
+  "best_for": [
+    "≥3 行 × ≥2 列参数/规格/BOM 表（行列表头 schema 必填）"
+  ],
+  "avoid_for": [
+    "行数 > 8（强制 direct-editable 原生表格，质量门判据）"
+  ],
+  "reuse_friendly": true
+}

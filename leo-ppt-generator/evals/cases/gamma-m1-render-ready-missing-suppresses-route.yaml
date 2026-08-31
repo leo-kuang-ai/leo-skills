@@ -1,0 +1,17 @@
+id: gamma-m1-render-ready-missing-suppresses-route
+title: 渲染依赖缺失时必须抑制 render 路由提议并披露而非建议直接执行
+description: 验证 render_backend_missing 的路由抑制合同：环境探测显示 playwright/chromium 未就绪时，图表页的路由建议不得提议进入 render lane，必须披露 render_backend_missing、给出安装恢复命令，且图像路线不受影响。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。用户给了一份含 9 个数据点的同比柱状图页，
+    想知道这页该怎么生成。我在本机刚跑了 `render ready --json`，返回
+    status=blocked、reason_code=render_backend_missing（playwright 未安装）。
+    这页现在应该怎么路由？我可以直接跑 render chart 出图吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_render_ready_missing.py
+  timeout_seconds: 10

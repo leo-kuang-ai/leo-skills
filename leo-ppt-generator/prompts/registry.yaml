@@ -72,3 +72,21 @@ entries:
     change: updated
     lesson: 图像模型偏好在页脚补"生成日期"类固定件；仅靠 required_text 白名单兜底不够显式，需在自查与 Avoid 两处点名禁令
     related_eval: null
+  - id: prompt-0008
+    date: "2026-08-31"
+    name: vendor-prompt-required-text-and-style-lock-blocks
+    file: prompts/slide-worker.md
+    improvement: vendor 侧落地（patch 0007）——_build_prompt 渲染两个独立 prompt 块：deck 级 style_lock 经 "## Deck Style Lock" 块逐字复用、每页 required_text[] 渲染为 "## Required Text Only" 白名单块（逐字、禁块外内容性文字）；slides.json 合同侧字段说明进 image-deck-workflow.md 第 7 步；静默丢失检出为 scripts/check_sources_manifest.py --check-job-prompts
+    dimension: visual-text-fidelity
+    change: updated
+    lesson: vendor _format_block 只取固定键、未知字段被静默忽略——白名单合同必须落到 prompt 文本本体才可执行；块在场性可机检（slides.json 声明 vs job prompt 缺块）让"合同写了但没生效"不再不可见
+    related_eval: null
+  - id: prompt-0008
+    date: "2026-08-31"
+    name: render-worker-baseline-addition
+    file: prompts/render-worker.md
+    improvement: 新建 render lane 页派发协议（与 slide-worker 平行）：render ready 三态前置检查、render page/chart 确定性执行、visual_qa 单页像素闸门（FAIL 不进 LLM 审、WARN 入 qa_note）、PNG 头 2560x1440 断言、provenance sidecar 不可手改；backend 如实回报 render:html/render:mermaid，backend_tokens 恒 not-recorded
+    dimension: render-lane-dispatch-protocol
+    change: added
+    lesson: 图像 worker 的"禁止本地渲染"禁令与 render lane 并行不悖——关键区分是路由确认：未经父 Agent 在既有 backend 确认点提议并被接受的本地渲染才是"近似替代页"；render 页必须走独立 worker 协议并以 render:* backend 如实回报，否则反冒充评测与 backend_stats 都会失真
+    related_eval: gamma-m1-render-worker-no-fake-image-backend

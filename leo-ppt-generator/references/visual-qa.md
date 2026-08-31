@@ -11,9 +11,6 @@
 「对抗式审查」**——主动假设这页有问题、专门找茬，直到找不到问题才判通过。
 正向「照着清单打勾」会漏掉它没列出的错误。
 
-借鉴：OfficeCLI 的「渲染→截图→对抗式审查」、PPTAgent 的逐页 `inspect_slide`
-（不达标立即重做，不靠其他页通过来补偿）。
-
 ## 二、质检流程（闭环，缺一不可）
 
 1. **worker 自查**（正向）：`slide-worker.md` 的 visually check 清单。
@@ -21,6 +18,16 @@
    `origin_image/slide_<N>.png` 与 `prompts/slide_<N>.json` 逐条对照。风格来自
    参考图提取时，复核呈现须为参考图与样张**并排比对**形态（见
    [`style-recommendation.md`](style-recommendation.md) 第五节）。
+2.5. **确定性像素闸门（机器前置，LLM 审之前）**：每页 record 前运行
+   `python3 scripts/visual_qa.py <页图或 origin_image 目录> --report <run>/reports/visual-qa.json`。
+   退出码 `1`（FAIL：空白页/尺寸不符/文件过小等）→ **直接打回该页，附机器
+   findings 作为打回理由，不进第 3 步 LLM 对抗审查、不消耗审阅**；修复后重跑
+   本步。退出码 `2`（仅 WARN：边缘截断嫌疑/对比度分区/竖排嫌疑）→ 可继续，
+   但 WARN 必须写入 `qa_note` 并在交付话术披露。退出码 `0` 才进入第 3 步。
+   render lane 页同样适用（render-worker 单页自查与父 Agent 批量复跑两层，
+   见 [`render-contract.md`](render-contract.md)）。检查族与阈值：DIM-01
+   （16:9 + 2560 交付档）、BLANK-01（主色>40% 且内容比<15% FAIL）、
+   CUT-01/CONT-01/VTXT-01（WARN）、SIZE-01（<200K FAIL/<600K WARN，2560 档）。
 3. **对抗式审查**：按下节清单**专门找茬**，每条问「这一页最可能错在哪」。
 4. **任一失败 → 打回该页重做**：内容层失败先改母版（见
    [`deck-master.md`](deck-master.md)），视觉层失败改变输入/prompt/backend 后重试；

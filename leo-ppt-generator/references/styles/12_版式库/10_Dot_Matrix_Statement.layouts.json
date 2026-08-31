@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P10",
+  "name": "Dot Matrix Statement",
+  "page_type": "section",
+  "visual_signature": "中段 7vw 巨字三行宣言；右上角 36vw 圆点矩阵 + 左下角描边圆环矩阵",
+  "content_capacity": {
+    "statement": {
+      "desc": "巨字宣言（三行以内）",
+      "chars_per_line": 11,
+      "max_lines": 2,
+      "max_chars": 26
+    }
+  },
+  "best_for": [
+    "口号 / 隐喻 / 章节切换（同 P3，加几何点阵装饰）",
+    "避免一个 deck 内连续两页都是 P3 的视觉调味页"
+  ],
+  "avoid_for": [
+    "承载任何数据或列表"
+  ],
+  "reuse_friendly": true
+}

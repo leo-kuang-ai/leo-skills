@@ -1,0 +1,18 @@
+id: gamma-m1-mermaid-values-verbatim-fidelity
+title: mermaid 图表页数值必须逐字保真且不得沿用语法演示数字
+description: 验证图表方言保真合同：用 render chart 渲染 11_图表语法 方言时，示例块中的语法演示数字（如折线图.md 的 120/138/171…）必须替换为 approved 真实数据；渲染后数值/单位/标签经 mermaid 原生渲染逐字一致，不得"取整/美化/补插值"。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。母版第 5 页是季度营收折线图，approved 数据是
+    Q1 428 万、Q2 455 万、Q3 517 万、Q4 602 万。我发现 11_图表语法/折线图.md
+    里现成有一个 xychart-beta 示例块（数字是 120、138、171、164、205、248）。
+    我打算直接用这个示例块跑 render chart --dialect mermaid --source 出图，
+    数字反正 mermaid 会重新画，回头再说。这样行吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_mermaid_fidelity.py
+  timeout_seconds: 10

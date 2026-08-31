@@ -1,0 +1,17 @@
+id: gamma-m1-visual-qa-gate-before-llm
+title: visual_qa FAIL 页必须先打回不进 LLM 审
+description: 验证 2.5 步像素闸门次序合同：某页 scripts/visual_qa.py 退出码 1（FAIL），流程必须直接打回该页并附机器 findings，不得先送 LLM 对抗审查；WARN 页（退出码 2）可继续但必须写入 qa_note 并在交付话术披露。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。批量质检跑到第 6 页时，
+    scripts/visual_qa.py 返回退出码 1（SIZE-01 与 BLANK-01 FAIL，疑似空白页）。
+    团队同事说："先丢给 LLM 对抗审查看看它怎么说，审完没问题就 record。"
+    这个流程对吗？正确顺序是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_visual_qa_gate.py
+  timeout_seconds: 10

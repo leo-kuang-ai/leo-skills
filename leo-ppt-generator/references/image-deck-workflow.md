@@ -33,6 +33,11 @@
    内容页,不额外增加。内容合同经用户确认后，
    立即冻结独立 `<project-root>` 并建立 `content/` 内容子目录（仅 execute 模式；
    advise 不创建任何文件）。
+   **回合合并**：材料齐全且无口径歧义时,步骤 1 的内容合同与步骤 2 的大纲可在
+   同一回合呈现（两份工件各自落盘并引用路径,同轮请求逐件确认）,视觉方向与
+   样张同理可同回合呈现（样张本就锚定视觉方向）,逐页母版独立成回合——合并
+   减少的是往返次数,不是确认点：每件工件仍须用户明示确认后才冻结,用户只
+   确认其一时仅冻结其一,材料缺失或口径歧义时仍先单独走步骤 1。
 2. 把大纲写入 `<project-root>/content/outline-v<N>.md`（文档头部含内容合同
    快照与 `confirmation: pending`）。**结构页显式成页**：大纲以封面页开篇
    （必选;合同按卡片口径(≤2 页)执行时除外——唯一卡片兼任开场,不设独立
@@ -44,6 +49,12 @@
    收束页豁免（第一条要点可为陈述/金句/呼应,角色词表对齐 `styles/13_页面语义`）;
    零要点页（陈述/氛围档）合法跳过。此规则随大纲延续到母版要点段,并由母版校验器
    输出要点连读稿（TAKEAWAY-READTHROUGH）复核——连读不成故事线即打回。
+   **RST 分页启发式（advisory）**：材料多段/结构复杂/学术长文时,大纲分页可按
+   [`rst-paging.md`](rst-paging.md) 的 8 关系词表标注分组边界（大纲页行可选
+   `rst: 与前页关系`;母版页首元信息可选 `rst_relation` 字段）——禅档位管
+   "一页装多少",RST 关系管"哪些内容必须同页/必须拆页"（same-unit 绝不拆页）;
+   两判据冲突时按学术图表证据规则的降级顺序处理,不得拆 same-unit。两者均为
+   advisory,不进母版硬校验,确认摘要中呈现"分页依据"一句即可。
    在聊天中引用文档路径与变更摘要并等待
    确认；用户确认时原地更新标记为 `confirmed`，用户反馈则修订产出 vN+1
    （旧版保留）。聊天不得整篇复述大纲。落盘失败即阻断该确认门并以控制面块
@@ -66,6 +77,16 @@
    图片式但强制置信度形状语法;≤4 个巨数推荐数字海报页。判定结果写回母版视觉行：
    产出母版新版本文件并登记 `revision_kind: post-confirm`（继承 confirmed 状态，
    不重新走完整确认）；若因此改变页数或结构，退回 pending 重新确认。
+3b. **素材校验闭环**（母版视觉行冻结素材清单后、`image prepare` 前）：运行
+   `python3 scripts/validate_assets.py <project-root>/content/sources-manifest.json`
+   （在技能目录内执行；或对 slides.json 的 `required_images`/`input_images` 列表）。
+   本地素材查存在/可读/是图片/sha256 一致；URL 只接受 `https://` 并以 HEAD 探活
+   （405 降级 GET+Range，超时 10s，不下载整文件）。**闭环合同**：校验失败 →
+   该素材标 `unknown`（**禁止入页**）→ 二选一：用户提供真实素材 / 改为 AI 生成
+   并标示意 → 重跑校验 → 缓存 diff 展示替换前后状态。`--offline` 模式完全不联网
+   （URL 记 skipped，交付前须联网重验全绿）；缓存（`sources/.asset-validation.json`）
+   只作报告 diff，永不作为"通过"的替代。编造素材链接直接出图 = 红灯（红灯清单）。
+   退出码 0/1/2：1 存在不可达素材（阻断入页）；2 仅缓存过期/慢端/offline 跳过警告。
 4. 模版推荐与选择：按 [`style-recommendation.md`](style-recommendation.md) 执行——
    合同信号 → 2–3 个候选（每方向四行：风格名/为什么/长什么样/换它的代价）+ 带归因
    的默认推荐 → 用户回字母锁定、点名风格直行、给参考图"照图做"、或要求浏览三视图
@@ -91,10 +112,24 @@
    生成 slides.json 与全 deck 术语表（canonical 实体名 + 缩写 + 首现页），
    `image prepare` 时按该页实际命中的术语**裁剪注入**（不全表复制），
    `assemble` 复验增加跨页术语一致性检查（同实体异写即报告）；把 confirmed 版
-   outline 与 master 复制进 run input 归档，
-   再调用顶层 `"$LEO_PPT" image prepare <run> --slides <slides.json>`；这一步创建唯一
-   `image-deck/slide_jobs.json` canonical state。vendor prompt 工具只能作为
-   无状态能力被 bridge 调用，不直接拥有 run 真值。
+   outline 与 master 复制进 run input 归档。**slides.json 合同字段（C1）**：deck 级
+   `style_lock: {shell: "...", constants: [...]}`——样张确认后从已确认风格 brief 与
+   样张方法派生的跨页常量锁（外层壳：纸色/背景、页码位置与形态、标题处理与光学
+   字号档、网格/角标、人物政策、表情档）；每页 `required_text: [...]`——该页允许
+   出现的全部内容性可见文字白名单（标题/要点/标签/图注/固定件文案，逐字）。两者经
+   vendor patch（`patches/0007`）渲染为 job prompt 的 `## Deck Style Lock` 与
+   `## Required Text Only` 独立块（逐字）；派发前可运行
+   `python3 scripts/check_sources_manifest.py --check-job-prompts <deck-dir>` 检出
+   "slides.json 声明了 required_text/style_lock 而 job prompt 缺块"的静默丢失。
+   **sources manifest 冻结（A2）**：从 confirmed 母版视觉行派生
+   `<project-root>/content/sources-manifest.json`（schema 见
+   [`sources-manifest-schema.md`](sources-manifest-schema.md)；母版是人确认的内容
+   真值，manifest 只是机器投影），再调用顶层
+   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json>`——
+   runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
+   `contents_sha256` 并入 `prepare_fingerprint`（不带 `--sources` 时 fingerprint 保持
+   旧算法，旧 run 恢复兼容）；这一步创建唯一 `image-deck/slide_jobs.json` canonical
+   state。vendor prompt 工具只能作为无状态能力被 bridge 调用，不直接拥有 run 真值。
 8. 多页时按 `prompts/slide-worker.md` 派发 worker，并为每次执行使用顶层 run lease。
 9. worker 返回后调用顶层 `"$LEO_PPT" image record <run>`；失败保留在同一
    canonical state。聊天回复不改变状态，取消后的迟到 lease 会被拒绝。
@@ -122,16 +157,52 @@
     artifact revision，重新组装、渲染并复验整套 PPTX；旧验证不得沿用。交付前必须
     运行 `python3 scripts/check_deck_geometry.py <final-pptx>`（在技能目录内执行；
     确定性断言画布 16:9、页图满幅无 contain 留白、无拉伸；非 0 退出阻止交付）。
+    **strict-sources 交付门**：含图片证据的交付（generate 全部；upgrade 路线先
+    `python3 scripts/check_sources_manifest.py --compile <run> [--out <path>]` 聚合）
+    交付前必须运行 `python3 scripts/check_sources_manifest.py <run> --strict`（在
+    技能目录内执行）：退出 1（含引用级不可回溯 `source_unverifiable`、AI 图冒充
+    引用）阻断交付；退出 2（低审查状态图等 WARN）可交付但必须在交付披露中列明。
+    交付披露同时逐页列明 TF-2 fallback 页清单（见文字保真降级链）。
 
 最终 slide 图片必须来自确认的图片 backend。不得使用 Pillow、SVG、HTML、
 canvas 或本地绘图生成“近似替代页”。required asset 无法正确进入页面时应
-blocked，而不是省略后继续。
+blocked，而不是省略后继续。**唯一封闭例外**：经样张确认的 text-fidelity-fallback
+模式（TF-2，见下节）——底图仍须来自确认 backend，叠加文字由
+`scripts/overlay_text.py` 确定性产生并逐字来自该页 `required_text[]` 白名单；
+此例外不延伸到任何其他本地合成场景。
 
 样张批准后，所有 slide job 继承同一 `sample_generation_method` 和 backend。
 继承前必须核验该方法的像素尺寸档为交付画布比例（16:9）：比例不符（如历史 run
 的 1536×1024 素材）不得继承，也不得由 worker/parent 私自降档回退，一律视为
 generation method 变更，走样张重新生成与确认。
 backend 切换需要用户重新确认并使旧 job fingerprint 失效。
+
+### 文字保真降级链（Text Fidelity Fallback）
+
+触发条件：视觉质检"文字准确性"失败（错字/漏字/白名单外文字），且视觉方向本身
+已接受。处置顺序固定，不可跳步：
+
+1. **TF-1 压文本预算重生成（优先，且至少尝试一轮）**：回母版做要点减法（禅档位
+   降一档 / 每条压缩 / 标签数减半），登记 `revision_kind: post-confirm`（页数或
+   结构变化才退回 pending，复用既有 3a 通道）→ 更新该页 `required_text[]` 白名单
+   → 同 backend 同方法重生成该页。文本预算参考（与禅档位联动，非新档位）：标题
+   ≤12 字、要点每条 ≤2 行、标签 ≤5 个、图注 ≤6 条每条 ≤12 字。
+2. **TF-2 留白版式 + 确定性贴字**：TF-1 仍失败时——① 用确认的 backend 生成
+   "留白版式页"（prompt 声明为每个白名单文字项预留空白区，禁止任何占位假字）；
+   ② `python3 scripts/overlay_text.py <底图> <required_text 白名单 json> <out>`
+   （在技能目录内执行）逐字贴字，输出恒为 2560×1440，非 16:9 底图或白名单外
+   文字拒绝渲染；贴字后重验画幅。**治理对齐**：TF-2 = `sample_generation_method`
+   变更——启用前必须重新生成并确认样张（寄生既有样张确认点，零新增确认门）；
+   未经该确认，slide-worker 的"manually composited text overlays"禁令不变，
+   不得静默贴字交付。③ 记录：sources manifest 该页加
+   `{"visual_id": "text-overlay", "source_class": "deterministic-overlay"}`；
+   slide job 记 `text_fallback: true`；收据按"底图 + 叠加后终图"双指纹记录；
+   qa_note 写"TF-2 engaged + 白名单逐字 + 无残留生成假字复检"。
+3. **终止**：TF-1 + TF-2 均失败 → 该页 `text_budget_exhausted`（blocked），回母版
+   重构或换 backend，不得无限重试。`text_fallback_engaged` 为状态码非错误。
+
+交付披露：最终回复逐页列明 fallback 页清单（TF-2 页与原因）；未披露的贴字页按
+红灯处理。回滚：TF-2 未获样张确认即整链禁用（退回"整页重生"）。
 
 中断恢复：会话中断后重新进入同一 generate 任务时，读取 `content/` 的版本化文档
 与确认基线定位所处确认门（某门已过当且仅当存在 confirmed 基线或其 `post-confirm`
@@ -157,6 +228,9 @@ backend 切换需要用户重新确认并使旧 job fingerprint 失效。
 - **PPTX 结构：** 页数、页序、尺寸、notes、媒体引用和交付 hash 一致；画布与页图
   宽高比一致（页图满幅、无 contain 留白、无拉伸），由
   `scripts/check_deck_geometry.py` 确定性断言，非 0 退出阻止交付。
+  母版冻结后同步运行 `python3 scripts/check_layout_reuse.py`（强视觉版式
+  `reuse_friendly=false` 一 deck 一次、P36 至多 2 页；见 `references/deck-master.md`
+  强视觉版式合同行与 `references/layout-dispatch.md`）。
 - **数据页披露：** 图片式路线的数据图为 stylized 表现，不承载精确数值标注；真实数值
   以逐页母版 / direct-editable 版为准（`styles/00_索引/图表样式规范.md` §五、3a 步数据密度
   路由）。交付话术含数据页时必须带此披露。

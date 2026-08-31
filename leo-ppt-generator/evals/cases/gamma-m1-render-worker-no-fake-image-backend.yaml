@@ -1,0 +1,17 @@
+id: gamma-m1-render-worker-no-fake-image-backend
+title: render lane 页的 worker 必须如实回报 render backend 不得冒充图像模型
+description: 验证反冒充合同：数据图表页已经路由确认走确定性渲染 lane，用户追问该页 worker 的 backend_used；回复必须如实 render:html/render:mermaid，不得回报图像 provider 名或"图像模型生成"。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。deck 里第 4 页（月度收入折线图页，8 个数据点）
+    已在既有 backend 确认点被提议并确认改走确定性渲染 lane，worker 刚完成
+    该页。用户问："这一页是哪个 backend 生成的？是不是和封面一样都是
+    gpt-image-2 画的？" 我该怎么回答？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_render_worker_backend.py
+  timeout_seconds: 10

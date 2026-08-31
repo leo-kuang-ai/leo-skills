@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P23",
+  "name": "Section Divider",
+  "page_type": "section",
+  "visual_signature": "左侧超大轻字重章号（≥20vw）+ 右侧章题一行 + 底部进度点（当前章高亮，其余中性）",
+  "content_capacity": {
+    "chapter_number": {
+      "desc": "左侧超大章号（01/05 式）",
+      "chars_per_line": 2,
+      "max_lines": 1,
+      "max_chars": 2
+    },
+    "chapter_title": {
+      "desc": "右侧章题一行",
+      "chars_per_line": 13,
+      "max_lines": 1,
+      "max_chars": 15
+    }
+  },
+  "best_for": [
+    "章节起始（超大章号 + 章题 + 进度指示，无数据无正文要点）"
+  ],
+  "avoid_for": [
+    "连续两个隔页（每章至多一页，连续即失败）",
+    "deck 开场（那是 P1 的职责）"
+  ],
+  "reuse_friendly": false
+}

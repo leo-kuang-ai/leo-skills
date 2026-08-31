@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P22",
+  "name": "Image Hero",
+  "page_type": "content",
+  "visual_signature": "上半屏 60% 全幅图片 + 左上白底标题块叠加（top:11vh）；下半屏 40% 长说明 + 三列 KPI",
+  "content_capacity": {
+    "hero_stats": {
+      "desc": "下半屏三列 KPI（真实数值）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "desc": {
+      "desc": "下半屏长说明",
+      "chars_per_line": 44,
+      "max_lines": 3,
+      "max_chars": 158
+    }
+  },
+  "best_for": [
+    "案例展示 / 产品发布 / 章节带图封面（真实图片 + 3 个核心数据）",
+    "产品截图 + 关键指标、案例图 + ROI"
+  ],
+  "avoid_for": [
+    "没有真实图源（占位灰图破坏视觉，禁用）"
+  ],
+  "reuse_friendly": true
+}

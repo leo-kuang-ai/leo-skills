@@ -12,6 +12,7 @@
 """
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -66,9 +67,9 @@ PASS_BLOCKS = [
 ]
 
 
-def run_cli(argv):
+def run_cli(argv, env=None):
     return subprocess.run([sys.executable, str(SCRIPT), *argv],
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, env=env)
 
 
 def write_json(payload):
@@ -248,7 +249,16 @@ class CliContractTest(unittest.TestCase):
         self.assertIn("R4 | warn", r.stdout)
 
     def test_html_without_playwright_degrades_exit_3(self):
-        r = run_cli(["--html", "whatever.html"])
+        # gamma-M1 起 runtime venv 常驻 playwright；本用例改为显式模拟
+        # "playwright 不可 import"（PYTHONPATH 前置 stub），保持原判据：
+        # 降级块 + exit 3 + 安装指引、无 traceback。
+        with tempfile.TemporaryDirectory() as stub_dir:
+            (Path(stub_dir) / "playwright.py").write_text(
+                'raise ImportError("simulated: playwright absent")\n', encoding="utf-8"
+            )
+            env = dict(os.environ)
+            env["PYTHONPATH"] = stub_dir + os.pathsep + env.get("PYTHONPATH", "")
+            r = run_cli(["--html", "whatever.html"], env=env)
         self.assertEqual(r.returncode, 3)
         self.assertIn("pip install playwright", r.stdout)
         self.assertIn("playwright install chromium", r.stdout)

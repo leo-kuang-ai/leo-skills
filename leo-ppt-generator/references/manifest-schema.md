@@ -400,3 +400,73 @@ spec 冻结后随 manifest 落盘，供审查 rubric 与来源清单引用。
   整体不存在，不写空对象。
 - 该键只描述视觉事实，与内容合同字段互不重叠；用户未回应确认时默认仅第一组
   进 spec、第二组不硬锁。
+
+## 对象级可选段（F1/F2 增量，δ 层实现）
+
+以下三段全部**可选且向后兼容**：不含这些段的 manifest 行为与既有合同完全
+一致（等价回归见 `tests/boundary/test_object_builder_equivalence.py::TableObjectFaceTest::test_manifest_without_tables_unchanged_legacy_behavior`）。段的校验与编译语义由
+runtime 对象层（`editable/object_builder.py`）实现，不改变 schema_version。
+
+### `theme`（deck 级或页级可选）
+
+```json
+{
+  "theme": {
+    "head_font_face": "Source Han Sans SC",
+    "body_font_face": "PingFang SC"
+  }
+}
+```
+
+- 仅 `builder=pptx`（对象级路径）消费：写 theme1.xml `a:fontScheme` 的
+  majorFont/minorFont 双槽（latin/ea/cs 三槽同面）。
+- `text_boxes[].font` 变为可选：缺省时按 `text_boxes[].role` 继承——
+  `role: "title"` → head 槽，`role: "body"`（缺省）→ body 槽；
+  显式 `font`（run 级或 box 级）仍逐 run 写三槽并覆盖主题。
+- **无 theme 段时旧行为不变**：缺省字体仍为 PingFang SC。
+- `builder=legacy` 时 theme 段被忽略并打 warning（不 fail）。
+
+### `tables[]`（页级可选，原生表格对象面）
+
+```json
+{
+  "tables": [
+    {
+      "box_px": [100, 220, 900, 300],
+      "rows": [["表头", ""], ["季度营收", "42.8M"]],
+      "col_widths": [0.6, 0.4],
+      "merges": [[0, 0, 0, 1]],
+      "z_index": 150
+    }
+  ]
+}
+```
+
+- `box_px` 必需（与其他对象同一像素坐标合同）；`rows` 为二维文本网格
+  （逐字进 required_text / all_text 校验）；`col_widths` 为相对宽度分数；
+  `merges` 每项 `[r1, c1, r2, c2]` 矩形合并——**被合并覆盖的单元格应留空**；
+  `z_index` 缺省 150（shapes 100 与 images 200 之间）。
+- 仅 `builder=pptx` 消费；legacy 路径忽略该段。
+
+### `charts[]`（预留，未实现）
+
+原生图表段为 M2 范围（仅"数据可逐字确认"场景启用）；本里程碑不消费该段，
+字段定义在实现时随本文件一并冻结。
+
+### run 级 builder 冻结字段（`page_jobs.json`）
+
+stable workflow 的 run 创建（`editable prepare`）时把生效 builder 冻结进
+`page_jobs.json`：
+
+```json
+{
+  "builder": {
+    "id": "leo-ppt-generator/object-builder-1",
+    "selection": "pptx"
+  }
+}
+```
+
+`finalize`/重建按冻结字段分派（优先于 `LEO_EDITABLE_BUILDER` 环境变量），
+保证同一 run 永远同一 builder；无该字段的旧 run 视为 legacy。
+选择器合同详见 [`execution-contract.md`](execution-contract.md)。

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P19",
+  "name": "Four Cards",
+  "page_type": "content",
+  "visual_signature": "顶部 80px IKB 蓝短发丝顶线 + 大字双行标题；下方 4 列均分卡（t-meta 编号 + 大字标题 + 段落描述）",
+  "content_capacity": {
+    "cards": {
+      "desc": "等权卡（编号 + 大字标题 + 一段描述）",
+      "count_min": 4,
+      "count_max": 4
+    },
+    "card_title": {
+      "desc": "每卡大字标题",
+      "chars_per_line": 5,
+      "max_lines": 1,
+      "max_chars": 6
+    },
+    "card_desc": {
+      "desc": "每卡一段描述",
+      "chars_per_line": 11,
+      "max_lines": 3,
+      "max_chars": 39
+    }
+  },
+  "best_for": [
+    "4 项等权特性 / 模块（数量 = 4，结构完全同质，纯定性）"
+  ],
+  "avoid_for": [
+    "数据高度对比（用 P6）",
+    "数量 ≠ 4",
+    "三步叙事（用 P5）"
+  ],
+  "reuse_friendly": true
+}

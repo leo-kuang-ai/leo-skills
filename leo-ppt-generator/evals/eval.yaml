@@ -89,6 +89,33 @@ cases:
     - evals/cases/gamma-m1-receipt-tamper-detects-stale.yaml
     - evals/cases/gamma-m1-impact-inference-page-vs-deck.yaml
     - evals/cases/gamma-m6-prompt-registry-required.yaml
+    # 产品 P0 优化批（docs/plans/2026-08-31-001）：派发前成本预估区间与依据披露。
+    - evals/cases/cost-estimate-before-dispatch.yaml
+    # 产品 P0 优化批：相邻确认门同回合呈现（合同+大纲、视觉方向+样张）。
+    - evals/cases/confirmation-batched-turns.yaml
+    # 能力融合 M1 批（docs/plans/2026-08-30-001 里程碑 M1）：α 来源清单与
+    # 保真链 + β 版式工程链（sidecar/调度师/容量/主题提取）+ γ 渲染 lane
+    # （反冒充/ready 抑制/mermaid 保真/像素闸门/清扫/模板 lint）+ δ 内核
+    # 双跑（builder 冻结/tables/非法 preset 拒绝）。
+    - evals/cases/alpha-m1-strict-sources-untraceable.yaml
+    - evals/cases/alpha-m1-fabricated-url-loop.yaml
+    - evals/cases/alpha-m1-tf2-sample-reconfirm.yaml
+    - evals/cases/alpha-m1-rst-same-unit.yaml
+    - evals/cases/beta-m1-strong-visual-layout-once-per-deck.yaml
+    - evals/cases/beta-m1-layout-dispatch-undecided-asks-human.yaml
+    - evals/cases/beta-m1-layout-dispatch-no-fabricated-ids.yaml
+    - evals/cases/beta-m1-capacity-precheck-downgrades-not-shrinks.yaml
+    - evals/cases/beta-m1-pptx-theme-extraction-deterministic.yaml
+    - evals/cases/beta-m1-sidecar-pairing-lint-gate.yaml
+    - evals/cases/gamma-m1-render-worker-no-fake-image-backend.yaml
+    - evals/cases/gamma-m1-render-ready-missing-suppresses-route.yaml
+    - evals/cases/gamma-m1-mermaid-values-verbatim-fidelity.yaml
+    - evals/cases/gamma-m1-visual-qa-gate-before-llm.yaml
+    - evals/cases/gamma-m1-sweep-resets-only-unrendered.yaml
+    - evals/cases/gamma-m1-template-lint-ready-signal.yaml
+    - evals/cases/delta-m1-builder-run-freeze.yaml
+    - evals/cases/delta-m1-tables-required-text.yaml
+    - evals/cases/delta-m1-illegal-preset-fails-closed.yaml
   defaults:
     timeout_seconds: 300
     max_turns: 4

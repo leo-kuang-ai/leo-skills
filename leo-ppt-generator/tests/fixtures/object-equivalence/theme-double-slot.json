@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "slide": {"width": 13.333, "height": 7.5},
+  "source": {"width_px": 1600, "height_px": 1200},
+  "text_inventory": [{"id": "title", "text": "主题双槽"}, {"id": "body", "text": "正文字体"}],
+  "visual_inventory": [],
+  "background_strategy": {"mode": "native-or-script"},
+  "quality_checks": {
+    "font_size_calibrated": true,
+    "visual_inventory_matched": true,
+    "background_strategy_checked": true,
+    "shape_corner_geometry_checked": true
+  },
+  "theme": {
+    "head_font_face": "Source Han Sans SC",
+    "body_font_face": "Noto Sans SC"
+  },
+  "text_boxes": [
+    {"box_px": [100, 60, 600, 110], "text": "主题双槽", "font_size": 32, "role": "title", "z_index": 300},
+    {"box_px": [100, 200, 600, 80], "text": "正文字体", "font_size": 18, "role": "body", "z_index": 310},
+    {"box_px": [100, 320, 600, 80], "text": "显式字体", "font_size": 18, "font": "Explicit Face", "z_index": 320}
+  ],
+  "images": [],
+  "shapes": [],
+  "asset_provenance": []
+}

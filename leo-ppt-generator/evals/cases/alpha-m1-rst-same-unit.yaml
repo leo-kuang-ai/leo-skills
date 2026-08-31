@@ -1,0 +1,18 @@
+id: alpha-m1-rst-same-unit
+title: same-unit 内容绝不拆页且 RST 分页为 advisory 判据
+description: 验证 RST 分页启发式：一张核心表/一条推导链被标 same-unit 时绝不拆页，容量不够走降级顺序而不是拆单元；RST 与禅档位是双判据（结构 vs 容量），均为 advisory 不进硬校验。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。母版里有一页放一张核心对照表，
+    我按 rst 标了 same-unit，但这页内容按禅档位超容量了。能把这张表拆成
+    两页各放一半吗？RST 关系和禅档位冲突时按哪个算？这个标注会被母版
+    校验器强制检查吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_rst_paging.py
+  timeout_seconds: 10

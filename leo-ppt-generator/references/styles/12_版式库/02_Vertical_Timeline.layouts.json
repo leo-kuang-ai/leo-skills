@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P2",
+  "name": "Vertical Timeline",
+  "page_type": "data",
+  "visual_signature": "左侧 axis 列 12px 圆点 + 1px 虚线轴；右侧节点信息（年份 + 大字数据 + 小标 + 描述）",
+  "content_capacity": {
+    "nodes": {
+      "desc": "时间节点（每节点 = 年份 + 量化数值 + 描述三件套）",
+      "count_min": 2,
+      "count_max": 5
+    },
+    "node_value": {
+      "desc": "每节点大字数据（如 1× / 4× 倍数 / 单位数字）",
+      "chars_per_line": 5,
+      "max_lines": 1,
+      "max_chars": 6
+    },
+    "node_desc": {
+      "desc": "每节点描述（年份 + 小标 + 描述）",
+      "chars_per_line": 50,
+      "max_lines": 3,
+      "max_chars": 180
+    }
+  },
+  "best_for": [
+    "带量化数据的时间演化（每节点年份 + 量化数值 + 描述三件套）",
+    "演化对比、年代变迁、版本迭代"
+  ],
+  "avoid_for": [
+    "只有节点名没有数据的时间线（改用 P11）",
+    "循环结构（那是 P14 的事）"
+  ],
+  "reuse_friendly": true
+}

@@ -7,7 +7,7 @@ artifact_contract: spec-unified-plan/v1
 artifact_readiness: implementation-ready
 product_contract_source: product-analysis-2026-08-31
 execution: code
-status: active
+status: completed
 ---
 
 # leo-ppt-generator 产品 P0 优化批
@@ -96,3 +96,6 @@ status: active
   execute-keeps-confirmation-gates、outline-doc-before-confirm、
   advice-only-no-execution。
 - 结果记录见 `evals/known-issues.md` 2026-08-31 产品 P0 批条目。
+- 全量轮（iteration-89，61 case）：53 PASS / 8 FAIL / 0 ERROR；8 个失败逐条
+  归因全部为在案存量/摆动、零条归因本批；后续项：回合合并下 outline-doc
+  判官的环境态等价分支（M0.2 候选，不在本批范围）。验证合同 1–5 全部关闭。

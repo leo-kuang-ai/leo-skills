@@ -112,6 +112,13 @@ adheres to a loose semantic-versioning convention.
     封面/金融数据页/教育内容页，出自 2026-08-29 六行业评测运行，出处
     docs/leo-ppt-generator-eval-6industries-0829.md），README 新增
     「成品样例」节；eval.yaml 注册两新用例（61 case）。
+  - 测评验证：新单测 12/12 绿、四 lint 绿、全量单测相对漂移基线零新增失败
+    （并行会话在途改动致基线 218→293，失败项全数归并行/存量）；在线子集
+    6/6 PASS（含 control-plane 十三点历史 12 FAIL 后首轮转绿，单轮不作
+    稳定性结论）；全量 61 case 轮 53 PASS / 8 FAIL，8 个失败逐条归因全部
+    为在案存量/摆动、零条归因本批（详见 evals/known-issues.md 本批条目）。
+    OPT-B 经两轮校准（用例口径消歧 + 判官确认组补"等你回复/拍板"变体，
+    历史双向重放后 it-88 在线转绿）。
 
 - **leo-ppt-generator 10 轮稳定性测评 + M0.1 校准批（user-visible）**
   - 18 case 子集 ×10 轮（iteration-75..84）：6 例 10/10 稳定、3 例 9/10

@@ -54,7 +54,23 @@ OPT-C 成本预估前置 / OPT-D README 成品样例），逐项带判官离线�
   cost-estimate-before-dispatch、confirmation-batched-turns、
   execute-keeps-confirmation-gates、outline-doc-before-confirm、
   advice-only-no-execution **6/6 PASS**。
-- 全量 61 case 轮（iteration-89）结果见下方追加条目。
+- **全量 61 case 轮（iteration-89）：53 PASS / 8 FAIL / 0 ERROR**。两条新用例与
+  control-plane-blocked-summary 均绿。8 个失败逐条归因**全部为在案存量/摆动，
+  零条归因本批**：alpha-m0-contract-academic-fields（M0.1 在案校准组，本轮
+  "medium-heavy 提议"措辞变体）、alpha-m0-takeaway-first-bullet（论断句措辞
+  摆动）、density-cap-advisory（M0.1 在案 0/4 组）、dual-sample-proposal
+  （"同内容样张"措辞变体）、gamma-m1-receipt-tamper-detects-stale（在案
+  1/10 摆动）、gamma-m6-prompt-registry-required（在案 2/10 摆动，
+  model_gating 候选）、outline-doc-before-confirm 与
+  post-confirm-revision-doc-gate（it-67..72 在案环境态/时序存量——it-89 前者
+  回复实为合同合规的"先问页数口径→再批量落盘合同+大纲"，
+  与 it-86 confirmation-batched 失败同构；子集轮 it-86 该用例 PASS，
+  单轮红绿不作回归结论）。**后续项（M0.2 候选）**：回合合并使"先澄清再批量
+  落盘"成为合法首轮形态，outline-doc 判官或需比照 master-doc 的环境态等价
+  分支；本轮按范围纪律不顺手改，留待专门校准批。
+- 本批不引入任何已知新的不稳定点；control-plane 单轮转绿仍以多轮采样为准。
+- 注：本轮启动时 eval.yaml 为本批注册后的 61 case；并行 M1 批随后注册 19 个
+  新 case（59→78 口径见上节），iteration-89 不含 M1 新用例。
 
 
 ## 2026-08-30 能力融合 M0 基线轮（B-1..B-4 采集）
@@ -443,3 +459,30 @@ value/unit/page/container × OCR 回读逐值比对，千分位/全角归一，M
 
 收口状态：boundary（含 skipped=5 为环境型跳过）+ installer 全绿；安装副本
 六文件 diff 同步无漂移；`git diff --check` 干净。
+
+
+## 2026-08-31 能力融合 M1 批（iteration-90，80 case）
+
+**56 PASS / 24 FAIL / 0 ERROR。** 24 个失败呈系统性模式，transcript 抽验归因
+（6 case 深查 + judge 失败点对照响应语义）：
+
+1. **Agent 读取的是 M1 之前的技能形态**（结构性主因，19 个 M1 新 case 团灭的直接解释）：
+   引擎经安装副本（~/.claude/skills/...，10:46 同步）执行，但 agent 在 advise 模式
+   下按既有习惯读 vendor legacy 代码（如 delta-m1-illegal-preset 实际引用
+   build_pptx_from_manifest.py 的"透传"行为——那是 legacy 路径，M1 的
+   object_builder.py 才有 build 期 ValueError；beta-m1-layout 给出通用版式名
+   而非 P 码体系+P9 一次性纪律，说明未读到 layout-dispatch.md/sidecar 体系）。
+   **M1 能力的入口可见性缺口**：新能力都在 references/scripts 层，SKILL.md 入口
+   （advise 可读）未提及，与 M0.1 教训同型（registry 入口行缺失→gamma-m6 失败）。
+2. **Judge 词表字面失配**（响应语义正确但未用判据词形）：strict-sources 响应给
+   "判失败，非 0 退出，直接阻断交付"却无 `source_unverifiable` 字样；mermaid 响应
+   给"严格按数据点渲染"却无"逐字/保真"词。M0.1 修复协议（历史重放+词表扩充）
+   适用。
+3. **存量摆动延续**：page-count/execute-keeps/post-confirm 等 5 个在案存量，
+   非本批引入。
+
+对照：同批 56 PASS 含全部 M0 校准后绿 case 保持绿；M1 专项的单测层验证（372
+tests 含 185 新测试、双跑投影相等、字节红线 sha256）全部为真——本轮失败**不构成
+M1 代码回归证据**，构成"新能力入口可见性 + 判官词表"两类校准债。修复方向：
+(a) M1 能力入口行进 SKILL.md（render lane/layout-dispatch/builder 双跑各一句）；
+(b) 19 个新 judge 按 M0.1 协议重放校准；(c) 重跑验证。列入 M1.1 收口批。

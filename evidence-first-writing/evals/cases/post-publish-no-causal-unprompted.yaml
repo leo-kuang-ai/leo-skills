@@ -17,5 +17,5 @@ constraints:
 
 judge:
   type: script
-  script_path: evals/scripts/check-post-publish-boundary.sh
+  script_path: evals/scripts/postpublish_judge.py
   timeout_seconds: 10

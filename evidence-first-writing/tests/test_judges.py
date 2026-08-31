@@ -37,6 +37,33 @@ CASES = [
     # known-issues 记录的自发合同词汇缺口样本（四轮稳定 FAIL 的其中一轮）
     ("check-post-publish-boundary.sh", "postpublish__it54_unprompted_vocabulary_gap.md", 1),
     ("check-post-publish-boundary.sh", "postpublish__syn_overclaim.md", 1),
+    # 2026-08-31 对抗样本（双分支结构化解析）：canonical 块内 promoted 裸值
+    # 无复现条件——旧 presence 判官实测放行（exit 0），结构化分支必须拒绝
+    ("check-post-publish-boundary.sh", "postpublish__adv_promoted_bare.md", 1),
+    # 2026-08-31 对抗样本：fenced yaml 块四字段全缺，靠正文零散 substring
+    # 命中拼凑——零静默通过守卫必须拒绝（不允许降级回同义词分支）
+    ("check-post-publish-boundary.sh", "postpublish__adv_fields_missing.md", 1),
+    # 2026-08-31 修复轮对抗样本（scr-20260831-164237）：去围栏裸 promoted——
+    # 围栏表面形态绕过 canonical 分支时，与围栏无关的 promoted 门必须拒绝
+    ("check-post-publish-boundary.sh", "postpublish__adv_nofence_promoted.md", 1),
+    # 2026-08-31 修复轮对抗样本：双 yaml 块（合规块在前 + 裸 promoted 块在后）
+    # ——逐块校验必须拒绝次优块的越权 promoted（多块旁路）
+    ("check-post-publish-boundary.sh", "postpublish__adv_dual_block_promoted.md", 1),
+    # 2026-08-31 终修轮对抗样本（scr-20260831-164237 第二轮）：粗体键名 + 全角
+    # 冒号的 promoted 决策——键名书写变体不得绕过与围栏无关的 promoted 门
+    ("check-post-publish-boundary.sh", "postpublish__adv_bold_key_promoted.md", 1),
+    # 2026-08-31 终修轮对抗样本：三条件以『复现计划 / 排期下月』未来时态书写
+    # ——计划态条件不计入升格条件（语境脱钩收口）
+    ("check-post-publish-boundary.sh", "postpublish__adv_future_planned_conditions.md", 1),
+    # 2026-08-31 终修轮对抗样本：本篇 replications: 1 与他段历史 replications: 3
+    # 并存——三条件只从决策同段提取，不得跨段取 max 收割
+    ("check-post-publish-boundary.sh", "postpublish__adv_max_harvest_cross_para.md", 1),
+    # 2026-08-31 终修轮误拒方向回归锁：合规 none 块 + 更早段落引用上轮
+    # status: promoted 历史——只武装最后一次决策标记，历史引用不再拖死本次决策
+    ("check-post-publish-boundary.sh", "postpublish__syn_none_with_history_ref.md", 0),
+    # 2026-08-31 终修轮误拒方向回归锁：markdown 列表内嵌两格缩进围栏的合规
+    # 四字段块——公共缩进剥离后与顶格块解析等价，不得零合同字段误拒
+    ("check-post-publish-boundary.sh", "postpublish__indented_canonical_pass.md", 0),
     # check-dev-edit-first.sh
     ("check-dev-edit-first.sh", "devedit__syn_pass.md", 0),
     ("check-dev-edit-first.sh", "devedit__syn_style_first.md", 1),

@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-"""Compare mechanically extractable factual invariants across two text files."""
+"""Compare mechanically extractable factual invariants across two text files.
+
+stdout 首行输出 ``invariant_hash: before=<sha256> after=<sha256>``（before/after
+文件内容的 SHA-256，任一端字节变化即改变哈希；供 post-publish ledger 做
+auto-stale 绑定），其后输出 JSON 对比报告。
+"""
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from collections import Counter
@@ -78,6 +84,11 @@ def main() -> int:
     before_text = args.before.read_text(encoding="utf-8")
     after_text = args.after.read_text(encoding="utf-8")
     result = compare(before_text, after_text)
+    # 内容哈希按原始字节计算（比较文本仍按 utf-8 解码，行为不变），
+    # 保证换行符等字节级变化也能被 auto-stale 消费方察觉。
+    before_hash = hashlib.sha256(args.before.read_bytes()).hexdigest()
+    after_hash = hashlib.sha256(args.after.read_bytes()).hexdigest()
+    print(f"invariant_hash: before={before_hash} after={after_hash}")
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 1 if args.fail_on_change and result["status"] == "changed" else 0
 

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
+# post-publish 判官本地包装入口。2026-08-31 修复轮（scr-20260831-164237）起
+# eval case YAML 的 judge.script_path 直接指向 postpublish_judge.py——skill-up
+# 引擎按单文件上传契约执行判官（仅上传 script_path 指向的单个文件），本包装
+# 不再作为引擎入口，仅供本地与单测调用。
+# 双分支结构化解析（canonical fenced YAML 块逐字段枚举校验 / 自然语言同义词
+# 判定）由 postpublish_judge.py 承载，本入口仅透传 EVAL_FINAL_MESSAGE（未设置
+# 时由 python 侧读 stdin）。退出码：0 接受，1 拒绝。
 set -euo pipefail
 
-output=${EVAL_FINAL_MESSAGE:-}
-
-[[ "$output" == *"observation"* || "$output" == *"观察"* ]] || { echo "缺少 observation" >&2; exit 1; }
-[[ "$output" == *"hypothesis"* || "$output" == *"假设"* ]] || { echo "缺少 hypothesis" >&2; exit 1; }
-[[ "$output" == *"曝光量"* || "$output" == *"曝光"* ]] || { echo "未披露曝光量缺口" >&2; exit 1; }
-open_rate_re='(打开率|open-rate)[^。]{0,20}(无法|不能|不可|未验证|推不出|算不出|not_available)|(无法|不能|不可|推不出|算不出|缺)[^。]{0,12}(打开率|open-rate)|open-rate status|打开率状态|not_available'
-[[ "$output" =~ $open_rate_re ]] || { echo "未处理打开率状态" >&2; exit 1; }
-[[ "$output" == *"stable_rule_update"* || "$output" == *"稳定规则"* ]] || { echo "缺少稳定规则决策" >&2; exit 1; }
-[[ "$output" == *"persistence"* || "$output" == *"不写入"* || "$output" == *"不写档"* ]] || { echo "缺少持久化状态" >&2; exit 1; }
-[[ "$output" != *"已证明该句式有效"* && "$output" != *"因此我们确定"* && "$output" != *"标题公式有效"* && "$output" != *"该公式有效"* && "$output" != *"证明了因果"* && "$output" != *"已被验证"* && "$output" != *"已被证明"* && "$output" != *"已验证"* && "$output" != *"确定有效"* ]] || { echo "错误升级为因果规则" >&2; exit 1; }
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$script_dir/postpublish_judge.py"

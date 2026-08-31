@@ -6,7 +6,8 @@
 - 供 audit/humanize 在中文文体诊断时优先运行，与 ``check_factual_invariants.py``
   （改写后事实回归）互补：本脚本只管"像不像模板"，不管"事实对不对"。
 - 检测分两级：失败级 FAIL（硬停词、绝对黑话、模型路标、字面翻案腔、提示性
-  冒号与破折号）与警告级 WARN（需结合语境判断的形状与统计信号）。
+  冒号与破折号）与警告级 WARN（需结合语境判断的形状与统计信号，含过程叙述
+  核验声明与比喻场聚集）。
 - 每条线索一行，格式：``级别 | 类别 | 位置 | 命中片段 | 建议动作``；级别为
   FAIL/WARN，位置为 ``L<行号>`` 或 ``全文``。输出是诊断线索，非交付门禁；
   作者样本与渠道优先原则可覆盖破折号、冒号等风格类建议。
@@ -18,8 +19,13 @@
   ``python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_prose.py" <file.md>``；
   也支持 ``-`` 从标准输入读取。脚本自身不依赖机器特定绝对路径。
 
-词表、正则、阈值与全部豁免规则自上游原样保留（冒号后接直接引语降级为警告、
-语境词与硬黑话重叠不重复计、语义翻案与字面翻案重叠去重等），未做增删。
+词表、正则、阈值与上游豁免规则原样保留（冒号后接直接引语降级为警告、语境词
+与硬黑话重叠不重复计、语义翻案与字面翻案重叠去重等）。两处本地增量：
+一是借喻场的字面前缀排除表 ``METAPHOR_LITERAL_PREFIX``，移植自 shuorenhua
+``automation/eval/hard_metrics.py``（MIT，快照 2026-08-31），消除「搜索引擎、
+代码仓库」等技术名词的字面用法误报；二是过程叙述警告级检测——核验声明句
+（如「我核对了来源，确认无误」「经过多方查证」）出现在正文时报线索，fenced
+状态块（如 ```yaml）已被屏蔽，天然豁免。
 """
 
 from __future__ import annotations
@@ -220,6 +226,30 @@ METAPHOR_FIELDS = {
     "海洋航行": ("蓝海", "浪潮", "潮水", "航船", "灯塔", "彼岸"),
 }
 
+# 借喻词的字面用法排除：词前紧邻这些前缀时是技术术语或本义（搜索引擎、代码
+# 仓库、商品库存），不算借喻命中。移植自 shuorenhua ``automation/eval/
+# hard_metrics.py`` 的 METAPHOR_LITERAL_PREFIX（MIT，快照 2026-08-31）；其中
+# 「阵地」「风口」「打法」不在本脚本 METAPHOR_FIELDS 内，按上游快照原样保留，
+# 词表扩容后自动生效。误伤防护优先：宁可漏报不可误杀。
+METAPHOR_LITERAL_PREFIX = {
+    "引擎": ("搜索", "渲染", "游戏", "物理", "推荐", "规则", "模板", "查询", "存储"),
+    "发动机": ("汽车", "飞机", "柴油", "航空"),
+    "仓库": ("代码", "git", "Git", "远程", "本地", "私有", "镜像"),
+    "库存": ("商品", "实际", "系统", "剩余"),
+    "阵地": ("前沿",),
+    "风口": ("出", "通", "进"),
+    "打法": ("战术",),
+}
+
+# 过程叙述：把核验动作本身写进正文（「我核对了来源，确认无误」「经过多方查证」）
+# 是模型自查话术的形状；核验过程应写入状态块或脚注，正文直接给结论与证据。
+# fenced 状态块（如 ```yaml）已被 mask_non_prose 屏蔽，天然不触发。
+PROCESS_NARRATION_PATTERNS = (
+    re.compile(r"(?:我|我们|笔者)(?:已经|先后|逐一|逐条|再次|多次)?(?:核对|查证|核实|验证|比对|复核)(?:了|过)"),
+    re.compile(r"经(?:过)?(?:多方|反复|多次|仔细|逐一|再次|交叉)?(?:查证|核实|核对|验证|比对)"),
+    re.compile(r"(?:核对|查证|核实|验证|比对)了?[^。！？\n]{0,16}确认无误"),
+)
+
 
 @dataclass
 class Paragraph:
@@ -376,6 +406,11 @@ def metaphor_cluster(text: str, distance: int = 800):
     for field, words in METAPHOR_FIELDS.items():
         for word in words:
             for match in re.finditer(re.escape(word), text):
+                # 字面用法（搜索引擎、代码仓库）先排除，不算借喻命中。
+                prefixes = METAPHOR_LITERAL_PREFIX.get(word, ())
+                head = text[max(0, match.start() - 4) : match.start()]
+                if any(head.endswith(prefix) for prefix in prefixes):
+                    continue
                 hits.append((match.start(), field, word))
     hits.sort()
     for index, (start, _, _) in enumerate(hits):
@@ -554,6 +589,28 @@ def main() -> int:
                 match.start(),
                 match.group(),
                 "先立误解再推翻就改成正面陈述，正常用法保留",
+            )
+        )
+
+    # 过程叙述检测：同一处声明可能同时命中首人称与「确认无误」两个形状，重叠去重。
+    narration_spans = []
+    process_narrations = []
+    for match in all_matches(prose, PROCESS_NARRATION_PATTERNS):
+        if any(
+            match.start() < end and match.end() > start
+            for start, end in narration_spans
+        ):
+            continue
+        process_narrations.append(match)
+        narration_spans.append(match.span())
+    for match in process_narrations[:4]:
+        findings.append(
+            Finding(
+                "WARN",
+                "process-narration 过程叙述",
+                match.start(),
+                match.group(),
+                "核验过程移到状态块或脚注，正文直接给结论和证据",
             )
         )
 
@@ -748,7 +805,8 @@ def main() -> int:
         f"黑话 {len(jargon_matches)}，硬停词 {len(stop_matches)}，"
         f"模型路标 {len(road_signs)}，需辨语境词 {len(context_jargon_matches)}，"
         f"抒情词 {len(lyric_matches)}，洞察路标 {len(marker_matches)}，"
-        f"长前置成分 {len(left_branches)}，重定语句 {len(dense_de)}"
+        f"长前置成分 {len(left_branches)}，重定语句 {len(dense_de)}，"
+        f"过程叙述 {len(process_narrations)}"
     )
     print("# 退出码：0=干净，1=存在失败级，2=仅警告级，3=输入或参数错误。")
     print("# 以上为诊断线索，非交付门禁；警告级线索需结合语境判断，作者样本与渠道惯例可覆盖风格类建议。")

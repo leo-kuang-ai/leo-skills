@@ -88,6 +88,50 @@ class CheckProseTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("WARN | metaphor-cluster", result.stdout)
 
+    def test_technical_terms_do_not_trigger_metaphor_cluster(self) -> None:
+        # 代码仓库 / 搜索引擎 / 商品库存 是技术名词的字面用法，不是借喻。
+        result = self.run_checker(
+            "我们把代码仓库迁移到了新的搜索引擎上，商品库存同步更新，这条赛道还没到终点。"
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("metaphor-cluster", result.stdout)
+
+    def test_genuine_metaphors_still_trigger_cluster(self) -> None:
+        # 反向保护：真实比喻句（无字面前缀）不得被排除表吞掉。
+        result = self.run_checker(
+            "他的心像被雨淋透的纸，行业的引擎熄了火，租金还在涨，潮水退去后只剩废墟。"
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("WARN | metaphor-cluster", result.stdout)
+
+    def test_verification_claim_in_body_reported_as_warning(self) -> None:
+        result = self.run_checker("我核对了来源，确认无误，这家公司确实存在。")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("WARN | process-narration", result.stdout)
+        self.assertNotIn("FAIL", result.stdout)
+
+    def test_multisource_checking_claim_reported_as_warning(self) -> None:
+        result = self.run_checker("经过多方查证，数据与原始报告一致。")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("WARN | process-narration", result.stdout)
+
+    def test_repeated_verification_claim_reported_as_warning(self) -> None:
+        result = self.run_checker("我们多次核对了来源，两处数据一致。")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("WARN | process-narration", result.stdout)
+
+    def test_verification_claim_inside_yaml_status_block_not_flagged(self) -> None:
+        result = self.run_checker(
+            "正文只是陈述事实，李敏在杭州见了张伟。\n\n"
+            "```yaml\n"
+            "verified: 我核对了来源，确认无误\n"
+            "checks: 经过多方查证\n"
+            "```\n"
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("process-narration", result.stdout)
+        self.assertIn("未发现这份检查器覆盖的问题", result.stdout)
+
     def test_two_item_parallel_not_flagged(self) -> None:
         result = self.run_checker("我们建立了流程，我们建立了规范。")
         self.assertEqual(result.returncode, 0)

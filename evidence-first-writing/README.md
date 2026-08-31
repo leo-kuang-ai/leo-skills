@@ -6,7 +6,7 @@
 
 - **Claude Code**（推荐）：本地运行 `claude` CLI。
 - **Codex / OpenAI 格式**：额外提供 `agents/openai.yaml` 代理定义。
-- 无需安装额外包；`scripts/` 里的 Python 脚本只需标准库。
+- 无需安装额外包；`scripts/` 里的 Python 脚本只需标准库。例外：`scripts/storm_research.py` 为可选执行器，需另装 `knowledge-storm`（未安装时输出降级指引并以退出码 3 结束，不影响其余工作流）。
 
 ## 安装
 
@@ -38,7 +38,21 @@ cp -R /tmp/leo-skills/evidence-first-writing ~/.claude/skills/
 rm -rf /tmp/leo-skills
 ```
 
-### 方式三：作为参考资料使用
+### 方式三：宿主对话框粘贴安装指引
+
+宿主没有命令行入口或插件市场时，把这段指引整段复制进对话框即可（多技能版本与各宿主路径表见[仓库根 README](../README.md#安装与使用)）：
+
+```text
+帮我安装技能仓库 https://github.com/leo-kuang-ai/leo-skills：
+1. 确定你所在宿主的技能目录（Claude Code 为 ~/.claude/skills，Codex 为 ~/.codex/skills，
+   Cursor 为 ~/.cursor/skills，其余宿主用通用 ~/.agents/skills；不确定时选 ~/.agents/skills）；
+2. git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git <技能目录>/leo-skills，
+   已存在则改为 git -C <技能目录>/leo-skills pull 更新；
+3. 将其中的 evidence-first-writing 目录软链到技能目录（Windows 无 symlink 权限时改用复制）；
+4. 列出技能目录确认就位，并提醒我重启宿主后生效。
+```
+
+### 方式四：作为参考资料使用
 
 即使 runtime 不支持自动加载，也可以直接打开本技能的 `SKILL.md`，把内容粘贴进对话。
 
@@ -109,10 +123,10 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 
 **降级契约（宿主差异不破坏交付）：**
 
-- 流程逻辑是 markdown 指令，随宿主执行；只有 `scripts/check_factual_invariants.py` 依赖文件系统 + python +
-  `$EVIDENCE_FIRST_WRITING_SKILL_DIR`。
-- 宿主无法确定已加载 Skill 路径时，`SKILL.md` 要求记录 `factual_invariant_check: not_run` 并说明原因，再人工核对
-  语义；**不得在用户项目里猜测 `scripts/` 路径**。
+- 流程逻辑是 markdown 指令，随宿主执行；只有 `scripts/check_factual_invariants.py` 与
+  `scripts/check_prose.py` 依赖文件系统 + python + `$EVIDENCE_FIRST_WRITING_SKILL_DIR`。
+- 宿主无法确定已加载 Skill 路径时，`SKILL.md` 要求记录 `factual_invariant_check: not_run`
+  并说明原因，再人工核对语义；**不得在用户项目里猜测 `scripts/` 路径**。
 - `post-publish` 持久写入需用户授权 + 目标路径；否则 `persistence: not_run`，只登记为观察/假设。
 - 声音档案、`soul.md`、渠道档案按宿主可用性读取；读不到时按「无档案」降级，只用临时语域，不声称学会个人声音。
 
@@ -141,8 +155,11 @@ Codex 宿主同样读取 `references/` 各流程契约；脚本/环境变量不�
 | `references/tool-selection.md` | 可选写作/Humanizer 工具选择 |
 | `references/personal-context.md` / `portable-prompt.md` | 个人说明书 / 可移植提示词 |
 | `scripts/check_factual_invariants.py` | 改写前后的事实不变量校验（需设置 `EVIDENCE_FIRST_WRITING_SKILL_DIR`） |
-| `tests/test_factual_invariants.py` | 包级单元测试 |
-| `evals/eval.yaml` + `evals/cases/` | `skill-up` 评测配置与用例 |
+| `scripts/check_prose.py` | 中文模板味确定性检查（vendored 自 human-writing，MIT）：只报线索不改文，FAIL/WARN 两级，供 audit/humanize 优先运行 |
+| `scripts/storm_research.py` | STORM 多视角研究可选执行器（deep 档 research 增强；未装 `knowledge-storm` 时优雅降级退出码 3） |
+| `references/source-analysis.md` | 来源分析纪律与 STORM 研究的执行说明 |
+| `tests/`（4 个测试文件） | 包级单元测试：事实不变量 / `check_prose` / STORM 桥 / 判官重放矩阵 |
+| `evals/eval.yaml` + `evals/cases/`（33 例） | `skill-up` 评测配置与用例 |
 | `evals/known-issues.md` | 已知问题与待复验清单 |
 
 ## 测试与评测
@@ -155,6 +172,8 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 skill-up validate evals/eval.yaml
 skill-up run evals/eval.yaml --engine claude_code
 ```
+
+评测套件当前 33 个用例，最新全量回归口径与在案已知项见 `evals/known-issues.md`。
 
 评测工作区（`evidence-first-writing-workspace/`）在 `.gitignore` 中，不提交。
 

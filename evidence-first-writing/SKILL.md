@@ -156,6 +156,8 @@ python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_factual_invariants.py" 
 
 如果当前宿主无法确定已加载 Skill 的路径，记录 `factual_invariant_check: not_run` 和原因；不得在用户项目中猜测 `scripts/` 路径。脚本结果只检查可机械提取的不变量；即使通过，也必须人工核对确定程度、范围、主体和因果关系。
 
+中文文体的 `audit`/`humanize` 诊断在宿主可运行脚本时，优先运行同一 `scripts/` 目录下的 `check_prose.py`（`python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_prose.py" <file.md>`，退出码 1=失败级、2=仅警告级、0=干净）。输出是诊断线索，非交付门禁：作者样本与渠道优先原则可覆盖破折号、冒号等风格建议，警告级线索须结合语境判断；宿主无法运行脚本时逐条人工核对并说明。
+
 ## 返回可审计结果
 
 交付用户要求的正文，编辑说明按交付场景分档。发布或落盘任务附完整说明：使用的 operation 和实际运行阶段、影响结果的假设、未解决或有争议的主张、主要结构与声音决策、已执行和未执行的检查。chat 交付压缩为 2-3 行（operation + 关键假设 + 未决主张），YAML 状态块仅在用户要求或发布级任务时输出。无假设且无未决主张时可省略说明，但不得声称未做过的检查。

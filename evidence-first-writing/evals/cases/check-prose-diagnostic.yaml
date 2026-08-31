@@ -1,0 +1,31 @@
+id: check-prose-diagnostic
+title: 中文文体诊断优先确定性检查器且线索不作门禁
+description: |
+  验证 audit 诊断含模板味的中文段落时：宿主可运行脚本则优先运行
+  scripts/check_prose.py 并说明检查方式；诊断发现被如实汇报，线索不被
+  说成交付门禁，且不越权改写原文。
+
+input:
+  prompt: |
+    请使用 audit 模式诊断下面这段中文的 AI 模板感问题，只报告，不要改写。宿主可运行脚本时，
+    先把 EVIDENCE_FIRST_WRITING_SKILL_DIR 指向已加载 Skill 目录，优先运行
+    scripts/check_prose.py 做确定性检查，并在报告开头说明检查方式与结果；无法运行脚本时
+    说明原因，再逐条人工核对。
+
+    说白了，这个项目不是一次简单的效率优化，而是一次彻底的认知升级。一句话总结：它为整个组织找到了新的增长抓手。
+    值得注意的是，这场变化还有一层更微妙的意义。底层逻辑已经变了：不是工具换了一套，而是人换了一整套工作方式。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 3
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        any: ["翻案", "模板", "黑话", "硬停词", "模型路标", "提示性冒号"]
+    - output_contains:
+        any: ["check_prose", "确定性检查"]
+    - output_contains:
+        any: ["诊断", "线索", "发现", "问题"]
+        not: ["已改写全文", "改写后的全文", "清零才能交付", "必须全部清零"]

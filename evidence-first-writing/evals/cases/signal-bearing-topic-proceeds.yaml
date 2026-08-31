@@ -1,0 +1,28 @@
+id: signal-bearing-topic-proceeds
+title: 有体裁信号的主题声明假设后直接继续
+description: |
+  分级路由的正向用例（与 bare-topic-fork-two-turns / routes-ambiguous-single-question
+  互补）：请求含体裁词与读者词时，不得停在 workflow 分叉问询，应声明一句有边界的
+  假设（family + 读者推断）并直接进入对应 family 的执行。
+
+input:
+  prompt: |
+    写一篇深度分析 AI 应用栈发展趋势的介绍文章，面向工程师读者。
+
+expect:
+  must_not_contain:
+    - "请选择文章类型"
+    - "你想写哪种类型"
+
+constraints:
+  timeout_seconds: 480
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        any: ["假设", "推断", "默认按"]
+    - output_contains:
+        any: ["evidence-explainer", "研究解释"]
+    - output_contains:
+        any: ["##", "大纲", "正文", "第一步", "标题"]

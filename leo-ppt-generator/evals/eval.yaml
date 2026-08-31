@@ -36,6 +36,59 @@ cases:
     - evals/cases/fixed-fixture-consistency.yaml
     - evals/cases/cross-ref-page-exists.yaml
     - evals/cases/dual-judge-rubric.yaml
+    # 模版推荐与选择（docs/plans/2026-08-28-001）：信号驱动推荐、四式指定、
+    # 错配劝阻一次、样张双生提议制。
+    - evals/cases/recommend-with-default.yaml
+    - evals/cases/user-picks-style.yaml
+    - evals/cases/style-from-reference-image.yaml
+    - evals/cases/mismatch-warning-once.yaml
+    - evals/cases/dual-sample-proposal.yaml
+    # 多行业批次 1（docs/leo-ppt-generator-multi-industry-optimization-tech-plan.md）：
+    # 行业 content_rules、数字登记表、data_classification/PHI/国家秘密门。
+    - evals/cases/industry-content-rules-enforced.yaml
+    - evals/cases/gov-ranking-compliance.yaml
+    - evals/cases/number-metadata-contract.yaml
+    - evals/cases/stat-chart-gating.yaml
+    - evals/cases/data-classification-gate.yaml
+    - evals/cases/state-secret-rejected.yaml
+    - evals/cases/phi-asset-blocked.yaml
+    - evals/cases/finance-private-placement.yaml
+    # 批次 2（技术方案 v2）：品牌 VI 注入与母版合同校验。
+    - evals/cases/brand-priority-qa.yaml
+    - evals/cases/master-contract-gate.yaml
+    # 内容确认文档门（docs/plans/2026-08-29-002）：大纲/母版确认前必须落盘为
+    # content/ 版本化文档并在聊天引用路径；修订回路、确认后修订、中断恢复与
+    # advise 边界（多轮测评 docs/leo-ppt-generator-eval-docgates-0829.md）。
+    - evals/cases/outline-doc-before-confirm.yaml
+    - evals/cases/master-doc-before-confirm.yaml
+    - evals/cases/outline-revision-doc-gate.yaml
+    - evals/cases/post-confirm-revision-doc-gate.yaml
+    - evals/cases/resume-from-content-docs.yaml
+    - evals/cases/advise-mode-no-content-docs.yaml
+    # 风格系统优化计划 U10（docs/plans/2026-08-29-001）：护栏注入可见性、
+    # 断言标题判据（条件化）、密度档位与字数上限。
+    - evals/cases/style-render-guardrail-visible.yaml
+    - evals/cases/assertion-headline-advisory.yaml
+    - evals/cases/density-cap-advisory.yaml
+    # 页数契约（docs/plans/2026-08-29-003）：口径询问、明确总数字面执行、
+    # 去尾页收束并入、极小页数卡片处理。
+    - evals/cases/page-count-ambiguous-asks.yaml
+    - evals/cases/page-count-explicit-total.yaml
+    - evals/cases/page-count-no-closing.yaml
+    - evals/cases/page-count-tiny-deck.yaml
+    # 能力融合 M0 批（docs/plans/2026-08-30-001）：α 内容合同（论断式要点、
+    # 图证据行、学术合同三字段）+ β 风格版式（样张结构页点头、风格反演三组、
+    # 学术五拍）+ γ 质量闭环（指纹收据门、篡改检测、波及推断、prompt 记账）。
+    - evals/cases/alpha-m0-takeaway-first-bullet.yaml
+    - evals/cases/alpha-m0-figure-evidence-row.yaml
+    - evals/cases/alpha-m0-contract-academic-fields.yaml
+    - evals/cases/beta-m7-sample-upgrade-structure-page-needs-nod.yaml
+    - evals/cases/beta-m7-style-inversion-three-groups.yaml
+    - evals/cases/beta-m6-academic-five-modes.yaml
+    - evals/cases/gamma-m1-delivery-receipt-gate.yaml
+    - evals/cases/gamma-m1-receipt-tamper-detects-stale.yaml
+    - evals/cases/gamma-m1-impact-inference-page-vs-deck.yaml
+    - evals/cases/gamma-m6-prompt-registry-required.yaml
   defaults:
     timeout_seconds: 300
     max_turns: 4

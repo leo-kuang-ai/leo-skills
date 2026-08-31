@@ -1,0 +1,17 @@
+id: style-from-reference-image
+title: 参考图跳过推荐并经样张并排比对验证
+description: 验证用户给风格参考图时跳过推荐、只提取视觉系统、复用样张并排比对"像不像"，不提取业务内容。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。选视觉风格阶段，我发了一张参考图
+    （一张深蓝底金色点缀的杂志风页面），就照这张图的感觉做。
+    流程上接下来怎么走？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_from_image.py
+  timeout_seconds: 10

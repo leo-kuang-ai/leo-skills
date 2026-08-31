@@ -1,0 +1,19 @@
+id: assertion-headline-advisory
+title: 金字塔模式话题词标题判不合格并给出断言改写方向
+description: 验证标题形态按论证模式条件化（visual-qa「标题形态断言」判据行 + 06_论证模式/结论先行金字塔.md 模式判据）：advise 模式下「市场分析」式话题词标题应被指出须为完整句断言，并给改写方向。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下帮我审这页：
+    - 论证模式：结论先行金字塔
+    - 标题：市场分析
+    - 要点：三大平台份额变化；用户画像迁移；竞品定价调整
+    这样安排可以吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_assertion_headline.py
+  timeout_seconds: 10

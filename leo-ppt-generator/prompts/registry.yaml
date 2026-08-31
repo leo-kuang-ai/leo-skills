@@ -1,0 +1,74 @@
+# 提示词进化记账（prompt evolution registry，gamma M0 / E6）
+# 结构思想改编自 OpenCanvas PROMPTS_REGISTRY（MIT），据用户线下授权。
+#
+# 纪律：
+# - 任何 prompts/*.md 的实质变更必须在同一 commit 追加条目（change: added|updated|removed）。
+# - scripts/lint_style_governance.py 校验：prompts/ 下每个 .md 文件在本表至少有
+#   一条 file 引用，缺条目 FAIL；条目指向不存在的文件仅 WARN（陈旧记账不阻断）。
+# - M0 播种：slide-worker.md 的 C1 四件套 + E4 容错协议行（α-M0 变更，要点抄自
+#   团队α设计 §3.5）；page-worker.md 以 baseline 条目入册（M0 无变更，满足全覆盖检查）。
+schema_version: 1
+entries:
+  - id: prompt-0001
+    date: "2026-08-30"
+    name: slide-worker-deck-style-lock
+    file: prompts/slide-worker.md
+    improvement: 样张确认后从已确认风格 brief 与样张方法派生 compact 跨页常量锁（外层壳：纸色/背景、页码位置与形态、标题处理与光学字号档、网格/角标、人物政策、表情档），存入 slides.json deck 级 style_lock 字段；worker 每页 prompt 逐字复用，只允许中央语义图区随内容变化
+    dimension: cross-page-style-consistency
+    change: updated
+    lesson: 样张方法继承（"style matches the approved sample slide"）只是一句话，无逐字复用的锁文本时跨页风格仍会漂移；style lock 是样张方法的文本化展开
+    related_eval: dual-sample-proposal
+  - id: prompt-0002
+    date: "2026-08-30"
+    name: slide-worker-page-role-lock
+    file: prompts/slide-worker.md
+    improvement: 每页声明页面角色（开场/正文/收束，对齐 13_页面语义）；正文页标题与其他正文页光学同尺寸，"短标题不放大"显式写入自查清单与 visual-qa 判据表，仅封面允许放大标题
+    dimension: typography-hierarchy
+    change: updated
+    lesson: 图像模型会把短标题自动放大以"填满"版面；光学同尺寸必须作为显式禁令写进 worker 自查，否则逐页字号档漂移不可检
+    related_eval: fixed-fixture-consistency
+  - id: prompt-0003
+    date: "2026-08-30"
+    name: slide-worker-required-text-whitelist
+    file: prompts/slide-worker.md
+    improvement: 母版定稿时为每页生成 required_text[] 白名单（该页允许出现的全部内容性可见文字，含标题/要点/标签/图注/固定件文案）进 slides.json；worker 自查"白名单逐字出现、白名单外的内容性文字＝发明→失败"（装饰性纹理字不计）
+    dimension: visual-text-fidelity
+    change: updated
+    lesson: 图像模型对长清单服从度差时，白名单短于全量文本更稳；白名单是页级唯一文字真值投影，也是像素 QA/OCR 断言的对照基准
+    related_eval: assertion-headline-advisory
+  - id: prompt-0004
+    date: "2026-08-30"
+    name: slide-worker-avoid-and-consistency-selfcheck
+    file: prompts/slide-worker.md
+    improvement: 每页 prompt 尾部带 Avoid 清单（从风格 brief 禁止清单＋通用禁令派生：水印/假 logo/多余页码/英文填充/伪标签/占位文本）；worker 生成前跑 Multi-Page Consistency Pass 六问（页码位置一致？外层壳一致？正文标题光学同尺寸含短标题？画幅 16:9？语义版式而非随机变化？白名单短到可干净渲染？）
+    dimension: multi-page-consistency
+    change: updated
+    lesson: 生成前自检比生成后打回便宜一个数量级；Avoid 清单挂在风格 brief 上可随风格包同步演进，不散落在 worker 文本里
+    related_eval: review-protocol-convergence
+  - id: prompt-0005
+    date: "2026-08-30"
+    name: slide-worker-retry-tier-protocol
+    file: prompts/slide-worker.md
+    improvement: 并入 E4 三层容错协议行：阶段分层重试每页 ≤3 次（prompt 准备/backend 执行/QA 三阶段独立计数、成功阶段跳过）；全册完成后清扫 ≤2 轮（只复位非 rendered 页）；已 rendered 页在重跑/恢复/清扫中无条件跳过
+    dimension: worker-fault-tolerance
+    change: updated
+    lesson: 复位已 rendered 页会导致重复计费与风格漂移；分层计数让"QA 没过"不重付"backend 已成功"的成本
+    related_eval: null
+  - id: prompt-0006
+    date: "2026-08-30"
+    name: page-worker-baseline-registration
+    file: prompts/page-worker.md
+    improvement: 基线登记（M0 无变更）——page-worker.md 现状入册，满足"每个 prompts/*.md 至少一条 registry 引用"的治理检查；后续任何实质变更须另立条目
+    dimension: registry-coverage
+    change: none
+    lesson: 记账粒度＝文件级引用＋条目级变更描述；未变更文件以 baseline 条目占位，避免 lint 对健康状态误报
+    related_eval: null
+  - id: prompt-0007
+    date: "2026-08-31"
+    name: slide-worker-no-footer-date-stamp
+    file: prompts/slide-worker.md
+    improvement: 自查清单新增"页脚禁止日期戳"判据（页码形态跟随 deck style lock；页脚日期戳按发明性固定件文字判失败，排版再干净也失败）；同步把 footer date stamps 并入 Avoid 清单的通用禁令枚举
+    dimension: visual-text-fidelity
+    change: updated
+    lesson: 图像模型偏好在页脚补"生成日期"类固定件；仅靠 required_text 白名单兜底不够显式，需在自查与 Avoid 两处点名禁令
+    related_eval: null

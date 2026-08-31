@@ -10,6 +10,13 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 - `upgrade-full`：将既有 image-deck 全量升级为可编辑版本。
 - `upgrade-selected`：只升级指定页面，其余页面保留图片。
 
+## 风格库
+
+`references/styles/` 提供 137 个可加载风格 brief（11 个顶层内置 + 126 个子目录参考，
+覆盖通用母版 / 行业 / 场景 / 品牌等 14 类目录）与 146 份分节轴规范（论证模式、信息图、
+渲染、布局、品牌、图表、版式、页面语义），由 `scripts/` 下四条治理 lint
+（brief 结构 / 版式网格 / 索引防漂移 / 治理断言）保证索引、网格与风格路由不漂移。
+
 ## 使用方式
 
 安装后，在 Agent 对话中明确提交材料、目标受众、交付类型和验收要求。例如：
@@ -54,7 +61,22 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 配置状态短语对照：`configured_unverified / locally_configured` = 已配置，首次生成图片时
 顺带完成真实验证；`not_configured / invalid` = 尚未配置或无效，需运行 `leo-ppt config`。
 
-#### 方式三：作为参考资料使用
+#### 方式三：宿主对话框粘贴安装指引
+
+宿主没有命令行入口或插件市场时，把这段指引整段复制进对话框即可（多技能版本与各宿主路径表见[仓库根 README](../README.md#安装与使用)）：
+
+```text
+帮我安装技能仓库 https://github.com/leo-kuang-ai/leo-skills：
+1. 确定你所在宿主的技能目录（Claude Code 为 ~/.claude/skills，Codex 为 ~/.codex/skills，
+   Cursor 为 ~/.cursor/skills，其余宿主用通用 ~/.agents/skills；不确定时选 ~/.agents/skills）；
+2. git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git <技能目录>/leo-skills，
+   已存在则改为 git -C <技能目录>/leo-skills pull 更新；
+3. 将其中的 leo-ppt-generator 目录软链到技能目录（Windows 无 symlink 权限时改用复制），
+   安装后按本 README 安装节的配置说明完成首次配置；
+4. 列出技能目录确认就位，并提醒我重启宿主后生效。
+```
+
+#### 方式四：作为参考资料使用
 
 即使 runtime 不支持自动加载，也可以直接打开本技能的 `SKILL.md`，把内容粘贴进对话。
 
@@ -93,6 +115,18 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 结构验证不等于视觉等价；Provider、OCR、Office viewer、桌面 PowerPoint 和人工视觉验收
 分别报告。只有 `delivery_readiness=accepted` 才能声称交付闭环。
 
+质量闭环机制：
+
+- **交付收据**：`leo-ppt delivery receipt create|verify` 为成品生成五类 sha256 指纹收据；
+  readiness 增加收据门——无收据披露 `acceptance_pending`，收据过期 `blocked`。
+- **母版内容合同**：`scripts/check_master_contract.py` 校验逐页机读语法（v2，含学术图
+  证据行）；slide worker 执行 deck style lock / page role lock / Required text only
+  白名单与论断式第一条要点等 M0 内容合同。
+- **图像版本历史**：`leo-ppt upstream codex-ppt image generate --keep-versions`
+  把旧输出轮转为 `<stem>.v<N><ext>` 并登记 `image-history.jsonl`，`image set-active` 按版本回切。
+- **提示词进化记账**：`prompts/registry.yaml` 登记 worker 提示词变更，
+  `lint_style_governance.py` 强制"prompt 无条目即 FAIL"。
+
 详细规则见：
 
 - [输入路由](references/input-routing.md)
@@ -106,6 +140,22 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 
 安装器面向 macOS arm64/x86_64 与 Windows x64。实际图片 Provider、OCR、桌面 Office 和
 worker 能力取决于当前宿主现场；安装成功不代表这些外部能力已验证可用。
+
+## 测试与评测
+
+```sh
+# 风格库治理 lint（在技能目录内执行）
+python3 scripts/lint_style_briefs.py
+python3 scripts/lint_layout_grid.py
+python3 scripts/lint_style_index.py
+python3 scripts/lint_style_governance.py
+
+# 行为评测（需 skill-up CLI 与可用引擎；当前 59 个用例）
+skill-up validate evals/eval.yaml
+skill-up run evals/eval.yaml
+```
+
+评测工作区（`leo-ppt-generator-*-workspace/` 等）在 `.gitignore` 中，不提交。
 
 ## 许可证
 

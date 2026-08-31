@@ -1,0 +1,18 @@
+id: brand-priority-qa
+title: 用户 VI 优先于内置品牌预设且对比度护栏生效
+description: 验证 --brand 的解析优先序（LEO_PPT_HOME/brands 用户 VI > 内置 10_品牌身份）与浅底对比度护栏（不达标给建议色）。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我们公司有官方 VI（主色 #A200FF
+    紫色），已经在本地保存过品牌档案；另外库里也有个叫 accenture 的内置
+    品牌预设。用 --brand 注入时读哪个？如果品牌色在白底上对比度只有 3:1
+    会怎么样？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_brand_priority.py
+  timeout_seconds: 10

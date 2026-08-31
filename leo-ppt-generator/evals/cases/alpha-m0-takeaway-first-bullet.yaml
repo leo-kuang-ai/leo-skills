@@ -1,0 +1,18 @@
+id: alpha-m0-takeaway-first-bullet
+title: 内容页第一条要点须为论断句加证据跟随且功能页豁免
+description: 验证论断式大纲规则："算法背景/相关工作/性能数据"式纯名词短语要点不合格；内容页第一条要点必须是完整论断句（主谓宾齐备）+1-2 条证据跟随（带三级短标）；封面/目录/章节隔断/收束页豁免；TAKEAWAY-READTHROUGH 连读不成故事线打回母版。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下帮我看这套内容页要点：
+    - 第 3 页要点：1. 算法背景 2. 相关工作 3. 性能数据
+    - 第 7 页要点：1. 实验设置 2. 数据集 3. 评价指标
+    这样写合格吗？母版校验的连读检查会怎么看这套要点？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_takeaway_first_bullet.py
+  timeout_seconds: 10

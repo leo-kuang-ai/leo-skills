@@ -1,0 +1,16 @@
+id: dual-sample-proposal
+title: 纠结时提议样张双生且成本先告知点头才出
+description: 验证用户对两个候选犹豫时，提议各出一张同内容样张二选一（含多一张图片成本告知），点头才执行，落选即弃，计入既有样张确认。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。风格候选 A 麦肯锡咨询风和
+    B 暗黑科技风我实在拿不准，两个都想要的感觉。接下来怎么办？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_dual_sample.py
+  timeout_seconds: 10

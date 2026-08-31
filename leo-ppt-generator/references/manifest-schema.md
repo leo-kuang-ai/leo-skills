@@ -373,3 +373,30 @@ Purpose:
 - Page mapping.
 
 Notes are not handed to page workers, translated, summarized, or rewritten.
+
+## `deck_spec.style.style_inversion`（generate 路线，可选字段注记）
+
+generate（image-deck）路线的 `deck_spec.json` 在 `style` 对象下支持一个**可选**
+键 `style_inversion`：样张选定后、`deck_spec.style` 锁定前，agent 读回已选样张
+输出的风格反演三组判读（合同见 [`style-recommendation.md`](style-recommendation.md)
+第七节；流程锚点见 [`image-deck-workflow.md`](image-deck-workflow.md) 步骤 6）。
+spec 冻结后随 manifest 落盘，供审查 rubric 与来源清单引用。
+
+```json
+{
+  "style_inversion": {
+    "source": "sample-inversion",
+    "sample_refs": ["<run>/images/sample_body.png"],
+    "inherit_stable": ["浅底网格 + 蓝色仅用于数据强调", "左对齐单栏正文"],
+    "needs_confirmation": ["封面整幅色块是否全套延续（未获确认，未锁）"],
+    "one_off_not_locked": ["样张中的手绘箭头装饰"]
+  }
+}
+```
+
+- 三组字段名固定：`inherit_stable`（明确应延续的）/ `needs_confirmation`
+  （需确认是否整套延续的）/ `one_off_not_locked`（偶然成立、不锁死的）。
+- **缺省即无键**：未做反演（如未走样张确认的路径）时 `style_inversion` 键
+  整体不存在，不写空对象。
+- 该键只描述视觉事实，与内容合同字段互不重叠；用户未回应确认时默认仅第一组
+  进 spec、第二组不硬锁。

@@ -1,0 +1,15 @@
+id: advise-mode-no-content-docs
+title: advise 模式不创建内容文档与项目目录
+description: 验证 advise 请求下 Skill 不落盘 content/ 文档、不声称已执行任何写动作，只给控制面块与咨询回复（KTD5：文档门仅 execute 模式生效）。
+
+input:
+  prompt: |
+    用 $leo-ppt-generator 帮我看看：下周要做一份产品发布会 PPT，给我讲讲大概流程就行，先不要执行。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_advise_mode_no_content_docs.py
+  timeout_seconds: 10

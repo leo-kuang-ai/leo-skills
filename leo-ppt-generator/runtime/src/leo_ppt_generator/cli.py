@@ -49,6 +49,7 @@ from .evidence import EvidenceError, record_acceptance, record_provenance, recor
 from .hybrid.assembler import HybridAssembler
 from .image_deck.adapter import ImageDeckAdapter
 from .lifecycle import CleanupConflict, Lifecycle
+from .render.receipt import RECEIPT_RELATIVE_PATH, ReceiptError, create_delivery_receipt, verify_delivery_receipt
 from .observability import (
     command_name,
     record_command,
@@ -68,7 +69,13 @@ from .storage import (
     sha256_bytes,
 )
 from .styles import StyleStoreError, list_styles, load_style, save_style
-from .templates import TemplateError, compose_layout, compose_style, list_templates
+from .templates import (
+    StyleColorOverrideError,
+    TemplateError,
+    compose_layout,
+    compose_style,
+    list_templates,
+)
 from .upgrade.baseline import (
     import_baseline,
     inspect_image_delivery,
@@ -767,6 +774,31 @@ def _run_result(
     )
 
 
+def _delivery_receipt_gate(root: Path) -> dict[str, Any]:
+    """DELIVERY-GATE 收据门：收据存在且 verify fresh 才算通过。
+
+    无收据 → not_run（披露，不崩）；stale/invalid → blocked。验证只在
+    收据存在时重算指纹，活跃 run 的常规命令只付一次存在性检查的成本。
+    """
+
+    receipt_path = root / RECEIPT_RELATIVE_PATH
+    try:
+        outcome = verify_delivery_receipt(root)
+    except (OSError, ReceiptError):
+        outcome = {"status": "invalid", "fresh": False}
+    status = {"fresh": "passed", "missing": "not_run"}.get(
+        outcome["status"], "blocked"
+    )
+    return {
+        "gate": "delivery_receipt",
+        "status": status,
+        "reason_code": f"delivery_receipt_{outcome['status']}",
+        "fresh": bool(outcome.get("fresh")),
+        "path": str(receipt_path),
+        "impact": outcome.get("impact") if status == "blocked" else None,
+    }
+
+
 def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
     output_dir = run.get("output_dir")
     if not isinstance(output_dir, str) or not output_dir:
@@ -823,11 +855,19 @@ def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
         if isinstance(value, dict) and isinstance(value.get("receipt"), str):
             evidence_refs.append(value["receipt"])
     evidence_refs.extend(str(path) for path in sorted((root / "reports").glob("provenance-*.json")))
+    receipt_gate = _delivery_receipt_gate(root)
+    if receipt_gate["status"] == "not_run":
+        missing.append("delivery_receipt")
+    elif receipt_gate["status"] != "passed":
+        unverified.append("delivery_receipt")
+    if receipt_gate["status"] != "passed" and receipt_gate["path"] not in evidence_refs:
+        evidence_refs.append(receipt_gate["path"])
     artifact_ready = summary.get("passed") is True
+    receipt_blocking = receipt_gate["status"] != "passed"
     status = (
         "artifact_invalid"
         if not artifact_ready
-        else ("acceptance_pending" if missing else "accepted")
+        else ("acceptance_pending" if missing or receipt_blocking else "accepted")
     )
     return {
         "status": status,
@@ -839,6 +879,7 @@ def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
         "artifact_ready": artifact_ready,
         "missing_gates": missing,
         "unverified_gates": unverified,
+        "receipt_gate": receipt_gate,
         "evidence_refs": list(dict.fromkeys(evidence_refs)),
     }
 
@@ -879,6 +920,11 @@ def _status_next_action(run: dict[str, Any]) -> dict[str, Any]:
     if run.get("status") == "completed":
         readiness = _delivery_readiness(run)
         if readiness and readiness["status"] == "acceptance_pending":
+            if readiness["missing_gates"] == ["delivery_receipt"]:
+                return {
+                    "kind": "create_delivery_receipt",
+                    "payload": {"gate": "delivery_receipt"},
+                }
             return {
                 "kind": "record_delivery_evidence",
                 "payload": {"missing_gates": readiness["missing_gates"]},
@@ -1075,6 +1121,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     backend = subcommands.add_parser("backend")
     backend_commands = backend.add_subparsers(dest="backend_command", required=True)
+    backend_report = backend_commands.add_parser("report")
+    backend_report.add_argument("run_path", nargs="?")
     backend_create = backend_commands.add_parser("create")
     backend_create.add_argument(
         "--provider",
@@ -1166,6 +1214,15 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--image")
     record.add_argument("--result")
     record.add_argument("--backend", default="fixture")
+    record.add_argument(
+        "--page-type", choices=("chart", "text-heavy", "image"),
+        help="页型标签（backend×页型路由统计用）",
+    )
+    record.add_argument("--attempts", type=int, default=1,
+                        help="该页到达 accepted 的尝试次数")
+    record.add_argument("--tokens", type=int, default=None,
+                        help="该页图片 backend 的 token 用量（worker 回报透传，"
+                             "缺省 not-recorded）")
     record.add_argument("--lease")
     record.add_argument("--generation", type=int)
     record.add_argument("--agent-id")
@@ -1263,6 +1320,16 @@ def build_parser() -> argparse.ArgumentParser:
     assemble.add_argument("--selected-pages")
     assemble.add_argument("--failures")
     assemble.add_argument("--partial-confirmation")
+    delivery_receipt = delivery_commands.add_parser("receipt")
+    delivery_receipt_commands = delivery_receipt.add_subparsers(
+        dest="delivery_receipt_command", required=True
+    )
+    receipt_create = delivery_receipt_commands.add_parser("create")
+    receipt_create.add_argument("run_path", nargs="?")
+    receipt_create.add_argument("--run-dir")
+    receipt_verify = delivery_receipt_commands.add_parser("verify")
+    receipt_verify.add_argument("run_path", nargs="?")
+    receipt_verify.add_argument("--run-dir")
 
     style = subcommands.add_parser("style")
     style_commands = style.add_subparsers(dest="style_command", required=True)
@@ -1275,8 +1342,34 @@ def build_parser() -> argparse.ArgumentParser:
     style_render.add_argument("style")
     style_render.add_argument("--home")
     style_render.add_argument("--mode", help="论证模式名（06_论证模式）")
+    style_render.add_argument(
+        "--brand", help="品牌身份名（10_品牌身份 或 $LEO_PPT_HOME/brands，用户 VI 优先）"
+    )
+    style_render.add_argument(
+        "--anchor", action="store_true",
+        help="附加风格锚附录（HEX/字族/渲染逐字节注入每页，防漂移；--brand 隐含开启）",
+    )
     style_render.add_argument("--layout", help="版式名（12_版式库，如 P6 / KPI Tower）")
     style_render.add_argument("--image-type", help="信息图类型名（07_信息图类型）")
+    style_render.add_argument(
+        "--materialize",
+        action="store_true",
+        help="为图片生成路线附加构图指令块（CSS 骨架翻译为画布区块占比）",
+    )
+    style_render.add_argument(
+        "--color",
+        action="append",
+        default=None,
+        metavar="ROLE=HEX",
+        help="deck 级调色板覆盖（可重复，role ∈ primary/secondary/accent/neutral，"
+        "值须为 #RRGGBB；同一 role 重复给值时最后一次生效；role 非法、取值非 HEX、"
+        "role 不在该风格或风格无 palette 均报 style_color_override_invalid）",
+    )
+    style_render.add_argument(
+        "--guardrail",
+        action="store_true",
+        help="输出追加确定性设计护栏摘要（缺省输出保持逐字节不变）",
+    )
     style_render.add_argument("--list-templates", action="store_true")
     style_save = style_commands.add_parser("save")
     style_save.add_argument("name")
@@ -1690,6 +1783,27 @@ def _dispatch_config(args: argparse.Namespace) -> dict[str, Any]:
     raise ValueError(f"unknown config command: {command}")
 
 
+def _parse_color_overrides(items: list[str] | None) -> dict[str, str] | None:
+    """Turn repeated ``--color ROLE=HEX`` args into an ordered override dict.
+
+    Malformed items (no ``=``) fail with the same StyleColorOverrideError the
+    semantic paths use, so the whole override contract has one failure
+    surface. Repeated roles: the last occurrence wins (documented CLI help).
+    """
+    if not items:
+        return None
+    colors: dict[str, str] = {}
+    for item in items:
+        role, sep, value = item.partition("=")
+        if not sep:
+            raise StyleColorOverrideError(
+                f"style_color_override_invalid: expected ROLE=HEX, got "
+                f"{item!r} (e.g. --color accent=#C0FF00)"
+            )
+        colors[role.strip()] = value.strip()
+    return colors
+
+
 def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
     if args.command == "version":
         return _version_report()
@@ -1766,6 +1880,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             next_action={"kind": "configure_credential_reference"},
         )
     if args.command == "backend":
+        if getattr(args, "backend_command", "") == "report":
+            run_path = _run_path(args)
+            return envelope(
+                "ready", "backend_report_ready",
+                table=_backend_report(run_path), safe_to_retry=True,
+            )
         registry = BackendRegistry.default()
         if args.backend_command == "create":
             output = Path(args.output).resolve()
@@ -2120,6 +2240,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             operation_id = args.operation_id or f"image-{number}-{args.agent_id or 'agent'}"
             idempotency_status = (
                 "replayed" if operation_id in jobs.get("operations", {}) else "created"
+            )
+            _append_backend_stats(
+                run_path, number=number, backend=args.backend,
+                page_type=getattr(args, "page_type", None),
+                attempts=getattr(args, "attempts", 1) or 1,
+                tokens=getattr(args, "tokens", None),
             )
             lease, generation = _lease_for_operation(
                 run_path,
@@ -2543,10 +2669,19 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     "ready", "templates_listed",
                     templates=list_templates(), safe_to_retry=True,
                 )
-            result = compose_style(args.style, mode=args.mode)
+            result = compose_style(
+                args.style,
+                mode=args.mode,
+                colors=_parse_color_overrides(getattr(args, "color", None)),
+                brand=getattr(args, "brand", None),
+                anchor=bool(getattr(args, "anchor", False)),
+                guardrail=bool(getattr(args, "guardrail", False)),
+            )
             if args.layout:
                 result["layout"] = compose_layout(
-                    args.layout, image_type=args.image_type
+                    args.layout,
+                    image_type=args.image_type,
+                    materialize=bool(getattr(args, "materialize", False)),
                 )
             return envelope(
                 "ready", "style_rendered", template=result, safe_to_retry=True,
@@ -2583,6 +2718,31 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             safe_to_retry=True,
         )
     if args.command == "delivery":
+        if args.delivery_command == "receipt":
+            run_path = _run_path(args)
+            if args.delivery_receipt_command == "create":
+                created = create_delivery_receipt(run_path)
+                return envelope(
+                    "completed",
+                    "delivery_receipt_created",
+                    artifact_refs=[created["path"]],
+                    evidence_refs=[created["path"]],
+                    receipt=created["receipt"],
+                    counts=created["counts"],
+                    safe_to_retry=True,
+                )
+            outcome = verify_delivery_receipt(run_path)
+            status = "completed" if outcome["status"] == "fresh" else "blocked"
+            evidence = (
+                [outcome["receipt_path"]] if outcome["status"] != "missing" else []
+            )
+            return envelope(
+                status,
+                f"delivery_receipt_{outcome['status']}",
+                delivery_receipt=outcome,
+                evidence_refs=evidence,
+                safe_to_retry=True,
+            )
         artifacts = [PageArtifact.from_dict(value) for value in _json_file(args.artifacts)]
         failures = {int(key): value for key, value in (_json_file(args.failures) if args.failures else {}).items()}
         result = HybridAssembler().assemble(
@@ -2684,16 +2844,77 @@ ERRORS = (
     ConfigServiceError,
     CleanupConflict,
     ContractError,
+    ReceiptError,
     IdempotencyConflict,
     RevisionConflict,
     RouteContractError,
     StyleStoreError,
+    TemplateError,
     UpstreamBridgeError,
     SetupContractError,
     CredentialError,
     WizardCancelled,
 )
 
+
+
+
+def _append_backend_stats(run_path, *, number, backend, page_type, attempts,
+                          tokens=None):
+    """Append one (backend, page_type, attempts) line for routing reports.
+
+    Sidecar jsonl under the run dir — deliberately outside slide_jobs.json so
+    the canonical state hash is unaffected; unwritable path is non-fatal
+    (statistics must never block a record).
+    """
+    import json as _json
+    from datetime import datetime, timezone
+
+    try:
+        stats_dir = Path(run_path) / "observability"
+        stats_dir.mkdir(parents=True, exist_ok=True)
+        entry = {
+            "ts": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "slide": number,
+            "backend": backend,
+            "page_type": page_type or "unlabeled",
+            "attempts": attempts,
+            "tokens": tokens if tokens is not None else "not-recorded",
+        }
+        with open(stats_dir / "backend_stats.jsonl", "a", encoding="utf-8") as fh:
+            fh.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def _backend_report(run_path):
+    """Aggregate backend_stats.jsonl into a (backend, page_type) pass-rate table."""
+    import json as _json
+    from collections import defaultdict
+
+    path = Path(run_path) / "observability" / "backend_stats.jsonl"
+    agg = defaultdict(lambda: {"pages": 0, "attempts": 0, "tokens": 0})
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                e = _json.loads(line)
+            except _json.JSONDecodeError:
+                continue
+            key = (e.get("backend", "unknown"), e.get("page_type", "unlabeled"))
+            agg[key]["pages"] += 1
+            agg[key]["attempts"] += max(1, int(e.get("attempts", 1)))
+            tk = e.get("tokens")
+            if isinstance(tk, int):
+                agg[key]["tokens"] += tk
+    table = {}
+    for (backend, page_type), v in sorted(agg.items()):
+        first_pass = v["pages"] / v["attempts"] if v["attempts"] else 1.0
+        table[f"{backend}/{page_type}"] = {
+            "pages": v["pages"],
+            "first_pass_rate": round(first_pass, 3),
+            "tokens_total": v["tokens"] or "not-recorded",
+        }
+    return table
 
 def main(argv: list[str] | None = None) -> int:
     if argv is None:
@@ -2723,7 +2944,10 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return 2 if result["status"] in {"blocked", "action_required", "choice_required"} else 0
     except ERRORS as error:
-        reason = str(error) or getattr(error, "reason_code", "contract_error")
+        # Prefer the class-level stable reason code (e.g.
+        # style_color_override_invalid); str(error) carries the per-input
+        # detail and must not become the reason_code consumers match on.
+        reason = getattr(error, "reason_code", None) or str(error) or "contract_error"
         print(json.dumps(envelope("blocked", reason, next_action={"kind": "inspect_reason_code"}), ensure_ascii=False, sort_keys=True), file=sys.stderr)
         return 2
 

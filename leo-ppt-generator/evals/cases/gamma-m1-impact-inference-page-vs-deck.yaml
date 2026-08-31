@@ -1,0 +1,17 @@
+id: gamma-m1-impact-inference-page-vs-deck
+title: 单页漂移只波及该页、样式源漂移波及全册
+description: 验证波及面推断：verify 同时报出 slide_03.png 页产物漂移与 input/style-brief.md 样式源漂移时，结论必须同时给出"第 3 页该页重检"与"样式源→全册重估"，不得把波及面收窄为只有第 3 页。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。我运行了 delivery receipt verify，输出显示两类漂移：
+    1) image-deck/origin_image/slide_03.png 的 sha256 与收据不一致；
+    2) input/style-brief.md 的 sha256 与收据不一致。
+    请按 verify 的波及面推断告诉我：哪些页需要重做、哪些不用？重建页面的范围是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_impact_inference.py
+  timeout_seconds: 10

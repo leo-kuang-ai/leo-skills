@@ -1,0 +1,17 @@
+id: master-contract-gate
+title: 无落位母版被校验器打回并先修母版
+description: 验证 check_master_contract 的落位闭合语义：视觉行引用要点3而该页只有两个要点时判失败、指认悬空引用、先修母版再重跑校验。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。母版第 2 页有两个要点，
+    但视觉行写的是"要点3→KPI 塔"。这个母版能过派发前的合同校验吗？
+    过不了的话怎么办？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_master_gate.py
+  timeout_seconds: 10

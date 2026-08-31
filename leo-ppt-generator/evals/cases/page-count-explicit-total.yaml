@@ -1,0 +1,21 @@
+id: page-count-explicit-total
+title: 明确总页数措辞按字面执行且不再询问口径
+description: 验证用户明确说「总共 15 页，含封面和尾页」时，Skill 不触发口径询问，直接按成品共 15 页执行并呈现结构拆解（封面 1 + 内容 13 + 尾页 1）。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行，继续上次任务。
+    内容合同正在冻结，材料数据如下（均已定级为「引用」，无需再问）：
+    - 主题：门店数字化改造季度汇报；受众：区域经理；演讲时长 10 分钟；
+    - Q3 新签门店 37 家，其中制造业 21 家（引用，出处：Q3 经营台账）；
+    - 试点门店人效提升 18%（引用，出处：试点复盘报告）；
+    - 覆盖门店 120 家，续约率 91%（引用，出处：CRM 导出）。
+    页数要求：总共 15 页，含封面和尾页。直接按这个定合同，不用再确认页数。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_page_count_explicit_total.py
+  timeout_seconds: 10

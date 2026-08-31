@@ -1,6 +1,6 @@
 ---
 artifact_contract: spec-unified-plan/v1
-artifact_readiness: requirements-only
+artifact_readiness: implementation-ready
 product_contract_source: spec-brainstorm
 execution: code
 status: active
@@ -13,8 +13,10 @@ title: leo-ppt-generator 模版推荐与用户选择 - Plan
 ## Goal Capsule
 
 - **Objective**：为 generate 路线补上"模版（视觉风格）推荐与用户自主选择"的交互合同：推荐是信号驱动的默认项，选择是低摩擦的 override。
-- **Product authority**：当前会话用户（skill 产品 owner）。
-- **Open blockers**：无产品级阻塞；两个实现落点问题推迟到规划（见 Outstanding Questions）。
+- **Recommended approach**：纯文档合同层实施——新增 `references/style-recommendation.md` 承载推荐/选择/照图/双生合同，workflow 步骤 4/6 与 SKILL.md 首屏钩子挂载，评测沿用自包含 judge 模式；零 runtime 代码改动（`style list`/`style render` 已存在直接复用）。
+- **Decision focus**：四式指定的优先序落点（点名 > 参考图 > 推荐）；双生提议制措辞；照图提取的边界（只提视觉系统）。
+- **Verification focus**：≥5 新 eval 用例（judge 双向离线自检）+ 3 回归抽样 + 安装副本同步后全绿。
+- **Largest risk**：新契约只放 references 深层导致单轮回复失真（质量回路轮实测教训）——SKILL.md 首屏钩子为强制项。
 
 ## Product Contract
 
@@ -137,3 +139,85 @@ title: leo-ppt-generator 模版推荐与用户选择 - Plan
 - `leo-ppt-generator/references/styles/00_索引/风格路由.md` — 内容→四维组合推荐表与气质速查表（三视图摘要的数据来源）。
 - `leo-ppt-generator/references/image-deck-workflow.md` 步骤 4 — 既有"提供 2–3 个视觉方向，确认一个"确认点（寄生宿主）。
 - `docs/leo-ppt-generator-quality-loop-optimization.md` — 逐页母版工件（推荐发生在母版确认之后的时间锚）。
+
+
+## Planning Contract
+
+Product Contract unchanged (byte-preserved upstream source slice).
+
+### Key Technical Decisions
+
+- **KTD1 落点选择（Outstanding Q1 裁决）**：推荐合同落新建 `references/style-recommendation.md` 而非扩展 `风格路由.md`——后者是索引/数据面，前者是交互合同面；按需加载纪律下分层更清晰，`风格路由.md` 仅追加"视觉方向确认步骤见 style-recommendation.md"指路半句。
+- **KTD2 SKILL.md 首屏钩子（必须）**：不变边界加一条最短钩子（指定优先序 + 照图 + 双生关键词），generate 导航节挂载 reference——质量回路轮已证新契约不上首屏则单轮评测与真实首答必然失真。
+- **KTD3 零 runtime 改动**：`leo-ppt style list`/`style render --list-templates` 命令面已存在（cli.py style 子命令），推荐/浏览/点名全部复用；参考图提取由 agent 按 style-library 合同执行（视觉系统提取是判断性工作，不做脚本）。
+- **KTD4 纠结信号与错配判定粒度（Outstanding Q2 裁决）**：纠结信号=用户对候选表达犹豫的语句（"拿不准/都想要/再想想"式），不做关键词穷举表（措辞随机性高），由合同描述语义 + eval 用语义组断言；错配判定=风格路由表场景轴的行业×场景行明显冲突，一次劝阻。
+- **KTD5 照图提取的单向边界**：从参考图只提取可复用视觉系统（配色/字重气质/纹理/留白密度），业务正文、人脸、可识别标识不提取；提取结果走既有样张里程碑 + 并排比对呈现（AE3），不新增预览样张轮次。
+
+### Implementation Units
+
+### U1. 推荐合同 reference
+
+- **Goal**：承载推荐与选择的完整交互合同（Product Contract R1–R9 的执行细则）。
+- **Requirements**：R1 R2 R3 R4 R5 R6 R7 R8 R9。
+- **Dependencies**：无。
+- **Files**：`leo-ppt-generator/references/style-recommendation.md`（新建）。
+- **Approach**：六节——信号映射（合同字段→路由输入，含自定义风格优先）、候选呈现（四行格式+统一换法尾行+tie-break 判据）、指定优先序（点名>参考图>推荐；点名直行/沿用回落/浏览三视图禁倾倒）、冲突劝阻（一次+记录依据）、照图做（提取边界+并入样张里程碑+并排比对）、样张双生（提议制/双参考图直入/落选即弃/计入样张里程碑）。
+- **Patterns to follow**：`references/deck-master.md` 的合同文体（判据化、失败路径完备）。
+- **Test scenarios**：文档合同——由 U5 eval 覆盖（无独立单测）。
+- **Verification**：文件成文且 SKILL.md/workflow 挂载指向它（U2 完成后链接可达）。
+
+### U2. workflow 步骤 4 重写与 SKILL 挂载
+
+- **Goal**：把"提供 2–3 个视觉方向，确认一个"升级为结构化推荐与选择入口。
+- **Requirements**：R1 R4 R5 R16（寄生既有确认点）。
+- **Dependencies**：U1。
+- **Files**：`leo-ppt-generator/references/image-deck-workflow.md`（步骤 4）、`leo-ppt-generator/SKILL.md`（不变边界钩子 + generate 导航挂载）。
+- **Approach**：步骤 4 改写为"模版推荐与选择：按 `style-recommendation.md` 执行（信号→候选→默认归因→四行呈现→用户回字母/点名/给图/浏览）"；SKILL.md 不变边界加最短钩子一条；generate 行挂载 reference。
+- **Patterns to follow**：质量回路轮的 SKILL.md 钩子文体（一行内说清关键语义）。
+- **Test scenarios**：eval 覆盖（U5）；`git diff --check` 干净。
+- **Verification**：SKILL.md 含钩子关键词（点名/参考图/双生）；workflow 步骤 4 引用新 reference。
+
+### U3. 照图做路径合同
+
+- **Goal**：参考图→风格 brief 的合同化路径（R10–R12）。
+- **Requirements**：R10 R11 R12。
+- **Dependencies**：U1。
+- **Files**：`leo-ppt-generator/references/style-library.md`（新增"照图做"节）、`leo-ppt-generator/references/input-routing.md`（风格参考指路句）。
+- **Approach**：style-library 增节——提取边界（只提视觉系统）、写 brief 进 `deck_spec.style`、样张并排比对呈现、确认"像"后锁定并可沉淀；input-routing 在"风格/素材参考"分支加指路半句。
+- **Test scenarios**：eval 覆盖（U5 `style-from-reference-image`）。
+- **Verification**：两文件成文；与 U1 的照图节无冲突表述。
+
+### U4. 样张双生合同
+
+- **Goal**：双生的提议制触发与执行细则（R13–R15）。
+- **Requirements**：R13 R14 R15。
+- **Dependencies**：U1。
+- **Files**：`leo-ppt-generator/references/image-deck-workflow.md`（步骤 6 扩展）、`leo-ppt-generator/references/visual-qa.md`（并排比对呈现注记）。
+- **Approach**：步骤 6 追加双生条款——侦测纠结信号提议（含"多一张图"成本告知）、双参考图直入、二选一落选即弃、计入既有样张里程碑确认；visual-qa 独立复核节注记参考图并排比对形态。
+- **Test scenarios**：eval 覆盖（U5 `dual-sample-proposal`）。
+- **Verification**：步骤 6 条款与 R13–R15 一一对应。
+
+### U5. 评测与安装副本同步
+
+- **Goal**：行为验收与回归。
+- **Requirements**：Success Criteria（全部 AE）。
+- **Dependencies**：U1 U2 U3 U4。
+- **Files**：`leo-ppt-generator/evals/cases/{recommend-with-default,user-picks-style,style-from-reference-image,mismatch-warning-once,dual-sample-proposal}.yaml` + `evals/fixtures/scripts/judge_*.py`（5 个自包含）+ `evals/eval.yaml` + `evals/known-issues.md`。
+- **Approach**：judge 全部自包含（沙盒单文件教训）、拒绝/提议类断言用语义组正则、good/bad 双向离线自检后上线；`install.sh --host claude --upgrade` 同步安装副本（diff 验证）后跑新用例 + 3 回归抽样（advice-only / execute-keeps-confirmation-gates / master-before-render）。
+- **Test scenarios**： Covers AE1.（推荐带归因+四行）Covers AE2.（点名直行）Covers AE3.（参考图并排比对）Covers AE5.（劝阻一次）Covers AE4/AE6.（双参考图直入/纠结提议——合并为 dual-sample-proposal 用例的两断言组）。
+- **Verification**：5 新用例全绿 + 3 回归抽样通过 + known-issues 记录。
+
+## Verification Contract
+
+| 命令 | 适用 | 通过信号 |
+|---|---|---|
+| `cd leo-ppt-generator && skill-up run evals/eval.yaml --include-case-name <新用例>` | U5 五用例逐个或成组 | 全部 PASS |
+| `cd leo-ppt-generator && skill-up run evals/eval.yaml --include-case-name advice-only-no-execution,execute-keeps-confirmation-gates,master-before-render`（多次 --include-case-name 形式） | 回归抽样 | 全 PASS（model_gating 除外口径不适用于此三例） |
+| `diff leo-ppt-generator/SKILL.md ~/.claude/skills/leo-ppt-generator/SKILL.md` | 同步验证 | 无差异 |
+| `git diff --check` | 提交前 | 干净 |
+
+## Definition of Done
+
+- U1–U5 全部落地且 Verification Contract 全绿。
+- CHANGELOG.md 同步（user-visible 标注）；known-issues.md 记录本轮 judge 设计。
+- 未提交项待用户授权（仓库纪律）。

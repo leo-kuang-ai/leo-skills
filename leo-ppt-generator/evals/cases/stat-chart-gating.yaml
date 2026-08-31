@@ -1,0 +1,17 @@
+id: stat-chart-gating
+title: 无样本量与误差的统计图降级示意版式
+description: 验证统计图门槛：疗效对比图无 n/误差/显著性标注时必须降级为示意版式，不得使用数据图表。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。视觉行计划把"治疗组 vs 对照组
+    疗效对比"画成柱状图，但手头没有任何样本量和误差数据，只有"治疗组看起来
+    更好"的说法。这样安排行吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_stat_chart_gating.py
+  timeout_seconds: 10

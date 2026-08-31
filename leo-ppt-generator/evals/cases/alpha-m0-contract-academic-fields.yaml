@@ -1,0 +1,18 @@
+id: alpha-m0-contract-academic-fields
+title: 学术场景合同三字段必填且词表封闭
+description: 验证学术合同字段：硕士答辩 deck（材料为论文）的内容合同必须声明 math_load（light/medium/heavy）/figure_orientation（figure-first/balanced/text-first）/section_priority（节级 H/M/L 页数分配）三字段，缺字段或用 medium-heavy 等词表外取值判失败；通用商务 deck 不强制。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下判断：一个 20 分钟硕士答辩
+    deck，材料是计算机视觉方向的论文，内容合同里没写数学量级、图表取向，
+    也没有分节优先级页数分配，直接开始出大纲行吗？
+    另外我打算把 math_load 写成 medium-heavy，可以吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_contract_academic_fields.py
+  timeout_seconds: 10

@@ -11,6 +11,10 @@ capability 过滤，再按凭据状态和用户既有确认排序。需要 mask 
 能力的 AtlasCloud。
 
 OpenAI 与 AtlasCloud 是图片 Provider 的选择关系；OCR 不参与图片 Provider 选择。
+数据密度是路线与 backend 推荐的输入（与 `image-deck-workflow.md` 3a 步联动）：
+数据版式页 ≥6 个数据点或含估算序列的 deck，默认推荐 direct-editable / hybrid——
+图片路线的 stylized 图表不承载精确数值标注（`styles/00_索引/图表样式规范.md` §五）；
+≤4 个巨数的数据海报页是图片路线最强项。
 普通图片式生成不披露 PaddleOCR。只有 editable 阶段明确需要文字 hints 时，setup
 才把 PaddleOCR 作为非必需在线增强列出；凭据缺失时使用本地 `builtin-ink`，不得阻断
 图片 Provider 确认或普通生成。
@@ -72,3 +76,22 @@ backend-contract.json`，worker 只读取该冻结副本。三个位置是同一
 
 `credential_ref` 只允许 `env:`、`host:` 或 `keychain:` 引用。原始 key/token、旧
 `editppt config` 文件和宿主私有认证文件都不是合法来源。
+
+
+## backend × 页型路由（批次 3-H）
+
+- `image record` 支持 `--page-type chart|text-heavy|image` 与 `--attempts <N>`：
+  每页尝试写入 `<run>/observability/backend_stats.jsonl`（旁路 sidecar，不影响
+  canonical state hash；统计失败不阻断 record）。
+- `"$LEO_PPT" backend report <run>`：聚合输出 (backend, page_type) 的一次通过率
+  表；多轮 run 积累后作为 backend 排序输入——图表/密集文字页优先路由到该页型
+  历史通过率高的 backend，而非只按 capability 过滤。
+- **prompt 方言**：不同图片后端对长结构化 prompt 的服从度不同——按已选 backend
+  生成方言变体（长清单型 backend 保结构化列表；指令敏感型 backend 收短句 +
+  负面约束前置），样张阶段必须用"最典型难页"（承接样张合同）。
+- **token 计量**：worker 回报 `backend_tokens` → 父 Agent `image record --tokens`
+  透传进 backend_stats；`backend report` 的 `tokens_total` 按 (backend, 页型)
+  聚合（未回报记 not-recorded），支撑"密集数据页多轮重打"的成本与路线决策
+  （如表格页持续高 token 低通过 → 默认改走 direct-editable）。
+- 路线成本参考：统计积累显示某页型在某 backend 一次通过率持续低时，派发前提示
+  换 backend 或改走 direct-editable（如密集表格页）。

@@ -1,0 +1,18 @@
+id: outline-revision-doc-gate
+title: 大纲按反馈修订产出 v2 文档并引用新路径
+description: 验证大纲 v1 已落盘未确认时，用户反馈修订后 Skill 产出 outline-v2.md（旧版保留），聊天引用 v2 路径与变更摘要并等待确认，不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行，继续上次任务。
+    大纲初稿已写入 content/outline-v1.md（10 页管理层例会版），还没收到我的确认。
+    反馈：把 NPS 42→55 的揭晓页从第 7 页提前到第 2 页，其余结构不动。
+    改完后给我确认，别磨蹭，尽快开始出图。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_outline_revision_doc_gate.py
+  timeout_seconds: 10

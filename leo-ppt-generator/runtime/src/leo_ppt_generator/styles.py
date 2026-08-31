@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 from pathlib import Path
@@ -61,17 +62,26 @@ def _builtin_root() -> Path:
 
 
 def _is_style_md(path: Path) -> bool:
-    """A style file carries a GPT-Image-2 JSON brief; docs/axes/indices don't.
+    """A style file carries a parseable GPT-Image-2 JSON brief; docs/axes don't.
 
     The reference library mixes two kinds of markdown: full style briefs
     (which embed a ```json``` block) and axis/rule documents (论证模式、信息图
     类型、图片渲染、版式库 etc., which are prose-only). Only the former are
     loadable styles; this predicate keeps the prose axes out of list_styles.
+    A fenced json block that fails json.loads does not count, so a malformed
+    or future non-brief format cannot silently appear/disappear from the list.
     """
     try:
-        return "```json" in path.read_text(encoding="utf-8")
+        text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         return False
+    for block in re.findall(r"```json\n(.*?)\n```", text, re.S):
+        try:
+            json.loads(block)
+        except json.JSONDecodeError:
+            continue
+        return True
+    return False
 
 
 def _find_builtin_style(name: str) -> Path:

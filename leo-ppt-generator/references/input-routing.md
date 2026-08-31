@@ -4,7 +4,7 @@
 
 | 输入与目标 | Route | 必要确认 |
 | --- | --- | --- |
-| 文章、报告、笔记、大纲，需要新演示文稿 | `generate` | 受众、目标、页数、大纲、完整逐页稿、风格、backend、样张 |
+| 文章、报告、笔记、大纲，需要新演示文稿 | `generate` | 受众、目标、页数（口径按 image-deck-workflow 第 1 步：默认内容页，封面/收尾额外计入）、大纲、完整逐页稿、风格、backend、样张 |
 | 图片/PDF，或确认可信的 PPT/PPTX，需要对象级可编辑 | `direct-editable` | 输入范围、可信 Office 确认、backend 与 worker 可用性 |
 | 已完成 image-deck，需要全量升级 | `upgrade-full` | 原 run、全部页面、交付类型变化 |
 | 已完成 image-deck，只升级指定页 | `upgrade-selected` | 冻结页集合、默认不允许 partial、失败集合变化后重新确认 |
@@ -20,7 +20,9 @@ PaddleOCR 不是 route 或图片 Provider。它只在 editable 阶段实际需�
 不得猜测 route 或隐式调用转换工具。
 
 同时存在内容与视觉稿时，先问一个会改变 route 的问题：视觉稿是严格保留布局并
-转可编辑，还是只作为新演示文稿的风格/素材参考。不要自行串联两条 route。
+转可编辑，还是只作为新演示文稿的风格/素材参考。不要自行串联两条 route。判定为
+风格参考且走 `generate` 时，按 [`style-library.md`](style-library.md)「照图做」节
+把参考图转为风格 brief 并经样张并排比对验证。
 
 ## Office Trust Gate
 

@@ -74,6 +74,16 @@ git diff --check
 
 `spec-first update` 重生成宿主镜像（`.agents/`、`.claude/`、`.codex/`、`.kiro/`）后，须重跑 `python3 scripts/mark-mirror-skills-internal.py`，保持镜像技能对 `npx skills add` 通用安装器默认隐藏（`metadata.internal: true`）。
 
+### 风格库 lint（leo-ppt-generator）
+
+```sh
+python3 leo-ppt-generator/scripts/lint_style_briefs.py        # brief 结构 lint（ERROR 非 0 退出）
+python3 leo-ppt-generator/scripts/lint_layout_grid.py         # 版式网格/双约束 lint（在技能目录内运行）
+```
+
+新增风格 brief / 版式文件必须两条 lint 全过（warning 白名单仅限存量，见
+`leo-ppt-generator/scripts/style-lint-baseline.txt` 收敛纪律）。
+
 提交前，请从对应技能目录运行包级格式化、测试与评测，并确认通过。
 
 ## 编码风格与命名

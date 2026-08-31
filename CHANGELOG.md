@@ -8,6 +8,289 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **leo-ppt-generator 10 轮稳定性测评 + M0.1 校准批（user-visible）**
+  - 18 case 子集 ×10 轮（iteration-75..84）：6 例 10/10 稳定、3 例 9/10
+    轻摆动、5 例 0/10 确定性失败——transcript 复核证实后者全部为判官/用例
+    校准缺口而非行为回归，并由此抓出 **SKILL.md 四处入口级知识缺口**
+    （M0 收据门、学术合同三字段、样张默认一张+结构页成本告知+反演三组
+    点名、正文 ≤80 字密度数字），已补入 SKILL.md 对应节。
+  - M0.1 判官/用例修复 6 处（均经 10 轮历史响应重放 + 合成反向陷阱控制）：
+    judge_cross_ref_exists/judge_master_gate 词表补「过不了」族；
+    judge_density_cap 表格分隔归一化 + `\s*条` 容忍；judge_contract_
+    academic_fields 枚举改"在场或 execute 延迟"+疑问句豁免；
+    judge_gamma_prompt_registry 双分支（需改→记账纪律 / 已存在→文件级
+    引用）+ 诚实机制说明豁免；judge_gamma_receipt_gate 反引号引号剥离；
+    beta-m6 用例重设计为反编造测法（不凭模式名现场编五拍、指向权威源）。
+  - 稳定性数据与逐例归因记入 evals/known-issues.md；结果矩阵存
+    leo-ppt-workspace/stability-10r/；终版报告（10 轮矩阵 + M0.1 修复 +
+    线上验证轮 **16/18**，五个 0/10 用例全部转绿）见
+    docs/leo-ppt-generator-stability-10r-m01-0831.md。judge_master_doc_
+    before_confirm 补子句级否定复核（it-85 重放通过、10 轮历史零回归）。
+
+- **10 轮全量 eval 稳定性测量（evidence-first-writing，330 次真实会话）**
+  - 逐轮 29/28/29/27/28/29/29/31/29/29 PASS（87.3%，扣除在案故意保持项后
+    90.0%）；非通过完成判官/模型分层归因：判官措辞类两处硬化并在线复验
+    PASS（taste-findings 补块引用直/弯引号紧形式；train-voice 补第七批
+    落盘确认变体）；模型侧间歇违约三类（chinese-22 漏报、signal-bearing
+    偶发省略 route 卡、bare-topic turn-1 违约起草）判官正确捕获、不放宽；
+    低频掷骰 5 case 各 1–2 轮观察；超时 ERROR 3 次。测量与分层记录见
+    evidence-first-writing/evals/known-issues.md（iteration-83..92/93）。
+
+- **新增安装方式：宿主对话框粘贴安装指引（user-visible）**
+  - 根 README 安装节新增"方式三：宿主对话框粘贴安装指引"，原"作为参考资料
+    使用"顺延为方式四：面向无命令行 / 插件市场入口的宿主（网页版 / 桌面版
+    agent），提供一段可整段复制的四步指引，由 agent 自行识别技能目录、clone
+    仓库、软链三个技能目录并校验；指引限定 clone / 软链 / 校验三件事，不涉及
+    凭据，且注明可替换为单技能安装。
+  - evidence-first-writing 与 leo-ppt-generator 包 README 安装节同步新增该方式
+    （各提供指向本技能的单技能版本指引），保持与根 README 安装节一致。
+
+- **leo-ppt-generator 六行业全流程测评第二轮（post-M0，user-visible）**
+  - 新增 `docs/leo-ppt-generator-eval-6industries-0830.md`：同题同景对照 0829
+    首轮——完成三景 medical/manufacturing 双满分（18/18）、finance 13/18
+    （provider 故障下纪律正确关闭）；**M0 增强项首个实测基线**（收据门真实
+    闭环 fresh、论断式要点 13/13、图证据行+R15 零装饰、反演三组同轮呈现，
+    主持人 4 图独立读图复核）；**H1 edit 模式修复确认**；新增缺陷：H3
+    provider 尺寸透传失效（P4 实验实锤固定 1536×1024 输出，三景探针级
+    止损零浪费）、H2 族 4 条新实证（LEO_PPT_BUNDLE 静默空集/slide_jobs
+    双写/record SameFileError/指纹锁死）、F4 workaround 确证；education/
+    government/retail 经 4 小时 ×12 次探针监测确认代理持续无视 size（固定
+    3:2 输出），需用户侧修复 provider（端点/凭据）后一键补跑。
+
+- **README 与技能包用户手册事实对齐（多 agent 审查产出，user-visible）**
+  - 根 README：评测用例数 31→33（evidence-first-writing）、9→59（leo-ppt-generator）；
+    leo-ppt-generator 简介改为 generate 主线 + 可信输入重建口径并标注 137 个可加载
+    风格 brief；evidence-first-writing 简介补创作者化能力层与新脚本工具链；宿主适配节
+    修正"两个技能"口径并注明 creator-buddy 包根无 `agents/openai.yaml`
+    （vendored 子技能保留上游自带定义）；评测证据边界更新
+    为当前口径（efw 33 例 GLM flash 下 32/33 PASS、唯一非通过为在案故意保持项
+    `post-publish-no-causal-unprompted`；lpg M0 轮 iteration-66 修正后 49/6/1）；开发节
+    补风格库 lint 命令；workspace 枚举改为 `*-workspace/` 通配；移除 efw 节的
+    Humanizer 工具链选型对比图片（`docs/image.png`）。
+  - `evidence-first-writing/README.md`（用户手册）：关键文件表补 `check_prose.py`、
+    `storm_research.py`、`references/source-analysis.md` 与 4 个测试文件；前置条件注记
+    STORM 可选依赖（`knowledge-storm`）与缺包降级；降级契约纳入 `check_prose.py`；
+    测试与评测节补 33 例口径。
+  - `leo-ppt-generator/README.md`（用户手册）：新增风格库规模节（137 可加载 brief +
+    146 分节轴 + 四治理 lint）；交付与验证节补质量闭环机制（交付收据门 / 母版内容
+    合同 / 图像版本历史 / 提示词进化记账）；新增测试与评测节（四 lint + 59 例
+    skill-up）。
+  - 审查中确认无误的口径保留：creator-buddy"32 个子技能分三组"（12+10+10 实测相符）。
+
+- **evidence-first-writing 全量 eval 回归 33 case：32/33 PASS**
+  - 全量真实引擎回归（iteration-81）：29 PASS / 4 FAIL，4 个失败全部为
+    known-issues 在案已知类（非融合回归）。按同义词惯例修复其中 3 个判官
+    措辞重掷并在线复验 PASS（iteration-82）：`check-causal-boundary.sh`
+    补「没法/照办/确定」；train-voice A2 补「下一步你可以选/指定路径把/
+    落盘为/试写一段」；docs B 补「未经证实/无法从我这里/无法保证/死链」。
+    唯一剩余非通过 `post-publish-no-causal-unprompted` 为在案故意保持
+    失败项（断言保持原样等待正规修复）。
+
+- **eval 判官确定性修复：环境态等价分支 + 数值锚点豁免（leo-ppt-generator）**
+  - `master-doc-before-confirm` / `style-render-guardrail-visible` 两 case 的
+    在案存量失败根因确定：eval 沙箱无上次会话项目状态，技能按合同正确
+    `blocked` 并索要真值而判官只认下游产物。两判官新增「环境态等价分支」
+    （blocked + 索要真值 + 不谎称完成 ≡ 落盘路径/护栏可见性），并给
+    `judge_guardrail_visible` 的数值锚点（1920…18 / 2560…32 / 4.5:1）加
+    句级否定豁免（锚点句常同句携带无关否定式规则被误杀）。历史双路径
+    重放 + 编造型/否定式反向控制 + 在线复验全部通过；融合相关 7 case
+    子集 7/7 全绿。详见 leo-ppt-generator/evals/known-issues.md。
+
+- **file-github 融合批次真实 eval 回归（14 case 子集）+ 判官否定感知修复**
+  - 双技能各跑 7 个融合相关 case（真实 claude_code 引擎）：evidence-first-writing
+    7/7 PASS（`check-prose-diagnostic`、`humanize-preserves-facts`、
+    `complete-humanizer-catalog`、`chinese-22-rules`、`copywriting-route`、
+    `source-grounded-tool-routing` + 修复后复验的 `audit-does-not-rewrite`、
+    `chinese-protocol-context-judgment`）；leo-ppt-generator 5/7 PASS
+    （`master-*` 3 个 + 修复后复验的 `master-contract-gate`、
+    `assertion-headline-advisory`），余 2 个为在案环境态存量（新沙箱无
+    项目材料时按合同 blocked，见 leo-ppt-generator/evals/known-issues.md
+    iteration-65 清单）。
+  - 判官修复（均先历史重放+反向控制、后在线复验 PASS）：`check-audit-readonly.sh`
+    证据接受集补引用块形态（`> “…"`）；chinese-protocol case any-list 按同义词
+    惯例扩停止判定构词族（无明显/无实质/文字干净等）；`judge_master_gate.py`
+    补「过不了」；`judge_assertion_headline.py` 结构化改造（引号保内文变体 +
+    `topic_word_verdict` 合取判据 + 断言词组扩展），五轮措辞掷骰全部收敛。
+  - 回归实证融合行为符合设计：audit 响应实际调用 `check_prose.py` 并将线索
+    按语境豁免、未当门禁；assertion/标题类判据输出与 deck-master 新增去模板
+    味清单协同正常。
+
+- **file-github 融合 P3 尾项落地（图生图预处理 + 图像版本历史）**（leo-ppt-generator，
+  user-visible，来源 geekai v4.3.0，授权已确认）
+  - runtime `image_gen.py` 新增 `prepare_reference_inputs`：edit 参考图归一化
+    （本地文件→base64 data URL、http/data URL 透传、清晰失败），`edit --image`
+    接受远程/内联输入并物化为临时文件自动清理。
+  - 输出图像版本历史：`--keep-versions` 轮转旧文件为 `<stem>.v<N><ext>` 并
+    append-only 登记 `image-history.jsonl`（末条 active:true 即当前激活）；
+    新增 `set-active` 子命令按版本回滚激活（复制语义，版本文件保留）；与
+    batch-manifest/--resume 正交。新增 `tests/test_image_gen_versions.py`
+    11 项（含退避共存与 resume 正交用例）。
+
+- **leo-ppt-generator 能力融合 M0 落地（内容合同 + 风格版式 + 指纹收据，docs/plans/2026-08-30-001）**
+  (user-visible)
+  - γ 质量闭环（E1/E4/E6）：`delivery receipt create|verify` 子命令与
+    `render/receipt.py`（五类 sha256 指纹 + linked_assets/builder_id 占位 +
+    波及页推断：页产物漂移→该页、样式源漂移→全册、QA 报告漂移→仅重跑 QA），
+    readiness 增收据门（无收据→acceptance_pending 披露、stale→blocked，
+    不破坏旧路径）；execution-contract 增收据门与 worker 三层容错协议
+    （分层重试≤3/清扫≤2/已渲染跳过）；新增 `prompts/registry.yaml` 提示词
+    进化记账 + lint_style_governance 第 6 检查（prompt 无条目→FAIL）；
+    reason-codes 追加 5 码（纯追加）。
+  - α 内容合同（C1/C3/C4/A1/A4）：slide-worker 四件套（deck style lock /
+    page role lock / Required text only 白名单 / Avoid+六问自检）；论断式
+    第一条要点 + TAKEAWAY-READTHROUGH 连读输出；学术合同三字段
+    （math_load/figure_orientation/section_priority，学术必填通用可选）；
+    新增 `references/academic-figure-evidence.md`（6 图处理模式 + 5 级审查
+    状态 + 图行语法，`check_master_contract.py` v2 图行校验，向后兼容）；
+    数字登记表升 v2 九列（verified?/as-of，`check_number_ledger.py`
+    --schema v1 兼容）。
+  - β 风格版式（B6/B7）：06_论证模式新增"学术五拍"（5→6，分节轴总数
+    145→146，_INDEX/style-library 计数同步）；科研答辩风双档
+    （minimal/dense-defense）；图表样式规范新增"学术方法图视觉语言
+    （NeurIPS Look 六要素）"章；样张升级（结构页成本先告知+点头才出）+
+    样张反演三组判读（inherit_stable/needs_confirmation/one_off_not_locked，
+    随 spec 落 style_inversion）；manifest-schema 注记新字段。
+  - T-L1 许可登记（R-10 口径：用户已线下确认授权）：upstreams.yaml 新增
+    `borrowed_ideas` 通道 7 条（pinned commit）；04_来源_guizang 补 AGPL-3.0
+    来源标注；新建 leo-ppt-generator/NOTICE（vendored/borrowed/guizang 三节）。
+  - 评测与测试：新增 10 个 eval case（alpha×3/beta×3/gamma×4，judge 全部
+    自包含+否定感知，已注册 eval.yaml，59 case 解析通过）+ 37 个新单测
+    （139→176，失败数持平 2 个存量金样漂移）；四 lint（briefs/layout/
+    index/governance）全 exit 0。基线事实与 M0 变更面记入 evals/known-issues.md。
+  - M0 轮评测（iteration-66，59 case）：47/11/1；transcript 归因 + 历史重放
+    证实两个疑似回归（cross-ref-page-exists、master-contract-gate）为判官
+    词表缺「过不了」，`judge_cross_ref_exists.py` 比照并行会话的
+    judge_master_gate 修复同款补词并重放通过——修正后口径 **49/6/1，
+    相对基线零真实行为回归**；6 个新 case FAIL 归入 M0.1 校准批。
+
+- **file-github 融合第二阶段落地（研究执行器 + 保护性编辑 + 生成韧性 + 视觉测量质检）**
+  - evidence-first-writing（user-visible）：
+    - 新增 `scripts/storm_research.py`：STORM 多视角研究可选执行器桥（deep 档
+      research 增强）；未安装 knowledge-storm 时输出固定降级块退出码 3
+      （隔离 venv 安装指引、DuckDuckGo 免 key 检索、litellm 接任意
+      provider），已安装时跑 persona 研究+双大纲（`--full` 开成文），结果
+      提示回证据账本核验；source-analysis.md 挂指针。新增
+      `tests/test_storm_bridge.py` 17 项（假包注入确定性覆盖降级分支与
+      已安装组装路径）。
+    - editorial-review.md 新增「保护性编辑边界」（只扫自己动过的句子/
+      毛边先假设是手迹/拿不准降白描/否决权留作者 + 三条失败解剖警示，
+      来源 renwei-writing，方法思想引用）；humanizer-patterns.md 渠道
+      容忍矩阵全量落地（中文 7 渠道 × 8 模式族三档矩阵，缺省档可被作者
+      样本覆盖）。
+  - leo-ppt-generator（user-visible）：
+    - runtime `image_gen.py` generate-batch 断点续跑与每页即落库：
+      `batch-manifest.jsonl` 追加式清单（成功/失败行），`--resume` 只补
+      缺页（manifest ok 行 + 磁盘非空复核为真值，跳过不占 QPS 名额），
+      汇总新增 `resumed/skipped` 字段；新增 `tests/test_image_gen_resume.py`
+      11 项（含与 429 退避/限流的串联共存测试）。
+    - 新增 `references/social-card-specs.md`（社交卡片输出形态规格层：
+      四画板规格/密度硬规则/字号带宽/组图分页策略/主题 token 映射，实验性
+      能力、SKILL 路由接入留待后续专门批次；来源 guizang，授权已确认）与
+      `scripts/validate_visual_measure.py`（测量式质检：R1 溢出修正阶梯/
+      R4 最小字号/R5 四横带密度/R8 视觉边界/R9 标题间距纯规则核，
+      `--measurements` 直连、`--html` 需 playwright 缺失时降级退出 3）；
+      visual-qa.md 登记为可选机读补充。新增
+      `tests/test_visual_measure_rules.py` 26 项（双解释器全绿）。
+
+- **leo-ppt-generator 能力融合工程主方案（技术方案/开发/测试/验证/测评全周期）**
+  - 新增 `docs/plans/2026-08-30-001-feat-leo-ppt-capability-fusion-master-plan.md`：
+    总架构师 + 4 个设计专家团（α 内容与合同 / β 风格版式资产 / γ 渲染与质量闭环 /
+    δ 内核与 IR）+ 测评与验证总署协作产出；含 6 条集成合同（CI-1..CI-6）、
+    10 项跨团队裁决（R-1..R-10，含用户线下授权后的许可口径变更）、里程碑
+    M0-M3 命令级准出判据、DoD D-1..D-10、验证闸门链 G0-G13、31 个新 eval
+    case 三批合入计划、红队 8 类对抗用例与风险登记簿。
+  - 新增 `docs/plans/fusion-team-designs/`：四份 10 节制可执行技术方案
+    （任务 ID/依赖/文件落点/验收标准）+ 一份统一测试/验证/测评总纲（424 行）。
+  - 关键设计决策：δ 内核迁移走"新增 object_builder + LEO_EDITABLE_BUILDER
+    双跑"而非改 vendored 代码；γ render lane 以确认 backend 模式接入零状态机
+    改动；α TF-2 贴字定义为 generation method 变更走样张重确认（例外封闭唯一）；
+    β 双层 layouts.json sidecar 且 compose 零改动守字节确定红线。
+
+- **file-github 19 项目全面融合第一阶段落地（技术方案 + 双技能集成）**
+  - 新增 `docs/plans/2026-08-30-file-github-integration.md`：四层融合模型
+    （L1 知识层 / L2 脚本层 / L3 工具层 / L4 内容层）、5 专家文件所有权矩阵、
+    测试-验证-测评三级策略与二阶段路线图；上游许可已经用户线下确认授权，
+    融合保留来源标注与快照日期。
+- **evidence-first-writing：file-github 融合批次（检测器 + 知识层 + 工具登记）**
+  (user-visible)
+  - L2 脚本层：vendor `human-writing` 的中文文风确定性检查器为
+    `scripts/check_prose.py`（零依赖；失败级硬停词/黑话/模型路标/翻案正则/
+    提示性标点 + 警告级排比/名词化/句长 CV/连词密度/比喻场聚集等，含冒号
+    引直接引语等豁免；退出码 0/1/2/3，输出为诊断线索非交付门禁），SKILL.md
+    接入 audit/humanize 中文诊断链路；新增 17 项单测（全套 24 测试通过）与
+    eval case `check-prose-diagnostic`（已注册进 evals/eval.yaml，
+    `skill-up list-cases` 校验通过）。
+  - L1 检测知识：humanizer-pattern-catalog 增补「改写侧护栏与实证校准」
+    （Never-inject 反注入 7 条、误报保护 16 类 + 人味保留 8 信号、可移植性
+    测试、lift 实证权重注记、结构保真与残留不增）；humanizer-patterns 增补
+    判断顺序/聚集定罪/渠道容忍三档；chinese-editorial-protocol 增补公众号
+    体裁 15 指纹 + 强中弱分级 + 防误判阈值（来源 avoid-ai-writing / humanizer /
+    no-ai-slop / wechat-article-skills，快照日期已标注）。
+  - L1 方法知识：新增 `references/copy-frameworks-ext.md`（五类 29 条标题
+    公式、「现在你可以」测试、Human Action Model、Perception Gap、七轮编辑
+    法、CTA/落地页区块、价值等式与反操纵红线、中文 AI 痕迹词表；转化率数字
+    按证据纪律不引用）并由 copywriting.md 挂指针；source-analysis 增补 STORM
+    多视角研究法与视频证据三级降级链；article-workflows 增补 coauthor 知识
+    卡片共创节奏与润色三原则；tool-selection 登记 wenyan-mcp / Wechatsync /
+    XiaohongshuSkills 三个发布分发执行器（来源 marketingskills / storm /
+    Video_note_generator / vibe-writing-workflow）。
+- **leo-ppt-generator：file-github 融合批次（分镜合同 + 去模板味 + 图像退避限流）**
+  (user-visible)
+  - prompts/slide-worker.md 新增 deck-wide content contract：全局风格锚定、
+    视觉转译（image prompt 必须写明图上文字且语言一致）、恰好 N 页硬约束、
+    detailed/slides 双模式图上文字量（来源 geekai v4.3.0 PPT 模块分镜
+    prompt，快照 2026-08）；deck-master.md 增加母版-分镜对接条目，并在
+    TITLE-READTHROUGH 锚点挂载 12 条标题/要点去模板味清单（翻案腔标题/
+    三连排比/名词化/黑话抬价/裸名词短语堆叠/英文三查，🟡 建议级不阻断）。
+  - runtime `image_gen.py`：仅 429 指数退避（2/4/8s 三档，其他错误保持
+    fail-fast）+ 进程级 QPS 限流器（默认 4 QPS，`LEO_PPT_IMAGE_QPS` 可覆盖，
+    clock/sleep 可注入）；新增 `tests/test_image_gen_backoff.py` 11 项单测。
+  - 新增 `references/marketing-deck-narrative.md`（SCR 叙事弧、11 页销售
+    deck 框架、买家角色定制、六大反模式、卡片式 5 框架；与结论句标题/beat
+    词表/论证模式衔接），deck-master.md 完成加载指针接线（来源
+    marketingskills sales-enablement，快照 2026-08-28）。
+
+- **ppt-github 90 项目 × 6 专家源码评审会：集成路线图**
+  - 新增 `docs/ppt-github-6专家集成评审会-2026-08-30.md`：6 位产品专家
+    （skill 提示词工程 / 端到端产品架构 / 学术风格内容 / agent 编排质量闭环 /
+    渲染图像管线 / 幻灯片框架格式内核）对 `/Users/kuang/knowledge/ppt-github`
+    全部 90 个项目逐仓源码评审后，收敛为 6 大能力支柱（证据来源治理、风格×版式
+    资产工程、文字保真、确定性渲染 lane、质量闭环机器化、对象级内核与 IR）、
+    6 条冲突裁决、P0/P1/P2 路线图与"明确不做"清单；含主持人对关键断言的
+    独立核验记录。
+  - 新增 `docs/ppt-github-expert-reports/专家{1..6}-*.md` 六份分报告
+    （共 1493 行，每项目附 ≥2 个源码文件路径证据与 License 判定）。
+  - 评审发现治理待办：`references/styles/04_来源_guizang/` 源项目为
+    AGPL-3.0，现有提取文本属许可证灰色地带，需补来源标注或按思想重写。
+
+- **leo-ppt-generator 多行业优化批次 2/3 全量落地（技术方案 v2 收口）**
+  (user-visible)
+  - 批次 2 生成确定性：`style render --brand`（`load_brand` 解析
+    brands/ 用户 VI 优先；合并序 用户品牌 > colors > 风格默认；浅底对比度
+    <4.5 fail-fast 并给建议色）与 `--anchor` 风格锚附录（HEX/字族/渲染逐字节
+    注入防漂移，默认路径 byte-identical 保持）；`check_master_contract.py`
+    母版合同校验器（四段/落位闭合/悬空引用/登记表/argument_role/交叉引用 +
+    标题连读稿输出，6 单测）；术语表按页裁剪注入与 assemble 跨页一致性；
+    brand_assets 全可选程序化降级、dark-deck 暗场预设、全 deck 跨页一致性
+    轮检与同角色页再锚定（仅结构密度维度）。
+  - 批次 3 版式与工程：P23–P29 七新版式（章节隔页/数字冲击/规格表[>8 行强制
+    editable]/文献页/教学三件套）与 Schema 登记及双向核对测试；图表语法三份
+    （瀑布桥/2×2 矩阵/统计图标注契约）；页面语义五份（文献/学习目标/小结/
+    练习/融资路演链）与 Q&A/backup 扩写；`diagram_render.py` 结构图确定性
+    自绘（Pillow 零新依赖、同输入逐字节一致、LR/TB，5 单测）；
+    `image record --page-type/--attempts` 旁路统计（不动 canonical state
+    hash）与 `backend report` 一次通过率聚合表、prompt 方言合同。
+  - Material deviation：`image prepare` 前置校验集成不成立（runtime 输入为
+    slides.json 不经手母版 md），母版校验归属 agent 合同层（已记 known-issues）。
+  - 三项收尾验证：backend_stats token 维度（`--tokens` 透传 + `backend report`
+    `tokens_total` 聚合，CLI 冒烟 0.667/11100）；P25 规格表机读比对
+    `check_table_values.py`（期望值清单 × OCR 回读，4 单测）；diagram_render
+    strict asset 真实图片合成端到端（4 节点流程图 2560×1440，视觉判定语义保持），
+    含 vendored `image_gen.py` `_edit expected_size` 登记式修复（上游 sync 可丢弃）。
+  - 全量测评：49 用例全量轮 40 绿；我方 4 例经修复转绿（judge 锁定语义放宽、
+    SKILL 品牌钩子上首屏），`mismatch-warning-once` 四轮确证模型三形态摆动后标
+    `model_gating`；其余 5 例为并行会话 in-flight 新用例归其工作面。单测全套
+    绿（boundary 4 套件 + installer 14）。
 - **镜像技能对通用安装器默认隐藏** (user-visible) — 四棵 spec-first 宿主镜像树
   （`.agents/`、`.claude/`、`.kiro/` 各 35，`.codex/` 无）共 105 个 SKILL.md 注入
   `metadata.internal: true`：裸 `npx skills add leo-kuang-ai/leo-skills` 的发现
@@ -17,6 +300,23 @@ adheres to a loose semantic-versioning convention.
   重生成覆盖（AGENTS.md 已记重放约定）；四份 README 方式一主命令回归裸命令形态
   （`-s` 降为单装变体）。镜像入库决策（f27e789）不变，clone-即得治理保留。
   计划:docs/plans/2026-08-29-005-feat-hide-mirror-skills-internal-plan.md。
+- **leo-ppt-generator 模版推荐与多行业批次 1 落地（001 计划 + 技术方案 v2 批次 1）**
+  (user-visible)
+  - 模版推荐与选择（`docs/plans/2026-08-28-001` 全五用例绿）：新增
+    `references/style-recommendation.md`（信号映射/四行呈现带归因/四式指定
+    优先序 点名>参考图>推荐/浏览三视图/错配首次必提示后尊重并记录依据/照图做
+    只提视觉系统经样张并排比对/样张双生提议制含成本告知落选即弃）；workflow
+    步骤 4/6 重写、style-library 照图节、input-routing 指路、SKILL 首屏钩子。
+  - 多行业批次 1：五行业 `_content_rules.md`（医疗五档+广告法 16 条分组+营销/
+    学术双力度；政务国家秘密三级拒做；金融私募/资管红线；学术 embargo 两式；
+    咨询行动标题与依据回指）；数字登记表合同（单源+例外清单确认面）与
+    `scripts/check_number_ledger.py`（6 单测）；`data_classification` 分级门与
+    PHI 可识别性门；4 新 reason code；visual-qa 判据两行+表述合规块+镜头池；
+    SKILL 分级入确认序列不豁免。评测：13 新用例全绿（模版 5 + 行业 8，judge
+    自包含+双向离线自检），known-issues 记录收敛过程与并行会话重叠规避
+    （argument_role/备注双段已由并行会话落地，未重复）。回归抽样 3/3 绿：两例
+    经跨会话集成适配——gates 判官样张断言语义组化；master 用例适配"页数口径/
+    首答合同冻结"新合同并新增"首轮冻结合同须预告剩余确认序列"钩子。
 - **仓库安装文档对齐 nuwa-skill 三式结构** (user-visible) — 根 README 与三个技能包
   README 的安装节统一为「方式一通用一行命令（`npx skills add leo-kuang-ai/leo-skills
   -s …`，vercel-labs/skills 安装器，78+ 宿主）/ 方式二手动 clone 宿主路径表（保留
@@ -27,6 +327,175 @@ adheres to a loose semantic-versioning convention.
   列出，故主命令用 `-s` 精确圈定，镜像排除的仓库侧适配另立后续工作。贡献约定补记
   marketplace.json 双通道语义（Claude Code 插件市场 + 通用安装器）。
   计划:docs/plans/2026-08-29-004-docs-nuwa-style-install-plan.md。
+- **leo-ppt-generator: generate 路线页数契约** (user-visible) — 用户页数
+  默认指内容页,封面与收尾页为必选结构页额外计入(说 15 页 → 成品 17 页,
+  合同呈现结构拆解算式);明确总页数措辞(「总共/不超过/恰好 X 页」)按字面
+  执行且不再询问,模糊措辞在合同冻结前询问一次口径(给出默认与换算);
+  数字 ≤2 且未明示要结构页时按卡片处理不加结构页;去尾页时末页承担收束
+  职能(回扣 `one_thing`),叙事三查③时长含结构页、第 12 步页数核对以合同
+  成品总页数为基准;rebuild/upgrade 路线豁免。落地:image-deck-workflow.md
+  第 1/2/12 步、deck-master.md 母版纪律、input-routing.md generate 确认项;
+  新增 page-count-ambiguous-asks / page-count-explicit-total /
+  page-count-no-closing / page-count-tiny-deck 评测用例与否定感知 judge
+  (v2:窗口化否定检测/全文匹配/询问三重守卫,对抗语料 58 样本零假接受
+  零假拒绝)。多维测评(2026-08-29,docs/leo-ppt-generator-eval-pagecount-0829.md):
+  全量 39 用例快照双分片并行回归 + judge 对抗 + 契约一致性审查;修复 P1
+  契约矛盾(卡片条款 vs 封面必选,补卡片豁免)、三查落点与短 deck 豁免、
+  master-before-render 用例适配(显式总数+密级,复验 PASS)、judge 假接受
+  15→0;control-plane 用例 13 连败后首过;4 个可复现失败属并行风格/文档门
+  工作面,已移交对应 owner。
+  计划:docs/plans/2026-08-29-003-feat-leo-ppt-page-count-contract-plan.md。
+- `docs/leo-ppt-generator-eval-industry-0830.md` — 多行业自主测试报告(2026-08-30):
+  五行业内容域 10 评测用例独立复验 10/10 且合规硬门禁组二轮复跑零波动;
+  咨询法律(无用例行业)探索快测响应命中数据分级 CONFIRM-GATE/确认序列预告/
+  三级标注路由/法律意见红线全部预期,声称规则经 _content_rules.md:11-13,29
+  逐条核对真实——行业门禁体系在真实 agent 行为层全部生效。附咨询法律永久
+  用例改造建议。
+- `docs/leo-ppt-generator-eval-pagecount-0829.md` — 页数契约多维测评报告(2026-08-29):
+  39 用例快照双分片 /tmp 隔离并行回归 + judge 58 样本对抗语料 + 契约一致性
+  审查三维度;judge 假接受 15→0/假拒绝 2→0,契约 P1 矛盾(卡片条款 vs 封面
+  必选)与两处 P2 修复,页数契约专项 5 用例全绿;/tmp 干净副本 9 例失败经
+  仓库目录对照 5 例确证为无播种环境差异,4 例可复现失败属并行工作面移交。
+- `docs/leo-ppt-generator-eval-docgates-0829.md` — 内容确认文档门多轮测评报告(2026-08-29):
+  6 用例×3 轮真实运行(18 case-run),通过 14(77.8%);5 次失败逐条取证同归因——skill-up
+  无前置播种导致叙述前提与技能反编造纪律冲突(agent 核查沙箱无文件后正确阻断),
+  0 次语义违规、0 次 judge 误杀;大纲门直出/中断恢复/advise 边界 3 用例 3/3 满稳。
+  新增 4 个维度用例与 judge(修订回路/确认后修订/中断恢复/advise 边界)永久入套件,
+  套件扩至 30 用例;建议 harness 增加 content/ 前置 fixture 播种。
+- **leo-ppt-generator: 内容确认文档门（generate 路线）** (user-visible) — 大纲与
+  逐页母版确认前必须落盘为 `<project-root>/content/` 版本化文档
+  （`outline-v<N>.md` / `deck-master-v<N>.md`，头部 `confirmation` 状态标记 +
+  `revision_kind: post-confirm` 修订链），聊天只引用路径与变更摘要、不整篇复述；
+  project-root 冻结提前到内容合同确认后并新增 `content/` 固定子目录
+  （execution-contract.md，含中断恢复真值规则）；image-deck-workflow.md 步骤
+  1/2/3/3a/7 改写为文档门语义（slides.json 从最高 confirmed 基线母版派生并归档
+  进 run input）；deck-master.md 真值工件前置到确认前；SKILL.md 不变边界补文档门
+  条款（仅 execute 模式）。新增 outline-doc-before-confirm /
+  master-doc-before-confirm 评测用例与 judge（否定感知断言路径引用+等待确认+无
+  生成声明）。计划：docs/plans/2026-08-29-002-feat-leo-ppt-content-doc-gates-plan.md。
+- `docs/plans/2026-08-29-002-feat-leo-ppt-content-doc-gates-plan.md` — leo-ppt-generator
+  内容确认文档门统一计划（brainstorm 产物，已经 spec-plan 充实为 implementation-ready）：
+  generate 路线大纲与逐页母版确认前必须落盘为 project-root `content/` 子目录的版本化文档
+  （`outline-v<N>.md` / `deck-master-v<N>.md`，头部 `confirmation` 状态标记支持断点续传），
+  聊天只引用路径+摘要；project-root 冻结提前到内容合同阶段，母版文档成为 run 冻结输入
+  来源。已拍板：单向审阅回路、仅文档/评测层执行深度（不动 runtime CLI）、确认后修订不重
+  确认、视觉方向/样张批准不落盘（恢复时重问）。4 个实现单元：执行合同与不变边界、工作流
+  步骤改写、母版规范对齐、新增 outline-doc-before-confirm 与 master-doc-before-confirm
+  两个评测用例（分别断言大纲门与母版门"确认前已落盘并引用路径"；母版门用例沿用套件
+  叙述前置状态惯例）。依据 dogfood 会话
+  sess_0937ad1d 的大纲/母版仅存聊天的缺陷。
+- `docs/leo-ppt-generator-eval-6industries-0829.md` — 六行业全流程测评报告(2026-08-29):
+  一题六景(金融/医疗/制造/教育/政务/零售),6 个场景 agent 两波并行真实执行完整
+  generate 流程(母版→style render --materialize→样张自审→prepare→逐页 gpt-image-2
+  真实生成 36 张→record→assemble→机检),主持人独立读图抽检。总分 76/84(90.5%):
+  内容纪律与风格系统满分级——unknown 埋点 6/6 拒上版、估算 6/6 双重标注、数字逐字
+  一致、medical P21 实证「无数据授权竖线→hairline 网格」红线可执行、六种风格身份
+  肉眼可辨;失分集中于工程摩擦,四大缺陷登记:image edit 模式 vendor bug(缺
+  expected_size,6/6 命中,降级 generate)、prepare 契约四连坑(顶层数组口径/时序/
+  指纹死锁/notes 字段)、assemble 输出路径限制、reason code 兜底化掩盖子因。产物存
+  `leo-ppt-workspace/eval-6ind-0829/`(git-ignored)。
+- **leo-ppt-generator: 风格系统优化计划 W1–W3 全单元落地（U1–U10）** — 承接
+  `docs/plans/2026-08-29-001-feat-leo-ppt-style-system-optimization-plan.md`（经三 persona
+  方案审查 20 findings 修复后执行）。runtime：`style render` 新增 `--color role=HEX`（deck 级
+  调色板覆盖，四条违例路径统一稳定码 `style_color_override_invalid` 并登记 reason-codes）与
+  `--guardrail`（确定性设计护栏摘要，缺省输出逐字节不变——评审实测证实）；`TemplateError`
+  纳入 CLI 错误面（envelope 化，修复裸 traceback）。工件：`style-brief-v1.schema.json` +
+  `lint_style_briefs.py`（schema 单真值源派生、白名单只缩不涨、--force 显式扩入）+
+  410 条存量基线；11 份顶层 brief palette/typography 定型（补齐 6 份缺子键/空角色值，全部
+  带 HEX 锚点）。版式：新增 P32 Agenda/P33 Team/P34 Quote/P35 Data Wall/P36 Ambience
+  （P23–P29 让渡多行业线），Schema/路由×2/关键类清单/_INDEX 登记闭环；修 P20 重复行、
+  P3 刻度 9.2、P8 专属类漏登、P36 遮罩纪律。规范：通用设计规范新增全局字体栈三档/行高
+  阶梯/pt 换算判据/每页字数上限/仪式页配额/deck 级动效规范；visual-qa 新增「标题形态断言」
+  判据行（KTD8 独占）；图表样式规范注册进按需索引链并补线宽 1–1.5px 条款；设计体系改写
+  为三层 token + 明暗配对机制。风格：新增迷幻国潮 2.0 / 暖调柔形（零 lint 警告）；配对表
+  +2 行、断表修复；_INDEX/style-library/设计体系全部二级计数同步（137 风格/130 分节轴/
+  15 图表语法/32 版式库/86 配对/29 Schema）。评测：新增 3 用例（guardrail 可见性/断言标题/
+  密度上限，否定感知判官）注册后 24 例。AGENTS/CLAUDE 登记双 lint。经两路多 agent 审查
+  （runtime 代码 + 文档纪律，含独立复跑）共 18 findings 全部修复。验证：59/59 单测、
+  brief lint errors=0、grid lint errors=0、`style list`=137、rg 引用完整性归零、
+  golden 随金字塔模式增强再生。(user-visible)
+
+### Fixed
+
+- **leo-ppt-generator: 图片式页图/画布宽高比失配根因修复（16:9 门禁）** — 2026-08-29
+  交付事故：页图按历史样张方法以 1536×1024（3:2）生成，vendor 组装默认 `contain`
+  等高放置进 10×5.625in（16:9）画布，13 页每页左右各 0.781in 白边（15.6% 画布宽度）；
+  结构门无比例断言、三轮视觉审查因白边与暖白底融合而全部漏检（8/22 旧版同缺陷）。
+  根因三层修复：①`SKILL.md` 不变边界新增"页图与交付画布必须同比例"硬合同（样张提交/
+  方法继承/交付前三处断言，继承前必须核验像素尺寸档，比例不符视为 generation method
+  变更须重新确认样张）；②`image-deck-workflow.md` 样张尺寸档硬合同（基准 2560×1440；
+  backend 自由尺寸能力以 backend contract/registry 校验为准，文档与提示词不写死模型
+  名）、继承守卫、组装前门禁与五层质量门 PPTX 结构层扩充；③`prompts/slide-worker.md`
+  画布比例硬约束（禁止假设模型尺寸档、禁止静默降档非 16:9，新增
+  `blocker=aspect_ratio_method_mismatch` / `aspect_ratio_unsupported` 稳定码）、产出
+  PNG 头像素自检与 `output_pixels` 返回字段。新增确定性门禁
+  `scripts/check_deck_geometry.py`（纯标准库：断言画布比例、页图满幅覆盖率 ≥98%、
+  无拉伸，支持 srcRect；内置 3 fixture 自测），并登记进工作流第 12 步与非补偿质量门。
+  验证：自测 3/3 通过；对事故版 PPTX 13 页全部拦截（84.4% 覆盖率）。(user-visible)
+
+### Changed
+
+- **evidence-first-writing: 全面对分档放松——问询例外化、交付场景分档、风格规则降为可覆盖默认** (user-visible) — 针对「模式过于死板」反馈的三层行为合同改造；事实红线（不编造来源/引语/数字/经历）、因果红线与授权边界不动：
+  - **入口层**（intent-routing.md + SKILL.md）：「裸主题硬路由」改为分级路由——含体裁/读者/渠道/用途任一信号的请求（如「深度分析」「面向工程师」）声明一句有边界假设后直接进入 workflow，仅完全无信号且候选 family 分叉时才问一个分叉问题（问询从默认降为例外）；route card 默认内部生成不展示，仅用户要求或存在改变交付物的假设时展示。
+  - **流程层**（editorial-pipeline.md）：新增「chat 交付」场景开关——无发布计划的请求在任意 depth 自动省略 Node 13 发布包装、平台测试与 Node 14 复盘，编辑说明压缩 2-3 行，YAML 状态块仅发布级/用户要求输出；Node 9 标题候选 chat 默认 1 个；Node 11 允许 quick/chat 合并相邻阶段（各 owner 检查结论保留）；Node 12 事实回归新增 `not_applicable (fresh draft)` 豁免（须附对照证据账本的人工语义核对，`not_run` 保留给「该做未做」）；Node 5 证据账本粒度与不确定性标注密度按 evidence_risk 分档。
+  - **风格层**（chinese-editorial-protocol.md + editorial-taste.md + portable-prompt.md）：22 条降为「诊断启发」（无实质命中一行通过，不逐项放行）；七类检测报告分档（干净稿一行通过，完整七类仅 audit/用户要求）；「两轮改写」改为条件触发改写并删除压缩 20% 默认目标（以信息密度为准）；新增「语域跟随体裁与渠道」三档基线语域（技术博客/公众号/知乎），格式默认可被用户与渠道规范覆盖；editorial-taste.md 限定语密度受密度约束；portable-prompt.md 模板与 source-analysis.md 同步新口径。
+  - **评测**：新增 `signal-bearing-topic-proceeds`（分级路由正向，断言假设声明 + family 归属 + 进入执行，timeout 480s）注册进 eval.yaml 与 routing-smoke 分组；eval-plan.md Case 2/6/13/21 同步；判官 `check-causal-boundary.sh` 扩词（照写/确立，附 7/7 重放与对抗 fixture 复验）；`chinese-protocol-context-judgment`/`train-voice-provisional` case any-list 按同义词惯例扩词（留余地/口语；确认没问题/先不动文件/说一声）；安全类断言（因果红线、post-publish 合同、只读边界）零削弱；裸主题既有 case（真裸主题输入）原样通过。
+  - 验证：单测 7/7（含判官重放矩阵）；全量 32 case 首轮 26 PASS（iteration-73），5 FAIL + 1 ERROR 逐案归因为判官/case 词表未命中、间歇性漏报与超时（详见 `evals/known-issues.md` 2026-08-29 节），扩词/修复后聚焦复跑全数 PASS（iteration-74/75）；净结果 31/32 PASS，唯一 FAIL 为在案 known-issue `post-publish-no-causal-unprompted`（GLM flash 自发合同词汇缺口，先于本次改造存在，断言有意保持）。
+
+- leo-ppt-generator: 大师评审团 20 轮审查决议首批落地(user-visible)——按
+  `docs/leo-ppt-generator-master-panel-20-rounds-review.md` R13/R15/R11/R12/R14/R16/R17/R18
+  决议逐单元推进,共 8 单元:
+  - **注入链工程修复(R13)**:`templates.py` 六项修复——`_field` 正则真正兼容两种冒号
+    形态(此前 docstring 宣称兼容但实测对标准形态返回空)、`_table` 跳过 `|---|` 分隔行、
+    `compose_layout` 对空 purpose/skeleton 抛 `TemplateError`(P9 空骨架不再静默注入)、
+    `load_layout` 规则文档拒绝 + P 编号精确匹配("P1" 不再子串误中 P10-P19)+ 歧义列
+    候选、`compose_style` 非贪婪 JSON 提取并包装 `JSONDecodeError`、`_is_style_md` 改为
+    fenced block 可解析验真;新增 `materialize_composition` 网格物化(CSS 骨架译为生图
+    构图指令)与 CLI `style render --materialize` 旗标(缺省输出不变)。测试可发现性
+    修复(tests/ 补 `__init__.py`,存量 21 测试首次被 discover 真实执行)。
+  - **数据诚实制度(R15)**:新建 `references/styles/00_索引/图表样式规范.md`——
+    chartjunk 禁令(尺寸必须由数据授权)、置信度形状语法(引用=实心/估算=纹理+「~」/
+    示意=禁入量化图形含 KPI 卡)、零基线/截断轴/跨页同尺度判据、色盲双线索、图片式
+    路线数据密度路由(≥6 点→可编辑/混合,4-5 点→形状语法,≤4 巨数→数字海报)与
+    stylized 图表披露;14 处 `data-journalism` 悬空引用全部改指新规范(引用归零)。
+  - **引用完整性(W1-U2 + R19)**:顶层 `麦肯锡风格.md` 去重删除(`style list` 名称
+    变更为 `麦肯锡咨询风`,135 份单通道);`设计体系.md`「全部落地完成」不实宣称改为
+    如实状态声明;`_INDEX.md` list_styles 口径修正为与代码一致(递归枚举);
+    `风格路由.md` 品牌覆盖空头支票改标「规划中」,幽灵条目「稳重商务风(红金变体)」
+    改指真实存在的政务行业风格。
+  - **版式库(R12)**:P9 收尾页空骨架补全;P20 `min(13vw,16vh)` 比值 1.23 修复为
+    `min(13vw,21vh)`;新建 P30 Swiss Image Split / P31 Swiss Evidence Grid 版式
+    (P23/P24 悬空引用改指);新建 `00_索引/版心Canon.md` 版心 token 单一真值 +
+    `scripts/lint_layout_grid.py` off-grid lint(双约束比值 error / 0.4vw 模数豁免
+    登记,现存 3 项);`12_版式库/02_关键类清单.md` 关键类真值(未登记类不得引用);
+    `09_结构布局/通用核心.md` 补骨架真值映射声明(12_版式库为唯一骨架真值)。
+  - **护栏升级(R11/R14/R17)**:`通用设计规范.md`——排印三档表情(Whisper/Speak/
+    Shout,档内一致+Shout 登记制例外)、身份字体声明必填、字号下限双口径(2560 生图
+    口径正文 ≥32px)、CJK 正字距铁律、配色三制式(mono/dual/poly-pop)、活跃占比
+    分档(极简 40-60%)、密度禅档位(0-1/≤3/≤6 按页面角色)、AI 图像来源三级标注
+    (实拍/生成-氛围/生成-示意,生成图禁入证据槽);`03_Statement.md` 负字距修复、
+    文字计量改「字」;`visual-qa.md` 判据表扩充(形状语法/图像来源/双口径/三档校验)
+    与镜头池新增「数据图形/图像来源」镜头。
+  - **叙事合同(R16/R17)**:`image-deck-workflow.md` 内容合同新增 `one_thing` 必填
+    与哇点登记(S.T.A.R.);母版字段扩展(argument_role/beat/audience_takeaway)与
+    减法审计;数据密度路由(3a 步);组装前叙事三查(首尾回扣/三关键点/Σ用时分级
+    校验:>15% 阻断);备注拆分 speaker_script(入 notes)/engineering(留 run 工件),
+    `speech.md` 悬空引用补定义;`deck-master.md` 重写四段合同;SKILL.md 母版摘要同步。
+  - **图表语法(R15.5)**:新增柱状图/折线图(xychart-beta)/迷你图 sparkline 三份
+    语法;12 份既有图表语法补「示例数字必须替换为 approved 真实数据」警示。
+  - **渲染守卫与品牌修正(R18/R14)**:20 份 `08_图片渲染` paste-ready 统一追加
+    no-text/no-logo/no-watermark 守卫 + 2560×1440 宽幅构图锚;20 处「下方 fewshot」
+    悬空引用清理;瑞士极简诱导生字措辞("Helvetica-adjacent typography")移除;
+    配对表「未被引用」清单失真修正(真孤儿 自然有机/黑板粉笔/剪纸层叠 补默认路由);
+    `google.md` 字体张冠李戴修正(Segoe UI→Google Sans/Roboto);党政红 typography
+    改为公文字体体系(小标宋标题+仿宋正文);20 份品牌文件统一 `verified_at` 核验
+    机制(交付前索取官方 token 或核验并登记日期)。
+  - 验证:单测 40/40 通过(含 16 项新注入链合同测试 + golden 确定性 fixture
+    `tests/fixtures/render_golden.json`);off-grid lint errors=0;`data-journalism`/
+    P23/P24 引用归零;`style list` 135 份单通道;评测:全量基线 18/21,3 例 FAIL 逐条归因均为判官否定感知不足或判据滞后于合同 v2(回复语义全部正确),按 AGENTS.md 否定感知准则修复三个 judge 词表/判据并复测 3/3 PASS(合计 21/21);归因与判官口径 v3 已记账 `evals/known-issues.md`。
+
+### Added
+
 - `docs/leo-ppt-generator-master-panel-20-rounds-review.md` — 世界级大师评审团 20 轮审查纪要:
   以 10 位设计师(Duarte/Reynolds/Vignelli/Tufte/Scher/Rams/Sagmeister/Vinh/Gallo/Bierut)的
   公开方法论为判据的角色化评审(并行 10 agent 直读源文件,~80 条发现 + 19 条签名洞察,
@@ -384,8 +853,6 @@ adheres to a loose semantic-versioning convention.
   comparison) embedded under the evidence-first-writing section. (user-visible)
 
 ### Changed
-
-- **evidence-first-writing: 三个关键停止点补显性视觉标记** — SKILL.md 在裸主题分叉问询（🛑 STOP：回答前禁止起草正文或生成大纲）、post-publish 因果红线标题（🔴）、未授权持久写入拦截（🔴 STOP：拒绝写入并停 `persistence: not_run`）三处补 `🔴/🛑` 显性标记；措辞与行为合同零变化，仅强化 LLM 解析时的检查点扫描（darwin-skill dim4 基线 7/10 短板项）。验证：3 独立 judge paired 比较 3-0 better（slight）；包级单测 7/7 通过；裸主题问询停止与未授权写入拦截两场景改后子 agent 复测与基线行为一致。
 
 - **插件版本发布** — `evidence-first-writing` 与 `leo-ppt-generator` 的
   `plugin.json` 版本 0.1.0 → 0.2.0：写作技能发布创作者化能力层（选题四问、

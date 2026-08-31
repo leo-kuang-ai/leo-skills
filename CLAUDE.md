@@ -49,7 +49,9 @@ python3 evidence-first-writing/scripts/check_factual_invariants.py before.md aft
 ```sh
 rg -n "TODO|FIXME" --glob '!AGENTS.md'
 git diff --check
+python3 leo-ppt-generator/scripts/lint_style_briefs.py
 ```
+新增风格 brief / 版式文件必须 lint 通过（warning 白名单仅限存量）。
 
 ## 架构一：证据优先写作技能
 

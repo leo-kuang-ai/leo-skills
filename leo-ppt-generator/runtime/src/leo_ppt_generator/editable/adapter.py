@@ -19,6 +19,7 @@ from .._vendor.editable_ppt.editppt.runtime import (
 
 # adapter 不导入 vendor 的领域状态模块。vendor 只作为无状态格式/构建工具；
 # 用户可见的 page_jobs.json 由本 adapter 唯一持有。
+from ..config import builder_selection
 from ..config.runtime_config import load_runtime_config
 from ..contracts import ContractError, PageArtifact
 from ..storage import (
@@ -30,6 +31,37 @@ from ..storage import (
     sha256_bytes,
     sha256_file,
 )
+
+
+def _builder(selection: str | None = None):
+    """Return the editable builder module for ``selection`` (F1-T4 dispatch).
+
+    ``legacy`` (default) keeps the vendored zip writer; ``pptx`` selects the
+    leo-owned object builder. Selection order: explicit argument (frozen run
+    field) → ``LEO_EDITABLE_BUILDER`` → ``legacy``.
+    """
+    if (selection or builder_selection.current()) == "pptx":
+        from . import object_builder
+
+        return object_builder
+    return _vendor_builder
+
+
+def _legacy_theme_warning(entries: list[dict[str, Any]]) -> None:
+    """legacy builder cannot compile ``theme`` sections (vendored writer frozen).
+
+    Warn — never fail — so manifests authored with theme metadata still build
+    through the legacy path during the migration double-run period.
+    """
+    for entry in entries:
+        manifest = entry.get("manifest") or {}
+        if isinstance(manifest, dict) and isinstance(manifest.get("theme"), dict):
+            print(
+                "warning: manifest carries a 'theme' section but builder=legacy ignores it; "
+                "set LEO_EDITABLE_BUILDER=pptx (or the run builder field) to compile theme slots",
+                file=sys.stderr,
+            )
+            return
 
 
 class EditableAdapter:
@@ -89,6 +121,10 @@ class EditableAdapter:
             "revision": 0,
             "run_status": "prepared",
             "prepare_fingerprint": fingerprint,
+            # F1-T4 run freeze: the effective builder is recorded at run
+            # creation; finalize/rebuild always dispatches on this field so a
+            # run never mixes builders across rebuilds, regardless of env.
+            "builder": builder_selection.frozen_field(),
             "pages": pages,
             "operations": {},
         }
@@ -478,7 +514,9 @@ class EditableAdapter:
             ):
                 return {**existing, "idempotency_status": "replayed"}
             raise ContractError("editable_finalize_manifest_conflict")
-        output_path = self.assemble_page_artifacts(artifacts, output)
+        output_path = self.assemble_page_artifacts(
+            artifacts, output, builder=builder_selection.from_frozen(jobs.get("builder"))
+        )
         fsync_file(output_path)
         delivery = {
             "delivery_type": "editable",
@@ -509,16 +547,21 @@ class EditableAdapter:
         return {**delivery, "idempotency_status": "created"}
 
     @staticmethod
-    def build_page_from_manifest(manifest: str | Path, output: str | Path) -> Path:
+    def build_page_from_manifest(manifest: str | Path, output: str | Path, *, builder: str | None = None) -> Path:
         manifest_path = Path(manifest).resolve()
         manifest_value = json.loads(manifest_path.read_text(encoding="utf-8"))
         output_path = Path(output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        _vendor_builder.write_pptx(manifest_value, output_path, manifest_path)
+        _builder(builder).write_pptx(manifest_value, output_path, manifest_path)
         return output_path
 
     @staticmethod
-    def assemble_page_artifacts(artifacts: list[PageArtifact], output: str | Path) -> Path:
+    def assemble_page_artifacts(
+        artifacts: list[PageArtifact],
+        output: str | Path,
+        *,
+        builder: str | None = None,
+    ) -> Path:
         if not artifacts:
             raise ContractError("empty_deck")
         slide_sizes = [EditableAdapter.slide_size_for_artifact(artifact) for artifact in artifacts]
@@ -553,9 +596,12 @@ class EditableAdapter:
             if artifact.notes:
                 notes.append({"page_index": number, "text": artifact.notes})
         output_path = Path(output).resolve()
+        builder_module = _builder(builder)
+        if builder_module is _vendor_builder:
+            _legacy_theme_warning(entries)
 
         def build(destination: Path) -> None:
-            _vendor_builder.write_deck(
+            builder_module.write_deck(
                 {"slide": {"width": slide_width, "height": slide_height}},
                 entries,
                 destination,

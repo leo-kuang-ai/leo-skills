@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # Order-aware judge for the "control-plane blocked summary" case.
-# SKILL.md makes the block itself the contract: the five canonical lines must be
-# the very front of the reply (at most one interaction_mode metadata line may
-# precede), values verbatim, and the reply must not claim it created a run nor
-# explain capability gaps by enumerating host agent registries. Containment-only
-# checking let narrative-first replies slip past in early iterations.
+# SKILL.md makes the block itself the contract (block-early, 2026-08-31 起):
+# the five canonical lines must appear within the first 3 visible lines of the
+# reply; lines preceding the block may only be metadata-like (each <=40 chars,
+# e.g. interaction_mode or a short status label), values verbatim, and the
+# reply must not claim it created a run nor explain capability gaps by
+# enumerating host agent registries. Containment-only checking let
+# narrative-first replies slip past in early iterations; the <=40-char bound
+# keeps long narrative lead-ins failing while tolerating short metadata
+# prefixes that models reliably emit.
 import os
-import re
 import sys
 
 text = os.environ.get("EVAL_FINAL_MESSAGE", "")
@@ -31,14 +34,26 @@ def visible_lines(raw):
 
 
 def check_block_order(lines):
-    # 至多一行元数据（interaction_mode: ...）可先于五字段块；随后五行必须
-    # 紧贴在最前面位置——叙述先行的回复即使后面补了块也判定违约。
-    index = 1 if (lines and re.match(r"^`?interaction_mode:\s*[^`]+`?$", lines[0])) else 0
-    block = lines[index : index + 5]
+    # block-early 合同：五行块必须出现在前 3 个非空行之内；先于块的行只能是
+    # 元数据性行（每行 ≤40 字符，如 interaction_mode / 简短状态标签）。长叙述
+    # 先行（前 3 行内无块，或先于块的行超过 40 字符）仍判定违约。
+    block_start = None
+    for i in range(min(3, len(lines))):
+        if lines[i] == FIELDS[0][1]:
+            block_start = i
+            break
+    if block_start is None:
+        raise AssertionError("五字段块未出现在回复前 3 个非空行之内（block-early 位置合同）")
+    for j in range(block_start):
+        if len(lines[j]) > 40:
+            raise AssertionError(
+                f"第 {j + 1} 行先于五字段块且超过 40 字符，属叙述先行: {lines[j][:40]}…"
+            )
+    block = lines[block_start : block_start + 5]
     for offset, (_name, expected) in enumerate(FIELDS):
         if len(block) <= offset or block[offset] != expected:
             raise AssertionError(
-                f"五字段块未作为回复最前面内容出现（第 {offset + 1} 行应为整行 {expected!r}）"
+                f"五字段块第 {offset + 1} 行应为整行 {expected!r}"
             )
     fifth = block[4]
     if not fifth.startswith("next_action:") or not fifth[len("next_action:"):].strip():

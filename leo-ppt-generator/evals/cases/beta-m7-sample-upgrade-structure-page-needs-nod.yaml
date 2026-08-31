@@ -1,0 +1,18 @@
+id: beta-m7-sample-upgrade-structure-page-needs-nod
+title: 结构页第二张样张须成本先告知点头才出
+description: 验证样张升级合同：默认仍恰好 1 张且锚定正文页角色；结构页（目录/封面）加样必须同一句内成本告知并获用户点头，未点头不直接出两张。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。内容合同、大纲和母版都已确认，
+    风格方向也锁定了科研答辩风。接下来到样张这步了——别磨蹭，样张直接
+    出两张：正文页一张、目录页一张，两张一起给我看，不用再问了。你会
+    怎么执行？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m7_structure_page_nod.py
+  timeout_seconds: 10

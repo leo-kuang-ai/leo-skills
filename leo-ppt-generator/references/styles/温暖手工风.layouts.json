@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "温暖手工风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：手工质感由材质纹理承担，不占文本区"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P10"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P5",
+        "P19",
+        "P33"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9",
+        "P36"
+      ],
+      "discouraged": []
+    }
+  ]
+}

@@ -17,13 +17,18 @@ import asyncio
 import base64
 from io import BytesIO
 import json
+import mimetypes
 import os
 from pathlib import Path
 import re
+import shutil
 import sys
+import tempfile
+import threading
 import time
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import urlparse
+from urllib.request import urlopen
 
 from image_providers import create_image_provider
 from image_providers.atlascloud import atlascloud_model_for_operation
@@ -53,6 +58,44 @@ MAX_BATCH_JOBS = 500
 DEFAULT_RUNTIME_HOME = "~/.codex-ppt-skill"
 ENV_FIELDS = ("OPENAI_API_KEY", "OPENAI_BASE_URL", "CODEX_PPT_IMAGE_MODEL")
 
+# Rate-limit policy (mirrors the geekai image adapter semantics): retry ONLY
+# HTTP 429, with a fixed 2s/4s/8s exponential backoff ladder, and throttle all
+# provider calls through a process-wide QPS limiter.
+HTTP_TOO_MANY_REQUESTS = 429
+RATE_LIMIT_BACKOFF_SECONDS = (2.0, 4.0, 8.0)
+IMAGE_QPS_ENV = "LEO_PPT_IMAGE_QPS"
+DEFAULT_IMAGE_QPS = 4.0
+
+# Batch resume (mirrors the geekai ppt-service semantics: persist each slide's
+# image as soon as it lands, and on resume regenerate only the slides whose
+# persisted record plus on-disk output are missing). The manifest is an
+# append-only JSONL log in the batch out-dir; one complete JSON object per
+# line, written immediately after each job's outcome is known.
+BATCH_MANIFEST_NAME = "batch-manifest.jsonl"
+MANIFEST_ERROR_SUMMARY_MAX_CHARS = 300
+
+# Version retention (--keep-versions): rotate a pre-existing output to
+# <stem>.v<N><ext> instead of overwriting it, and log every version to an
+# append-only image-history.jsonl next to the outputs (mirrors geekai's
+# slide image_history + SetActiveSlideVersion semantics).
+IMAGE_HISTORY_NAME = "image-history.jsonl"
+
+# Reference-image preprocessing (geekai PrepareReferenceInputsForImg2Img
+# semantics): local files become data URLs, remote/data URLs pass through.
+REFERENCE_MIME_TYPES = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".gif": "image/gif",
+}
+_MIME_TO_EXTENSION = {
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/webp": ".webp",
+    "image/gif": ".gif",
+}
+
 
 def _die(message: str, code: int = 1) -> None:
     print(f"Error: {message}", file=sys.stderr)
@@ -61,6 +104,101 @@ def _die(message: str, code: int = 1) -> None:
 
 def _warn(message: str) -> None:
     print(f"Warning: {message}", file=sys.stderr)
+
+
+class _QpsLimiter:
+    """Thread-safe fixed-interval throttle with no burst allowance.
+
+    Mirrors Go's rate.NewLimiter(qps, 1): at most `qps` acquisitions per
+    second, spaced `1/qps` apart. `reserve` plans the wait under the lock and
+    returns it; the caller sleeps outside the lock so concurrent threads never
+    serialize on the mutex while waiting. Clock and sleep are injectable for
+    tests.
+    """
+
+    def __init__(self, qps: float, *, clock=time.monotonic, sleep=time.sleep) -> None:
+        self._interval = 1.0 / qps if qps > 0 else 0.0
+        self._clock = clock
+        self._sleep = sleep
+        self._lock = threading.Lock()
+        self._next_ok = 0.0
+
+    def reserve(self) -> float:
+        """Reserve the next call slot and return how long to wait first."""
+        if self._interval <= 0.0:
+            return 0.0
+        with self._lock:
+            now = self._clock()
+            wait = max(0.0, self._next_ok - now)
+            self._next_ok = max(now, self._next_ok) + self._interval
+            return wait
+
+    def acquire(self) -> None:
+        wait = self.reserve()
+        if wait > 0:
+            self._sleep(wait)
+
+
+_RATE_LIMITER: Optional[_QpsLimiter] = None
+
+
+def _configured_qps() -> float:
+    raw = os.getenv(IMAGE_QPS_ENV, "").strip()
+    if not raw:
+        return DEFAULT_IMAGE_QPS
+    try:
+        qps = float(raw)
+    except ValueError:
+        _warn(f"Invalid {IMAGE_QPS_ENV}={raw!r}; using default {DEFAULT_IMAGE_QPS} QPS.")
+        return DEFAULT_IMAGE_QPS
+    if qps <= 0:
+        _warn(f"{IMAGE_QPS_ENV}={raw!r} must be > 0; using default {DEFAULT_IMAGE_QPS} QPS.")
+        return DEFAULT_IMAGE_QPS
+    return qps
+
+
+def _rate_limiter() -> _QpsLimiter:
+    global _RATE_LIMITER
+    if _RATE_LIMITER is None:
+        _RATE_LIMITER = _QpsLimiter(_configured_qps())
+    return _RATE_LIMITER
+
+
+def _is_rate_limit_error(exc: Exception) -> bool:
+    """True only for HTTP 429 rate limiting, not for other failures."""
+    status = getattr(exc, "status_code", None)
+    if isinstance(status, int) and status == HTTP_TOO_MANY_REQUESTS:
+        return True
+    name = exc.__class__.__name__.lower()
+    if "ratelimit" in name or "rate_limit" in name:
+        return True
+    msg = str(exc).lower()
+    return "429" in msg or "too many requests" in msg or "rate limit" in msg
+
+
+def _call_rate_limited(func, *, sleep=time.sleep):
+    """Run func() under the global QPS limiter with 429-only backoff retry.
+
+    Retries only HTTP 429 errors, sleeping 2s/4s/8s between attempts (one
+    initial call plus at most three retries). Any other exception propagates
+    immediately, and after the final retry the 429 itself propagates unwrapped
+    — errors are never swallowed. `sleep` is injectable for tests.
+    """
+    backoffs = RATE_LIMIT_BACKOFF_SECONDS
+    for attempt in range(len(backoffs) + 1):
+        _rate_limiter().acquire()
+        try:
+            return func()
+        except Exception as exc:
+            if attempt == len(backoffs) or not _is_rate_limit_error(exc):
+                raise
+            wait_s = backoffs[attempt]
+            _warn(
+                f"HTTP 429 rate limited; backing off {wait_s:.0f}s "
+                f"(retry {attempt + 1}/{len(backoffs)})"
+            )
+            sleep(wait_s)
+    raise RuntimeError("unreachable")  # pragma: no cover
 
 
 def _runtime_home() -> Path:
@@ -205,6 +343,69 @@ def _check_image_paths(paths: Iterable[str]) -> List[Path]:
             _warn(f"Image exceeds 50MB limit: {path}")
         resolved.append(path)
     return resolved
+
+
+def prepare_reference_inputs(items: Iterable[str]) -> List[str]:
+    """Normalize img2img reference inputs into provider-consumable strings.
+
+    Mirrors geekai's PrepareReferenceInputsForImg2Img: an existing local file
+    becomes a ``data:<mime>;base64,...`` URL (MIME inferred from the file
+    extension); http(s) URLs and already-encoded data URLs pass through
+    unchanged. Raises ValueError with a clear message for missing files or
+    extensions without a known image MIME type.
+    """
+    prepared: List[str] = []
+    for raw in items:
+        item = str(raw).strip()
+        if not item:
+            raise ValueError("empty reference image input")
+        if item.startswith("data:"):
+            prepared.append(item)
+            continue
+        if item.lower().startswith(("http://", "https://")):
+            prepared.append(item)
+            continue
+        path = Path(item).expanduser()
+        if not path.exists():
+            raise ValueError(f"reference image file not found: {item}")
+        mime = REFERENCE_MIME_TYPES.get(path.suffix.lower())
+        if mime is None:
+            supported = ", ".join(sorted(REFERENCE_MIME_TYPES))
+            raise ValueError(
+                f"unsupported reference image extension {path.suffix!r} for {item}; "
+                f"expected one of: {supported}"
+            )
+        encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+        prepared.append(f"data:{mime};base64,{encoded}")
+    return prepared
+
+
+def _is_remote_reference(raw: str) -> bool:
+    item = str(raw).strip()
+    return item.startswith("data:") or item.lower().startswith(("http://", "https://"))
+
+
+def _materialize_reference(prepared: str, tmp_dir: Path) -> Path:
+    """Stage one prepared reference (data URL or http URL) as a local file.
+
+    Both bundled providers' edit() contract requires local file Paths (they
+    re-encode to data URLs themselves where needed), so non-file references
+    normalized by prepare_reference_inputs are materialized to temp files for
+    the duration of the provider call.
+    """
+    if prepared.startswith("data:"):
+        header, _, payload = prepared.partition(",")
+        mime = header[len("data:") :].split(";", 1)[0] or "image/png"
+        data = base64.b64decode(payload)
+    else:
+        mime = mimetypes.guess_type(prepared)[0] or "image/png"
+        with urlopen(prepared, timeout=60) as response:
+            data = response.read()
+    suffix = _MIME_TO_EXTENSION.get(mime, ".png")
+    fd, name = tempfile.mkstemp(dir=str(tmp_dir), prefix="ref-", suffix=suffix)
+    with os.fdopen(fd, "wb") as fh:
+        fh.write(data)
+    return Path(name)
 
 
 def _normalize_output_format(fmt: Optional[str]) -> str:
@@ -486,25 +687,66 @@ def _decode_write_and_downscale(
     downscale_suffix: str,
     output_format: str,
     expected_size: str,
+    keep_versions: bool = False,
 ) -> None:
     for idx, image_b64 in enumerate(images):
         if idx >= len(outputs):
             break
         out_path = outputs[idx]
-        if out_path.exists() and not force:
+        # --keep-versions implies overwrite permission: the current file is
+        # preserved as a version first, so replacing it is lossless.
+        if out_path.exists() and not (force or keep_versions):
             _die(f"Output already exists: {out_path} (use --force to overwrite)")
         out_path.parent.mkdir(parents=True, exist_ok=True)
+        history_path = out_path.parent / IMAGE_HISTORY_NAME
+
+        if keep_versions and out_path.exists():
+            # Rotate atomically (os.replace): the active path either holds the
+            # old bytes or the new bytes, never a half-written mix.
+            slot = _next_version_slot(out_path)
+            archived = _version_file_path(out_path, slot)
+            os.replace(out_path, archived)
+            _append_history_record(
+                history_path,
+                {
+                    "output": out_path.name,
+                    "version": f"v{slot}",
+                    "file": archived.name,
+                    "bytes": archived.stat().st_size,
+                    "timestamp": _utc_now_iso(),
+                    "active": False,
+                },
+            )
 
         raw = base64.b64decode(image_b64)
         _validate_generated_image_bytes(raw, expected_size)
-        out_path.write_bytes(raw)
+        if keep_versions:
+            _write_bytes_atomic(out_path, raw)
+        else:
+            out_path.write_bytes(raw)
         print(f"Wrote {out_path}")
+
+        if keep_versions:
+            # The new active content is labeled with the slot it would occupy
+            # when archived later, keeping version labels and .vN files in
+            # lockstep across rotations and set-active switches.
+            _append_history_record(
+                history_path,
+                {
+                    "output": out_path.name,
+                    "version": f"v{_next_version_slot(out_path)}",
+                    "file": out_path.name,
+                    "bytes": out_path.stat().st_size,
+                    "timestamp": _utc_now_iso(),
+                    "active": True,
+                },
+            )
 
         if downscale_max_dim is None:
             continue
 
         derived = _derive_downscale_path(out_path, downscale_suffix)
-        if derived.exists() and not force:
+        if derived.exists() and not (force or keep_versions):
             _die(f"Output already exists: {derived} (use --force to overwrite)")
         derived.parent.mkdir(parents=True, exist_ok=True)
         resized = _downscale_image_bytes(raw, max_dim=downscale_max_dim, output_format=output_format)
@@ -599,6 +841,204 @@ def _job_output_paths(
     ]
 
 
+def _manifest_path(out_dir: Path) -> Path:
+    return out_dir / BATCH_MANIFEST_NAME
+
+
+def _utc_now_iso() -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _error_summary(exc: Exception) -> str:
+    # Collapse whitespace so multi-line provider errors stay readable on one
+    # manifest line; truncate to keep lines bounded.
+    text = " ".join(str(exc).split())
+    return text[:MANIFEST_ERROR_SUMMARY_MAX_CHARS]
+
+
+def _load_manifest_success_jobs(manifest_path: Path) -> set:
+    """Return job indexes that have a success record in the batch manifest.
+
+    The manifest is the resume truth, mirroring geekai's per-slide image
+    records: only a persisted "ok" line counts as done. A crash can leave a
+    truncated trailing line, so malformed lines are skipped with a warning
+    instead of aborting the resume.
+    """
+    done: set = set()
+    if not manifest_path.exists():
+        return done
+    for line_no, raw in enumerate(manifest_path.read_text(encoding="utf-8").splitlines(), start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            _warn(f"Batch manifest line {line_no} is not valid JSON ({exc}); ignoring it.")
+            continue
+        if not isinstance(record, dict):
+            _warn(f"Batch manifest line {line_no} is not a JSON object; ignoring it.")
+            continue
+        if record.get("status") != "ok":
+            continue
+        try:
+            done.add(int(record["job"]))
+        except (KeyError, TypeError, ValueError):
+            _warn(f"Batch manifest line {line_no} has no usable job index; ignoring it.")
+    return done
+
+
+class _BatchManifestWriter:
+    """Append-only JSONL manifest writer; one complete line per job outcome.
+
+    Each record is serialized to a single string and appended with one write
+    followed by flush, so a crash can at most truncate the final line — every
+    fully written line stays parseable on resume. If a previous crash left a
+    partial trailing line without its newline, a separator newline is written
+    first so the new record does not get glued onto the broken line.
+    """
+
+    def __init__(self, path: Path) -> None:
+        self._path = path
+        self._lock = threading.Lock()
+
+    def append(self, record: Dict[str, Any]) -> None:
+        line = json.dumps(record, ensure_ascii=False)
+        with self._lock:
+            self._path.parent.mkdir(parents=True, exist_ok=True)
+            needs_separator = False
+            if self._path.exists() and self._path.stat().st_size > 0:
+                with self._path.open("rb") as probe:
+                    probe.seek(-1, os.SEEK_END)
+                    needs_separator = probe.read(1) != b"\n"
+            with self._path.open("a", encoding="utf-8") as fh:
+                if needs_separator:
+                    fh.write("\n")
+                fh.write(line + "\n")
+                fh.flush()
+
+
+def _write_bytes_atomic(path: Path, data: bytes) -> None:
+    """Write bytes via a sibling temp file + os.replace so a crash never
+    leaves a half-written active file."""
+    fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as fh:
+            fh.write(data)
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
+
+
+def _version_file_path(output: Path, slot: int) -> Path:
+    return output.with_name(f"{output.stem}.v{slot}{output.suffix}")
+
+
+def _next_version_slot(output: Path) -> int:
+    """First unclaimed version slot (v1, v2, ...) for this output."""
+    slot = 1
+    while _version_file_path(output, slot).exists():
+        slot += 1
+    return slot
+
+
+def _append_history_record(history_path: Path, record: Dict[str, Any]) -> None:
+    # Reuse the crash-safe append-only JSONL writer from the batch manifest.
+    _BatchManifestWriter(history_path).append(record)
+
+
+def set_active(history_file: Path, output_name: str, version: str) -> Path:
+    """Re-activate a previously archived version of an output image.
+
+    Copies (never moves — the version file itself stays) the recorded
+    version file over the active output path via temp copy + os.replace, then
+    appends an active:true line to the history. The history is append-only:
+    for a given output the LAST active:true line is the activation truth and
+    every earlier line is implicitly superseded (inactive), so rotation never
+    rewrites history rows. Raises ValueError with a clear message when the
+    history file, the version record, or the version file is missing.
+    """
+    if not history_file.exists():
+        raise ValueError(f"image history file not found: {history_file}")
+    records: List[Dict[str, Any]] = []
+    for line_no, raw in enumerate(history_file.read_text(encoding="utf-8").splitlines(), start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            _warn(f"Image history line {line_no} is not valid JSON ({exc}); ignoring it.")
+            continue
+        if isinstance(record, dict):
+            records.append(record)
+    matches = [
+        rec
+        for rec in records
+        if rec.get("output") == output_name and str(rec.get("version")) == version
+    ]
+    if not matches:
+        raise ValueError(
+            f"version {version} not found in {history_file} for output {output_name}"
+        )
+    file_name = str(matches[-1].get("file") or "")
+    version_file = history_file.parent / file_name
+    if not file_name or not version_file.exists():
+        raise ValueError(f"version file for {version} is missing: {version_file}")
+    active_path = history_file.parent / output_name
+    fd, tmp_name = tempfile.mkstemp(
+        dir=str(history_file.parent), prefix=active_path.name + ".", suffix=".tmp"
+    )
+    os.close(fd)
+    try:
+        shutil.copyfile(version_file, tmp_name)
+        os.replace(tmp_name, active_path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
+    _append_history_record(
+        history_file,
+        {
+            "output": output_name,
+            "version": version,
+            "file": active_path.name,
+            "bytes": active_path.stat().st_size,
+            "timestamp": _utc_now_iso(),
+            "active": True,
+        },
+    )
+    return active_path
+
+
+def _job_outputs_complete(outputs: List[Path]) -> bool:
+    """True when every declared output exists and is non-empty."""
+    return all(p.exists() and p.stat().st_size > 0 for p in outputs)
+
+
+def _success_record(job_index: int, outputs: List[Path], job: Dict[str, Any]) -> Dict[str, Any]:
+    record: Dict[str, Any] = {
+        "status": "ok",
+        "job": job_index,
+        # `output` names the primary output; for n>1 jobs `bytes` is the total
+        # across all outputs written by this job (informational only — resume
+        # completeness is re-checked against the files themselves).
+        "output": outputs[0].name,
+        "bytes": sum(p.stat().st_size for p in outputs),
+        "timestamp": _utc_now_iso(),
+    }
+    page_type = job.get("page_type")
+    if page_type:
+        record["page_type"] = str(page_type)
+    return record
+
+
 async def _run_generate_batch(args: argparse.Namespace) -> int:
     jobs = _read_jobs_jsonl(args.input)
     out_dir = Path(args.out_dir)
@@ -664,7 +1104,17 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
     provider = create_image_provider(api_key=os.getenv("OPENAI_API_KEY"), base_url=_api_base_url())
     sem = asyncio.Semaphore(args.concurrency)
 
+    # Per-page persistence: every job outcome is appended to the manifest as
+    # soon as it is known, so an interrupted batch leaves an exact record of
+    # which pages are done. --resume then trusts only persisted "ok" records
+    # whose outputs are still present and non-empty (the file check guards
+    # against outputs deleted or truncated after the manifest was written).
+    resume = bool(getattr(args, "resume", False))
+    manifest = _BatchManifestWriter(_manifest_path(out_dir))
+    done_jobs = _load_manifest_success_jobs(_manifest_path(out_dir)) if resume else set()
+
     any_failed = False
+    stats = {"resumed": 0, "skipped": 0, "generated": 0, "failed": 0}
 
     async def run_job(i: int, job: Dict[str, Any]) -> Tuple[int, Optional[str]]:
         nonlocal any_failed
@@ -693,9 +1143,25 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
             n=n,
             explicit_out=job.get("out"),
         )
+        if resume and i in done_jobs and _job_outputs_complete(outputs):
+            stats["resumed"] += 1
+            stats["skipped"] += 1
+            print(
+                f"{job_label} output already complete per {BATCH_MANIFEST_NAME}; skipping",
+                file=sys.stderr,
+            )
+            return i, None
         try:
             async with sem:
                 print(f"{job_label} starting", file=sys.stderr)
+                # Global QPS throttle for the batch path too. The 429 backoff
+                # itself stays inside provider.generate_batch, which already
+                # retries transient errors (including 429) on a 2/4/8s ladder
+                # honoring Retry-After; stacking another retry loop here would
+                # multiply the attempt count per job.
+                throttle_s = _rate_limiter().reserve()
+                if throttle_s > 0:
+                    await asyncio.sleep(throttle_s)
                 started = time.time()
                 images = await provider.generate_batch(
                     payload,
@@ -707,15 +1173,33 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
             _decode_write_and_downscale(
                 images,
                 outputs,
-                force=args.force,
+                # --resume owns the missing pages, so overwriting a stale,
+                # orphaned, or truncated target when regenerating a job is
+                # intentional even without an explicit --force.
+                force=args.force or resume,
                 downscale_max_dim=args.downscale_max_dim,
                 downscale_suffix=args.downscale_suffix,
                 output_format=effective_output_format,
                 expected_size=str(payload["size"]),
+                keep_versions=getattr(args, "keep_versions", False),
             )
+            manifest.append(_success_record(i, outputs, job))
+            stats["generated"] += 1
             return i, None
         except Exception as exc:
             any_failed = True
+            stats["failed"] += 1
+            # Failure lines are audit-only: resume keys strictly on "ok"
+            # records, so recording errors can never cause a page to be
+            # skipped (mirrors geekai persisting err_msg on failed tasks).
+            manifest.append(
+                {
+                    "status": "error",
+                    "job": i,
+                    "error": _error_summary(exc),
+                    "timestamp": _utc_now_iso(),
+                }
+            )
             print(f"{job_label} failed: {exc}", file=sys.stderr)
             if args.fail_fast:
                 raise
@@ -731,6 +1215,14 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
                 t.cancel()
         raise
 
+    # `resumed` counts jobs reused from a prior run via --resume; `skipped` is
+    # the general did-not-call-the-provider bucket and currently equals it.
+    print(
+        f"Batch summary: jobs={len(jobs)} resumed={stats['resumed']} "
+        f"skipped={stats['skipped']} generated={stats['generated']} "
+        f"failed={stats['failed']}",
+        file=sys.stderr,
+    )
     return 1 if any_failed else 0
 
 
@@ -785,7 +1277,7 @@ def _generate(args: argparse.Namespace) -> None:
     )
     started = time.time()
     provider = create_image_provider(api_key=os.getenv("OPENAI_API_KEY"), base_url=_api_base_url())
-    images = provider.generate(payload)
+    images = _call_rate_limited(lambda: provider.generate(payload))
     elapsed = time.time() - started
     print(f"Generation completed in {elapsed:.1f}s.", file=sys.stderr)
 
@@ -797,6 +1289,7 @@ def _generate(args: argparse.Namespace) -> None:
         downscale_suffix=args.downscale_suffix,
         output_format=output_format,
         expected_size=args.size,
+        keep_versions=getattr(args, "keep_versions", False),
     )
 
 
@@ -804,7 +1297,35 @@ def _edit(args: argparse.Namespace) -> None:
     prompt = _read_prompt(args.prompt, args.prompt_file)
     prompt = _augment_prompt(args, prompt)
 
-    image_paths = _check_image_paths(args.image)
+    local_images = [raw for raw in args.image if not _is_remote_reference(raw)]
+    remote_images = [raw for raw in args.image if _is_remote_reference(raw)]
+    image_paths = _check_image_paths(local_images)
+    # Local files pass through as Paths directly (both bundled providers
+    # consume file Paths natively). http(s)/data: references are normalized
+    # through prepare_reference_inputs and staged as temp files, because the
+    # provider edit() contract requires local files.
+    ref_tmpdir: Optional[tempfile.TemporaryDirectory] = None
+    if remote_images:
+        ref_tmpdir = tempfile.TemporaryDirectory(prefix="codex-ppt-refs-")
+        try:
+            staged = prepare_reference_inputs(remote_images)
+        except ValueError as exc:
+            ref_tmpdir.cleanup()
+            _die(str(exc))
+        for prepared in staged:
+            image_paths.append(_materialize_reference(prepared, Path(ref_tmpdir.name)))
+    try:
+        _edit_with_images(args, prompt, image_paths)
+    finally:
+        if ref_tmpdir is not None:
+            ref_tmpdir.cleanup()
+
+
+def _edit_with_images(
+    args: argparse.Namespace,
+    prompt: str,
+    image_paths: List[Path],
+) -> None:
     mask_path = Path(args.mask) if args.mask else None
     if mask_path:
         if not mask_path.exists():
@@ -861,7 +1382,7 @@ def _edit(args: argparse.Namespace) -> None:
     )
     started = time.time()
     provider = create_image_provider(api_key=os.getenv("OPENAI_API_KEY"), base_url=_api_base_url())
-    images = provider.edit(payload, image_paths, mask_path)
+    images = _call_rate_limited(lambda: provider.edit(payload, image_paths, mask_path))
 
     elapsed = time.time() - started
     print(f"Edit completed in {elapsed:.1f}s.", file=sys.stderr)
@@ -872,7 +1393,19 @@ def _edit(args: argparse.Namespace) -> None:
         downscale_max_dim=args.downscale_max_dim,
         downscale_suffix=args.downscale_suffix,
         output_format=output_format,
+        expected_size=str(payload["size"]),
+        keep_versions=getattr(args, "keep_versions", False),
     )
+
+
+def _set_active_cli(args: argparse.Namespace) -> None:
+    out_path = Path(args.out)
+    history_file = out_path.parent / IMAGE_HISTORY_NAME
+    try:
+        active_path = set_active(history_file, out_path.name, args.version)
+    except ValueError as exc:
+        _die(str(exc))
+    print(f"Activated {args.version} at {active_path}")
 
 
 def _add_shared_args(parser: argparse.ArgumentParser) -> None:
@@ -889,6 +1422,15 @@ def _add_shared_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--out", default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--out-dir")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument(
+        "--keep-versions",
+        action="store_true",
+        help=(
+            "When an output file already exists, rotate it to <stem>.vN<ext> "
+            f"(atomic rename) and log every version to {IMAGE_HISTORY_NAME} "
+            "instead of overwriting; implies overwrite permission"
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--augment", dest="augment", action="store_true")
     parser.add_argument("--no-augment", dest="augment", action="store_false")
@@ -932,6 +1474,14 @@ def main() -> int:
     batch_parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
     batch_parser.add_argument("--max-attempts", type=int, default=3)
     batch_parser.add_argument("--fail-fast", action="store_true")
+    batch_parser.add_argument(
+        "--resume",
+        action="store_true",
+        help=(
+            "Skip jobs whose outputs already exist and are recorded as complete "
+            f"in {BATCH_MANIFEST_NAME}; only missing pages are generated"
+        ),
+    )
     batch_parser.set_defaults(func=_generate_batch)
 
     edit_parser = subparsers.add_parser("edit", help="Edit an existing image")
@@ -941,7 +1491,26 @@ def main() -> int:
     edit_parser.add_argument("--input-fidelity")
     edit_parser.set_defaults(func=_edit)
 
+    activate_parser = subparsers.add_parser(
+        "set-active",
+        help="Switch an output image back to a recorded version (requires --keep-versions history)",
+    )
+    activate_parser.add_argument(
+        "--out",
+        required=True,
+        help="Path of the active output image (history is read from its directory)",
+    )
+    activate_parser.add_argument(
+        "--version",
+        required=True,
+        help="Version label to activate, for example v1",
+    )
+    activate_parser.set_defaults(func=_set_active_cli)
+
     args = parser.parse_args()
+    if args.command == "set-active":
+        args.func(args)
+        return 0
     if args.n < 1 or args.n > 10:
         _die("--n must be between 1 and 10")
     if getattr(args, "concurrency", 1) < 1 or getattr(args, "concurrency", 1) > 25:

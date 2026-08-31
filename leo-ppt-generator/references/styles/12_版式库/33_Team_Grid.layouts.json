@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P33",
+  "name": "Team Grid",
+  "page_type": "content",
+  "visual_signature": "顶部页标题 8.4vw + 可选一行团队说明；下方 3-4 列网格：头像块 12vw（直角或全圆全页统一）+ 姓名 + 角色 + 一句话背景",
+  "content_capacity": {
+    "members": {
+      "desc": "人物卡（头像 + 姓名 + 角色 + 背景）",
+      "count_min": 3,
+      "count_max": 8
+    },
+    "member_role": {
+      "desc": "每卡角色（meta 1.2vw）",
+      "chars_per_line": 22,
+      "max_lines": 2,
+      "max_chars": 52
+    },
+    "member_bio": {
+      "desc": "每卡一句话背景",
+      "chars_per_line": 19,
+      "max_lines": 3,
+      "max_chars": 68
+    }
+  },
+  "best_for": [
+    "3-8 位人物四件套（头像 + 姓名 + 角色 + 一句话背景）",
+    "团队介绍、顾问阵容、项目组、致谢名单"
+  ],
+  "avoid_for": [
+    ">8 人（分页或改 P15 名单）",
+    "占位灰图与 AI 人像冒充实拍",
+    "头衔杜撰"
+  ],
+  "reuse_friendly": true
+}

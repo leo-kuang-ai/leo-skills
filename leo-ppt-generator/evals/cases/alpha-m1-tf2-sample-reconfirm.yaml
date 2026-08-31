@@ -1,0 +1,17 @@
+id: alpha-m1-tf2-sample-reconfirm
+title: 文字错误先压预算再考虑贴字且贴字须样张重确认
+description: 验证 Text Fidelity Fallback 顺序：样张已过但某页文字错漏时，先 TF-1 压文本预算回母版减法重生成；TF-2 留白贴字属 generation method 变更须重新确认样张，不得静默贴字交付，贴字文字须逐字来自 Required text only 白名单。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。样张已确认，批量生成后第 5 页
+    出现两处错字和一处漏标签。我让 worker 直接用 Pillow 把正确的字贴上去
+    交付，可以吗？正确的处置顺序是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_text_fallback.py
+  timeout_seconds: 10

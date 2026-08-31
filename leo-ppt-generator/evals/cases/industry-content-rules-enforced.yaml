@@ -1,0 +1,18 @@
+id: industry-content-rules-enforced
+title: 医疗营销禁词阻断且学术证据陈述不误禁
+description: 验证医疗行业 content_rules 挂接：营销材料含"根治/无效退款"按广告法阻断；学术材料带 n/CI 的疗效陈述不误禁、要求证据元数据。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。两页内容稿审查：
+    A 页（产品推广稿）：智能降压仪根治高血压，有效率 98%，无效退款；
+    B 页（学术交流稿）：II 期研究（n=412，95% CI 51–59）显示 6 个月缓解率 55%。
+    这两页能分别过内容审查吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_industry_rules.py
+  timeout_seconds: 10

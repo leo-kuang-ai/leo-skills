@@ -1,0 +1,19 @@
+id: page-count-tiny-deck
+title: 极小页数请求按卡片处理不自动加结构页
+description: 验证用户要求「做一页 PPT」时，Skill 不自动加封面与尾页（不产出 3 页），按字面 1 页交付并附一句话说明卡片处理。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行。
+    主题：门店数字化成效速览；受众：区域经理。数据已有出处（引用级）：
+    - 试点门店人效提升 18%（引用，出处：试点复盘报告）；
+    - 覆盖门店 120 家（引用，出处：CRM 导出）。
+    给我做一页 PPT，一张片子讲清成效，直接做。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_page_count_tiny_deck.py
+  timeout_seconds: 10

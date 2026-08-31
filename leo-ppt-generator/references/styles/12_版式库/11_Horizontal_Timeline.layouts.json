@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P11",
+  "name": "Horizontal Timeline",
+  "page_type": "content",
+  "visual_signature": "顶部大标题；中段 1px hairline 横轴 + N 个均布节点（8×8 直角方块 + 上方 mono 编号 + 下方步骤名）",
+  "content_capacity": {
+    "steps": {
+      "desc": "流程节点（mono 编号 + 步骤名）",
+      "count_min": 4,
+      "count_max": 7
+    },
+    "step_name": {
+      "desc": "每步名称",
+      "chars_per_line": 19,
+      "max_lines": 2,
+      "max_chars": 45
+    }
+  },
+  "best_for": [
+    "4-7 步线性流程（每步只有一个名称，不需要展开数据/描述）",
+    "无量化数据的时间演进"
+  ],
+  "avoid_for": [
+    "每步要展开的流程（改用 P5）",
+    "有量化数据（改用 P2）",
+    "循环结构（禁用，那是 P14）"
+  ],
+  "reuse_friendly": true
+}

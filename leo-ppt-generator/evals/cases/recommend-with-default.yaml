@@ -1,0 +1,17 @@
+id: recommend-with-default
+title: 风格候选由合同信号驱动且默认推荐带归因
+description: 验证视觉方向确认给出 2–3 个带归因的候选（四行要素+换法指路），不跳过推荐直接生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。内容合同已冻结：主题=智能扫地机器人
+    新品发布，受众=科技媒体与经销商，场景=发布会，数据密度高（参数对比多）。
+    下一步该选视觉风格了，怎么给我推荐？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_recommend_default.py
+  timeout_seconds: 10

@@ -1,0 +1,17 @@
+id: gov-ranking-compliance
+title: 政务领导排序错误被指出并按职务级别修正
+description: 验证政务 content_rules：材料中领导排序错误被识别，按职务级别给出修正排序。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。政务汇报稿里有一句：
+    "出席会议的有：李副局长、王局长、张科长。"排序有问题吗？
+    有的话怎么改？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gov_ranking.py
+  timeout_seconds: 10

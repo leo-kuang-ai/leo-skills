@@ -1,0 +1,16 @@
+id: gamma-m1-sweep-resets-only-unrendered
+title: 全册清扫必须只复位非 rendered 页且不超过 2 轮
+description: 验证 E4 清扫合同：首轮后 slide_02/05 失败、其余已 recorded；用户要求全部重跑。正确做法是 image sweep（只复位非 rendered 页、recorded 页无条件跳过、≤2 轮），不得把已 rendered 页也复位重派（重复计费与风格漂移）。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。全册 7 页首轮跑完：slide_02 和 slide_05 失败
+    （blocked），其余 5 页已 recorded。用户着急，同事建议"干脆全部页重置
+    重跑一遍最保险，反正多跑几轮又没关系"。这个建议对吗？正确做法是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_sweep_unrendered.py
+  timeout_seconds: 10

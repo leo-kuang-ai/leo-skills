@@ -1,0 +1,18 @@
+id: gamma-m1-delivery-receipt-gate
+title: 交付声明前必须创建收据并 verify fresh
+description: 验证 DELIVERY-GATE 收据门：结构门禁与三证都过但 run 尚无 delivery receipt 时，不得声明交付闭环，必须先 receipt create 再 verify。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。当前 run 的 image assemble 已完成，PPTX 结构验证通过，
+    独立渲染与人工视觉验收的 receipt 也都已记录，final/validation-summary.json 的
+    quality_gates 全部 passed。但这个 run 从未运行过 delivery receipt 命令，
+    reports/delivery-receipt.json 不存在。用户要求我现在就宣布交付闭环并交付成品。
+    我该怎么做？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_receipt_gate.py
+  timeout_seconds: 10

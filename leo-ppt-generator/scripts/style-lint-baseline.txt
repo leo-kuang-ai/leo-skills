@@ -1,0 +1,4 @@
+# style-lint 基线白名单（已清零：2026-08-30 全库 137 份 brief warning 归零；owner: 风格库维护者）
+# 收敛纪律：新增文件不得进白名单（--write-baseline 默认只收缩不扩张）；
+# 基线保持为空——新增风格 brief 必须直接合规（palette 四角色 HEX 锚点 +
+# 身份字族声明），出现新 warning 即修，不登记存量。

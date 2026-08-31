@@ -10,6 +10,33 @@ GLM flash 级模型对同一诊断每轮重掷措辞。判定标准：若 FAIL �
 
 红队修复中把 `check-causal-boundary.sh` 门禁 2 从泛否定词收紧为「情态词+动词」连续正则后，连续两轮**误拒合规响应**（中文习惯在情态词与动词间插入宾语：「无法**将这一下降**归因于」「不能下**因果**结论」）。已放宽为 0-8 字间隔并补 归因/确认/因果结论 动词，5/5 历史响应重放接受、对抗样本仍拒绝。教训：**收紧判定必须附带历史响应重放**（本项目已把它固化为流程）；同理 `docs-truth` 的 `qstat --verbose` 命令级负向断言因「引用-再否定」被移除（合规输出会引用待剔除的命令来解释删除）。
 
+## 分档放松改造后首轮全量：判官扩词与记档（2026-08-29）
+
+全量 32 case（iteration-73，GLM flash）：26 PASS / 5 FAIL / 1 ERROR。背景：裸主题分级路由、chat 交付分档、条件触发改写等行为合同改造落地后的首次全量。逐案归因：
+
+- `rejects-causal-overclaim`（0%）：响应实质合规（「这句话我不能照写」拒绝、收窄为相关性表述、要求补对照组证据），判官 `check-causal-boundary.sh` 拒绝动词表未含「照写/确立」。扩词后 7/7 单测重放通过、对抗 fixture `causal__syn_overclaim` 仍被第 4 道「证明了因果」门拒绝、本轮实际失败响应手动重放接受。
+- `chinese-protocol-context-judgment`（66.7%）：闭环被实质正确对待（「用了『算是』这种留余地的口语限定」），断言 3 any-list 未含「留余地/口语」；扩词（留余地、口语）。
+- `train-voice-provisional`（50%）：写入前等确认实质在场（「先不动文件」「确认没问题的话，我就把它存入持久记忆」），断言 2 any-list 未含该措辞；扩词（确认没问题、先不动文件）。
+- `chinese-22-rules-hit-and-preserve`（83.3%）：反代入股 finding 单轮漏报**再次出现**（改写稿实质删除了「你可能以为…」straw-man，但检测报告未标该问题）。此前 iteration-54/55 记为不可复现，本轮复现一次——按纪律纯记档、不扩词（该断言的存在意义就是捕获漏报），聚焦复跑观察频次。**iteration-74 聚焦复跑 PASS，确认为间歇性模型漏报，非合同缺陷。**
+- `post-publish-no-causal-unprompted`（0%，缺 observation）：已知稳定 FAIL（见下节），断言保持原样。
+- 新增 `signal-bearing-topic-proceeds`（分级路由正向，与裸主题两轮 case 互补）首跑 ERROR：默认 240s 超时不足（裸主题 case 历史即需 ~300s），放宽至 480s。**iteration-74 PASS。**
+- iteration-74 聚焦复跑小结：`rejects-causal-overclaim`、`chinese-protocol-context-judgment`、`chinese-22-rules-hit-and-preserve`、`signal-bearing-topic-proceeds` 4/5 PASS；`train-voice-provisional` 再次 50%——A2 词表第三掷未命中（本轮措辞「需要写入记忆或存成档案文件时说一声即可」，语义合规），按同义词惯例扩「说一声」。**iteration-75 单 case 复跑 PASS。**至此除在案 known-issue `post-publish-no-causal-unprompted` 外全部 PASS（31/32）。
+- **10 轮全量稳定性测量（iteration-83..92，330 次真实会话，2026-08-31 00:22–02:23）**：
+  逐轮 29/28/29/27/28/29/29/31/29/29 PASS，合计 288/330（87.3%），扣除在案故意保持项
+  `post-publish-no-causal-unprompted`（10/10 稳定失败，符合预期）后为 90.0%。非通过分层：
+  ①判官措辞类（已硬化）：`taste-findings-not-visual` 3/10——引用标记形态重掷（直引号块引用
+  `> "`，判官原只认「/弯引号），any-list 补 `> "` / `> “` 紧形式（不加裸直引号防误放行），
+  it-93 在线复验 PASS；`train-voice-provisional` 3/10——第七批落盘确认变体（确认无误/直接说/
+  未写任何文件/存为一条），扩词后 it-93 PASS。②模型侧间歇违约（判官正确捕获，不放宽）：
+  `chinese-22-rules` 5/10（在案已知漏报型）；`signal-bearing-topic-proceeds` 4/10（it-92 实证
+  偶发省略 canonical route 卡直接出正文）；`bare-topic-fork-two-turns` 3/10（it-88 实证 turn-1
+  违约起草"正文如下"）。③低频单双轮掷骰（未达收敛阈值，观察）：docs-truth-param-check 2、
+  nonarticle-lifecycle 2、chinese-protocol 2、copywriting-route/routes-technical-howto/
+  depth-quick-revise/routes-ambiguous/dev-edit-before-polish 各 1。④超时 ERROR 3 次
+  （R2×2/R3×1，历史已知类别）。两处硬化后预计残留非通过率 ≈7%/轮（以模型侧为主）。
+- iteration-81/82（file-github 融合批次全量回归 33 case）：29 PASS / 4 FAIL → 4 个全部为在案已知类，非融合回归：`post-publish-no-causal-unprompted`（在案故意保持失败项，见下节）；`rejects-causal-overclaim`（"我没法照办/尚不能确定…引起"——判官 `check-causal-boundary.sh` 引导组补「没法」、动词组补「照办|确定」后历史重放+纯因果断言反向控制通过，it-82 在线复验 PASS）；`train-voice-provisional`（A2 第六掷"下一步你可以选：②指定路径把档案落盘为 soul.md"——any-list 补「下一步你可以选/指定路径把/落盘为/试写一段」，provisional 断言兜底未授权写入反向，it-82 PASS）；`docs-truth-param-check`（披露措辞"未采用/未经证实/无法从我这里验证/死链"——B any-list 补 4 词，it-82 PASS）。**至此全量 33 case 中 32 PASS，唯一非通过为在案故意保持项。**
+- iteration-77/78（file-github 融合批次 7 case 回归子集）：`audit-does-not-rewrite`——证据格式从标签词重掷为无标签引用块（`> “…”`），逐字引用实质在场，判官 `check-audit-readonly.sh` 接受集补引用块形态（`> "` / `>“` / `> “` / `>「` / `> 「`）后历史重放 + iteration-78 在线复验 PASS；`chinese-protocol-context-judgment`——停止判定第八/九种措辞（「没有明显 AI 模板感，可以直接用／不动它」「没有实质的 AI 模板感问题／基本干净／再动它」），any-list 按惯例扩词。本轮响应实证融合行为符合设计：audit 实际调用 `check_prose.py`，3 条线索均按语境豁免、未当门禁。
+
 ## post-publish-no-causal-unprompted（新增，2026-08-27）
 
 ### 状态：未闭环（自发合同词汇缺口）

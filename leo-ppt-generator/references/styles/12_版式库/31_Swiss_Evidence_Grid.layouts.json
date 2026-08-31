@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P31",
+  "name": "Swiss Evidence Grid",
+  "page_type": "content",
+  "visual_signature": "顶部断言标题（一行说清 2-3 张图的关系）；下方 2-3 列等宽网格（gap 与版心 gutter 一致）；每格 fit-contain 图 + 底部 caption 带（kicker + 一行说明）",
+  "content_capacity": {
+    "images": {
+      "desc": "证据图格（图 + caption 带）",
+      "count_min": 2,
+      "count_max": 3
+    },
+    "assertion_title": {
+      "desc": "顶部断言标题（把图的关系说成结论）",
+      "chars_per_line": 9,
+      "max_lines": 1,
+      "max_chars": 10
+    },
+    "caption": {
+      "desc": "每格 caption（kicker + 一行说明，字号 ≥16px 双口径）",
+      "chars_per_line": 25,
+      "max_lines": 3,
+      "max_chars": 90
+    }
+  },
+  "best_for": [
+    "2-3 张同类真实图片证据链，每张配一句「它证明了什么」的 caption",
+    "竞品对比、版本演进、多场景验证"
+  ],
+  "avoid_for": [
+    "纯文字卡片场景（用 P4/P16）",
+    "超过 3 张（改用 P15）"
+  ],
+  "reuse_friendly": true
+}

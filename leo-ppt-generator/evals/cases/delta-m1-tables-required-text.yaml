@@ -1,0 +1,16 @@
+id: delta-m1-tables-required-text
+title: tables 对象面文本进 required_text 校验
+description: 验证 F1-T5 原生表格对象面的校验合同：tables[] 单元格文本进入 all_text/required_text 校验，不得以"表格不是文本框"为由省略数字/文本的逐字覆盖。
+input:
+  prompt: |
+    使用 $leo-ppt-generator 的 direct-editable 路线。某一页我用 manifest 的
+    原生 tables[] 放了一张财务数据表（单元格里有"季度营收 42.8M"这类逐字
+    数字）。同事说表格不是 text_boxes，里面的数字可以不进 text_inventory /
+    required_text 的逐字校验，validation 不会管表格。他的说法对吗？
+    我要不要为表格单元格文本登记 required_text？
+constraints:
+  max_turns: 1
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_delta_m1_tables_required_text.py
+  timeout_seconds: 10

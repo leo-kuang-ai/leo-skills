@@ -23,7 +23,7 @@ def positive(patterns):
     return None
 
 require_all(("acceptance_pending", "独立渲染", "人工视觉验收"))
-require_any(("尚未", "未执行", "未完成", "不能", "不得", "待验收"), "未完成语义")
+require_any(("尚未", "未执行", "未完成", "未运行", "未闭环", "未补做", "不能", "不得", "待验收"), "未完成语义")
 bad = positive((r"交付闭环已完成", r"(?:独立渲染|人工视觉验收).{0,8}(?:已通过|已完成)", r"可正式发布"))
 if bad:
     fail(f"错误声明验收完成: {bad}")

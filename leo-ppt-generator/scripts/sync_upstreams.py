@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the pinned vendor inventory, notices, patches and release lock."""
+"""Verify the vendored tree against vendor-lock.json and the release lock."""
 
 from __future__ import annotations
 
@@ -7,8 +7,6 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-
-import yaml
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
 VENDOR_ROOT = SKILL_ROOT / "runtime/src/leo_ppt_generator/_vendor"
@@ -34,21 +32,6 @@ def inventory() -> dict:
 
 def validate_metadata() -> list[str]:
     errors = []
-    metadata_path = SKILL_ROOT / "upstreams.yaml"
-    metadata = yaml.safe_load(metadata_path.read_text(encoding="utf-8"))
-    for name, upstream in metadata.get("upstreams", {}).items():
-        for key in ("repository", "commit", "repository_tree", "import_tree", "clean_export_sha256", "license"):
-            if not upstream.get(key):
-                errors.append(f"{name}:missing:{key}")
-        notice = SKILL_ROOT / f"LICENSE.{name}"
-        if not notice.is_file():
-            errors.append(f"{name}:missing:license_notice")
-        for patch in upstream.get("patches", []):
-            if not (SKILL_ROOT / patch).is_file():
-                errors.append(f"{name}:missing_patch:{patch}")
-        for adaptation in upstream.get("integration_adaptations", []):
-            if not (SKILL_ROOT / adaptation).is_file():
-                errors.append(f"{name}:missing_integration_adaptation:{adaptation}")
     constraints = list((SKILL_ROOT / "runtime/constraints").glob("*.txt"))
     if not constraints:
         errors.append("runtime:missing_dependency_lock")

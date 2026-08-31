@@ -191,6 +191,20 @@ def _format_block(title: str, value: Any) -> str:
     return f"## {title}\n{body}\n"
 
 
+def _format_required_text(items: List[str]) -> str:
+    # Required Text Only 白名单块（leo C1 合同）：逐字来自 slides.json 的
+    # required_text[]；块外的内容性文字按发明内容判失败。未声明白名单的页不
+    # 渲染该块（与 _format_block 对空值的语义一致）。
+    if not items:
+        return ""
+    lines = ["Render exactly and only these visible text items (verbatim):"]
+    lines.extend(f"- {item}" for item in items)
+    lines.append(
+        "No other content-bearing text, labels, or micro-annotations beyond this list."
+    )
+    return "## Required Text Only\n" + "\n".join(lines) + "\n"
+
+
 def _format_input_images(images: Iterable[Dict[str, Any]]) -> str:
     lines: List[str] = []
     for idx, image in enumerate(images, start=1):
@@ -253,6 +267,7 @@ def _build_prompt(
         _format_block("Required Background", required_background),
         _format_block("Global Style", style),
         _format_block("Canvas Theme", variant),
+        _format_block("Deck Style Lock", deck.get("style_lock")),
     ]
 
     if images:
@@ -260,6 +275,7 @@ def _build_prompt(
         prompt_parts.append(_format_input_images(images))
         prompt_parts.append("\n")
 
+    required_text_items = _string_list(slide.get("required_text"))
     prompt_parts.extend(
         [
             _format_block("Slide", {
@@ -273,6 +289,7 @@ def _build_prompt(
                 "key_points": _string_list(slide.get("key_points")),
                 "speaker_focus": slide.get("speaker_focus"),
             }),
+            _format_required_text(required_text_items),
             _format_block("Layout", slide.get("layout")),
             _format_block("Visual Elements", slide.get("visual_elements")),
             _format_block("Source Image Rules", slide.get("source_image_rules")),

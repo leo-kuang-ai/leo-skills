@@ -1,0 +1,18 @@
+id: resume-from-content-docs
+title: 中断后从磁盘内容文档恢复确认状态
+description: 验证新会话恢复 generate 任务时，Skill 以 content/ 版本化文档为确认状态真值（引用文档、进入下一确认门），不要求用户重述已确认内容，不重新起草大纲/母版。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行。（新会话恢复）
+    上个会话中断了：project-root 是 leo-ppt-workspace/demo-deck，
+    content/outline-v1.md 与 content/deck-master-v1.md 均已确认（confirmation: confirmed），
+    视觉方向还没选。接着往下走。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_resume_from_content_docs.py
+  timeout_seconds: 10

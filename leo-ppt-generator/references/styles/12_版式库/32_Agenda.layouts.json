@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P32",
+  "name": "Agenda",
+  "page_type": "agenda",
+  "visual_signature": "顶部 kicker「AGENDA/目录」+ 页标题 8.4vw；下方 3-6 行议程条目：hairline 分隔 + 左编号巨字（min(4.8vw,8vh)）+ 中章节名 + 右一行说明",
+  "content_capacity": {
+    "entries": {
+      "desc": "议程行（编号巨字 + 章节名 + 一行说明）",
+      "count_min": 3,
+      "count_max": 6
+    },
+    "entry_note": {
+      "desc": "每条目右列一行说明",
+      "chars_per_line": 25,
+      "max_lines": 2,
+      "max_chars": 60
+    }
+  },
+  "best_for": [
+    "3-6 个章节条目（编号 + 章节名 + 一行说明；条目名与后续章节标题逐字一致）",
+    "deck 目录页 / 章程议程页 / 汇报路线预告"
+  ],
+  "avoid_for": [
+    "条目 > 6（改 P15 去图）",
+    "承载数据或展开说明",
+    "单一主题宣言（改 P3）"
+  ],
+  "reuse_friendly": true
+}

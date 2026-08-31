@@ -55,6 +55,7 @@
 | `style_rendered` | 模板确定性注入内容已渲染 | 不适用 | 将返回的 template 写入 deck_spec.style 与 slides[].layout |
 | `templates_listed` | 模板轴清单已枚举 | 不适用 | 从清单选择渲染/版式/信息图/模式名 |
 | `template_store_error` | 模板知识库加载失败或模板不存在 | 是 | 用 `style render --list-templates` 查看可用名后重试 |
+| `style_color_override_invalid` | `style render --color` 覆盖违例（role 非法/非 #RRGGBB/role 不在该风格/风格无 palette/项缺 `=`） | 是 | 改用 role ∈ primary/secondary/accent/neutral 与 #RRGGBB 值重试；`style render` 缺省输出不受影响 |
 | `backend_contract_unreadable` | 冻结的 backend contract 无法读取 | 是 | 检查 run 输入树与文件权限，必要时创建新 run |
 | `credential_reference_invalid` | 凭据引用不是允许的 `env:`、`host:` 或 `keychain:` 形式 | 是 | 使用 provider allowlist 中的引用，不写入原始凭据 |
 | `credential_reference_unavailable` | 声明的凭据引用当前不可解析 | 是 | 在宿主注入对应环境变量或启用明确 resolver |
@@ -125,6 +126,10 @@
 | `secret_in_execution_receipt` | 执行 receipt 意外包含凭据值 | 是 | 停止交付并修复 receipt 脱敏逻辑 |
 | `evidence_receipt_invalid`、`provenance_receipt_invalid`、`visual_receipt_invalid`、`acceptance_receipt_invalid` | provider、独立视觉或人工验收 receipt 不符合 v1 合同 | 是 | 补齐必需身份、逐页结论和 hash 后重录 |
 | `evidence_sensitive_content_forbidden` | evidence receipt 含疑似凭据或授权头 | 是 | 删除秘密，只保留 provider receipt id 与非敏感身份 |
+| `sensitive_data_unclassified` | 检出未公开/涉密样貌数据但内容合同未声明分级 | 是 | 补 `data_classification` 分级声明后继续；restricted 机密/绝密另见下码 |
+| `state_secret_rejected` | 材料属国家秘密（机密/绝密，或未走审批的秘密级） | 否 | 移交保密渠道，本任务终止；不得生成任何页面 |
+| `phi_unmasked_blocked` | required asset 含可识别 PHI（人脸清晰影像/病历号/身份证样式文本/可定位地址） | 是 | 脱敏或替换素材后重跑；脱敏后随母版确认轮确认 |
+| `industry_rule_violation` | 成稿命中行业 content_rules 红线（逐条定位到页） | 是 | blocked 级词与伪造公文图元 → deck 级阻断；rewrite/annotate 级按"母版→受影响页重建"修复 |
 | `delivery_summary_required`、`delivery_identity_mismatch` | 尚无最终交付，或 receipt 的 PPTX hash 与当前交付不一致 | 是 | 对当前最终 PPTX 重新渲染/验收并生成新 receipt |
 | `delivery_summary_invalid`、`delivery_structure_not_ready` | 最终 validation summary 不可读，或结构门禁未通过 | 是 | 修复最终产物与 validation summary，不能用人工 receipt 绕过 |
 | `delivery_acceptance_pending` | 产物已生成，但独立渲染或人工视觉验收尚未通过 | 是 | 记录当前 PPTX 的 visual 与 manual acceptance receipt |
@@ -213,3 +218,58 @@
 | `config_check_unavailable` | 本地状态检查暂时不可用 | 是 | `wait_and_retry` |
 | `host_check_required` | Host_Provider 需宿主现场确认 | 条件式 | 由当前宿主 setup 现场声明；不凭配置文件推断 |
 | `host_recheck_allowed` | 复查后 Host 能力允许继续原任务 | 不适用 | `resume_task` 从中断节点恢复 |
+
+## 交付收据门（DELIVERY-GATE 指纹收据，gamma M0 追加）
+
+以下 code 属于 `delivery receipt create|verify` 指纹收据控制面；收据位于
+`<run>/reports/delivery-receipt.json`，`delivery_readiness.receipt_gate` 消费。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `delivery_receipt_created` | 五类 sha256 指纹收据已原子写入 | 不适用 | 交付/导出前运行 `delivery receipt verify`；收据自身不进指纹 |
+| `delivery_receipt_fresh` | 重算五类指纹与收据全一致 | 不适用 | 允许交付；`receipt_gate=passed`，`delivery_readiness` 可达 accepted |
+| `delivery_receipt_missing` | 交付前该 run 尚无收据（gate 按 not_run 披露） | 是 | 运行 `leo-ppt delivery receipt create <run>` 后再 verify 与交付 |
+| `delivery_receipt_stale` | 五类指纹任一漂移（改动/新增/缺失都算） | 是 | 按 verify 输出的波及面处理（页产物→该页；资产/样式源→全册；QA 报告→仅重跑 QA）后重建收据 |
+| `delivery_receipt_invalid` | 收据文件不可读、schema 版本不符或五类结构非法 | 是 | 重新 `delivery receipt create` 覆盖重建；不手工编辑收据 |
+
+## 来源清单与文字保真（alpha M1 追加）
+
+以下 code 属于 sources manifest 交付门（`check_sources_manifest.py --strict`）、
+素材校验闭环（`validate_assets.py`）与 Text Fidelity Fallback 降级链
+（`overlay_text.py`）控制面；只增不改既有码。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `sources_manifest_missing` | 路线要求来源清单但 prepare/交付时缺 manifest | 是 | 从 confirmed 母版视觉行派生 `content/sources-manifest.json` 后重新冻结 |
+| `sources_manifest_invalid` | manifest schema/枚举/自指纹/敏感命中非法，或冻结输入漂移 | 是 | 按 `sources-manifest-schema.md` v1 修正后重跑校验；冲突则创建新 run |
+| `source_unverifiable` | strict 下引用级 visual 无法回溯用户输入（无 source_ref / 文件缺失 / sha256 不匹配） | 是 | 补源文件入 `sources/`，或降级为示意并重新确认，再重跑 `--strict` |
+| `asset_validation_failed` | 素材本地缺失/非图片/sha 不符，或 URL 不可达/非 https | 是 | 该素材标 `unknown` 禁止入页；用户提供真实素材或改 AI 生成标示意后重验（缓存 diff 展示替换前后） |
+| `text_fallback_engaged` | TF-2 确定性贴字已在该页启用（状态码，非错误） | 不适用 | 底图来自确认 backend、文字逐字来自白名单、样张已重确认；交付逐页披露 |
+| `text_budget_exhausted` | TF-1 压预算与 TF-2 贴字均失败，该页 blocked | 是 | 回母版重构该页或换 backend，不得无限重试 |
+
+## 渲染 lane 与像素闸门（gamma M1 追加）
+
+以下 code 属于确定性渲染 lane（`render ready|page|chart`、`image sweep`、
+`image record --render-receipt`、`scripts/visual_qa.py`）控制面。合同细节见
+`references/render-contract.md`。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `render_backend_ready` | playwright + chromium + 离线字体目录探测通过 | 不适用 | 允许路由提议进入 render lane（寄生既有 backend 确认点） |
+| `render_backend_missing` | 渲染依赖未安装或 chromium 二进制缺失 | 是 | 按安装指引装 playwright + chromium 后重跑 `render ready`；期间路由提议被抑制并披露，图像 lane 不受影响 |
+| `render_backend_unknown` | 组件在场但 chromium 启动探测不可判 | 是 | 按 missing 抑制路由提议并披露探测不可判；排查启动错误后重跑 `render ready` |
+| `render_template_not_found` | 模板 id 不在 assets/render-templates/ | 是 | 核对模板 id 后重试；模板清单见该目录 README |
+| `render_template_contract_violation` | 模板缺 ready 信号/禁动画条款等合同失败（lint 级 FAIL） | 是 | 修模板或换模板；lint 见 `scripts/lint_render_templates.py` |
+| `render_data_invalid` | slide data / mermaid 块不可解析、`--source` 无 ```mermaid-example 块或语法渲染失败 | 是 | 修数据后重试；示例数字必须替换为 approved 真实数据 |
+| `render_timeout` | 渲染超过时限（goto/fonts.ready/screenshot） | 是 | 增大 `--timeout` 或简化页内容 |
+| `render_size_mismatch` | 产物 PNG 头实际像素 ≠ 请求档（或 --size 非 16:9/非 1x/2x 档） | 是 | 检查模板根容器 1280×720 与 device_scale_factor；不符时不产出 |
+| `render_output_invalid` | 截图不是合法 PNG | 是 | 重试；持续出现则排查渲染环境 |
+| `render_receipt_invalid` | provenance sidecar 结构非法 / `out_sha256` 与被 record 产物不一致 / backend 与 record 不一致 | 是 | 用渲染产物旁的 `<out>.render.json` 原件重试；不得手改 sidecar |
+| `rasterizer_unavailable` | resvg 双路径（Python 绑定 + Node 子进程）均不可用 | 是 | 安装 `resvg-py`（首选）或 node + `@resvg/resvg-js`；或退纯图形态 |
+| `render_page_completed` | `render page` 成功（envelope 完成码） | 不适用 | record 时以 `--render-receipt` 并入 provenance |
+| `render_chart_completed` | `render chart` 成功（envelope 完成码） | 不适用 | SVG 可 `--png` 栅格化；数值/单位/标签经 mermaid 原生逐字保真 |
+| `visual_qa_failed` | 确定性像素闸门存在 FAIL（退出码 1） | 是 | 该页直接打回，不进 LLM 审（visual-qa.md 2.5 步）；按 findings 修复后重跑 |
+| `visual_qa_warned` | 像素闸门仅 WARN（退出码 2） | 是 | 可交付但必须写入 qa_note 并在交付话术披露 |
+| `render_sweep_planned` | `image sweep --dry-run` 输出复位计划（完成码） | 不适用 | 确认计划后去掉 `--dry-run` 执行 |
+| `render_sweep_applied` | `image sweep` 已复位非 rendered 页（复用 reset_failed_pages） | 见协议 | 已 rendered 页无条件跳过；按 ≤2 轮上限继续 |
+| `render_sweep_rounds_exhausted` | 清扫轮次已达 `--max-rounds` 上限，拒绝再次复位 | 条件式 | 剩余失败页走缺页拒绝组装 / partial-hybrid 确认（upgrade）或向用户披露（generate） |

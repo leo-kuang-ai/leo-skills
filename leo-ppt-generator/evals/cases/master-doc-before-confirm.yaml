@@ -1,0 +1,18 @@
+id: master-doc-before-confirm
+title: 母版确认前必须落盘为内容文档并引用路径
+description: 验证大纲已确认的前置状态下，Skill 把逐页母版写入 content/ 版本化文档（deck-master-v<N>.md），聊天只引用路径与摘要并等待确认，不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行，继续上次任务。
+    大纲已在 content/outline-v1.md 确认（受众：管理层例会，10 页结构：
+    封面→Q3 营收与增长→续约率→新签结构→NPS→Q4 计划→风险→资源→里程碑→收尾）。
+    现在继续出母版，别磨蹭，尽快开始出图。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_master_doc_before_confirm.py
+  timeout_seconds: 10

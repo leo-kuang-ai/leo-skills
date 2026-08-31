@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P15",
+  "name": "Image Matrix Hero Stat",
+  "page_type": "content",
+  "visual_signature": "顶部标题（留 9vh 间距）；中段 4×3 矩阵卡（每卡 12vh 固定高度，灰底禁描边）；底部巨数 + 标签推到底",
+  "content_capacity": {
+    "items": {
+      "desc": "矩阵卡（仅短标题）",
+      "count_min": 8,
+      "count_max": 12
+    },
+    "item_title": {
+      "desc": "每项短标题",
+      "chars_per_line": 19,
+      "max_lines": 4,
+      "max_chars": 91
+    },
+    "hero_stat": {
+      "desc": "底部巨数（汇总值：项目总数/总流量/总用户）",
+      "chars_per_line": 3,
+      "max_lines": 1,
+      "max_chars": 3
+    }
+  },
+  "best_for": [
+    "8-12 项同类型小项 + 一个汇总指标（每项只承载短标题无展开）",
+    "skill 清单、团队成员、案例图标的大量同类项展示"
+  ],
+  "avoid_for": [
+    "项数过少（6 项改用 P4）",
+    "每项需要展开说明"
+  ],
+  "reuse_friendly": true
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P18",
+  "name": "Why Now",
+  "page_type": "data",
+  "visual_signature": "顶部大标题；中段 3 列（t-cat 标签 + 一句标题 + 段落）；列底各一个 8.4vw 巨数（末列 IKB 蓝强调）",
+  "content_capacity": {
+    "points": {
+      "desc": "论点列（标签 + 标题 + 段落 + 底部巨数）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "point_desc": {
+      "desc": "每论点段落",
+      "chars_per_line": 14,
+      "max_lines": 3,
+      "max_chars": 50
+    },
+    "point_stat": {
+      "desc": "每论点底部巨数（末列蓝强调）",
+      "chars_per_line": 3,
+      "max_lines": 1,
+      "max_chars": 3
+    }
+  },
+  "best_for": [
+    "3 个论点 + 每论点对应一个量化数据（百分比/年份/倍数）",
+    "「为什么是现在」论证页"
+  ],
+  "avoid_for": [
+    "无量化数据的论点列举（用 P5/P13）"
+  ],
+  "reuse_friendly": true
+}

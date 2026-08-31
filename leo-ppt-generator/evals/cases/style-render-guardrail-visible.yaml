@@ -1,0 +1,16 @@
+id: style-render-guardrail-visible
+title: style render --guardrail 注入含护栏摘要关键行
+description: 验证护栏前移合同：deck_spec 注入用 style render 时带 --guardrail，最终消息展示的渲染结果含「设计护栏摘要」标识、字号双口径与对比度锚点行；缺省逐字节确定性另由单测 golden 保护。
+
+input:
+  prompt: |
+    开始执行。用 $leo-ppt-generator 把「清爽专业风」按「结论先行金字塔」论证模式做
+    确定性注入，用于 deck_spec.style；要求输出带设计护栏摘要，把渲染结果贴给我看。
+
+constraints:
+  max_turns: 2
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_guardrail_visible.py
+  timeout_seconds: 10

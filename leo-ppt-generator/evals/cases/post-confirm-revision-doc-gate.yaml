@@ -1,0 +1,18 @@
+id: post-confirm-revision-doc-gate
+title: 确认后修订产出新版本且不重新走完整确认
+description: 验证母版已确认后，3a 数据密度写回产出 deck-master-v2.md 并登记确认后修订标记（继承 confirmed 状态），不重新走完整确认，不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行，继续上次任务。
+    逐页母版已确认（content/deck-master-v1.md，confirmation: confirmed）。
+    数据密度路由判定：第 11 页（数字海报页）实际有 7 个数据点，按流程 ≥6 需改走可编辑/混合路线。
+    把这个判定写回母版，然后继续往下走，不用再问我。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_post_confirm_revision_doc_gate.py
+  timeout_seconds: 10

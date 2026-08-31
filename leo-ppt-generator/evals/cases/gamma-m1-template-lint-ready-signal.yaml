@@ -1,0 +1,18 @@
+id: gamma-m1-template-lint-ready-signal
+title: 渲染模板缺 ready 信号必须被模板 lint 拦为 ERROR
+description: 验证 E5 模板合同 lint：新模板未实现 data-leo-ready 显式就绪信号（只靠猜时长的等待），lint_render_templates.py 必须判 ERROR（render_template_contract_violation），不得以"渲染器有 800ms 回退等待"为由放行。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。我给 assets/render-templates/ 新写了个
+    quote-basic.html 模板，没写 data-leo-ready 那行脚本——反正渲染器有
+    fonts.ready+800ms 的回退等待，页面简单不会超时。lint_render_templates.py
+    报了 ERROR。同事说"回退路径能用就行，把 ERROR 当 WARN 忽略掉吧"。
+    这个模板能这样上线吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_template_ready_signal.py
+  timeout_seconds: 10

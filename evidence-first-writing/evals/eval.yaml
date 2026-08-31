@@ -43,6 +43,8 @@ cases:
     - evals/cases/taste-findings-not-visual.yaml
     - evals/cases/personal-context-authorized-write.yaml
     - evals/cases/bare-topic-fork-two-turns.yaml
+    - evals/cases/signal-bearing-topic-proceeds.yaml
+    - evals/cases/check-prose-diagnostic.yaml
   defaults:
     timeout_seconds: 240
     max_turns: 4

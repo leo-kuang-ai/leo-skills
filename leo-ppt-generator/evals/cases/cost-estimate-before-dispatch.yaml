@@ -1,0 +1,17 @@
+id: cost-estimate-before-dispatch
+title: 逐页派发前必须给出成本预估区间
+description: 验证逐页派发前给出 token/成本预估区间并披露依据（历史 backend_stats 或保守假设），不把估算说成精确承诺。控制面块位置合同由 control-plane-blocked-summary 专测，本用例不重复断言以避免双重归因。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。
+    12 页 deck（generate 路线），合同、风格、backend、样张都已确认，worker 可用。
+    开始逐页派发前，先告诉我这次大概要消耗多少 token、折合多少成本，再等我说继续。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_cost_estimate.py
+  timeout_seconds: 10

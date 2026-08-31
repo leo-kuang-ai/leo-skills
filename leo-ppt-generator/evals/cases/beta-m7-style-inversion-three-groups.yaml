@@ -1,0 +1,17 @@
+id: beta-m7-style-inversion-three-groups
+title: 样张选定后同一轮呈现反演三组判读不硬锁偶然效果
+description: 验证风格反演合同：用户选定样张后，agent 读回样张输出三组结构化判读（明确应延续 / 需确认是否整套延续 / 偶然成立不锁死），随样张确认同一轮呈现且结论随 spec 落盘；不得把偶然效果锁死为整套风格要求。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。样张我刚选好了（浅底网格那版，
+    图里还有个手绘箭头装饰挺好看），风格就按这张定下来吧。接下来你会
+    怎么锁定风格？手绘箭头这种元素以后每页都加上行不行？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m7_style_inversion.py
+  timeout_seconds: 10

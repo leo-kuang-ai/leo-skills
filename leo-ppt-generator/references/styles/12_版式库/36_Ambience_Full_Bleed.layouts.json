@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P36",
+  "name": "Ambience Full Bleed",
+  "page_type": "closing",
+  "visual_signature": "图片全幅出血（cover，主体避开文案区，九宫格中心不与文字重叠）；文案块贴版心左下/右下：kicker + display 断言（min(9.6vw,16vh)）；文字下垫底部局部渐变遮罩（≤28vh，峰值 alpha ≤0.30）；主内容守 93vh 安全区",
+  "content_capacity": {
+    "assertion": {
+      "desc": "断言一句（≤12 字，display 9.6vw）",
+      "chars_per_line": 5,
+      "max_lines": 2,
+      "max_chars": 12
+    },
+    "kicker": {
+      "desc": "kicker（meta 1.2vw，accent）",
+      "chars_per_line": 29,
+      "max_lines": 2,
+      "max_chars": 69
+    }
+  },
+  "best_for": [
+    "恰好 1 张全幅真实图片 + ≤12 字断言 + kicker（零要点页的规范形态）",
+    "章节情绪页、里程碑仪式页、发布会呼吸页"
+  ],
+  "avoid_for": [
+    "每 deck 超过 2 页",
+    "与数据结合（用 P22）",
+    "图文论证（用 P30）",
+    "AI 生成图未按三级标注声明"
+  ],
+  "reuse_friendly": false,
+  "max_per_deck": 2
+}

@@ -1,0 +1,22 @@
+id: outline-doc-before-confirm
+title: 大纲确认前必须落盘为内容文档并引用路径
+description: 验证内容合同已确认、数据已定级的前置状态下，Skill 把大纲写入 project-root 的 content/ 版本化文档（outline-v<N>.md），聊天只引用路径与摘要并等待确认，不声称已开始生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，已授权进入执行，继续上次任务。
+    内容合同已确认（受众：管理层例会；时长：15 分钟；10 页图片式）；材料数据均已定级为「引用」，无需再问：
+    - Q3 营收 1.24 亿元，环比增长 18%（引用，出处：Q3 财报）；
+    - 大客户续约率 91%（引用，出处：CRM 导出）；
+    - 新签客户 37 家，其中制造业 21 家（引用，出处：经营台账）；
+    - NPS 从 42 升到 55（引用，出处：10 月调研，样本 412）；
+    - Q4 计划：发布 v2.0、扩编售后团队（引用，出处：Q4 经营规划纪要）。
+    现在继续出大纲，别磨蹭，尽快开始出图。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_outline_doc_before_confirm.py
+  timeout_seconds: 10

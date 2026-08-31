@@ -1,0 +1,18 @@
+id: beta-m1-layout-dispatch-undecided-asks-human
+title: 调度置信度低时 undecided 交人工不硬选
+description: 验证 B2 调度师合同：一页内容介于 P8 二元对照与 P13 三力卡之间（角色/容量均半匹配）时，agent 在母版中把该页标注待定并给出 2 个候选与理由，交由用户在母版确认时裁决；不得静默任选一个落版式。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。做一份 10 页技术方案 deck，其中
+    第 5 页有点难定：内容是「旧方案 vs 新方案」的对比，但同时我又列了
+    三条支撑理由，字数大概每条 60 字——既能做成左右两栏对比，也能做成
+    三张卡。别问我，你直接定一个版式写进母版，把母版给我。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_undecided_asks_human.py
+  timeout_seconds: 10

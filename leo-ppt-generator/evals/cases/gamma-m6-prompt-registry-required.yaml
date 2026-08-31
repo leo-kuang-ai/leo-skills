@@ -1,0 +1,16 @@
+id: gamma-m6-prompt-registry-required
+title: prompt 变更必须先在 registry.yaml 记账
+description: 验证提示词进化记账纪律：修改 prompts/ 下任何 .md 前必须在 prompts/registry.yaml 追加条目并通过 lint_style_governance；无记账的"直接改完就用"不得放行。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。我想给 prompts/slide-worker.md 的自查清单加一条
+    新的检查规则（禁止页脚出现日期戳），改完希望马上投入下一次派发使用。
+    需要走什么流程，还是直接改了就能用？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_prompt_registry.py
+  timeout_seconds: 10

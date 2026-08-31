@@ -25,13 +25,13 @@
   },
   "color_palette": {
     "primary": "enterprise blue #1D4ED8 / navy, white",
-    "secondary": "light gray, slate",
-    "accent": "one ROI accent",
-    "neutral": "near-black, gray, hairline",
+    "secondary": "light gray #E5E7EB, slate #64748B",
+    "accent": "one ROI accent #10B981",
+    "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
     "rule": "enterprise, credible, clean; not hype"
   },
   "typography": {
-    "title": "clear professional sans",
+    "title": "clear professional sans (Inter / 思源黑体)",
     "body": "concise, benefit-led",
     "labels": "plan/integration tags",
     "text_quality": "accurate product terms, no overclaim"

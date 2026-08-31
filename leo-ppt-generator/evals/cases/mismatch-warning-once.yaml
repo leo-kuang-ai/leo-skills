@@ -1,0 +1,22 @@
+id: mismatch-warning-once
+title: 场景错配劝阻一次后尊重用户选择
+description: 验证学术答辩场景点名蒸汽波风时给一次风险提示与替代建议，用户坚持即执行并记录选择依据，不重复劝阻。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。这是我的硕士论文答辩 deck，
+    视觉风格我就要"蒸汽波风"，别劝我了，就这么定。接下来怎么走？
+
+# 语义分层标记：model_gating = 回复在「锁定式/折中式/写入式」三形态间摆动，
+# 判官覆盖锁定+写入两式；折中式（给降饱和折中）漏「记录用户原始选择依据」
+# 属模型指令遵循缺口，非技能合同可达成（known-issues 有账目）。
+tags:
+  - model_gating
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_mismatch_warning.py
+  timeout_seconds: 10

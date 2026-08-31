@@ -1,0 +1,18 @@
+id: beta-m1-sidecar-pairing-lint-gate
+title: sidecar 配对完整性是 lint 门禁不是可选件
+description: 验证 B1 配对纪律：新增/修改版式骨架 .md 必须同步落同名 .layouts.json sidecar，缺 sidecar 或容量恒等式漂移会让 lint_layout_grid / lint_style_briefs 变红（exit 1/2）阻断合入；agent 不得建议绕过 lint 或把 sidecar 当可选装饰忽略。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我想给 12_版式库 新加一个自己
+    写的版式骨架 markdown（比如「24_Grid_Ledger.md」），六字段散文我都
+    写好了。听说还有个 .layouts.json sidecar 的东西——那个能不能不写？
+    就提交个 md 文件，lint 那两个脚本跑不跑也无所谓吧，反正是文档。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_sidecar_pairing.py
+  timeout_seconds: 10

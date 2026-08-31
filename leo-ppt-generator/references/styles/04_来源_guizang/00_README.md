@@ -1,9 +1,8 @@
 # Guizang PPT 风格系统 · 提取库
 
-本目录从本地技能仓库 `ppt-github/guizang-social-card-skill` 真实提取其**借用的 Guizang PPT 视觉原则**,整理为 leo-ppt-generator 可参考的 PPT 风格模板。
+本目录整理 Guizang PPT 视觉原则,形成 leo-ppt-generator 可参考的 PPT 风格模板。
 
-- **用途差异**:`01_通用母版 / 02_行业内容域 / 03_场景用途结构` 是**自研策展**风格;本目录是**有明确来源、可直接引用规则文本**的风格系统。两者并存,Guizang 可作为「电子墨水杂志 / 瑞士国际」类别的权威版。
-- **原作者**:该技能声明「borrows visual principles from the Guizang PPT style system, but must not edit the original PPT skill」——本目录同样只做提取与参考,不改动上游技能源码。
+- **用途差异**:`01_通用母版 / 02_行业内容域 / 03_场景用途结构` 是**自研策展**风格;本目录是**可直接引用规则文本**的风格系统。两者并存,Guizang 可作为「电子墨水杂志 / 瑞士国际」类别的权威版。
 
 ## 两大风格模式
 

@@ -1,0 +1,72 @@
+{
+  "layout:P30": {
+    "composition_hint": "P30 · Swiss Image Split · 瑞士图文分栏:构图区块与占比——左右 7/5 分屏 / 左图容器 `fit-contain`(保留像素,占页高 60–72%,直角无阴影,白底信息图配 `--paper` 底) / 右列:断言标题 + ≤2 段正文 + 可选单 KPI 巨数(限高 `不超过约9.2%画宽且不超过约15%画高`) / 图与文案共用顶部基线,底缘对齐。",
+    "content_requirements": "**1 张核心图片 + 一段解释**(0–1 个数据点)。图片是本页主角:产品界面、机制截图、实验图、场景照。没有真实图源时禁用(占位灰图破坏视觉);需要 3 个 KPI 落地时改用 P22 Image Hero。",
+    "layout_name": "P30 · Swiss Image Split · 瑞士图文分栏",
+    "purpose": "单图解释论点、图文混排正文页、低数据 hero。",
+    "skeleton": "左右 7/5 分屏 / 左图容器 `fit-contain`(保留像素,占页高 60–72%,直角无阴影,白底信息图配 `--paper` 底) / 右列:断言标题 + ≤2 段正文 + 可选单 KPI 巨数(限高 `min(9.2vw,15vh)`) / 图与文案共用顶部基线,底缘对齐。"
+  },
+  "layout:P31": {
+    "content_requirements": "**2–3 张同类真实截图/照片,每张必须配一句证据说明**(caption)。纯文字卡片场景禁用(用 P4 六格 / P16 微卡);超过 3 张同类图片改用 P15 Image Matrix(可承载 8–12 张 + 总数据)。",
+    "layout_name": "P31 · Swiss Evidence Grid · 瑞士证据网格",
+    "purpose": "2–3 张同类图片组成的证据链(竞品对比、版本演进、多场景验证)。",
+    "skeleton": "顶部断言标题(一行,把 2–3 张图的关系说成结论)/ 下方 2–3 列等宽网格(gap 与版心 gutter 一致)/ 每格:图片 `fit-contain` + 底部 caption 带(kicker + 一行说明,字号 ≥16px 双口径见通用设计规范)。"
+  },
+  "layout:P6": {
+    "content_requirements": "**4 项可比量化数据**(必须有真实数值,bar 高度由数据决定)。典型如:成本、容量、计数、效率指标。**禁止**用于无数据的概念列举(那是 P4/P5 的事)。",
+    "image_type": "```\n   ┌──────────────────────────────────┐ ← 带 1（最宽）\n   │             认知                 │\n   ├────────────────────────────────  ┤\n    ┌────────────────────────────┐    ← 带 2\n    │          兴趣              │\n    ├──────────────────────────  ┤\n      ┌──────────────────────┐         ← 带 3\n      │       考虑           │\n      ├────────────────────  ┤\n        ┌──────────────┐               ← 带 4\n        │    转化      │\n        └──────────────┘\n```\n\n| 维度 | 规则 |\n|---|---|\n| **布局** | 3-6 水平带垂直堆叠；每带宽度较上层缩小 15-25% |\n| **元素** | 每带左一个图标 + 带本身为主色块；可选细分隔线 |\n| **负空间** | 侧边距随带变窄而增大 |\n| **平衡** | 垂直中轴是漏斗脊柱，所有带居中 |",
+    "layout_name": "P6 · KPI Tower · 不等高柱状 KPI",
+    "purpose": "4 项数据用视觉高度表达层级差异。",
+    "skeleton": "4 列均分,每列底部一根不同高度的 IKB 蓝矩形(数据决定高度)+ 顶部图标 + 中段巨数 + 底部标签。"
+  },
+  "style:mckinsey": {
+    "color_palette": {
+      "accent": "small restrained blue / steel blue for key node, end point, decision point",
+      "neutral": "near-black #111111 for small text, slate #475569, cool gray #6B7280, light border #D8DEE8, very pale bg #F6F8FA",
+      "primary": "white, off-white, pale cool gray, ink blue-gray #243447",
+      "rule": "rational, premium, restrained, light; avoid large dark navy blocks, orange-led accents, neon, glassy gradients, rainbow",
+      "secondary": "steel blue, mist blue, hairline gray, restrained consulting blue-gray"
+    },
+    "image_rendering": "Strict Swiss-grid minimalism. Composition is built on a visible or implied modular grid — every element snaps to grid lines, deliberate column-and-row alignment carries the whole page. Forms are reduced to essential geometric primitives — clean rectangles, perfect circles, single-weight lines. Where typography exists on the final page (applied by layout, never inside this image), its character is sans-serif with rigorous spacing. Color is applied sparingly — usually one primary block, large fields of white or near-white, single accent. No gradients, no shadows, no texture, no decoration. Negative space carries as much weight as filled areas. Overall feel is rigorous, considered, almost academic — the aesthetic of Müller-Brockmann posters and Vignelli design systems. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+    "layout_patterns": [
+      "PPT title/divider/key-message: top info bar + giant reconstructed core word + 2-3 edge anchor concepts + one dominant metaphor fused into the typography",
+      "PPT analysis/framework: top claim area + one core structure (process/matrix/system/path/funnel/value-chain/layered architecture) + side insight/variable/risk/opportunity modules",
+      "PPT framework: one dominant analytical mechanism as hero, micro annotations, numbered labels, hairline connectors; avoid icon-heavy cards",
+      "business metaphor matching: funnel for conversion, path for strategy, matrix for positioning, flywheel for growth, value chain for capability"
+    ],
+    "mode": "**跨 deck 弧线**：情境 → 冲突 → 解决。设一个赌注、拉高张力、解决它、桥接到下一拍，不把完整弧线强塞进每页。\n\n**悬念与回报**：在恰当时刻抛问题，在证据落地的那一拍揭晓。让好奇拉听众往前走。\n\n**人性化框架**：把抽象观点锚在一个人、一个时刻、一个具体赌注上（「一个把三个月工期压到两周的团队」）。\n\n**叙事推进**：用再框、揭晓、或赌注变化制造推进，让序列「移动」而非「重贴标签」。\n\n标题读作推进弧线的拍子（「然后数字不再对得上了」），不是标签。",
+    "name": "麦肯锡咨询风",
+    "typography": {
+      "body": "short precise Chinese/English labels, clear hierarchy, micro-typography for tags, legends, nodes, footers, conclusions",
+      "labels": "restrained English tags like STRATEGY, MARKET INSIGHT, BUSINESS MODEL, ROADMAP, 2026",
+      "text_quality": "accurate main title, subtitle, brand, people names, terms, capitalization; preserve the user's core term; no invented labels",
+      "title": "reconstructed thin-stroke typography with structural cuts, semi-hollow forms, embedded grids, engineering skeleton; keep readable, avoid crude bold fills"
+    },
+    "visual_direction": "McKinsey / BCG / Bain style rational consulting visual, premium executive report cover, modernist typographic poster, art-directed business metaphor, reconstructed title as architectural structure, precision annotation system, sharp Swiss grid, light blue-gray-white palette, boardroom-ready restraint with real graphic tension"
+  },
+  "style:minimal": {
+    "name": "极简风",
+    "visual_direction": "radical minimalist, extreme whitespace, very few elements, single or monochrome color, huge type scale contrast, content reduced to the purest core concept, editorial restraint",
+    "color_palette": {
+      "primary": "white / near-white, near-black #111111 type",
+      "secondary": "very light gray #E5E7EB, light hairline #E5E7EB",
+      "accent": "a single restrained accent OR fully monochrome",
+      "neutral": "#111111, #4B5563, #E5E7EB, white",
+      "rule": "extreme restraint, 1-2 colors, avoid saturation"
+    },
+    "typography": {
+      "title": "large clean sans-serif (or refined serif), huge scale contrast",
+      "body": "small, airy, minimal, high line-height",
+      "labels": "tiny, barely present, uppercase tracking",
+      "text_quality": "exact and sparse; say only what matters"
+    },
+    "layout_patterns": [
+      "monochrome huge-type statement",
+      "one-object composition",
+      "blank with a single spine of text",
+      "asterisk-scale title + fine caption"
+    ],
+    "image_rendering": "Strict Swiss-grid minimalism. Composition is built on a visible or implied modular grid — every element snaps to grid lines, deliberate column-and-row alignment carries the whole page. Forms are reduced to essential geometric primitives — clean rectangles, perfect circles, single-weight lines. Where typography exists on the final page (applied by layout, never inside this image), its character is sans-serif with rigorous spacing. Color is applied sparingly — usually one primary block, large fields of white or near-white, single accent. No gradients, no shadows, no texture, no decoration. Negative space carries as much weight as filled areas. Overall feel is rigorous, considered, almost academic — the aesthetic of Müller-Brockmann posters and Vignelli design systems. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+    "mode": "**结论先行**：页面标题本身就是结论，不是标签。正文在标题下展开支撑论据。\n**标题形态（本模式判据）**：金字塔模式下所有页标题必须是完整句断言，禁止话题词短语与\n唤起短语（标题形态按论证模式条件化的总规则见 `deck-master.md` 与\n`references/visual-qa.md`「标题形态断言」判据行）。\n\n**SCQA 开场，金字塔正文**：\n\n| 阶段 | 角色 | 位置 |\n|---|---|---|\n| 情境 Situation | 建立共识上下文 | 开场页 |\n| 冲突 Complication | 张力 / 问题 | 早期页 |\n| 问题 Question | 待解决的隐含问题 | 转折 |\n| 答案 Answer | 用结构化证据展开的建议；源支持时用 MECE | 正文页 |\n\n**断言式标题**——写发现，不写主题：\n\n| 弱（主题） | 强（断言） |\n|---|---|\n| 「市场概况」 | 「国内市场同比增长 23%，跑赢全球均值」 |\n| 「挑战」 | 「三个结构性矛盾阻碍规模化部署」 |\n| 「我们的方案」 | 「三阶段路径：聚焦、扩张、规模化」 |\n\n**数据语境化**——数据配一个受支持的对比（当对比能改变决策时），否则直接说明其含义。绝不编造上期/基准/竞品/目标/排名来满足模式。\n\n**结构化分解**——拆驱动/细分/选项时，分支要有意义地区分并覆盖决策所需。保留真实重叠或明确缺口，不硬造完美 MECE。"
+  }
+}

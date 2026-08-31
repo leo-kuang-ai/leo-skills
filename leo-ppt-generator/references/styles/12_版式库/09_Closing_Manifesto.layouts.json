@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P9",
+  "name": "Closing Manifesto",
+  "page_type": "closing",
+  "visual_signature": "左右 5/7 分屏；左 ink/IKB 底色大字宣言（min(9.2vw,15vh) 限高 + ASCII 点纹理）；右白底 3 条 takeaway（编号 mono + 标题 + 一行说明，行间距 ≥9vh）+ 底部 hairline",
+  "content_capacity": {
+    "manifesto": {
+      "desc": "左侧宣言短句（断言句 ≤12 字）",
+      "chars_per_line": 5,
+      "max_lines": 1,
+      "max_chars": 6
+    },
+    "takeaways": {
+      "desc": "右侧 takeaway 条（编号 + 标题 + 一行说明）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "takeaway_note": {
+      "desc": "每条 takeaway 的一行说明",
+      "chars_per_line": 44,
+      "max_lines": 2,
+      "max_chars": 105
+    }
+  },
+  "best_for": [
+    "deck 收尾页（左宣言短句 + 右 3 条 takeaway 固定结构，每个 deck 只有一页）"
+  ],
+  "avoid_for": [
+    "中间页使用（那会与 P1 封面重复；中段收束用 P12）"
+  ],
+  "reuse_friendly": false
+}

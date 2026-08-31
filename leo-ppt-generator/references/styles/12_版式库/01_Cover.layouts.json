@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P1",
+  "name": "Cover",
+  "page_type": "cover",
+  "visual_signature": "IKB 满屏 + ASCII 呼吸场；主标题反白 weight 200（min(11.6vw,19vh) 双约束大字），强调字用斜体；底部副标 + 元信息带",
+  "content_capacity": {
+    "title": {
+      "desc": "主标题（反白 weight 200，min(11.6vw,19vh) 双约束）",
+      "chars_per_line": 7,
+      "max_lines": 1,
+      "max_chars": 8
+    },
+    "subtitle": {
+      "desc": "底部副标",
+      "chars_per_line": 29,
+      "max_lines": 1,
+      "max_chars": 34
+    },
+    "meta": {
+      "desc": "底部元信息带",
+      "chars_per_line": 44,
+      "max_lines": 2,
+      "max_chars": 105
+    }
+  },
+  "best_for": [
+    "整套 deck 起手 / 主题宣言（纯文字结构：主标题 + 副标 + 元信息）"
+  ],
+  "avoid_for": [
+    "承载数据或列表（封面不承载数据）",
+    "章节内页（章节起始用 P23/P3）"
+  ],
+  "reuse_friendly": false
+}

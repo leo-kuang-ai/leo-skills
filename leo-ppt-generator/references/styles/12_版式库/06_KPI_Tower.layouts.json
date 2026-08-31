@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P6",
+  "name": "KPI Tower",
+  "page_type": "data",
+  "visual_signature": "4 列均分；每列底部一根不同高度的 IKB 蓝矩形（高度由数据决定，6-36vh）+ 顶部图标 + 中段巨数 + 底部标签",
+  "content_capacity": {
+    "items": {
+      "desc": "KPI 列（图标 + 巨数 + 标签，bar 高度 ∝ 数值）",
+      "count_min": 4,
+      "count_max": 4
+    },
+    "item_label": {
+      "desc": "列标签",
+      "chars_per_line": 19,
+      "max_lines": 2,
+      "max_chars": 45
+    },
+    "big_number": {
+      "desc": "中段巨数（真实数值）",
+      "chars_per_line": 5,
+      "max_lines": 1,
+      "max_chars": 6
+    }
+  },
+  "best_for": [
+    "4 项可比量化数据（bar 高度由真实数据决定）",
+    "成本、容量、计数、效率指标的 4 项对比"
+  ],
+  "avoid_for": [
+    "无数据的概念列举（那是 P4/P5 的事）",
+    "超过 4 项或不足 4 项的数据"
+  ],
+  "reuse_friendly": true
+}

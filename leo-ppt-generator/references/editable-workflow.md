@@ -30,6 +30,29 @@
 `manifest.json` 是对象级页面的构建权威；`PageArtifact` 只用于跨能力交接，
 不能替代 manifest。worker 失败后先诊断并改变条件，再 reset 和重新派发。
 
+## 源风格主题提取（direct-editable「沿用源风格」）
+
+`direct-editable` 路线决定「沿用源风格」时，风格提取用确定性脚本而非
+Agent 肉眼判读：
+
+```text
+python3 scripts/extract_pptx_theme.py <可信.pptx> --json <run>/input/theme-extract.json
+```
+
+- **时点红线**：仅在 Office Trust Gate 通过 + CLI preflight 通过后运行
+  （见 [input-routing.md](input-routing.md)）；blocked / terminal 状态下
+  不读取、不复制源文件。
+- 输出为键排序确定性 JSON（含 `source_pptx_sha256`，无时间戳，可重放
+  比对），存 `<run>/input/theme-extract.json` 供 sources_manifest 引用指纹；
+  theme 缺失/不可解析时脚本 exit 1 带 reason，清晰失败不静默降级。
+- **HEX 红线**：提取结果不写入任何风格 brief 的 `color_palette` 固有色值。
+  角色色只走 deck 锚点覆盖通道——按输出 `suggested_overrides` 经
+  `"$LEO_PPT" style render <风格> --color primary=#RRGGBB …` 生效（既有
+  通道，含角色/HEX 校验）。提取的是「这份 deck 的身份色值」，不是「风格
+  的固有属性」。字体同理：Office→Web 映射结果（16 条表）作为 deck 级
+  字族锚输入；不在表内的中文字体保留原名并按输出的
+  `note: 生图后端可用性需样张验证` 走样张验证。
+
 ## 可编辑交付质量门
 
 - 正文、标题、图表文字必须是可选中的原生文本；字体缺失时记录明确替代字体并重新

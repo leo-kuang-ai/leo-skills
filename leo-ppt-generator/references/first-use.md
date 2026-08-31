@@ -27,6 +27,15 @@ Python、venv、runtime identity、内部目录或多条诊断命令，除非用
 
 ## 宿主与 Provider
 
+- **渲染 lane（可选能力，不阻断主路径）**：确定性渲染（图表/表格/文字密集
+  页的 `render page/chart`）依赖 playwright + chromium 与离线字体，属可选
+  增强而非图片路线前置。首次考虑把数据密度高的页路由到 render lane 前，
+  先运行 `"<cli_reference>" render ready --json`：`render_backend_ready`
+  才允许提议；`render_backend_missing`/`unknown` 时**抑制路由提议并披露**
+  （安装指引随探测结果返回，chromium 装入 `$LEO_PPT_HOME/render-browsers/`
+  不污染全局），期间图像 lane 与既有四条 route 全功能不受影响。合同见
+  [`render-contract.md`](render-contract.md) 与
+  [`backend-selection.md`](backend-selection.md) 渲染 lane 节。
 - 合格的已配置外部 Provider 优先于宿主 `builtin-imagegen`；没有合格外部 Provider
   时，宿主明确声明 available 才能作为兜底；unknown 先核实，不能推测为 available。
 - 统一配置入口是 `leo-ppt config`。读取 `config status --json --route <route>`：

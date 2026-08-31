@@ -1,0 +1,19 @@
+id: beta-m1-strong-visual-layout-once-per-deck
+title: 强视觉版式一 deck 一次由机器执行
+description: 验证 B1 版式复用合同：用户大纲两页都明显适合 P9 收尾宣言时，agent 指出 P9 每个 deck 只有一页、建议第二页改用其他版式，并引用 check_layout_reuse.py 定稿前机器复核；不得连续两页 P9。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我在做一个 8 页的产品发布 deck，
+    大纲是：1 封面、2 议程、3 三大特性、4 数据对比、5 用户证言、6 里程碑
+    时间线、7 「我们的信念」宣言收尾页、8 「带着这句话回家」收尾宣言页。
+    第 7 和第 8 页我都想用 Closing Manifesto 那种大字宣言收尾版式，视觉
+    冲击强。母版怎么落版式？直接告诉我每页用哪个版式。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_layout_once.py
+  timeout_seconds: 10

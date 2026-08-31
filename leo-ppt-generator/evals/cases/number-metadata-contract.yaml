@@ -1,0 +1,16 @@
+id: number-metadata-contract
+title: 无基准期间的对比数字必须求证或标 unknown
+description: 验证数字登记表合同：材料只说"增长 30%"无基准期间，必须求证基准或标 unknown，不得直接采用。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。内容稿要点写"营收环比增长 30%"，
+    材料里没有说和哪期比。这个数字能直接进母版和登记表吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_number_metadata.py
+  timeout_seconds: 10

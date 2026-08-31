@@ -26,9 +26,9 @@ Prompt：修改一份包含固定姓名、日期、引语、百分比、因果�
 - 只有诊断出问题的段落发生实质变化；
 - 没有新增经历、数字、来源或场景；
 - 空泛段落信息密度提高或被删除；
-- 改写前先按中文七类合同输出检测报告；
-- 第一版后执行残留反查，再决定是否产生不同的第二版；
-- 报告实际压缩比例，未达到 20% 时说明事实、论证或声音边界；
+- 检出实质问题时先输出中文七类检测报告（audit 或用户明确要求时输出完整七类）；
+- 改写后执行残留反查，仍有实质问题才产生第二版；
+- 报告实际压缩比例（压缩以信息密度为准，无默认百分比）；
 - 不把检测语言描述成作者身份的证据。
 
 Judge：改写前后不变量确定性比较，加编辑 Judge。
@@ -81,8 +81,8 @@ Prompt：审查一篇整体自然的中文作者原稿。原稿有一个准确�
 - 不因单个高频词、单次反转、长句或排比就判定存在 AI 模板感；
 - 保留准确术语、引语和作者样本支持的表达；
 - 检测报告只列实际命中的类别，不为填满七类制造 finding；
-- 没有实质问题时停止，不为达到 20% 删除目标而硬改；
-- 明确说明第一版无需修改，第二版与第一版一致或不另行生成。
+- 没有实质问题时停止，不为压缩比例硬改；
+- 干净稿一行通过，不另行生成第二版。
 
 Judge：包含应保留片段的确定性断言，加误报率编辑 Judge。
 
@@ -179,7 +179,7 @@ Prompt A：用户只想处理一篇中文知乎稿，并询问应该装哪个工
 - A 按中文通用检测、中文互联网语域和长期声音需求分层推荐，不仅按星标排序；
 - A 明确 `taste-skill` 当前是前端视觉工具，HC3 是无根许可证的 2023 研究代码，缺源码的 `shuorenhua`/`ai-flavor-remover` 只能列候选；
 - A 要求执行前核对维护、许可证、网络、写范围和隐私；
-- B 返回含五项 brief、七类检测、核心 22 条、两轮改写、约 20% 条件化目标和停止条件的模板；
+- B 返回含五项 brief、七类检测、核心 22 条、条件触发改写和停止条件的模板；
 - 两者都不声称工具或检测器能证明作者身份。
 
 Judge：关键合同确定性检查，加可用性审查。
@@ -283,7 +283,7 @@ Judge：route/family 关键词确定性断言，加结构适配语义 Judge。
 
 ## Case 21：模糊请求只问一个分叉问题
 
-Prompt：「帮我写一篇关于 AI 教育的文章。」
+Prompt A：「帮我写一篇关于 AI 教育的文章。」
 
 检查：
 
@@ -292,7 +292,12 @@ Prompt：「帮我写一篇关于 AI 教育的文章。」
 - 只问一个能区分 reader job 的问题，例如形成判断还是完成操作；
 - 不提前假定研究解释、观点评论或教程。
 
-Judge：首轮问号/问题数量的 script Judge，加路由语义 Judge。
+Prompt B（分级路由正向）：「写一篇深度分析 AI 应用栈发展趋势的介绍文章，面向工程师读者。」
+
+- 含体裁与读者信号时不得停在问询，应声明有边界的假设并直接进入对应 family；
+- 假设一行带过（family + 读者推断），用户可在产物上纠正。
+
+Judge：A 用首轮问号/问题数量的 script Judge，加路由语义 Judge；B 用确定性断言验证假设声明、family 归属与进入执行，且不出现类型问卷。
 
 ## Case 22：混合类型保持一个主 Family
 
@@ -351,7 +356,7 @@ skill-up run evals/eval.yaml --include-case-name 'routes-*' \
   --include-case-name nonarticle-lifecycle --include-case-name copywriting-route \
   --include-case-name depth-quick-revise --include-case-name voice-profile-skip \
   --include-case-name audit-does-not-rewrite --include-case-name source-grounded-tool-routing \
-  --include-case-name personal-context-no-write
+  --include-case-name personal-context-no-write --include-case-name signal-bearing-topic-proceeds
 
 # evidence-regression
 skill-up run evals/eval.yaml --include-case-name 'post-publish-*' \
@@ -403,5 +408,6 @@ Case 7A 已由 `voice-profile-skip` 覆盖；Case 20 的四个 family 分别由 
 | 明确授权后的最小投射写入 | `personal-context-authorized-write` | 文件级：`files_exist` AGENTS.md、`files_not_exist` 私密档案、`file_contains` 必含 unittest；负向拦截授权外推（自行写入跨项目记忆） |
 | 裸主题两轮状态机 | `bare-topic-fork-two-turns` | 逐轮：`turn_response_not_contains` 断言首轮无 route card/正文、次轮不回退类型问卷 |
 | 无字段泄漏的 post-publish 合同 | `post-publish-no-causal-unprompted` | 与泄漏版同一 judge，验证自发合同词汇（当前 GLM flash 下稳定 FAIL，见 known-issues） |
+| 有信号裸主题直接继续（分级路由正向） | `signal-bearing-topic-proceeds` | 假设声明 + family 归属 + 进入执行的确定性断言，与 `bare-topic-fork-two-turns` 互补 |
 
 宿主限流、上下文超时和 Skill 行为失败必须分别统计。没有 `result.json` 或 case-level error evidence 时，不得把运行中进程或部分输出计入 PASS/FAIL。

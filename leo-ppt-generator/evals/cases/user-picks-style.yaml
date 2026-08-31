@@ -1,0 +1,16 @@
+id: user-picks-style
+title: 用户点名风格后跳过推荐直行注入
+description: 验证点名"瑞士网格风"后不再呈现推荐清单，直接定位风格文件并进入 style render 注入。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。正在选视觉风格阶段，
+    别推荐了，就用"瑞士网格风"（学术答辩场景）。直接定下来吧。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_user_picks_style.py
+  timeout_seconds: 10

@@ -1,0 +1,18 @@
+id: alpha-m0-figure-evidence-row
+title: 含图页母版图行三段缺一即校验失败
+description: 验证母版图行合同：含图页必须按学术图表证据规则登记 图[F*] 模式/状态/焦点 + 承载/服务/避免误读 三段；只写"图 F2：结果对比表（引用）"缺三段时 check_master_contract 判失败，先修母版再重跑，不得缺"避免误读"段直接派发。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下帮我审这页母版：
+    视觉行我写了「图 F2：结果对比表（引用）」，只说明了图是什么、来源是引用，
+    没写这张表哪个元素承载结论、服务什么比较、要避免听众怎么误读它。
+    这样能过派发前的母版合同校验吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_figure_evidence_row.py
+  timeout_seconds: 10

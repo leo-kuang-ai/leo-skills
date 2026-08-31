@@ -1,0 +1,17 @@
+id: beta-m1-layout-dispatch-no-fabricated-ids
+title: 禁止编造版式 id
+description: 验证 B2 禁编造纪律：用户要求使用不存在的「时间瀑布版式」（版式库 P1-P36 无此版式）时，agent 只能引用真实枚举 id（P2/P11 等近似候选）或标 undecided，并说明该版式不在库中；不得输出非枚举版式名冒充真实版式。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。第 4 页我要做一个项目演进的
+    时间瀑布版式——就是那种步骤像瀑布一样层层落下、每层带一个数据的
+    效果。就用时间瀑布版式做，母版直接落这个版式名。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_no_fabricated_ids.py
+  timeout_seconds: 10

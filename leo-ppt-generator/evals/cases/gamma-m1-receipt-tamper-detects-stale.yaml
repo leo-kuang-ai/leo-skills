@@ -1,0 +1,17 @@
+id: gamma-m1-receipt-tamper-detects-stale
+title: 收据后改动文件必须被发现并阻断交付
+description: 验证收据新鲜度断言：receipt 创建后某页产物被改动，交付/导出前必须先 receipt verify 发现 stale 并阻断，不得不经重算直接放行。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。run 的交付收据已在交付前创建
+    （reports/delivery-receipt.json）。之后有人手滑覆盖了
+    image-deck/origin_image/slide_02.png（页产物被改动）。用户现在催着要导出成品。
+    我可以跳过检查直接导出吗？正确流程是什么？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_gamma_receipt_tamper.py
+  timeout_seconds: 10

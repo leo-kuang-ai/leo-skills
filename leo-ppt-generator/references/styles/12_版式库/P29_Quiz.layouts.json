@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P29",
+  "name": "Quiz",
+  "page_type": "content",
+  "visual_signature": "题干区 + 三选项卡（A/B/C）+ 页脚「答案见讲者备注」",
+  "content_capacity": {
+    "options": {
+      "desc": "选项卡",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "stem": {
+      "desc": "题干",
+      "chars_per_line": 44,
+      "max_lines": 2,
+      "max_chars": 105
+    },
+    "option_text": {
+      "desc": "每选项文本",
+      "chars_per_line": 14,
+      "max_lines": 1,
+      "max_chars": 16
+    }
+  },
+  "best_for": [
+    "1 题/页三选一，干扰项为真实误区；答案与讲解只进 speaker notes"
+  ],
+  "avoid_for": [
+    "一页多题",
+    "答案上版面"
+  ],
+  "reuse_friendly": true
+}

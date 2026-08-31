@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "slide": {
+    "width": 13.333,
+    "height": 7.5
+  },
+  "source": {
+    "width_px": 1600,
+    "height_px": 1200
+  },
+  "text_inventory": [
+    {
+      "id": "title",
+      "text": "基线等价 Baseline"
+    },
+    {
+      "id": "body",
+      "required_text": [
+        "粗体 ",
+        "x²",
+        "second line"
+      ]
+    }
+  ],
+  "visual_inventory": [],
+  "background_strategy": {
+    "mode": "native-or-script"
+  },
+  "quality_checks": {
+    "font_size_calibrated": true,
+    "visual_inventory_matched": true,
+    "background_strategy_checked": true,
+    "shape_corner_geometry_checked": true
+  },
+  "background": "#F4F6F8",
+  "text_boxes": [
+    {
+      "box_px": [
+        100,
+        80,
+        600,
+        120
+      ],
+      "text": "基线等价 Baseline",
+      "font_size": 32,
+      "align": "center",
+      "valign": "middle",
+      "color": "#1A1A1A",
+      "z_index": 300
+    },
+    {
+      "box_px": [
+        100,
+        240,
+        500,
+        200
+      ],
+      "paragraphs": [
+        {
+          "runs": [
+            {
+              "text": "粗体 ",
+              "bold": true,
+              "font_size": 14.3,
+              "color": "#0F766E"
+            },
+            {
+              "text": "x²",
+              "baseline": 30000,
+              "font_size": 14.3,
+              "italic": true
+            },
+            {
+              "text": " 尾部",
+              "font": "Helvetica Neue",
+              "font_size": 14.3
+            }
+          ]
+        },
+        "second line"
+      ],
+      "font_size": 14.3,
+      "align": "left",
+      "wrap": "none",
+      "autofit": "shape",
+      "font_size_source": "measured",
+      "z_index": 310
+    }
+  ],
+  "images": [
+    {
+      "box_px": [
+        900,
+        100,
+        400,
+        300
+      ],
+      "path": "photo_a.png",
+      "alt": "photo a",
+      "z_index": 200
+    },
+    {
+      "box_px": [
+        900,
+        500,
+        200,
+        150
+      ],
+      "path": "chart_b.png",
+      "alt": "chart b",
+      "z_index": 250
+    },
+    {
+      "box_px": [
+        1200,
+        500,
+        200,
+        150
+      ],
+      "path": "photo_a.png",
+      "alt": "dup ref",
+      "z_index": 260
+    }
+  ],
+  "shapes": [
+    {
+      "type": "rect",
+      "box_px": [
+        50,
+        500,
+        300,
+        160
+      ],
+      "fill": "#FFFFFF",
+      "stroke": "#0F766E",
+      "stroke_width": 2,
+      "z_index": 100
+    },
+    {
+      "type": "roundRect",
+      "box_px": [
+        400,
+        500,
+        300,
+        160
+      ],
+      "source_corner_radius_px": 18,
+      "fill": "none",
+      "stroke": "#111111",
+      "z_index": 110
+    },
+    {
+      "type": "ellipse",
+      "box_px": [
+        750,
+        500,
+        200,
+        160
+      ],
+      "fill": "#E66B00",
+      "stroke": "none",
+      "z_index": 120
+    },
+    {
+      "type": "line",
+      "points_px": [
+        80,
+        700,
+        700,
+        640
+      ],
+      "stroke": "#333333",
+      "stroke_width": 3,
+      "dash": "dash",
+      "z_index": 130
+    },
+    {
+      "preset": "diamond",
+      "box_px": [
+        800,
+        700,
+        160,
+        120
+      ],
+      "fill": "#57C4B8",
+      "stroke": "#111111",
+      "z_index": 140
+    },
+    {
+      "type": "rect",
+      "polygon_px": [
+        [
+          1000,
+          620
+        ],
+        [
+          1200,
+          620
+        ],
+        [
+          1150,
+          760
+        ],
+        [
+          1000,
+          760
+        ]
+      ],
+      "fill": "#666666",
+      "stroke": "none",
+      "z_index": 150,
+      "box_px": [
+        1000,
+        620,
+        200,
+        140
+      ]
+    }
+  ],
+  "asset_provenance": [
+    {
+      "path": "photo_a.png",
+      "source": "photo_a.png",
+      "source_type": "asset-sheet-separated",
+      "provenance_note": "asset-sheet separated from source"
+    },
+    {
+      "path": "chart_b.png",
+      "source": "chart_b.png",
+      "source_type": "asset-sheet-separated",
+      "provenance_note": "asset-sheet separated from source"
+    }
+  ]
+}

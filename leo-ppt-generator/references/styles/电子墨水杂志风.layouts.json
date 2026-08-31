@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "电子墨水杂志风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：墨水灰阶不影响文本容量"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P3"
+      ],
+      "discouraged": [
+        "P10"
+      ]
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P26",
+        "P8",
+        "P34"
+      ],
+      "discouraged": [
+        "P15"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P25",
+        "P20"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

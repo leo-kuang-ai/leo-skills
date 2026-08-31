@@ -1,0 +1,60 @@
+# leo-ppt-generator 评测稳定性测量与 M0.1 校准报告（2026-08-31）
+
+- **方法**：skill-up 对 18 case 子集（15 个历史不稳定/失败用例 + 3 个稳定对照）连跑 10 轮（iteration-75..84，串行，每轮 ~13-20 分钟），随后实施 M0.1 校准并跑线上验证轮（iteration-85）
+- **背景**：M0 合入轮（iteration-66，59 case）出现 6 个新 case FAIL + 2 个疑似回归；稳定性测量的目的 = 区分"模型摆动 / 判官口径 / 真实行为缺口 / 用例设计缺陷"四类成因
+- **产物**：`leo-ppt-workspace/stability-10r/`（results.csv 180 行逐 case 逐轮矩阵、loop.log、round11-result.json）
+
+## 一、10 轮矩阵（修复前）
+
+| 分层 | 用例 | 通过率 | 定性 |
+|---|---|---|---|
+| 稳定 10/10 ×6 | advice-only / untrusted-office-input / cross-ref-page-exists / master-before-render / master-contract-gate / **master-doc-before-confirm** | 100% | 健康（master-doc 在全量轮 2 次超时为负载因素，子集零超时实证） |
+| 轻摆 9/10 ×3 | assertion-headline / mixed-advise-execute / style-render-guardrail | ≥90% | 模型摆动（style-render 的 1 败为引擎 ERROR） |
+| 中摆 2/10 ×1 | gamma-m6-prompt-registry | 20% | 双合法分支（需改→记账 / 已存在→引用），模型在分支间摆动 + 治理知识召回方差 |
+| 重摆 1/10 ×3 | beta-m7-sample-upgrade-nod / gamma-m1-receipt-tamper / post-confirm-revision | ≤10% | 前两个为 advise 知识缺口（见 M0.1）；post-confirm 为在案用例环境态问题（新沙箱无项目材料，判官期待 fixture 态） |
+| 确定性失败 0/10 ×5 | alpha-contract-academic / beta-m6-academic-five / beta-m7-style-inversion / density-cap / gamma-receipt-gate | 0% | **transcript 复核全部实质正确**——判官/用例校准缺口，并由此抓出 SKILL.md 四处入口级知识缺口 |
+
+## 二、M0.1 校准（修复实施与验证协议）
+
+**SKILL.md 入口级锚点 4 处**（稳定性测评抓出的真实集成缺口——M0 把规则写进了 execute 层 reference，但 advise 模式唯一可读的 SKILL.md 没有）：
+1. 指纹收据门（create → verify fresh，无/陈旧不得 accepted）——修 gamma-receipt-gate（0/10）与 gamma-tamper（1/10）
+2. 学术合同三字段必填 + 答辩档位问明——修 alpha-contract-academic（0/10）
+3. 样张默认恰好 1 张 + 结构页成本告知点头 + 反演三组点名——修 beta-m7-nod（1/10）与 beta-m7-inversion（0/10）
+4. 论点/证据/方案页正文合计 ≤80 字、每要点行 ≤40 字——修 density-cap（0/10）
+
+**判官修复 7 处**（协议 = 10 轮历史响应重放 + 合成反向陷阱控制，全部零误放行）：
+- judge_cross_ref_exists / judge_master_gate：否定词表补「过不了」族（it-66 两"疑似回归"由此定性为词表缺口并重放通过）
+- judge_density_cap：markdown 表格分隔归一化 + `\s*条` 空格容忍 + 词组扩充
+- judge_contract_academic_fields：枚举值要求改"在场或 execute 延迟核实"+ 疑问句回述豁免（"可以吗"不是背书）
+- judge_gamma_prompt_registry：双分支接受（需改→记账纪律 / 已存在→文件级引用）+ 诚实机制说明豁免（"机制上可行但治理 lint 会拦"不算放行），重放 2/10→5/10
+- judge_gamma_receipt_gate：引号剥离增反引号 span（规则原文回述误判源）
+- judge_master_doc_before_confirm：否定感知降子句级复核（"确认门不能省，需要你点头"的点头半句为正向），it-85 重放通过且 10 轮历史零回归
+
+**用例重设计 1 个**：beta-m6-academic-five-modes——原问法要求 advise 模式枚举模板（与"advise 禁读 reference"矛盾），重设计为**反编造测法**：题目点名"学术五拍"，正确行为 = 不凭模式名现场编五拍序列 + 指向权威源（06_论证模式/--list-templates/进 execute）+ 转述注入机制与 Numbers-not-adjectives 纪律。
+
+## 三、线上验证轮（iteration-85，M0.1 修复后）
+
+**16/18 PASS**（master-doc 经判官子句级修复重放补正计入）：
+
+| 前状 | 用例 | round 11 |
+|---|---|---|
+| 0/10 ×5 | density-cap / alpha-contract / beta-m6 / beta-m7-inversion / gamma-receipt-gate | **全部 PASS** |
+| 1/10 ×2 | beta-m7-nod / gamma-tamper | **PASS** |
+| 2/10 ×1 | gamma-m6 | FAIL（model_gating 候选：双合法分支 + 治理知识摆动，不建议向 SKILL.md 堆贡献者向细节） |
+| 在案存量 | post-confirm-revision | FAIL（用例环境态问题，非行为回归——沿用并行会话归因） |
+| 10/10 摆动 1 次 | master-doc | FAIL→判官子句级修复后重放 PASS |
+
+对照：修复前子集最好轮 11/18 → 修复后 16/18（89%），且 12 个此前不稳定用例中 11 个转绿。
+
+## 四、结论
+
+1. **稳定性测量完成了它的使命**：10 轮数据把 18 个用例切成五层并逐层定性；五个 0/10 确定性失败全部是校准缺口而非行为回归——transcript 复核是关键一步，没有它会把 5 个健康行为误报为回归。
+2. **最大的真实收获是 SKILL.md 四处缺口**：M0 把收据门、学术字段、样张纪律、密度数字写进了 execute 层 reference，漏了入口层——这是"分层文档 + advise/execute 分权"架构的系统性风险点，建议后续里程碑把"新规则是否需要 SKILL.md 锚点"加入 checklist。
+3. **判官否定感知的三个通用坑已被系统性修复并留下范式**：词表缺口（过不了）、粒度缺口（句级→子句级）、引号剥离缺口（反引号）——新 judge 应直接复用 β 系的子句降级实现。
+4. 残余不稳定面：gamma-m6（model_gating 候选）与 post-confirm-revision（环境态）共 2 例，占比 2/59 = 3.4%，均为在案定性项。
+
+## 五、验证口径
+
+- 10+1 轮共 198 次真实会话；重放验证 70 次（7 判官 × 10 轮）；合成反向陷阱 8 组全部正确 FAIL
+- 本地门复跑：unittest 187 tests / 2 存量金样漂移持平、四 lint exit 0
+- 逐例证据链：evals/known-issues.md M0.1 两节 + stability-10r/results.csv

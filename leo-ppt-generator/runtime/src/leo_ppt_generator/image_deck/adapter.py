@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,74 @@ from ..storage import (
     sha256_file,
 )
 
+# sources_manifest.json v1 的轻量合同校验（完整校验在技能包
+# scripts/check_sources_manifest.py；runtime 侧只做冻结前阻断）。
+SOURCES_SCHEMA_VERSION = 1
+SOURCES_MANIFEST_KIND = "visual-sources"
+SOURCES_SOURCE_CLASSES = frozenset(
+    {
+        "user-material",
+        "derived-crop",
+        "ai-generated",
+        "illustrative",
+        "native-rebuild",
+        "deterministic-render",
+        "deterministic-overlay",
+    }
+)
+SOURCES_TIERS = frozenset({"引用", "估算", "示意"})
+SOURCES_NULL_REF_CLASSES = frozenset(
+    {"ai-generated", "native-rebuild", "deterministic-overlay"}
+)
+_SOURCES_SENSITIVE = re.compile(
+    r"(?i)(api[_-]?key|access[_-]?token|password|authorization|bearer|secret)"
+)
+_SOURCES_PAGE_ID = re.compile(r"^slide_(\d+)$")
+
+
+def validate_sources_manifest(data: Any) -> dict[str, Any]:
+    """冻结前轻量校验：结构、枚举、自指纹与敏感扫描；非法即 ContractError。"""
+    if not isinstance(data, dict):
+        raise ContractError("sources_manifest_invalid")
+    if data.get("schema_version") != SOURCES_SCHEMA_VERSION or data.get(
+        "manifest_kind"
+    ) != SOURCES_MANIFEST_KIND:
+        raise ContractError("sources_manifest_invalid")
+    pages = data.get("pages")
+    if not isinstance(pages, list) or not pages:
+        raise ContractError("sources_manifest_invalid")
+    for page in pages:
+        if not isinstance(page, dict):
+            raise ContractError("sources_manifest_invalid")
+        page_id = page.get("page_id")
+        if not isinstance(page_id, str) or not _SOURCES_PAGE_ID.match(page_id):
+            raise ContractError("sources_manifest_invalid")
+        visuals = page.get("visuals")
+        if not isinstance(visuals, list):
+            raise ContractError("sources_manifest_invalid")
+        for visual in visuals:
+            if not isinstance(visual, dict):
+                raise ContractError("sources_manifest_invalid")
+            if visual.get("source_class") not in SOURCES_SOURCE_CLASSES:
+                raise ContractError("sources_manifest_invalid")
+            tier = visual.get("tier")
+            if tier not in SOURCES_TIERS:
+                raise ContractError("sources_manifest_invalid")
+            if visual.get("source_ref") is None and (
+                visual.get("source_class") not in SOURCES_NULL_REF_CLASSES
+                or tier == "引用"
+            ):
+                raise ContractError("sources_manifest_invalid")
+    recorded = data.get("contents_sha256")
+    payload = {key: value for key, value in data.items() if key != "contents_sha256"}
+    if not isinstance(recorded, str) or sha256_bytes(
+        canonical_json(payload).encode()
+    ) != recorded:
+        raise ContractError("sources_manifest_invalid")
+    if _SOURCES_SENSITIVE.search(canonical_json(payload)):
+        raise ContractError("sources_manifest_invalid")
+    return data
+
 
 class ImageDeckAdapter:
     contract_version = 1
@@ -29,13 +98,26 @@ class ImageDeckAdapter:
         self.jobs_path = self.run_dir / "slide_jobs.json"
         self.images_dir = self.run_dir / "origin_image"
 
-    def prepare(self, slides: list[dict[str, Any]]) -> dict[str, Any]:
+    def prepare(
+        self,
+        slides: list[dict[str, Any]],
+        sources_manifest: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         if not slides or len(slides) > 50:
             raise ContractError("input_too_large" if len(slides) > 50 else "empty_deck")
         numbers = [int(slide["number"]) for slide in slides]
         if numbers != list(range(1, len(slides) + 1)):
             raise ContractError("invalid_page_sequence")
-        fingerprint = sha256_bytes(canonical_json(slides).encode())
+        if sources_manifest is not None:
+            validate_sources_manifest(sources_manifest)
+            fingerprint = sha256_bytes(
+                canonical_json(
+                    {"slides": slides, "sources_manifest": sources_manifest}
+                ).encode()
+            )
+        else:
+            # 无 sources 输入时保持旧算法逐字节不变（旧 run 恢复兼容，CI-3）。
+            fingerprint = sha256_bytes(canonical_json(slides).encode())
         if self.jobs_path.is_file():
             existing = self._jobs()
             if existing.get("prepare_fingerprint") == fingerprint:
@@ -49,6 +131,14 @@ class ImageDeckAdapter:
             "prepare_fingerprint": fingerprint,
             "run_status": "prepared",
             "operations": {},
+            "sources": (
+                None
+                if sources_manifest is None
+                else {
+                    "path": "input/sources-manifest.json",
+                    "contents_sha256": sources_manifest.get("contents_sha256"),
+                }
+            ),
             "slides": [
                 {
                     "number": number,

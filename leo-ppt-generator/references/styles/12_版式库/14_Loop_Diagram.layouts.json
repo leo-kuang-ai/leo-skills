@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P14",
+  "name": "Loop Diagram",
+  "page_type": "content",
+  "visual_signature": "左 4 行编号步骤（顶对齐）；右 SVG 同心圆环 + 中央巨字 LOOP；节点统一灰底直角方块",
+  "content_capacity": {
+    "steps": {
+      "desc": "循环步骤（编号 + 描述）",
+      "count_min": 3,
+      "count_max": 5
+    },
+    "step_desc": {
+      "desc": "每步描述",
+      "chars_per_line": 14,
+      "max_lines": 1,
+      "max_chars": 16
+    }
+  },
+  "best_for": [
+    "循环 / 闭环流程（终点回到起点，3-5 步）",
+    "自学循环、CI/CD、反馈闭环、agent loop"
+  ],
+  "avoid_for": [
+    "线性流程（禁用，那是 P11）"
+  ],
+  "reuse_friendly": true
+}

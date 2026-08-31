@@ -1,0 +1,18 @@
+id: beta-m1-pptx-theme-extraction-deterministic
+title: 主题提取走确定性脚本而非肉眼判读
+description: 验证 B4 合同：Office Trust Gate 已通过、preflight 已过的可信 PPTX 想沿用源风格时，agent 引用 scripts/extract_pptx_theme.py 的确定性输出（12 slot/字体映射/角色色）并以 --color 覆盖命令生效，HEX 不写进风格 brief；不得以「看起来是蓝色商务风」的肉眼判读充当结论。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我有一份客户给的 PPTX（来源
+    可信，Trust Gate 那步我已经确认过了，preflight 也过了），现在要基于
+    它重做一份新 deck，风格就沿用它现有的主题——主色、强调色、字体都
+    跟原文件保持一致。你看看这文件是什么风格，把颜色字体提取出来用上。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m1_theme_extract.py
+  timeout_seconds: 10

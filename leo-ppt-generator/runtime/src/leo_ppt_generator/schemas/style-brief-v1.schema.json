@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "style-brief-v1.schema.json",
+  "title": "leo-ppt-generator 风格 brief（GPT-Image-2 风格 Brief JSON 块）",
+  "description": "风格库 brief 的结构契约。lint（scripts/lint_style_briefs.py）以本文件为单真值源：required 键为 ERROR 级；color_palette 各角色的 pattern（值内至少内嵌一个 #RRGGBB 锚点）与 typography 的身份字体关键词为 WARNING 级（存量偏差进 scripts/style-lint-baseline.txt 白名单，新增文件不得进白名单）。layout_blueprints 声明为可选（现存 brief 均有；lint 只做存在性子集校验）。",
+  "type": "object",
+  "required": [
+    "type",
+    "style_name",
+    "best_for",
+    "visual_direction",
+    "canvas",
+    "color_palette",
+    "typography",
+    "layout_patterns"
+  ],
+  "properties": {
+    "type": { "type": "string" },
+    "style_name": { "type": "string", "minLength": 1 },
+    "best_for": { "type": "string", "minLength": 1 },
+    "visual_direction": { "type": "string", "minLength": 1 },
+    "canvas": {
+      "type": "object",
+      "required": ["aspect_ratio", "background", "composition", "density"],
+      "properties": {
+        "aspect_ratio": { "type": "string" },
+        "background": { "type": "string" },
+        "composition": { "type": "string" },
+        "density": { "type": "string" }
+      }
+    },
+    "color_palette": {
+      "type": "object",
+      "required": ["primary", "secondary", "accent", "neutral", "rule"],
+      "properties": {
+        "primary": {
+          "type": "string",
+          "description": "散文用法说明 + 至少一个 #RRGGBB 锚点（WARNING 级，见 scripts/style-lint-baseline.txt）",
+          "pattern": "#[0-9A-Fa-f]{6}"
+        },
+        "secondary": { "type": "string", "pattern": "#[0-9A-Fa-f]{6}" },
+        "accent": { "type": "string", "pattern": "#[0-9A-Fa-f]{6}" },
+        "neutral": { "type": "string", "pattern": "#[0-9A-Fa-f]{6}" },
+        "rule": { "type": "string" }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["title", "body", "labels"],
+      "description": "各值须为身份字体声明：中文主字族具体到族（思源黑体/Noto Sans SC/MiSans/宋体系等）+ 英文搭配 + 字重区间 + 气质理由；『clean sans-serif』类零信息描述为 WARNING（通用设计规范 §一.6）",
+      "properties": {
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "labels": { "type": "string" },
+        "text_quality": { "type": "string" }
+      }
+    },
+    "layout_patterns": { "type": "array", "minItems": 1 },
+    "layout_usage_rule": { "type": "string" },
+    "layout_blueprints": { "type": "array" },
+    "visual_elements": { "type": "object" },
+    "rendering_constraints": { "type": "array" },
+    "reference": { "type": "string" }
+  }
+}

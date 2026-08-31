@@ -1,0 +1,17 @@
+id: beta-m6-academic-five-modes
+title: 学术五拍骨架不凭印象编造并指向权威源与注入机制
+description: 验证学术视觉语言包（B6）的 advise 侧正确行为：被问及"学术五拍"具体构成时，不凭模式名现场编造五拍序列，指向权威源（06_论证模式 轴文档 / style render --list-templates / 进入 execute 读取），并正确转述注入机制（母版结论句标题按论证模式条件化 + style render --mode 注入）与答辩实质纪律（Numbers, not adjectives）。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。我下周要做博士论文答辩 deck，
+    听说你们的风格库有个叫「学术五拍」的论证骨架。它具体是哪五拍、按什么
+    顺序？怎么注入到生成流程里？答辩页上的结论怎么写才不算空话？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_beta_m6_academic_five.py
+  timeout_seconds: 10

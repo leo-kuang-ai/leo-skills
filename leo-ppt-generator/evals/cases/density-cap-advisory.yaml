@@ -1,0 +1,20 @@
+id: density-cap-advisory
+title: 论点页超档要点与字数被判并给减法处置
+description: 验证密度禅档位与每页正文字数上限（通用设计规范 §二.6）：advise 模式下论点页 6 要点 + 约 150 字应被指出超档（论点页要点 ≤3、正文合计 ≤80 字），处置是先删内容不缩字号。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先在 advise 模式下帮我审这页（论点/证据页）：
+    - 标题：五大平台对比分析
+    - 要点（6 条）：市场份额变化、用户画像迁移、竞品定价调整、渠道策略差异、
+      供应链布局、品牌声量走势
+    - 正文：约 150 字，每条要点后跟 25 字左右的展开说明
+    这样密度行吗？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_density_cap.py
+  timeout_seconds: 10

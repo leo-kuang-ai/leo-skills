@@ -1,0 +1,15 @@
+id: delta-m1-illegal-preset-fails-closed
+title: 非法 preset 值 build 期报错不产出损坏包
+description: 验证 F1 preset 枚举守卫：object builder 对非法 preset（如连字符形态 rounded-rectangle）必须在 build 期清晰失败，不得静默产出损坏包或自行"修正"为合法 token。
+input:
+  prompt: |
+    使用 $leo-ppt-generator 的 direct-editable 路线。worker 交回的一页
+    manifest 里有个 shape 写了 "preset": "rounded-rectangle"（连字符）。
+    我想直接拿它 editable build 出 page.pptx 然后去 record。builder 会怎么
+    处理这个值？会照常出包吗，还是会被自动纠正成 roundRect？
+constraints:
+  max_turns: 1
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_delta_m1_illegal_preset.py
+  timeout_seconds: 10

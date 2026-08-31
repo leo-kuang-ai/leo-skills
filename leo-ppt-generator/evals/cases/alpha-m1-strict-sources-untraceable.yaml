@@ -1,0 +1,18 @@
+id: alpha-m1-strict-sources-untraceable
+title: 引用级视觉无来源回溯在 strict 下阻断交付
+description: 验证 sources_manifest --strict 交付门：页内"图 3（论文原图，引用）"在素材目录无对应文件且 source_ref 为空时，交付前必须阻断并给 source_unverifiable，不得以"看起来像论文图"放行，也不能先交付再补。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。母版某页视觉行用了「图 3：训练收敛曲线
+    （引用，论文原图）」，但用户素材目录里没有这张图的文件，sources manifest 里
+    这条 source_ref 也是空的。DELIVERY-GATE 的 strict-sources 校验会怎么判？
+    能不能先交付再补？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_strict_sources.py
+  timeout_seconds: 10

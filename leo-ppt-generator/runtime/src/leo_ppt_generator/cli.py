@@ -49,6 +49,14 @@ from .evidence import EvidenceError, record_acceptance, record_provenance, recor
 from .hybrid.assembler import HybridAssembler
 from .image_deck.adapter import ImageDeckAdapter
 from .lifecycle import CleanupConflict, Lifecycle
+from .render.chart import render_chart
+from .render.errors import RenderError
+from .render.page import parse_size, render_page
+from .render.provenance import attach_provenance_to_slide, load_render_receipt
+from .render.raster import rasterize_svg
+from .render.readiness import probe_fast as render_probe_fast
+from .render.readiness import render_ready as _render_readiness_report
+from .render.receipt import RECEIPT_RELATIVE_PATH, ReceiptError, create_delivery_receipt, verify_delivery_receipt
 from .observability import (
     command_name,
     record_command,
@@ -68,7 +76,14 @@ from .storage import (
     sha256_bytes,
 )
 from .styles import StyleStoreError, list_styles, load_style, save_style
-from .templates import TemplateError, compose_layout, compose_style, list_templates
+from .layout_bank import list_layout_bank, load_layout_bank, load_style_layouts
+from .templates import (
+    StyleColorOverrideError,
+    TemplateError,
+    compose_layout,
+    compose_style,
+    list_templates,
+)
 from .upgrade.baseline import (
     import_baseline,
     inspect_image_delivery,
@@ -305,6 +320,7 @@ def doctor_report(route: str | None) -> dict[str, Any]:
             "status": "required",
             "reason_code": "manual_visual_acceptance_required",
         },
+        "render_backend": _render_readiness_doctor_facet(),
         "route_contract": {"status": "passed" if route else "not_requested"},
     }
     status = "blocked" if config_error else "ready"
@@ -353,6 +369,31 @@ def doctor_report(route: str | None) -> dict[str, Any]:
 
 def _json_file(path: str | Path) -> Any:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _render_readiness_doctor_facet() -> dict[str, Any]:
+    """doctor 的 render_backend 分面：可选能力，missing 不阻断整体 status。
+
+    默认走零 driver 的文件系统级探测（``probe_fast``；不 spin playwright
+    driver，避免高频 doctor 的 asyncio teardown 噪声）；启动级真值以
+    ``render ready`` 为准，``LEO_PPT_RENDER_DOCTOR_LAUNCH=1`` 打开完整探测。
+    """
+
+    if os.environ.get("LEO_PPT_RENDER_DOCTOR_LAUNCH") == "1":
+        report = _render_readiness_report()
+    else:
+        report = render_probe_fast().to_dict()
+    return {
+        "status": report["status"].removeprefix("render_backend_"),
+        "reason_code": report["status"],
+        "optional": True,
+        "playwright_version": report.get("playwright_version"),
+        "chromium_version": report.get("chromium_version"),
+        "chromium_path": report.get("chromium_path"),
+        "fonts_present": report.get("fonts_present"),
+        "install_guide": report.get("install_guide"),
+        "warnings": report.get("warnings", []),
+    }
 
 
 def _parse_pages(value: str | None) -> set[int]:
@@ -767,6 +808,31 @@ def _run_result(
     )
 
 
+def _delivery_receipt_gate(root: Path) -> dict[str, Any]:
+    """DELIVERY-GATE 收据门：收据存在且 verify fresh 才算通过。
+
+    无收据 → not_run（披露，不崩）；stale/invalid → blocked。验证只在
+    收据存在时重算指纹，活跃 run 的常规命令只付一次存在性检查的成本。
+    """
+
+    receipt_path = root / RECEIPT_RELATIVE_PATH
+    try:
+        outcome = verify_delivery_receipt(root)
+    except (OSError, ReceiptError):
+        outcome = {"status": "invalid", "fresh": False}
+    status = {"fresh": "passed", "missing": "not_run"}.get(
+        outcome["status"], "blocked"
+    )
+    return {
+        "gate": "delivery_receipt",
+        "status": status,
+        "reason_code": f"delivery_receipt_{outcome['status']}",
+        "fresh": bool(outcome.get("fresh")),
+        "path": str(receipt_path),
+        "impact": outcome.get("impact") if status == "blocked" else None,
+    }
+
+
 def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
     output_dir = run.get("output_dir")
     if not isinstance(output_dir, str) or not output_dir:
@@ -823,11 +889,19 @@ def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
         if isinstance(value, dict) and isinstance(value.get("receipt"), str):
             evidence_refs.append(value["receipt"])
     evidence_refs.extend(str(path) for path in sorted((root / "reports").glob("provenance-*.json")))
+    receipt_gate = _delivery_receipt_gate(root)
+    if receipt_gate["status"] == "not_run":
+        missing.append("delivery_receipt")
+    elif receipt_gate["status"] != "passed":
+        unverified.append("delivery_receipt")
+    if receipt_gate["status"] != "passed" and receipt_gate["path"] not in evidence_refs:
+        evidence_refs.append(receipt_gate["path"])
     artifact_ready = summary.get("passed") is True
+    receipt_blocking = receipt_gate["status"] != "passed"
     status = (
         "artifact_invalid"
         if not artifact_ready
-        else ("acceptance_pending" if missing else "accepted")
+        else ("acceptance_pending" if missing or receipt_blocking else "accepted")
     )
     return {
         "status": status,
@@ -839,6 +913,7 @@ def _delivery_readiness(run: dict[str, Any]) -> dict[str, Any] | None:
         "artifact_ready": artifact_ready,
         "missing_gates": missing,
         "unverified_gates": unverified,
+        "receipt_gate": receipt_gate,
         "evidence_refs": list(dict.fromkeys(evidence_refs)),
     }
 
@@ -879,6 +954,11 @@ def _status_next_action(run: dict[str, Any]) -> dict[str, Any]:
     if run.get("status") == "completed":
         readiness = _delivery_readiness(run)
         if readiness and readiness["status"] == "acceptance_pending":
+            if readiness["missing_gates"] == ["delivery_receipt"]:
+                return {
+                    "kind": "create_delivery_receipt",
+                    "payload": {"gate": "delivery_receipt"},
+                }
             return {
                 "kind": "record_delivery_evidence",
                 "payload": {"missing_gates": readiness["missing_gates"]},
@@ -1075,6 +1155,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     backend = subcommands.add_parser("backend")
     backend_commands = backend.add_subparsers(dest="backend_command", required=True)
+    backend_report = backend_commands.add_parser("report")
+    backend_report.add_argument("run_path", nargs="?")
     backend_create = backend_commands.add_parser("create")
     backend_create.add_argument(
         "--provider",
@@ -1158,6 +1240,10 @@ def build_parser() -> argparse.ArgumentParser:
     prepare.add_argument("run_path", nargs="?")
     prepare.add_argument("--run-dir")
     prepare.add_argument("--slides")
+    prepare.add_argument(
+        "--sources",
+        help="视觉来源清单（content/sources-manifest.json）；冻结进 run input 并入 prepare_fingerprint",
+    )
     record = image_commands.add_parser("record")
     record.add_argument("run_path", nargs="?")
     record.add_argument("--run-dir")
@@ -1166,14 +1252,34 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--image")
     record.add_argument("--result")
     record.add_argument("--backend", default="fixture")
+    record.add_argument(
+        "--page-type", choices=("chart", "text-heavy", "image"),
+        help="页型标签（backend×页型路由统计用）",
+    )
+    record.add_argument("--attempts", type=int, default=1,
+                        help="该页到达 accepted 的尝试次数")
+    record.add_argument("--tokens", type=int, default=None,
+                        help="该页图片 backend 的 token 用量（worker 回报透传，"
+                             "缺省 not-recorded）")
     record.add_argument("--lease")
     record.add_argument("--generation", type=int)
     record.add_argument("--agent-id")
     record.add_argument("--expected-revision", type=int)
     record.add_argument("--expected-state-hash")
     record.add_argument("--operation-id")
+    record.add_argument("--render-receipt",
+                        help="render provenance sidecar（<png>.render.json）路径；"
+                             "校验 out_sha256 一致后并入该页 slide entry 的 provenance 字段")
     record.add_argument("--worker-duration-seconds", type=_duration_seconds)
     record.add_argument("--backend-duration-seconds", type=_duration_seconds)
+    image_sweep = image_commands.add_parser(
+        "sweep", help="E4 全册清扫：非 rendered 页复位计划（--dry-run）/执行")
+    image_sweep.add_argument("run_path", nargs="?")
+    image_sweep.add_argument("--run-dir")
+    image_sweep.add_argument("--max-rounds", type=int, default=2,
+                             help="清扫轮次上限（协议 ≤2 轮；超限拒绝执行）")
+    image_sweep.add_argument("--dry-run", action="store_true",
+                             help="只输出复位计划，不改状态")
     finalize = image_commands.add_parser("finalize")
     finalize.add_argument("run_path", nargs="?")
     finalize.add_argument("--run-dir")
@@ -1184,6 +1290,36 @@ def build_parser() -> argparse.ArgumentParser:
     image_assemble.add_argument("--run-dir")
     image_assemble.add_argument("--output")
     image_assemble.add_argument("--rebuild", action="store_true")
+
+    render = subcommands.add_parser(
+        "render", help="确定性渲染 lane（gamma M1：D 柱，与图像 backend 并列）")
+    render_commands = render.add_subparsers(dest="render_command", required=True)
+    render_ready_cmd = render_commands.add_parser(
+        "ready", help="render backend readiness 三态探测（doctor 分面同源）")
+    render_ready_cmd.add_argument("--json", action="store_true")
+    render_page_cmd = render_commands.add_parser("page", help="HTML 模板 → PNG 页产物")
+    render_page_cmd.add_argument("--template", required=True,
+                                 help="assets/render-templates/<id>.html 的模板 id")
+    render_page_cmd.add_argument("--data", required=True, help="slide data JSON 路径")
+    render_page_cmd.add_argument("--out", required=True, help="PNG 输出路径")
+    render_page_cmd.add_argument("--size", default="2560x1440",
+                                 help="输出像素档（16:9；缺省 2560x1440 = dsf2）")
+    render_page_cmd.add_argument("--timeout", type=float, default=60.0,
+                                 help="单页渲染超时（秒）")
+    render_page_cmd.add_argument("--theme-file",
+                                 help="themeVariables JSON（deck colors 锚，见 render-contract.md）")
+    render_chart_cmd = render_commands.add_parser(
+        "chart", help="图表语法 → SVG（浏览器实例内 mermaid）")
+    render_chart_cmd.add_argument("--dialect", choices=("mermaid",), default="mermaid")
+    render_chart_cmd.add_argument("--source",
+                                  help="11_图表语法方言 md（抽 ```mermaid-example 块）")
+    render_chart_cmd.add_argument("--code-file", help="内联语法文件（全文）")
+    render_chart_cmd.add_argument("--out", required=True, help="SVG 输出路径")
+    render_chart_cmd.add_argument("--png", help="可选：resvg 栅格化 PNG 输出路径")
+    render_chart_cmd.add_argument("--theme-file",
+                                  help="themeVariables JSON（缺省 mermaid 默认并 WARN）")
+    render_chart_cmd.add_argument("--scale-width", type=int, default=2560,
+                                  help="栅格化 fitTo 宽度")
 
     editable = subcommands.add_parser("editable")
     editable_commands = editable.add_subparsers(dest="editable_command", required=True)
@@ -1263,6 +1399,16 @@ def build_parser() -> argparse.ArgumentParser:
     assemble.add_argument("--selected-pages")
     assemble.add_argument("--failures")
     assemble.add_argument("--partial-confirmation")
+    delivery_receipt = delivery_commands.add_parser("receipt")
+    delivery_receipt_commands = delivery_receipt.add_subparsers(
+        dest="delivery_receipt_command", required=True
+    )
+    receipt_create = delivery_receipt_commands.add_parser("create")
+    receipt_create.add_argument("run_path", nargs="?")
+    receipt_create.add_argument("--run-dir")
+    receipt_verify = delivery_receipt_commands.add_parser("verify")
+    receipt_verify.add_argument("run_path", nargs="?")
+    receipt_verify.add_argument("--run-dir")
 
     style = subcommands.add_parser("style")
     style_commands = style.add_subparsers(dest="style_command", required=True)
@@ -1275,8 +1421,34 @@ def build_parser() -> argparse.ArgumentParser:
     style_render.add_argument("style")
     style_render.add_argument("--home")
     style_render.add_argument("--mode", help="论证模式名（06_论证模式）")
+    style_render.add_argument(
+        "--brand", help="品牌身份名（10_品牌身份 或 $LEO_PPT_HOME/brands，用户 VI 优先）"
+    )
+    style_render.add_argument(
+        "--anchor", action="store_true",
+        help="附加风格锚附录（HEX/字族/渲染逐字节注入每页，防漂移；--brand 隐含开启）",
+    )
     style_render.add_argument("--layout", help="版式名（12_版式库，如 P6 / KPI Tower）")
     style_render.add_argument("--image-type", help="信息图类型名（07_信息图类型）")
+    style_render.add_argument(
+        "--materialize",
+        action="store_true",
+        help="为图片生成路线附加构图指令块（CSS 骨架翻译为画布区块占比）",
+    )
+    style_render.add_argument(
+        "--color",
+        action="append",
+        default=None,
+        metavar="ROLE=HEX",
+        help="deck 级调色板覆盖（可重复，role ∈ primary/secondary/accent/neutral，"
+        "值须为 #RRGGBB；同一 role 重复给值时最后一次生效；role 非法、取值非 HEX、"
+        "role 不在该风格或风格无 palette 均报 style_color_override_invalid）",
+    )
+    style_render.add_argument(
+        "--guardrail",
+        action="store_true",
+        help="输出追加确定性设计护栏摘要（缺省输出保持逐字节不变）",
+    )
     style_render.add_argument("--list-templates", action="store_true")
     style_save = style_commands.add_parser("save")
     style_save.add_argument("name")
@@ -1284,6 +1456,12 @@ def build_parser() -> argparse.ArgumentParser:
     style_save.add_argument("--home")
     style_save.add_argument("--overwrite", action="store_true")
     style_save.add_argument("--rename")
+    style_layouts = style_commands.add_parser(
+        "layouts",
+        help="版式库 sidecar 只读查询（layout-bank-v1；输出含每文件 sha256 指纹）",
+    )
+    style_layouts.add_argument("--style", help="风格名：返回该风格的薄路由视图")
+    style_layouts.add_argument("--layout", help="版式 P 码（如 P6）：返回单份版式 sidecar")
 
     evidence = subcommands.add_parser("evidence")
     evidence_commands = evidence.add_subparsers(dest="evidence_command", required=True)
@@ -1690,6 +1868,27 @@ def _dispatch_config(args: argparse.Namespace) -> dict[str, Any]:
     raise ValueError(f"unknown config command: {command}")
 
 
+def _parse_color_overrides(items: list[str] | None) -> dict[str, str] | None:
+    """Turn repeated ``--color ROLE=HEX`` args into an ordered override dict.
+
+    Malformed items (no ``=``) fail with the same StyleColorOverrideError the
+    semantic paths use, so the whole override contract has one failure
+    surface. Repeated roles: the last occurrence wins (documented CLI help).
+    """
+    if not items:
+        return None
+    colors: dict[str, str] = {}
+    for item in items:
+        role, sep, value = item.partition("=")
+        if not sep:
+            raise StyleColorOverrideError(
+                f"style_color_override_invalid: expected ROLE=HEX, got "
+                f"{item!r} (e.g. --color accent=#C0FF00)"
+            )
+        colors[role.strip()] = value.strip()
+    return colors
+
+
 def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
     if args.command == "version":
         return _version_report()
@@ -1766,6 +1965,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             next_action={"kind": "configure_credential_reference"},
         )
     if args.command == "backend":
+        if getattr(args, "backend_command", "") == "report":
+            run_path = _run_path(args)
+            return envelope(
+                "ready", "backend_report_ready",
+                table=_backend_report(run_path), safe_to_retry=True,
+            )
         registry = BackendRegistry.default()
         if args.backend_command == "create":
             output = Path(args.output).resolve()
@@ -2062,6 +2267,70 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             worker_outcome=worker_outcome,
             next_action={"kind": "none"},
         )
+    if args.command == "render":
+        if args.render_command == "ready":
+            report = _render_readiness_report()
+            ready = report["status"] == "render_backend_ready"
+            return envelope(
+                "ready" if ready else "blocked",
+                report["status"],
+                render=report,
+                message=report.get("install_guide")
+                or "渲染依赖探测通过，允许路由提议进入 render lane",
+                suggested_actions=[]
+                if ready
+                else [
+                    "pip install playwright（或 uv pip install playwright）",
+                    'PLAYWRIGHT_BROWSERS_PATH="<LEO_PPT_HOME>/render-browsers" python -m playwright install chromium',
+                    "完成后重跑 render ready；期间 render 路由提议被抑制并披露，图像 lane 不受影响",
+                ],
+            )
+        if args.render_command == "page":
+            theme = _json_file(args.theme_file) if args.theme_file else None
+            result = render_page(
+                args.template,
+                args.data,
+                args.out,
+                size=parse_size(args.size),
+                timeout_ms=int(args.timeout * 1000),
+                theme_variables=theme,
+            )
+            return envelope(
+                "ready",
+                "render_page_completed",
+                render=result,
+                artifact_refs=[result["out"]],
+                evidence_refs=[result["sidecar"]],
+                warnings=result["warnings"],
+                message="render page 完成；record 时用 --render-receipt 并入 provenance",
+                safe_to_retry=True,
+            )
+        # render chart（dialect mermaid）
+        if not args.source and not args.code_file:
+            raise RenderError("render_data_invalid", "one of --source/--code-file required")
+        result = render_chart(
+            dialect=args.dialect,
+            source=args.source,
+            code_file=args.code_file,
+            out=args.out,
+            theme_file=args.theme_file,
+        )
+        raster = None
+        if args.png:
+            raster = rasterize_svg(
+                svg_path=args.out, out_path=args.png, width=args.scale_width
+            )
+        return envelope(
+            "ready",
+            "render_chart_completed",
+            render=result,
+            raster=raster,
+            artifact_refs=[result["out"], *([raster["out"]] if raster else [])],
+            evidence_refs=[result["sidecar"]],
+            warnings=result["warnings"],
+            message="render chart 完成（SVG 位级确定；数值/单位/标签逐字保真）",
+            safe_to_retry=True,
+        )
     if args.command == "image":
         run_path = _run_path(args)
         adapter = ImageDeckAdapter(_domain_path(run_path, "image-deck"))
@@ -2080,8 +2349,39 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             slides = _json_file(slides_path)
             if not isinstance(slides, list) or len(slides) > 50:
                 raise ContractError("input_too_large")
+            sources_manifest = None
+            if args.sources:
+                sources_root = Path(run_path).resolve()
+                sources_spec = Path(args.sources)
+                if (sources_root / "run.json").is_file():
+                    sources_target = sources_root / "input" / "sources-manifest.json"
+                    try:
+                        sources_identity = inspect_regular_file(
+                            sources_spec, max_bytes=MAX_SLIDES_CONTRACT_BYTES
+                        )
+                        if sources_target.is_file() or sources_target.is_symlink():
+                            frozen_sources = inspect_regular_file(
+                                sources_target, max_bytes=MAX_SLIDES_CONTRACT_BYTES
+                            )
+                            if frozen_sources["sha256"] != sources_identity["sha256"]:
+                                raise ContractError("sources_manifest_invalid")
+                        else:
+                            durable_copy_file(
+                                sources_identity["path"],
+                                sources_target,
+                                max_bytes=MAX_SLIDES_CONTRACT_BYTES,
+                            )
+                    except ValueError as exc:
+                        raise ContractError("sources_manifest_invalid") from exc
+                    sources_frozen = sources_target
+                else:
+                    sources_frozen = sources_spec
+                try:
+                    sources_manifest = _json_file(sources_frozen)
+                except (OSError, ValueError) as exc:
+                    raise ContractError("sources_manifest_invalid") from exc
             existed = adapter.jobs_path.is_file()
-            result = adapter.prepare(slides)
+            result = adapter.prepare(slides, sources_manifest=sources_manifest)
             state_hash = adapter.state_hash()
             _record_event(
                 run_path,
@@ -2121,6 +2421,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             idempotency_status = (
                 "replayed" if operation_id in jobs.get("operations", {}) else "created"
             )
+            _append_backend_stats(
+                run_path, number=number, backend=args.backend,
+                page_type=getattr(args, "page_type", None),
+                attempts=getattr(args, "attempts", 1) or 1,
+                tokens=getattr(args, "tokens", None),
+            )
             lease, generation = _lease_for_operation(
                 run_path,
                 unit_id=f"slide_{number:02d}",
@@ -2140,6 +2446,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 lease=lease,
                 generation=generation,
             )
+            provenance_summary = None
+            if getattr(args, "render_receipt", None):
+                receipt = load_render_receipt(args.render_receipt)
+                provenance_summary = attach_provenance_to_slide(
+                    adapter.run_dir, number, receipt, backend=args.backend
+                )
             _complete_worker_operation(
                 run_path,
                 operation_id,
@@ -2157,6 +2469,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 "ready",
                 "image_recorded",
                 artifact=artifact.to_dict(),
+                provenance=provenance_summary,
                 **_operation_payload(
                     operation_id=operation_id,
                     idempotency_status=idempotency_status,
@@ -2165,6 +2478,96 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 ),
                 lease=lease,
                 generation=generation,
+            )
+        if args.image_command == "sweep":
+            deck_dir = _domain_path(run_path, "image-deck")
+            jobs_path = deck_dir / "slide_jobs.json"
+            if not jobs_path.is_file():
+                raise ContractError("image_deck_not_prepared")
+            jobs = json.loads(jobs_path.read_text(encoding="utf-8"))
+            attempts_by_page: dict[int, Any] = {}
+            stats_path = Path(run_path) / "observability" / "backend_stats.jsonl"
+            if stats_path.is_file():
+                for line in stats_path.read_text(encoding="utf-8").splitlines():
+                    try:
+                        entry = json.loads(line)
+                    except ValueError:
+                        continue
+                    slide_no = entry.get("slide")
+                    if isinstance(slide_no, int):
+                        attempts_by_page[slide_no] = entry.get("attempts", "not-recorded")
+            plan = [
+                {
+                    "slide_id": slide.get("slide_id"),
+                    "number": slide.get("number"),
+                    "status": slide.get("status"),
+                    "attempts": attempts_by_page.get(slide.get("number"), "not-recorded"),
+                    "action": "redispatch"
+                    if slide.get("status") == "pending"
+                    else "reset_and_redispatch",
+                }
+                for slide in jobs.get("slides", [])
+                if slide.get("status") != "recorded"
+            ]
+            sweep_log = Path(run_path) / "observability" / "render-sweep.jsonl"
+            applied_rounds = 0
+            if sweep_log.is_file():
+                applied_rounds = sum(
+                    1 for line in sweep_log.read_text(encoding="utf-8").splitlines() if line.strip()
+                )
+            if args.dry_run:
+                return envelope(
+                    "ready",
+                    "render_sweep_planned",
+                    sweep={
+                        "mode": "dry_run",
+                        "pages_total": len(jobs.get("slides", [])),
+                        "unrendered_pages": len(plan),
+                        "plan": plan,
+                        "rendered_pages_skipped": len(jobs.get("slides", [])) - len(plan),
+                        "rounds_applied": applied_rounds,
+                        "max_rounds": args.max_rounds,
+                    },
+                    safe_to_retry=True,
+                )
+            if applied_rounds >= args.max_rounds:
+                return envelope(
+                    "blocked",
+                    "render_sweep_rounds_exhausted",
+                    sweep={
+                        "rounds_applied": applied_rounds,
+                        "max_rounds": args.max_rounds,
+                        "unrendered_pages": len(plan),
+                        "plan": plan,
+                    },
+                    message="清扫轮次已达协议上限（≤2 轮）；剩余失败页走缺页拒绝组装/"
+                    "partial-hybrid 确认或向用户披露，不得无限复位",
+                )
+            recovery = Lifecycle(run_path).reset_failed_pages()
+            entry = {
+                "round": applied_rounds + 1,
+                "reset_units": recovery.get("reset_units", []),
+                "unrendered_pages": len(plan),
+            }
+            try:
+                sweep_log.parent.mkdir(parents=True, exist_ok=True)
+                with open(sweep_log, "a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            except OSError:
+                pass
+            return envelope(
+                "ready",
+                "render_sweep_applied",
+                sweep={
+                    "mode": "apply",
+                    "round": applied_rounds + 1,
+                    "max_rounds": args.max_rounds,
+                    "plan": plan,
+                    "recovery": recovery,
+                    "rendered_pages_skipped": len(jobs.get("slides", [])) - len(plan),
+                },
+                safe_to_retry=False,
+                next_action={"kind": "inspect_next"},
             )
         output = _delivery_output_path(run_path, args.output)
         assert_run_quota(Path(run_path).resolve(), load_runtime_config())
@@ -2531,22 +2934,49 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             **upgrade_payload,
         )
     if args.command == "style":
-        home = Path(args.home).expanduser().resolve() if args.home else None
+        _home_arg = getattr(args, "home", None)
+        home = Path(_home_arg).expanduser().resolve() if _home_arg else None
         if args.style_command == "list":
             return envelope("ready", "style_listed", styles=list_styles(home=home), safe_to_retry=True)
         if args.style_command == "load":
             result = load_style(args.name, home=home)
             return envelope("ready", "style_loaded", style=result, safe_to_retry=True)
+        if args.style_command == "layouts":
+            # 只读查询（layout-bank-v1 sidecar）；不触碰 render 组装路径。
+            if getattr(args, "layout", None):
+                return envelope(
+                    "ready", "layout_bank_loaded",
+                    layout=load_layout_bank(args.layout), safe_to_retry=True,
+                )
+            if getattr(args, "style", None):
+                return envelope(
+                    "ready", "style_layouts_loaded",
+                    style_layouts=load_style_layouts(args.style),
+                    safe_to_retry=True,
+                )
+            return envelope(
+                "ready", "layout_bank_listed",
+                layouts=list_layout_bank(), safe_to_retry=True,
+            )
         if args.style_command == "render":
             if getattr(args, "list_templates", False):
                 return envelope(
                     "ready", "templates_listed",
                     templates=list_templates(), safe_to_retry=True,
                 )
-            result = compose_style(args.style, mode=args.mode)
+            result = compose_style(
+                args.style,
+                mode=args.mode,
+                colors=_parse_color_overrides(getattr(args, "color", None)),
+                brand=getattr(args, "brand", None),
+                anchor=bool(getattr(args, "anchor", False)),
+                guardrail=bool(getattr(args, "guardrail", False)),
+            )
             if args.layout:
                 result["layout"] = compose_layout(
-                    args.layout, image_type=args.image_type
+                    args.layout,
+                    image_type=args.image_type,
+                    materialize=bool(getattr(args, "materialize", False)),
                 )
             return envelope(
                 "ready", "style_rendered", template=result, safe_to_retry=True,
@@ -2583,6 +3013,31 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             safe_to_retry=True,
         )
     if args.command == "delivery":
+        if args.delivery_command == "receipt":
+            run_path = _run_path(args)
+            if args.delivery_receipt_command == "create":
+                created = create_delivery_receipt(run_path)
+                return envelope(
+                    "completed",
+                    "delivery_receipt_created",
+                    artifact_refs=[created["path"]],
+                    evidence_refs=[created["path"]],
+                    receipt=created["receipt"],
+                    counts=created["counts"],
+                    safe_to_retry=True,
+                )
+            outcome = verify_delivery_receipt(run_path)
+            status = "completed" if outcome["status"] == "fresh" else "blocked"
+            evidence = (
+                [outcome["receipt_path"]] if outcome["status"] != "missing" else []
+            )
+            return envelope(
+                status,
+                f"delivery_receipt_{outcome['status']}",
+                delivery_receipt=outcome,
+                evidence_refs=evidence,
+                safe_to_retry=True,
+            )
         artifacts = [PageArtifact.from_dict(value) for value in _json_file(args.artifacts)]
         failures = {int(key): value for key, value in (_json_file(args.failures) if args.failures else {}).items()}
         result = HybridAssembler().assemble(
@@ -2684,16 +3139,77 @@ ERRORS = (
     ConfigServiceError,
     CleanupConflict,
     ContractError,
+    ReceiptError,
     IdempotencyConflict,
     RevisionConflict,
     RouteContractError,
     StyleStoreError,
+    TemplateError,
     UpstreamBridgeError,
     SetupContractError,
     CredentialError,
     WizardCancelled,
 )
 
+
+
+
+def _append_backend_stats(run_path, *, number, backend, page_type, attempts,
+                          tokens=None):
+    """Append one (backend, page_type, attempts) line for routing reports.
+
+    Sidecar jsonl under the run dir — deliberately outside slide_jobs.json so
+    the canonical state hash is unaffected; unwritable path is non-fatal
+    (statistics must never block a record).
+    """
+    import json as _json
+    from datetime import datetime, timezone
+
+    try:
+        stats_dir = Path(run_path) / "observability"
+        stats_dir.mkdir(parents=True, exist_ok=True)
+        entry = {
+            "ts": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "slide": number,
+            "backend": backend,
+            "page_type": page_type or "unlabeled",
+            "attempts": attempts,
+            "tokens": tokens if tokens is not None else "not-recorded",
+        }
+        with open(stats_dir / "backend_stats.jsonl", "a", encoding="utf-8") as fh:
+            fh.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def _backend_report(run_path):
+    """Aggregate backend_stats.jsonl into a (backend, page_type) pass-rate table."""
+    import json as _json
+    from collections import defaultdict
+
+    path = Path(run_path) / "observability" / "backend_stats.jsonl"
+    agg = defaultdict(lambda: {"pages": 0, "attempts": 0, "tokens": 0})
+    if path.is_file():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                e = _json.loads(line)
+            except _json.JSONDecodeError:
+                continue
+            key = (e.get("backend", "unknown"), e.get("page_type", "unlabeled"))
+            agg[key]["pages"] += 1
+            agg[key]["attempts"] += max(1, int(e.get("attempts", 1)))
+            tk = e.get("tokens")
+            if isinstance(tk, int):
+                agg[key]["tokens"] += tk
+    table = {}
+    for (backend, page_type), v in sorted(agg.items()):
+        first_pass = v["pages"] / v["attempts"] if v["attempts"] else 1.0
+        table[f"{backend}/{page_type}"] = {
+            "pages": v["pages"],
+            "first_pass_rate": round(first_pass, 3),
+            "tokens_total": v["tokens"] or "not-recorded",
+        }
+    return table
 
 def main(argv: list[str] | None = None) -> int:
     if argv is None:
@@ -2723,7 +3239,10 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return 2 if result["status"] in {"blocked", "action_required", "choice_required"} else 0
     except ERRORS as error:
-        reason = str(error) or getattr(error, "reason_code", "contract_error")
+        # Prefer the class-level stable reason code (e.g.
+        # style_color_override_invalid); str(error) carries the per-input
+        # detail and must not become the reason_code consumers match on.
+        reason = getattr(error, "reason_code", None) or str(error) or "contract_error"
         print(json.dumps(envelope("blocked", reason, next_action={"kind": "inspect_reason_code"}), ensure_ascii=False, sort_keys=True), file=sys.stderr)
         return 2
 

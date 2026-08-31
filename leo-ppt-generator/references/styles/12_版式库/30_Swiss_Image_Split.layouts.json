@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout",
+  "layout_id": "P30",
+  "name": "Swiss Image Split",
+  "page_type": "content",
+  "visual_signature": "左右 7/5 分屏；左图容器 fit-contain 占页高 60-72%（直角无阴影）；右列断言标题 + ≤2 段正文 + 可选单 KPI 巨数；图与文案共用顶部基线、底缘对齐",
+  "content_capacity": {
+    "assertion_title": {
+      "desc": "右列断言标题",
+      "chars_per_line": 8,
+      "max_lines": 1,
+      "max_chars": 9
+    },
+    "body_copy": {
+      "desc": "右列 ≤2 段正文",
+      "chars_per_line": 18,
+      "max_lines": 9,
+      "max_chars": 194
+    },
+    "kpi_number": {
+      "desc": "可选单 KPI 巨数（min(9.2vw,15vh) 限高）",
+      "chars_per_line": 3,
+      "max_lines": 1,
+      "max_chars": 3
+    }
+  },
+  "best_for": [
+    "1 张核心图片 + 一段解释（0-1 个数据点，图片是主角）",
+    "产品界面、机制截图、实验图、场景照"
+  ],
+  "avoid_for": [
+    "没有真实图源（禁用）",
+    "需要 3 个 KPI 落地（改用 P22）"
+  ],
+  "reuse_friendly": true
+}

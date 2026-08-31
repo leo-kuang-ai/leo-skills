@@ -616,7 +616,8 @@ class N1BoundarySignalTest(unittest.TestCase):
         code, branch, reason = judge.judge(message)
         self.assertEqual((code, branch), (1, "canonical"))
         self.assertIn("promoted 与单篇表现冲突", reason)
-        self.assertIn("N=1", reason)
+        # 冲突信号标签恒为数值形态名 n=1（命中源为大写 N=1）
+        self.assertIn("n=1", reason)
 
     def test_ordinal_n1st_is_not_a_conflict_signal(self):
         """n=1st 序数形态（1 后紧跟字母）不命中冲突门（尾断言 (?![0-9A-Za-z])）。"""
@@ -904,7 +905,7 @@ class IndentedFenceBlockTest(unittest.TestCase):
     def _indented_message(self, rule_line):
         return (
             "复盘：\n\n  ```yaml\n"
-            "  observation: 本次单篇阅读 12 万，约为平时 3 倍\n"
+            "  observation: 句式效应已在多篇可比文章中复现\n"
             "  hypothesis: 「把 X 留给 Y」句式可能提升打开率\n"
             "  " + rule_line + "\n"
             "  persistence: not_run\n"

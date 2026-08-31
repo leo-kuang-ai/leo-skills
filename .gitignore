@@ -18,6 +18,7 @@ htmlcov/
 .DS_Store
 .idea/
 *.log
+.zcode/
 
 # OS / desktop files (Windows target via install.ps1)
 Thumbs.db

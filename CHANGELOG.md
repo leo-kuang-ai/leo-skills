@@ -25,6 +25,19 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
+- **leo-ppt-generator 开源借鉴优化 R3 产品文档（6 专家 × 152 项目调研）
+  (user-visible)**：新增
+  `docs/brainstorms/2026-08-31-005-leo-ppt-oss-fusion-r3-requirements.md`
+  （spec-prd 产物，`status: ready-for-planning`，checker 零 findings）与
+  `docs/file-github-expert-reports/` 六份专家调研报告（内容研究/文案质量/
+  视觉风格/长程一致性/素材分发/工程治理，每条借鉴点附上游源码 file:line
+  证据）。PRD 归并为 7 域 60 条需求（P0 八条：研究代采、deck 文案确定性
+  检测、讲稿口语化纪律、图上文字合成协议、deck 承诺账本、影响面自动
+  计算、export 导出子命令族、评测统计检验）、62 条验收、四批 Feature
+  Slices 分期与九条 Non-Goals（不代发/不爬虫/不做检测对抗等）；横切
+  BR-001 入口锚点纪律直指 M1.1 在案"入口可见性缺口"债务。上游授权由
+  用户线下确认，署名按 NOTICE 法定最小集，不新增借源登记面。
+
 - **leo-ppt-generator 交叉测评（darwin-skill × skill-upper，6 独立 judge × 2 轮）**
   - 新增 `docs/leo-ppt-generator-cross-eval-6judges-0831.md`：三轴交叉（行为轴
     skill-up 13 轮存量 + 结构轴 darwin 9 维 + paired 版本轴）。**Paired 多数决
@@ -91,6 +104,56 @@ adheres to a loose semantic-versioning convention.
   `sync_upstreams.py --check` 回绿。
 
 ### Added
+
+- **leo-ppt-bench 可移植基准（docs/plans/2026-08-31-003，user-visible）**
+  - 新增 `bench/`：对任意 AI PPT skill 本地跑分的 8 维交付级基准——不编造
+    无来源数字 / 素材链接先校验 / 不枚举宿主内部清单 / 确认门不被跳过授权
+    绕过 / 来源不明 Office 防护 / 部分失败必须披露 / 不虚报完成 / 演讲稿
+    不编造；协议（bench/README.md：skill-up 指向任意技能目录、model_gating
+    分层解读、诚实结果纪律）、8 用例提示词与判官全部去 leo 化（无 reason
+    code、无输出块假设）。
+  - 判官离线双向自检 8/8 通过；正向对照（对 leo 自身在线跑）：6/8 直接绿，
+    notes-not-fabricated 经环境态等价分支校准（共享工作区多成品时"先澄清
+    目标且无编造承诺"也算过，比照 master-doc 在案先例）后复测绿；
+    confirmation-not-skippable 三次尝试均为环境层失败（两次 300s 超时 +
+    一次 API 429 限流，响应文件即 429 报错），判官离线自检绿、leo 同维度
+    原生用例 execute-keeps-confirmation-gates 在线绿，记环境受限未决。
+- **EN README 国际化入口（user-visible）**：新增 `README.en.md`（定位句、
+  四 Route、安全边界、交付验证、bench、样例与画廊链接的英译摘要），与
+  中文 README 双语互链；全球风格包独立成批（涉及四条风格 lint 结构合同）。
+
+- **leo-ppt-generator 产品 P1 优化批（docs/plans/2026-08-31-002，user-visible）**
+  - 交付档案（delivery profiles，user-visible）：`${LEO_PPT_HOME}/profiles/<名称>.md`
+    作为与 styles/brands 同构的第三条用户档案通道，合同草案按档案预填并逐项标注
+    来源、用户只确认差异项；档案只存偏好字段绝不存业务数据，分级与答辩档位确认
+    不豁免；新增 `scripts/check_delivery_profile.py`（结构校验+业务数据/涉密启发式
+    WARN）+ 8 单测；SKILL.md 不变边界与 image-deck-workflow 步骤 1 新增合同；
+    新用例 delivery-profile-contract-advisory（在线 PASS）。
+  - 学术模式命名入口（user-visible）：新 reference `academic-vertical.md`——
+    「学术模式」一句话入口与既有合同的一条龙映射（三字段+答辩档位→RST/五拍→
+    图证据六模式→风格推荐→样张锚点→provenance 交付），纯整合不新增确认门；
+    SKILL.md 按需读取表与学术句补入口指认；新用例 academic-vertical-entry
+    （在线 PASS）。
+  - 讲稿导出（user-visible）：新增 `scripts/export_speaker_notes.py`（`--pptx`
+    成品 / `--master` 母版二选一，确定性导出讲稿 markdown，缺备注页如实列出
+    提示回母版补 speaker_script、不编造口播稿）+ 7 单测；为合同中既有的
+    speech.md 概念补上用户侧工具；SKILL.md 交付披露与 workflow 交付节锚点；
+    新用例 speaker-notes-export-offered（在线 PASS）。
+  - 风格画廊（user-visible）：新增 `scripts/generate_style_gallery.py` 从
+    `references/styles/` 文件系统确定性生成 `samples/style-gallery.md`（11 套
+    内置风格+适用场景一览+各轴计数，`--check` 作漂移守卫）+ 4 单测；README
+    成品样例节链接。
+  - 判官校准（alpha-m0-contract-academic-fields，在案摆动用例）：it-89/91/92
+    三轮实证两类误杀——"先回述用户意向、词表核验纪律写在别处"被误判放行
+    （改全局延迟姿态豁免）、纯学术上下文未展开谈通用 deck 被判缺边界意识
+    （限定式场景表述计入边界意识）；三轮历史重放 PASS + 无条件放行陷阱仍
+    FAIL，it-93 在线复测 PASS。
+  - 测评验证：新增 19 单测全绿（全量 391 tests 仅 2 个在案金样存量失败）、
+    五 lint 绿、eval.yaml 注册至 83 case、P1 子集在线 8/8 PASS；全量 83 case
+    轮 57 PASS / 26 FAIL——26 例归因：17 例 M1 新用例首次在线校准（M1 自留
+    工作面）、8 例在案摆动存量轮转、1 例本批判官引号族措辞缺口（扩词+全历史
+    重放+it-95 在线复绿）；P1 批自身零行为回归，control-plane 连续三轮绿
+    （it-86/91/94）。详见 evals/known-issues.md 本批条目。
 
 - **leo-ppt-generator 产品 P0 优化批（docs/plans/2026-08-31-001，user-visible）**
   - 表面合同 block-early：控制面五字段块位置规则由"最前面（至多一行

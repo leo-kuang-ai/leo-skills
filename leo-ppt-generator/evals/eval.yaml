@@ -93,6 +93,11 @@ cases:
     - evals/cases/cost-estimate-before-dispatch.yaml
     # 产品 P0 优化批：相邻确认门同回合呈现（合同+大纲、视觉方向+样张）。
     - evals/cases/confirmation-batched-turns.yaml
+    # 产品 P1 优化批（docs/plans/2026-08-31-002）：交付档案预填不豁免分级、
+    # 学术模式命名入口三字段+档位、讲稿导出诚实边界。
+    - evals/cases/delivery-profile-contract-advisory.yaml
+    - evals/cases/academic-vertical-entry.yaml
+    - evals/cases/speaker-notes-export-offered.yaml
     # 能力融合 M1 批（docs/plans/2026-08-30-001 里程碑 M1）：α 来源清单与
     # 保真链 + β 版式工程链（sidecar/调度师/容量/主题提取）+ γ 渲染 lane
     # （反冒充/ready 抑制/mermaid 保真/像素闸门/清扫/模板 lint）+ δ 内核

@@ -1,0 +1,16 @@
+id: speaker-notes-export-offered
+title: 讲稿导出须指明通道与诚实边界
+description: 验证讲稿交付物知识在场：导出通道（export_speaker_notes.py / speech.md）、来源（成品 PPTX 或母版）、缺备注页如实列出且不编造口播稿。advise 档不执行导出。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先别执行，只回答一个问题：
+    你们生成的 PPT 能顺带导出一份演讲稿/讲稿吗？有的页如果没有备注怎么办？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_speaker_notes_export.py
+  timeout_seconds: 10

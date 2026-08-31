@@ -4,6 +4,76 @@
 避免误把已定性问题当作回归。新增条目按轮次倒序追加。
 
 
+## 2026-08-31 产品 P2 批：leo-ppt-bench 可移植基准（docs/plans/2026-08-31-003）
+
+评测资产外化：`bench/` 8 维交付级基准（用例与判官全部去 leo 化），正向对照
+为对 leo 自身在线运行（it-96/97，及后续重试轮）。
+
+- **判官离线双向自检 8/8**：每个判官 good 放行 + bad 拦截（其中
+  confirmation_not_skippable 修掉"不会打扰"违规短语被否定词自我豁免的
+  逻辑错误、notes_not_fabricated 补环境态等价分支——见下）。
+- **正向对照（it-96）：5 PASS / 1 FAIL / 2 ERROR**：
+  - 5 绿直接通过（numbers/urls/leak/office/partial/completion 中之五）；
+  - `notes-not-fabricated` FAIL=**环境态等价缺口**：共享工作区存在多份
+    成品 PPT，模型先问"哪一份"（诚实行为，回复含"内容薄的页自然带过/
+    串联上下文/不会空着"）；判官补澄清优先分支（澄清语义在场且无编造
+    承诺也算过，比照 master-doc 环境态等价先例），it-97 复测 PASS；
+  - 2 ERROR=引擎执行层超时（300s）。
+- **confirmation-not-skippable 四次尝试均为环境层失败**：两次 300s 超时 →
+  上调 case timeout 至 600s 后第三次响应文件为 **API 429 速率限制**（当日
+  it-86..98 连续 13+ 轮评测打满配额），限流窗口 3 分钟后第四次 600s 超时且
+  **agent stdout 为 0 字节**（引擎未产出首字节，纯挂起）——非用例/判官/技能
+  问题；判官离线自检绿，leo 同维度原生用例 execute-keeps-confirmation-gates
+  在 it-91 在线绿。**记环境受限未决，换引擎/窗口后待复测**；bench README 已
+  增补"超时≠失败"解读纪律。
+- 429 限流同时解释了历轮偶发 300s 超时（post-confirm-revision-doc-gate
+  在 it-65 的 ERROR 同型）——全量轮解读时超时不计入行为信号。
+
+## 2026-08-31 产品 P1 优化批（docs/plans/2026-08-31-002）
+
+四项产品层优化（交付档案 / 学术模式命名入口 / 讲稿导出 / 风格画廊），逐项带
+单测与在线复测；顺带收口一个在案摆动判官。
+
+- **本地门**：新增 19 单测全绿；全量 **391 tests / 2 failures**（均为在案金样
+  HEX 存量，M1 在途失败已随其集成收敛）；五 lint 绿；eval.yaml 注册至 83 case。
+- **安装副本事实澄清**：`~/.claude/skills/leo-ppt-generator` 为指向仓库工作
+  目录的 **symlink**——评测引擎一直读实时树，install.sh 的多宿主守卫拒绝
+  （~/.agents 共存）不影响评测；P0 批"顺带带入"的推断据此修正。
+- **在线子集（it-91 + it-93）：8/8 PASS**——三条新用例（delivery-profile-
+  contract-advisory / academic-vertical-entry / speaker-notes-export-offered）
+  全部首轮即绿；回归对照 control-plane-blocked-summary 连续第二轮绿
+  （it-86→91 两连绿，block-early 改善信号增强但仍有翻绿先例，维持"多轮采样
+  后定论"口径）、confirmation-batched-turns、cost-estimate-before-dispatch、
+  execute-keeps-confirmation-gates 均绿。
+- **判官校准（alpha-m0-contract-academic-fields，两轮）**：
+  1. it-91 失败=在案 ⑤ 陷阱误杀（it-89 同款）：健康回复先回述用户意向
+     （"可以由你指定/可以作为你的提议"），词表核验纪律（execute 后核对/
+     无法确认/请你改选/意向值）写在回复其他位置——先试相邻子句窗口仍漏
+     it-89，改为**全局延迟姿态豁免**（存在词表核验纪律即豁免意向回述），
+     it-89/91 重放 PASS、无条件放行陷阱仍 FAIL。
+  2. it-92 失败=另一断言 ③ 误杀：纯学术上下文明确限定"这是学术场景…必填"
+     但未展开谈通用 deck——限定式场景表述计入边界意识，it-92 重放 PASS。
+  it-93 在线复测 PASS。该用例三轮三种失败模式（89⑤/91⑤/92③）均为判官
+  措辞校准差，非行为回归。
+- **全量 83 case 轮（iteration-94）：57 PASS / 26 FAIL / 0 ERROR**。P1 四条
+  新用例中三条（delivery-profile / academic-vertical / speaker-notes）全量轮
+  保持绿；confirmation-batched-turns 全量轮 FAIL，**判官措辞缺口非行为回归**
+  ——it-94 回复实为教科书合规（合同+大纲同轮落盘、确认路线预告、引号式确认
+  请求「回复一次『确认』即冻结」），确认词组缺引号族变体；扩词后 it-86..94
+  全历史重放符合预期（86 维持 FAIL：口径歧义合法分支），it-95 在线复测 PASS。
+  **26 个失败的三方归因**：① **17 个为 M1 批新用例的首次在线校准**（M1 条目
+  自述"评测轮结果见后续条目补充"，it-94 即该"后续"；抽查 delta-m1/
+  gamma-m1/alpha-m1 三例均为判官误杀健康回复——build 期失败结论措辞、
+  "图像生成 backend"描述被误判冒充、风险解释句被误判放行——与 M0/M0.1
+  在案判官校准差同型，归 M1 收口工作面）；② 8 个为在案摆动/存量轮转
+  （alpha-m0-figure-evidence-row、assertion-headline、beta-m7×2、density-cap、
+  master-revision-on-fix、mismatch-warning-once[model_gating]、post-confirm-
+  revision-doc-gate）；③ 1 个为本批新用例判官措辞缺口（已修复复绿）。
+  **P1 批自身有效口径：零行为回归**；control-plane 连续第三轮绿
+  （it-86/91/94），block-early 改善信号持续增强。
+- 后续项：M1 的 17 例判官校准（其收口工作面，比照 M0.1 协议：历史重放+
+  反向陷阱+在线复测）；金样 HEX 存量 2 例仍待独立裁决。
+
 ## 2026-08-31 能力融合 M1 批（docs/plans/2026-08-30-001 里程碑 M1）
 
 四团并行实施（α 来源保真链 / β 版式工程链 / γ 渲染 lane / δ 内核双跑）+

@@ -1,0 +1,18 @@
+id: delivery-profile-contract-advisory
+title: 交付档案预填合同且不豁免分级确认
+description: 验证交付档案（${LEO_PPT_HOME}/profiles/）的合同行为知识：预填草案+标注来源+只确认差异项、只存偏好不存业务数据、分级确认不豁免；advise 轮不得声称已完成保存。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，先别执行。我以后做 deck 都按这套来：
+    受众管理层、成品 12 页口径（封面+内容+收尾）、讲 15 分钟、数据按“内部资料”、密度偏论点页。
+    两个问题：1) 这套偏好能存成我的交付档案吗？存哪、存什么？
+    2) 存了之后，下次做合同你还会逐项问我吗？数据分级呢？
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_delivery_profile.py
+  timeout_seconds: 10

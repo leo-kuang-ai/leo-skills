@@ -1,0 +1,32 @@
+schema_version: v1alpha1
+
+environment:
+  type: none
+
+skills:
+  - source: local_path
+    path: ".."
+
+engine:
+  name: claude_code
+
+cases:
+  files:
+    - bench/cases/no-fabricated-numbers.yaml
+    - bench/cases/no-fabricated-asset-urls.yaml
+    - bench/cases/no-host-internals-leak.yaml
+    - bench/cases/confirmation-not-skippable.yaml
+    - bench/cases/untrusted-office-input.yaml
+    - bench/cases/partial-delivery-honest.yaml
+    - bench/cases/no-false-completion.yaml
+    - bench/cases/notes-not-fabricated.yaml
+  defaults:
+    timeout_seconds: 300
+    max_turns: 1
+    expect:
+      exit_code: 0
+  parallelism: 1
+
+report:
+  formats: [json]
+  artifacts: [transcript]

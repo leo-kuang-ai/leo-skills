@@ -90,7 +90,7 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | `execute` Route 判断 | `references/input-routing.md` | 其他全部 references、prompts、styles |
 | 首次准备与 Provider 状态 | `references/first-use.md`、`references/backend-selection.md` | workflow、manifest、worker、styles |
 | 跨 Route runtime/恢复/交付与 CLI 用法 | `references/execution-contract.md`、`references/cli-helper.md`（在对应 Route 进入后） | reason-codes 直到已有 reason code |
-| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md` | styles 直到风格已选；`slide-worker.md` 直到样张通过；`academic-figure-evidence.md` 直到进入母版制作且材料含图片证据/学术场景；`sources-manifest-schema.md` 直到 `image prepare --sources` 冻结与交付前 strict 校验；`rst-paging.md` 直到大纲制作且材料多段/结构复杂 |
+| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md`、`academic-vertical.md`（学术信号或用户点名「学术模式」时） | styles 直到风格已选；`slide-worker.md` 直到样张通过；`academic-figure-evidence.md` 直到进入母版制作且材料含图片证据/学术场景；`sources-manifest-schema.md` 直到 `image prepare --sources` 冻结与交付前 strict 校验；`rst-paging.md` 直到大纲制作且材料多段/结构复杂 |
 | `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 直到真实 worker 已确认 |
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
 
@@ -169,7 +169,11 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   三字段必填——数学量级（math_load）、图表取向（figure_orientation）、分节
   优先级页数分配（section_priority），通用 deck 可选不强制，取值词表进 execute
   后按工作流 reference 核实；
-- 学术场景还须问明交付档位：组会简报（minimal）还是答辩证据密集（dense-defense），未问明不得默认取密集档；
+- 学术场景还须问明交付档位：组会简报（minimal）还是答辩证据密集（dense-defense），未问明不得默认取密集档；学术场景的一条龙指认（入口信号、五拍/RST/图证据/风格推荐/样张锚点映射）见 [`academic-vertical.md`](references/academic-vertical.md)，用户说「学术模式」即声明该场景；
+- **交付档案**：用户保存的交付档案（`${LEO_PPT_HOME}/profiles/<名称>.md`）可预填
+  合同草案并逐项标注来源，用户只确认差异项；档案只存偏好字段、绝不存业务数据，
+  且**不豁免分级与答辩档位确认**（见 `references/image-deck-workflow.md` 步骤 1
+  交付档案预填节；保存前过 `scripts/check_delivery_profile.py`）；
 - **模版推荐与选择**：风格候选由合同信号驱动、默认推荐必须带归因一句；用户指定
   优先序＝点名 > 参考图 > 推荐（给了参考图就跳过推荐直行，只提取视觉系统并经
   样张并排比对验证）；错配首次必须提示一句风险与替代建议（用户预先说"别劝"也不豁免首次告知），之后尊重选择并在 style 合同记录用户选择依据、不再重复劝阻；品牌 VI 经
@@ -234,7 +238,9 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 - **交付披露**：最终回复必须包含 PPTX 与必要逐页/notes/failure report 路径、结构验证结果，以及
   provider/OCR/viewer/desktop/人工视觉验证中所有未运行项。含图片证据的交付披露还须包含
   来源清单校验状态（交付前 `scripts/check_sources_manifest.py <run> --strict`，非 0 退出
-  阻断，WARN 项逐条披露）与 TF-2 fallback 页清单。
+  阻断，WARN 项逐条披露）与 TF-2 fallback 页清单。用户要求讲稿交付物时,经
+  `scripts/export_speaker_notes.py`（`--pptx` 成品 / `--master` 母版）导出,缺备注页
+  如实列出,不得编造口播稿。
 
 ## 红灯清单（反模式速查）
 

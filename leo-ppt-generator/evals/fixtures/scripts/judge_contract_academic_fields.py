@@ -67,21 +67,32 @@ if not any(v in text for v in ("figure-first", "balanced", "text-first")) and no
 ):
     fail("缺少 figure_orientation 词表或 execute 核实延迟")
 require_any(("section_priority", "优先级", "页数分配", "节级"), "section_priority 字段")
-# ③ 通用 deck 不强制的边界意识（可选/非学术不强制 在场）
-require_any(("通用", "非学术", "商务", "可选", "不强制", "不阻断"), "通用可选边界")
+# ③ 通用 deck 不强制的边界意识。it-92 实证:把必填判定明确限定在学术场景
+# ("这是学术场景…三字段必须")本身就是边界意识——纯学术上下文未展开谈通用
+# deck 不算缺口;未做任何场景限定的泛化必填才缺口(一刀切正向句另由④拦)。
+require_any(("通用", "非学术", "商务", "可选", "不强制", "不阻断",
+             "学术场景", "学位论文", "答辩场景", "组会", "论文"), "通用可选边界")
 # ④ 否定感知：禁止"所有 deck 都必须"类一刀切正向句
 forbid_positive((r"所有 deck 都必须", r"任何 deck 都必须", r"所有场景都必须",
                  r"一律必填", r"商务 deck 也必须", r"通用 deck 也必须"),
                 "一刀切误伤")
-# ⑤ 分句级陷阱：medium-heavy 等词表外取值被**无条件**放行才判败；
-# 同句带核实/确认/execute 延迟语义属 advise 诚实处置；疑问句（回述用户提问
-# "可以吗"）不是背书——均不算放行。
-for clause in re.split(r"[。！？\n，,；;、]", text):
-    if "medium-heavy" not in clause and "heavy-medium" not in clause:
-        continue
-    if any(d in clause for d in DEFER) or "可以吗" in clause or "吗" in clause[-2:]:
-        continue
-    for m in re.finditer(r"可以|合法|有效|也行|没问题|准确|允许", clause):
-        prefix = clause[max(0, m.start() - 2):m.start()]
-        if not any(n in prefix for n in ("不", "别", "勿", "难", "非")):
-            fail(f"出现不应有的非法枚举值放行: {clause.strip()[:60]}")
+# ⑤ 分句级陷阱：medium-heavy 等词表外取值被**无条件**放行才判败。it-89/91
+# 两轮实证：健康回复会先回述用户意向（"可以作为你的提议/可以由你指定"），把
+# 词表核验纪律（execute 后核对/无法确认是否合法/不符请你改选/意向值）写在
+# 回复的其他位置——因此先看**全局延迟姿态**：存在词表核验纪律即豁免对意向
+# 回述的陷阱；全回复无任何延迟语义时，逐句严格拦截无条件背书。
+DEFERRAL_POSTURE = (
+    "无法核实", "无法确认", "进入 execute", "execute 后", "按工作流", "不凭印象",
+    "请你改选", "要求改写", "要求你改", "意向值", "由你指定", "你指定", "你来定",
+    "待核实", "核对词表", "词表核实", "词表未核实", "以论文实际", "为依据",
+)
+if not any(marker in text for marker in DEFERRAL_POSTURE):
+    for clause in re.split(r"[。！？\n，,；;、]", text):
+        if "medium-heavy" not in clause and "heavy-medium" not in clause:
+            continue
+        if "可以吗" in clause or "吗" in clause[-2:]:
+            continue
+        for m in re.finditer(r"可以|合法|有效|也行|没问题|准确|允许", clause):
+            prefix = clause[max(0, m.start() - 2):m.start()]
+            if not any(n in prefix for n in ("不", "别", "勿", "难", "非")):
+                fail(f"出现不应有的非法枚举值放行: {clause.strip()[:60]}")

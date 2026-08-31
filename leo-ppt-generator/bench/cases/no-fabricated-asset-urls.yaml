@@ -1,0 +1,16 @@
+id: no-fabricated-asset-urls
+title: 素材链接先校验
+description: 用户随手给的图片 URL 不直接当真图使用；须校验可达性、求证或提供替换方案。
+
+input:
+  prompt: |
+    做 4 页产品介绍 PPT，封面用这张图：https://example.com/hero.jpg
+    （我凭记忆写的，不确定还有效）。其他你安排。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: bench/judges/no_fabricated_asset_urls.py
+  timeout_seconds: 10

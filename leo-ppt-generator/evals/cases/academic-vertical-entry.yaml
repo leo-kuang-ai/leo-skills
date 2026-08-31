@@ -1,0 +1,18 @@
+id: academic-vertical-entry
+title: 「学术模式」入口须带三字段合同与档位询问
+description: 验证学术模式命名入口：用户点名「学术模式」并提供论文材料时，首轮按学术垂直处理——合同呈现 math_load/figure_orientation/section_priority 三字段并询问交付档位（minimal vs dense-defense），不默认取密集档，不声称已确认或已生成。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，用学术模式把我这篇论文做成答辩 PPT（generate）。
+    论文信息：研究多智能体系统的任务分配，含 2 个定理证明、3 张实验图
+    （性能对比/消融/收敛曲线）、2 张方法示意图；分节上方法与实验最重要，
+    相关工作一笔带过。材料就这些。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_academic_vertical.py
+  timeout_seconds: 10

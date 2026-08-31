@@ -1,5 +1,7 @@
 # Leo PPT Generator
 
+[English README](README.en.md)
+
 Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输入重建为对象级可编辑 PPTX，
 以及把既有图片式演示文稿升级为全量或指定页的 editable/hybrid 版本。
 
@@ -27,6 +29,10 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 - 教学课件 · 内容页
 
   ![教学课件内容页](samples/education-content-page.png)
+
+风格可发现性见[风格画廊](samples/style-gallery.md)（由
+`scripts/generate_style_gallery.py` 从风格库确定性生成，11 套内置风格与适用场景
+一览）；完整索引与选风格路由见 `references/styles/00_索引/_INDEX.md`。
 
 ## 风格库
 

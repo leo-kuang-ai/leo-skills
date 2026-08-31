@@ -38,6 +38,15 @@
    样张同理可同回合呈现（样张本就锚定视觉方向）,逐页母版独立成回合——合并
    减少的是往返次数,不是确认点：每件工件仍须用户明示确认后才冻结,用户只
    确认其一时仅冻结其一,材料缺失或口径歧义时仍先单独走步骤 1。
+   **交付档案预填**：用户保存过交付档案（`${LEO_PPT_HOME}/profiles/<名称>.md`，
+   与 `styles/`、`brands/` 同构的用户档案通道）时,合同草案按档案预填并在每个
+   预填字段后标注「来自交付档案 <名称>」;用户只需确认或改写差异项,逐项覆盖
+   均合法。档案只存偏好字段（audience / scenario / page_count_policy /
+   duration / data_classification_default / density / preferred_style 可选）,
+   **绝不存业务数据**（材料数字、客户名、项目名）;保存动作本身需用户明示
+   （"存为我的交付档案"）,保存前过 `scripts/check_delivery_profile.py` 结构
+   校验。**档案不豁免确认**：数据分级与学术答辩档位仍须本轮明示确认（分级是
+   安全门,材料变了答案可能变）;档案也不改变确认序列与回合合并规则。
 2. 把大纲写入 `<project-root>/content/outline-v<N>.md`（文档头部含内容合同
    快照与 `confirmation: pending`）。**结构页显式成页**：大纲以封面页开篇
    （必选;合同按卡片口径(≤2 页)执行时除外——唯一卡片兼任开场,不设独立
@@ -143,7 +152,10 @@
     确认全部页 recorded 后组装。缺页不得进入组装。PPTX notes **只承载
     `speaker_script`**（口播稿/预期疑问/停顿/用时）；`engineering` 备注留在 run
     工件不进 notes。`speech.md` 定义为 run 工件内全部页 `speaker_script` 的连播
-    汇总（组装时生成,worker 禁改,见 slide-worker 禁改清单）。
+    汇总（组装时生成,worker 禁改,见 slide-worker 禁改清单）。用户要求讲稿/
+    演讲稿交付物时,用 `scripts/export_speaker_notes.py` 导出（`--pptx` 成品或
+    `--master` 母版二选一;确定性输出,缺备注页如实列出并提示回母版补
+    speaker_script,不得编造口播稿）。
 12. 重新打开 PPTX，核对页数（基准 = 内容合同按页数口径换算的成品总页数）、
     notes、结构和交付类型。若母版或合同约定了版面固定件
     （页码/页脚/署名位），逐页核对位置与字号一致；页内文本引用（「见第 X 页」「见

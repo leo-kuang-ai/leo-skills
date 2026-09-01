@@ -45,6 +45,26 @@ def builtin_style_path(name: str) -> Path:
     return _builtin_styles_dir() / f"{_validate_name(name)}.md"
 
 
+def _marker_bundle_root() -> Path | None:
+    """定位 runtime_manager 安装时写入的技能包根标记。
+
+    托管 venv 把包复制进 site-packages，``parents[3]`` 布局回不到 bundle 根；
+    安装器在 runtime 目录（venv 的上级）写 ``bundle_root`` 标记文件，本函数
+    从当前文件向上（至多 8 层，覆盖 site-packages→venv→runtime_dir 链）查找。
+    """
+    for parent in Path(__file__).resolve().parents[:8]:
+        marker = parent / "bundle_root"
+        try:
+            text = marker.read_text(encoding="utf-8").strip()
+        except OSError:
+            continue
+        if text:
+            candidate = Path(text).expanduser()
+            if candidate.is_dir():
+                return candidate
+    return None
+
+
 def _builtin_styles_dir() -> Path:
     """Locate references/styles in both layouts: the installed launcher exports
     LEO_PPT_BUNDLE (the skill bundle root), while in-repo development falls back
@@ -52,6 +72,11 @@ def _builtin_styles_dir() -> Path:
     override = os.environ.get("LEO_PPT_BUNDLE")
     if override and override.strip():
         candidate = Path(override).expanduser() / "references/styles"
+        if candidate.is_dir():
+            return candidate
+    marked = _marker_bundle_root()
+    if marked is not None:
+        candidate = marked / "references/styles"
         if candidate.is_dir():
             return candidate
     return Path(__file__).resolve().parents[3] / "references/styles"

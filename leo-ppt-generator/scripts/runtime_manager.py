@@ -512,6 +512,11 @@ class RuntimeManager:
                 "cli_version": smoke.stdout.strip(),
                 "dependency_install_requires_network_or_cache": True,
             }
+            # 技能包根标记：托管 venv 中的包无法经 parents[3] 回到 bundle 根，
+            # styles/render 资产解析器向上查找本标记定位（styles.py::_marker_bundle_root）。
+            (runtime_dir / "bundle_root").write_text(
+                str(self.bundle_root) + "\n", encoding="utf-8"
+            )
             atomic_write_json(runtime_dir / "runtime.json", receipt)
             if not self._healthy(identity):
                 raise RuntimeInstallError("runtime 写入 receipt 后健康检查失败")

@@ -15,6 +15,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from ..styles import _marker_bundle_root
+
 
 def _bundle_root() -> Path:
     override = os.environ.get("LEO_PPT_BUNDLE")
@@ -22,6 +24,11 @@ def _bundle_root() -> Path:
         candidate = Path(override).expanduser()
         if (candidate / "assets").is_dir():
             return candidate
+    # 托管 venv 布局：读 runtime 目录的 bundle_root 标记（安装器写入，
+    # 见 runtime_manager._install；查找逻辑与 styles 同源）。
+    marked = _marker_bundle_root()
+    if marked is not None and (marked / "assets").is_dir():
+        return marked
     # 与 styles._builtin_styles_dir 的 parents[3] 布局同源，但从顶层包
     # __init__ 锚定（本模块深一层，直接用 parents[3] 会落到 runtime/）。
     import leo_ppt_generator as _package

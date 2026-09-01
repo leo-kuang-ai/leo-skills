@@ -8,6 +8,30 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **leo-ppt-generator：真实环境打包验证批（发现并修复托管 venv 风格库不可见
+  缺陷，user-visible）**：真实环境五层验证链——doctor ready；`style list`
+  实测发现托管 venv 中返回**空**（包被物理复制进 site-packages，
+  `parents[3]` 布局回不到 bundle 根，且 launcher 未按设计导出
+  LEO_PPT_BUNDLE，全部 311 风格对已安装 CLI 不可见）。修复：
+  `runtime_manager._install` 在 runtime 目录写 `bundle_root` 标记文件；
+  `styles._marker_bundle_root()` 从 `__file__` 向上（≤8 层，覆盖
+  site-packages→venv→runtime_dir 链）查找标记，接入 styles 与
+  render/assets 两处解析点（env 覆盖 > 标记 > 仓内布局三层优先级）；
+  新增 4 例回归测试 `tests/test_bundle_marker.py`（标记命中/env 优先/无标记
+  回退/死标记忽略，macOS 路径 resolve 处理）。验证：重建 runtime 后**无
+  环境变量** `style list` 返回 318 套含 S5 六套；style render 双跑 sha256
+  一致（地图战略/玩味手绘/浅粉棕 ×论证模式）；`--brand` 招商银行(#C8152D)/
+  重庆大学(#006BB7) 注入验证通过（实证 P1-2 修复的通道可用性）；render
+  lane 三页真实渲染（封面/内容/mermaid 图表）经 vendored `create_presentation`
+  组装 PPTX，python-pptx 结构验证通过（3 页/10×5.625in/满幅图片/备注
+  写入/464.7KB）；测试 82+4 例过。另：托管 venv 按 doctor 指引补装
+  playwright（共享 chromium-1234 已在）。测评：风格子集 13 例×3 轮
+  （10 例 3/3 稳定通过,含新风格路由/别名/医疗域；style-candidates-
+  honest-gap 3/3 稳定 50% 为基线判官词表债；dual-sample/narrative 各
+  1 轮抖动属既有 flaky）；对照 iteration-116 基线 mismatch-warning-once
+  由 0% 修复为 3/3 通过（P1 口径修复正面效果）。存量发现登记：
+  tests/installer 引用已改名的 prune 子命令（先于本批,另行处置）。
+
 - **leo-ppt-generator：style 模块内容审查修复批（P1×4 + P2×15 + P3×8，
   user-visible）**：三源审查（318 brief 机器全量扫描 + 文档层专家通读 + S5
   保真复核）发现项全量处置——P1 硬矛盾四项：规模口径三套并存统一（style-

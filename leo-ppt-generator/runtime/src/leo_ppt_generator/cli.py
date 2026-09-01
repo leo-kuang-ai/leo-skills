@@ -79,6 +79,7 @@ from .styles import StyleStoreError, list_styles, load_style, save_style
 from .layout_bank import list_layout_bank, load_layout_bank, load_style_layouts
 from .templates import (
     StyleColorOverrideError,
+    StyleVarOverrideError,
     TemplateError,
     compose_layout,
     compose_style,
@@ -1445,9 +1446,28 @@ def build_parser() -> argparse.ArgumentParser:
         "role 不在该风格或风格无 palette 均报 style_color_override_invalid）",
     )
     style_render.add_argument(
+        "--var",
+        action="append",
+        default=None,
+        metavar="KEY=VALUE",
+        help="token sidecar 变量覆盖（可重复，key 形如 palette.accent / "
+             "typography.title / density；palette 值须为 #RRGGBB；覆盖 primary/text "
+             "按 4.5:1、accent 按 3:1 相对生效 background 做对比度硬校验（覆盖 "
+             "background 时三者全量重查），不足报 style_var_contrast_insufficient；"
+             "键不存在/值非法报 style_var_override_invalid；不带 --var 时输出逐字节不变）",
+    )
+    style_render.add_argument(
         "--guardrail",
         action="store_true",
         help="输出追加确定性设计护栏摘要（缺省输出保持逐字节不变）",
+    )
+    style_render.add_argument(
+        "--layout-lock",
+        action="store_true",
+        help="输出追加版式系统锁定块（网格 token/安全边距/页码位/圆角线重，"
+             "逐页逐字节相同注入防网格页码漂移；从 token_sidecar.layout（优先）"
+             "或 brief 顶层 layout 键读取，两者皆无 → layout_lock_unavailable "
+             "exit 2 不静默；不带旗标输出逐字节不变）",
     )
     style_render.add_argument("--list-templates", action="store_true")
     style_save = style_commands.add_parser("save")
@@ -1887,6 +1907,28 @@ def _parse_color_overrides(items: list[str] | None) -> dict[str, str] | None:
             )
         colors[role.strip()] = value.strip()
     return colors
+
+
+def _parse_var_overrides(items: list[str] | None) -> dict[str, str] | None:
+    """Turn repeated ``--var KEY=VALUE`` args into an ordered override dict.
+
+    Same shape as ``_parse_color_overrides`` but failing with
+    StyleVarOverrideError so the whole --var contract has one failure
+    surface (semantic validation of key paths/HEX values lives in
+    ``templates._merge_token_sidecar``). Repeated keys: last wins.
+    """
+    if not items:
+        return None
+    overrides: dict[str, str] = {}
+    for item in items:
+        key, sep, value = item.partition("=")
+        if not sep:
+            raise StyleVarOverrideError(
+                f"style_var_override_invalid: expected KEY=VALUE, got "
+                f"{item!r} (e.g. --var palette.accent=#C0FF00)"
+            )
+        overrides[key.strip()] = value.strip()
+    return overrides
 
 
 def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
@@ -2968,9 +3010,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 args.style,
                 mode=args.mode,
                 colors=_parse_color_overrides(getattr(args, "color", None)),
+                var_overrides=_parse_var_overrides(getattr(args, "var", None)),
                 brand=getattr(args, "brand", None),
                 anchor=bool(getattr(args, "anchor", False)),
                 guardrail=bool(getattr(args, "guardrail", False)),
+                layout_lock=bool(getattr(args, "layout_lock", False)),
             )
             if args.layout:
                 result["layout"] = compose_layout(

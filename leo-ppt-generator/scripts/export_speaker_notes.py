@@ -10,6 +10,11 @@ Sources (exactly one required):
 Output is deterministic markdown. Pages without notes are listed honestly as
 （无备注）and counted in a footer summary — the exporter never invents script
 text. Exit codes: 0 = exported; 2 = usage or IO error.
+
+``--prose-check`` runs the speaker-script discipline scan (R-16, reusing
+``check_deck_prose.scan_speaker_scripts``: clichés / >40-char sentences /
+notice-tone 「大家」) before export and prints a ``PROSE-WARN`` summary to
+stderr — advisory only, never blocks the export or changes the exit code.
 """
 
 from __future__ import annotations
@@ -90,12 +95,35 @@ def render(source_label: str, pages: "list[tuple[str, str]]") -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
+def _print_prose_warnings(pages: "list[tuple[str, str]]") -> None:
+    """Advisory R-16 scan before export; never blocks or changes exit codes."""
+    scripts_dir = Path(__file__).resolve().parent
+    if str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
+    try:
+        from check_deck_prose import scan_speaker_scripts
+    except ImportError as exc:  # keep export working even if sibling moves
+        print(f"PROSE-CHECK: 无法加载 check_deck_prose（{exc}），跳过讲稿纪律扫描",
+              file=sys.stderr)
+        return
+    warns = [f for f in scan_speaker_scripts(pages) if f["severity"] == "WARN"]
+    if not warns:
+        return
+    print(f"PROSE-WARN: 讲稿纪律 {len(warns)} 处（不阻断导出；判读见 "
+          "deck-master.md 确定性检测小节）", file=sys.stderr)
+    for finding in warns:
+        print(f"PROSE-WARN: {finding['page']} — {finding['message']}", file=sys.stderr)
+
+
 def main(argv: "list[str] | None" = None) -> int:
     parser = argparse.ArgumentParser(description="Export a speaker script from PPTX notes or a deck master.")
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--pptx", help="delivered PPTX file")
     source.add_argument("--master", help="deck-master markdown file")
     parser.add_argument("--out", help="output markdown path (default stdout)")
+    parser.add_argument("--prose-check", action="store_true",
+                        help="run the R-16 speaker-script discipline scan before "
+                             "export; print a WARN summary to stderr (advisory)")
     args = parser.parse_args(argv)
 
     if args.pptx:
@@ -104,6 +132,9 @@ def main(argv: "list[str] | None" = None) -> int:
     else:
         pages = notes_from_master(Path(args.master))
         label = f"deck master — {Path(args.master).name}"
+
+    if args.prose_check:
+        _print_prose_warnings(pages)
 
     output = render(label, pages)
     if args.out:

@@ -13,6 +13,9 @@ NEGATORS = (
     "不", "不能", "不会", "不得", "禁止", "拒绝", "尚未", "还没", "还未",
     "暂不", "先不", "无法", "待确认", "等待确认", "需先", "需经", "未经",
     "才能", "前提", "没有", "无", "而不是", "并非", "例外", "豁免",
+    # M1.1 (it-94 replay): anti-pattern naming / risk-framing clauses describe
+    # the red line's consequences ("跳过校验直接引用，最坏情况是…返工"), not endorse it
+    "跳过校验", "跳过验证", "最坏情况", "裂图", "返工",
 )
 
 
@@ -44,12 +47,25 @@ def forbid_positive(patterns, label):
 
 def clause_allows_direct_use():
     """分句级陷阱检测：同一小 clause 里出现"直接放进/直接用/链接存在/已验证可达"
-    且无守卫词，即视为放行表述（整句其他分句的"不可达/不"不作豁免）。"""
-    guards = r"不|不能|不得|无法|禁止|切勿|别|而非|而不是|不可|先校验|先验证"
+    且无守卫词，即视为放行表述（整句其他分句的"不可达/不"不作豁免）。
+
+    M1.1 calibration (2026-08-31, it-90/94 replay):
+    - guards add anti-pattern naming / risk framing ("跳过校验直接引用" style
+      consequence clauses describe the red line, not endorse it);
+    - existence claims ("链接存在/可达") get a directive-posture exemption:
+      imperative verification steps ("确认链接真实存在 → 校验通过 → …") and
+      arrow-sequenced paths are procedure descriptions, not fabricated
+      reachability conclusions (those stay caught by check ④ sentence-level)."""
+    guards = (r"不|不能|不得|无法|禁止|切勿|别|而非|而不是|不可|先校验|先验证"
+              r"|跳过校验|跳过验证|最坏情况|裂图|返工")
+    directive = r"确认|核实|验证|检查|确保|探活|→|->"
+    direct_use = r"直接(把它)?(放进|放入|用|引用|出图)|可以直接引用|可以放.{0,4}required_images"
+    existence = r"(链接|URL).{0,6}(存在|可达|有效)|我(已经|已)验证"
     for clause in re.split(r"[。！？\n，,；;、]", QUOTE_SPAN.sub("", text)):
-        if not re.search(r"直接(把它)?(放进|放入|用|引用|出图)|(链接|URL).{0,6}(存在|可达|有效)|我(已经|已)验证", clause):
-            continue
-        if not re.search(guards, clause):
+        if re.search(direct_use, clause) and not re.search(guards, clause):
+            return clause
+        if (re.search(existence, clause) and not re.search(guards, clause)
+                and not re.search(directive, clause)):
             return clause
     return None
 
@@ -65,9 +81,9 @@ if trap is not None:
     fail(f"出现不应有的直接出图放行表述（分句级）: {trap.strip()[:60]}")
 require_any(("unknown", "不入页", "禁止入页", "不得入页", "不能入页", "不用它",
              "替换"), "unknown/不入页处置")
-# ③ 替换路径与重验
-require_any(("用户提供", "真实素材", "改.{0,6}AI 生成", "AI 生成.{0,6}示意",
-             "标示意", "降级.{0,6}示意"), "替换路径")
+# ③ 替换路径与重验（M1.1 扩词："替换为可核实来源的图" / "降级为示意"）
+require_any(("用户提供", "真实素材", "替换为", "改.{0,6}AI 生成", "AI 生成.{0,6}示意",
+             "标示意", "降级.{0,6}示意", "降级为"), "替换路径")
 require_any(("重跑", "重验", "重新校验", "再次校验", "复验"), "重验动作")
 # ④ 不得声称现场已验证（advise 模式禁现场结果表述）
 forbid_positive((r"我(已经|已)验证.{0,10}可达", r"链接(是)?存在", r"该链接可达",

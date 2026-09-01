@@ -1,0 +1,21 @@
+id: style-candidates-honest-gap
+title: 库外风格如实说明缺口并指相近候选
+description: "验证候补清单诚实边界（style-candidates.md「不假装在库」精神 + 点名路径「风格不存在时列相近候选，不静默替换」）：用户点名韩式咨询精密网格风（한국 스타일，属 slides-grab 候补源、现库未收录），回复须如实说明当前库没有该风格或给出相近候选（精密网格/瑞士系：瑞士网格风、麦肯锡咨询风等），不假装存在、不承诺本轮渲染、不现场编造风格。判官承担主要断言：在场=诚实缺口词族或相近候选指路，违规=未否定的存在宣称/渲染承诺/风格创建。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise，只咨询、先不要生成。
+    我要一套韩式咨询精密网格风（한국 스타일）的 deck——你们库里有这个风格吗？
+    有的话什么样，没有的话怎么办？先别开始做。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "韩式"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_candidates_gap.py
+  timeout_seconds: 10

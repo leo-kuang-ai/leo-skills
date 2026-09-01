@@ -28,6 +28,15 @@ def require_any(values, label):
 
 def positive(patterns):
     for sentence in re.split(r"[。！？\n]+", text):
+        # M1.1 (2026-08-31): question-restatement exemption (M0.1 precedent:
+        # healthy replies restate the user's ask before denying it). A fragment
+        # ending in 吗/呢, or containing 能否/能不能/可不可以/可否, is the echoed
+        # question itself, not an affirmative answer, so forbid checks skip it.
+        stripped = sentence.strip()
+        if re.search(r"(吗|呢)\s*$", stripped) or re.search(
+            r"(能否|能不能|可不可以|可否)", stripped
+        ):
+            continue
         body = QUOTE_SPAN.sub("", sentence)
         if any(re.search(p, body) for p in patterns) and not any(
             v in body for v in NEGATORS

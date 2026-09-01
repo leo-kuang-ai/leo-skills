@@ -1,0 +1,21 @@
+id: style-medical-vertical-density
+title: 医疗语境推荐医疗健康家族不推错配家族
+description: "验证医疗健康硬规则偏好（scripts/style_hard_rules.py：domain 医疗/医院 prefer 医疗健康家族；库内医疗健康 18 条）：医院科室年度总结汇报要专业稳重医学风格时，回复须推荐医疗健康家族（任一真实医疗风格名如医疗学术风/深蓝灰科研风，或「医疗健康」家族词——「医学风」等会回声用户原话的子串不算），且不把明显错配家族（赛博朋克/Y2K/荧光/蒸汽波等高攻击系）当作推荐或候选呈现；否定语境下的排除性提及（「排除荧光系」）属健康行为不算违规。判官承担主要断言：医疗词族在场，违规=未否定的错配家族推荐。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise，先不要执行。
+    医院科室要做年度总结汇报 deck，医学风格要专业稳重，
+    有合适的风格推荐吗？先只问问，不要开始做。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "医学"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_medical_vertical.py
+  timeout_seconds: 10

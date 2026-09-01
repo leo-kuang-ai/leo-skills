@@ -80,5 +80,41 @@ class HeuristicWarningTest(unittest.TestCase):
         self.assertIn("WARN: unknown fields ignored: client_name", result.stdout)
 
 
+class StyleSampleTest(unittest.TestCase):
+    """R-20: optional style_sample text block — non-empty check, multi-line
+    collection, quotation heuristics exemption, short-sample warning."""
+
+    def test_multiline_style_sample_block_collected(self):
+        profile = VALID + (
+            "style_sample:\n"
+            "  我们把复杂留给自己，把简单留给用户。\n"
+            "  说话直接，先给结论再给理由。\n"
+        )
+        result = _run(profile)
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("OK: 8 fields valid", result.stdout)
+        self.assertNotIn("WARN", result.stdout)
+
+    def test_empty_style_sample_exits_2(self):
+        result = _run(VALID + "style_sample:\n", expect_ok=False)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("style_sample present but empty", result.stderr)
+
+    def test_short_sample_warns_but_passes(self):
+        result = _run(VALID + "style_sample: 太短\n")
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("样本过短", result.stdout)
+        self.assertIn("WARN", result.stdout)
+
+    def test_business_numbers_inside_sample_do_not_warn(self):
+        profile = VALID + (
+            "style_sample:\n"
+            "  原文摘录：本季度营收 1.24 亿元，同比增长 55%。\n"
+        )
+        result = _run(profile)
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("疑似业务数据", result.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

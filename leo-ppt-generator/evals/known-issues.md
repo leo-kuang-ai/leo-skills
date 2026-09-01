@@ -4,7 +4,169 @@
 避免误把已定性问题当作回归。新增条目按轮次倒序追加。
 
 
-## 2026-08-31 产品 P2 批：leo-ppt-bench 可移植基准（docs/plans/2026-08-31-003）
+## 2026-09-01 风格进货批 C1-C4（B 方案全量模式）终局收口
+
+owner 确认 B 方案（硬顶 220→300，006 计划在案）后四线并行开采候补矿，
+全部交付。**终验：全量 1120 tests OK 零失败；六 lint 全绿；audit 312 briefs/
+295 顶层主风格+17 变体（≤300 硬顶，净增 89）；疑似同族簇 10=基线零恶化
+（单例 287）；family_duplicate 零；画廊金样板 19 风格 up to date；
+91 case 解析通过。**
+
+- **C 批入账（净增 82 主风格/池代表+2 渲染锚+4 PPTX 金样板）**：C1 gpt-image2
+  12 主+7 参考池（233 单页池确定性归并）；C2 slides-grab 25（韩式 23 保真，
+  韩文原名入 aliases+四角色 HEX 源 tokens 强制）+OfficeCLI 7（六分组
+  variant-dimension 第二维度）；C3 beautiful 14+academic 4+huashu 6（zine/
+  vintage-poster 与 owner 点名分歧以实际去重裁定留痕）；C4 杂项五源 14+2。
+- **四重去重全效**：C 批原始 650+ 条处理，跳过 300+（概念重复为主，含 6 条
+  "源无 HEX 锚保真不可证"显式拒收）；四迁移器（intake_gpt_image2/
+  slidesgrab_officecli/beautiful_html 等）幂等 --check 全过。
+- **新家族**：韩式咨询/精密网格/煤炭工业/时尚咨询/美食编辑/新闻编辑/参考池
+  代表等（FAMILIES 35 家族 self-test 绿）。
+- **目录新增**：14_参考池_gpt-image2/15_来源_officecli/16_来源_slides-grab/
+  （均不在 lint_style_index 的 BRIEF_DIRS 硬口径，索引括注独立口径）。
+- **簇数监控结论**：10→10，未触发回退门槛（>20）；推荐质量对冲机制（硬规则
+  家族配额+variant_of+audit 门）全效。
+- 候补清单 style-candidates.md 台账余量已由 C 批清空（各源吸收/跳过台账在
+  迁移器 --report 可复现）；后续补货按使用信号（R-64/55/点名落空）驱动。
+
+## 2026-09-01 风格批专属测评轮：6 用例三轮收敛 6/6（iteration-105~115）
+
+新增 6 个 advise 档用例（91 case 口径）覆盖进货批能力面：别名命中/库外诚实/
+叙事层/硬规则防错配/新家族可用/医疗垂直。**首轮 2/6 → 二轮 5/6 → 终轮 6/6**，
+归因与修复：
+
+- **真实产品缺口（已修，user-visible）**：SKILL.md advise 模式原禁读全部
+  reference，导致"库里有没有 X 风格"类咨询只能答"不读库"（style-alias 与
+  medical 两例同源暴露）。修复：advise 增读取豁免——仅允许
+  `references/styles/00_索引/_INDEX.md`（纯目录索引元数据）；修复后 agent
+  精确命中 Dracula紫风（含路径/家族/同族 9 款）与医疗库内风格名。
+- **判官校准 3 处**（历史重放转绿、自检 6/6 保持、反向不洗白）：
+  narrative_layering 配对词族补「论证配置/弧线/张力释放」（响应语义本就在场）；
+  hardrule_mismatch 替代断言补「收敛/折中/点缀」折中词族（点名优先合同下，
+  收敛版是合法首次替代）；alias_colloquial 在库名单补场景轴 10 名
+  （「技术分享风」等真实在库名曾被名单遗漏误杀）。
+- 通过例亮点：candidates-honest-gap 首轮即绿（库外诚实+相近候选指路）；
+  new-family-renderable 首轮即绿（竹简/星月夜在库确认+能力边界）；
+  hardrule 首轮即履行"一次性风险提示"教科书义务。
+
+## 2026-08-31 风格进货批 S1-S5+M1 终局收口（docs/plans/2026-08-31-006）
+
+七路勘察（283 项零抽查）→六批执行（S1a/S1b/S2a/S2b/S3/S4n/S4b/S5+M1 机制线）
+全部交付。**终局验收：全量 1065 tests OK（会话基线 391→1065，零失败，含此前
+4 例 render 环境项本轮亦绿）；六 lint 全绿；audit 223 brief/206 顶层+17 变体/
+同族簇 10=基线不恶化/family_duplicate 零；画廊金样板 --check 19 风格零 drift；
+迁移器 --check 幂等（ohmy/landppt/yixue_kimi/codex_xiaobei 四器全过）；
+85 case 解析通过。**
+
+- **资产入账**：主风格 121→206（+85，硬顶 220 余量 14 留进化）+变体 17；
+  08 渲染轴 20→41（21 生图卡，CC BY 台账）；10 品牌轴 20→34（14 品牌）；
+  06 论证模式轴 6→19（叙事方法论 12+拍库，新维度）；别名清偿 103；
+  六项机制资产（chart_smart 槽/continuity 合同/明度维度/学科色板/
+  53 条色板池/原子路由评估）；候补矿 19 源登记（style-candidates.md，
+  按使用信号进化）。
+- **判官/用例**：本批纯资产批，未新增 eval case（行为面无变化）；
+  85 case 解析口径不变。
+- **遗留**：render 环境项（node 模块/chromium）历史轮偶发，本轮终验全绿
+  后如复现仍按环境态解读；金样板 19 风格口径外的新增主风格（其余 77 个）
+  按需扩展（画廊展示面与回归基准的平衡，S5 决策记录在案）。
+- **并行工程事实**：六批 agent 并行共享工作树，靠文件域互斥+互查去重
+  （S1a↔S1b 四包互让、S2a 代 S2b/S4n 机械计数同步）+禁用 stash 纪律，
+  零覆盖事故。
+
+## 2026-08-31 R3 在线测评轮：负触发组首跑与判官校准（iteration-100/101）
+
+- **iteration-100（doc-layout 单例）**：FAIL=判官误杀——响应边界语义在场
+  （"不要用于纯文档排版…跳过它"）与替代路径在场（"直接用 python-docx
+  生成"），词形失配（判官只认 不属于/超出范围/无法处理 与 建议/请使用）。
+  修复：SCOPE 增 不要用于/不适用/跳过技能，SUGGEST 增 直接用/我来帮
+  （代做替代路径也算指引——负触发要拦的是 Route 启动不是帮忙）；重放转绿，
+  自检 7/7 保持。
+- **iteration-101（负触发组）**：doc-layout PASS（修复生效）；single-image
+  FAIL=**真实行为失败**——agent 对单张封面图请求进入首次使用偏好设置+
+  本次生成方案流程（越权启动，frontmatter 负触发边界未被遵守）。判官
+  归因校准：STARTUP 增 首次使用偏好/偏好设置写入/生成方案 词族，重放仍
+  FAIL 且归因精准（命中"本次生成方案"）；该例与 M1.1 九例同列真实行为
+  债（holdout 例，不参与判官调参的约定遵守：本次校准仅加启动词族使归因
+  准确，判定结论未变）。
+- **M1.1 在线复测子集（iteration-102/103/104）**：beta-m1-undecided **PASS**
+  （入口锚点修复后自愈——锚点对"形态知识缺口"类案例有效）；
+  beta-m1-capacity FAIL（回复语义正确但未引用 `--capacity`/`check_deck_geometry`
+  预检命令——提示词层行为债，需命令词入 slide-worker/入口层强化，非本轮交付缺陷）；
+  gamma-m1-render-ready FAIL 但**半好转**（恢复命令"补齐 playwright 重跑
+  render ready"已在场，缺"图像 lane 不受影响"披露与抑制词形）——两例维持
+  M1.1 在案"真实行为失败"定性，归入提示词强化后续批。
+- 引擎事实：在线轮可见 `unrecognized_model glm-5.3[1m]` 引擎警告，响应
+  正常产出，暂不影响判定；后续轮若复现需评估引擎配置。
+
+## 2026-08-31 R3 开发批：多线并行全量需求落地（docs/brainstorms/2026-08-31-005）
+
+按 PRD Feature Slices 多线并行开发（每线含"调研原文 file:line 核实前置"，共
+核实上游源码 20+ 处，含 3 处报告转述与原文的出入修正）。受管口径单测
+**391 → 687 全绿**，五 lint 全绿，eval.yaml 83→**85 case** 解析通过。
+
+- **已交付需求（35）**：R-03/04/05/06/07/08/09/10/15/16/17/18/19/24/25/26/34/
+  35/36/37/38/39/41/47/49/51/52/53/54/55/61/62/63/65/68。
+- **新增脚本（16）**：eval_stats / check_deck_prose / compute_impact /
+  check_content_facts / check_sensitive_text / normalize_transcript /
+  library_catalog / style_hard_rules / distill_deck_style / export_deck /
+  check_content_baseline / record_run_step / reproject_derivatives /
+  build_rendered_ledger / audit_style_families / deck_template(在途)。
+- **新 reference（10）**：library-schema / data-sources / deck-distillation /
+  image-text-composition / deck-templates(在途) 及既有合同增节
+  （deck-master 承诺表/确定性检测/四级标注/证据密度/图上文字；workflow 3c
+  核查官/素材库派生/影响面；render-contract 导出节;visual-qa rubric+预算;
+  execution-contract 状态恢复;style-recommendation 硬规则+多样性;input-routing
+  音视频；academic-vertical 评审视角矩阵）。
+- **判官与用例**：判官校准 10 文件（见 R3-0 条目）；新 case 负触发组 2 例
+  （85 case）+judge_negative_trigger 自检 7/7。
+- **在途收口（本条目登记后进行）**：SKILL.md 入口锚点统一（BR-001）、
+  R-66 家族合并（实测 17 簇/48 份，五大强候选）、R-27/28 token sidecar+模板
+  扩面、R-48/50 分发边界+deck 模板、P2 择优批。
+- **各线遗留衔接点**（后续批）：negative_prompt/paired_illustration 的提示词
+  链注入（runtime cli/prepare_slide_prompts）;OCR 持久化（rendered-ledger 从
+  missing 升全量）;export 产物并入交付收据五类指纹;R-69 完整代采（轻形态
+  信号验证后）;判官 9 例在线复测（见 R3-0）。
+- **并行工程事实**：共享工作区多线并行曾发生一次 git stash 误操作卷走在途
+  文件（R-24 线），相关线逐文件核验完整复原；后续所有线已加"禁用 stash"
+  纪律。测试基线在并行窗口动态增长（391→687），中间态 error 以各线交付报告
+  归属口径为准。
+
+
+## 2026-08-31 R3-0 前置批：M1.1 收口 + R-51 评测统计（docs/brainstorms/2026-08-31-005）
+
+R3 全量开发的前置批（多线并行工程），四件收口：
+
+- **金样 HEX 2 例裁决（B-1 存量终结）**：独立裁决=更新 golden 至当前输出——
+  brief 带 HEX 是五条 lint 治理下的 checked-in 现状，HEX 在生图载体中是给图像
+  模型的色彩锚；设计链"风格不带 HEX"原则对应 R-27 token sidecar 落地**之后**
+  的目标架构，非当前阶段义务。`tests/fixtures/render_golden.json` 经
+  compose_style 生成方式重建（非手改），test_templates 全绿；受管口径
+  **391/391**（历史口径 391/2 至此清零）。
+- **M1 入口锚点**：SKILL.md 纯新增 6 行（渲染 lane/layout-dispatch P 码/
+  editable builder 双跑三条锚点；来源保真核实既有已覆盖不补）。闭合
+  delta-m1-illegal-preset（入口行自带 build 期 ValueError 语义）与
+  beta-m1-layout（P 码调度锚点）的 iteration-90 结构性主因。
+- **判官校准（M0.1 协议：历史重放+词表+反向陷阱）**：iteration-90/94 重放
+  19 个 M1 新 case，归因 **8 判官误杀 / 9 真实行为失败 / 0 环境**；10 个判官
+  文件词表/陷阱作用域变更（均带 M1.1 calibration 注释与重放依据）；重放结果
+  **14 case-轮误杀转绿、5 历史 PASS 保持零回归、19 真实 FAIL 保持不洗白**；
+  离线双向自检 28/28（含 2 条直击新陷阱模式的对抗样本）。**遗留 9 例待在线
+  复测**（beta 全系 6 例 + gamma-render-ready/sweep + alpha-rst-same-unit，
+  均为真实行为失败；入口锚点已修，预期在线轮自愈；rst-same-unit 注意：
+  rst-paging.md 属 execute 阶段 reference，advise 层无 RST 知识锚点，若在线
+  仍败需评估是否在入口表补一行）。
+- **R-51 eval_stats**：Wilson 95% CI / MW-U（连续性+连结校正）/ Fisher 精确
+  （全程整数权重零漂移）；31 单测；输入=skill-up result.json（schema
+  v1alpha1 实测）或 NDJSON。对 iteration-90~99 十轮实测输出在案——多数 case
+  呈 trending（2 轮样本 CI 宽），印证"小样本不定论"纪律；判官修复效果的
+  显著性结论待修复后在线轮补齐再算。
+- **测试基线口径重申（B-2 先例）**：跑测试/脚本必须 `runtime/.venv/bin/python`
+  （系统 python3 为宿主 venv，缺 filelock/PIL/pptx 等）。R3 各批并行合入期
+  全量数动态增长（391→585+），并行窗口内全量可能含他线在途中间态 error
+  （测试文件先于脚本落盘等），以各批交付报告口径为准；批次收口后统一全量
+  复核。
+
+
 
 评测资产外化：`bench/` 8 维交付级基准（用例与判官全部去 leo 化），正向对照
 为对 leo 自身在线运行（it-96/97，及后续重试轮）。

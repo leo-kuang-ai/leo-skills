@@ -6,6 +6,331 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Changed
+
+- **leo-ppt-generator：S5 吸收批 6 套缺口风格 brief（ppt-github 生态审查收尾，
+  user-visible）**：三专家全量审查 122 项后补齐仅存语义缺口——huashu-design 3
+  套（设计流派·玩味手绘极简风/Collins 式荧光黄 #FFE01B、设计流派·不羁玩梗流行
+  风/Reddit 式橙红 #FF4500 破格混排、柔和治愈·人文圆角卡片风/Khan 式森林绿
+  #14BF96）、open-kimi 2 套（商务专业·地图战略风,map-strategy 六色系全源直迁,
+  全库唯一地图叙事母版；科技数字·粉紫云层诊断风,pink-purple-diagnosis 全 token
+  直迁,含 L1-L8 版式骨架）、yixueAIganhuo 1 套（医疗健康·浅粉棕医院运营风,019
+  模板图像素采样,补医疗域运营管理场景）。全部走 R-29 扩展模板落位,四条治理 lint
+  全绿（briefs=318/0 err/0 warn,无 family_duplicate）；登记同步 `_INDEX.md`
+  （lint 口径 273→279、全口径 305→311、独立可选 288→294≤300 硬顶、01 母版
+  150→155 子节计数全同步）、`视觉风格配对.md` +6 行、`风格路由.md` 快速路由
+  +6 行与气质速查 +3 行。方案与 v1→v2 九处修正对照见
+  `docs/plans/2026-09-01-001-feat-leo-ppt-style-s5-absorption-plan.md`。
+
+- **leo-ppt-generator：Gorden/dashi 授权后金样板登记与许可红线修订
+  （user-visible）**：GordenPPTSkill（稻壳）获项目负责人线下授权（2026-09）,
+  按 officecli 先例精选 4 套实体 PPTX 入 `samples/reference-golden/gorden/`
+  （red-patriot-general/thesis-formula/report-massive-charts/mckinsey-style,
+  合计约 12MB,严守轻量量级拒绝 101MB 整收）+ 全 21 套 README 映射表（源路径
+  可回查,逐套标注 skill 侧等价 brief）。dashi（AGPL）同步授权,candidates 条目
+  勘察 C→B 升级（theme01-12 色板可直引）;`style-candidates.md` 许可红线段改写。
+  另登记 gitee-mirrors/deckjs 勘察行（3 个框架级主题,净新 0,不收）。
+
+- **leo-ppt-generator：品牌轴补录与来源标注补强**：`10_品牌身份/` 新增招商银行
+  （#C8152D 品牌红 + 金融蓝辅助）与重庆大学（#006BB7 CQU 蓝 + 山城层叠渐变）,
+  VI 近似色提取自 cn-academic-spark design_spec,计数 34→36 同步 `_INDEX.md`
+  与 `style-library.md`（分节轴 197→199）;麦肯锡咨询风补注 mckinsey-pptx 同族
+  色板变体来源（aliases +mckinsey-pptx navy,不另立风格）;顶层手绘技术解释风
+  补 ian-handdrawn-ppt theme-tokens 同源标注（治理修正,内容早已吸收）。
+
+- **leo-ppt-generator 风格进货批 C2：slides-grab + OfficeCLI 双源吸收净增 32
+  （user-visible，全量模式）**：slides-grab 25（韩式 design-diversity 保真 23
+  ——咨询精密网格/全幅极简演讲/韩式政策报告/数据信息密集/极简单色笔记/植物
+  有机编辑/精密金融科技/温暖款待/单色基础设施/电影感演讲/战略藏青/MBB幽灵
+  框架/粗块信息图/档案索引/BCG展板/投行IR编辑/黄金网格演讲/图案海报演讲/
+  集团IR克制/星幕金字塔/卡片新闻财报/政策口号书法/韩式政府浅蓝，韩文原名入
+  aliases、四角色 HEX 全部源 tokens 保真；西式精选 2——暗黑学院/彩窗马赛克）
+  +OfficeCLI morph-ppt 7（流光液态/鼠尾草谷物暗纹/聚光舞台/斜切重工/色差
+  故障/粉紫编辑/大地有机；六分组 dark/mixed/vivid/warm 在 brief 头部
+  variant-dimension 标注为明度第二维度）+4 份成品 PPTX 金样板复制入
+  samples/reference-golden/officecli/（只登记路径不转换）；FAMILIES 新增
+  韩式咨询/精密网格两家族；新增迁移器 intake_slidesgrab_officecli.py（四重
+  去重门+概念级 SKIP 全登记+幂等）+13 单测；audit 同族簇 10→10 零新增、
+  六 lint 全绿、全量 1106 测试零新增失败、render 冒烟 2（含 1 韩式）ready。
+
+- **leo-ppt-generator 风格进货批 C3：三源吸收净增 24（user-visible，B 方案
+  全量进货）**：beautiful-html-templates 14（复古视窗/双年展海报/钴蓝网格
+  简报/樱彩磁带包装/行动主义海报/柔彩衬线编辑/便利贴拼贴/模版印刷标语/复古
+  晚宴餐牌/别针手账/象牙账本/胶囊卡波普/祖母绿刊头/林间三色季刊，双层 JSON
+  机械迁移 avoid_for→负面提示词）+academic-ppt-master 4（数据新闻编辑/立体
+  剪纸/粉笔黑板/全幅摄影编辑；zine/vintage-poster 与里索印刷/中世纪现代判重
+  跳过留痕）+huashu-design 6（黑底数字剧场/单色满版海报/高桥流糖果舞台/
+  便当格卡片/暗线终端/宣言备忘录，审美禁区并入负面提示词）；academic 14
+  调色板家族独立文档（调色板行为参考.md，口径区别于图表色序池）；新增
+  intake_beautiful_html.py 迁移器+13 单测；audit 簇 10→10、六 lint 全绿、
+  render 冒烟 3 风格 ready。
+
+- **leo-ppt-generator 风格进货批 C1：gpt-image2 全量吸收（user-visible，B 方案
+  全量进货）**：净新增 12 主风格（Stripe蓝白/黑白杂志/抽象艺术画册/煤炭工业/
+  珊瑚紫双色调/高级料理杂志/深蓝红新闻编辑/时尚咨询工具包/有机渐变形/荧光黄
+  商务/纸质文件夹拟物/深蓝极简工作坊）+**233 套单页池确定性归并为 7 个参考池**
+  （14_参考池_gpt-image2/：池代表 brief+全量清单 md 回源可查；归并键=底色
+  亮度/冷暖锚/punk-tech 二分，不计入 brief 计数口径）；新增迁移器
+  intake_gpt_image2.py（四重去重+幂等）+29 单测；FAMILIES 新增 5 家族扩 4
+  家族；audit 同族簇 10→10 零新增、六 lint 全绿、render 冒烟 2 风格 ready。
+
+- **leo-ppt-generator 风格进货批 C4：杂项矿五源精选（user-visible，B 方案
+  全量进货）**：净增 14 主风格+2 渲染锚——awesome-ppt-skills 31 行业提示词
+  转轴 6 条（美妆个护/Web3 加密/地产空间/公益组织/达人营销/人文史哲，思想级
+  改写）；xhs-visual-director 24 版面气质改画幅吸收 4 条（深色科技杂志/夜间
+  独白/个人品牌宣言/工具清单）；frontend-slides 自有精选 2（活页标签手册/
+  暗夜植物园，MIT 直迁）；dashi 思想级 2（色谱图表/声波霓虹）；awesome-gpt-
+  image-2 余量补 08 轴 2 锚；FAMILIES 十组同步、视觉风格配对+14 行（含两条
+  新链路）、计数测试改「≥下限+内部一致」断言（并行进货批不再互破硬总数）；
+  audit 同族簇 10→10 零新增、render 冒烟 ready。
+
+- **leo-ppt-generator 风格进货批评测资产（user-visible）**：新增 6 个 advise 档
+  行为用例与 6 个自包含判官（85→91 case）——style-alias-colloquial-hit
+  （别名命中/反查 ~110 在库名防编造）、style-candidates-honest-gap（库外
+  风格诚实缺口+相近候选指路）、narrative-pitch-layering（叙事方法论层
+  语义+论证模式配对+无 Route 启动）、style-hardrule-defense-mismatch
+  （答辩×赛博朋克首次风险提示+替代建议，照办无提示=FAIL）、
+  style-new-family-renderable（新家族在库确认+能力边界）、
+  style-medical-vertical-density（医疗家族推荐+错配排除）；判官各 6 样本
+  自检 6/6、复合否定词级否定感知（修复 3 处单字软化误判）、全量 1065
+  单测零新增失败。
+
+- **leo-ppt-generator 风格进货批 S5 收尾：8 新家族金样板与画廊扩展
+  （user-visible)**：R-65 金样板覆盖 11→19——8 个新风格家族（终端配色/
+  设计流派/东方意蕴/柔和治愈/夜空氛围/质感专业/中式载体/印象派油画）各选
+  1 代表（Dracula紫/杂志衬线/故宫墨红/奶油温柔/星火夜空/黑金期刊/中式
+  书卷/星月夜）进金样板与画廊；gallery 脚本增 FAMILY_REPRESENTATIVES 名单
+  与暗底家族可见性守护（11 内置输入零漂移）；--check 19 风格零 drift、
+  渲染冒烟 4 风格 ready、六 lint 全绿、全量 1051 单测零新增失败。
+
+- **leo-ppt-generator 风格进货批 S3：yixueAIganhuo-PPT + open-kimi 价值
+  精选终批（user-visible)**：净增 16 主风格（190→206，≤220）——医疗健康
+  域加密 13 条（深蓝灰科研/冷蓝斜切医学/医学书卷/医学手稿答辩/暖陶土医学/
+  深海军蓝医学/秋叶麦田水彩医学/深蓝菱形答辩/青蓝水墨医学/雾感鼠尾草/
+  医养同源水墨/森林绿临床水彩/黑白水墨临床，源 19 个医学 JSON 的
+  色板/avoid_style→negative_prompt 直迁，continuity/asset_embedding 不迁
+  ——M1 已通用化；跳过 6：通用蓝白/暖米复古答辩/冷蓝期刊/秋麦暖棕/
+  暖棕人文品牌/浅粉棕运营与现库医疗 5 条+学术族概念重复）；open-kimi
+  30 套双段式 design.md 精选 3（黑金期刊——黑白灰金融期刊台账+单金锚/
+  蓝焰作战室——近黑蓝监控作战室/松烟画报——近黑场电影感画报；其余 27
+  套概念去重 SKIP，style-candidates.md 余量同步归零）。新增迁移器
+  `scripts/intake_yixue_kimi.py`（--check/--write 幂等，锚点来源纪律+
+  family_duplicate+audit 同族预检+WCAG 四重门）+17 用例；FAMILIES 同步
+  （医疗健康 +13、质感专业/科技暗色/艺术表现各 +1，28 家族）；
+  _INDEX/style-library 计数 207→223（独立可选 190→206）、视觉风格配对
+  补 16 行、计数测试随迁。验证：六 lint 全绿、audit 同族簇 10→10 零新增、
+  全量 1044 单测零新增失败（4 失败均为本机渲染后端缺 node 模块/chromium
+  的环境性失败，与本批无关）、style render 冒烟 3 风格通过（含 2 医学）。
+
+- **leo-ppt-generator 风格进货批 S4b：候补进化资产登记表（user-visible)**：
+  新增 references/style-candidates.md——七路勘察确认、本批不入库的 19 个
+  剩余源矿逐源七字段登记（gpt-image2 265/slides-grab 90 韩式精密网格/
+  beautiful 34/OfficeCLI 51+21 金样板/open-kimi 30/academic/huashu/
+  frontend-slides/dashi 版式母矿等，零遗漏）；表头声明进化机制：候补非
+  承诺入库、不占 220 硬顶，按 R-30/R-64/R-55 使用信号驱动补货，补货走
+  四重去重+治理 lint+余量检查，入库同步补金样板与预览；GordenPPTSkill
+  禁入库与 AGPL/无 LICENSE 思想级红线沿袭；style-library 加指引；6 用例。
+
+- **leo-ppt-generator 风格进货批 S4n：叙事方法论层新立（user-visible)**：
+  06_论证模式轴新增「叙事方法论」子类 12 条（学术研究报告/咨询决策/创意
+  提案/事故复盘/融资路演/主旨演讲/经营复盘/产品发布/科普讲解/方案提案/
+  技术深潜/工作坊教学，源 ppt-master 12 叙事风格；每条含适用场景/页序
+  骨架/节奏要点/与论证模式五拍·RST 的三层正交声明及拍库白名单）；新增
+  叙事拍库（presentation-skill arc_beat 33 按频次精选 20 拍+12 节奏签名，
+  白名单选配非自由组合——M1 评估结论落地）；style-presets 叙事字段衔接；
+  轴 6→19，_INDEX/style-library 计数收口；文档合同测试 5 用例（含白名单
+  闭包防发明拍）。
+
+- **leo-ppt-generator 风格进货批 S2a：三源精选吸收（user-visible)**：LandPPT
+  净增 6 主风格——新子类「中式载体」（竹简/中式书卷/宣纸）与「印象派油画」
+  （莫奈/星月夜），吉卜力手绘归艺术表现；html-ppt-skill 36 主题与
+  presentation-ai 39 主题经概念/指纹严格子集判定**零净新**（oh-my-ppt 批已
+  全覆盖，宁少勿滥）；09_结构布局新增版式目录补充参考（47 版式摘 15 条+P 码
+  映射）；新增迁移器 `intake_landppt.py`（四重去重+锚点来源纪律：HEX 须溯源
+  源 CSS 含 %23/rgba 解码）+15 用例；修复 style-library 137 旧计数漂移至
+  207/196/190 口径；六 lint 全绿、audit 簇数不恶化、全量 1021 单测零新增失败、
+  3 风格渲染冒烟通过。主风格 184→190（≤220）。
+
+- **leo-ppt-generator 风格进货批 S2b：双源分节轴吸收（user-visible）**：
+  08_图片渲染轴 20→41——codex-slides 22 张社区生图卡去重 1 张
+  （`nb-chalkboard-lesson` 与既有「黑板粉笔」同概念）后净增 21 条
+  （styleBlock→paste-ready 生图提示词主体、tags→适用场景、palette→
+  可覆盖参考色板+密度，每条登记源卡/作者/案例 URL 与 CC BY 4.0 许可
+  台账；45 张内置模板不收，属 S2a 域）；10_品牌身份轴 20→34——
+  xiaobei design-systems 15 品牌去重 ibm 后净增 14（airbnb/apple/bmw/
+  figma/framer/linear/notion/shopify/spotify/starbucks/stripe/supabase/
+  tesla/vercel；亮暗双模收敛为主色板+暗场变体声明，统一 dark-deck
+  预设词汇，verified_at 未核验合同与轴内一致）。两轴均不占主风格 220
+  硬顶。新增 `scripts/intake_codex_xiaobei.py` 迁移器（--check/--write
+  幂等）+12 用例；_INDEX/style-library.md 计数同步（分节轴 146→181）、
+  视觉风格配对末节补 21 条默认路由；品牌冒烟 `style render --brand
+  linear --anchor` 通过，生图卡经 `load_rendering` 合同冒烟 3/21 通过。
+- **leo-ppt-generator 风格进货批 S1a：oh-my-ppt 整库吸收（user-visible）**：
+  新增 49 份参考风格 brief（48 主风格+1 同板变体），01_通用母版新建
+  终端配色/设计流派/东方意蕴/柔和治愈/夜空氛围/质感专业六子类，艺术表现
+  +3、科技数字 +1；FAMILIES 同步 6 新家族（共 26）；主风格 136→184
+  （≤220 硬顶）；新增 `scripts/intake_ohmy.py` 迁移器（概念映射 25 跳过/
+  同板指纹/audit 同族预检/WCAG 文字锚四重门，幂等）+18 用例；与 S1b 并行
+  互查去重（4 包因 S1b 已收改判跳过）；六 lint 全绿、全量单测 1003 通过、
+  style render 抽 5 风格冒烟通过、金样板无 drift。
+
+- **leo-ppt-generator 风格进货批 S1b（user-visible）**：净增 15 个主风格
+  brief（121→136）——slides_maker 18 预设净新 10（孟菲斯新潮/里索印刷/
+  粗野报刊/蓝晒图纸/暗夜奢华/博物馆纪念/中世纪现代/终端命令行/深色编辑
+  报告/传统色叙事；guard→negative_prompt、image_prompt→渲染提示词）+
+  Awesome-PPT-Design-Skills 净新 5（和纸柔光/日式生活杂志/未来科技编辑/
+  极简奢侈品牌/现代插画编辑），撞名四项以区分名过 family_duplicate 门；
+  同批清偿 R-63 遗留 aliases 债：103 个主风格经 migrate_style_aliases.py
+  （幂等+--check）补齐 2-5 个中英别名；_INDEX/视觉风格配对/FAMILIES 同步；
+  渲染冒烟绿，同族簇数不恶化。
+
+- **leo-ppt-generator 风格进货批 M1 机制线六件（user-visible)**：①
+  token_sidecar.palette 增可选 chart_smart 图解专用色槽（源 presentation-ai
+  smartLayout），schema 测试 5 用例；② 新增 references/style-continuity.md——
+  样张确认后六字段跨页继承清单+原图嵌入 preserve/stylize 二选一政策（源
+  yixueAIganhuo-PPT 通用化），文档合同测试 7 用例；③ style-library.md 增
+  「变体第二维度：明度×饱和度六分组」节（源 OfficeCLI morph-ppt，经索引计数
+  断言安全判定落位）；④ academic-vertical 增学科倾向色板表（源 paper2anything，
+  advisory 不豁免色盲安全枚举）；⑤ 新增 scripts/chart_palette_pool.py+快照池
+  53 条（echarts 36+ppt-mcp 17 双源解析，14 用例）；⑥ presentation-skill
+  原子组合路由评估（结论：部分引入——arc_beat 叙事拍库+共现白名单，不引入
+  自由组合主路线）。新增 26 用例全绿。
+
+- **leo-ppt-generator R3 修复轮·脚本面九件（交叉审查 findings,user-visible)**：
+  `check_number_ledger.py --diff` 新版登记表整体消失/清空不再误归用法档——
+  旧版存在 verified=yes 行即 FAIL exit 1（提示"登记表整体消失，数字性证据须
+  显式降级或经确认"），仅旧版缺节维持 exit 2；单文件模式文件不可读改
+  exit 2（原为裸 traceback），并删除分隔行过滤中的 no-op 死代码；
+  `check_deck_prose.py` 连词计数改最长优先不重叠匹配（孤立"与此同时"不再
+  被"同时"双计越 MIN_HITS）；`check_content_facts.py` 四位 19xx/20xx 无单位/
+  百分号后缀 token 按年份豁免（与族 i 同口径），无任何页块的母版 exit 2 不再
+  静默 PASS；`check_references.py` 文献节内非 bullet 行（全角［1］/"1."编号）
+  计入条目解析，不再静默丢失并误报"无参考文献页"；`normalize_transcript.py
+  --fix` 非法时间戳前缀丢弃不再残留正文；`style_pack.py` manifest 相对路径与
+  `--target` 两处边界判定改 `Path.relative_to()`（原 startswith 可被兄弟目录
+  前缀穿越）；`library_catalog.py remove` 删除前校验 asset_path 解析后仍在库根
+  内，越界拒删 exit 2；新增 20 项回归单测（先红后绿），全量回归 954 测零失败、
+  治理 lint 全绿。
+
+- **leo-ppt-generator R3 修复轮状态恢复面五件（user-visible）**：新增
+  `scripts/find_confirmed_baseline.py` 公共 confirmed 基线链定位
+  （reproject_derivatives 与 expire_candidates 共用，防双份漂移；显式
+  pending 的 post-confirm 退回版本视为链断，回落更低 confirmed 根——未确认
+  内容不再被当作投影真值/过期基线）；expire_candidates 大纲候选改按大纲
+  自身序列的最高 confirmed 版本判过期（母版序列只判母版，修复 v5 母版误标
+  最新确认大纲 outline-v3 的跨系列误伤）；execution-contract「内容层状态与
+  恢复」CAS 协议补写回后 `--record` 重锁闭环句（锁为 advisory，重锁+写前
+  复核缩小竞态窗口），record_run_step exit 2 补双义说明（用法错误重试
+  即可，状态矛盾才需人工裁决）；style_hard_rules FAMILIES 补 R-66 合并簇
+  主风格（教学课件+互联网产品风、金融审计+商业计划书风）防规则层对合并后
+  语境失明并加防失明自检断言，7 新测+3 例按修正语义调整，全部 lint 绿。
+
+- **leo-ppt-generator 版式系统锚与证据截图组件（R-31/R-32,user-visible)**：
+  `style render --layout-lock` 旗标输出版式系统锁定块（网格/安全边距/页码位/
+  圆角线重五锚逐页注入防网格页码漂移；layout 键缺失 fail-loud
+  `layout_lock_unavailable`，不带旗标输出逐字节不变，字节红线断言）；新增
+  渲染模板 `frame-shot.html`（六参数移植：ratio 七档/corners 上限 14px/
+  shadow/bg 中性舞台永不 accent/inset/contain 缺省+device 包装；正交纪律
+  禁透视倾斜；image_src 仅收 data: URI 离线确定），过 lint_render_templates
+  全规则，证据截图页优先路由渲染 lane；render-contract §3/§13 同步，
+  reason-codes 补 layout_lock_unavailable，22 新测。
+
+- **leo-ppt-generator R3-4 择优批 styles 侧五件（R-29/30/33/64/67,
+  user-visible)**：新增风格扩展模板（R-29：八节空模板+四条 lint 机检门+
+  区分性人工门，占位未填完不计入 briefs 计数防静默漏检）；style-recommendation
+  增"分角色组合"（R-30，可选档默认关：封面更冲击/内页更理性家族）；新增
+  `scripts/style_pack.py`（R-33 风格包导出/导入：manifest sha256 确定性打包，
+  导入过 manifest 完整性/单文件 lint/同名冲突/同板预检四重门）；新增
+  `scripts/recommend_feedback.py`（R-64 反馈闭环：只存家族归类标签不存原话、
+  bandit 权重建议、清理入口，数据落 LEO_PPT_HOME/style-feedback/）；新增
+  `references/style-presets.md`+json（R-67 场景预组合 8 预设：合并后主风格
+  口径+真实 P 码版式集+fallback 链，可选档默认关），26 新测，五 lint 全绿。
+
+- **leo-ppt-generator R3 补漏双件：R-01/R-40（user-visible）**：材料缺失场景
+  新增"研究代采轻形态"引导——generate 首轮无自备材料时控制面五字段固定块
+  语义不变，解释部分附研究问题清单（按主题与受众组织、每节 2–4 问）与
+  建议检索渠道/素材类型清单（不含具体链接），经既有合同确认门确认并预告
+  剩余确认序列；轻形态零宿主依赖、不联网、不模拟研究结果，R-69 条件未齐备
+  时如实说明能力边界并指回清单（AE-01/02）；新增
+  `scripts/check_cross_page_consistency.py`（R-40 长 deck 硬门禁：术语同实体
+  异写/页码跳号重复/固定件冲突三类检查，四分类输出，>30 页阻断项非 0 退出、
+  ≤30 页降风险向后兼容），workflow 步骤 7 接线，15 单测。
+
+- **leo-ppt-generator 风格 token sidecar 与渲染模板扩面（R-27/R-28,
+  user-visible)**：brief 可选 `token_sidecar` 键（palette 五核心键对齐
+  theme.json 渲染锚、可扩展 social-card 8 token、typography/density），
+  `style render --var key=value` 变量级覆盖并复用 brand_contrast 硬校验
+  （primary/text ≥4.5:1、accent ≥3:1、覆盖 background 全量重查，
+  reason_code `style_var_override_invalid`）；不带 --var 输出逐字节不变
+  （字节红线回归断言）；渲染模板扩面——新增 spec-table（P25）/timeline
+  （P11）/compare（P8）/pull-quote（P34）四个 HTML 模板，全部过
+  lint_render_templates 合同并附真浏览器渲染冒烟；render-contract §3/§12
+  同步，17+6 新测。
+
+- **leo-ppt-generator 长程一致性双件：R-42/R-46（user-visible）**：
+  execution-contract.md 新增"分节分批母版确认（>40 页）"合同——按节分批
+  落盘与确认（大纲全册一次），各节独立 confirmation、全部节 confirmed 才
+  构成母版基线，每节附一行式节摘要（结论/新增术语/新增数字/未决承诺），
+  复用既有 post-confirm 机制不新增确认门；新增
+  `scripts/check_worker_brief.py`（worker 简报四块完备性阶梯：required_text /
+  style_lock / 术语注入 / 数字登记行引用，缺任一 exit 1 阻断派发并给缺块
+  清单，声明缺失自动豁免，三种入口），Worker 节与 workflow 步骤 8 接线，
+  13 单测。
+
+- **leo-ppt-generator 分级误区澄清与候选过期标记（R-58/R-45,user-visible)**：
+  SKILL.md 数据分级句嵌误区澄清——内部数据≠涉密，未公开经营数据定级内部
+  即可继续，仅涉密样貌数据须机密以上档处置；Gate 0 节尾补"确认可信后仍会
+  做 preflight 结构检查，不代表不信任"；新增 `scripts/expire_candidates.py`
+  ——基线 confirmed 后把低于基线版本的候选工件（大纲/母版旧版与
+  baseline 标记的风格/双样张落选候选）登记 `content/expired-candidates.json`
+  标 expired 防误引（post-confirm 链不标、幂等、不改原文件），deck-master
+  同步合同句，7 单测。
+
+- **leo-ppt-generator 交付分发边界与 deck 模板化（R-48/R-50,user-visible)**：
+  execution-contract.md 交付节新增分发边界小节——leo 交付止于文件与导出
+  形态，不代发任何平台、不请求/不存储平台凭据，用户要求发布时指路已登记
+  外部工具（Wechatsync 系，草稿先行），与 DELIVERY-GATE 同构的防范围蠕变
+  声明；新增 `scripts/deck_template.py`（save/instantiate/diff-data，业务
+  数据全剥离的结构资产模板；数据点指纹沿用/新增/缺失三分类，缺失进材料
+  确认清单；确认语义红线写死——diff 只减少呈现项不减少确认门）与
+  `references/deck-templates.md`，21 单测。
+
+- **leo-ppt-generator 风格库家族去重合并（R-66,user-visible)**：五大同板簇
+  （汇报述职/发布营销/学术答辩/路演财报/咨询·产品·培训）23 份参考 brief
+  归并为 7 主风格 + 16 场景变体（variant_of 归属标注，文件原位保留），独立
+  可选风格 137→121,变体原名全数保留经主风格 aliases 可检索;
+  lint_style_briefs 增同板家族计数（family_duplicate）与 variants 归属九类
+  校验防回潮；audit_style_families 复测同族簇 17→10（剩余均为弱证据保留）；
+  style_hard_rules FAMILIES 同步合并后归属（防失明断言通过）；schema 声明
+  variants/variant_of 可选字段；README/_INDEX/style-library 计数口径一次性
+  迁移，五 lint 全绿。
+
+### Added
+
+- **leo-ppt-generator 风格资产线四件：R-25/R-26/R-65/R-68（user-visible）**：
+  11 套内置风格 brief 各补 `negative_prompt`（负面提示词，5 条/风格，全部
+  提炼自各 brief 既有 avoid/rule 素材）与 `paired_illustration`
+  （插画家族 flat/glass/hand-drawn/dashboard/photographic/editorial/collage/
+  diagram + 浓度 core/supportive/sparse）；`lint_style_briefs.py` 增两字段
+  校验（11 内置必填、126 参考风格带字段即校验形状、缺省豁免——同 layouts
+  sidecar 渐进轴），并加 `--root` 供单测 fixture 根；
+  `generate_style_gallery.py` 扩展金样板：`--render-golden` 经 M1 渲染 lane
+  CLI（render page/render chart）为 11 内置各渲染三页（封面/内容/图表，
+  固定示例数据、风格色板经 deck-color 锚逐字进 SVG），产物
+  `samples/style-gallery/<风格>/thumb-*.png` + 确定性输入 JSON（88 文件，
+  双跑 sha256 一致），画廊 md 嵌图；`--check` 升级为 R-65 金样板回归（临时
+  目录重渲染 sha 对比，漂移非 0 退出；后端缺失降级为输入字节对比并 WARN，
+  不静默放弃）；新增 `scripts/audit_style_families.py`（R-66 前置：137 brief
+  轴/子家族/调性/场景分布 + 复用色板 TOP + 名称相似∪色板重合 union-find
+  疑似同族簇 17 个涉及 48 份，`--json` 机读，只读不改 brief）；
+  `_INDEX.md` 顶层内置节补两字段说明；新增
+  `tests/test_audit_style_families.py`、`tests/test_lint_style_briefs.py`，
+  扩展 `tests/test_generate_style_gallery.py`（嵌图/双跑确定性/漂移检测/
+  缺页/降级，共 13 用例）。全量回归 687 通过，五 lint 全绿。提示词链消费
+  （negative_prompt 并入 style render/prepare_slide_prompts 注入）为后续
+  接线，衔接点 `runtime/src/leo_ppt_generator/cli.py`（style render）与
+  `runtime/src/leo_ppt_generator/_vendor/codex_ppt/prepare_slide_prompts.py`。
+
 ### Removed
 
 - **leo-ppt-generator 移除全部借源登记与借鉴说明（user-visible）**：删除
@@ -25,18 +350,182 @@ adheres to a loose semantic-versioning convention.
 
 ### Added
 
-- **leo-ppt-generator 开源借鉴优化 R3 产品文档（6 专家 × 152 项目调研）
+- **leo-ppt-generator 内容质量四件：R-06/R-07/R-08/R-09（user-visible）**：
+  `check_master_contract.py` 新增要点级标注判据——三级标扩四级（引用/估算/
+  示意/**用户确认**），引用级必须携带 source_ref（`【引用|src:锚点】`或行尾
+  `[src:]`），用户确认级须带 `round:N` 溯源标记；新增
+  `scripts/check_content_facts.py`（R-06 内容核查官）：母版数字断言与材料
+  回读比对（千分位/百分号/万·亿量级换算容忍，机器标记与交叉引用剔除，
+  有界 2 轮返母版语义）；`deck-master.md` 新增证据密度 advisory（R-07：节
+  evidence_count >6 拆页 /<2 并节）与四级语法块；`image-deck-workflow.md`
+  步骤 3c 挂内容核查官（高保障档）；15+9 新用例，全量 668 OK。
+
+- **leo-ppt-generator 用户素材库与数据通道：R-04/R-05（user-visible）**：新增
+  `scripts/library_catalog.py`（LEO_PPT_HOME/library/ 素材库：内容寻址登记
+  sha256+来源+标签、幂等 add、清理入口 remove、export-manifest 派生
+  sources-manifest 兼容 JSON 且 strict 档实测通过；敏感正则扫元数据拒入库）、
+  `references/library-schema.md`（schema 与 PRD R-04 数据边界照抄：仅本地/
+  可导出可清理/档案只存偏好、素材库存主动入库本体）与
+  `references/data-sources.md`（公共只读数据通道登记与回溯格式——源 URL+
+  ISO8601 抓取时间戳入 manifest；抓不到如实 unknown 求证；不做爬虫/登录态），
+  16 单测含库登记→manifest→strict 门机制闭环。
+
+- **leo-ppt-generator 图上文字合成协议：R-24（user-visible）**：新增
+  `references/image-text-composition.md`——图像 lane 全出血封面/大图井页面的
+  四步事前协议（安全区约束注入：视觉行声明文字落位区+主体映射并注入生成
+  提示词 → 无蒙版优先 → 局部图像色调蒙版仅降级：radial 限定文字区/取图内
+  色调/峰值透明度 0.15-0.30 → 360px 缩略图终检归视觉 QA 轮，非确定性脚本）
+  与反模式四条；配套文档合同测试 7 例（四步小节/蒙版硬约束/声明语法/归 QA
+  轮表述/反模式防漂移断言）。
+
+- **leo-ppt-generator 视觉质检门禁与标杆蒸馏：R-52/R-54（user-visible）**：
+  `references/visual-qa.md` 第六节新增两档高保障可选门禁——rubric 合成分
+  （命中扣分制：P1 扣 10/P2 扣 5/P3 扣 2，发现级去重，<90 阻止组装）与
+  迭代硬预算（至多 3 轮，与"连续两轮无 P1/P2"先到者生效，超限升级用户）；
+  新增 `scripts/distill_deck_style.py`（R-54）：可信标杆 PPTX 的确定性蒸馏
+  （版式角色/页面节奏/字号分档/色板直方图/图表频率 → 五层 markdown 档案，
+  每条观察带页码出处、单页观察标"需确认"组、无出处观察双层丢弃、局限声明
+  与反演红线在场），配套 `references/deck-distillation.md` 合同与 19 单测。
+
+- **leo-ppt-generator 文案扩展线四件：R-10/R-17/R-18/R-19（user-visible）**：
+  `scripts/check_deck_prose.py` 新增两检测族——措辞纪律（R-17，WARN：自我
+  解释连接词作要点开头「这说明/这意味着/由此可见/不难看出」；「大家」通知腔
+  入要点、金句/氛围页加重提示；非常/十分/极其+形容词同页 ≥2 处堆砌）与
+  标题兑现对账（R-18，WARN：标题数字含百分数须在本页数字登记表数值集合内，
+  标识符片段与四位年份豁免，无登记表母版该族 INFO 跳过）；词表常量与既有
+  六族同模式，退出码语义不变。`scripts/check_number_ledger.py` 新增
+  `--diff OLD NEW` 模式（R-19，TF-1 信息点留存断言）：verified?=yes 行按
+  数值×页×口径键在新版消失→FAIL（exit 1，提示须显式降级或经确认），新增/
+  数值变化/行变化/非 verified 删除行 INFO 如实列出，exit 0/1/2。
+  `references/academic-vertical.md` 新增「评审视角矩阵」节（R-10）：答辩档
+  从材料归纳 3–5 个评审 persona 及最可能追问（视角按同类材料结构先例归纳，
+  参考 storm persona_generator），映射每 persona 1–2 个 Q&A/backup 预设
+  追问页，寄生既有大纲确认门不新增确认门。来源：storm、
+  xiaoma-durex-copywriter diction.md、bigpeng-hot-gzh qa-checklist、
+  shuorenhua SKILL.md §8（快照 2026-08-31）。测试：
+  `tests/test_check_deck_prose.py` 追加 11 例、
+  `tests/boundary/test_number_ledger.py` 追加 8 例（既有用例零改动）；
+  `runtime/.venv/bin/python -m unittest discover -s tests -q` 全量 619 例
+  通过。
+
+- **leo-ppt-generator 内容文案批九条（R-02/11/12/13/14/20/21/22/23,
+  user-visible)**：新增 `scripts/check_references.py`（R-13 文献元数据离线
+  校验：DOI 格式/同文献多处引用一致性 FAIL、GB/T 7714 提示 WARN）与
+  `scripts/build_material_digest.py`（R-02 超长材料确定性词频摘要，¶N 原文
+  锚点）；`check_deck_prose.py` 追加 j/k/l 三族（R-21 论证媒介连排单调、
+  R-22 金句口号模式与反向克制上限、R-23 学术要点模糊词无量化条件）及
+  `--style-sample` 文风样本豁免（R-20，档案增可选 style_sample 字段）；
+  deck-master 补 R-11 节级 verify_standard、R-12 两段式大纲留档 advisory；
+  academic-vertical 补 R-14 学术图表规范（色盲安全调色板/误差表示必填/
+  多面板对齐），50 新测。
+- **leo-ppt-generator 治理新增批五件（R-43/44/57/59/60,user-visible)**：
+  新增 `scripts/check_plan_compliance.py`（R-43 计划履约报告：母版要点 vs
+  渲染 OCR 回读四档核对，线索级非门禁）、`scripts/decision_log.py`（R-44
+  决策账本：add/list/cite/supersede，风险必填、推翻留痕）、
+  `scripts/lint_skill_structure.py`（R-57 结构 lint：SKILL.md 行数上限/
+  引用断链/frontmatter 契约，当前树全绿）、`scripts/build_delivery_preflight.py`
+  （R-59 交付预检聚合四门单文件 delivery-preflight.json）、
+  `scripts/capability_manifest.py`（R-60 能力清单版本表：计数+sha256 汇总，
+  --compare 能力级 diff），44 新测。
+- **leo-ppt-generator R3-0 前置批：M1.1 收口三件 + 评测统计（user-visible）**：
+  ① 金样 HEX 2 例存量裁决终结——`tests/fixtures/render_golden.json` 经生成
+  ① 金样 HEX 2 例存量裁决终结——`tests/fixtures/render_golden.json` 经生成
+  方式重建至当前输出（brief 带 HEX 为五 lint 治理下现状，R-27 token sidecar
+  落地前的正确态），受管口径 391/391 全绿；② SKILL.md 补 M1 能力入口锚点
+  纯新增 6 行（渲染 lane/版式 P 码/editable builder 双跑），闭合
+  iteration-90"入口可见性缺口"结构性主因；③ M1.1 判官校准（M0.1 协议）：
+  iteration-90/94 重放 19 个 M1 新 case，归因 8 误杀/9 真实失败/0 环境，
+  10 个判官词表与陷阱作用域修订，14 case-轮误杀转绿、历史 PASS 零回归、
+  真实 FAIL 不洗白，双向自检 28/28（遗留 9 例待在线复测，见
+  evals/known-issues.md R3-0 条目）。
+
+- **leo-ppt-generator 新增内容层状态与恢复四脚本（R-36/R-37/R-38/R-39/R-41，
+  状态线）(user-visible)**：`scripts/check_content_baseline.py`——content/ 工件
+  sha256 基线锁（`<FILE>.base-lock.json`），post-confirm 写回前 `--verify`
+  过基线哈希 CAS（exit 0）才落笔，漂移 exit 3 给有限选项（重锁/人工恢复/
+  只查看）不自动覆盖（会话外手改保护，并发会话后者停止）；`scripts/
+  record_run_step.py`——`<run>/reports/run-ledger.jsonl` 追加页内
+  prompt/backend/qa/record 与 deck 级 receipt 阶段事件（含 attempt/problems/
+  artifact sha256），`--tail` 查看、`--resume-suggestion` 输出"从哪继续"建议
+  （exit 2 = 闭合状态矛盾或重试预算耗尽）；`scripts/reproject_derivatives.py`
+  ——从最高 confirmed 基线（含 post-confirm 链）确定性重建 sources-manifest
+  图行投影与术语表投影（流程字段按 figure_id 继承，自指纹对齐
+  check_sources_manifest 口径），检测 slides.json 页集合漂移，`--dry-run`
+  只 diff；`scripts/build_rendered_ledger.py`——从 slide_jobs/OCR 产物聚合
+  每页渲染事实（OCR 摘要/关键数值 top5/图表计数）到
+  `<run>/reports/rendered-ledger.json`，无 OCR 页如实标注 missing；
+  `references/execution-contract.md` 新增「内容层状态与恢复」一节（四个脚本
+  调用时机 + 建议不覆盖礼仪 + runtime CLI 自动接线列为后续衔接点）；
+  新增 38 个单测（CAS 记录-复核-篡改-重锁/账本追加-续点/重投影-漂移/
+  渲染账本聚合-missing-确定性），全量回归 600 用例通过。
+- **leo-ppt-generator 新增音视频材料路线、敏感文本候选扫描与负触发用例组
+  （R-03/R-53/R-55，输入与治理线）(user-visible)**：`references/input-routing.md`
+  新增「音视频材料」节——接受形态为带时间戳转写稿（用户自备或宿主转写能力
+  产出），段前缀 `mm:ss-mm:ss`（与 AI-Media2Doc 预处理协议同构），无转写通道
+  如实按材料缺失处理不静默，分级询问照常，引用级事实回溯时间点；新增
+  `scripts/normalize_transcript.py` 校验/规范化转写稿时间戳前缀（不规范行报
+  位置，`--fix` 继承上一段区间补默认前缀并收敛 AI-Media2Doc 括号形式，exit
+  0/1/2，确定性）；新增 `scripts/check_sensitive_text.py` 两层检测词面层——
+  未脱敏手机号（词边界）、18 位身份证（GB 11643-1999 校验位降误报）、
+  `--custom-terms` 用户词表，`--profile internal|confidential`（后者配
+  `--strict` 加报校验不过候选），命中输出一律遮蔽串（如 `138****5678`）
+  绝不回显完整敏感值，候选≠结论、分级判定归 agent 语境层，exit 0/2，确定性；
+  新增负触发评测用例组 `evals/cases/negative-trigger-doc-layout.yaml` +
+  `negative-trigger-single-image.yaml`（holdout 例，注释声明不参与判官调参）
+  与自包含否定感知判官 `evals/fixtures/scripts/judge_negative_trigger.py`
+  （礼貌指路语义在场 + 无 Route 启动迹象，`--self-test` 7 样本全过），
+  注册进 `evals/eval.yaml`（85 case，validate 通过）；新增
+  `tests/test_check_sensitive_text.py`（14 用例）与
+  `tests/test_normalize_transcript.py`（11 用例）。
+
+- **leo-ppt-generator 新增风格推荐硬规则层与别名试点（R-61/R-62/R-63，推荐线）(user-visible)**：
+  新增 `scripts/style_hard_rules.py`（21 条规则 / 20 家族词表，家族名对齐
+  `_INDEX.md` 实际分组；`--check-brief` 输出排除/锁定/偏好家族与触发规则
+  id，`--self-test` 内置对抗样本自检；点名 `named_style` bypass 全部规则；
+  纯 stdlib、确定性、exit 0/2）；`references/style-recommendation.md` 接线
+  三处——「硬规则前置」（语义推荐前先过规则层，点名 bypass 并在 style
+  合同记录依据）、「跨家族多样性」（2–3 方向必跨家族、候选池家族配额
+  每族 ≤2、首方向标注推荐）、点名路径别名匹配一句；R-63 试点给 11 个
+  顶层内置 brief 增 `aliases` 字段（中英别名/俗称），`_INDEX.md` 顶层内置
+  节补别名标注（lint 数字断言不受影响），
+  `style-brief-v1.schema.json` 同步声明可选 `aliases`（单真值源）；
+  新增 `tests/test_style_hard_rules.py` 22 用例。五条 lint 全绿；
+  126 子目录参考风格别名并入 R-66 家族合并批。
+
+- **leo-ppt-generator 新增 export 导出子命令族首批 `scripts/export_deck.py`
+  （handout-PDF + 长图，R-47/R3-1b）(user-visible)**：逐页 PNG 目录 → 多页
+  PDF（PIL save_all，分辨率原样）或垂直拼接长图（最宽页居中、白底）；
+  `pages.json` 索引优先、否则文件名自然排序（缺号判 missing）；同输入双跑
+  sha256 逐字节相等（显式置空 Pillow PDF CreationDate/ModDate 墙钟）；
+  三态回执（started/completed/failed JSON Lines，含 sha256/页数/失败页
+  清单，exit 0/1/2）；新增 `tests/test_export_deck.py` 17 用例全绿；
+  `references/render-contract.md` 增补第 11 节导出目标合同。收据指纹集成
+  与 carousel/notes 合成属后续批。
+
+- **leo-ppt-generator 开源借鉴优化 R3 产品文档（6 专家 × 152 项目 + 风格体系设计链）
   (user-visible)**：新增
   `docs/brainstorms/2026-08-31-005-leo-ppt-oss-fusion-r3-requirements.md`
   （spec-prd 产物，`status: ready-for-planning`，checker 零 findings）与
   `docs/file-github-expert-reports/` 六份专家调研报告（内容研究/文案质量/
   视觉风格/长程一致性/素材分发/工程治理，每条借鉴点附上游源码 file:line
-  证据）。PRD 归并为 7 域 60 条需求（P0 八条：研究代采、deck 文案确定性
+  证据）。PRD 归并为 8 域 68 条需求（P0 八条：研究代采、deck 文案确定性
   检测、讲稿口语化纪律、图上文字合成协议、deck 承诺账本、影响面自动
-  计算、export 导出子命令族、评测统计检验）、62 条验收、四批 Feature
-  Slices 分期与九条 Non-Goals（不代发/不爬虫/不做检测对抗等）；横切
-  BR-001 入口锚点纪律直指 M1.1 在案"入口可见性缺口"债务。上游授权由
-  用户线下确认，署名按 NOTICE 法定最小集，不新增借源登记面。
+  计算、export 导出子命令族、评测统计检验）、70 条验收、五批 Feature
+  Slices 分期（含 R3-2.5 风格体系批）与十三条 Non-Goals；域 H（R-61~R-68）
+  吸收 ppt-github 风格体系设计链结论（硬规则层/跨家族多样性/别名/金样板
+  回归/家族合并/场景预设/插画配对），并显式不做 Embedding 粗排、char_budget
+  移植、七阶段重构与 Beamer 编译；横切 BR-001 入口锚点纪律直指 M1.1 在案
+  "入口可见性缺口"债务。同日经 spec-doc-review 三视角（一致性/可行性/安全）
+  评审并全量修复 9 项发现：素材库存储口径三处对齐、新增 BR-006 第三方内容
+  权利边界（区分上游借鉴授权与运行时采集内容）、R-24 安北区改约束注入、
+  R-64 反馈日志数据边界、批次顺序写死（R3-2 后 R3-3 前）、家族合并计数口径
+  迁移判据、PDF 导出能力来源声明、敏感扫描输出遮蔽、金样板覆盖范围明确。
+  同日开发前待确认点全量落地（owner 确认）：R-01 降为轻形态（研究问题清单
+  +取材指引，零宿主依赖）、完整代采拆为 R-69（P1，轻形态使用信号验证后
+  条件启用）；R-47 裁剪（carousel 随 R3-4 择优）；分期重构为 R3-0 前置批
+  （R-51 评测统计+M1.1 收口，R3-1 出口条件）+R3-1a/1b 两子批；P2 维持择优；
+  R-56 默认不启用；OQ 三项全部 owner-answered 并绑定追溯行。
+  上游授权由用户线下确认，署名按 NOTICE 法定最小集，不新增借源登记面。
 
 - **leo-ppt-generator 交叉测评（darwin-skill × skill-upper，6 独立 judge × 2 轮）**
   - 新增 `docs/leo-ppt-generator-cross-eval-6judges-0831.md`：三轴交叉（行为轴

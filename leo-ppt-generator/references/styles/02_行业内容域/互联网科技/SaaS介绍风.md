@@ -15,6 +15,7 @@
 {
   "type": "16:9 full-slide PowerPoint image",
   "style_name": "SaaS介绍风",
+  "aliases": ["SaaS风", "软件服务风", "SaaS pitch"],
   "best_for": "SaaS 产品与企业服务,需要信任、整合价值与 ROI 导向的表达",
   "visual_direction": "B2B SaaS aesthetic, credible integration value, ROI narrative, enterprise trust, clean product clarity, solution-system credibility",
   "canvas": {

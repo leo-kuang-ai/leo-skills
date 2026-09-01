@@ -32,7 +32,8 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 
 风格可发现性见[风格画廊](samples/style-gallery.md)（由
 `scripts/generate_style_gallery.py` 从风格库确定性生成，11 套内置风格与适用场景
-一览）；完整索引与选风格路由见 `references/styles/00_索引/_INDEX.md`。
+一览，另含 8 个新家族代表金样板）；完整索引与选风格路由见
+`references/styles/00_索引/_INDEX.md`。
 
 ## 风格库
 
@@ -40,6 +41,9 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 覆盖通用母版 / 行业 / 场景 / 品牌等 14 类目录）与 146 份分节轴规范（论证模式、信息图、
 渲染、布局、品牌、图表、版式、页面语义），由 `scripts/` 下四条治理 lint
 （brief 结构 / 版式网格 / 索引防漂移 / 治理断言）保证索引、网格与风格路由不漂移。
+R-66 家族去重合并后，126 参考中 16 份同板场景变体（色板指纹相同的周报月报/年终总结
+等五大家族簇）经 `variant_of` 归并至 7 个主风格家族，独立可选风格 121 个；变体文件与
+原名全数保留（主风格 `aliases` 可检索），brief 结构 lint 增同板家族计数校验防回潮。
 
 ## 使用方式
 
@@ -106,7 +110,10 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 
 ## 故障排查
 
-- 本地机制健康自检：`leo-ppt doctor`
+- 本地机制健康自检：`leo-ppt doctor`；能力级版本比对（R-60）：
+  `python3 scripts/capability_manifest.py --out capability-manifest.json`，
+  与安装副本 `--compare` 输出 styles/briefs/scripts/references 计数与文件级
+  diff（与 lint_style_index 计数口径互证）。
 - 回滚到上一个可用 runtime：`leo-ppt rollback`（identity 可由 `doctor` 输出获得）
 - 升级/清理相关问题先看 `UPDATES.md` 与 `CHANGELOG.md`，再考虑重装。
 
@@ -174,9 +181,16 @@ python3 scripts/lint_layout_grid.py
 python3 scripts/lint_style_index.py
 python3 scripts/lint_style_governance.py
 
-# 行为评测（需 skill-up CLI 与可用引擎；当前 59 个用例）
+# chart_series 调色板弹药池查询（echarts 36 + ppt-mcp 17，快照随包；
+# --aggregate 重建需外部源，见脚本 docstring 环境变量）
+python3 scripts/chart_palette_pool.py --query <name>
+
+# 行为评测（需 skill-up CLI 与可用引擎；当前 83 个用例）
 skill-up validate evals/eval.yaml
 skill-up run evals/eval.yaml
+
+# 评测统计（R-51：多轮结果 → 每 case Wilson 95% CI 与判官修复显著性检验）
+python3 scripts/eval_stats.py <skill>-workspace/iteration-N/result.json ... [--replay-before ... --replay-after ...]
 ```
 
 评测工作区（`leo-ppt-generator-*-workspace/` 等）在 `.gitignore` 中，不提交。

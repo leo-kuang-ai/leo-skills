@@ -39,10 +39,15 @@ def positive(patterns):
 
 
 # 1. ERROR 成立：缺 ready 信号违反模板合同。
-require_any(
-    ("ERROR 成立", "不能忽略", "不能当 WARN", "必须修", "合同条款", "render_template_contract_violation", "template.ready_signal"),
-    "ERROR 成立语义",
-)
+# M1.1 扩词（it-94 replay）："确定性契约"、"不建议把 ERROR 降级为 WARN"、
+# "ERROR→WARN 是全局策略变更" 是等价的 ERROR-成立结论措辞。
+_error_stands = ("ERROR 成立", "不能忽略", "不能当 WARN", "必须修", "合同条款",
+                 "render_template_contract_violation", "template.ready_signal",
+                 "确定性契约", "全局策略变更")
+if not any(v in text for v in _error_stands) and re.search(
+    r"(?:不建议|不能|不得|不要|别).{0,12}(?:忽略|降级|当 ?WARN)", text
+) is None:
+    fail(f"缺少ERROR 成立语义: {' | '.join(_error_stands)}")
 
 # 2. 回退等待是兜底不是豁免（时序漏气风险）。
 require_any(

@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- leo render lane 模板：compare（R-28 / P8 双轨对照）
+  槽位语义对齐 12_版式库 08_Duo_Compare sidecar：左右两半屏中间一根纵向
+  1px 长线分隔 / 各自顶部 t-cat 标签 + 大字标题 + 下方要点说明。
+  数据合同：sides 恰 2 项 {label,title,points[]}（不足 2 项不渲染对照体）。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>compare</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; }
+  body {
+    font-family: "Noto Sans SC", sans-serif;
+    background: #f7f5f0; color: #1f2430; position: relative;
+  }
+  .leo-slide { width: 1280px; height: 720px; padding: 80px 100px 72px; }
+  .duo { width: 100%; height: 100%; display: flex; }
+  .duo-half { flex: 1 1 0; display: flex; flex-direction: column; }
+  .duo-half.right { padding-left: 70px; }
+  .duo-half.left { padding-right: 70px; }
+  .t-cat {
+    font-size: 22px; letter-spacing: 0.3em; color: #b08d57; font-weight: 700;
+    margin-bottom: 26px;
+  }
+  .side-title {
+    font-size: 58px; font-weight: 700; line-height: 1.2; color: #14213d;
+    margin-bottom: 34px; overflow-wrap: break-word;
+  }
+  .side-points { list-style: none; display: flex; flex-direction: column; gap: 22px; }
+  .side-points li { font-size: 28px; line-height: 1.55; color: #2c3242; display: flex; gap: 16px; }
+  .side-points li::before { content: "—"; color: #b08d57; font-weight: 700; flex: none; }
+  .vrule { width: 1px; background: #14213d; align-self: stretch; }
+  .page-no { position: absolute; right: 44px; bottom: 30px; font-size: 22px; color: #8d8578; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+    animation: none !important; transition: none !important;
+  }
+</style>
+</head>
+<body>
+  <main class="leo-slide" id="leo-slide">
+    <div class="duo" data-leo-block="compare">
+      <section class="duo-half left" data-leo-block="side-left"></section>
+      <div class="vrule" data-leo-block="vrule"></div>
+      <section class="duo-half right" data-leo-block="side-right"></section>
+    </div>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function buildSide(block, side) {
+    var cat = document.createElement("div");
+    cat.setAttribute("class", "t-cat");
+    cat.setAttribute("data-leo-block-item", "label");
+    cat.textContent = String(side.label || "");
+    var title = document.createElement("h2");
+    title.setAttribute("class", "side-title");
+    title.setAttribute("data-leo-block-item", "title");
+    title.textContent = String(side.title || "");
+    var points = document.createElement("ul");
+    points.setAttribute("class", "side-points");
+    points.setAttribute("data-leo-block-item", "points");
+    (Array.isArray(side.points) ? side.points : []).forEach(function (text) {
+      var item = document.createElement("li");
+      item.setAttribute("data-leo-block-item", "point");
+      item.textContent = String(text);
+      points.appendChild(item);
+    });
+    block.appendChild(cat);
+    block.appendChild(title);
+    block.appendChild(points);
+  }
+  function applyData(data) {
+    data = data || {};
+    var sides = Array.isArray(data.sides) ? data.sides : [];
+    if (sides.length === 2) {
+      buildSide(document.querySelector('[data-leo-block="side-left"]'), sides[0]);
+      buildSide(document.querySelector('[data-leo-block="side-right"]'), sides[1]);
+    }
+    document.querySelector('[data-leo-block="page-no"]').textContent =
+      data.page_no != null ? String(data.page_no) : "";
+  }
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

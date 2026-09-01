@@ -21,11 +21,11 @@
   },
   "style:mckinsey": {
     "color_palette": {
-      "accent": "small restrained blue / steel blue for key node, end point, decision point",
+      "accent": "small restrained blue #2E5E8C / steel blue #4A6E8A for key node, end point, decision point",
       "neutral": "near-black #111111 for small text, slate #475569, cool gray #6B7280, light border #D8DEE8, very pale bg #F6F8FA",
       "primary": "white, off-white, pale cool gray, ink blue-gray #243447",
       "rule": "rational, premium, restrained, light; avoid large dark navy blocks, orange-led accents, neon, glassy gradients, rainbow",
-      "secondary": "steel blue, mist blue, hairline gray, restrained consulting blue-gray"
+      "secondary": "steel blue #4A6E8A, mist blue #8FA8BF, hairline gray #D8DEE8, restrained consulting blue-gray"
     },
     "image_rendering": "Strict Swiss-grid minimalism. Composition is built on a visible or implied modular grid — every element snaps to grid lines, deliberate column-and-row alignment carries the whole page. Forms are reduced to essential geometric primitives — clean rectangles, perfect circles, single-weight lines. Where typography exists on the final page (applied by layout, never inside this image), its character is sans-serif with rigorous spacing. Color is applied sparingly — usually one primary block, large fields of white or near-white, single accent. No gradients, no shadows, no texture, no decoration. Negative space carries as much weight as filled areas. Overall feel is rigorous, considered, almost academic — the aesthetic of Müller-Brockmann posters and Vignelli design systems. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
     "layout_patterns": [
@@ -40,33 +40,33 @@
       "body": "short precise Chinese/English labels, clear hierarchy, micro-typography for tags, legends, nodes, footers, conclusions",
       "labels": "restrained English tags like STRATEGY, MARKET INSIGHT, BUSINESS MODEL, ROADMAP, 2026",
       "text_quality": "accurate main title, subtitle, brand, people names, terms, capitalization; preserve the user's core term; no invented labels",
-      "title": "reconstructed thin-stroke typography with structural cuts, semi-hollow forms, embedded grids, engineering skeleton; keep readable, avoid crude bold fills"
+      "title": "reconstructed thin-stroke typography (思源黑体 Light / Helvetica Neue) with structural cuts, semi-hollow forms, embedded grids, engineering skeleton; keep readable, avoid crude bold fills"
     },
     "visual_direction": "McKinsey / BCG / Bain style rational consulting visual, premium executive report cover, modernist typographic poster, art-directed business metaphor, reconstructed title as architectural structure, precision annotation system, sharp Swiss grid, light blue-gray-white palette, boardroom-ready restraint with real graphic tension"
   },
   "style:minimal": {
-    "name": "极简风",
-    "visual_direction": "radical minimalist, extreme whitespace, very few elements, single or monochrome color, huge type scale contrast, content reduced to the purest core concept, editorial restraint",
     "color_palette": {
-      "primary": "white / near-white, near-black #111111 type",
-      "secondary": "very light gray #E5E7EB, light hairline #E5E7EB",
-      "accent": "a single restrained accent OR fully monochrome",
+      "accent": "a single restrained accent #6B7280 OR fully monochrome",
       "neutral": "#111111, #4B5563, #E5E7EB, white",
-      "rule": "extreme restraint, 1-2 colors, avoid saturation"
+      "primary": "white / near-white, near-black #111111 type",
+      "rule": "extreme restraint, 1-2 colors, avoid saturation",
+      "secondary": "very light gray #E5E7EB, light hairline #E5E7EB"
     },
-    "typography": {
-      "title": "large clean sans-serif (or refined serif), huge scale contrast",
-      "body": "small, airy, minimal, high line-height",
-      "labels": "tiny, barely present, uppercase tracking",
-      "text_quality": "exact and sparse; say only what matters"
-    },
+    "image_rendering": "Strict Swiss-grid minimalism. Composition is built on a visible or implied modular grid — every element snaps to grid lines, deliberate column-and-row alignment carries the whole page. Forms are reduced to essential geometric primitives — clean rectangles, perfect circles, single-weight lines. Where typography exists on the final page (applied by layout, never inside this image), its character is sans-serif with rigorous spacing. Color is applied sparingly — usually one primary block, large fields of white or near-white, single accent. No gradients, no shadows, no texture, no decoration. Negative space carries as much weight as filled areas. Overall feel is rigorous, considered, almost academic — the aesthetic of Müller-Brockmann posters and Vignelli design systems. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
     "layout_patterns": [
       "monochrome huge-type statement",
       "one-object composition",
       "blank with a single spine of text",
       "asterisk-scale title + fine caption"
     ],
-    "image_rendering": "Strict Swiss-grid minimalism. Composition is built on a visible or implied modular grid — every element snaps to grid lines, deliberate column-and-row alignment carries the whole page. Forms are reduced to essential geometric primitives — clean rectangles, perfect circles, single-weight lines. Where typography exists on the final page (applied by layout, never inside this image), its character is sans-serif with rigorous spacing. Color is applied sparingly — usually one primary block, large fields of white or near-white, single accent. No gradients, no shadows, no texture, no decoration. Negative space carries as much weight as filled areas. Overall feel is rigorous, considered, almost academic — the aesthetic of Müller-Brockmann posters and Vignelli design systems. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
-    "mode": "**结论先行**：页面标题本身就是结论，不是标签。正文在标题下展开支撑论据。\n**标题形态（本模式判据）**：金字塔模式下所有页标题必须是完整句断言，禁止话题词短语与\n唤起短语（标题形态按论证模式条件化的总规则见 `deck-master.md` 与\n`references/visual-qa.md`「标题形态断言」判据行）。\n\n**SCQA 开场，金字塔正文**：\n\n| 阶段 | 角色 | 位置 |\n|---|---|---|\n| 情境 Situation | 建立共识上下文 | 开场页 |\n| 冲突 Complication | 张力 / 问题 | 早期页 |\n| 问题 Question | 待解决的隐含问题 | 转折 |\n| 答案 Answer | 用结构化证据展开的建议；源支持时用 MECE | 正文页 |\n\n**断言式标题**——写发现，不写主题：\n\n| 弱（主题） | 强（断言） |\n|---|---|\n| 「市场概况」 | 「国内市场同比增长 23%，跑赢全球均值」 |\n| 「挑战」 | 「三个结构性矛盾阻碍规模化部署」 |\n| 「我们的方案」 | 「三阶段路径：聚焦、扩张、规模化」 |\n\n**数据语境化**——数据配一个受支持的对比（当对比能改变决策时），否则直接说明其含义。绝不编造上期/基准/竞品/目标/排名来满足模式。\n\n**结构化分解**——拆驱动/细分/选项时，分支要有意义地区分并覆盖决策所需。保留真实重叠或明确缺口，不硬造完美 MECE。"
+    "mode": "**结论先行**：页面标题本身就是结论，不是标签。正文在标题下展开支撑论据。\n**标题形态（本模式判据）**：金字塔模式下所有页标题必须是完整句断言，禁止话题词短语与\n唤起短语（标题形态按论证模式条件化的总规则见 `deck-master.md` 与\n`references/visual-qa.md`「标题形态断言」判据行）。\n\n**SCQA 开场，金字塔正文**：\n\n| 阶段 | 角色 | 位置 |\n|---|---|---|\n| 情境 Situation | 建立共识上下文 | 开场页 |\n| 冲突 Complication | 张力 / 问题 | 早期页 |\n| 问题 Question | 待解决的隐含问题 | 转折 |\n| 答案 Answer | 用结构化证据展开的建议；源支持时用 MECE | 正文页 |\n\n**断言式标题**——写发现，不写主题：\n\n| 弱（主题） | 强（断言） |\n|---|---|\n| 「市场概况」 | 「国内市场同比增长 23%，跑赢全球均值」 |\n| 「挑战」 | 「三个结构性矛盾阻碍规模化部署」 |\n| 「我们的方案」 | 「三阶段路径：聚焦、扩张、规模化」 |\n\n**数据语境化**——数据配一个受支持的对比（当对比能改变决策时），否则直接说明其含义。绝不编造上期/基准/竞品/目标/排名来满足模式。\n\n**结构化分解**——拆驱动/细分/选项时，分支要有意义地区分并覆盖决策所需。保留真实重叠或明确缺口，不硬造完美 MECE。",
+    "name": "极简风",
+    "typography": {
+      "body": "small, airy, minimal, high line-height",
+      "labels": "tiny, barely present, uppercase tracking",
+      "text_quality": "exact and sparse; say only what matters",
+      "title": "large clean sans-serif (Helvetica / 思源黑体, or refined serif), huge scale contrast"
+    },
+    "visual_direction": "radical minimalist, extreme whitespace, very few elements, single or monochrome color, huge type scale contrast, content reduced to the purest core concept, editorial restraint"
   }
 }

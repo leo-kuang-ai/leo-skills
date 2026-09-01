@@ -6,9 +6,10 @@
    必须出现的事实与不可杜撰项,以及两项叙事必填——**`one_thing`**(整套 deck 能压成
    的一句话主线;暂不能给出时标 `unknown` 求证,不得为空)与**哇点登记**(S.T.A.R.
    时刻:一个听众一周后仍记得的瞬间——一个数字/一个人物/一次揭晓,登记其所在页;
-   发布会与路演场景强制,登记位不强制新增页面)。数字与因果断言按**三级标注**：
+   发布会与路演场景强制,登记位不强制新增页面)。数字与因果断言按**四级标注**：
    有出处的事实为「引用」；本仓或经验推算为「估算」（页面必须括注"估算"或"经验值"）；
-   修辞性对比为「示意」（必须标"示意"，且不得使用图表版式呈现）。三级之外、来源不足的
+   修辞性对比为「示意」（必须标"示意"，且不得使用图表版式呈现）；用户口述数据为
+   「用户确认」（可溯源到会话轮，语法见 deck-master 数字登记表节）。四级之外、来源不足的
    数字、引用、客户名、结论或因果关系标记为 `unknown` 并向用户确认，不得为了页面
    完整而补写；断言强度不得超出其来源等级。图片素材声明来源三级
    （实拍 / 生成-氛围 / 生成-示意,见通用设计规范图像铁律）。**学术场景合同三字段
@@ -79,7 +80,10 @@
    总时长必须与内容密度相容。母版确认前对文档执行**减法审计**（逐页「删掉哪条仍
    成立」、deck 级「哪些页可合并」）。母版确认后成为内容真值工件：四段完整性以
    文档为判定载体，聊天只引用路径与变更摘要；后续内容层修复先改母版再重建受影响
-   页，母版变更触发受影响页重验。
+   页，母版变更触发受影响页重验。**影响面清单确定性推导**（R-35）：受影响页由
+   `python3 scripts/compute_impact.py <旧母版> <新母版>` 从母版 diff 推导
+   （登记表数字/术语词形变化 + 交叉引用传递闭包；纯文案改零页），回复的波及面
+   结论须引用该清单，不得凭印象罗列。
 3a. **数据密度路由**（母版确认后、视觉方向前）：全 deck 数据点计数并按
    [`styles/00_索引/图表样式规范.md`](styles/00_索引/图表样式规范.md) 第五节判路——
    任一页 ≥6 个数据点或含估算级数值序列,该页改走可编辑/混合路线原生图表;4–5 点可留
@@ -96,6 +100,12 @@
    （URL 记 skipped，交付前须联网重验全绿）；缓存（`sources/.asset-validation.json`）
    只作报告 diff，永不作为"通过"的替代。编造素材链接直接出图 = 红灯（红灯清单）。
    退出码 0/1/2：1 存在不可达素材（阻断入页）；2 仅缓存过期/慢端/offline 跳过警告。
+3c. **内容核查官**（高保障档，R-06）：母版冻结后、`image prepare` 前运行
+   `python3 scripts/check_content_facts.py <母版> <材料/research-pack.md...> [--json]`
+   （确定性，纯 stdlib）——抽取标题与要点的数字断言与材料文本回读比对（容忍
+   千分位/百分号/万·亿单位换算；估算/示意/用户确认级要点豁免），差异清单
+   有界 2 轮返母版（改数/补出处/降级标注后重跑），第 2 轮仍有差异不再返工——
+   逐项向用户确认或降级 unknown；退出码 0 无差异 / 1 有差异 / 2 用法。
 4. 模版推荐与选择：按 [`style-recommendation.md`](style-recommendation.md) 执行——
    合同信号 → 2–3 个候选（每方向四行：风格名/为什么/长什么样/换它的代价）+ 带归因
    的默认推荐 → 用户回字母锁定、点名风格直行、给参考图"照图做"、或要求浏览三视图
@@ -120,7 +130,14 @@
 7. 从 `content/` 最高 confirmed 基线（含其 `post-confirm` 修订链）的母版文档
    生成 slides.json 与全 deck 术语表（canonical 实体名 + 缩写 + 首现页），
    `image prepare` 时按该页实际命中的术语**裁剪注入**（不全表复制），
-   `assemble` 复验增加跨页术语一致性检查（同实体异写即报告）；把 confirmed 版
+   `assemble` 复验增加跨页术语一致性检查（同实体异写即报告）；deck 超过 30 页
+   时另跑 `python3 scripts/check_cross_page_consistency.py <母版>`（R-40）：同实体
+   异写/页码跳号重复/固定件声明冲突升非 0 退出阻断，输出四分类（阻断/风险/
+   承诺状态/通过），≤30 页降为风险报告（向后兼容）；**承诺表核对**
+   （R-34）：目录/agenda 承诺与实际页面经 `check_master_contract` 的
+   deck-promises 判据核对（承诺文本/锚页/兑现页/状态，语法见
+   [`deck-master.md`](deck-master.md)），未兑现（open 项缺兑现页或兑现页
+   不存在，含目录多宣称一章）非 0 退出阻断；把 confirmed 版
    outline 与 master 复制进 run input 归档。**slides.json 合同字段（C1）**：deck 级
    `style_lock: {shell: "...", constants: [...]}`——样张确认后从已确认风格 brief 与
    样张方法派生的跨页常量锁（外层壳：纸色/背景、页码位置与形态、标题处理与光学
@@ -133,13 +150,22 @@
    **sources manifest 冻结（A2）**：从 confirmed 母版视觉行派生
    `<project-root>/content/sources-manifest.json`（schema 见
    [`sources-manifest-schema.md`](sources-manifest-schema.md)；母版是人确认的内容
-   真值，manifest 只是机器投影），再调用顶层
+   真值，manifest 只是机器投影）。**用户素材库（R-04）**：母版视觉行引用库内
+   素材（`${LEO_PPT_HOME}/library/`，见 [`library-schema.md`](library-schema.md)）
+   时自动携带出处（sha256+来源），sources-manifest 可由
+   `python3 scripts/library_catalog.py --root <library/> export-manifest` 从库登记
+   派生（page_id 占位与绝对路径按 WARN 提示改写后再冻结）；库外编造链接仍被
+   `--strict` 拒绝。市场/行业数据只经 [`data-sources.md`](data-sources.md) 登记
+   通道获取，来源 URL+抓取时间戳入 manifest，抓不到如实标 unknown 求证（R-05）。
+   再调用顶层
    `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json>`——
    runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
    `contents_sha256` 并入 `prepare_fingerprint`（不带 `--sources` 时 fingerprint 保持
    旧算法，旧 run 恢复兼容）；这一步创建唯一 `image-deck/slide_jobs.json` canonical
    state。vendor prompt 工具只能作为无状态能力被 bridge 调用，不直接拥有 run 真值。
 8. 多页时按 `prompts/slide-worker.md` 派发 worker，并为每次执行使用顶层 run lease。
+   派发前 `python3 scripts/check_worker_brief.py <deck 目录|slides.json>` 过 worker
+   简报四块完备阶梯（R-46，合同与豁免口径见执行合同 Worker 节）。
 9. worker 返回后调用顶层 `"$LEO_PPT" image record <run>`；失败保留在同一
    canonical state。聊天回复不改变状态，取消后的迟到 lease 会被拒绝。
 10. 对每页分别关闭文字准确性、可读性/对比度、遮挡/截断、required asset、

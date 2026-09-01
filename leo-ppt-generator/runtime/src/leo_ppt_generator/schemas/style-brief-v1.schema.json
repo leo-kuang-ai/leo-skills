@@ -17,6 +17,77 @@
   "properties": {
     "type": { "type": "string" },
     "style_name": { "type": "string", "minLength": 1 },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "中英别名/俗称（R-63 试点，先覆盖 11 顶层内置；126 子目录参考风格并入家族合并批）。用户口语名经别名命中（见 references/style-recommendation.md 第三节），名称子串/别名匹配失败时列相近候选，不静默替换"
+    },
+    "token_sidecar": {
+      "type": "object",
+      "description": "机器可读风格 token sidecar（R-27，可选纯增量，同 aliases 先例；不带 --var 时 style render 输出不变）。palette 核心键 primary/accent/background/surface/text 对齐 H 线 theme.json 渲染锚，可按 social-card 8 token 先例扩展键名（paper/ink/muted/line/accent_soft 等）；palette 值一律纯 #RRGGBB。style render --var key=value 在本面覆盖：primary/text 按 4.5:1、accent 按 3:1 相对生效 background 硬校验，覆盖 background 时三者全量重查（形态见 references/render-contract.md 渲染 lane 合同）。layout 子键为版式系统锚源（R-31，被 --layout-lock 优先读取，降级源为 brief 顶层 layout 键）",
+      "properties": {
+        "palette": {
+          "type": "object",
+          "description": "HEX token 面；核心五键显式声明，扩展键（social-card 8 token 先例：paper/paper_2/ink/muted/line/accent_soft/accent_on 等）经 additionalProperties 放行，值同须纯 #RRGGBB；chart_smart 为图解专用填充槽（源 presentation-ai smartLayout）",
+          "additionalProperties": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+          "properties": {
+            "primary": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "background": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "surface": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "text": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "chart_smart": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "description": "图解专用填充色槽（chart_series 数据系列色序列之外的语义槽，源 presentation-ai smartLayout 七语义槽）：金字塔/饼图/阶梯/循环/时间线等 smart 图解结构填色，通常取 primary 近邻或其刻意变体；区别于中性卡面 surface，不承担文字底色可读性"
+            }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "density": { "type": "string", "minLength": 1 },
+        "layout": {
+          "type": "object",
+          "description": "版式系统锚源（R-31）：style render --layout-lock 优先读本键（brief 顶层 layout 键为降级源）；五字段齐备才注入 layout_lock 锁定块，缺一报 layout_lock_unavailable（exit 2 不静默）；不带旗标输出逐字节不变",
+          "required": ["grid", "safe_margin", "page_no", "corner_radius", "line_weight"],
+          "properties": {
+            "grid": { "type": "string", "minLength": 1 },
+            "safe_margin": { "type": "string", "minLength": 1 },
+            "page_no": { "type": "string", "minLength": 1 },
+            "corner_radius": { "type": "string", "minLength": 1 },
+            "line_weight": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "description": "版式系统锚降级源（R-31，可选纯增量；--layout-lock 在无 token_sidecar.layout 时读本键）：grid 网格 token / safe_margin 安全边距 / page_no 页码位 / corner_radius 圆角 / line_weight 线重，五字段缺一报 layout_lock_unavailable（见 references/render-contract.md §13）",
+      "required": ["grid", "safe_margin", "page_no", "corner_radius", "line_weight"],
+      "properties": {
+        "grid": { "type": "string", "minLength": 1 },
+        "safe_margin": { "type": "string", "minLength": 1 },
+        "page_no": { "type": "string", "minLength": 1 },
+        "corner_radius": { "type": "string", "minLength": 1 },
+        "line_weight": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "variants": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "家族主风格声明（R-66）：条目格式「原名: 差异短句」，收录并入本家族的同板场景变体原名；lint 校验与 variant_of 指向双向一致（见 scripts/lint_style_briefs.py 家族计数校验）"
+    },
+    "variant_of": {
+      "type": "string",
+      "minLength": 1,
+      "description": "家族变体归属声明（R-66）：值为家族主风格的 style_name；带本字段的 brief 不计为独立顶层风格（audit/lint 口径），原名保留可检索、经主风格 aliases 命中"
+    },
     "best_for": { "type": "string", "minLength": 1 },
     "visual_direction": { "type": "string", "minLength": 1 },
     "canvas": {

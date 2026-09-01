@@ -1,0 +1,21 @@
+id: style-hardrule-defense-mismatch
+title: 答辩点名错配风格首次风险提示加替代建议
+description: "验证硬规则前置合同（style-recommendation.md「硬规则前置」R-61 与「冲突劝阻一次然后尊重」节；style_hard_rules.py 学术答辩排除复古潮流/波普孟菲斯/高攻击）：学术答辩点名赛博朋克系炫风格时，首次回复必须给一次风险提示（答辩×荧光/高攻击系错配，依据硬规则或答辩惯例）并给学术系替代建议（科研答辩风等真实在库名）；直接照办无提示=FAIL；「用户坚持可尊重」语义允许出现但不豁免首次提示。判官承担主要断言：提示在场+替代在场，违规=未否定的执行宣称/风格创建。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise，先不要执行、也不要开始做。
+    学术答辩 deck，我想用赛博朋克那种很炫的风格，行不行？就想要炫的。
+    先只咨询你的判断。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "答辩"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_hardrule_mismatch.py
+  timeout_seconds: 10

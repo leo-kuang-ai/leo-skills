@@ -26,9 +26,13 @@ REQUIRED_FIELDS = (
     "data_classification_default",
     "density",
 )
-OPTIONAL_FIELDS = ("preferred_style",)
+OPTIONAL_FIELDS = ("preferred_style", "style_sample")
 # Numbers are legitimate in these fields (page arithmetic, talk length).
 NUM_LEGIT_FIELDS = {"page_count_policy", "duration"}
+# style_sample (R-20) is a quoted user-voice text block: business-number and
+# secret heuristics target preference declarations, not quotations, so the
+# sample is exempt from them; it only needs non-empty text.
+STYLE_SAMPLE_MIN_CHARS = 20
 BUSINESS_NUMBER = re.compile(r"\d+(?:\.\d+)?\s*(?:亿元|万元|亿元|亿|万|元|家|%|个亿)")
 SECRET_LEVELS = ("机密", "绝密", "秘密")
 
@@ -41,18 +45,38 @@ def fail(message: str) -> None:
 def parse_fields(text: str) -> "tuple[dict[str, str], list[str]]":
     fields: dict[str, str] = {}
     unknown: list[str] = []
-    for raw in text.splitlines():
-        line = raw.strip()
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
         if not line or line.startswith("#") or line.startswith(">"):
+            i += 1
             continue
-        match = re.match(r"^([A-Za-z_]+)\s*[:：]\s*(.+)$", line)
+        match = re.match(r"^([A-Za-z_]+)\s*[:：]\s*(.*)$", line)
         if not match:
+            i += 1
             continue
         key, value = match.group(1), match.group(2).strip()
+        if key == "style_sample":
+            # R-20: the voice sample is a text block — indented continuation
+            # lines join the value until the next non-indented line.
+            block = [value]
+            j = i + 1
+            while j < len(lines):
+                raw = lines[j]
+                if raw.strip() and not raw[0].isspace():
+                    break
+                if raw.strip():
+                    block.append(raw.strip())
+                j += 1
+            fields[key] = "\n".join(b for b in block if b).strip()
+            i = j
+            continue
         if key in REQUIRED_FIELDS or key in OPTIONAL_FIELDS:
             fields[key] = value
         else:
             unknown.append(key)
+        i += 1
     return fields, unknown
 
 
@@ -71,12 +95,20 @@ def main(argv: "list[str] | None" = None) -> int:
     missing = [f for f in REQUIRED_FIELDS if f not in fields or not fields[f]]
     if missing:
         fail(f"missing or empty required fields: {', '.join(missing)}")
+    if "style_sample" in fields and not fields["style_sample"]:
+        fail("style_sample present but empty — provide the sample text block "
+             "or remove the field")
     if unknown:
         print(f"WARN: unknown fields ignored: {', '.join(unknown)}")
 
     warnings: list[str] = []
+    sample = fields.get("style_sample", "")
+    if sample and len(sample) < STYLE_SAMPLE_MIN_CHARS:
+        warnings.append(
+            f"style_sample:样本过短({len(sample)} 字)——建议提供成段文本,"
+            f"不少于 {STYLE_SAMPLE_MIN_CHARS} 字")
     for key, value in fields.items():
-        if key in NUM_LEGIT_FIELDS:
+        if key in NUM_LEGIT_FIELDS or key == "style_sample":
             continue
         if BUSINESS_NUMBER.search(value):
             warnings.append(f"{key}:疑似业务数据({value[:30]})——档案只存偏好,请删除业务数字")

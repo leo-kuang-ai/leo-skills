@@ -121,6 +121,19 @@ cases:
     - evals/cases/delta-m1-builder-run-freeze.yaml
     - evals/cases/delta-m1-tables-required-text.yaml
     - evals/cases/delta-m1-illegal-preset-fails-closed.yaml
+    # 输入与治理线 R3-2/3 批：负触发边界（纯文档排版/单张配图请求不触发
+    # 四 Route，礼貌指路；single-image 为 holdout 例不参与判官调参）。
+    - evals/cases/negative-trigger-doc-layout.yaml
+    - evals/cases/negative-trigger-single-image.yaml
+    # 风格进货批评测批（2026-08-31，全部 advise 档）：口语别名命中、候补
+    # 诚实缺口、叙事层与论证模式配对、硬规则错配首次提示、新家族可渲染
+    # 边界、医疗语境推荐边界（判官 judge_style_*.py，自包含+否定感知）。
+    - evals/cases/style-alias-colloquial-hit.yaml
+    - evals/cases/style-candidates-honest-gap.yaml
+    - evals/cases/narrative-pitch-layering.yaml
+    - evals/cases/style-hardrule-defense-mismatch.yaml
+    - evals/cases/style-new-family-renderable.yaml
+    - evals/cases/style-medical-vertical-density.yaml
   defaults:
     timeout_seconds: 300
     max_turns: 4

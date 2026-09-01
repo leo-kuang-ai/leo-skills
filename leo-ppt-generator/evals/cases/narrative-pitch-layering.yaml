@@ -1,0 +1,21 @@
+id: narrative-pitch-layering
+title: 融资路演咨询呈现叙事层与论证模式配对
+description: "验证叙事方法论层三层正交合同（references/styles/06_论证模式/叙事方法论/融资路演.md 第 4 节）：只问怎么组织内容时，回复须呈现叙事层语义（为什么是现在/页序骨架/要价/增长牵引等，超出对用户措辞的回声）并提及论证模式配对（故事弧/结论先行金字塔/怎么证）；不新增确认门、不启动执行——advise 下把 route 列为候选合法，控制面字段行豁免，仅散文中未否定的启动/加门宣称算违规。判官承担主要断言：叙事语义词族+配对词族在场且无 Route 启动迹象。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise。
+    融资路演 deck 大概 12 页，我只想先问怎么组织内容——
+    叙事怎么排、论证怎么配？先别生成，也先不要进入执行流程。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "路演"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_narrative_layering.py
+  timeout_seconds: 10

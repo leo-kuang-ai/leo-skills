@@ -110,5 +110,54 @@ class ContractTest(unittest.TestCase):
             self.assertEqual(target.read_text(encoding="utf-8"), out1)
 
 
+class ProseCheckTest(unittest.TestCase):
+    """--prose-check：R-16 讲稿纪律 WARN 汇总（stderr、不阻断导出、不改退出码）。"""
+
+    def test_prose_check_prints_warn_summary_without_blocking(self):
+        master = """# 逐页母版 v1 — prose-check 测试
+
+## P1 方法
+- speaker_script：接下来我将为大家介绍方法。这一页的讲稿句子故意写得很长很长并且明显超过四十个字的上限以便触发长句警告的测试用例现在应该足够长了。
+
+## P2 收束
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "deck-master-v1.md"
+            path.write_text(master, encoding="utf-8")
+            result = _run(["--master", path, "--prose-check"])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("PROSE-WARN", result.stderr)
+        self.assertIn("第 1 页", result.stderr)
+        self.assertIn("讲稿套话「接下来我将」", result.stderr)
+        # export itself still happens on stdout
+        self.assertIn("# 讲稿（来源：deck master", result.stdout)
+        self.assertIn("共 2 页；有备注 2 页，缺备注 0 页", result.stdout)
+
+    def test_prose_check_clean_script_is_silent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            master = Path(tmp) / "deck-master-v1.md"
+            master.write_text(MASTER, encoding="utf-8")
+            result = _run(["--master", master, "--prose-check"])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("PROSE-WARN", result.stderr)
+        self.assertNotIn("PROSE-CHECK", result.stderr)
+
+    def test_prose_check_with_out_file_keeps_export_intact(self):
+        master = """## P1 方法
+- speaker_script：综上所述，先看结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "deck-master-v1.md"
+            path.write_text(master, encoding="utf-8")
+            target = Path(tmp) / "script.md"
+            result = _run(["--master", path, "--prose-check", "--out", target])
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("PROSE-WARN", result.stderr)
+            written = target.read_text(encoding="utf-8")
+        self.assertIn("# 讲稿（来源：deck master", written)
+        self.assertNotIn("PROSE-WARN", written)
+
+
 if __name__ == "__main__":
     unittest.main()

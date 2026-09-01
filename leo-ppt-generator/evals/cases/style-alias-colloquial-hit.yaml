@@ -1,0 +1,21 @@
+id: style-alias-colloquial-hit
+title: 口语风格别名命中真实在库风格名
+description: "验证点名路径的别名合同（style-recommendation.md「点名」节，103 主风格已配中英 aliases）：advise 下用户用口语别名（dracula 那种终端暗紫配色）问风格，回复须命中库内真实风格名/家族名（如 Dracula紫风、终端配色/终端命令行风族任一），或经硬规则确认语境（技术分享≠学术答辩，不在排除范围）；不得编造不在库的风格名，也不得声称已创建/新建风格。判官承担主要断言：在场=终端族真实名或语境确认，违规=未否定的风格创建/编造宣称（判官内置 206 主风格名代表性子集反查引号内风格名）。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise，先不要执行、只咨询。
+    我想给开发者做一场技术分享 deck，视觉想用 dracula 那种终端暗紫配色。
+    库里有对应的风格吗？叫什么名字、合不合适？先说清楚，别动手。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "终端"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_alias_colloquial.py
+  timeout_seconds: 10

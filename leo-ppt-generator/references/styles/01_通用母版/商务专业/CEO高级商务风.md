@@ -15,6 +15,7 @@
 {
   "type": "16:9 full-slide PowerPoint image",
   "style_name": "CEO高级商务风",
+  "aliases": ["CEO汇报风", "高管商务风", "executive premium"],
   "best_for": "面向董事会与高阶管理层的提案、资本叙事与财务汇报,需要权威、精致与稀缺感",
   "visual_direction": "premium executive suite visual, metallic gradient finish, refined accent metal, authoritative boardroom mood, polished micro-icons, restrained luxury, atelier-grade finish, high-credential report elegance",
   "canvas": {

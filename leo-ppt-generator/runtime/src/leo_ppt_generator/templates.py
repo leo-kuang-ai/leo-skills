@@ -11,6 +11,7 @@ already injects (Global Style / Layout blocks).
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 from pathlib import Path
@@ -243,6 +244,171 @@ def _merge_palette_override(brief_palette: object, colors: dict[str, str]) -> di
     return merged
 
 
+class StyleLayoutLockError(StyleStoreError):
+    """``--layout-lock`` requested but the brief/sidecar carries no usable
+    layout-system key (fail-loud: never silently skip the lock)."""
+
+    reason_code = "layout_lock_unavailable"
+
+
+# Layout-system anchor fields (R-31, xhs-visual-director master-lock prefix):
+# grid tokens / safe margins / page-number slot / corner radius / line weight.
+# All five must be present non-empty before the lock block is injected —
+# a partial lock would silently re-open the drift it exists to prevent.
+_LAYOUT_LOCK_FIELDS = ("grid", "safe_margin", "page_no", "corner_radius", "line_weight")
+
+_LAYOUT_LOCK_LABELS = {
+    "grid": "网格锚",
+    "safe_margin": "安全边距锚",
+    "page_no": "页码位锚",
+    "corner_radius": "圆角锚",
+    "line_weight": "线重锚",
+}
+
+
+def _layout_lock_block(brief_layout: object, sidecar: object) -> list[str]:
+    """Deterministic layout-system lock block for ``--layout-lock`` (R-31).
+
+    Source resolution honors the deck contract: the machine-readable
+    ``token_sidecar.layout`` key wins over the brief's top-level ``layout``
+    key (the sidecar is the effective token surface, same as palette). With
+    neither source carrying a usable dict the call fails with
+    ``layout_lock_unavailable`` instead of silently skipping the lock; the
+    same error names the first missing field when the dict is partial.
+    """
+    source: object = None
+    origin = "brief"
+    if isinstance(sidecar, dict) and isinstance(sidecar.get("layout"), dict):
+        source = sidecar["layout"]
+        origin = "token_sidecar"
+    elif isinstance(brief_layout, dict):
+        source = brief_layout
+    if not isinstance(source, dict) or not source:
+        raise StyleLayoutLockError(
+            "layout_lock_unavailable: --layout-lock requires a layout key "
+            "(grid/safe_margin/page_no/corner_radius/line_weight) on the "
+            "brief top level or token_sidecar; this style carries none — "
+            "add one or drop the flag (see references/render-contract.md §13)"
+        )
+    for field in _LAYOUT_LOCK_FIELDS:
+        value = source.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise StyleLayoutLockError(
+                f"layout_lock_unavailable: layout.{field} is missing/empty "
+                f"(all of {_LAYOUT_LOCK_FIELDS} are required for the lock "
+                f"block; source: {origin})"
+            )
+    lines = ["【版式锚（逐页逐字节相同注入，防网格/页码/边距漂移）】"]
+    for field in _LAYOUT_LOCK_FIELDS:
+        lines.append(f"{_LAYOUT_LOCK_LABELS[field]}：{source[field].strip()}")
+    return lines
+
+
+class StyleVarOverrideError(StyleStoreError):
+    """Token-sidecar variable override violated the key/HEX/contrast contract."""
+
+    reason_code = "style_var_override_invalid"
+
+
+# Token-sidecar ink keys under the contrast hard gate. Floors follow the
+# dual-threshold guardrail (00_索引/通用设计规范): body-text tokens
+# (primary/text) must hold 4.5:1; accent is an emphasis/large-token face
+# and only owes the 3:1 non-text floor — H-line theme.json ships real
+# sub-4.5 accents, so gating them would false-block legitimate overrides.
+_SIDECAR_INK_FLOORS = {"primary": 4.5, "text": 4.5, "accent": 3.0}
+
+
+def _sidecar_hex(value: object) -> str | None:
+    """Return the value when it is a pure ``#RRGGBB`` token, else None."""
+    if isinstance(value, str) and _HEX_VALUE_RE.match(value):
+        return value
+    return None
+
+
+def _enforce_sidecar_contrast(palette: dict, overridden: set[str]) -> None:
+    """Hard contrast gate for ``--var`` palette overrides (brand_contrast
+    reuse: same WCAG ratio math, same nearest-compliant suggestion).
+
+    Checks the overridden ink keys against the effective background token
+    (``palette.background`` when it is a HEX token, else #FFFFFF — the same
+    default the brand path uses). Overriding ``background`` re-checks every
+    ink key, so both directions of drift are caught; pre-existing tokens
+    the user did not touch are not gated (fail on the override, not on the
+    brief — mirrors ``brand_contrast_insufficient`` scope).
+    """
+    bg = _sidecar_hex(palette.get("background")) or "#FFFFFF"
+    bg_overridden = "background" in overridden
+    for key, floor in _SIDECAR_INK_FLOORS.items():
+        if key not in overridden and not bg_overridden:
+            continue
+        value = _sidecar_hex(palette.get(key))
+        if value is None:
+            continue
+        ratio = _contrast_ratio(value, bg)
+        if ratio < floor:
+            raise StyleVarOverrideError(
+                f"style_var_contrast_insufficient: palette.{key} {value} vs "
+                f"background {bg} = {ratio:.2f}:1（{key} 下限 {floor}）；"
+                f"最近合规建议 {_suggest_accessible(value, bg, floor)}"
+            )
+
+
+def _merge_token_sidecar(sidecar: object, overrides: dict[str, str]) -> dict:
+    """Merge ``--var key=value`` overrides onto the brief's token sidecar.
+
+    Keys are dotted paths into the sidecar (``palette.primary`` /
+    ``typography.title`` / ``density``); only keys the sidecar already
+    carries can be overridden (same fail-fast shape as
+    ``_merge_palette_override``). Palette values must be ``#RRGGBB``;
+    typography/density values non-empty strings. Any ``palette.*``
+    override triggers the contrast hard gate afterwards. The parsed brief
+    is never mutated in place.
+    """
+    if not isinstance(sidecar, dict):
+        raise StyleVarOverrideError(
+            "style_var_override_invalid: no token_sidecar (brief must carry "
+            "one before --var can override; see references/render-contract.md)"
+        )
+    merged = copy.deepcopy(sidecar)
+    overridden_palette: set[str] = set()
+    for path, value in overrides.items():
+        section, dot, key = path.partition(".")
+        if dot:
+            sub = merged.get(section)
+            if section not in ("palette", "typography") or not isinstance(sub, dict):
+                raise StyleVarOverrideError(
+                    f"style_var_override_invalid: unknown key {path!r}"
+                )
+            if key not in sub:
+                raise StyleVarOverrideError(
+                    f"style_var_override_invalid: sidecar has no {path!r} key"
+                )
+            if section == "palette":
+                if _sidecar_hex(value) is None:
+                    raise StyleVarOverrideError(
+                        f"style_var_override_invalid: {path}={value!r} is not #RRGGBB"
+                    )
+                overridden_palette.add(key)
+            elif not isinstance(value, str) or not value.strip():
+                raise StyleVarOverrideError(
+                    f"style_var_override_invalid: {path} value is empty"
+                )
+            sub[key] = value
+        elif isinstance(merged.get(section), str):
+            if not isinstance(value, str) or not value.strip():
+                raise StyleVarOverrideError(
+                    f"style_var_override_invalid: {section} value is empty"
+                )
+            merged[section] = value
+        else:
+            raise StyleVarOverrideError(
+                f"style_var_override_invalid: unknown key {path!r}"
+            )
+    if overridden_palette:
+        _enforce_sidecar_contrast(merged["palette"], overridden_palette)
+    return merged
+
+
 def _guardrail_block(palette: object) -> list[str]:
     """Deterministic design-guardrail digest for the ``--guardrail`` route.
 
@@ -371,9 +537,11 @@ def compose_style(
     *,
     mode: str | None = None,
     colors: dict[str, str] | None = None,
+    var_overrides: dict[str, str] | None = None,
     brand: str | None = None,
     anchor: bool = False,
     guardrail: bool = False,
+    layout_lock: bool = False,
 ) -> dict:
     """Merge the visual-style brief, its paired image rendering (paste-ready
     paragraph), and the argument mode into one deterministic dict for
@@ -381,9 +549,17 @@ def compose_style(
 
     ``colors`` applies a deck-level role override (see
     ``_merge_palette_override``; every invalid shape fails with
-    ``style_color_override_invalid``). ``guardrail=True`` appends the
-    deterministic guardrail digest — the default output stays byte-identical
-    to the no-flag path so snapshot consumers are unaffected.
+    ``style_color_override_invalid``). ``var_overrides`` applies ``--var``
+    overrides onto the brief's machine-readable ``token_sidecar`` (see
+    ``_merge_token_sidecar``; invalid shapes fail with
+    ``style_var_override_invalid``, palette overrides additionally pass the
+    contrast hard gate). ``guardrail=True`` appends the
+    deterministic guardrail digest and ``layout_lock=True`` the
+    layout-system lock block (``token_sidecar.layout`` wins over the
+    brief's top-level ``layout`` key; neither present →
+    ``layout_lock_unavailable``, see ``_layout_lock_block``) — both flags
+    default off so the default output stays byte-identical to the
+    no-flag path and snapshot consumers are unaffected.
     """
     style = load_style(visual_style)
     m = re.search(r"```json\n(.*?)\n```", style["content"], re.S)
@@ -396,6 +572,13 @@ def compose_style(
     palette: object = brief.get("color_palette")
     if colors:
         palette = _merge_palette_override(palette, colors)
+    # Token sidecar passthrough/override: absent sidecar + no --var → key
+    # absent (byte red line for the 137 briefs without one).
+    token_sidecar = None
+    if var_overrides:
+        token_sidecar = _merge_token_sidecar(brief.get("token_sidecar"), var_overrides)
+    elif isinstance(brief.get("token_sidecar"), dict):
+        token_sidecar = copy.deepcopy(brief["token_sidecar"])
     if brand:
         # 合并优先序（合同）：用户品牌 > 用户 colors > 风格默认 —— 品牌最后覆盖。
         bd = load_brand(brand)
@@ -419,10 +602,17 @@ def compose_style(
         "typography": brief.get("typography"),
         "layout_patterns": brief.get("layout_patterns"),
     }
+    if token_sidecar is not None:
+        composed["token_sidecar"] = token_sidecar
     if brand:
         composed["brand"] = composed_brand
     if guardrail:
         composed["guardrail"] = _guardrail_block(palette)
+    if layout_lock:
+        # 版式锚读取生效 sidecar 的 layout 键优先于 brief 顶层（R-31）。
+        composed["layout_lock"] = _layout_lock_block(
+            brief.get("layout"), token_sidecar
+        )
     rendering_name = paired_rendering(visual_style)
     if rendering_name:
         try:

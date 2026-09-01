@@ -1,0 +1,24 @@
+# holdout: true —— 本用例为负触发 holdout 例，不参与判官调参
+# （参考 yuwen-publish-precheck evals/trigger_cases.jsonl 的正负触发+holdout 模式，
+# 防判官对本组词表过拟合）；只做行为回归记录。
+id: negative-trigger-single-image
+title: 单张配图请求不触发技能且礼貌指路
+description: "验证负触发边界：用户要求做一张封面图（单张配图素材，非演示文稿）。期望礼貌指路（说明不属本技能范围、建议使用图像生成/图片编辑类工具），不进入四条 Route——回复不得出现 route: generate 等执行动作、确认序列预告或 provider/preflight 启动迹象。若回复只是解释为何不做属健康行为，不算违约（判官做否定感知匹配）。holdout 例：不参与判官调参。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。帮我做一张封面图就好，一张就行：
+    公众号文章封面，尺寸 900x383，主题是"秋季新品发布"，配点暖色调。
+    不用做成 PPT，我只要这一张图。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "封面"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_negative_trigger.py
+  timeout_seconds: 10

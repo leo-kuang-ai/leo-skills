@@ -33,6 +33,22 @@
 
 - `cover-basic.html` 封面：kicker / title / subtitle / footer 双栏。
 - `body-basic.html` 正文：title / bullets 清单 / 可选 `chart_svg` 槽 / 页码。
+- `spec-table.html` 规格参数表（P25，R-28）：columns / column_align / rows /
+  页码；表头角色底色 + 斑马纹行 + 数值列右对齐。
+- `timeline.html` 横向时间线（P11，R-28）：steps（4-7 节点，字符串数组或
+  {no,name} 对象数组）+ 页码；1px 横轴 + 均布直角方块节点。
+- `compare.html` 双轨对照（P8，R-28）：sides（恰 2 项 {label,title,points}）+
+  页码；中央 1px 纵线分隔，两侧同构。
+- `pull-quote.html` 大引语（P34，R-28）：quote / source_name / source_meta /
+  页码；垂直居中引文 + 出处块，留白 ≥40%。
+- `frame-shot.html` 证据截图框架（R-32，guizang screenshot-treatment 移植）：
+  kicker / title / caption + 六参数 `ratio`（7 档 16x10/16x9/4x3/3x2/1x1/3x4/
+  21x9）/ `corners`（sq/sm/md，上限 14px）/ `shadow`（none/soft/ed）/
+  `bg`（paper/paper-2/grey-1/grid/dot/ink，永不 accent 着色）/ `inset`
+  （none/sub/bal）/ `fit`（contain 缺省，cover 显式覆盖）+ `device` 包装
+  （none/browser/phone，phone 强制 sq 圆角）+ `image_src`（仅 data: URI，
+  离线确定合同）+ 页码；正交纪律——禁透视/倾斜/旋转/3D，截图页优先路由
+  渲染 lane（见 references/render-contract.md §3）。
 
 ## 版式映射（β 团队接口）
 

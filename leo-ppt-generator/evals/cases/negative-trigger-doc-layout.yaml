@@ -1,0 +1,21 @@
+id: negative-trigger-doc-layout
+title: 纯文档排版请求不触发技能且礼貌指路
+description: "验证负触发边界：用户要求把一段文字排版成 Word 文档（纯文档排版，非演示文稿）。期望礼貌指路（说明不属本技能范围、建议使用文档/排版工具），不进入四条 Route——回复不得出现 route: generate 等执行动作、确认序列预告或 provider/preflight 启动迹象。若回复只是解释为何不做属健康行为，不算违约（判官做否定感知匹配）。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。帮我把下面这段产品介绍文字排版成 Word 文档，
+    排得清爽一点就行：标题加粗居中、正文两端对齐、页边距窄一点。
+    不是做幻灯片，我就是要一份排好版的 Word 文件。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "Word"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_negative_trigger.py
+  timeout_seconds: 10

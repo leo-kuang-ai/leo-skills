@@ -1,0 +1,88 @@
+<!doctype html>
+<!-- leo render lane 模板：pull-quote（R-28 / P34 引用金句）
+  槽位语义对齐 12_版式库 34_Quote_Hero sidecar：页面垂直居中单列——
+  顶部 hairline 级装饰引号（禁彩色大引号图标）/ 引文主体（display 级，
+  min(9.2vw,15vh) 双约束）/ 底部出处块：短 hairline + 人名 + 头衔·机构·时间；
+  全页留白 ≥40%，引语逐字保真（textContent 注入，不截断不改写）。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>pull-quote</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; }
+  body {
+    font-family: "Noto Sans SC", sans-serif;
+    background: #f7f5f0; color: #1f2430; position: relative;
+  }
+  .leo-slide {
+    width: 1280px; height: 720px; padding: 90px 150px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+  }
+  .quote-col { max-width: 950px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .quote-mark {
+    font-size: 40px; color: #b08d57; line-height: 1; font-weight: 400;
+    margin-bottom: 34px; letter-spacing: 0.2em;
+  }
+  .quote {
+    font-size: min(9.2vw, 15vh); line-height: 1.4; font-weight: 700; color: #14213d;
+    letter-spacing: 0.02em; overflow-wrap: break-word;
+  }
+  .quote-source { margin-top: 56px; display: flex; flex-direction: column; align-items: center; }
+  .quote-rule { width: 64px; height: 1px; background: #8d8578; margin-bottom: 24px; }
+  .source-name { font-size: 34px; font-weight: 700; color: #1f2430; margin-bottom: 10px; }
+  .source-meta { font-size: 22px; color: #6b6357; letter-spacing: 0.06em; }
+  .page-no { position: absolute; right: 44px; bottom: 30px; font-size: 22px; color: #8d8578; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+    animation: none !important; transition: none !important;
+  }
+</style>
+</head>
+<body>
+  <main class="leo-slide" id="leo-slide">
+    <div class="quote-col">
+      <div class="quote-mark" data-leo-block="quote-mark">&quot;</div>
+      <blockquote class="quote" data-leo-block="quote"></blockquote>
+      <div class="quote-source" data-leo-block="quote-source">
+        <div class="quote-rule" data-leo-block="quote-rule"></div>
+        <div class="source-name" data-leo-block="source-name"></div>
+        <div class="source-meta" data-leo-block="source-meta"></div>
+      </div>
+    </div>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function applyData(data) {
+    data = data || {};
+    // 引语逐字保真：textContent 注入，模板不截断、不改写、不加省略号。
+    document.querySelector('[data-leo-block="quote"]').textContent = data.quote || "";
+    document.querySelector('[data-leo-block="source-name"]').textContent =
+      data.source_name || "";
+    document.querySelector('[data-leo-block="source-meta"]').textContent =
+      data.source_meta || "";
+    if (!data.source_name && !data.source_meta) {
+      document.querySelector('[data-leo-block="quote-source"]').remove();
+    }
+    document.querySelector('[data-leo-block="page-no"]').textContent =
+      data.page_no != null ? String(data.page_no) : "";
+  }
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

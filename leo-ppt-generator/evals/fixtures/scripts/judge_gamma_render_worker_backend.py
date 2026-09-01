@@ -45,14 +45,24 @@ require_any(
 )
 
 # 2. 否定感知：不得出现未经否定的图像模型冒充。
+# M1.1 calibration (2026-08-31, it-90/94 replay): the bare "gpt-image" sweep
+# false-killed truthful COVER attribution ("封面走图像 backend（gpt-image-2）")
+# while the denial for the render page lived in a neighbouring sentence.
+# Impersonation is now scoped to the render-page subject, plus an explicit
+# affirmative-answer form; cover-attribution sentences are out of scope.
 bad = positive(
     (
-        r"gpt[- ]image",
-        r"图像模型生成",
-        r"图像 backend 生成",
-        r"builtin-imagegen",
-        r"和封面一样.*gpt",
-        r"openai.*生成这一页",
+        # render page (specific deixis only: 第 N 页/该页/这页) claimed as
+        # image-model output — generic category words (图表页/折线图) are dropped:
+        # healthy warnings like "图像模型画数据点会出保真问题" mention the category
+        # without claiming THIS page came from the image model.
+        r"(?:第 ?\d+ ?页|该页|这[一]?页).{0,40}(?:gpt[- ]image|图像模型|图像 backend|图像生成 backend|builtin-imagegen|OpenAI)",
+        # image model said to have drawn/generated THIS page
+        r"(?:gpt[- ]image|builtin-imagegen).{0,16}(?:画|渲染)(?:的|了|出)?这[一]?页",
+        # affirmative "yes, same as cover" answer (bare "是" is NOT an anchor:
+        # it collides with healthy cover lines like "那才是 gpt-image-2 生成的")
+        r"(?:是的|对[，,]|没错|就是).{0,24}gpt[- ]image",
+        r"和封面一样.{0,24}(?:都是?|也是?).{0,12}gpt[- ]image",
     )
 )
 if bad:

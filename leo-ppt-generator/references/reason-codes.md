@@ -56,6 +56,8 @@
 | `templates_listed` | 模板轴清单已枚举 | 不适用 | 从清单选择渲染/版式/信息图/模式名 |
 | `template_store_error` | 模板知识库加载失败或模板不存在 | 是 | 用 `style render --list-templates` 查看可用名后重试 |
 | `style_color_override_invalid` | `style render --color` 覆盖违例（role 非法/非 #RRGGBB/role 不在该风格/风格无 palette/项缺 `=`） | 是 | 改用 role ∈ primary/secondary/accent/neutral 与 #RRGGBB 值重试；`style render` 缺省输出不受影响 |
+| `style_var_override_invalid` | `style render --var` 覆盖违例（点路径键不存在/非 #RRGGBB/对比度不达标/项缺 `=`） | 是 | 改用 sidecar 已有键名与 #RRGGBB 值重试；不带 `--var` 输出逐字节不变 |
+| `layout_lock_unavailable` | `style render --layout-lock` 开启但 brief 与 sidecar 均无可用 layout 键（或五字段缺一） | 是 | 给 token_sidecar.layout（优先）或 brief 顶层 layout 补齐 grid/safe_margin/page_no/corner_radius/line_weight，或去掉旗标；不带旗标输出逐字节不变 |
 | `backend_contract_unreadable` | 冻结的 backend contract 无法读取 | 是 | 检查 run 输入树与文件权限，必要时创建新 run |
 | `credential_reference_invalid` | 凭据引用不是允许的 `env:`、`host:` 或 `keychain:` 形式 | 是 | 使用 provider allowlist 中的引用，不写入原始凭据 |
 | `credential_reference_unavailable` | 声明的凭据引用当前不可解析 | 是 | 在宿主注入对应环境变量或启用明确 resolver |

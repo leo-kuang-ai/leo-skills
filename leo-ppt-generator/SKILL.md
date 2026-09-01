@@ -33,7 +33,8 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 
 此分支禁止读取、复制、预检、隔离或净化文件；“警告后继续”“先扫描”“净化后继续”
 都不构成可信确认。用户明确确认来源可信后，下一轮才可进入 CLI preflight；确认仍不能
-绕过旧 `.ppt`、宏、嵌入对象、external relationship、远程模板或损坏结构检查。
+绕过旧 `.ppt`、宏、嵌入对象、external relationship、远程模板或损坏结构检查——常见
+误区：确认可信后仍会做 preflight 结构检查，不代表不信任，检查只针对结构风险。
 宿主可运行脚本时，上述固定块必须经 `render-control-summary.py --fixed gate0`
 原样产生（该模式不读取任何文件）；无法运行脚本时按固定块手写，并显式记录降级
 `gate0_render: handwritten`。本分支的“禁止读取”只针对用户输入文件与重建动作；
@@ -47,7 +48,10 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 - `advise`：用户只要求判断、解释、比较路线、汇报状态或说明下一步，或明确说“先不要
   执行”。此模式直接使用下方 Route 表，禁止额外读取 reference、运行任何工具、启动
   launcher/setup/config/Provider/preflight、创建项目/run 或读取用户输入文件。
-  唯一的工具豁免是 `scripts/render-control-summary.py --fixed gate0` /
+  读取豁免：用户询问风格库内容（"有没有 X 风格/有什么可选"）时，可读取
+  `references/styles/00_索引/_INDEX.md`（纯目录索引元数据，无副作用），据实
+  回复在库风格名/别名命中/相近候选；不读 styles 目录其他文件、不读其他
+  reference。唯一的工具豁免是 `scripts/render-control-summary.py --fixed gate0` /
   `--fixed worker-unavailable`：该模式不读取任何文件、无副作用，输出固定块不构成
   执行动作，用户“不要执行任何操作”的表述不得据此改回手写。宿主确实无法运行脚本时
   才手写固定块，并显式记录降级 `gate0_render: handwritten` 或
@@ -93,6 +97,14 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md`、`academic-vertical.md`（学术信号或用户点名「学术模式」时） | styles 直到风格已选；`slide-worker.md` 直到样张通过；`academic-figure-evidence.md` 直到进入母版制作且材料含图片证据/学术场景；`sources-manifest-schema.md` 直到 `image prepare --sources` 冻结与交付前 strict 校验；`rst-paging.md` 直到大纲制作且材料多段/结构复杂 |
 | `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 直到真实 worker 已确认 |
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
+
+generate 命中数据图表/表格/文字密集页时读 `references/render-contract.md`（render
+page/chart 确定性渲染 lane）；逐页版式匹配进母版前读 `references/layout-dispatch.md`（P 码调度与容量预检）。
+generate 全出血封面/大图井（文字压图）页读 `references/image-text-composition.md`
+（四步事前构图协议）；素材入库/检索读 `references/library-schema.md`（经
+`scripts/library_catalog.py` 登记 sha256 出处），点名市场/行业数据读
+`references/data-sources.md`；带时间戳转写稿先经 `scripts/normalize_transcript.py`
+（`--fix`）规整前缀再按文本材料路由（音视频节见 `references/input-routing.md`）。
 
 `references/styles/` 约束为按需索引：先读 `style-library.md`，选定风格、论证模式和版式
 后只读对应的单个风格文件；禁止预加载整个 styles 目录。`reason-codes.md` 只在已有
@@ -160,7 +172,9 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 
 - 🔴 CONFIRM-GATE（人在回路，逐门暂停等待用户明示）：在会改变结果前确认大纲、完整内容、风格、图片 backend、样张或升级页集合，
   以及数据分级（`data_classification`：材料含未公开/涉密样貌数据时必须定级，
-  机密/绝密直接拒做）——分级确认同样不因跳过授权而豁免；首轮冻结合同（含材料
+  机密/绝密直接拒做）——分级确认同样不因跳过授权而豁免；分级误区澄清：内部
+  数据≠涉密，未公开经营数据定级内部即可继续，仅涉密样貌数据须机密以上档处置；
+  首轮冻结合同（含材料
   缺失分支）须预告剩余确认序列「合同 → 大纲 → 逐页母版 → 视觉方向 → 样张」，
   用户才知道确认点还有几个；相邻确认点可同回合呈现（合同+大纲同回合、视觉
   方向+样张同回合，逐页母版独立成回合）——合并的是往返不是确认：每件工件仍须
@@ -169,6 +183,8 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   三字段必填——数学量级（math_load）、图表取向（figure_orientation）、分节
   优先级页数分配（section_priority），通用 deck 可选不强制，取值词表进 execute
   后按工作流 reference 核实；
+- **敏感文本候选扫描**：定级存疑或素材入库前跑 `scripts/check_sensitive_text.py`
+  （命中仅掩码输出；候选非结论，裁决仍归 `data_classification` 分级门）。
 - 学术场景还须问明交付档位：组会简报（minimal）还是答辩证据密集（dense-defense），未问明不得默认取密集档；学术场景的一条龙指认（入口信号、五拍/RST/图证据/风格推荐/样张锚点映射）见 [`academic-vertical.md`](references/academic-vertical.md)，用户说「学术模式」即声明该场景；
 - **交付档案**：用户保存的交付档案（`${LEO_PPT_HOME}/profiles/<名称>.md`）可预填
   合同草案并逐项标注来源，用户只确认差异项；档案只存偏好字段、绝不存业务数据，
@@ -181,6 +197,11 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   10_品牌身份 预设，浅底对比度 <4.5:1 报错并给最近合规建议色；用户纠结或双参考图时提议
   样张双生（多一张图成本先告知，点头才出，二选一落选即弃不追加第三方向）——全部寄生既有视觉方向确认与样张点，不新增
   确认门（见 `references/style-recommendation.md`）。execute 授权或用户的"不用确认"要求不豁免该确认序列，样张确认尤其不可跳过。generate 路线的大纲与逐页母版确认对象是 `<project-root>/content/` 下的版本化文档（`outline-v<N>.md` / `deck-master-v<N>.md`）：提交确认前必须落盘并在头部携带 `confirmation` 状态标记，聊天只引用路径与变更摘要，不整篇复述；该文档门仅在 execute 模式生效。
+  风格候选先过 `scripts/style_hard_rules.py --check-brief`（排除错配/锁定强语境，用户
+  点名即 bypass）；推荐 2–3 方向必须跨家族；点名不存在时列相近候选（子串/别名/同轴
+  邻近）不静默替换；点名资产可为可信标杆 deck 蒸馏档案（`scripts/distill_deck_style.py`，
+  Gate 0 信任先行）。风格库治理用 `generate_style_gallery.py --check`（金样板回归，
+  漂移 exit 1）与 `audit_style_families.py`（家族分布只读盘点）。
 - **比例合同**：页图与交付画布必须同比例：generate 路线 slide 图片像素尺寸档必须为交付画布宽高比（默认 16:9，基准 2560×1440）。样张提交、样张方法继承与交付前都必须断言该比例；交付前必须运行 `scripts/check_deck_geometry.py`（非 0 退出阻止交付）。继承既有 sample_generation_method 前必须核验其像素尺寸档，比例不符（如历史 3:2 素材）不得继承，视为 generation method 变更，须重新生成并确认样张。
 - **文字保真降级链**：文字错误先 TF-1 压文本预算回母版减法重生成（至少一轮）；TF-2
   留白贴字（`scripts/overlay_text.py`，底图仍来自确认 backend、逐字来自
@@ -192,13 +213,22 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   视觉行（容器清单 + 每个要点落位声明 + 图像来源三级）、备注（speaker_script 与
   engineering 分栏）；内容层失败先改母版再重建受影响页，
   不绕过母版直接改图（见 `references/deck-master.md`）。
+  母版落盘后跑 `scripts/check_deck_prose.py`（文案纪律线索，翻案腔超限 exit 1）与
+  `check_number_ledger.py --diff`（TF-1 后 verified 数字留存断言）；高保障档冻结后
+  派发前另跑 `scripts/check_content_facts.py`（数字断言回读材料，有界 2 轮）；
+  post-confirm 写回与恢复按 [执行合同](references/execution-contract.md)「内容层状态与恢复」（CAS verify / run ledger / reproject）。
 - **三级标注**：数字与断言三级标注：引用（有出处）/ 估算（标"估算"或"经验值"）/ 示意（标"示意"，
   不得用图表版式）；三级之外来源不足一律标 `unknown` 求证，不得直接写入页面。材料
   整体缺失属于输入层的 unknown：同样必须先输出控制面五字段块（如
   `input_material_missing`）再解释，不得以自然语言"要材料"开头；并在解释中重申
-  确认序列（大纲/母版/样张）不因用户的跳过授权而豁免。
+  确认序列（大纲/母版/样张）不因用户的跳过授权而豁免；四级（含用户确认）与要点级 source_ref 语法见 `references/deck-master.md`。
+  材料缺失的解释部分按 [输入路由](references/input-routing.md)「材料缺失 → 研究代采
+  轻形态」节附研究问题清单与建议检索渠道/素材类型，经合同确认门确认（零宿主依赖、
+  不联网；用户要求代采而 R-69 条件未齐备时如实说明能力边界并指回清单自取材）。
 - **再检要求**：打回重做后的再检必须同时写出目标判据结论与波及面结论（如改文字→复查密度与
   截断）；qa_note 只写"已修复"不构成通过。
+  改母版重生成前用 `scripts/compute_impact.py` 推导受影响页清单；含目录/agenda
+  的 deck 母版携带 deck-promises 承诺表（见 `references/deck-master.md`）。
 - **CLI 真值**：只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。
 - **真实派发**：多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
@@ -240,7 +270,10 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   来源清单校验状态（交付前 `scripts/check_sources_manifest.py <run> --strict`，非 0 退出
   阻断，WARN 项逐条披露）与 TF-2 fallback 页清单。用户要求讲稿交付物时,经
   `scripts/export_speaker_notes.py`（`--pptx` 成品 / `--master` 母版）导出,缺备注页
-  如实列出,不得编造口播稿。
+  如实列出,不得编造口播稿（可加 `--prose-check` 顺手输出讲稿口语化 PROSE-WARN,
+  建议项不阻断）。用户要求讲义 PDF / 长图交付物时,经 `scripts/export_deck.py`
+  导出（started / completed / failed 三态回执,failed_pages 逐页列缺页/坏页）,
+  导出属交付动作、同过 🔴 DELIVERY-GATE 披露。
 
 ## 红灯清单（反模式速查）
 
@@ -279,7 +312,7 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 缺页、未完成状态或任一页 QA 失败都阻止组装。组装复验时逐页核对合同约定的版面
 固定件（页码/页脚位置与字号一致），页内文本引用与实际页码核对存在。用户要求高保障
 档位时，启用 [视觉质检规范](references/visual-qa.md) 第六节多轮审查协议（镜头池轮换，
-连续两轮无 P1/P2 才收敛；台账记录，驳回须给依据）与交付双评审官可选档
+连续两轮无 P1/P2 才收敛；台账记录，驳回须给依据；高保障档另可选 rubric 合成分与迭代硬预算,默认不启用）与交付双评审官可选档
 （见 [执行合同](references/execution-contract.md)，分歧 ≥2 分复议，不替代三证）。
 
 ### direct-editable
@@ -291,6 +324,9 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
 图片/PDF 可直接 prepare；PPT/PPTX 必须先通过可信确认与 preflight。真实 worker 可用
 后才读取 [page worker prompt](prompts/page-worker.md)。不得以整页截图叠少量文本冒充
 对象级可编辑，也不得在真实 spawn 前记录 dispatch。
+
+editable 组装内核为双 builder 等价（`LEO_EDITABLE_BUILDER=pptx|legacy`，默认 legacy）：
+对象级 object_builder 对非法 preset 在 build 期 ValueError 拒绝而非透传，见 [执行合同](references/execution-contract.md)。
 
 ### upgrade-full
 

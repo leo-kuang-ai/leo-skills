@@ -14,7 +14,17 @@
      不得携带位置性标注词（见 references/academic-figure-evidence.md）；
   ⑧ deck-contract 块校验（v2）：学术场景（论文/答辩/组会/文献汇报/科研答辩
      信号）三字段 math_load/figure_orientation/section_priority 必填，
-     枚举合法；section_priority Σ建议页数 ≠ 内容页数 → WARN。
+     枚举合法；section_priority Σ建议页数 ≠ 内容页数 → WARN；
+  ⑨ deck-promises 承诺表校验（R-34）：顶层 `deck-promises:` 块或
+     deck-contract 内嵌同名子表，四列（承诺/锚页/兑现页/状态）；每个
+     open/fulfilled 行的锚页与兑现页必须存在（目录多宣称一章即 FAIL），
+     closed 豁免；无承诺表的旧母版静默跳过（向后兼容）；
+  ⑩ 要点级标注与 source_ref（R-08/R-09）：要点行标注短标词表为四级
+     （引用/估算/示意/用户确认，全/半角括号或【】均可，可带竖线字段）；
+     引用级要点必须携带 source_ref（【引用|src:材料锚点】 或行尾
+     [src:锚点]），用户确认级要点必须携带会话轮标记（round:N）或说明
+     字段（note:/说明:）；估算/示意与无标注要点豁免（向后兼容：
+     旧母版无标注要点不触发本判据）。
 
 母版机读语法约定（deck-master.md 合同）：
   - 页由 `## S<N> ` 或 `## 附` 起始；
@@ -75,6 +85,23 @@ ACADEMIC_SIGNALS = ("论文", "答辩", "组会", "文献汇报", "科研答辩"
 MATH_LOADS = {"light", "medium", "heavy"}
 FIGURE_ORIENTATIONS = {"figure-first", "balanced", "text-first"}
 DECK_CONTRACT_RE = re.compile(r"^deck-contract[：:][ \t]*$", re.M)
+
+# --- v2：deck-promises（目录/agenda 承诺账本，R-34） ---
+PROMISES_BLOCK_RE = re.compile(r"^deck-promises[：:][ \t]*$", re.M)
+PROMISE_HEADER_CELLS = ("承诺", "锚页", "兑现页", "状态")
+PROMISE_STATUSES = {"open", "fulfilled", "closed"}
+
+# --- R-08/R-09：要点级四级标注与 source_ref ---
+# Tier vocabulary extends the ledger's three levels (引用/估算/示意) with a
+# fourth level 用户确认 (data stated by the user in a contract/clarification
+# round). Marks live in full/half-width brackets and may carry pipe fields.
+TIER_MARK_RE = re.compile(
+    r"[【（(]\s*(用户确认|引用|估算|示意)(?:\s*[|｜][^】）)]*)?\s*[】）)]")
+POINT_LABEL_RE = re.compile(r"^要点\s*\d+\s*[：:]\s*")
+SRC_SQ_RE = re.compile(r"\[\s*src\s*[：:]\s*([^\]]+?)\s*\]")
+SRC_BRACKET_RE = re.compile(r"【[^】]*?src\s*[：:]\s*[^】\s][^】]*】")
+ROUND_MARK_RE = re.compile(r"round\s*[：:]\s*\d+")
+NOTE_MARK_RE = re.compile(r"(?:note|说明)\s*[：:]\s*[^】\]\s]")
 
 
 def split_pages(text):
@@ -231,6 +258,167 @@ def check_deck_contract(text, content_pages, failures, warnings):
             f"{content_pages}（请对账页数口径）")
 
 
+def _adjacent_pipe_rows(lines, start):
+    """Collect the pipe-table rows immediately following a declaration line."""
+    rows = []
+    for ln in lines[start:]:
+        s = ln.strip()
+        if s.startswith("|"):
+            rows.append(s)
+        else:
+            break
+    return rows
+
+
+def parse_deck_promises(text):
+    """Collect raw deck-promises table rows.
+
+    Accepted locations: a top-level `deck-promises:` block, or an indented
+    `deck-promises:` sub-table inside the deck-contract block. Returns None
+    when no block exists anywhere (legacy masters: criterion silently skips).
+    """
+    lines = text.splitlines()
+    rows = []
+    for i, ln in enumerate(lines):
+        if PROMISES_BLOCK_RE.match(ln):
+            rows.extend(_adjacent_pipe_rows(lines, i + 1))
+    block = parse_deck_contract(text)
+    if block:
+        blines = block.splitlines()
+        for i, ln in enumerate(blines):
+            if ln.strip().startswith("deck-promises"):
+                rows.extend(_adjacent_pipe_rows(blines, i + 1))
+    return rows if rows else None
+
+
+def _resolve_promise_page(ref, page_seq):
+    """Resolve S<N> / N / 附 against the deck's page sequence; None if absent."""
+    s = ref.strip()
+    valid = set(page_seq)
+    m = re.fullmatch(r"[Ss](\d+)", s)
+    if m:
+        pid = f"S{m.group(1)}"
+        return pid if pid in valid else None
+    if s == "附":
+        return "附" if "附" in valid else None
+    if s.isdigit():
+        n = int(s)
+        return page_seq[n - 1] if 1 <= n <= len(page_seq) else None
+    return None
+
+
+def check_deck_promises(text, page_seq, failures):
+    """Validate the deck-promises ledger (R-34).
+
+    Every open/fulfilled row must carry an anchor page and a payoff page that
+    both exist in the deck (a fabricated agenda chapter fails); `closed` rows
+    are exempt from payoff checking. Returns None when no table exists
+    (backward-compatible silent skip), else the count of validated rows.
+    """
+    rows = parse_deck_promises(text)
+    if rows is None:
+        return None
+    if not rows:
+        failures.append("deck-promises: 表存在但无可解析承诺行")
+        return 0
+    header = [c.strip() for c in rows[0].strip("|").split("|")]
+    if not all(c in header for c in PROMISE_HEADER_CELLS):
+        failures.append(
+            "deck-promises: 表头须含四列「承诺/锚页/兑现页/状态」")
+        return 0
+    passed = 0
+    data_rows = [r for r in rows[1:]
+                 if not re.match(r"^[\s:-]+$", r.replace("|", ""))]
+    for idx, row in enumerate(data_rows, start=1):
+        cells = [c.strip() for c in row.strip("|").split("|")]
+        where = f"deck-promises 行{idx}"
+        if len(cells) < len(PROMISE_HEADER_CELLS):
+            failures.append(f"{where}: 列数不足（{len(cells)} < 4）")
+            continue
+        promise, anchor, payoff, status = cells[:4]
+        if status not in PROMISE_STATUSES:
+            failures.append(
+                f"{where}: 状态「{status}」不在封闭枚举 "
+                f"{sorted(PROMISE_STATUSES)}")
+            continue
+        if status == "closed":
+            passed += 1  # exempt: confirmed-closed promise needs no payoff
+            continue
+        if not anchor:
+            failures.append(f"{where}「{promise}」: 缺锚页")
+            continue
+        if _resolve_promise_page(anchor, page_seq) is None:
+            failures.append(f"{where}「{promise}」: 锚页「{anchor}」不存在")
+            continue
+        if not payoff:
+            failures.append(
+                f"{where}「{promise}」: 状态 {status} 缺兑现页")
+            continue
+        if _resolve_promise_page(payoff, page_seq) is None:
+            failures.append(
+                f"{where}「{promise}」: 兑现页「{payoff}」不存在"
+                "（目录多宣称一章即此类失败）")
+            continue
+        passed += 1
+    return passed
+
+
+def _has_source_ref(content):
+    """True when the bullet carries a machine-checkable source reference:
+    a trailing [src:锚点] or a pipe field inside a 【…】 mark."""
+    m = SRC_SQ_RE.search(content)
+    if m and m.group(1).strip():
+        return True
+    return bool(SRC_BRACKET_RE.search(content))
+
+
+def _has_session_provenance(content):
+    """True when a 用户确认 bullet traces to a conversation round
+    (round:N marker) or carries an explicit note/说明 field."""
+    if ROUND_MARK_RE.search(content):
+        return True
+    return bool(NOTE_MARK_RE.search(content))
+
+
+def check_bullet_tiers(text, failures):
+    """Validate bullet-level tier marks and source_ref (R-08/R-09).
+
+    Citation-tier bullets (引用) must carry a source_ref — pipe form
+    【引用|src:材料锚点】 or trailing [src:锚点]. User-confirmed bullets
+    (用户确认) must carry a session-round marker (round:N) or a note field.
+    估算/示意 bullets and unmarked bullets are exempt (legacy masters never
+    trigger this criterion). Returns the count of tier-marked bullets seen.
+    """
+    current = "全 deck"
+    checked = 0
+    for line_no, raw in enumerate(text.splitlines(), start=1):
+        header = PAGE_RE.match(raw)
+        if header:
+            current = header.group(0).lstrip("#").strip()
+            continue
+        m = POINT_LINE_RE.match(raw)
+        if not m:
+            continue
+        content = m.group(1)
+        if any(k in content for k in _NON_POINT):
+            continue
+        content = POINT_LABEL_RE.sub("", content)
+        marks = TIER_MARK_RE.findall(content)
+        if not marks:
+            continue
+        checked += 1
+        where = f"{current}（第 {line_no} 行）"
+        if "引用" in marks and not _has_source_ref(content):
+            failures.append(
+                f"{where}: 引用级要点缺 source_ref（语法：【引用|src:材料锚点】"
+                "或要点行尾 [src:锚点]）")
+        if "用户确认" in marks and not _has_session_provenance(content):
+            failures.append(
+                f"{where}: 用户确认级要点缺会话轮标记（语法："
+                "【用户确认|round:N】或 note/说明 字段）")
+    return checked
+
+
 def check_page(header, body, total_pages, failures, prefix):
     title = TITLE_RE.search(body)
     if not title:
@@ -299,12 +487,24 @@ def main():
     check_figure_rows(text, failures)
     content_pages = total - functional_count
     check_deck_contract(text, content_pages, failures, warnings)
+    page_seq = []
+    for header, _body in pages:
+        m = re.match(r"^##\s+(?:S(\d+)|附)", header.strip())
+        page_seq.append("附" if m is None or m.group(1) is None else f"S{m.group(1)}")
+    promise_count = check_deck_promises(text, page_seq, failures)
+    tier_count = check_bullet_tiers(text, failures)
     if failures:
         for f in failures:
             print(f"FAIL: {f}", file=sys.stderr)
         return 1
-    print(f"OK: {total} 页四段/落位/argument_role/交叉引用/登记表全部通过"
-          f"（内容页 {content_pages}，功能页 {functional_count}）")
+    ok = (f"OK: {total} 页四段/落位/argument_role/交叉引用/登记表全部通过"
+          f"（内容页 {content_pages}，功能页 {functional_count}")
+    if promise_count is not None:
+        ok += f"；承诺表 {promise_count} 条核对通过"
+    if tier_count:
+        ok += f"；要点标注 {tier_count} 条核对通过"
+    ok += "）"
+    print(ok)
     print("TITLE-READTHROUGH: " + " → ".join(titles))
     print("TAKEAWAY-READTHROUGH: " + " → ".join(takeaways))
     if warnings:

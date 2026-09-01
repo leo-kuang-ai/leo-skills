@@ -1,0 +1,21 @@
+id: style-new-family-renderable
+title: 新家族风格可做性确认不夸大渲染承诺
+description: "验证新进货家族（中式载体/印象派油画，S2a 批）的可渲染性沟通边界：用户问竹简风/星月夜风能不能做、什么样，回复须确认在库（真实风格名/家族名与「在库/已收录/可以做」同句同现——两名字已在用户原话中出现，纯回声不算确认）并如实说明能力（可以做/可渲染），不夸大：不说「立即出图/马上出图/无需确认」，不声称已创建新风格。判官承担主要断言：在库名确认+能力词在场，违规=未否定的越权渲染承诺/创建宣称。"
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator，进入 advise，先只咨询、不要动手。
+    竹简风、星月夜风这种能做吗？能做的话大概什么样？
+    先不要生成任何东西，说说情况就行。
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    - "竹简"
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_style_family_renderable.py
+  timeout_seconds: 10

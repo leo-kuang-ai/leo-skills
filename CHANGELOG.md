@@ -8,6 +8,18 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **leo-ppt-generator：测评收尾批——观察项排查关闭 + 记档文档（user-visible）**
+  ：三项观察项排查关闭：style_store_error 连发瞬态（load_style 全链只读
+  无锁，串行 6 连发+5 并发均不复现，判定并行期系统资源瞬态、fail-closed
+  设计内）；CLI 输出裸控制字符（输出统一走 json.dumps 必转义+全库 318
+  brief 无裸控制字符，判定 agent 管道损耗）；tests/installer prune 漂移
+  （现 14/14 稳定 OK，早前 6 errors 为陈旧 __pycache__）。实体修复：律所
+  专业风适用场景补"年度专业服务与合规回顾"；配对表补在线教育风变体锚
+  分叉注记（教学锚 vs 主风格产品锚的回落许可）。新增 20+50 行业测评
+  记档文档 docs/leo-ppt-generator-style-route-50industries-0901.md
+  （两轮方案/结果/修复对照/观察项关闭/渐进遗留全固化）。验证：governance/
+  briefs/structure lint 全绿，bundle_marker+style_pack+installer 测试过。
+
 - **leo-ppt-generator：50 行业 ×双场景路由测评与场景轴系统性修复（user-visible）**
   ：5 agent ×10 行业 ×2 场景（行业主场景 A + 各行业晋升述职 B），共约 110 项
   检查 + 55 次真实 render——A 场景风格本体层 50/50 全健康（上轮 10 处路由

@@ -8,6 +8,21 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **leo-ppt-generator：20 行业 style 路由正确性测评与路由层修复（user-visible）**
+  ：4 agent ×5 行业 ×6 项检查（路由可见/索引正确/真实可加载/内容匹配/端到端
+  注入/配对锚）共 120 项——风格本体层 20/20 全健康（索引/CLI/render/内容/
+  配对全过），系统性缺口收敛于路由表对 02 行业身份轴的覆盖（13/20 用例
+  C1 PARTIAL/FAIL：法律与文旅零入口，地产/双碳被"制造/能源/工程"行误导至
+  工程蓝图风，美妆被消费行带向波普/孟菲斯反向气质）。修复（按医疗行桥接
+  先例）：金融行加银行年报风/投资机构风直达；咨询行并入法律合规（律所
+  专业风）；SaaS/AI 行加 02 族指针；制造能源行拆三行（智能制造/双碳 ESG/
+  地产楼盘，双碳配结论先行金字塔+自然有机）；消费行细分美妆柔和向与快消
+  卖点燃向；新增文旅/目的地与汽车/新车发布两行；游戏行加电竞数据复盘向；
+  配对表新能源双碳风锚工程蓝图→自然有机；投资机构风适用场景补投后管理。
+  另登记观察项：连发 style render 偶发 style_store_error 瞬态（独立重跑
+  即恢复）。验证：governance/index/briefs/structure 四 lint 全绿；新路由
+  4 风格真实 render 抽验 ready/style_rendered。
+
 - **leo-ppt-generator：真实环境打包验证批（发现并修复托管 venv 风格库不可见
   缺陷，user-visible）**：真实环境五层验证链——doctor ready；`style list`
   实测发现托管 venv 中返回**空**（包被物理复制进 site-packages，

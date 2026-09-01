@@ -57,3 +57,39 @@ Writing Agent 提供最完整的节点和机器门禁：选题、brief、立场�
 4. 声音档案具有证据状态，未验证档案必须降级。
 5. 代理读者测试、热点评分和检测分数不能冒充 field outcome。
 6. 只有真实、可比、跨文章重复的发布结果才能升级为稳定规则。
+
+---
+
+# 第二轮上游审计（file-github 语料，2026-08-31）
+
+## 范围冻结
+
+语料根为本地 file-github 语料镜像（路径未入库；沿用第一轮惯例记本地绝对路径于工作区清单），快照 2026-08-31，152 个 git 仓库（commit 清单冻结于 `upstream-absorption-workspace/00-corpus-manifest.md`，本地 git-ignore 工作区）。方法：漏斗式全景——12 批并行浅筛全量出卡（A 可吸收度≥2 共 54 / B 29 / C 69，卡片见 screening/batch-01..12）→ 6 轨道定向深读 20 个 A 级项目（deepread/T1-T6）→ 44 条候选合并裁决（05-phase3-candidates.md）→ 用户裁决三批全做、合同口径 3+6（06-adjudication.md）。与 2026-08-26 审计重叠的两个项目（writing-agent、humanizer 同 commit）已按增量重评。
+
+## 五簇能力结论
+
+1. **研究环执行纪律**（gpt-researcher/deep-research/deep-searcher/open_deep_research/AcademicForge/node-DeepResearch，MIT/Apache）：吸收终止与预算（双向终止/禁空转轮/depth 分档/85-15 分割）、策展五维保守准入与降级保留、压缩保真（清理而非总结）、引用三态核验与编号按 family 分治——落 source-analysis.md 三节与 workflow-contract.md 呈现契约。多 agent 拓扑与网络核验脚本不吸收（零网络原则）。
+2. **中文去 AI 味语义级核对**（shuorenhua/sepia/qu-ai-wei/academic-humanizer/human-writing，均 MIT）：七要素双向核对、动词强度匹配、hedging 不得升格（Never-inject 第 8 条）、venue-first 语域采样、【需作者确认】区块†、CCL 实证锚点、两域 tells——落 chinese-editorial-protocol.md 与 humanizer 两个文件；120 案例阴阳对转 eval 负例集（chinese-humanize-preserve-negative，13 组）。74/18/8 英文配比仅作参照。
+3. **状态块与违约对策**（claude-blog/Deep-Research-skills/last30days-skill/writing-agent，均 MIT）：判官双分支结构化解析（canonical YAML 四值枚举+promoted 三条件+零静默；自然语言同义词分支）+ `branch=canonical|synonym;contract_fields=n` 标注；postpublish 状态外置脚本（仅显式 --ledger、append-only、--invariant-hash）；factual_regression 哈希绑定。**判定线实验结论：结构锚不能唤起 flash 级模型的状态块自发性（16 轮 0 canonical），落盘修复以脚本裁决为主**；route 首锚有效（signal-bearing 4/10→10/10）。
+4. **审查与收敛协议**（AI-Scientist 非标→只思想/academic-paper-skills MIT）：收敛早停三条（每轮只精修上轮/无新发现须原样保留/轮数是上限）+ 输出完备性契约（逐维度结论、最少 1 条问题或"未发现+检查范围"出口、pass|blocked|not_checked 枚举）+ 返工 ≤3 轮带病放行 + 拒答式评审。**数值过线门禁被实测证伪**（LLM 自评+机械阈值可博弈：弱维度被高分买过线、伪造引用过校验），任何"分数≥X 放行"机制禁入。
+5. **声音认知层与文案质检**（blogger-distiller/xiaoma-durex-copywriter/marketing-os，均 MIT）：soul.md 新增「核心信念与判断方式」「观点张力」章节与行级证据格式（≥2 篇独立样本出处）、覆盖边界披露†复用 voice_basis 字段族；文案 grounding 溯源（ungrounded 披露）†、双层语义借势质检（暗示不豁免证据、强合规禁双关）、战术失效双列、评分有界停止（启发式非实测声明）。策略层声音蒸馏与蒸馏他人模式不吸收（授权红线）。
+
+## 明示不吸收（附理由，防下轮重复评估）
+
+数值过线门禁（证伪如上）；策略层运营打法与"蒸馏他人博主"（授权与概念污染）；Nonce 溯源（单 agent 无攻击面）；多 agent 拓扑/网络核验/外部 embedding（零网络）；"中位 6 字"等统计目标（基数不可复核）；19 阶段停机/固定候选数/empathy 主体（维持 2026-08-26 结论）；74/18/8 编辑配比（英文语料，仅参照注记）。卡片池下轮候选见 `04-phase1-summary.md`（ALwrity claim 三分类、FAROS 六态枚举、渠道容忍矩阵、STORM pip 桥等）。
+
+## 验证证据
+
+- 单测 157 项全绿（判官 20+23 对抗/回归用例、状态外置脚本 26、检查器增量 9 等）。
+- 判官加固 A/B 回放：全部历史 fixture 零翻转（重建修改前判官对照实测）。
+- it-94 观察性全量：36 case 32 PASS；存量 33=29 PASS（87.9%，it-83..92 带内），4 失败逐案归因（实验基线项 ×1、在案间歇类 ×2、判官 `≠` 否定缺口误拒 ×1 已修+聚焦复跑 PASS）。
+- 判定线实验与三组频率对比、三条新 case 首跑基线：记 evals/known-issues.md「R2 上游吸收」节。
+- 引擎事实：`expect.must_contain_any` 解析不执行——script case 断言迁移 rule_based（deep-editorial-pipeline、audit-does-not-rewrite，历史重放通过）。
+
+## 对当前 Skill 的约束（第二轮新增）
+
+1. post-publish 状态块自发性：停止一切 SKILL.md 文本尝试（内容追加式与结构位置式均已证伪），落盘路径以脚本裁决为准。
+2. 数值门禁禁令永久化：评分只可作软停止线索，任何放行判定不得依赖自评分数过线。
+3. 判官收紧必须附历史重放（含重建前判官的 A/B 对照）与对抗 fixture 回归锁；否定感知窗口须覆盖数学否定形态。
+4. 新 eval 断言一律 rule_based 形态，直至上游修复 must_contain_any。
+5. 本轮全部增补已带来源+许可证+快照 2026-08-31 标注；无证/非标许可项目（AI-Scientist）仅思想重写，零文本复制。

@@ -8,6 +8,56 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **evidence-first-writing：排版合同四件套落地（排版赛道漏斗三线裁决之线 1，
+  user-visible）**：新增 `references/layout-contract.md`（本轮唯一新 reference，58 行
+  四节：结构规约六条"只加标记不改内容"、px 阈值登记判据 15-17px/行高≥1.7/H1≤28px
+  含 345px 版心推导、渲染器中立兼容条款与 CSS 安全区/禁区核对表、AI 排版保真条款
+  封闭 block 词表/确定性降级/索引引用不重写正文；来源 xiaohu[机制吸收零文本]/
+  md-wechat/obsidian[MIT]/autocorrect，快照 2026-08-31）；新增 `scripts/check_layout.py`
+  零依赖排版 lint（6 类规则：CJK 半角标点邻接判定+6 类保护区豁免、callout≤4/高亮≤5/
+  加粗每段≤2/表格≤4 列 FAIL、三连同构 WARN；退出码 0/1/2/3；无汉字守卫；五字段输出）
+  +39 单测（红→绿抓到边框管道计数真缺陷；评审门修复 P1 围栏内 callout 误计与
+  P3 半边框列数差一，均带判别性回归锁；23 存量文档基线零半角标点误报）；新增
+  eval case `layout-neutral-output`（渲染器中立断言，rule_based，首跑 FAIL 属词面
+  重掷实质在场、扩词后 2/2 PASS，记档词面高变例）；SKILL.md 接线句（check_prose
+  段内 +1 句，诊断非门禁，合同字段零改动）；tool-selection autocorrect 升级双轨
+  （内置 check_layout 轻量 + CLI 整仓 CI 超集）+ CSS 核对表指针 + 容量经验值。
+  线 2 增量口径（guizang R2/R3/R6/R7+scrollH、raphael 整形参考）以自包含 handoff
+  文档移交 leo-ppt 并行会话（工作区，AGPL 零复制）。验证：全套单测零回归；排版
+  赛道漏斗 30 浅筛→7 深读→三线裁决全程留痕（upstream-absorption-workspace/layout/）。
+
+- **evidence-first-writing：file-github 第二轮上游吸收全量落地（三批 15 任务，
+  user-visible）**：P0 地基——post-publish 判官升级双分支结构化解析（canonical
+  YAML 四值枚举 + promoted 三条件分段作用域 + 逐块校验 + 重复键/键名变体/围栏
+  变体对抗 + 否定感知窗口含数学否定 `≠`，`branch=canonical|synonym;contract_fields=n`
+  标注，A/B 历史回放零翻转）、`update_postpublish_record.py` 状态外置脚本（仅显式
+  --ledger、append-only、--invariant-hash，26 单测）、`check_factual_invariants.py`
+  内容哈希输出、`check_prose.py` 比喻场字面排除表（修技术术语误报）+ 过程叙述
+  lint；P1 增补——研究环三节（终止与预算/策展准入/压缩保真与引用忠实）、账本
+  摘录必填分档与引用呈现 family 分治†、拒答式评审†与返工 ≤3 轮带病放行†、收敛
+  早停、审查输出完备性契约（1 条问题下限或"未发现+检查范围"出口）、中文协议
+  七要素核对/动词强度分层/venue-first/【需作者确认】区块†/Never-inject 第 8 条、
+  长文缩水控制（bounded scope+留存率 ≥0.85 启发式）、声音档案认知层两章节+行级
+  证据+覆盖边界披露†、文案 grounding 溯源†+双层语义借势质检（暗示不豁免证据）、
+  工具登记五项（newsnow/xiaohongshu-mcp/md2wechat-skill 只登记/autocorrect/
+  Wechatsync CLI）；P2 合同——结构锚三件（状态块尾锚+route 首锚+发前自检）+
+  脚本指针句。新增 eval case 四个（阴阳对负例集 13 组/voice 超样本披露/
+  copy ungrounded 披露/case 断言扩展三条）。**判定线实验结论**：结构锚不能唤起
+  flash 级模型状态块自发性（16 轮 0 canonical，按预注册判定线回退脚本裁决路径，
+  停止该面 SKILL.md 文本尝试）；route 首锚显著有效（signal-bearing 4/10→10/10）。
+  **验证**：单测 157 全绿；it-94 观察性全量 36 case 32 PASS（存量 33=29，带内，
+  4 失败逐案归因）；多轮全量 3 轮 31/33/34 of 36（存量 33 扣故意失败项
+  87.9%/90.9%/97.0%，三轮均值 91.9%——R1 单轮低于 90% 线但在 it-83..92
+  历史带内且 4 失败全部归因在案间歇类；无新增稳定 FAIL；明细记
+  known-issues）；数值过线门禁实测证伪禁入；`expect.must_contain_any`
+  引擎解析不执行事实记档并迁移 rule_based。记档：evals/known-issues.md「R2
+  上游吸收」节、references/upstream-source-audit.md 第二轮审计章节；来源+
+  许可证+快照 2026-08-31 全程标注（AI-Scientist 非标许可仅思想重写）。
+
+
+
+
+
 - **leo-ppt-generator：优化清单九项全落地（P0 机检两项/P1 一项/P2 三项/P3 两项+可达性桥注，user-visible）**
   ：P0-1 路由可达性审计入 lint_style_governance（02/03 轴每风格须
   命名/组级桥注/variant_of 代达三通路任一，首跑抓出 29 个"有库无路"

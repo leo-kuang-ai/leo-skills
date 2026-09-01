@@ -46,6 +46,9 @@ cases:
     - evals/cases/signal-bearing-topic-proceeds.yaml
     - evals/cases/check-prose-diagnostic.yaml
     - evals/cases/chinese-humanize-preserve-negative.yaml
+    - evals/cases/voice-out-of-scope-disclosure.yaml
+    - evals/cases/copy-grounding-ungrounded.yaml
+    - evals/cases/layout-neutral-output.yaml
   defaults:
     timeout_seconds: 240
     max_turns: 4

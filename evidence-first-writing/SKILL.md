@@ -22,6 +22,8 @@ description: 先识别写作意图、文章类型、证据风险和协作方式�
 
 “帮我写一篇关于 X 的文章”这类请求按信号分档处理：含体裁、读者、渠道或用途任一信号时（如「深度分析」「介绍」「发布」「面向工程师」），声明一句有边界的假设（family + 读者推断）后直接进入 workflow，不问询；完全无信号、且候选 family 会产生不同证据门禁与交付物时，才问一个能区分主 workflow 的问题并立即停止，例如「你更希望读者形成一个判断，还是照着步骤完成一件事？」🛑 STOP：在用户回答前禁止起草正文或生成大纲。问询是例外，不是默认。
 
+route 首锚：开始写正文前先补 route 卡——同一响应要产出正文、大纲或改写稿时，route 卡必须先于正文在场；发现自己在写正文而卡尚未出现，停下先补卡再继续。本锚只约束执行路径，不约束问询路径：仅问分叉问题的问询轮无 route 卡是合法的（见上段 STOP）。（来源：last30days-skill 结构锚思想（MIT），快照 2026-08-31）
+
 确定 `article_family` 后读取 [references/article-workflows.md](references/article-workflows.md) 的对应流程。产品营销文案转 `copywriting.md`；技术教程、How-to、Reference 或 Explanation 同时读取 `technical-docs.md`。文章类型、发布渠道和作者声音是不同维度，不得互相替代。
 
 ## 选择深度
@@ -125,6 +127,8 @@ stable_rule_update: none   # 未满足 2 复现 + 2 可比 + 反例已查时只�
 persistence: not_run       # 未获明确写入授权时的固定值
 ```
 
+状态块之后固定追加单行末行标记 `postpublish-status: recorded`（yaml 围栏之外、复盘输出的最后一行；单行、固定、机器可 grep）。尾锚只提示状态块已落位，不替代上述任何字段、枚举与因果红线。落盘任务优先经 `scripts/update_postpublish_record.py` 裁决产出状态块（含 `--invariant-hash` 记录 `check_factual_invariants.py` 的事实回归哈希），模型不手写。（来源：claude-blog / last30days-skill 结构锚思想（均 MIT），快照 2026-08-31）
+
 渠道数据可得时，复盘同时记录 observation 清单（完读断点、被引用句、评论高频词），唯一用途是喂 [references/reader-profile.md](references/reader-profile.md) 与 [references/topic-momentum.md](references/topic-momentum.md) 的证据链；禁止任何段落级归因表述。
 
 ## 保护作者声音
@@ -156,10 +160,12 @@ python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_factual_invariants.py" 
 
 如果当前宿主无法确定已加载 Skill 的路径，记录 `factual_invariant_check: not_run` 和原因；不得在用户项目中猜测 `scripts/` 路径。脚本结果只检查可机械提取的不变量；即使通过，也必须人工核对确定程度、范围、主体和因果关系。
 
-中文文体的 `audit`/`humanize` 诊断在宿主可运行脚本时，优先运行同一 `scripts/` 目录下的 `check_prose.py`（`python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_prose.py" <file.md>`，退出码 1=失败级、2=仅警告级、0=干净）。输出是诊断线索，非交付门禁：作者样本与渠道优先原则可覆盖破折号、冒号等风格建议，警告级线索须结合语境判断；宿主无法运行脚本时逐条人工核对并说明。
+中文文体的 `audit`/`humanize` 诊断在宿主可运行脚本时，优先运行同一 `scripts/` 目录下的 `check_prose.py`（`python3 "$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_prose.py" <file.md>`，退出码 1=失败级、2=仅警告级、0=干净）。输出是诊断线索，非交付门禁：作者样本与渠道优先原则可覆盖破折号、冒号等风格建议，警告级线索须结合语境判断；宿主无法运行脚本时逐条人工核对并说明。发布级任务可另跑 `check_layout.py`（同目录，排版结构诊断：半角标点邻接、密度配额、段落节奏；退出码语义同上，同为线索非门禁），排版规约见 [references/layout-contract.md](references/layout-contract.md)。
 
 ## 返回可审计结果
 
 交付用户要求的正文，编辑说明按交付场景分档。发布或落盘任务附完整说明：使用的 operation 和实际运行阶段、影响结果的假设、未解决或有争议的主张、主要结构与声音决策、已执行和未执行的检查。chat 交付压缩为 2-3 行（operation + 关键假设 + 未决主张），YAML 状态块仅在用户要求或发布级任务时输出。无假设且无未决主张时可省略说明，但不得声称未做过的检查。
+
+发送前的最后一道自检核对结构锚：正文已产出时，route 卡与（post-publish 任务时的）状态块是否在场且与正文一致；缺失即在发送前补齐，只补锚，不改已完成正文的事实内容。（来源：last30days-skill 发前自检层思想（MIT），快照 2026-08-31）
 
 编辑文件时优先做局部修改。除非有明确的纠错依据，否则保留引语、代码、引用和用户提供的事实。

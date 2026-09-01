@@ -1,14 +1,54 @@
 id: audit-does-not-rewrite
 title: audit 模式只报告不改写
-description: 验证明确的只读审查不会越权生成第一版或第二版正文。
+description: |
+  验证明确的只读审查不会越权生成第一版或第二版正文；多轮场景下（第二轮自查）
+  无新发现时显式声明收敛并维持上轮结论，而不是为完成轮数硬造新 finding。
+  2026-08-31 收敛早停扩展（T009）：judge 由 check-audit-readonly.sh 迁移为
+  rule_based——脚本三组正断言（引用证据/可执行动作/高影响问题识别）与负断言
+  （不越权改写）等价迁移并按轮收紧，未削弱；新增第二轮收敛声明 any-list 与
+  否定感知 not-list（防「无新发现」substring 误判与硬造 finding 措辞）。
+  脚本文件保留原地不删。
 
 input:
-  prompt: |
-    只审查，不要改写下面的段落。请指出最高影响问题、引用原句、说明影响和建议动作。
+  turns:
+    - role: user
+      content: |
+        只审查，不要改写下面的段落。请指出最高影响问题、引用原句、说明影响和建议动作。
 
-    在当今快速发展的时代，这一开创性举措不仅是效率的提升，更是认知升级、价值沉淀和长期主义闭环的重要里程碑。业内专家普遍认为，它将赋能每一个普通人。
+        在当今快速发展的时代，这一开创性举措不仅是效率的提升，更是认知升级、价值沉淀和长期主义闭环的重要里程碑。业内专家普遍认为，它将赋能每一个普通人。
+    - role: user
+      content: |
+        请复核上一轮的审查结论。
+
+constraints:
+  timeout_seconds: 300
+  max_turns: 2
 
 judge:
-  type: script
-  script_path: evals/scripts/check-audit-readonly.sh
-  timeout_seconds: 10
+  type: rule_based
+  success:
+    # 第一轮审计实质：原 check-audit-readonly.sh 三组正断言等价迁移（未削弱）
+    - turn_response_contains:
+        turn: 1
+        contains_any: ["原句", "引用", "原文", "证据", '> "', '>“', '> “', '>「', '> 「']
+    - turn_response_contains:
+        turn: 1
+        contains_any: ["动作"]
+    - turn_response_contains:
+        turn: 1
+        contains_any: ["意义膨胀", "夸大", "宣传", "空泛", "套话", "无依据", "缺乏可验证依据", "无法被检验", "过度泛化", "绝对化", "模糊归因", "没有来源", "无来源", "无出处", "匿名权威", "虚假权威", "不可核验", "不可证伪"]
+    # 全程不越权改写：原脚本负断言按轮收紧
+    - turn_response_not_contains:
+        turn: 1
+        not_contains: ["第一版改写", "第二版改写", "改写后："]
+    - turn_response_not_contains:
+        turn: 2
+        not_contains: ["第一版改写", "第二版改写", "改写后："]
+    # 第二轮：无新发现时显式声明收敛并维持上轮（any-list）
+    - turn_response_contains:
+        turn: 2
+        contains_any: ["无新发现", "没有新问题", "未发现新", "没有新增", "无新增", "维持", "收敛", "不再改动", "不再修改", "无需再改", "到此为止", "不再需要", "不再继续", "审查完成", "复查完成", "自查完成", "一致", "沿用", "不变", "依然成立", "仍成立", "没有变化", "无变化", "没有遗漏", "未见遗漏", "未发现遗漏", "无误"]
+    # 否定感知：防「无新发现」等 any 词被否定句式 substring 误判，并拒绝硬造新 finding 措辞
+    - turn_response_not_contains:
+        turn: 2
+        not_contains: ["并非无新发现", "不是无新发现", "并不是无新发现", "并非没有新问题", "不是没有新问题", "未收敛", "又发现", "又找到", "又检出", "发现了新的问题", "补充一个问题", "补充一条问题", "再改一版", "还需再改", "还需要改", "还需修改", "并非无误", "复核后修正", "修正如下", "不一致"]

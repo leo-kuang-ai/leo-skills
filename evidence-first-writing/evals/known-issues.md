@@ -6,9 +6,33 @@ GLM flash 级模型对同一诊断每轮重掷措辞。判定标准：若 FAIL �
 
 已按此纪律处理的用例：`dev-edit-before-polish`（六轮六种措辞：并列/零贡献 → 文章不变/删掉任何一句 → 互不推进 → 通用真理/罗列/常识 → 删掉任意一句，全文毫发无损（it-66）→ 删除全部六个空转前提/删句测试（it-67），全部实质在场，A/A 掉率 1/3；后两次按既有合法词收口——「删掉任意」为变体、「空转」为 chinese-22 断言既有词表成员，历史失败响应重放均通过）；`chinese-protocol-context-judgment`（fixture 结尾句自身含反转金句造成判定二义，已修 fixture 根因而非追词，残余 A/A 掉率 1/3——停止判定措辞仍会重掷，如「模板感低」「整体人味充足」「不需要硬改」「不需要改」「不需要去模板」（it-69，第七种），后两者已按同义词惯例补入 case any-list 并复验 PASS）；`routes-ambiguous-single-question`（it-69 首掷：分叉问题第二读者任务用「照着做完一件事」，脚本词表只有完成/操作/理解/实践/步骤，补「做完」后历史重放 + 聚焦复验 PASS；该用例此前全量从未失败）；`taste-findings-not-visual`（it-71/72 连续两掷：引用用英文弯引号 “ 而非「」、密度表述先后掷「名词倾倒/净信息量为零」「八个词并列」，词表已为前者扩词一次（含弯引号字符），it-72 的「并列」按纪律记档不追——两轮实质均在场：3-4 条高杠杆品味 finding + 证据/代价/动作 canonical 格式 + 逐字引用原文，此前全量从未失败）；`docs-truth-param-check`（五轮五种参数核对措辞：不在 help → 不在真实 → 不在你提供的真实 → 未采用 → 输出中没有/删除，全部实质在场，A/A 掉率 2/3）；`audit-does-not-rewrite`（证据标签同义重掷：iteration-33 用「引用：」按扩同义词收口，iteration-54/55 再掷 `证据：` / `**证据**：`，两轮响应均逐字引用原句、实质在场，判官接受集扩「证据」后历史重放 + iteration-56 在线复验 PASS）；`chinese-22-rules-hit-and-preserve`（iteration-54 单轮漏报反代入 finding，iteration-55 聚焦复验 PASS 不可复现，纯记档；2026-08-27 晚论点压缩句判据落地后，检测报告从「类别标签式」转向「决策日志式」——删「深邃/拥抱」而不言「翻译腔」、「没有任何动作或例子支撑」而不言「空泛」，it-65/66 实质在场（删句测试被正确执行），case 两处 any-list 按惯例扩词后复验 PASS）。
 
+### 多轮全量稳定性（2026-08-31 R2 收尾，iteration-95/96/97，36 case）
+
+三轮连续全量：31/33/34 PASS（0 error）。存量 33 扣在案故意失败项（unprompted）后：**87.9% / 90.9% / 97.0%，均值 91.9%**——R1 单轮低于 90% 线但在 it-83..92 历史带（81.8-93.9%）内，且 4 个存量失败全部归因在案间歇类（chinese-protocol 2/10、dev-edit 1/10、bare-topic 频次上升已记档）；无新增稳定 FAIL。新增三 case：preserve-negative 3/3、copy-grounding 3/3、voice-out-of-scope 1/3（两轮失败均为措辞重掷实质在场：it-95「边界之外/外推/样本全在」、it-97「外推」+voice_basis 规范披露，扩词后两轮失败响应重放均命中；扩词后 21:0x 活体复测再掷第三种词形「样本域只有/档案本身的限制」——实质在场（规范披露档案限制并声明虚构填充需替换），按总则最终扩词（+样本域/档案本身的限制/档案的限制）并**记档为词面高变例，后续再掷只记档不追词**）。判定线实验与频率对比见上节。
+
 ## 判定收紧的回归教训（2026-08-27）
 
 红队修复中把 `check-causal-boundary.sh` 门禁 2 从泛否定词收紧为「情态词+动词」连续正则后，连续两轮**误拒合规响应**（中文习惯在情态词与动词间插入宾语：「无法**将这一下降**归因于」「不能下**因果**结论」）。已放宽为 0-8 字间隔并补 归因/确认/因果结论 动词，5/5 历史响应重放接受、对抗样本仍拒绝。教训：**收紧判定必须附带历史响应重放**（本项目已把它固化为流程）；同理 `docs-truth` 的 `qstat --verbose` 命令级负向断言因「引用-再否定」被移除（合规输出会引用待剔除的命令来解释删除）。
+
+## R2 上游吸收：判定线实验、判官修复与引擎事实（2026-08-31）
+
+### post-publish 状态块自发性：结构位置式干预同样无效（0/8），回退脚本裁决路径
+
+判定线预注册实验（T014 结构锚落地后，`post-publish-no-causal-unprompted` 聚焦 8 轮×2 批共 16 轮）：全部 synonym 分支、`contract_fields=0`、响应不产出任何 canonical 字段。按判定线（≤1/8）触发预定回退——**维持并细化在案结论**：对 flash 级模型，SKILL.md 文本强化无论内容追加式还是结构位置式（尾锚 `postpublish-status: recorded` + route 首锚 + 发前自检三层）均不能唤起 post-publish 状态块自发性；B6 落盘修复转 `scripts/update_postpublish_record.py` 脚本裁决为主路径（SKILL.md 指针句已在位）。断言保持原样不削弱；停止对该面追加任何 SKILL.md 文本尝试。
+
+同一锚组合的精细归因（两面分开记，锚组合保留）：**route 首锚显著有效**——`signal-bearing-topic-proceeds` 从 it-83..92 基线 4/10 升至 **10/10**（正文前 route 卡约束对"要执行"路径起效；状态块尾针对"要复盘"路径无效）。
+
+`bare-topic-fork-two-turns` 频次上升观察：基线 3/10 → 本轮 10/15 失败且全部同型——turn-1 跳问直起草（模型自行消费 turn-2 答案「读者自己判断」后直接分叉成文并带卡）。属在案「turn-1 违约起草」类而非首锚引起；首锚使违约形态更可见（违约起草规范地带卡）。按总则记档不追词，待全量多轮观察；若持续高位，下轮评估将「裸主题问询轮禁止起草」升为独立断言组。
+
+### 判官侧修复与扩词（本轮新入）
+
+- `≠|!=|不等于` 入否定标记表：it-94 全量实测 `post-publish-no-causal` 唯一失败轮为实质合规响应（「阅读高 ≠ 标题公式有效」为否定语境），数学否定形态缺口致误拒；修复+回归用例（`test_math_negation_neq_symbol_exempts_overclaim_phrase`）后聚焦复跑 PASS。该轮存量 33=29 PASS（87.9%，it-83..92 带内）。
+- postpublish 判官 8 项加固（键名强调符/等号变体、逐块校验、重复键矛盾、promoted 三条件分段作用域+未来时态窗口、最后决策标记、缩进 dedent、n=1 边界与 N 大写、大小写计数）：A/B 回放零翻转，对抗面回归锁 23 用例；明细记 upstream-source-audit 第二轮章节。
+- 新 case 首跑基线三条：`chinese-humanize-preserve-negative`（13 组阴阳对）、`voice-out-of-scope-disclosure`、`copy-grounding-ungrounded` 均 1 轮 PASS，基线记于各自 YAML description 尾部（灰区弱点已注记）。`voice-out-of-scope-disclosure` 全量首轮（it-95）措辞重掷：响应实质在场（「样本全在后端工程域」「边界之外」「外推到教育决策」）而 any-list 未含该词形，扩词（边界之外/领域之外/边界外/外推/样本全在/样本都在）后 it-95 失败响应重放命中。
+
+### 引擎事实：`expect.must_contain_any` 解析不执行
+
+当前 skill-up 构建中 script 形态 case 的 `expect.must_contain_any` 被解析但**不执行**——首次实测（T007）命中零词仍 PASS。`deep-editorial-pipeline` 与 `audit-does-not-rewrite` 已迁移 rule_based 等价断言并做历史重放（iteration-92 在案响应全过）；`check-deep-pipeline.sh`/`check-audit-readonly.sh` 暂无 case 引用（保留未删，清理待下轮）。上游修复前，新增断言一律用 rule_based 形态。
 
 ## 分档放松改造后首轮全量：判官扩词与记档（2026-08-29）
 

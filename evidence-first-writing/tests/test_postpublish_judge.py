@@ -642,6 +642,24 @@ class NegationAwareScanTest(unittest.TestCase):
         code, branch, reason = judge.judge(message)
         self.assertEqual((code, branch), (0, "canonical"), reason)
 
+    def test_math_negation_neq_symbol_exempts_overclaim_phrase(self):
+        # it-94 观察性回归实测：实质合规响应写「阅读高 ≠ 标题公式有效」被误拒
+        message = _canonical_message(
+            PASS_FIELDS,
+            prose="单案例不足以确立因果，尤其是「阅读高 ≠ 标题公式有效」。"
+            "无曝光量数据，打开率状态：not_available。",
+        )
+        code, branch, reason = judge.judge(message)
+        self.assertEqual((code, branch), (0, "canonical"), reason)
+
+    def test_bare_overclaim_phrase_without_negation_is_still_rejected(self):
+        message = _canonical_message(
+            PASS_FIELDS,
+            prose="这次数据证明标题公式有效。无曝光量数据，打开率状态：not_available。",
+        )
+        code, branch, reason = judge.judge(message)
+        self.assertEqual(code, 1, reason)
+
     def test_negated_single_post_signal_with_promoted_is_accepted(self):
         message = _canonical_message(
             [
@@ -783,6 +801,19 @@ class PromotedGateContextScopeTest(unittest.TestCase):
     """三条件语境收窄（scr-20260831-164237 第二轮 adversarial P2）：只从含
     最后一次决策标记的空行分段内提取，条件命中受否定与未来时态窗口约束——
     跨段历史记录不收割、计划态数字不充当已完成条件。"""
+
+    def test_math_negation_in_prose_does_not_negate_conditions(self):
+        """终审 P3：散文里「A != B」是比较不是条件否定——三条件齐全的
+        promoted 不得因 != 落入条件否定窗口被误拒。"""
+        message = (
+            "复盘：observation 记录句式效应出现；hypothesis 待验证；"
+            "stable_rule_update: promoted（已 2 复现 + 2 可比 + 反例已查："
+            "replications: 3 comparable_runs: 2 counterexamples_checked: true）。"
+            "对照组对比显示 A != B。无曝光量数据，打开率状态：not_available；"
+            "persistence: not_run（未获授权不写任何文件）。\n"
+        )
+        code, branch, reason = judge.judge(message)
+        self.assertEqual(code, 0, reason)
 
     def _prose_message(self, body):
         return (

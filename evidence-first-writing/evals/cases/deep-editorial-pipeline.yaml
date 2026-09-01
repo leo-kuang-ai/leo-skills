@@ -1,10 +1,23 @@
 id: deep-editorial-pipeline
 title: 高风险文章应采用完整编辑主链
-description: 验证事实密集且准备公开发布的文章不会被降级为直接起草和末端去 AI 味。
+description: |
+  验证事实密集且准备公开发布的文章不会被降级为直接起草和末端去 AI 味。
+  2026-08-31 扩展（workflow-contract.md §2 账本完备性合同，U6，来源：
+  academic-paper-skills（MIT），快照 2026-08-31）：增补断言——账本核心主张行
+  只有来源、缺证据摘录时该主张被拦截，不得直接引用进正文，须先回来源补抄
+  摘录或降级为不可引用。同轮把 judge 从 script 改为 rule_based：原
+  check-deep-pipeline.sh 检查等价迁移：四项（deep / 证据账本 / 事实回归 / 分层编辑）
+  迁入 rule_based any/not 断言，「无 AI 分数放行」负断言由 expect.must_not_contain
+  承载（it-97 实测该指令在当前构建中执行）
+  新断言；expect.must_contain_any 在当前 skill-up 构建中不生效，故不使用。
+  baseline: 2026-08-31 转换后首跑 PASS（claude_code 引擎 GLM 5.3，90.6s，6/6
+  断言通过；拦截断言命中「不能直接引用」，not-list 零命中；此前 expect 形态
+  的一次运行为 96.8s PASS 但 must_contain_any 未被执行，已改判无效并重构）。
 
 input:
   prompt: |
     我要公开发布一篇关于新劳动政策影响的深度文章，文中会使用政策日期、企业数据、员工访谈和金额。先不要写正文，请使用这个 Skill 给出一步一步的执行流程、每个门禁和主要产物。目标是高质量且可以接受外部质疑。
+    另外我提前问一个具体问题：我的证据账本里核心主张 C03「某制造企业因新政策把三成劳务合同改成了劳务派遣」，目前只有来源链接，还没抄证据摘录。这一条能不能直接引用写进正文？请在流程里说明这一条的处理方式。
 
 expect:
   must_not_contain:
@@ -15,6 +28,19 @@ constraints:
   max_turns: 2
 
 judge:
-  type: script
-  script_path: evals/scripts/check-deep-pipeline.sh
-  timeout_seconds: 10
+  type: rule_based
+  success:
+    # 以下四条为原 check-deep-pipeline.sh 的等价迁移（既有断言不削弱）
+    - output_contains:
+        all: ["deep"]
+    - output_contains:
+        any: ["证据账本", "evidence-ledger", "evidence ledger"]
+    - output_contains:
+        any: ["事实回归", "factual_regression"]
+    - output_contains:
+        any: ["分层审查", "分层编辑", "development_edit"]
+    # U6 新增：缺摘录的核心主张被拦截（肯定断言 any-list）
+    - output_contains:
+        any: ["不可引用", "不能直接引用", "不得直接引用", "不能直接写进正文", "不得直接写进正文", "不能直接进正文", "不得直接进正文", "不能写进正文", "不得写进正文", "不能进正文", "不得进正文", "不得进入正文", "不能进入正文", "不满足进入正文", "不具备进入正文", "没有资格进入", "不能以现状写进正文", "不允许进入正文", "不允许写进正文", "不能作为事实", "不得作为事实", "不能进入终稿", "不得进入终稿", "先补摘录", "补上摘录", "补齐摘录", "补抄摘录", "补录摘录", "补摘录", "先摘录", "先抄摘录", "摘录后", "必须摘录", "须先摘录", "抄录原文", "回来源补", "回到来源", "先回来源", "回读来源", "重新回读来源", "缺少摘录", "没有摘录", "摘录为空", "摘录缺失", "缺摘录", "未摘录", "未核实"]
+        # 否定感知：仅拦无条件放行/免摘录表述（含 C03 锚定，避免误伤「补齐后才可引用」类健康表述）
+        not: ["C03 可以直接引用", "C03 可以引用", "C03 可以写进正文", "C03 可以进正文", "可以直接引用 C03", "现在就可以引用", "现在可以直接引用", "无需摘录", "不需要摘录", "摘录可以后补", "可以先引用后补", "可以先写后补", "先引用再补摘录"]

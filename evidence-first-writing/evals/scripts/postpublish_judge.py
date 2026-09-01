@@ -49,9 +49,12 @@ substring——防 ``stable_rule_update: None of the criteria are met`` 被
 ``"None" in response`` 误判为接受。拒绝方向的全文扫描（单篇冲突信号与
 因果黑名单）配否定感知窗口（AGENTS.md 门禁纪律）：命中起点前方 8 字符内
 出现否定标记（不能|无法|尚未|未|不可|不得|并非|不是|已排除|排除|不依赖|
-不基于|不再|无关|没）时按否定语义不计命中；数值形态 n=1 另走边界正则
-（大小写不敏感，不误伤 n=10..19、N=1st 序数与『n=1 起步/初步』成长叙述），
-中文短语保留子串。
+不基于|不再|无关|没|≠|!=|不等于——数学否定形态 2026-08-31 扩入，it-94 实测
+「阅读高 ≠ 标题公式有效」为实质合规）时按否定语义不计命中——该窗口仅用于
+拒绝方向扫描（单篇冲突信号与因果黑名单）；promoted 三条件的计数豁免不采
+数学否定形态（条件语境中 A != B 是比较不是条件否定，it-94 后终审实测）；
+数值形态 n=1 另走边界正则（大小写不敏感，不误伤 n=10..19、N=1st 序数与
+『n=1 起步/初步』成长叙述），中文短语保留子串。
 
 stderr 恒输出一行 ``branch=canonical;contract_fields=<n>`` 或
 ``branch=synonym;contract_fields=<n>``（n=全 message 命中的合同字段键数，
@@ -131,9 +134,16 @@ _SINGLE_POST_PHRASES = (
 )
 
 # 否定感知窗口：拒绝方向扫描命中起点前方 8 字符内出现否定标记则不计命中
-# （窗口宽度对齐 check-causal-boundary.sh 在案纪律的 0-8 字间隔）
+# （窗口宽度对齐 check-causal-boundary.sh 在案纪律的 0-8 字间隔；
+# ≠/!=/不等于 属数学否定形态——2026-08-31 观察性回归 it-94 实测「阅读高 ≠ 标题公式有效」
+# 为实质合规响应，因标记表缺数学否定被误拒，按同义词惯例扩入）
 _NEGATION_WINDOW = 8
 _NEGATION_MARKERS_RE = re.compile(
+    r"并非|不是|已排除|不能|无法|尚未|不可|不得|不依赖|不基于|不再|无关|排除|未|没|≠|!=|不等于"
+)
+
+# 条件计数豁免专用：数学否定形态不参与（A != B 在条件语境是比较，不是条件否定）
+_PROSE_NEGATION_MARKERS_RE = re.compile(
     r"并非|不是|已排除|不能|无法|尚未|不可|不得|不依赖|不基于|不再|无关|排除|未|没"
 )
 
@@ -197,10 +207,15 @@ def exact_value(raw):
     return value
 
 
-def _negated_hit(message, start, window=_NEGATION_WINDOW):
-    """拒绝方向命中起点前方 window 字符窗口内是否出现否定标记。"""
+def _negated_hit(message, start, window=_NEGATION_WINDOW, markers=None):
+    """拒绝方向命中起点前方 window 字符窗口内是否出现否定标记。
+
+    markers 缺省用全量标记表（含 ≠/!= 数学否定）；promoted 三条件的
+    计数豁免传 _PROSE_NEGATION_MARKERS_RE（数学否定不参与条件豁免）。
+    """
+    regex = markers if markers is not None else _NEGATION_MARKERS_RE
     prefix = message[max(0, start - window):start]
-    return bool(_NEGATION_MARKERS_RE.search(prefix))
+    return bool(regex.search(prefix))
 
 
 def find_single_post_signal(message):
@@ -365,9 +380,10 @@ def _decision_paragraph(message, index):
 
 
 def _condition_hit_counts(segment, found):
-    """条件命中是否计入：命中起点前方 8 字符否定窗口（复用否定感知纪律）
+    """条件命中是否计入：命中起点前方 8 字符否定窗口（复用否定感知纪律，
+    但数学否定形态不参与条件豁免——条件语境中 A != B 是比较不是条件否定）
     与前后未来时态窗口（前 8 / 后 12 字符）内的计划、排期、否定语义不计。"""
-    if _negated_hit(segment, found.start()):
+    if _negated_hit(segment, found.start(), markers=_PROSE_NEGATION_MARKERS_RE):
         return False
     prefix = segment[max(0, found.start() - _NEGATION_WINDOW):found.start()]
     suffix = segment[found.end():found.end() + _FUTURE_SUFFIX_WINDOW]

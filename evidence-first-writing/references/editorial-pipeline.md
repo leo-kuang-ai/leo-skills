@@ -120,6 +120,8 @@
 
 finding 必须有文本证据、影响、修复动作和 owning node。仅审查时到此停止；要求修改时只修获授权范围。
 
+打回-修订循环默认 ≤3 轮†：轮数是默认工作约定而非数值门禁，不得据此写成「轮数/分数达标即放行」的机械规则。超限不是无限返工、静默截断或崩溃：未解决的 finding 保持 open 状态进入编辑说明，带病放行交作者决策——这是门禁失败时「暴露阻塞」纪律的一种形态，不是自动通过，也不得用润色遮掩。修订所需的检索或验证 0 产出、或全部尝试失败时，立即停止并如实记录缺口，不硬撑生成。（来源：gpt-researcher（Apache-2.0），快照 2026-08-31；†合同性增补）
+
 ## 12. 去模板与事实回归
 
 Humanizer 先诊断、后删除、再定点改写；检测分数不参与质量放行。改写前冻结数字、日期、姓名、URL、引语、代码、术语、范围、确定程度和因果关系。文件存在时，使用当前已加载 Skill 根目录的绝对路径运行 `"$EVIDENCE_FIRST_WRITING_SKILL_DIR/scripts/check_factual_invariants.py"`；根目录不可确定时记录 `factual_invariant_check: not_run`，然后人工检查脚本不能判断的语义漂移。
@@ -171,6 +173,8 @@ independent_review:
 - `not_run`：没有授权、能力、时间或必要材料；不能宣称已独立验证。
 - `author_side_simulation`：同一 Agent 根据读者问题自检；只可作为内部辅助。
 
+拒答式评审协议†：审查结论先过「最强反方」——先回答「如果要拒绝这份稿子，最有力的理由是什么」，再给正方结论；未经反方攻击直接放行无效。未通过时输出以「要通过，你必须…」开头的可执行改进清单，每条指回 owning node，整份清单回注修订输入，作为 `findings_returned` 状态的具体形态。同一问题评审失败后禁止原地原样重答：下一轮必须换路径（换检索角度、补证据或换 owning node）或升级作者决策，失败原因一行入过程记录。（来源：node-DeepResearch（Apache-2.0），快照 2026-08-31；†合同性增补）
+
 独立 reviewer 只审目标授权范围，不能获得额外写权限、外部发送权限或私人档案。审查失败不允许由 Humanizer 直接掩盖。
 
 ## 14. 复盘与学习（按需）
@@ -189,6 +193,8 @@ stable_rule_update:
 ```
 
 `status: promoted` 需要同时满足：`replications >= 2`、`comparable_runs >= 2`、`counterexamples_checked: true`。不满足时只能写 `none` 或 `hypothesis`，不得把规则写进稳定声音档案或标题公式，也不得承诺下次沿用。原始指标使用 append-only 账本，允许追加但不得覆盖历史版本。
+
+状态块之后固定追加单行末行标记 `postpublish-status: recorded`（yaml 围栏之外、复盘输出最后一行；与 SKILL.md post-publish 节的尾锚同一形态）。尾锚只是结构提示，不替代四字段、枚举与升格条件。
 
 `post-publish` 默认只分析，不持久写入。单篇结果只登记为 `observation` 与 `hypothesis`；没有曝光量时打开率标记 `not_available`。未获得明确写入授权和目标路径时，`persistence: not_run`，不得写入声音档案、记忆或项目文件。
 

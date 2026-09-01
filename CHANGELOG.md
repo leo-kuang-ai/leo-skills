@@ -8,6 +8,30 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **leo-ppt-generator：style 模块内容审查修复批（P1×4 + P2×15 + P3×8，
+  user-visible）**：三源审查（318 brief 机器全量扫描 + 文档层专家通读 + S5
+  保真复核）发现项全量处置——P1 硬矛盾四项：规模口径三套并存统一（style-
+  library 273/256、style-recommendation 121+16 → 311/294，单一引用 _INDEX
+  顶行）；`--brand` 通道"规划中/未实现"改为已实现（对齐 cli.py 与 style-library
+  合同，风格路由使用规则 3 与设计体系覆盖优先级行）；硬顶 220→300（candidates
+  补货门恢复可执行，现 294/300）；emoji 反模式加"brief 明示降级豁免"句。
+  P2：_INDEX 顶行过期口径快照两处刷新；设计体系/通用设计规范规模表整批刷新
+  （视觉轴 37→155+11 等）；扩展模板 JSON 补 visual_elements/rendering_
+  constraints/reference 三节、计数 137/121 统一；candidates 四条目余量随
+  C2/S5 吸收账刷新；字号 32/44 两层关系声明（红线 vs Canon 刻度）；路由表
+  列头改"视觉/行业风格（01/02）"、渲染列偏离豁免句、学术行改学术五拍、
+  06 叙事方法论层可见性注记、P1-P36 补全、气质速查补东方/柔和/终端三行、
+  数学与医疗行推荐力修正、别名多命中消歧规则第 6 条；配对表 4 处改锚
+  （环保绿动→自然有机/健康科普插画→矢量插画/地图战略→水彩注记地图/汽车
+  品牌→超实产品海报）+ 兜底节矛盾改写 + 主表空行断裂合并 + 风投/融资路演
+  分叉注记。S5 保真补译：地图战略风补 B/E/F 三母版与字号层级（layout_
+  patterns 4→7）、浅粉棕医院运营风补目录人物/双轴趋势页型（3→5）。P3 杂项：
+  招行字体栈补 PingFang SC、重大补 Dark Ink/注记灰阶、#333→#333333、
+  图表规范 P35 漏计与"共用零基线"漏字、版式 Schema 断裂、调色板措辞、
+  _INDEX 孤儿行/结构布局第 8 行/OfficeCLI 分组计数/"制版"错字。
+  negative_prompt<3（126 份）与别名冲突（40 组）登记为渐进治理债
+  （style-library.md 渐进治理节）。验证：六条 lint 全绿 + gallery --check OK。
+
 - **leo-ppt-generator：S5 吸收批 6 套缺口风格 brief（ppt-github 生态审查收尾，
   user-visible）**：三专家全量审查 122 项后补齐仅存语义缺口——huashu-design 3
   套（设计流派·玩味手绘极简风/Collins 式荧光黄 #FFE01B、设计流派·不羁玩梗流行

@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -35,6 +36,20 @@ INSTALL_GUIDE = (
     "python -m playwright install chromium；完成后重跑 render ready。"
     "期间图像 lane 不受影响。"
 )
+
+
+def _concrete_install_guide() -> str:
+    """一键可复制版安装指引：以当前解释器与 home 目录生成具体命令，
+    免去用户拼接路径（托管 venv 场景 pip 即 venv 内 pip）。"""
+    py = Path(sys.executable)
+    pip = py.with_name("pip") if py.name.startswith("python") else py
+    browsers = default_home() / RENDER_BROWSERS_SUBDIR
+    return (
+        "render lane 依赖未就绪，一键安装（复制执行）：\n"
+        f'  "{pip}" install playwright\n'
+        f'  PLAYWRIGHT_BROWSERS_PATH="{browsers}" "{py}" -m playwright install chromium\n'
+        "完成后重跑 render ready。期间图像 lane 不受影响。"
+    )
 
 
 @dataclass
@@ -164,7 +179,7 @@ def probe_fast() -> ReadinessReport:
 
         report.playwright_version = metadata.version("playwright")
     except Exception:
-        report.install_guide = INSTALL_GUIDE
+        report.install_guide = _concrete_install_guide()
         report.details["missing"] = ["playwright"]
         return report
 
@@ -190,7 +205,7 @@ def probe_fast() -> ReadinessReport:
             report.details["detection"] = "filesystem"
             report.status = "render_backend_ready"
             return report
-    report.install_guide = INSTALL_GUIDE
+    report.install_guide = _concrete_install_guide()
     report.details["missing"] = ["chromium"]
     report.details["probe_note"] = "filesystem-level detection; run `render ready` for launch-level truth"
     return report
@@ -212,7 +227,7 @@ def probe(*, launch: bool = True) -> ReadinessReport:
         import importlib.metadata as metadata
         report.playwright_version = metadata.version("playwright")
     except Exception:
-        report.install_guide = INSTALL_GUIDE
+        report.install_guide = _concrete_install_guide()
         report.details["missing"] = ["playwright"]
         return report
 
@@ -222,7 +237,7 @@ def probe(*, launch: bool = True) -> ReadinessReport:
     report.chromium_path = executable
     report.chromium_version = version
     if error:
-        report.install_guide = INSTALL_GUIDE
+        report.install_guide = _concrete_install_guide()
         report.details["missing"] = ["chromium"]
         report.details["probe_error"] = error
         # executable 缺失是确知的 missing；executable 在场但启动/探测异常

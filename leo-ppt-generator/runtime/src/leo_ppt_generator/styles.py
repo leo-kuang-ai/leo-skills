@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import time
 import re
 from pathlib import Path
 
@@ -147,7 +148,13 @@ def load_style(name: str, *, home: Path | None = None) -> dict:
     if not path.is_file():
         raise StyleStoreError("style_not_found")
     try:
-        content = path.read_text(encoding="utf-8")
+        try:
+            content = path.read_text(encoding="utf-8")
+        except OSError:
+            # 多 worker 并发高峰期的瞬态读失败（fd/资源压力）重试一次；
+            # UnicodeError 是确定性损坏，不重试。
+            time.sleep(0.05)
+            content = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError) as exc:
         raise StyleStoreError("style_unreadable") from exc
     content = _sanitize(content)

@@ -219,6 +219,58 @@ def _check_prompt_registry(
         warnings.append(f"提示词记账陈旧: {file_ref} 已不存在于 prompts/（仅提示，不阻断）")
 
 
+# 路由可达性显式豁免：有意不进路由地图的 02/03 风格（点名词源/低频场景）。
+# 收敛纪律：只缩不增——新增豁免必须写明理由。
+ROUTE_REACH_EXEMPT: frozenset[str] = frozenset({
+    # （当前为空：全部 02/03 风格经命名/组级桥注/家族主风格代达可达）
+})
+
+
+def _check_route_reachability(errors: list[str]) -> None:
+    """7. 路由可达性：02/03 轴（行业身份/场景结构）每个独立可选风格在
+    ``00_索引/风格路由.md`` 可达——三条通路任一即过：
+    a) 风格名在路由文档出现（含括注点名）；
+    b) 组级桥注：路由文档含 ``<组目录名>族``（如「02 行业域医疗健康族」）；
+    c) 家族代达：本风格是 variant_of 变体且其主风格名在路由文档出现。
+    不可达 = "有库无路"索引孤儿（20+50 行业测评定位的系统性缺口类别）。"""
+    routing = STYLES_ROOT / "00_索引" / "风格路由.md"
+    if not routing.is_file():
+        return
+    text = routing.read_text(encoding="utf-8")
+    for axis in ("02_行业内容域", "03_场景用途结构"):
+        for p in sorted((STYLES_ROOT / axis).rglob("*.md")):
+            if p.name in ("_content_rules.md", "00_README.md"):
+                continue
+            raw = p.read_text(encoding="utf-8")
+            m = re.search(r"```json\n(.*?)```", raw, re.S)
+            if not m:
+                continue  # 轴内非 brief 文件（规则/README）
+            stem = p.stem
+            if stem in ROUTE_REACH_EXEMPT:
+                continue
+            if stem in text:
+                continue
+            group = p.parent.name
+            if f"{group}族" in text:
+                continue
+            variant_primary = ""
+            try:
+                variant_primary = json.loads(m.group(1)).get("variant_of", "") or ""
+            except json.JSONDecodeError:
+                variant_primary = ""
+            if not variant_primary:
+                # 变体声明可能只落在 markdown 文本（R-66 早期形态）而非 JSON 键
+                vm = re.search(r"variant_of[^\n]*?([\u4e00-\u9fff]{2,12}风)", raw)
+                if vm:
+                    variant_primary = vm.group(1)
+            if variant_primary and variant_primary in text:
+                continue
+            errors.append(
+                f"路由不可达: {p.relative_to(STYLES_ROOT)} —— 路由文档无命名/"
+                f"组级桥注（{group}族）/主风格代达（variant_of={variant_primary or '无'}）"
+            )
+
+
 def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -228,6 +280,7 @@ def main() -> int:
     _check_routing(errors)
     _check_text_anchor(errors)
     _check_prompt_registry(errors, warnings)
+    _check_route_reachability(errors)
     print(f"governance errors={len(errors)} warnings={len(warnings)}")
     for item in errors[:20]:
         print(f"  ✗ {item}")

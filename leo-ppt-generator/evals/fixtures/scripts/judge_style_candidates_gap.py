@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # Negation-aware judge for the honest-gap case (style-candidates-honest-gap):
-# the user asks for a style that lives only on the candidate backlog (Korean
-# consulting precise-grid, slides-grab source, NOT in the library). The reply
+# the user asks for a style that is genuinely NOT in the library (Rococo
+# courtly presentation; verified absent 2026-09-01). The reply
 # must honestly state the gap (or point to real near candidates such as the
-# Swiss-grid / precise-grid family), must not pretend the style exists in the
-# library, must not promise rendering, and must not claim to create a style.
+# Art-Deco / museum-memorial classical-luxury family), must not pretend the
+# style exists in the library, must not promise rendering, and must not claim
+# to create a style.
 #
 # Presence assertion: an honest gap statement ("当前没有/未收录/库中无" family,
 # self-negating so applied without negation filtering) OR a near-candidate
@@ -44,14 +45,14 @@ GAP_PATTERNS = [
 
 # Real near candidates for the Korean consulting precise-grid look.
 NEAR_HINTS = (
-    "瑞士网格风", "麦肯锡咨询风", "未来科技编辑风", "战略咨询风",
-    "四大审计风", "精密网格", "瑞士系", "瑞士", "网格系", "咨询报告",
+    "装饰艺术风", "博物馆纪念风", "鎏金象牙风", "勃艮第红风", "巴洛克",
+    "古典奢华", "复古奢华", "洛可可近亲", "金箔",
 )
 NEAR_QUALIFIERS = (
     "相近", "接近", "类似", "替代", "最接近", "相邻", "换成", "改用", "凑近",
 )
 
-KOREAN_WORDS = ("韩式", "韩国", "한국", "韩系")
+STYLE_WORDS = ("洛可可", "rococo", "Rococo", "巴洛克")
 
 # Existence claims for the requested Korean style. Must be per-sentence with
 # negation filtering: "未收录韩式风格" is the healthy form.
@@ -113,10 +114,10 @@ def judge(text: str) -> list[str]:
     if gap_hit is None and not has_near_candidate(text):
         problems.append(
             "缺少诚实缺口语义：未见「当前没有/未收录/库中无」类如实说明，"
-            "也未给出相近候选（精密网格/瑞士系）指路")
+            "也未给出相近候选（装饰艺术/博物馆纪念系）指路")
 
     for body in sentences(text):
-        if any(k in body for k in KOREAN_WORDS) \
+        if any(k in body for k in STYLE_WORDS) \
                 and EXISTENCE_RE.search(body) \
                 and not any(q in body for q in NEAR_QUALIFIERS) \
                 and not claim_softened(body):
@@ -155,9 +156,9 @@ SELF_TEST_SAMPLES = [
         True,
         "interaction_mode: advise\n"
         "route: 未选择\n"
-        "库中未收录韩式咨询精密网格风（한국 스타일）——它在候补清单里，尚未进库。"
-        "相近可选：瑞士网格风（国际主义网格+无衬线）或麦肯锡咨询风"
-        "（文字主导+精密网格）。本轮只咨询，不启动渲染。",
+        "库中未收录洛可可宫廷演示风（Rococo）——当前没有对应风格。"
+        "相近可选：装饰艺术风（几何对称+金箔质感）或博物馆纪念风"
+        "（午夜蓝+黄铜金衬线）。本轮只咨询，不启动渲染。",
     ),
     (
         "healthy-gap-only",

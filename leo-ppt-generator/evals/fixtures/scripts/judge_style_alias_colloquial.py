@@ -140,6 +140,12 @@ def claim_softened(body: str) -> bool:
 
 def looks_like_style_name(name: str) -> bool:
     # Chinese style names carry 风; imported names may carry style/theme.
+    # 真实风格名以「风」结尾；以「风格」结尾的引号短语（如「用户点名风格」）
+    # 是规则词汇而非风格名宣称——迭代 120 的实测误判来源。
+    if name.endswith("风格") or name.endswith("风格」"):
+        return False
+    if "点名" in name or "规则" in name or "预设" in name:
+        return False  # 规则/机制用语，不是风格名
     return "风" in name or bool(re.search(r"(?i)\b(style|theme)\b", name))
 
 
@@ -227,6 +233,15 @@ SELF_TEST_SAMPLES = [
         False,
         "点名可以命中 Dracula紫风；不过更推荐「紫红赛博终端风」，"
         "就是 dracula 那种感觉，特别配技术分享。",
+    ),
+    (
+        # 回归：迭代 120 实测误判——引号内规则词汇「用户点名风格」被判为
+        # 编造风格名。真实风格名以「风」结尾，以「风格」结尾的是词汇。
+        "healthy-rule-vocab-quote",
+        True,
+        "库里可以命中 Dracula紫风（终端配色族）。\n"
+        "- **点名规则**：你属于「用户点名风格」，按选择优先序直接锁定该风格。"
+        "本轮只咨询不执行。",
     ),
 ]
 

@@ -8,6 +8,29 @@ adheres to a loose semantic-versioning convention.
 
 ### Changed
 
+- **leo-ppt-generator：优化清单九项全落地（P0 机检两项/P1 一项/P2 三项/P3 两项+可达性桥注，user-visible）**
+  ：P0-1 路由可达性审计入 lint_style_governance（02/03 轴每风格须
+  命名/组级桥注/variant_of 代达三通路任一，首跑抓出 29 个"有库无路"
+  孤儿，经 7 处组级桥注+新增对外宣传行全部消解，豁免白名单保持为空）；
+  P0-2 跨文档口径机检入 lint_style_index（style-library 可加载/独立可选、
+  style-recommendation 独立可选、设计体系视觉轴四锚点动态比对，正负例
+  双验证，顺修 parent.parent 路径 bug）；P1-4 别名撞名入 lint_style_briefs
+  （28 串存量白名单只缩不增，新撞名 ERROR，负例拦截验证）。P3-9
+  load_style 瞬态 OSError 单次重试（UnicodeError 不重试）；P2-6
+  `style list --filter`（名称/别名大小写不敏感双路，医院/dracula 双验）；
+  P2-7 render 后端一键安装指引动态化（当前解释器+home 具体路径可直接
+  复制执行）；P2-5 `scripts/draft_negative_prompts.py` 草案器（从 brief
+  自身 avoid/constraints 确定性派生，dry-run 默认；实测仅少数含显性禁止
+  句的 brief 有产出，主体仍靠命中时顺手补，已登记渐进治理节）。P3-8
+  双判官修复：style-candidates-honest-gap 前提过期（韩式精密网格已随 C2
+  收录，agent 如实答"有"反被判违规）——前提换为全库零命中的洛可可宫廷
+  演示风+判官近邻锚换装饰艺术/博物馆纪念族（自测 6/6+正反例）；
+  style-alias-colloquial-hit 迭代 120 误判（规则词汇「用户点名风格」被
+  引号反查判为编造）——加"以『风格』结尾=词汇非风格名"护栏+回归样本
+  （自测 7/7）。验证：六 lint 全绿+测试组全过；两修复用例连续 2 轮
+  eval 全 PASS（修复前 honest-gap 四轮稳定 50% 失败）；runtime 重建
+  eaad597b 后 --filter/标记/playwright 链路复验通过。
+
 - **leo-ppt-generator：测评收尾批——观察项排查关闭 + 记档文档（user-visible）**
   ：三项观察项排查关闭：style_store_error 连发瞬态（load_style 全链只读
   无锁，串行 6 连发+5 并发均不复现，判定并行期系统资源瞬态、fail-closed

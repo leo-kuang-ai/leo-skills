@@ -1415,6 +1415,10 @@ def build_parser() -> argparse.ArgumentParser:
     style_commands = style.add_subparsers(dest="style_command", required=True)
     style_list = style_commands.add_parser("list")
     style_list.add_argument("--home")
+    style_list.add_argument(
+        "--filter",
+        help="按名称/别名字符串过滤（大小写不敏感；318 条全量输出前的轻量裁剪）",
+    )
     style_load = style_commands.add_parser("load")
     style_load.add_argument("name")
     style_load.add_argument("--home")
@@ -2979,7 +2983,16 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
         _home_arg = getattr(args, "home", None)
         home = Path(_home_arg).expanduser().resolve() if _home_arg else None
         if args.style_command == "list":
-            return envelope("ready", "style_listed", styles=list_styles(home=home), safe_to_retry=True)
+            styles = list_styles(home=home)
+            needle = getattr(args, "filter", None)
+            if needle:
+                needle = str(needle).strip().lower()
+                styles = [
+                    item for item in styles
+                    if needle in str(item.get("name", "")).lower()
+                    or any(needle in str(a).lower() for a in item.get("aliases", []) or [])
+                ]
+            return envelope("ready", "style_listed", styles=styles, safe_to_retry=True)
         if args.style_command == "load":
             result = load_style(args.name, home=home)
             return envelope("ready", "style_loaded", style=result, safe_to_retry=True)

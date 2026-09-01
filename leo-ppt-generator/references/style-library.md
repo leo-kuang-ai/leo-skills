@@ -152,6 +152,9 @@ Layout 块 → 每页图片生成 prompt。
 - **negative_prompt 渐进补齐**：约 126 份早期批参考 brief 的 negative_prompt 不足
   3 条（lint 仅对顶层 11 套内置强制）。补齐节奏：该风格被点名命中或触发渲染修订时
   顺手补至 3-5 条针对性负面词，不专项批量重写（避免无真实风险的模板化填充）。
+  辅助工具：`scripts/draft_negative_prompts.py` 从 brief 自身 avoid/constraints
+  确定性派生草案（dry-run 默认，--apply 需人工确认；实测仅对少数含显性禁止句的
+  brief 有产出，主体仍靠顺手补）。
 - **别名冲突消歧**：约 40 组口语别名跨风格重复（如"国风"/"terminal"/"catppuccin"），
   消歧规则见 [`styles/00_索引/风格路由.md`](styles/00_索引/风格路由.md) 使用规则第 6 条；
   新增风格登记 aliases 时不得与既有别名撞车（lint family_duplicate 之外的人工检查项）。

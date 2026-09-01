@@ -29,6 +29,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -126,6 +127,58 @@ def _check_library(errors: list[str], actual: dict[str, int]) -> None:
             )
 
 
+
+def _count_variants() -> int:
+    """01/02/03 轴 variant_of 变体文件数（以 brief JSON 键为唯一真值；
+    markdown 提及不算——主风格描述家族时也会出现该词）。"""
+    count = 0
+    for axis in ("01_通用母版", "02_行业内容域", "03_场景用途结构"):
+        for f in (STYLES_ROOT / axis).rglob("*.md"):
+            m = re.search(r"```json\n(.*?)```", f.read_text(encoding="utf-8"), re.S)
+            if not m:
+                continue
+            try:
+                if json.loads(m.group(1)).get("variant_of"):
+                    count += 1
+            except json.JSONDecodeError:
+                continue
+    return count
+
+
+def _check_doc_scale_consistency(errors: list[str], actual: dict, top_level: int) -> None:
+    """跨文档口径一致性：style-library 可加载行 / style-recommendation 独立可选数 /
+    设计体系视觉轴行，必须与文件系统真值一致（P1 三套口径并存的机检防回潮）。"""
+    extra = 0
+    for d in ("15_来源_officecli", "16_来源_slides-grab"):
+        extra += sum(
+            1 for f in (STYLES_ROOT / d).rglob("*.md")
+            if re.search(r"```json\n", f.read_text(encoding="utf-8"))
+        )
+    total_json = top_level + sum(actual[d] for d in BRIEF_DIRS) + extra
+    independent = total_json - _count_variants()
+    lib = LIBRARY_PATH.read_text(encoding="utf-8") if LIBRARY_PATH.exists() else ""
+    m = re.search(r"\*\*可加载风格\*\*[^\n]*?\|\s*(\d+)\s*份\s*\|", lib)
+    if m and int(m.group(1)) != total_json:
+        errors.append(f"style-library.md 可加载风格: 写 {m.group(1)}，实际全口径 {total_json}")
+    if not m:
+        errors.append("style-library.md 可加载风格行缺失或格式变化，无法核对")
+    mi = re.search(r"独立可选风格\s*(\d+)\s*个", lib)
+    if mi and int(mi.group(1)) != independent:
+        errors.append(f"style-library.md 独立可选: 写 {mi.group(1)}，实际 {independent}")
+    rec_path = STYLES_ROOT.parent / "style-recommendation.md"
+    if rec_path.exists():
+        rec = rec_path.read_text(encoding="utf-8")
+        mr = re.search(r"独立可选\s*(\d+)\s*个", rec)
+        if mr and int(mr.group(1)) != independent:
+            errors.append(f"style-recommendation.md 独立可选: 写 {mr.group(1)}，实际 {independent}")
+    sys_path = STYLES_ROOT / "00_索引" / "设计体系.md"
+    if sys_path.exists():
+        s = sys_path.read_text(encoding="utf-8")
+        ms = re.search(r"\|\s*视觉风格 visual-style\s*\|\s*(\d+)\+", s)
+        if ms and int(ms.group(1)) != actual.get("01_通用母版", 0):
+            errors.append(f"设计体系.md 视觉风格轴: 写 {ms.group(1)}，实际 {actual.get('01_通用母版', 0)}")
+
+
 def main() -> int:
     text = INDEX_PATH.read_text(encoding="utf-8")
     errors: list[str] = []
@@ -181,6 +234,7 @@ def main() -> int:
                 errors.append(f"{label}: _INDEX 写 {claimed}，实际 {real}")
 
     _check_library(errors, actual)
+    _check_doc_scale_consistency(errors, actual, top_level)
 
     print(f"index_consistency errors={len(errors)}")
     for item in errors:

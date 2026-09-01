@@ -219,6 +219,34 @@ def _load_baseline() -> set[str]:
     return entries
 
 
+# 别名撞名存量白名单（2026-09-01 快照，28 串；消歧规则见 风格路由.md 使用规则）。
+# 收敛纪律：只缩不增——某串消歧清理后从此处删除；新增撞名必须 ERROR 拦截。
+ALIAS_COLLISION_BASELINE: frozenset[str] = frozenset({
+    "BI风", "Memphis", "catppuccin", "dreamy", "editorial", "linzi-morandi",
+    "linzi-punk", "linzi-tech", "literary", "magazine", "playful", "retro",
+    "terminal", "公益风", "古典", "国风", "撞色", "星河", "朋克酷风", "杂志风",
+    "梦幻", "樱粉", "温柔", "烟火", "精选科技风", "莫兰迪系", "薄荷", "高级",
+})
+
+
+def _alias_collision_check(parsed: list[tuple[str, dict]]) -> list[str]:
+    """别名撞名审计：同一别名被多个独立风格声明时，口语点名（R-63）产生
+    歧义。存量撞名经白名单豁免（消歧规则兜底）；白名单外的新撞名即 ERROR。"""
+    alias_owners: dict[str, list[str]] = {}
+    for rel, brief in parsed:
+        for alias in brief.get("aliases", []) or []:
+            alias_owners.setdefault(str(alias), []).append(brief.get("style_name") or rel)
+    errors: list[str] = []
+    for alias in sorted(alias_owners):
+        owners = alias_owners[alias]
+        if len(owners) > 1 and alias not in ALIAS_COLLISION_BASELINE:
+            errors.append(
+                f"alias_collision: 别名「{alias}」被 {len(owners)} 个风格声明"
+                f"（{'/'.join(sorted(owners))}）——新撞名不在存量白名单，请消歧或改名"
+            )
+    return errors
+
+
 def _palette_fingerprint(brief: dict) -> frozenset[str]:
     """Same HEX anchor scope as audit_style_families (palette + canvas bg)."""
     palette_src = json.dumps(
@@ -338,6 +366,10 @@ def main(argv: list[str] | None = None) -> int:
 
     # R-66 anti-regression check runs in both lint and write-baseline modes.
     errors.extend(_family_merge_check(parsed))
+
+    # 别名撞名（口语点名消歧债）：存量 28 个撞名串白名单只缩不增；
+    # 新增撞名（新风格 aliases 撞既有别名）即 ERROR。
+    errors.extend(_alias_collision_check(parsed))
 
     # 顶层内置风格必须有同名 .layouts.json 路由视图（B1-T4；仅顶层，子目录
     # 参考风格不强制——渐进轴，将来按批次纳入时走 baseline 收敛纪律）。

@@ -6,7 +6,218 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Added
+
+- **leo-ppt-generator：OpenAI 兼容图片渠道目录——配置与通用代码隔离（user-visible）**：
+  新增 checked-in 声明式目录 `runtime/src/leo_ppt_generator/config/providers.yaml`
+  与领域模块 `channel_catalog.py`，首批接入 6 个国内渠道：智谱（`ZHIPU_API_KEY`，
+  cogview-4 系列）、阿里云百炼 dashscope（`DASHSCOPE_API_KEY`，qwen-image）、
+  火山方舟 ark（`ARK_API_KEY`，doubao-seedream-4）、百度千帆（`QIANFAN_API_KEY`，
+  ernie-vig-v2）、腾讯混元 TokenHub 同步通道（`HUNYUAN_API_KEY`，hy-image-v3.0）、
+  魔搭 ModelScope（`MODELSCOPE_API_TOKEN`，Qwen/Qwen-Image）。渠道能力 v1 固定
+  generate-only；`backend create --provider <channel>` 端点 origin 与默认模型由
+  目录自动填充，执行期 base URL = origin + 渠道固定 api_path（修复对带路径端点
+  强拼 `/v1` 的不兼容），显式端点覆盖仍须 origin-only（fail-closed 不变）。
+  registry/credentials/runtime_config/cli/setup/observability 的 provider 枚举
+  全部改为从目录派生（新增渠道零代码改动），setup provider_options 附渠道引导块
+  （官网/取 key 页/环境变量/模型清单），4 个 schema 的 provider enum 同步。新增
+  `references/provider-catalog.md`（渠道一览、配置引导、维护者新增指引）。
+  vendor 补丁 `0008-codex-openai-compatible-url-fallback.patch`：通用图片适配器
+  响应缺 `b64_json` 时按 `url` 下载转 base64（解锁只回临时 URL 的渠道，
+  vendor-lock.json 已再生）。新增渠道不改代码的解耦红线由
+  `tests/test_channel_catalog.py` 看护（15 例：目录校验 fail-closed、contract
+  默认值回填、执行期 URL 派生、schema enum 同步、通用模块无渠道名硬编码、
+  0008 回归）。wanx/kling/混元旧控制台等异步任务型接口暂缓（需原生适配器）。
+- **leo-ppt-generator：`leo-ppt config` 交互式向导接入渠道目录（user-visible）**：
+  `ProviderName` 枚举改为由内置成员 + 渠道目录动态构建（`config/models.py`），
+  配置子系统（service/selection/readiness/transactions/receipt_store）零专用分支
+  即支持渠道——`ProviderName("zhipu")`、`for provider in ProviderName`、keychain
+  槽位 `leo-ppt-generator/<渠道 id>` 全部自动成立。向导 provider 菜单列出全部
+  渠道，条目布局「渠道名渠道（取 key 页面 URL）- 使用渠道名官方图片服务」
+  （`display_name` 为 providers.yaml 新增字段）；选中渠道后展示官网/取 key/环境
+  变量/模型清单引导，端点与模型回车即用目录默认值，`ConfigService.configure`
+  对渠道端点缺省回填默认 origin（提供时仍 origin-only 校验）。首页"查看支持的
+  服务"与"已配置服务"列表同步覆盖渠道。测试增至 20 例（新增菜单布局、引导
+  文案、端点/模型默认值、枚举组合）。验证：端到端向导冒烟（注入菜单/提示 +
+  stdin key）成功写入 zhipu profile（model=cogview-4、endpoint=目录默认、
+  keychain 引用）并出现在 overview 当前服务；冒烟产生的临时 keychain 凭据已
+  清除。
+- **leo-ppt-generator：featured 默认推荐渠道——乾行AI画廊（user-visible）**：
+  渠道目录新增 `qianxing`（`https://fast.qianxing.us.ci`，new-api 系 OpenAI 兼容
+  中转；`QIANXING_API_KEY`，默认模型 `gpt-image-1`，令牌页 `/token`）。目录新增
+  `featured` 字段（加载器校验全目录至多一个）：featured 渠道在 `leo-ppt config`
+  向导菜单排第一位并标注（推荐），首次配置引导直接指向——只需输入 API Key 与
+  模型，端点自动用目录默认；4 个 schema enum 同步 `qianxing`。测试增至 22 例
+  （featured 唯一性、菜单第一位与（推荐）标注、非 featured 渠道顺延）。
+- **leo-ppt-generator：`leo-ppt config` 流程接入推荐渠道直达与默认化（user-visible）**：
+  首页动作菜单在 featured 渠道未配置时新增首位入口「配置推荐渠道：乾行AI渠道
+  （默认 https://fast.qianxing.us.ci）」，一步进入该渠道配置（key + 模型，端点
+  自动默认）；概览区同步输出推荐提示行。配置 featured 渠道成功后追加确认
+  「是否设为默认图片服务」（默认同意）——同意即写 `preferred_provider`，后续
+  任务固定使用该渠道；渠道已配置后直达入口与提示自动消失。测试增至 23 例
+  （`_overview_actions` 首位/缺席断言）。端到端冒烟：预置 openai profile 后经
+  首页入口一键配置 qianxing → preferred 写入 → `resolve_provider` 返回
+  qianxing（configured-preferred）；临时 keychain 凭据已清理。
+- **leo-ppt-generator：渠道目录数据文件纳入 runtime 打包（bugfix）**：
+  `runtime/pyproject.toml` 的 package-data 补 `"leo_ppt_generator.config" =
+  ["*.yaml"]`——此前 providers.yaml 不进 wheel，受管 runtime 重建后
+  `leo-ppt config` 看不到任何渠道（channel_catalog_unreadable）。修复后
+  `runtime_manager.py ensure` 重建成功（runtime 指纹 eaad597b → 131eccc），
+  实机 `leo-ppt config provider list` 返回全部 10 个 provider，向导菜单
+  实测含 7 渠道 + featured 推荐位。
+- **leo-ppt-generator：`leo-ppt config` 向导 UX 打磨（user-visible）**：
+  ① Provider 菜单——渠道项 URL 短化（去 https:// 前缀，完整链接保留在选中后的
+  引导文案），末项「退出」改「返回上级」（返回首页操作而非退出向导），菜单前
+  增加引导行「国内渠道可直接选择：API Key 就绪后端点与模型均可用默认值」，
+  featured 存在时支持回车默认选中推荐项（提示「默认 1」）；② 已配置服务列表
+  ——`ConfigOverviewProvider` 新增非敏感 `model` 字段并在列表展示
+  （如「乾行AI渠道（gpt-image-1）  优先级 100  已启用  凭据已设置 [当前]」）；
+  ③ 配置完成后输出下一步指引（直接生成任务 / `leo-ppt setup --route generate`
+  查看就绪报告）；④ 概览状态块与服务列表间空行分组。测试增至 24 例
+  （菜单短链/返回上级断言、overview model 字段）；runtime 已重建激活
+  （131eccc → 6332b75d）并在新 venv 实测回车默认选中 featured。
+- **leo-ppt-generator：多渠道切换体验（user-visible）**：
+  ① 「固定使用某个服务」升级为「切换当前使用的服务」子菜单——只列已配置
+  服务（带模型与凭据状态标注、[当前] 标记），内嵌「恢复自动选择」与
+  「返回上级」，替代原先从 11 项全量 Provider 菜单中翻找的路径；② 修复
+  固定首选模式下没有切换入口的问题（`_overview_actions` 在 fixed 模式
+  同时提供 prefer 与 clear_preference）；③ 「调整自动选择顺序」从逗号
+  分隔 provider id 文本输入改为逐位菜单选择（每步显示剩余服务 + 「保持
+  剩余顺序并完成」，应用前确认新顺序）。端到端冒烟：三服务（乾行/智谱/
+  OpenAI）下切换固定首选到智谱成功（preferred=zhipu，resolve 返回
+  configured-preferred）；逐位选择智谱→OpenAI 后优先级落位 10/20/30。
+  runtime 已重建激活（6332b75d → 2f8eee03）。
+
 ### Changed
+
+- **evidence-first-writing：对照六层 Skill 写作法审查落地——description 触发面与路由枚举同步锁（user-visible）**：
+  SKILL.md frontmatter description 改为 YAML 双引号包裹（防未来混入英文冒号
+  被解析器静默截断），并补齐 `post-publish`/`tool-select`/`personal-context`
+  三个 operation 的用户原话触发面（发布后真实指标复盘、写作与去 AI 味工具
+  选型比较、长期个人说明书），修复这三个 lifecycle 只能靠正文触发的欠触发
+  风险。「入口意图识别」节的 lifecycle/family 中文概述行补英文枚举锚并补全
+  漏列的 `tool-select`、`personal-context`（概述此前只覆盖 12 个 canonical
+  lifecycle 中的 10 个）。新增 `tests/test_route_enum_sync.py` 把
+  lifecycle_intent / article_family / operation 三轴枚举纳入
+  SKILL.md ↔ intent-routing.md 双向同步锁（先红后绿验证：锁在旧文本上
+  23 个断言失败，修复后全绿；全套单测 202 例 PASS）。另适配 skill-up
+  0.10.0 评测 schema：`personal-context-authorized-write` 用例的
+  `file_contains` 由不被识别的 `contains` 列表改为必填 `content` 字段，
+  断言语义不变（AGENTS.md 含 `unittest`），37 例配置校验通过。验证：
+  全量 it-99（本机 claude_code、模型未固定）`13/22/2` 与既有 provider
+  漂移画像一致；it-100/101 新旧 SKILL.md A/B（focused 3 例）新版
+  `1 PASS / 2 FAIL`、旧版 `0 PASS / 3 FAIL`，共同 FAIL 为 judge 词表
+  未命中（非本次改动引入），`file_contains` 适配断言两轮均通过；
+  详见 evals/verification-summary.md。
+- **leo-ppt-generator：风格库理想态目标架构升级至 v4.5（对抗式评审闭环，撤回冻结）**：重写
+  `docs/leo-ppt-generator-style-library-target-architecture.md`，先将第二轮深审发现
+  收敛为可实施目标合同（fenced JSON `style-brief-v2` 为 authored 单一真值，拆分 computed
+  catalog 与 verification evidence，稳定 `style_id`、builtin/user/behavioral 三平面、统一
+  `AssetResolver`、类型化推荐请求与候选、组合 bindings/presets/components/pools、证据化
+  readiness、catalog 发布/失效/降级与 deck 解析收据，候选池改为查询结果）；再据第三轮
+  对抗性审查修订：把"已定决策"拆为原则层（锁定）与机制层（按 L 级采用、库小时可长期
+  不建）消除比例性锁定矛盾，新增被引用资产（rendering/mode/layout/component/brand）最小
+  身份合同补齐组合关系图，稳定 `style_id`+resolver 从 L0 下沉到 L1 并标注 all-or-nothing、
+  L0 回到零迁移集，readiness 拆分"首推资格（candidate 即可首推）"与"出图验证置信（verified
+  仅加权/高保障档）"以不回退现状首推面，新增 authored `lifecycle` 承载 deprecated，删除冗余
+  `layout_profile_id`，并统一并发口径、`variant_of` 跨 scope 规则、合并计数 owner、请求字段
+  基数与 data_density 命名、收据引擎/权重版本。该文档仍为独立北极星参考，不实施运行时或
+  目录迁移。v4.1 据三专家会议裁决进一步统一 candidate/verified 资格语义，消除 L0 profile 与
+  L1 完整 v2 强制时点冲突，将非 style ID 持久化和所有身份/路径敏感消费者 resolver 闭包锁在
+  L1、L3 收敛为纯物理迁移；同时把 hard-rule `lock` 拆为 `required_include`/
+  `exclusive_lock` 并定义 MMR 降级 reason code，补齐 text density/visual evidence 字段映射，
+  以 `composition_resolution`/`resolved_input_digest` 冻结完整组合并驱动 golden stale，新增
+  builtin 兼容 bundle 发布/回滚合同；最低限度补充稳定匹配桶、behavioral append-only 补偿和
+  deprecated tombstone/replacement 方向，不展开实现机制。v4.2 再据 Style Dictionary、Backstage、Helm、
+  OCI 等同类模式对标优化物理布局：目标树改为 canonical authored、contracts、evidence、generated
+  四区，canonical 内只按稳定资产角色组织；style 从扁平同名文件对改为每实体一个
+  `<id-slug>/{brief.md,layouts.json}` 包，删除单子角色的 compositions/overlays 包装层，user plane
+  镜像最小 canonical/generated 边界，并同步 sidecar、resolver、不变量和 L3 合同。分类/来源仍只在
+  元数据和 facets 中表达，digest/content-addressing 只用于发布、证据与复现，不进入人工 authoring 路径。
+  v4.3 据四角色对抗性验证收敛并冻结北极星，补齐三条实施前边界：① §8 防长尾饿死——富化覆盖率经
+  `counts.md` 可观测，未富化风格在浏览/点名路径始终可达且显式标 `name-only`，不因缺特征在候选面静默
+  消失；② §11 stale 语义——stale 只暂失 verified 加成与高保障档准入、不影响 candidate 默认首推，并区分
+  单 style 内容变更与 canon/contracts/composer 等全局资产变更的 stale 传播范围；③ §15 L1 边界——所有
+  stem-based 定位与身份推导必须与 `style_id` 铸造在 L1 同批退役，实体包重命名与 prompt projection 字节
+  回归为 L1 退出证据，不留到 L3。frontmatter 标注 status_note: frozen。v4.4 再据最终四 Agent 终审做一次
+  窄解冻并重新冻结，闭合 6 个计划前 P1：① evidence 收据集/digest 进入 catalog 确定性重建与 bundle
+  兼容闭包（大型 artifact 可外置）；② L1 负责叶子实体包形状归一化和消费者切换，L3 只做父目录搬迁/
+  兼容层删除；③ L1 派生 experimental/candidate/deprecated 基线资格，L2 只叠加 verified/stale 证据；
+  ④ `license=unknown` 使用 scope-aware、默认 fail-closed 的晋升/推荐/执行/发布门；⑤ user canonical 与
+  catalog 共享 generation/freshness、失败降级和 reader-first/writer-second 首轮兼容合同；⑥ typed query
+  返回 request-scoped coverage/degradation，覆盖不足时不把富化子集最优冒充全库最优。同步把最终逐页
+  prompt 字节不变、receipt 不进 prompt 固化为 L1 硬退出证据。frontmatter 升级 `version: v4.4`、
+  `supersedes: v4.3` 并重新标注 frozen。仍为独立北极星参考，不实施运行时或目录迁移。
+  v4.5 据五 Agent 对抗式评审（迁移工程/契约一致性/代码事实核查/产品治理/架构-计划对齐）**撤回
+  v4.4 的 frozen**，闭合 6 个 P0 与 11 个 P1：① 收据从 `deck_spec.style.resolution` 移到顶层兄弟键
+  `style_resolution`，并把 prompt projection 定为显式白名单——v4.4 的形状在「Global Style 块整字典
+  序列化」的既有组装方式下会让 catalog digest/composition receipt 逐字进每页图片 prompt，违反其自身
+  §13.1 并击穿 L1 退出证据③；② 许可门拆 advisory/enforcing 两级，enforcing 独立排级且以澄清覆盖率
+  为准入（实测 `source.license` 覆盖率 0/319，一次性 fail-closed 会让可用池归零含全部自研内置），
+  `license` 升为 versioned vocabulary 并补 `native-owned`/`cleared-no-restriction`，user-local 本机
+  默认可用以保住「自定义风格优先列为候选」，区分 bundle 兼容闭包与对外分发子集；③ 降级出口从
+  「0 个方向」改为「0 个语义排序方向 + 强制浏览/点名 fallback」，统一原则层/漏斗/降级三处方向基数，
+  并定义方向数 <2 时跨家族多样性自动不适用（原写法会让确认门无工件可确认、且与「2–3 方向必须跨
+  家族」算术冲突）；④ L1 拆 L1a 身份地基/L1b 消费者收敛/L1c 叶子成包/L1d 查询治理面，all-or-nothing
+  收窄到「翻转 stem 定位 lint」这一步，字节回归门只适用 L1a–L1c 而 L1d 明确允许输出变化，耦合面从
+  3 个点状例子扩为四类（含零机检的 name-keyed 成员表），补配对表 owner 前移、golden roster 去显示名化、
+  成员表 lint、prompt 基线 fixture 四项 L1 前置，退出证据增第四条 CLI 表面兼容并给③可执行定义；
+  ⑤ 新增 §12.2.1 发布序列与回滚深度，显式声明 L1c 为单向门、回滚深度上限 1、跨 writer 边界回滚为
+  禁止操作；⑥ 新增 §0.4 实现计划对齐关系（L↔Phase 无映射警告 + 两份 active 计划的失效条目表）与
+  §0.5 重新冻结退出条件（其中 CI 载体与成员表 lint 两项架构无法自证）。P1 侧澄清 `stale` 为收据状态
+  并给出 tier 派生规则、Candidate 补 `evidence_status`/`enrichment`、`coverage_state` 与 reason code
+  一一映射并补 `semantic_coverage_partial`、user mutation 与 query 降级拆用两个 code、给机械门标最低
+  生效层级并声明部分条目实为人工评审项、修负反馈可达性（纯抵消语义会使 decay 数学上不可达、造成
+  现状能力倒退）、补确定性序列化 profile 与重建状态元组、补 freshness 检测 owner、定义 `prefer` 为
+  软加权、给 pool 移出可执行面排级、§6.1 补 evidence 输入、§4.6 定死 ID 载体、§17 改为带代价与补偿
+  的真实取舍清单（新增 4 条 v4.5 代价）。原则层新增三条：收据物理隔离、降级无零出口、治理门不得
+  一次性牺牲现状可用能力。文档随 docs 重组迁至
+  `docs/leo-ppt-generator/architecture/style-library-target-architecture.md`。仍为独立北极星参考，
+  不实施运行时或目录迁移。
+
+- **leo-ppt-generator：两份 active plan 加目标架构对齐标注（治理）**：按 v4.5 架构 §0.4，为
+  `docs/plans/2026-09-02-001-refactor-leo-ppt-style-library-restructure-plan.md` 与
+  `docs/plans/2026-09-01-001-feat-leo-ppt-style-recommendation-coordinate-plan.md` 各加
+  `alignment` / `alignment_source` / `alignment_checked` frontmatter 字段与标题下的逐条失效清单。
+  两份风险等级不同：前者 `implementation-ready`（是 `spec-work` 执行入口，默认交付 Phase 0+2 会产出
+  架构 §3.1 禁止的物理分类树，标 `needs-rewrite`，列 8 条失效——四分区含已被 v4.2 删除的 `overlays/`、
+  `01_通用母版` 家族子目录、`taxonomy` 四处形状冲突（最贵，会写进全库 300+ brief）、`source` 缺
+  `license` 键、「运行时几乎不动」、stem 长期去重键、sidecar 同名同目录、零回归口径过弱）；后者
+  `requirements-only`（按 spec-plan 规则属 enrichment input、非执行入口，标 `partial-conflict`，
+  列 3 条 tier 相关失效——「首推必出已验证池」与架构「candidate 即可默认首推」方向相反、tier 枚举把
+  来源标签当资格等级、默认 tier=reference）。两份均同时列出「方向一致可保留」条目与重写/修正指引，
+  避免整体废弃有效内容。**`status` 均未改动**（仍 `active`）：机械阻断需改 `superseded`，而该操作按
+  spec-plan 规则不可逆，留待 owner 决定。架构侧同步回填 §0.4 风险等级表与治理动作状态、§0.5 退出
+  条件 6 标记完成、`related` 注释修正为 `partial-conflict`。未改代码，未改两份 plan 的实质内容。
+
+- **leo-ppt-generator：300 硬顶退役 + 候补台账 C 批同步 + 语料层五路资产
+  （user-visible，方案 docs/plans/2026-09-02-002）**：① 硬顶退役——owner
+  2026-09-02 决策独立可选风格不再设数量上限，三处活合同断言移除
+  （style-candidates.md 表头两处、_INDEX.md 顶行一处），防膨胀改由五步质量门
+  承担（信号确认→四重去重→精选与许可核验→金样板三页+配对预览→lint+audit
+  出口，簇数判据=不高于基线 10 且 ≤ 回退门槛 20），五步流程成文进候补表头
+  与 style-extension-template 合格门；② 台账同步——style-candidates.md 全
+  20 源刷新为 C1-C4 实收/余量口径（快照 2026-09-02，真值分层：有迁移器源以
+  `intake_*.py --report` 为准、C4 五源以 CHANGELOG/known-issues 为准），
+  Mck 经 audit 裁决不收（36 版式 avoid_for 覆盖 28/36 充实，稀疏前置不成立）；
+  ③ 语料层——新增 `00_索引/负面语料参考池.md`（huashu 审美禁区思想级改写，
+  首期通用+三派辐射四组 20 条，`draft_negative_prompts.py --pool` 接线，
+  缺省行为不变）、`00_索引/构图词汇参考.md`（六类视觉词汇+一句话构图模板，
+  MIT 来源、不学富提示词密度）、`12_版式库/00_容量档位参考.md`（dashi 容量
+  档位词汇，数值可引表述思想级）；④ 容量查询面——`style layouts` 新增
+  `--capacity` 只读过滤旗标（槽名<=N 逗号 AND，计数槽按 count_max/文本槽按
+  max_chars 判定，缺键如实报 missing），缺省输出逐字节不变；⑤ 色板池 53→57
+  ——OfficeMCP 4 组方案静态源登记（快照常量内置，--aggregate 幂等重现，
+  指纹查重与既有池零同板重叠），手绘白板/手绘技术解释两 brief 各补箭头/便签
+  细化素材语汇（MIT 思想级）。验证：六 lint 全绿（新增 3 份文档计数同步
+  199→200/17→19/39→40）；audit 簇数 10=基线；全量 1135 单测零新增失败
+  （render 环境项 4 例在案按环境态解读）；7 迁移器 --check 幂等；
+  `style layouts`/`style render` 缺省输出逐字节回归通过；+3 测试文件 25 用例
+  （负面语料池 6/容量过滤 12/语料资产 7）+ 池与文档合同测试适配。文档合同
+  测试重写同时修复了 HEAD 基线两处在案红（C 批改 300 硬顶未同步 220 断言、
+  文档 127 行超预算 120——历史遗留，非本批引入）。
+
+- **leo-ppt-generator：新增 `references/_INDEX.md` 只读导航索引**：按功能八组一览顶层 30 份 reference 的定位与加载阶段概述，方便维护者/Agent 定位；权威加载顺序仍以 `SKILL.md`「按需读取规则」为唯一真值，本索引显式声明不构成第二加载合同。零迁移、纯附加——未移动/重命名任何 reference，未改运行时或 lint 口径；`README.md`「详细规则见」与 `SKILL.md`「按需读取规则」各挂一行只读导航入口（非执行指令，不改变按需读取纪律）；89 行内相对链接全部机检可达（missing=0）。
 
 - **evidence-first-writing：排版合同四件套落地（排版赛道漏斗三线裁决之线 1，
   user-visible）**：新增 `references/layout-contract.md`（本轮唯一新 reference，58 行

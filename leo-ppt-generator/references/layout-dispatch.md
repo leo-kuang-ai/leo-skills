@@ -21,6 +21,9 @@
    （母版内容行已有）对 sidecar `content_capacity`：
    - **区间包含度**：条数落在 `count_min/count_max` 区间内 = 1.0；不足
      按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 容量分乘 0。
+   容量预检的人工/agent 选页通道：`leo-ppt style layouts --capacity "槽名<=N"`
+   只读过滤（计数槽按 `count_max`、文本槽按 `max_chars`），档位速查见
+   `styles/12_版式库/00_容量档位参考.md`。
    - **字数覆盖度**：每要点预估字数（vw 视觉宽度）对最宽文本 slot 的
      `max_chars`（× 风格 `capacity_factor.text`）；装得下 = 1.0；
      ≤1.2 倍 = 0.5；硬超 = 容量分乘 0。

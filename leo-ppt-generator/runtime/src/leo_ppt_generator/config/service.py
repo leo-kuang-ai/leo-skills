@@ -13,6 +13,7 @@ from typing import Any, Callable, Mapping, Sequence
 
 from ..application.routes import ROUTE_CAPABILITY_RESOLVER
 from ..credentials import CredentialInputChannel, CredentialInputSelection
+from . import channel_catalog
 from .models import (
     Capability,
     ConfigReport,
@@ -88,9 +89,10 @@ class ConfigOverviewProvider:
     credential_available: bool
     selected: bool
     reason_code: str
+    model: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "provider": self.provider.value,
             "configured": self.configured,
             "enabled": self.enabled,
@@ -99,6 +101,9 @@ class ConfigOverviewProvider:
             "selected": self.selected,
             "reason_code": self.reason_code,
         }
+        if self.model is not None:
+            result["model"] = self.model
+        return result
 
 
 @dataclass(frozen=True)
@@ -237,6 +242,13 @@ class ConfigService:
                 ConfigOverviewProvider(
                     provider=provider,
                     configured=isinstance(profile, Mapping),
+                    model=(
+                        str(profile.get("model"))
+                        if isinstance(profile, Mapping)
+                        and isinstance(profile.get("model"), str)
+                        and profile.get("model").strip()
+                        else None
+                    ),
                     enabled=bool(profile and profile.get("enabled") is True),
                     priority=(
                         profile.get("priority")
@@ -327,8 +339,16 @@ class ConfigService:
             raise ConfigServiceError("unknown_provider") from exc
 
         endpoint_origin: str | None = None
+        channel = channel_catalog.channel_by_name(provider.value)
         if provider is ProviderName.OPENAI_COMPATIBLE:
             endpoint_origin = validate_endpoint_origin(request.endpoint_origin)
+        elif channel is not None:
+            # 渠道端点可选：缺省用目录默认 origin，提供时仍须 origin-only。
+            endpoint_origin = (
+                validate_endpoint_origin(request.endpoint_origin)
+                if request.endpoint_origin is not None
+                else channel.endpoint_origin
+            )
         elif request.endpoint_origin is not None:
             raise ConfigServiceError("provider_profile_invalid:endpoint_origin")
 
@@ -597,8 +617,15 @@ class ConfigService:
             return ("start_configuration", "list_providers", "exit")
         if selection_error == "provider_priority_tie":
             return ("reorder", "prefer", "exit")
-        actions = ["edit_selected", "add_provider", "reorder"]
-        actions.append("clear_preference" if mode == "fixed" else "prefer")
+        actions: list[str] = []
+        featured = channel_catalog.featured_channel()
+        if featured is not None and featured.id not in profiles:
+            # 推荐渠道未配置时提供一步直达入口，排在动作首位。
+            actions.append("configure_featured")
+        actions.extend(("edit_selected", "add_provider", "reorder", "prefer"))
+        if mode == "fixed":
+            # 固定模式下仍可切换到其他已配置服务；恢复自动选择单独提供。
+            actions.append("clear_preference")
         actions.extend(("list_providers", "exit"))
         return tuple(actions)
     def _provider_facts(

@@ -129,7 +129,13 @@ supportive＝辅助证据与氛围 / sparse＝极简点缀。
 
 ## 九、合格判断清单
 
-结构门（可机检，四条治理 lint 全绿才算过门）：
+> 若本风格来自候补源矿（见 [`style-candidates.md`](../../style-candidates.md)），
+> 合格门为其表头"补货门"五步流程（信号确认 → 四重去重 → 精选与许可核验 →
+> 金样板三页 + 配对预览 → lint + audit 出口）；本清单是其中第 4-5 步的执行细节，
+> 前三步在候补台账侧完成并留痕。
+
+结构门（可机检，风格级四条治理 lint 全绿才算过门；仓库级
+`lint_render_templates`/`lint_skill_structure` 提交前另跑，合计六条）：
 
 - [ ] `lint_style_briefs.py`：`briefs=` 计数 +1；无 ERROR、无未登记 WARNING
       （四角色 HEX 锚点 + 身份字族，新文件不进基线白名单）；

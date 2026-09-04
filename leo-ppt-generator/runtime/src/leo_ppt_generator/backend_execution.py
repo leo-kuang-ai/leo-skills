@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .config.backend_contract import BackendContractError, BackendRegistry
+from .config.channel_catalog import channel_by_name
 from .credentials import PROVIDERS, CredentialError, credential_manager
 from .storage import canonical_json, sha256_file
 
@@ -119,12 +120,20 @@ def build_execution_context(
             # Atlas vendor 使用独立的 HTTP provider；兼容层只需同时提供其旧字段。
             env["ATLASCLOUD_API_KEY"] = credential
             env["OPENAI_API_KEY"] = credential
-        elif provider in {"openai", "openai-compatible"}:
+        elif provider in {"openai", "openai-compatible"} or channel_by_name(provider) is not None:
+            # 渠道 provider 复用 OpenAI SDK 执行面：凭据统一注入 OPENAI_API_KEY，
+            # 端点差异只在下面的 base URL 派生。
             env["OPENAI_API_KEY"] = credential
         else:
             raise BackendExecutionError("provider_credential_mapping_unsupported")
+    channel = channel_by_name(provider)
     endpoint = contract.get("endpoint_origin")
-    if isinstance(endpoint, str) and endpoint:
+    if channel is not None:
+        # 渠道 base URL = origin（contract 覆盖或目录默认）+ 目录固定 api_path；
+        # 不做 /v1 猜测，避免把渠道路径拼错。
+        origin = endpoint if isinstance(endpoint, str) and endpoint else channel.endpoint_origin
+        env["OPENAI_BASE_URL"] = f"{origin.rstrip('/')}{channel.api_path}"
+    elif isinstance(endpoint, str) and endpoint:
         env["OPENAI_BASE_URL"] = (
             _openai_compatible_api_base_url(endpoint)
             if provider == "openai-compatible"

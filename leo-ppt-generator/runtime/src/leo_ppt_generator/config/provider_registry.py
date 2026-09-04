@@ -8,6 +8,7 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Iterable, Mapping
 
+from .channel_catalog import CHANNEL_CAPABILITIES, channels
 from .models import Capability, ProviderName
 
 
@@ -217,6 +218,32 @@ def _unsupported_host_policy() -> VerificationPolicy:
     )
 
 
+def _channel_definitions() -> tuple[ProviderDefinition, ...]:
+    """从 checked-in 渠道目录组合 provider 定义；不在此出现具体渠道名。"""
+
+    channel_capabilities = tuple(Capability(name) for name in sorted(CHANNEL_CAPABILITIES))
+    return tuple(
+        ProviderDefinition(
+            name=channel.id,
+            adapter=AdapterIdentity(channel.id, f"{channel.id}/v1", "openai-compatible"),
+            capabilities=_capabilities(
+                supported=channel_capabilities,
+                unsupported=tuple(
+                    capability
+                    for capability in Capability
+                    if capability not in channel_capabilities
+                ),
+            ),
+            credential_environments=frozenset({channel.credential_environment}),
+            default_model=channel.default_model,
+            max_reference_images=0,
+            # 渠道端点声明保持 generic fail-closed；固定 origin 不提升策略。
+            verification_policy=_external_policy(),
+        )
+        for channel in channels()
+    )
+
+
 def _definitions() -> tuple[ProviderDefinition, ...]:
     all_capabilities = tuple(Capability)
     image_transient_failures = frozenset(
@@ -321,7 +348,7 @@ def _definitions() -> tuple[ProviderDefinition, ...]:
                 retry=bounded_retry,
             ),
         ),
-    )
+    ) + _channel_definitions()
 
 
 class ProviderRegistry:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """chart_palette_pool.py 弹药库测试（机制线 M1）：双源解析器纯函数、
-聚合确定性/命名空间、CLI 查询语义、提交快照合同（53 条全 hex）。"""
+聚合确定性/命名空间、CLI 查询语义、提交快照合同（57 条全 hex，分层下限）。"""
 import json
 import sys
 import tempfile
@@ -98,7 +98,15 @@ class BuildPoolTest(unittest.TestCase):
             pool = cpp.build_pool(tmpdir, themes_py)
         self.assertEqual(
             list(pool),
-            ["echarts/alpha", "echarts/zeta", "ppt_mcp/corporate_blue"],
+            [
+                "echarts/alpha",
+                "echarts/zeta",
+                "office_mcp/corporate_gray",
+                "office_mcp/elegant_green",
+                "office_mcp/modern_blue",
+                "office_mcp/warm_red",
+                "ppt_mcp/corporate_blue",
+            ],
         )
         # PPT chart series cycle over accent1..6 only; dark/light stay out.
         self.assertEqual(pool["ppt_mcp/corporate_blue"]["colors"][0], "#2B579A")
@@ -146,7 +154,12 @@ class CommittedSnapshotTest(unittest.TestCase):
         for name, entry in pool.items():
             for color in entry["colors"]:
                 self.assertRegex(color, r"^#[0-9A-Fa-f]{6}$", msg=name)
-            self.assertGreaterEqual(len(entry["colors"]), 6, msg=name)
+            # 分层下限：office_mcp 上游每方案仅 5 个可作系列色的键
+            # （primary/accent1/accent2/secondary/text；light 近白留作
+            # background，与 ppt_mcp "dark/light 留 context"先例一致）；
+            # 既有 echarts/ppt_mcp 源维持 6，不因新源削弱丢色守卫。
+            floor = 5 if name.startswith("office_mcp/") else 6
+            self.assertGreaterEqual(len(entry["colors"]), floor, msg=name)
             self.assertIn("source", entry)
 
 

@@ -1,6 +1,6 @@
 # 上游补丁目录
 
-固定上游当前应用七个可由 `git apply --check` 复核的受控补丁：
+固定上游当前应用八个可由 `git apply --check` 复核的受控补丁：
 
 - `0001-codex-state-directory-barrier.patch`：状态文件替换后同步父目录；包内暂无
   可执行聚焦回归，proof 在上游开发仓。
@@ -23,6 +23,12 @@
   禁块外内容性文字）；聚焦回归为
   `tests/boundary/test_prompt_block_regression.py`（包内可执行），静默丢失检出为
   `scripts/check_sources_manifest.py --check-job-prompts`。
+- `0008-codex-openai-compatible-url-fallback.patch`：通用 provider 适配器的
+  `generate` / `edit` / `generate_batch` 统一经 `_image_payload` 取图——优先
+  `b64_json`，缺失时按响应 `url` 下载转 base64，两者皆缺时清晰报错；解锁只回
+  临时 URL 的 OpenAI 兼容渠道（目录渠道见
+  `runtime/src/leo_ppt_generator/config/providers.yaml`）；聚焦回归为
+  `tests/test_channel_catalog.py::test_image_payload_prefers_b64_and_downloads_url`。
 
 Office 输入信任边界属于当前项目 adapter/route 增强，单独记录为
 `assembly-and-office-boundaries.md`，不伪装成 upstream patch。每个补丁在本文件内

@@ -9,7 +9,7 @@ from __future__ import annotations
 import sys
 import uuid
 from dataclasses import dataclass
-from typing import Callable, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from ..credentials import (
     CredentialError,
@@ -17,6 +17,7 @@ from ..credentials import (
     CredentialInputResolver,
     CredentialInputSelection,
 )
+from . import channel_catalog
 from .models import ConfigReport, ConfigStatus, ProviderName, VerificationState
 from .runtime_config import RuntimeConfigError, validate_endpoint_origin
 from .service import (
@@ -105,6 +106,13 @@ class ConfigWizard:
                 if overview.selection is not None and overview.selection.provider is not ProviderName.BUILTIN_IMAGEGEN:
                     last_result = self._configure_provider(overview.selection.provider, request)
                 continue
+            if action == "configure_featured":
+                featured = channel_catalog.featured_channel()
+                if featured is not None:
+                    last_result = self._configure_provider(
+                        ProviderName(featured.id), request
+                    )
+                continue
             if action == "add_provider":
                 provider = self._choose_provider()
                 if provider is not None:
@@ -114,17 +122,7 @@ class ConfigWizard:
                 self._reorder(overview)
                 continue
             if action == "prefer":
-                provider = self._choose_provider()
-                if provider is not None:
-                    if self.confirm(
-                        f"新任务将固定使用 {self._provider_label(provider)}，是否继续？",
-                        False,
-                    ):
-                        self.service.set_preferred_provider(
-                            request,
-                            provider=provider,
-                            operation_id=f"config-wizard-prefer-{provider.value}-{uuid.uuid4().hex}",
-                        )
+                self._switch_provider(overview, request)
                 continue
             if action == "clear_preference":
                 if self.confirm("恢复自动选择，是否继续？", False):
@@ -186,7 +184,25 @@ class ConfigWizard:
 
         if not changed:
             self._write("配置未修改，已保留当前设置。")
-        elif report.status == ConfigStatus.READY:
+        elif (
+            channel_catalog.channel_by_name(provider.value) is not None
+            and channel_catalog.channel_by_name(provider.value).featured
+            and report.status
+            in (ConfigStatus.READY, ConfigStatus.CONFIGURED_UNVERIFIED)
+        ):
+            if self.confirm(
+                f"是否将 {self._provider_label(provider)} 设为默认图片服务？",
+                True,
+            ):
+                self.service.set_preferred_provider(
+                    request,
+                    provider=provider,
+                    operation_id=f"config-wizard-prefer-{provider.value}-{uuid.uuid4().hex}",
+                )
+                self._write(
+                    f"已设为默认：新任务将固定使用 {self._provider_label(provider)}。"
+                )
+        if changed and report.status == ConfigStatus.READY:
             self._write("配置完成，已验证可用，可以开始生成。")
         elif report.status == ConfigStatus.CONFIGURED_UNVERIFIED:
             if report.verification_state == VerificationState.STALE:
@@ -198,6 +214,11 @@ class ConfigWizard:
                 self._write(
                     "配置已保存，但尚未真实验证；首次生成图片时会完成验证。"
                 )
+        if changed:
+            self._write(
+                "下一步：直接开始生成任务即可使用该服务；或运行 "
+                "`leo-ppt setup --route generate` 查看就绪报告。"
+            )
         return WizardResult(report=report)
 
     def _profile_inputs(
@@ -212,6 +233,7 @@ class ConfigWizard:
             and existing_profile.get("endpoint_origin")
             else None
         )
+        channel = channel_catalog.channel_by_name(provider.value)
         if provider is ProviderName.OPENAI_COMPATIBLE:
             while endpoint_origin is None:
                 if current_origin is not None:
@@ -224,6 +246,21 @@ class ConfigWizard:
                     candidate = self.prompt(
                         "请输入中转站 HTTPS 地址（仅 origin，例如 https://api.example.com）："
                     ).strip()
+                try:
+                    endpoint_origin = validate_endpoint_origin(candidate)
+                except RuntimeConfigError:
+                    self._write(
+                        "地址无效：请输入不含路径、用户名、查询串或片段的 HTTPS 地址。"
+                    )
+        elif channel is not None:
+            # 渠道有 checked-in 默认 origin；回车即用默认，输入则须 origin-only。
+            default_origin = current_origin or channel.endpoint_origin
+            while endpoint_origin is None:
+                raw = self.prompt(
+                    f"请输入{channel.display_name}渠道 HTTPS 端点"
+                    f"（回车使用 {default_origin}）："
+                ).strip()
+                candidate = raw or default_origin
                 try:
                     endpoint_origin = validate_endpoint_origin(candidate)
                 except RuntimeConfigError:
@@ -244,7 +281,7 @@ class ConfigWizard:
             ).strip()
             if entered:
                 model = entered
-        elif provider is ProviderName.OPENAI_COMPATIBLE:
+        elif provider is ProviderName.OPENAI_COMPATIBLE or channel is not None:
             entered = self.prompt(
                 f"请输入图片模型（默认 {definition.default_model}）："
             ).strip()
@@ -260,33 +297,81 @@ class ConfigWizard:
         if index is None or index == 2:
             return None
         if index == 1:
-            self._write("支持 OpenAI、OpenAI-compatible 中转站和 AtlasCloud。")
+            channel_names_display = "、".join(
+                channel.display_name for channel in channel_catalog.channels()
+            )
+            self._write(
+                "支持 OpenAI、OpenAI-compatible 中转站、AtlasCloud，以及渠道目录中的"
+                f" {len(channel_catalog.channels())} 个 OpenAI 兼容渠道：{channel_names_display}。"
+            )
             return self._quick_start()
-        self._write("请选择你已有账号的图片服务。完成配置后，Leo PPT 会自动记住你的选择。")
+        featured = channel_catalog.featured_channel()
+        if featured is not None:
+            self._write(
+                f"推荐选择 {featured.display_name}渠道"
+                f"（菜单第 1 项）：只需输入 API Key 与模型，"
+                f"端点自动使用 {featured.endpoint_origin}。"
+                "完成配置后，Leo PPT 会自动记住你的选择。"
+            )
+        else:
+            self._write("请选择你已有账号的图片服务。完成配置后，Leo PPT 会自动记住你的选择。")
         return self._choose_provider()
 
     def _choose_provider(self) -> ProviderName | None:
-        providers = (
-            ProviderName.OPENAI,
-            ProviderName.OPENAI_COMPATIBLE,
-            ProviderName.ATLASCLOUD,
+        featured = channel_catalog.featured_channel()
+        ordered_channels = tuple(
+            sorted(
+                channel_catalog.channels(),
+                key=lambda channel: 0 if channel.featured else 1,
+            )
         )
-        labels = [
-            "OpenAI - 使用 OpenAI 官方图片服务",
-            "OpenAI-compatible 中转站 - 使用已有的兼容服务商账号",
-            "AtlasCloud - 使用 AtlasCloud 图片服务",
-        ]
+        channel_entries = tuple(
+            (
+                ProviderName(channel.id),
+                f"{channel.display_name}渠道（{channel.key_page.removeprefix('https://')}）"
+                f"- 使用{channel.display_name}官方图片服务"
+                + ("（推荐）" if channel.featured else ""),
+            )
+            for channel in ordered_channels
+        )
+        if featured is not None:
+            # featured 渠道默认选中：排菜单第一位。
+            providers = (channel_entries[0][0], ProviderName.OPENAI, ProviderName.OPENAI_COMPATIBLE, ProviderName.ATLASCLOUD, *(entry[0] for entry in channel_entries[1:]))
+            labels = [channel_entries[0][1],
+                "OpenAI - 使用 OpenAI 官方图片服务",
+                "OpenAI-compatible 中转站 - 使用已有的兼容服务商账号",
+                "AtlasCloud - 使用 AtlasCloud 图片服务",
+                *(entry[1] for entry in channel_entries[1:]),
+            ]
+        else:
+            providers = (
+                ProviderName.OPENAI,
+                ProviderName.OPENAI_COMPATIBLE,
+                ProviderName.ATLASCLOUD,
+                *(entry[0] for entry in channel_entries),
+            )
+            labels = [
+                "OpenAI - 使用 OpenAI 官方图片服务",
+                "OpenAI-compatible 中转站 - 使用已有的兼容服务商账号",
+                "AtlasCloud - 使用 AtlasCloud 图片服务",
+                *(entry[1] for entry in channel_entries),
+            ]
         if self.fixed_provider is not None:
             if self.fixed_provider not in providers:
                 raise ConfigServiceError("unknown_provider")
             return self.fixed_provider
-        choices = (*labels, "退出")
+        choices = (*labels, "返回上级")
+        self._write(
+            "国内渠道可直接选择：API Key 就绪后端点与模型均可用默认值。"
+        )
         if self._menu_injected:
             index = self.menu(choices, "选择图片服务 Provider")
         else:
+            # featured 渠道存在时回车即选推荐项。
             index = self._default_menu(
                 choices,
                 "选择图片服务 Provider",
+                default_index=0 if featured is not None else None,
             )
         if index is None or index >= len(providers):
             return None
@@ -295,6 +380,19 @@ class ConfigWizard:
         return provider
 
     def _write_provider_setup_guide(self, provider: ProviderName) -> None:
+        channel = channel_catalog.channel_by_name(provider.value)
+        if channel is not None:
+            self._write(
+                f"{channel.display_name}渠道：用于接入{channel.display_name}官方"
+                "图片生成服务（OpenAI 兼容同步接口）。\n"
+                f"没有账号或 API Key：请访问 {channel.portal} 开通服务，"
+                f"在 {channel.key_page} 创建 API Key。\n"
+                f"也可直接设置环境变量 {channel.credential_environment}。"
+                f"默认模型 {channel.default_model}，可用模型："
+                f"{'、'.join(channel.models)}。\n"
+                "接下来输入 API Key（端点与模型可直接回车使用默认值）。"
+            )
+            return
         guides = {
             ProviderName.OPENAI: (
                 "OpenAI：用于直接使用 OpenAI 官方图片生成服务。\n"
@@ -314,13 +412,104 @@ class ConfigWizard:
         }
         self._write(guides[provider])
 
+    def _switch_provider(self, overview: ConfigOverview, request: StatusRequest) -> None:
+        """在已配置服务间切换固定首选；内嵌恢复自动选择。"""
+
+        configured = [
+            item for item in overview.providers if item.configured
+        ]
+        if not configured:
+            self._write("尚无已配置服务，请先添加或配置图片服务。")
+            return
+        labels = []
+        for item in configured:
+            model = f"（{item.model}）" if item.model else ""
+            credential = "" if item.credential_available else "  凭据缺失"
+            current = " [当前]" if item.selected else ""
+            labels.append(
+                f"{self._provider_label(item.provider)}{model}{credential}{current}"
+            )
+        choices = (*labels, "恢复自动选择", "返回上级")
+        index = self.menu(choices, "切换当前使用的服务")
+        if index is None or index >= len(choices) - 1:
+            return
+        if index == len(choices) - 2:
+            if self.confirm("恢复自动选择（按优先级取最高）？", False):
+                self.service.clear_preferred_provider(
+                    request,
+                    operation_id=f"config-wizard-auto-{uuid.uuid4().hex}",
+                )
+                self._write("已恢复自动选择。")
+            return
+        selected = configured[index]
+        if self.confirm(
+            f"新任务将固定使用 {self._provider_label(selected.provider)}，是否继续？",
+            False,
+        ):
+            self.service.set_preferred_provider(
+                request,
+                provider=selected.provider,
+                operation_id=(
+                    f"config-wizard-prefer-{selected.provider.value}-{uuid.uuid4().hex}"
+                ),
+            )
+            self._write(f"已切换：新任务将固定使用 {self._provider_label(selected.provider)}。")
+
+    def _reorder(self, overview: ConfigOverview) -> None:
+        enabled = [item for item in overview.providers if item.enabled]
+        if len(enabled) < 2:
+            self._write("只有一个已启用服务，无需调整顺序。")
+            return
+        self._write("当前自动选择顺序（数字越小越优先）：")
+        for position, item in enumerate(enabled, start=1):
+            model = f"（{item.model}）" if item.model else ""
+            self._write(f"  {position}. {self._provider_label(item.provider)}{model}")
+        remaining = list(enabled)
+        ordered: list[Any] = []
+        while len(remaining) > 1:
+            labels = [
+                f"{self._provider_label(item.provider)}"
+                + (f"（{item.model}）" if item.model else "")
+                for item in remaining
+            ]
+            index = self.menu(
+                (*labels, "保持剩余顺序并完成"),
+                f"选择排第 {len(ordered) + 1} 位的服务",
+            )
+            if index is None or index == len(remaining):
+                ordered.extend(remaining)
+                remaining = []
+                break
+            ordered.append(remaining.pop(index))
+        ordered.extend(remaining)
+        if self.confirm(
+            "新顺序：" + " → ".join(
+                self._provider_label(item.provider) for item in ordered
+            ) + "，是否应用？",
+            True,
+        ):
+            try:
+                self.service.reorder_provider_priorities(
+                    tuple(item.provider.value for item in ordered)
+                )
+                self._write("已更新自动选择顺序。")
+            except ConfigServiceError:
+                self._write("顺序无效：请包含每个已启用服务一次，且不要重复。")
+
     def _choose_home_action(self, overview: ConfigOverview) -> str | None:
         self._render_overview(overview)
+        featured = channel_catalog.featured_channel()
         labels = {
+            "configure_featured": (
+                f"配置推荐渠道：{featured.display_name}渠道"
+                f"（默认 {featured.endpoint_origin}）"
+                if featured is not None
+                else "配置推荐渠道"
+            ),
             "edit_selected": "修改当前服务",
             "add_provider": "添加备用服务",
             "reorder": "调整自动选择顺序",
-            "prefer": "固定使用某个服务",
+            "prefer": "切换当前使用的服务",
             "clear_preference": "恢复自动选择",
             "list_providers": "查看全部服务",
             "exit": "退出",
@@ -352,10 +541,24 @@ class ConfigWizard:
         else:
             self._write("图片服务设置")
             self._write("状态：需要处理")
+        featured = channel_catalog.featured_channel()
+        if (
+            featured is not None
+            and not any(
+                item.provider.value == featured.id and item.configured
+                for item in overview.providers
+            )
+        ):
+            self._write(
+                f"推荐：配置 {featured.display_name}渠道"
+                f"（{featured.endpoint_origin}），"
+                "只需 API Key 与模型，端点自动使用默认。"
+            )
             if overview.selection_error == "provider_priority_tie":
                 self._write("两个服务的优先级相同，请调整顺序或固定使用其中一个服务。")
             else:
                 self._write("尚未找到可用于生成图片的服务。")
+        self._write("")
         self._render_provider_list(overview)
 
     def _render_provider_list(self, overview: ConfigOverview) -> None:
@@ -364,32 +567,21 @@ class ConfigWizard:
             if not item.configured:
                 continue
             state = "已启用" if item.enabled else "未启用"
-            credential = "已设置" if item.credential_available else "凭据缺失"
+            credential = "凭据已设置" if item.credential_available else "凭据缺失"
             current = " [当前]" if item.selected else ""
-            priority = f" priority {item.priority}" if item.priority is not None else ""
-            self._write(
-                f"- {self._provider_label(item.provider)}  {state}{priority}  {credential}{current}"
+            model = f"（{item.model}）" if item.model else ""
+            priority = (
+                f"  优先级 {item.priority}" if item.priority is not None else ""
             )
-
-    def _reorder(self, overview: ConfigOverview) -> None:
-        enabled = [item for item in overview.providers if item.enabled]
-        if len(enabled) < 2:
-            self._write("只有一个已启用服务，无需调整顺序。")
-            return
-        names = ", ".join(item.provider.value for item in enabled)
-        raw = self.prompt(
-            f"请输入自动选择顺序（逗号分隔，当前 {names}）："
-        ).strip()
-        if not raw:
-            return
-        providers = tuple(item.strip() for item in raw.split(",") if item.strip())
-        try:
-            self.service.reorder_provider_priorities(providers)
-        except ConfigServiceError:
-            self._write("顺序无效：请包含每个已启用服务一次，且不要重复。")
+            self._write(
+                f"- {self._provider_label(item.provider)}{model}{priority}  {state}  {credential}{current}"
+            )
 
     @staticmethod
     def _provider_label(provider: ProviderName) -> str:
+        channel = channel_catalog.channel_by_name(provider.value)
+        if channel is not None:
+            return f"{channel.display_name}渠道"
         return {
             ProviderName.OPENAI: "OpenAI",
             ProviderName.OPENAI_COMPATIBLE: "OpenAI-compatible 中转站",

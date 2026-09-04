@@ -14,9 +14,13 @@
     python3 scripts/draft_negative_prompts.py            # dry-run：列出草案
     python3 scripts/draft_negative_prompts.py --apply    # 把草案写入不足 3 条的
                                                          # brief（去重后补足，最多 5 条）
+    python3 scripts/draft_negative_prompts.py --pool references/styles/00_索引/负面语料参考池.md
+                                                          # 叠加语料池词条（家族组按
+                                                          # brief 所在目录名匹配，
+                                                          # 通用组全适用）
 
-纪律：--apply 只在既有 negative_prompt < 3 时写入，且新条目全部来自本
-brief 自身约束字段；写入后建议同批跑 lint_style_briefs 确认无回归。
+纪律：--apply 只在既有 negative_prompt < 3 时写入；brief 自身约束字段派生的
+候选优先，池词条只补缺口；写入后建议同批跑 lint_style_briefs 确认无回归。
 """
 
 from __future__ import annotations
@@ -30,6 +34,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 STYLES_ROOT = SKILL_DIR / "references" / "styles"
+DEFAULT_POOL = STYLES_ROOT / "00_索引" / "负面语料参考池.md"
 
 _JSON_BLOCK = re.compile(r"```json\n(.*?)\n```", re.S)
 _SPLIT = re.compile(r"[；;。]\s*|\s*[、，]\s*(?=不要|禁|避免|不)")
@@ -68,11 +73,47 @@ def _candidates(brief: dict) -> list[str]:
     return seen
 
 
+def _load_pool(path: Path) -> dict[str, list[str]]:
+    """解析负面语料参考池：``## 组名`` 二级标题段 + 其下 ``- `` 列表项。
+
+    ``## 选用指引`` 段是给人读的 consuming 说明，不参与解析。
+    """
+    groups: dict[str, list[str]] = {}
+    current: list[str] | None = None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            name = line[3:].strip()
+            current = None if name == "选用指引" else groups.setdefault(name, [])
+        elif current is not None and line.startswith("- "):
+            item = line[2:].strip()
+            if len(item) >= 6:
+                current.append(item)
+    return groups
+
+
+def _pool_candidates(groups: dict[str, list[str]], path_parts: set[str]) -> list[str]:
+    """按 brief 路径段匹配池组：``通用`` 组全适用，其余组名命中目录名才适用。"""
+    out: list[str] = []
+    for name, items in groups.items():
+        if name == "通用" or name in path_parts:
+            out.extend(items)
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="negative_prompt 草案器（dry-run 默认）")
     parser.add_argument("--apply", action="store_true", help="写入不足 3 条的 brief（补足至 3-5 条）")
     parser.add_argument("--limit", type=int, default=0, help="最多处理 N 份（0=全部）")
+    parser.add_argument(
+        "--pool", type=Path, nargs="?", const=DEFAULT_POOL, default=None,
+        help="负面语料参考池路径；裸 --pool 用内置池"
+        f"（{DEFAULT_POOL.relative_to(SKILL_DIR)}），不传则不启用",
+    )
     args = parser.parse_args(argv)
+
+    pool_groups: dict[str, list[str]] = {}
+    if args.pool is not None:
+        pool_groups = _load_pool(args.pool)
 
     touched = 0
     for path in sorted(STYLES_ROOT.rglob("*.md")):
@@ -91,6 +132,13 @@ def main(argv: list[str] | None = None) -> int:
             continue
         existing_set = {x for x in existing}
         draft = [c for c in _candidates(brief) if c not in existing_set]
+        if pool_groups:
+            parts = set(path.relative_to(STYLES_ROOT).parts)
+            pool_extra = list(dict.fromkeys(  # 组间词条保序去重
+                c for c in _pool_candidates(pool_groups, parts)
+                if c not in existing_set and c not in draft
+            ))
+            draft += pool_extra  # 池词条排在自身派生之后，只补缺口
         if not draft:
             continue
         fill = draft[: max(0, 5 - len(existing))][: 3 - len(existing)]

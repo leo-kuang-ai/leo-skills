@@ -1,5 +1,15 @@
 # Backend 选择
 
+除内置四类 backend 外，OpenAI 兼容图片渠道（智谱 / 百炼 / 方舟 / 千帆 / 混元 /
+魔搭）以 checked-in 目录注册：条目见
+[`provider-catalog.md`](provider-catalog.md)，数据源为
+`runtime/src/leo_ppt_generator/config/providers.yaml`。渠道能力固定为
+generate-only；`backend create --provider <channel>` 时端点 origin 与默认模型由
+目录填充（显式 `endpoint_origin` 仍须 origin-only），执行期 base URL =
+origin + 渠道固定 `api_path`，不做 `/v1` 猜测。渠道凭据环境变量与 CLI 枚举均从
+目录派生；setup 报告在 provider_options 内披露渠道引导块（官网 / 取 key /
+环境变量 / 模型清单）。
+
 分别声明 backend 的 `generate`、`edit`、`mask` 和 `reference image`
 capability。任务需要的 capability 缺失时，在派发前返回
 `blocked/backend_capability_missing`。

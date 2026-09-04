@@ -570,6 +570,50 @@
     ],
     "source": "echarts/theme/vintage.js"
   },
+  "office_mcp/corporate_gray": {
+    "background": "#F2F2F2",
+    "colors": [
+      "#444444",
+      "#595959",
+      "#D9D9D9",
+      "#0078D7",
+      "#333333"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/elegant_green": {
+    "background": "#EEECE1",
+    "colors": [
+      "#468847",
+      "#92D050",
+      "#70AD47",
+      "#FFFFFF",
+      "#595959"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/modern_blue": {
+    "background": "#F7F7F7",
+    "colors": [
+      "#0078D7",
+      "#00B0F0",
+      "#FFC000",
+      "#282828",
+      "#444444"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/warm_red": {
+    "background": "#FDFDFD",
+    "colors": [
+      "#C0504D",
+      "#E67E22",
+      "#F1C40F",
+      "#444444",
+      "#2C3E50"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
   "ppt_mcp/chakra": {
     "background": "#FFFFFF",
     "colors": [

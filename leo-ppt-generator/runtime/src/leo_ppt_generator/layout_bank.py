@@ -24,6 +24,12 @@ class LayoutBankError(StyleStoreError):
     reason_code = "layout_bank_error"
 
 
+class CapacityFilterError(LayoutBankError):
+    """``--capacity`` 条件语法错误的稳定 reason code（信封边界不坍缩）。"""
+
+    reason_code = "capacity_filter_invalid"
+
+
 def _styles_root() -> Path:
     return builtin_style_path("_placeholder").parent
 
@@ -142,13 +148,7 @@ def list_layout_bank() -> list[dict]:
     """枚举 36 版式 sidecar 摘要（layout_id/name/page_type/reuse_friendly/
     max_per_deck/sha256，按 layout_id 排序，确定性输出）。"""
     items: list[dict] = []
-    for path in sorted(_layout_dir().glob("*.layouts.json")):
-        try:
-            data = _read_json(path)
-            if data.get("entity") != "layout":
-                continue
-        except LayoutBankError:
-            continue
+    for path, data in _iter_layout_sidecars():
         items.append(
             {
                 "layout_id": data.get("layout_id"),
@@ -163,3 +163,108 @@ def list_layout_bank() -> list[dict]:
         )
     items.sort(key=lambda item: str(item["layout_id"]))
     return items
+
+
+def _iter_layout_sidecars():
+    """按路径序产出 ``(path, data)``；读取失败或 entity 不符的文件跳过。
+
+    list 与 capacity 过滤共用的遍历入口，避免两份逐字重复的 sidecar 扫描块。
+    """
+    for path in sorted(_layout_dir().glob("*.layouts.json")):
+        try:
+            data = _read_json(path)
+            if data.get("entity") != "layout":
+                continue
+        except LayoutBankError:
+            continue
+        yield path, data
+
+
+def _parse_capacity_conditions(text: str) -> list[tuple[str, int]]:
+    """解析 ``槽名<=N`` 逗号分隔条件（仅支持 ``<=``，MVP 语义：够小才装得下）。
+
+    语法错误抛 ``CapacityFilterError``（reason_code=capacity_filter_invalid），
+    保证 CLI 信封边界拿到稳定错误码而非泛化 layout_bank_error。
+    """
+    conditions: list[tuple[str, int]] = []
+    for chunk in text.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if "<=" not in chunk:
+            raise CapacityFilterError(
+                f"capacity_filter_invalid: {chunk!r} 缺 <= 操作符"
+                "（语法：槽名<=N，逗号分隔）"
+            )
+        slot, _, bound = chunk.partition("<=")
+        slot = slot.strip()
+        if not slot:
+            raise CapacityFilterError(
+                "capacity_filter_invalid: 空槽名（语法：槽名<=N）"
+            )
+        try:
+            limit = int(bound.strip())
+        except ValueError:
+            raise CapacityFilterError(
+                f"capacity_filter_invalid: {bound!r} 不是整数"
+            ) from None
+        conditions.append((slot, limit))
+    if not conditions:
+        raise CapacityFilterError("capacity_filter_invalid: 空条件")
+    return conditions
+
+
+def _slot_upper_bound(slot_def: dict) -> int | None:
+    """槽位容量上限：计数槽取 ``count_max``，文本槽取 ``max_chars``。"""
+    for key in ("count_max", "max_chars"):
+        value = slot_def.get(key)
+        if isinstance(value, int):
+            return value
+    return None
+
+
+def filter_layout_bank_by_capacity(conditions: str) -> dict:
+    """按容量条件筛选版式（UB2 容量查询面，只读，不进 render 路径）。
+
+    判定语义：``items<=6`` 要求该版式 ``items`` 槽的上限（``count_max``，无则
+    ``max_chars``）≤ 6；多条件 AND。槽不存在的版式不匹配（该版式无此槽位
+    概念，属正常不匹配）；**槽存在但既无 ``count_max`` 也无 ``max_chars`` 的
+    版式进 ``missing``（如实报缺，不静默通过）**。来源思想：dashi 容量选页
+    硬条件（title-chars/item-count），2026-09-02 落地。
+    """
+    parsed = _parse_capacity_conditions(conditions)
+    matched: list[dict] = []
+    missing: dict[str, list[str]] = {}
+    for path, data in _iter_layout_sidecars():
+        layout_id = data.get("layout_id")
+        capacity = data.get("content_capacity") or {}
+        ok = True
+        bounds: dict[str, int] = {}
+        miss_slots: list[str] = []
+        for slot, limit in parsed:
+            slot_def = capacity.get(slot)
+            if not isinstance(slot_def, dict):
+                ok = False
+                continue  # 不 break：后续条件的缺键槽仍要如实进 missing
+            bound = _slot_upper_bound(slot_def)
+            if bound is None:
+                miss_slots.append(slot)
+                ok = False
+                continue
+            if bound > limit:
+                ok = False
+            bounds[slot] = bound
+        if miss_slots:
+            missing[str(layout_id)] = miss_slots
+        if ok:
+            matched.append(
+                {
+                    "layout_id": layout_id,
+                    "name": data.get("name"),
+                    "page_type": data.get("page_type"),
+                    "capacity_bounds": bounds,
+                    "sha256": _sha256_of(path),
+                }
+            )
+    matched.sort(key=lambda item: str(item["layout_id"]))
+    return {"matched": matched, "missing": missing}

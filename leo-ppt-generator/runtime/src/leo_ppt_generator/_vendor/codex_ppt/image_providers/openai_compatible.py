@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import os
 from pathlib import Path
 import re
 import sys
+import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 
 from .base import ImageProvider
@@ -102,6 +104,23 @@ async def _generate_one_with_retries(
     raise last_exc or RuntimeError("unknown error")
 
 
+def _download_image_b64(url: str, timeout_seconds: float = 120.0) -> str:
+    with urllib.request.urlopen(url, timeout=timeout_seconds) as response:
+        return base64.b64encode(response.read()).decode("ascii")
+
+
+def _image_payload(item: Any) -> str:
+    b64 = getattr(item, "b64_json", None)
+    if b64:
+        return b64
+    url = getattr(item, "url", None)
+    if url:
+        # OpenAI-compatible gateways that answer with a hosted URL (e.g. temp
+        # links): download once and keep the downstream b64 contract intact.
+        return _download_image_b64(str(url))
+    raise ValueError("image response item has neither b64_json nor url")
+
+
 class OpenAICompatibleImageProvider(ImageProvider):
     def __init__(
         self,
@@ -119,7 +138,7 @@ class OpenAICompatibleImageProvider(ImageProvider):
 
     def generate(self, payload: Dict[str, Any]) -> List[str]:
         result = self._create_client().images.generate(**payload)
-        return [item.b64_json for item in result.data]
+        return [_image_payload(item) for item in result.data]
 
     def edit(
         self,
@@ -133,7 +152,7 @@ class OpenAICompatibleImageProvider(ImageProvider):
             if mask_file is not None:
                 request["mask"] = mask_file
             result = self._create_client().images.edit(**request)
-        return [item.b64_json for item in result.data]
+        return [_image_payload(item) for item in result.data]
 
     async def generate_batch(
         self,
@@ -148,7 +167,7 @@ class OpenAICompatibleImageProvider(ImageProvider):
             attempts=attempts,
             job_label=job_label,
         )
-        return [item.b64_json for item in result.data]
+        return [_image_payload(item) for item in result.data]
 
     def _create_client(self) -> Any:
         if self._client_factory is not None:

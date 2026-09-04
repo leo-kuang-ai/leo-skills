@@ -13,7 +13,11 @@ token_sidecar 选色参考；不进风格条目配额、不改 brief schema。
   声明；tooltip 的 rgba 背景与组件级双色渐变不收）；
 - ppt-mcp: ``ppt-mcp/src/ppt_com/themes.py`` ``PRESET_PALETTES`` 17 组
   ——ast 解析 dict 字面量，色序取 accent1..accent6（PPT 图表系列循环），
-  dark/light 四键留作 context 不进色序。
+  dark/light 四键留作 context 不进色序；
+- office-mcp: ``Office-PowerPoint-MCP-Server/utils/design_utils.py``
+  ``PROFESSIONAL_COLOR_SCHEMES`` 4 组（快照 2026-09-02，RGB 数值按事实
+  数据直引，表述思想级；指纹查重与既有 53 条零同板重叠，合计 57 条）——**静态快照
+  常量内置**（不依赖外部目录），``--aggregate`` 重建时确定性重现，幂等。
 
 确定性：条目按键排序、色序保持源序、仅收 ``#RRGGBB``（3 位/非 hex 丢弃）。
 
@@ -52,6 +56,37 @@ _VAR_BG_RE = re.compile(r"var\s+backgroundColor\s*=\s*'(#[0-9A-Fa-f]{3,6})'")
 _THEME_BG_RE = re.compile(r"^ {4,8}backgroundColor:\s*'(#[0-9A-Fa-f]{3,6})'", re.M)
 _PPT_MCP_PREFIX = "ppt_mcp/"
 _ECHARTS_PREFIX = "echarts/"
+_OFFICE_MCP_PREFIX = "office_mcp/"
+
+# Office-PowerPoint-MCP-Server PROFESSIONAL_COLOR_SCHEMES 快照（2026-09-02，
+# UB4 色板池增量）。RGB 数值按事实数据直引；系列色序 = primary → accent1 →
+# accent2 → secondary → text（light 太浅留作 background，不进系列色）。
+_OFFICE_MCP_SCHEMES: dict[str, dict[str, list[int]]] = {
+    "modern_blue": {
+        "primary": [0, 120, 215], "secondary": [40, 40, 40],
+        "accent1": [0, 176, 240], "accent2": [255, 192, 0],
+        "light": [247, 247, 247], "text": [68, 68, 68],
+    },
+    "corporate_gray": {
+        "primary": [68, 68, 68], "secondary": [0, 120, 215],
+        "accent1": [89, 89, 89], "accent2": [217, 217, 217],
+        "light": [242, 242, 242], "text": [51, 51, 51],
+    },
+    "elegant_green": {
+        "primary": [70, 136, 71], "secondary": [255, 255, 255],
+        "accent1": [146, 208, 80], "accent2": [112, 173, 71],
+        "light": [238, 236, 225], "text": [89, 89, 89],
+    },
+    "warm_red": {
+        "primary": [192, 80, 77], "secondary": [68, 68, 68],
+        "accent1": [230, 126, 34], "accent2": [241, 196, 15],
+        "light": [253, 253, 253], "text": [44, 62, 80],
+    },
+}
+
+
+def _rgb_hex(rgb: list[int]) -> str:
+    return "#{:02X}{:02X}{:02X}".format(*rgb)
 
 
 def _normalize_hex(value: str) -> str | None:
@@ -136,6 +171,19 @@ def build_pool(
                     "background": _normalize_hex(entry.get("light1", "")),
                     "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES",
                 }
+    # 静态快照源：无论 --aggregate 是否提供外部目录，office-mcp 4 组确定性在池。
+    for name, scheme in _OFFICE_MCP_SCHEMES.items():
+        pool[f"{_OFFICE_MCP_PREFIX}{name}"] = {
+            "colors": [
+                _rgb_hex(scheme[k])
+                for k in ("primary", "accent1", "accent2", "secondary", "text")
+            ],
+            "background": _rgb_hex(scheme["light"]),
+            "source": (
+                "Office-PowerPoint-MCP-Server/utils/design_utils.py"
+                "#PROFESSIONAL_COLOR_SCHEMES"
+            ),
+        }
     return dict(sorted(pool.items()))
 
 

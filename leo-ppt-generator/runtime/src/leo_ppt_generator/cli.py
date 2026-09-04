@@ -23,6 +23,7 @@ from .application.routes import (
 from .application.run_index import IdempotencyConflict, RevisionConflict, RunIndex
 from .backend_execution import BackendExecutionError
 from .config.backend_contract import BackendContractError, BackendRegistry
+from .config.channel_catalog import channel_by_name, channel_names
 from .config.provider_registry import ProviderRegistry
 from .config.receipt_store import FileReceiptStore
 from .config.models import HostCapabilityState, ProviderName, RouteName
@@ -33,6 +34,7 @@ from .config.runtime_config import (
     RuntimeConfigError,
     assert_run_quota,
     configure_openai_compatible_profile,
+    configure_provider_profile,
     default_home,
     load_runtime_config,
     openai_compatible_profile,
@@ -76,7 +78,13 @@ from .storage import (
     sha256_bytes,
 )
 from .styles import StyleStoreError, list_styles, load_style, save_style
-from .layout_bank import list_layout_bank, load_layout_bank, load_style_layouts
+from .layout_bank import (
+    CapacityFilterError,
+    filter_layout_bank_by_capacity,
+    list_layout_bank,
+    load_layout_bank,
+    load_style_layouts,
+)
 from .templates import (
     StyleColorOverrideError,
     StyleVarOverrideError,
@@ -94,6 +102,13 @@ from .upstream_bridge import CODEX_TOOLS, UpstreamBridgeError, run_upstream
 
 PROTOCOL = "leo-ppt-machine/v1"
 MAX_SLIDES_CONTRACT_BYTES = 1024 * 1024
+
+# provider 枚举从 checked-in 渠道目录派生；新增渠道不改本文件。
+CHANNEL_PROVIDERS = channel_names()
+EXTERNAL_PROVIDER_CHOICES = ("openai", "openai-compatible", "atlascloud", *CHANNEL_PROVIDERS)
+BACKEND_PROVIDER_CHOICES = ("builtin-imagegen", *EXTERNAL_PROVIDER_CHOICES)
+PROFILE_CONFIGURABLE_PROVIDERS = ("openai-compatible", *CHANNEL_PROVIDERS)
+PROVIDER_EXAMPLES = "|".join(EXTERNAL_PROVIDER_CHOICES)
 
 
 def _duration_seconds(value: str) -> float:
@@ -295,7 +310,7 @@ def doctor_report(route: str | None) -> dict[str, Any]:
     }
     provider_available = any(
         credential_references[provider]["status"] == "available"
-        for provider in ("openai", "openai-compatible", "atlascloud")
+        for provider in EXTERNAL_PROVIDER_CHOICES
     )
     compatible_profile = openai_compatible_profile() if config_error is None else None
     readiness = {
@@ -1038,7 +1053,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     setup.add_argument(
         "--provider",
-        choices=("builtin-imagegen", "openai", "openai-compatible", "atlascloud"),
+        choices=BACKEND_PROVIDER_CHOICES,
     )
     setup.add_argument("--require-mask", action="store_true")
     setup.add_argument(
@@ -1083,7 +1098,7 @@ def build_parser() -> argparse.ArgumentParser:
     provider_configure = provider_commands.add_parser("configure")
     provider_configure.add_argument(
         "--provider",
-        choices=("openai", "openai-compatible", "atlascloud"),
+        choices=EXTERNAL_PROVIDER_CHOICES,
         required=True,
     )
     provider_configure.add_argument("--route")
@@ -1092,7 +1107,7 @@ def build_parser() -> argparse.ArgumentParser:
     provider_prefer = provider_commands.add_parser("prefer")
     provider_prefer.add_argument(
         "--provider",
-        choices=("openai", "openai-compatible", "atlascloud"),
+        choices=EXTERNAL_PROVIDER_CHOICES,
         required=True,
     )
     provider_prefer.add_argument("--route")
@@ -1106,7 +1121,7 @@ def build_parser() -> argparse.ArgumentParser:
     provider_enabled = provider_commands.add_parser("enabled")
     provider_enabled.add_argument(
         "--provider",
-        choices=("openai", "openai-compatible", "atlascloud"),
+        choices=EXTERNAL_PROVIDER_CHOICES,
         required=True,
     )
     provider_enabled.add_argument("--value", choices=("true", "false"), required=True)
@@ -1114,7 +1129,7 @@ def build_parser() -> argparse.ArgumentParser:
     provider_remove = provider_commands.add_parser("remove")
     provider_remove.add_argument(
         "--provider",
-        choices=("openai", "openai-compatible", "atlascloud"),
+        choices=EXTERNAL_PROVIDER_CHOICES,
         required=True,
     )
     provider_remove.add_argument("--confirm", action="store_true")
@@ -1161,7 +1176,7 @@ def build_parser() -> argparse.ArgumentParser:
     backend_create = backend_commands.add_parser("create")
     backend_create.add_argument(
         "--provider",
-        choices=("builtin-imagegen", "openai", "openai-compatible", "atlascloud"),
+        choices=BACKEND_PROVIDER_CHOICES,
     )
     backend_create.add_argument(
         "--host-imagegen",
@@ -1178,9 +1193,10 @@ def build_parser() -> argparse.ArgumentParser:
     provider = subcommands.add_parser("provider")
     provider_commands = provider.add_subparsers(dest="provider_command", required=True)
     provider_configure = provider_commands.add_parser("configure")
-    provider_configure.add_argument("--provider", choices=("openai-compatible",), required=True)
-    provider_configure.add_argument("--base-url", required=True)
-    provider_configure.add_argument("--model", required=True)
+    provider_configure.add_argument("--provider", choices=PROFILE_CONFIGURABLE_PROVIDERS, required=True)
+    # openai-compatible 必填；渠道有 checked-in 默认值，可省略。
+    provider_configure.add_argument("--base-url", required=False)
+    provider_configure.add_argument("--model", required=False)
 
     run = subcommands.add_parser("run")
     run_commands = run.add_subparsers(dest="run_command", required=True)
@@ -1486,6 +1502,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     style_layouts.add_argument("--style", help="风格名：返回该风格的薄路由视图")
     style_layouts.add_argument("--layout", help="版式 P 码（如 P6）：返回单份版式 sidecar")
+    style_layouts.add_argument(
+        "--capacity",
+        help="容量过滤（只读）：槽名<=N 逗号分隔，如 title<=8,items<=6；"
+        "计数槽按 count_max、文本槽按 max_chars 判定，缺键版式如实报 missing",
+    )
 
     evidence = subcommands.add_parser("evidence")
     evidence_commands = evidence.add_subparsers(dest="evidence_command", required=True)
@@ -1844,7 +1865,7 @@ def _dispatch_config(args: argparse.Namespace) -> dict[str, Any]:
                 primary_action=primary_action_for(
                     overview.selection_error,
                     route=str(request.route or "generate"),
-                    provider="openai|openai-compatible|atlascloud",
+                    provider=PROVIDER_EXAMPLES,
                 ),
             )
         return envelope(
@@ -1978,7 +1999,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             report["primary_action"] = primary_action_for(
                 selection_error,
                 route=args.route,
-                provider="openai|openai-compatible|atlascloud",
+                provider=PROVIDER_EXAMPLES,
             )
         return report
     if args.command == "route":
@@ -1997,11 +2018,22 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             return manager.status(args.provider)
         return manager.remove(args.provider)
     if args.command == "provider":
-        config = configure_openai_compatible_profile(
-            endpoint_origin=args.base_url,
-            model=args.model,
-        )
-        profile = config.values["provider_profiles"]["openai-compatible"]
+        channel = channel_by_name(args.provider)
+        if channel is not None:
+            # 渠道：端点有 checked-in 默认 origin，base-url/model 均可省略。
+            config = configure_provider_profile(
+                args.provider,
+                endpoint_origin=args.base_url or channel.endpoint_origin,
+                model=args.model or channel.default_model,
+            )
+        else:
+            if not args.base_url or not args.model:
+                raise BackendContractError("provider_profile_fields_required")
+            config = configure_openai_compatible_profile(
+                endpoint_origin=args.base_url,
+                model=args.model,
+            )
+        profile = config.values["provider_profiles"][args.provider]
         return envelope(
             "ready",
             "provider_profile_configured",
@@ -2046,6 +2078,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             credential_ref = None
             endpoint_origin = None
             model = args.model
+            channel = channel_by_name(provider)
             profiles = load_runtime_config().values.get("provider_profiles", {})
             profile = profiles.get(provider) if selection is not None else None
             if isinstance(profile, dict):
@@ -2053,6 +2086,16 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 credential_source = profile.get("credential_source")
                 credential_ref = profile.get("credential_ref")
                 endpoint_origin = profile.get("endpoint_origin")
+                if channel is not None:
+                    model = model or channel.default_model
+                    endpoint_origin = endpoint_origin or channel.endpoint_origin
+            elif channel is not None:
+                # 渠道无 profile 时直接用目录默认值；凭据仍走引用解析。
+                model = model or channel.default_model
+                endpoint_origin = channel.endpoint_origin
+                credential_source, credential_ref = credential_manager().reference(
+                    provider
+                )
             elif provider == "openai-compatible":
                 profile = openai_compatible_profile()
                 if profile is None:
@@ -2998,6 +3041,22 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             return envelope("ready", "style_loaded", style=result, safe_to_retry=True)
         if args.style_command == "layouts":
             # 只读查询（layout-bank-v1 sidecar）；不触碰 render 组装路径。
+            # is not None（非 falsy）守卫：空串条件必须进解析层报
+            # capacity_filter_invalid，而不是静默回落全量列表。
+            if getattr(args, "capacity", None) is not None:
+                if getattr(args, "style", None) or getattr(args, "layout", None):
+                    raise CapacityFilterError(
+                        "capacity_filter_conflict: --capacity 与 "
+                        "--style/--layout 互斥，请只传其一"
+                    )
+                result = filter_layout_bank_by_capacity(args.capacity)
+                return envelope(
+                    "ready", "layout_bank_capacity_filtered",
+                    capacity_filter=args.capacity,
+                    matched=result["matched"],
+                    missing=result["missing"],
+                    safe_to_retry=True,
+                )
             if getattr(args, "layout", None):
                 return envelope(
                     "ready", "layout_bank_loaded",

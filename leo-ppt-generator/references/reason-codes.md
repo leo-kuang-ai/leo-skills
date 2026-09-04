@@ -53,6 +53,8 @@
 | `style_saved` | 用户风格已原子保存 | 不适用 | 保存返回的路径与 sha256，后续运行优先读取该风格 |
 | `style_store_error` | 风格库操作的兜底错误 | 条件式 | 读取具体子 reason code 后修复并重试 |
 | `style_rendered` | 模板确定性注入内容已渲染 | 不适用 | 将返回的 template 写入 deck_spec.style 与 slides[].layout |
+| `layout_bank_capacity_filtered` | 版式库容量过滤结果已返回 | 不适用 | 按 matched/missing 消费；槽名语法见 `styles/12_版式库/00_容量档位参考.md` |
+| `capacity_filter_invalid` | --capacity 条件语法错误（含空条件/互斥冲突） | 条件式 | 按 `槽名<=N` 语法修正后重试；与 --style/--layout 互斥 |
 | `templates_listed` | 模板轴清单已枚举 | 不适用 | 从清单选择渲染/版式/信息图/模式名 |
 | `template_store_error` | 模板知识库加载失败或模板不存在 | 是 | 用 `style render --list-templates` 查看可用名后重试 |
 | `style_color_override_invalid` | `style render --color` 覆盖违例（role 非法/非 #RRGGBB/role 不在该风格/风格无 palette/项缺 `=`） | 是 | 改用 role ∈ primary/secondary/accent/neutral 与 #RRGGBB 值重试；`style render` 缺省输出不受影响 |

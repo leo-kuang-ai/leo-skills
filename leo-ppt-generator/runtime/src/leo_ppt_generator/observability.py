@@ -10,7 +10,12 @@ from typing import Any
 
 from filelock import FileLock
 
+from .config.channel_catalog import channel_names
 from .storage import atomic_write_json, canonical_json, sha256_file
+
+# provider 示例串从渠道目录派生；新增渠道不改本文件。
+_PROVIDER_EXAMPLES = "|".join(("openai", "openai-compatible", "atlascloud", *channel_names()))
+_BACKEND_PROVIDER_EXAMPLES = "|".join(("builtin-imagegen", "openai", "openai-compatible", "atlascloud", *channel_names()))
 
 _PRIMARY_ACTIONS: dict[str, dict[str, str]] = {
     "unknown_route": {
@@ -40,7 +45,7 @@ _PRIMARY_ACTIONS: dict[str, dict[str, str]] = {
     },
     "host_image_capability_unavailable": {
         "id": "select_external_provider",
-        "command": "leo-ppt setup --route {route} --host-imagegen unavailable --provider <openai|openai-compatible|atlascloud>",
+        "command": "leo-ppt setup --route {route} --host-imagegen unavailable --provider <" + _PROVIDER_EXAMPLES + ">",
         "verification": "selected_provider 为外部 Provider 且状态为 ready。",
     },
     "provider_confirmation_required": {
@@ -50,7 +55,7 @@ _PRIMARY_ACTIONS: dict[str, dict[str, str]] = {
     },
     "provider_choice_required": {
         "id": "choose_provider",
-        "command": "leo-ppt setup --route {route} --host-imagegen unavailable --provider <openai|atlascloud>",
+        "command": "leo-ppt setup --route {route} --host-imagegen unavailable --provider <" + _PROVIDER_EXAMPLES + ">",
         "verification": "selected_provider 与选择一致且状态为 ready。",
     },
     "provider_capability_required": {
@@ -80,7 +85,7 @@ _PRIMARY_ACTIONS: dict[str, dict[str, str]] = {
     },
     "unknown_backend": {
         "id": "choose_supported_provider",
-        "command": "leo-ppt setup --route {route} --provider <builtin-imagegen|openai|openai-compatible|atlascloud>",
+        "command": "leo-ppt setup --route {route} --provider <" + _BACKEND_PROVIDER_EXAMPLES + ">",
         "verification": "重新运行 setup，确认 provider 出现在 provider_options 中。",
     },
     "setup_schema_version_unsupported": {

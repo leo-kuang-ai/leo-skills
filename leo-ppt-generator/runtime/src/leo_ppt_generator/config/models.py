@@ -9,11 +9,32 @@ from types import MappingProxyType
 from typing import Any, ClassVar, Mapping
 
 
-class ProviderName(StrEnum):
-    OPENAI = "openai"
-    OPENAI_COMPATIBLE = "openai-compatible"
-    ATLASCLOUD = "atlascloud"
-    BUILTIN_IMAGEGEN = "builtin-imagegen"
+_BUILTIN_PROVIDER_MEMBERS: dict[str, str] = {
+    "OPENAI": "openai",
+    "OPENAI_COMPATIBLE": "openai-compatible",
+    "ATLASCLOUD": "atlascloud",
+    "BUILTIN_IMAGEGEN": "builtin-imagegen",
+}
+
+
+def _build_provider_name() -> type[StrEnum]:
+    """内置成员 + 渠道目录动态构建 ProviderName。
+
+    渠道 id 是 checked-in 目录数据：按渠道 id 构造成员后，
+    `ProviderName(<渠道 id>)`、`for provider in ProviderName`、`.value` 与
+    `is` 比较对渠道全部成立，配置子系统无需为渠道写任何专用分支。
+    新增渠道不改本文件。
+    """
+
+    from .channel_catalog import channel_names
+
+    members = dict(_BUILTIN_PROVIDER_MEMBERS)
+    for channel_id in channel_names():
+        members[channel_id.replace("-", "_").upper()] = channel_id
+    return StrEnum("ProviderName", members)
+
+
+ProviderName = _build_provider_name()
 
 
 class RouteName(StrEnum):

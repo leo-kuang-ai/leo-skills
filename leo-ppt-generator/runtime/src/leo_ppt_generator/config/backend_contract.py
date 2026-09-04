@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 from urllib.parse import urlsplit
 
+from .channel_catalog import channel_by_name
 from .provider_registry import (
     ProviderDefinition,
     ProviderRegistry as ProviderPolicyRegistry,
@@ -120,6 +121,10 @@ class BackendRegistry:
         if mode not in {"generate", "edit"}:
             raise BackendContractError("backend_mode_invalid")
         backend = self.select(name, required={mode})
+        channel = channel_by_name(name)
+        if channel is not None and endpoint_origin is None:
+            # 渠道有 checked-in 默认 origin；显式传入时仍走 origin-only 校验。
+            endpoint_origin = channel.endpoint_origin
         selected_model = backend.default_model if model is None else model
         if not isinstance(selected_model, str) or not selected_model.strip():
             raise BackendContractError("backend_model_invalid")
@@ -275,6 +280,22 @@ class BackendRegistry:
             parsed = urlsplit(endpoint)
             if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password or parsed.query or parsed.fragment:
                 raise BackendContractError("endpoint_origin_invalid")
+        elif channel_by_name(backend.name) is not None:
+            # 渠道 endpoint 可选（缺省用目录默认 origin）；提供时必须 origin-only。
+            if endpoint is not None:
+                if not isinstance(endpoint, str) or not endpoint:
+                    raise BackendContractError("endpoint_origin_invalid")
+                parsed = urlsplit(endpoint)
+                if (
+                    parsed.scheme != "https"
+                    or not parsed.netloc
+                    or parsed.username
+                    or parsed.password
+                    or parsed.query
+                    or parsed.fragment
+                    or parsed.path not in ("", "/")
+                ):
+                    raise BackendContractError("endpoint_origin_invalid")
         elif endpoint is not None:
             raise BackendContractError("endpoint_origin_unsupported")
         return backend

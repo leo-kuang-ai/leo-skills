@@ -18,16 +18,32 @@ from urllib.parse import urlsplit
 
 import yaml
 from filelock import FileLock
+
+from . import channel_catalog
 from yaml.constructor import ConstructorError
 
 
 SCHEMA_VERSION = 2
-EXTERNAL_PROVIDERS = ("openai", "openai-compatible", "atlascloud")
+EXTERNAL_PROVIDERS = (
+    "openai",
+    "openai-compatible",
+    "atlascloud",
+    # 渠道 provider 从 checked-in 目录派生；新增渠道不改这里。
+    *channel_catalog.channel_names(),
+)
 ENVIRONMENT_REFERENCES = {
     "openai": "env:OPENAI_API_KEY",
     "openai-compatible": "env:OPENAI_API_KEY",
     "atlascloud": "env:ATLASCLOUD_API_KEY",
+    **{
+        channel.id: f"env:{channel.credential_environment}"
+        for channel in channel_catalog.channels()
+    },
 }
+# 端点可覆盖（origin-only）的 provider：openai-compatible 必填，渠道有默认值。
+_ENDPOINT_PROFILE_PROVIDERS = frozenset(
+    {"openai-compatible", *channel_catalog.channel_names()}
+)
 OS_STORE_REFERENCES = {
     provider: frozenset(
         {
@@ -208,7 +224,7 @@ def _allowed_keys(pointer: str) -> frozenset[str]:
             "enabled",
             "priority",
         }
-        if provider == "openai-compatible":
+        if provider in _ENDPOINT_PROFILE_PROVIDERS:
             common.add("endpoint_origin")
         return frozenset(common)
     return frozenset()
@@ -335,6 +351,7 @@ def _validate_profile(
         allowed.add("credential_generation")
     if provider == "openai-compatible":
         required.add("endpoint_origin")
+    if provider in _ENDPOINT_PROFILE_PROVIDERS:
         allowed.add("endpoint_origin")
     if not required.issubset(value) or not set(value).issubset(allowed):
         raise RuntimeConfigError("provider_profile_invalid", pointer)
@@ -342,6 +359,10 @@ def _validate_profile(
     credential, issue = _validate_credential(provider, value, environment)
     normalized: dict[str, Any] = {"model": _model(value.get("model"))}
     if provider == "openai-compatible":
+        normalized["endpoint_origin"] = validate_endpoint_origin(
+            value.get("endpoint_origin")
+        )
+    elif provider in _ENDPOINT_PROFILE_PROVIDERS and value.get("endpoint_origin") is not None:
         normalized["endpoint_origin"] = validate_endpoint_origin(
             value.get("endpoint_origin")
         )
@@ -740,6 +761,51 @@ def openai_compatible_profile(
     return copy.deepcopy(profile) if profile is not None else None
 
 
+def configure_provider_profile(
+    provider: str,
+    *,
+    endpoint_origin: str | None = None,
+    model: str,
+    credential_source: str = "environment-reference",
+    credential_ref: str | None = None,
+    credential_generation: int | None = None,
+    home: str | os.PathLike[str] | None = None,
+    environ: Mapping[str, str] | None = None,
+) -> RuntimeConfig:
+    """通用非敏感 profile 写入器；渠道与 openai-compatible 共用一条路径。"""
+
+    if provider not in EXTERNAL_PROVIDERS:
+        raise RuntimeConfigError("provider_profile_invalid", f"/provider_profiles/{provider}")
+    if provider == "openai-compatible" and not (
+        isinstance(endpoint_origin, str) and endpoint_origin.strip()
+    ):
+        raise RuntimeConfigError(
+            "provider_profile_invalid",
+            "/provider_profiles/openai-compatible/endpoint_origin",
+        )
+    store = ConfigStore(home, environ=environ)
+    current = store.read()
+    candidate = copy.deepcopy(current.document)
+    if credential_ref is None:
+        credential_ref = ENVIRONMENT_REFERENCES[provider]
+    if credential_source != "os-store-reference" and credential_generation is not None:
+        raise RuntimeConfigError(
+            "provider_profile_invalid",
+            f"/provider_profiles/{provider}/credential_generation",
+        )
+    profile: dict[str, Any] = {
+        "model": model,
+        "credential_source": credential_source,
+        "credential_ref": credential_ref,
+    }
+    if isinstance(endpoint_origin, str) and endpoint_origin.strip():
+        profile["endpoint_origin"] = endpoint_origin
+    if credential_source == "os-store-reference":
+        profile["credential_generation"] = credential_generation
+    candidate["provider_profiles"][provider] = profile
+    return store.compare_and_swap(current.canonical_digest, candidate)
+
+
 def configure_openai_compatible_profile(
     *,
     endpoint_origin: str,
@@ -752,26 +818,16 @@ def configure_openai_compatible_profile(
 ) -> RuntimeConfig:
     """兼容旧内部命令的非敏感写入器；始终写正式完整 profile。"""
 
-    store = ConfigStore(home, environ=environ)
-    current = store.read()
-    candidate = copy.deepcopy(current.document)
-    if credential_ref is None:
-        credential_ref = ENVIRONMENT_REFERENCES["openai-compatible"]
-    if credential_source != "os-store-reference" and credential_generation is not None:
-        raise RuntimeConfigError(
-            "provider_profile_invalid",
-            "/provider_profiles/openai-compatible/credential_generation",
-        )
-    profile: dict[str, Any] = {
-        "endpoint_origin": endpoint_origin,
-        "model": model,
-        "credential_source": credential_source,
-        "credential_ref": credential_ref,
-    }
-    if credential_source == "os-store-reference":
-        profile["credential_generation"] = credential_generation
-    candidate["provider_profiles"]["openai-compatible"] = profile
-    return store.compare_and_swap(current.canonical_digest, candidate)
+    return configure_provider_profile(
+        "openai-compatible",
+        endpoint_origin=endpoint_origin,
+        model=model,
+        credential_source=credential_source,
+        credential_ref=credential_ref,
+        credential_generation=credential_generation,
+        home=home,
+        environ=environ,
+    )
 
 
 def run_size_bytes(run_dir: Path) -> int:

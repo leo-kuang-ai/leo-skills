@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""style-candidates.md 文档合同测试（风格进货批 S4b）：候补矿登记表存在性
-与行数预算、七路勘察确认的剩余源零遗漏逐源覆盖、每源触发/去重字段与七字段
-合同在场、进化机制声明（非承诺入库/三类使用信号/四重去重+lint 门+220 硬顶
-余量检查/金样板与预览补齐义务）、许可红线沿袭。"""
+"""style-candidates.md 文档合同测试（2026-09-02 台账同步批）：候补矿登记表
+存在性与行数预算、勘察源零遗漏逐源覆盖、每源触发/去重字段与六字段合同在场、
+进化机制声明（非承诺入库/三类使用信号/五步补货门——300 硬顶已于 2026-09-02
+退役，数量上限不再存在/金样板与预览补齐义务/簇数回退门槛）、许可红线沿袭。"""
 import unittest
 from pathlib import Path
 
@@ -10,8 +10,8 @@ DOC = (
     Path(__file__).resolve().parents[1]
     / "references" / "style-candidates.md"
 )
-LINE_BUDGET = 120
-MECHANISM_BUDGET = 15
+LINE_BUDGET = 140
+MECHANISM_BUDGET = 28
 
 # Every remaining mine confirmed by the seven-route survey and ruled NOT into
 # this intake batch. The list is the zero-omission contract: dropping a source
@@ -37,6 +37,8 @@ SURVEY_SOURCES = (
     "awesome-ppt-skills",
     "ian-handdrawn",
 )
+# 注：gitee-mirrors/deckjs 为 S5 追加审查项（非七路勘察面，判不收），
+# 由台账文本登记，不进零遗漏合同锁。
 
 
 class StyleCandidatesDocTest(unittest.TestCase):
@@ -67,26 +69,31 @@ class StyleCandidatesDocTest(unittest.TestCase):
     def test_every_source_carries_trigger_and_dedup_fields(self):
         # Each entry must answer WHEN to restock and WHAT it duplicates —
         # the two fields that make the inventory actionable rather than a
-        # wish list.
+        # wish list. 六字段合同（2026-09-02 台账同步批）：源项目/C 批实收/
+        # 净新余量/精选建议/触发条件/去重注意。
         self.assertGreaterEqual(
             self.content.count("触发："), len(SURVEY_SOURCES))
         self.assertGreaterEqual(
             self.content.count("去重："), len(SURVEY_SOURCES))
-        for field in ("源项目", "规模与载体", "勘察定级", "净新预估",
+        for field in ("源项目", "C 批实收", "净新余量",
                       "精选建议", "触发条件", "去重注意"):
             self.assertIn(field, self.content)
 
     def test_evolution_mechanism_contract_present(self):
+        # 300 硬顶已于 2026-09-02 退役（owner 决策）：机制合同断言"不设数量
+        # 上限 + 五步质量门"，不再断言任何数字上限措辞。
         for fragment in (
             "候补≠承诺入库",
-            "不占 220 硬顶",
+            "不设数量上限",
             "R-30",
             "R-64",
             "R-55",
             "四重去重",
             "family_duplicate",
-            "四条治理 lint",
-            "220 硬顶余量检查",
+            "信号确认",
+            "治理 lint",
+            "簇数",
+            "回退门槛",
             "金样板",
             "预览",
         ):

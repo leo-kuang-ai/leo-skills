@@ -99,7 +99,7 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
 
 generate 命中数据图表/表格/文字密集页时读 `references/render-contract.md`（render
-page/chart 确定性渲染 lane）；逐页版式匹配进母版前读 `references/layout-dispatch.md`（P 码调度与容量预检）。
+page/chart 确定性渲染 lane）；逐页版式匹配进母版前读 `references/layout-dispatch.md`（P 码调度与容量预检）。按容量预筛版式用 `leo-ppt style layouts --capacity "槽名<=N"`（只读查询，档位速查与语法见 `references/styles/12_版式库/00_容量档位参考.md`）；负面提示词补齐取词与生图构图词汇分别见 `references/styles/00_索引/负面语料参考池.md`（`scripts/draft_negative_prompts.py --pool`）与 `references/styles/00_索引/构图词汇参考.md`。
 generate 全出血封面/大图井（文字压图）页读 `references/image-text-composition.md`
 （四步事前构图协议）；素材入库/检索读 `references/library-schema.md`（经
 `scripts/library_catalog.py` 登记 sha256 出处），点名市场/行业数据读
@@ -108,7 +108,7 @@ generate 全出血封面/大图井（文字压图）页读 `references/image-tex
 
 `references/styles/` 约束为按需索引：先读 `style-library.md`，选定风格、论证模式和版式
 后只读对应的单个风格文件；禁止预加载整个 styles 目录。`reason-codes.md` 只在已有
-reason code 需要解释或恢复时读取。执行前未命中的 references 不得因为“可能有用”而读取。
+reason code 需要解释或恢复时读取。执行前未命中的 references 不得因为“可能有用”而读取。维护者查阅 reference 功能分组见 `references/_INDEX.md`（只读导航、非加载合同，不改变本节读取纪律）。
 
 所有场景（含 advise、材料缺失、worker 缺失）的回复都必须先输出下节「控制面响应合同」的五字段块，再写任何解释。
 

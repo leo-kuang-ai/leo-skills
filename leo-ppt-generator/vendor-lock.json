@@ -9,7 +9,7 @@
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/atlascloud.py": "bcdc6c35afd7c483f01125cb5788ef852c16cd9525eddebb6b206673193fa450",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/base.py": "027468265d72c0bf4e4372bdbfbe8cf12759f929e873fa10c16c13577a468296",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py": "d7d72145ea38da394e315b2a2c0990bf7fdf24cd10dd5bb54d1999d9849714d2",
-    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/openai_compatible.py": "2b258767f9521a07c4c0f694cf6b5d2593366da775ce6d6f80a27fcfacbc32d8",
+    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/openai_compatible.py": "aa4a8e5ebed78676c85f6377fe273b6d9b66810a9ed5391c8b6f5f6dc43eaa9d",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/prepare_slide_prompts.py": "74ff34e42ae025f8c15a785c05de5fb5043b6553e65666102c5d155bed5d80e7",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/record_slide_blocker.py": "92be04beb2a690ec6c19dea48a9674d2daea3ceabe2de9e64b181361d0dbde9c",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/record_slide_dispatch.py": "f5ce8806a0aecf24ea3b7c657c8d20507d83b6fd21a81da86d8f6f9da623ed54",

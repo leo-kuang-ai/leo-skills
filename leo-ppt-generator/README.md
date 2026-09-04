@@ -160,6 +160,7 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 
 详细规则见：
 
+- [reference 全量导航索引](references/_INDEX.md)（按功能八组一览 30 份 reference 的定位与加载阶段）
 - [输入路由](references/input-routing.md)
 - [首次使用](references/first-use.md)
 - [执行合同](references/execution-contract.md)

@@ -7,6 +7,7 @@ from typing import Any
 
 from .application.routes import ROUTES
 from .config.backend_contract import BackendContractError, BackendRegistry
+from .config.channel_catalog import channel_by_name, channel_names
 from .observability import primary_action_for
 
 SETUP_PROTOCOL = "leo-ppt-setup/v1"
@@ -63,6 +64,7 @@ def _provider_options(
         if provider == "openai-compatible":
             profile = profiles.get(provider, {})
             profile_status = str(profile.get("status", "missing")) if isinstance(profile, dict) else "missing"
+        channel = channel_by_name(provider)
         if provider == "builtin-imagegen":
             credential_status = host_imagegen
         evidence_refs = credential.get("evidence_refs", doctor.get("evidence_refs", []))
@@ -105,6 +107,18 @@ def _provider_options(
                 ),
             }
         )
+        if channel is not None:
+            # 渠道引导信息直接来自 checked-in 目录：官网、取 key 入口、
+            # 环境变量名与模型清单，供 setup 报告引导用户完成配置。
+            options[-1]["channel"] = {
+                "portal": channel.portal,
+                "key_page": channel.key_page,
+                "credential_environment": channel.credential_environment,
+                "default_model": channel.default_model,
+                "models": list(channel.models),
+                "endpoint_origin": channel.endpoint_origin,
+                "notes": channel.notes,
+            }
     return sorted(
         options,
         key=lambda option: (
@@ -367,7 +381,7 @@ def build_setup_report(
             available_but_incapable = [
                 provider
                 for provider, value in references.items()
-                if provider in {"openai", "openai-compatible", "atlascloud"}
+                if provider in {"openai", "openai-compatible", "atlascloud", *channel_names()}
                 and provider not in capable
                 and isinstance(value, dict)
                 and value.get("status") == "available"
@@ -404,7 +418,7 @@ def build_setup_report(
         reason_code=reason,
         replacements={
             **replacements,
-            "provider": external[0]["provider"] if len(external) == 1 else "openai|openai-compatible|atlascloud",
+            "provider": external[0]["provider"] if len(external) == 1 else "|".join(("openai", "openai-compatible", "atlascloud", *channel_names())),
         },
     )
 

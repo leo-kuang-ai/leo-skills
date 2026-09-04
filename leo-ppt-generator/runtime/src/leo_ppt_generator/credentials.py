@@ -16,6 +16,7 @@ from enum import Enum
 from pathlib import Path
 from typing import ClassVar, Protocol
 
+from .config import channel_catalog
 from .config.runtime_config import default_home
 
 CREDENTIAL_PROTOCOL = "leo-ppt-credential/v1"
@@ -29,6 +30,11 @@ PROVIDERS = {
     "openai-compatible": "OPENAI_API_KEY",
     "atlascloud": "ATLASCLOUD_API_KEY",
     "paddleocr": "PADDLE_OCR_TOKEN",
+    # 渠道 provider 的环境变量从 checked-in 目录派生，新增渠道不改这里。
+    **{
+        channel.id: channel.credential_environment
+        for channel in channel_catalog.channels()
+    },
 }
 
 

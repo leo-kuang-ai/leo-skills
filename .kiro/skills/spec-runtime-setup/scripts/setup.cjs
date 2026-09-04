@@ -51,6 +51,7 @@ const {
   runWorkspaceBatch,
 } = require('./lib/workspace-executor.cjs');
 const {
+  buildProviderPlanSelections,
   buildWorkspaceRuntimePreflight,
   requiresRuntimeProjectionPreflight,
   resolveRuntimeProjectionTargets,
@@ -138,7 +139,7 @@ function runSetup(input = {}) {
     folder: actionPlan.args.folder,
     allRepos: actionPlan.args.allRepos,
   });
-  if (!target.state_write_allowed && actionPlan.mutation) {
+  if (target.mode === 'invalid-target' || (!target.state_write_allowed && actionPlan.mutation)) {
     return {
       exit_code: 2,
       mode: actionPlan.mode,
@@ -155,10 +156,17 @@ function runSetup(input = {}) {
   const mutationNeedsHost = ['verify', 'only', 'graphify-refresh', 'host-config-repair', 'workspace-graph-build'].includes(actionPlan.mode);
   const runner = input.runner || runCommandSync;
   const candidates = advisoryHostCandidates({ env, runner });
+  const internalWorkspaceRefresh = isInternalWorkspaceGraphRefreshInvocation({ actionPlan, env });
   const authority = resolveHostAuthority({
     env,
     mutationRequested: mutationNeedsHost,
     candidates,
+    skillRoot,
+    targetIdentity: target.target_root || target.workspace_root || cwd,
+    // Detached workspace refresh is launched from canonical source, not a host
+    // Skill mirror. Its mutation authority is the validated lifecycle lease.
+    enforceSurfaceBinding: input.enforceSurfaceBinding === true && !internalWorkspaceRefresh,
+    now: input.now,
   });
   if (authority.status === 'blocked') {
     return {
@@ -236,6 +244,15 @@ function runSetup(input = {}) {
       target,
     });
   }
+}
+
+function isInternalWorkspaceGraphRefreshInvocation({ actionPlan, env = {} } = {}) {
+  if (!actionPlan || actionPlan.mode !== 'workspace-graph-build') return false;
+  const credential = workspaceGraphLifecycleCredentialFromEnv(env);
+  return env[INTERNAL_REFRESH_ONLY_ENV] === '1'
+    && isAbsolutePath(env[INTERNAL_CODEGRAPH_COMMAND_ENV])
+    && isAbsolutePath(env[INTERNAL_GRAPHIFY_COMMAND_ENV])
+    && Boolean(credential && credential.token && credential.owner_pid);
 }
 
 function buildRuntimeProjectionPreflight(context, selection = null) {
@@ -580,6 +597,7 @@ function runPlan(context, repoRoot) {
     reason_code: blockedEntry ? blockedEntry.reason_code || blockedEntry.blocked_reason : 'setup-install-plan-ready',
     target: context.target,
     host: context.host,
+    provider_selection: buildProviderPlanSelections({ context, repoRoot, providerPlans }),
     actions: previewActions,
     safety: previewSafety(context),
     next_action: providerBlock
@@ -823,6 +841,8 @@ function helpResult() {
     '模式：--check | --verify-only | --refresh-facts | --plan | --project-config | --only <ids> | --repair-host-config',
     'Graphify 刷新：--only graphify --refresh',
     '目标：--repo <path> | --folder <path> | --all-repos',
+    '  --repo 仅接受精确 Git root；--folder 接受精确逻辑目录且不要求 Git。',
+    '  folder 内的 Provider artifact/facts 不会提升到父 Git root；仅 generated runtime 可复用父 root。',
     'Workspace 双层图构建：--only codegraph,graphify --workspace-graph [--repos <a,b>]',
     'Workspace 双层图状态：--workspace-graph-status [--repos <a,b>]',
     'Workspace 双层图清理：--workspace-graph-clean [--repos <a,b>]',
@@ -849,7 +869,10 @@ function failedResult(reasonCode, error, exitCode = 1, extra = {}) {
 
 function main(argv = process.argv.slice(2)) {
   const parsed = parseEntrypointOptions(argv);
-  const result = runSetup({ argv });
+  const result = runSetup({
+    argv,
+    enforceSurfaceBinding: true,
+  });
   const scenarioFingerprintSetup = result.payload
     && result.payload.runtime_capabilities
     && result.payload.runtime_capabilities.scenario_fingerprint_setup;

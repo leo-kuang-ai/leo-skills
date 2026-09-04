@@ -1,6 +1,6 @@
 ---
 name: evidence-first-writing
-description: 先识别写作意图、文章类型、证据风险和协作方式，再编排调研、论证、起草、编辑、个人声音、技术验证、营销文案和去 AI 模板感。适用于观点评论、研究解释、教程指南、案例复盘、个人叙事、Newsletter/平台文章、正式报告和产品文案；不用于学术代写或伪造经历与来源。
+description: "先识别写作意图、文章类型、证据风险和协作方式，再编排调研、论证、起草、编辑、个人声音、技术验证、营销文案和去 AI 模板感。适用于观点评论、研究解释、教程指南、案例复盘、个人叙事、Newsletter/平台文章、正式报告和产品文案；也适用于发布后真实指标复盘（打开率、阅读量）、写作与去 AI 味工具选型比较、建立长期个人说明书（让 AI 长期了解我）。不用于学术代写或伪造经历与来源。"
 ---
 
 # 证据优先写作
@@ -11,8 +11,8 @@ description: 先识别写作意图、文章类型、证据风险和协作方式�
 
 任何写作任务先读取 [references/intent-routing.md](references/intent-routing.md)，在内部冻结四轴 route。完成路由后，凡是需要向用户展示 route、计划或编辑说明，必须使用 canonical route 字段，不得只用自然语言同义词替代：
 
-1. `lifecycle_intent`：新写、调研、定主张/结构、起草、修订、审查、去模板、声音建模或发布复盘；
-2. `article_family`：观点评论、研究解释、教程、How-to、技术 Reference、技术 Explanation、案例复盘、个人叙事、Newsletter/平台文章、正式报告、产品营销文案，或 `not_applicable`；
+1. `lifecycle_intent`：新写（`create`）、调研（`research`）、定主张/结构（`shape`）、起草（`draft`）、修订（`revise`）、审查（`audit`）、去模板（`humanize`）、声音建模（`train-voice`/`evaluate-voice`）、工具选择（`tool-select`）、个人说明书（`personal-context`）或发布复盘（`post-publish`）；
+2. `article_family`：观点评论（`argument`）、研究解释（`evidence-explainer`）、教程（`tutorial`）、How-to（`how-to`）、技术 Reference（`technical-reference`）、技术 Explanation（`technical-explanation`）、案例复盘（`case-retrospective`）、个人叙事（`personal-narrative`）、Newsletter/平台文章（`newsletter-platform`）、正式报告（`formal-report`）、产品营销文案（`marketing-copy`），或 `not_applicable`；
 3. `evidence_risk`：事实密度、影响范围、时效性和发布不可逆性；
 4. `collaboration_modifier`：直接执行、逐节共创、声音档案、渠道适配和是否落盘。
 

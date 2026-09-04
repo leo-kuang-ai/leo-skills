@@ -29,8 +29,7 @@ expect:
     - CLAUDE.md
   file_contains:
     - path: AGENTS.md
-      contains:
-        - "unittest"
+      content: "unittest"
 
 judge:
   type: rule_based

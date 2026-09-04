@@ -1,6 +1,6 @@
 # 评测验证摘要
 
-更新日期：2026-08-27
+更新日期：2026-09-04
 
 ## 结论
 
@@ -53,6 +53,7 @@
 - iteration-51 / iteration-54，GLM flash，31 例两轮全量 A/A：`28 PASS / 1 FAIL / 2 ERROR` 与 `27 PASS / 3 FAIL / 1 ERROR`（iteration-51 前 10 分钟与外部会话的 skill-up 运行共享代理配额，iteration-54 无并发干扰）。3 个 ERROR（nonarticle-lifecycle、bare-topic 第二轮 resume、source-grounded）均为引擎超时，聚焦复验 PASS（iteration-53/55）；FAIL 定性：`audit-does-not-rewrite` 两轮均为证据标签同义漂移（响应逐字引用原句但标签用「证据」，判官按 iteration-33 先例扩同义词，历史重放 + iteration-56 在线复验 PASS）；`chinese-22-rules-hit-and-preserve` 单轮漏报反代入 finding，聚焦复验 PASS 不可复现；`post-publish-no-causal-unprompted` 跨轮稳定 FAIL（词汇重掷：缺少 observation → 缺少稳定规则决策）。`bare-topic-fork-two-turns` 干净环境实测 299 s/300 s 余量为零，超时放宽至 420 s 后全量 PASS。
 - iteration-57~63，GLM flash，技能输出合同收紧后的安全网与修复验证：iteration-57 五例安全网 `3 PASS / 2 FAIL`——`chinese-protocol-context-judgment` 为停止判定新同义「不需要改」（case any-list 扩词后 it-61 复验 PASS；七类逐类表态使检测报告结构显著稳定）；`post-publish-no-causal-unprompted` 在 SKILL.md 行内枚举合同下仍 FAIL，状态块升级为 fenced YAML 示例后再 2/2 FAIL（it-62/63，响应四字段全缺席），累计七轮稳定 FAIL。`bare-topic-fork-two-turns` 超时分布五样本 [221/271/298/299/309] s，420 s 上限维持（对最大值 36% 余量）。收紧判定必须附带历史响应重放已固化为流程（见 known-issues.md）。
 - iteration-65~69，GLM flash，v2 创作者化能力层（3 个新 references + 6 文件改动）的回归链：安全网 8 例 `6 PASS / 2 FAIL`（unprompted 已知；chinese-22 报告风格偏移）；全量 it-66 `26/4/1`——dev-edit 第 5 掷（删掉任意）、chinese-22 决策日志式同义词扩词、nonarticle 240s 超时（第 4 次，聚焦复验 PASS）；dev-edit 第 6 掷（空转，借入 chinese-22 既有合法词）历史重放通过后聚焦 PASS；修复后全量 it-69 `27/4/0`——routes-ambiguous（做完，首掷）与 chinese-protocol（不需要去模板，第 7 掷）扩词后聚焦 PASS，chinese-22 本轮为编辑判断轮换（对抽象词选择「保留+披露缺口」而非删除，实质可辩护、此前 it-68 聚焦 PASS），按纪律记档不追词。- iteration-71~72，GLM flash，全修复态最终全量与收口：it-71 `29 PASS / 2 FAIL / 0 ERROR`——unprompted 第 11 轮稳定 FAIL；`taste-findings-not-visual` 本会话首掷（引用弯引号 + 倾倒/净信息量，扩词后）在 it-72 聚焦复验中再掷新词（并列），两轮实质均在场（canonical finding 格式 + 逐字引用），按纪律记档为词汇轮换类，不追词。v2 落地后的最终画像：31 例有效行为稳定性 30/31（唯一残留 unprompted 已知模型极限）；flash 上单轮全量原始绿灯受词汇轮换概率制约（27-30 PASS 区间），全部 FAIL 经分诊收敛，证据链完整；受支持模型复验仍是最终门槛。
+- iteration-99~101，2026-09-04，本机 claude_code 登录态（模型未固定，report `model_name` 为空）上的 description 触发面 + 路由枚举同步锁落地回归：it-99 全量 37 例 `13 PASS / 22 FAIL / 2 ERROR`（ERROR 为 CLI `Prompt is too long` 与 480s 超时）。FAIL 形态与既有 provider 漂移画像一致（judge 词表未命中 / 输出含禁词 / 词汇轮换），不构成改动回归证据；受支持模型复验仍是最终门槛。it-100/101 做 SKILL.md 新旧 A/B（同环境 focused 3 例：routes-technical-howto、personal-context-authorized-write、deep-independent-review-status）：新版 `1 PASS / 2 FAIL`，旧版（stash 改动）`0 PASS / 3 FAIL`——两例共同 FAIL 为同一 judge 词表未命中（新旧一致，非本次改动引入），deep-independent-review-status 仅新版 PASS；本轮顺带适配 skill-up 0.10.0 的 `file_contains` schema（`contains` 列表 → 必填 `content` 字段，断言语义不变），A/B 两轮该断言均通过（真实写集 AGENTS.md 含 `unittest` 成立）。同步锁单测见 `tests/test_route_enum_sync.py`（先红 23 断言、修复后全绿；全套 202 例 PASS）。
 
 ## Provider 诊断
 

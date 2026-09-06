@@ -1,0 +1,17 @@
+id: editorial-long-sentence
+title: 长句编辑不丢逻辑
+description: 发布型润色可以拆分长句，但必须保留条件、范围和结果关系。
+
+input:
+  prompt: |
+    请把下面这段工程文章翻译成简体中文并润色为官方技术运营文风：
+
+    The deploy job promotes the build only when the error budget has remaining headroom, and features that miss the release train wait for the next cycle unless the incident commander declares a hotfix window.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_editorial_long_sentence.py
+  timeout_seconds: 10

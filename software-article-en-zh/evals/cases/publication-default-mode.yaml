@@ -1,0 +1,17 @@
+id: publication-default-mode
+title: 默认请求走双层交付并交付五件套
+description: 不带任何模式词的普通翻译请求，默认按 publication 双层模式执行并输出五件套（验证 delivery_mode 默认翻转）。
+
+input:
+  prompt: |
+    请把下面这段说明翻译成简体中文：
+
+    The scheduler restarts gracefully on config reloads. It drains in-flight tasks first and picks up new work only after the drain completes, so no task is lost during a reload.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_default_mode.py
+  timeout_seconds: 10

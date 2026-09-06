@@ -1,0 +1,35 @@
+id: heading-hierarchy
+title: Markdown 标题层级保持
+description: 源文的 2 个一级、2 个二级、1 个三级标题在译文中须保持同等层级数量，不得拍平或增删。
+
+input:
+  prompt: |
+    请把下面的 Markdown 部署文档翻译成简体中文，保持标题层级不变：
+
+    # Deployment
+
+    Our release train leaves every Thursday. Builds that miss the train wait for the next one unless the release manager declares a hotfix.
+
+    ## Build
+
+    The build stage compiles the service, runs the unit suite, and publishes an artifact with a content hash.
+
+    ### Docker
+
+    Each artifact is wrapped into a Docker image and pushed to the internal registry with the commit SHA as the tag.
+
+    ## Release
+
+    The release stage promotes the image to staging, runs smoke tests, and requires a manual approval before production.
+
+    # Monitoring
+
+    Every deploy emits an event to the metrics stream, and dashboards are updated from the same stream within a minute.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_heading_hierarchy.py
+  timeout_seconds: 10

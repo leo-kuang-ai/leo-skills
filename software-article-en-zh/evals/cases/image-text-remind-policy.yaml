@@ -1,0 +1,21 @@
+id: image-text-remind-policy
+title: 图片文字只提醒不越权
+description: image_text_policy 为 remind 时给出候选图片提醒，图片路径原样保留，且无图像证据时不断言图片一定含有某种文字。
+
+input:
+  prompt: |
+    请把下面的发布说明翻译成简体中文，图片文字策略为 remind（只提醒，不要修改图片）：
+
+    ## What's new
+
+    The onboarding flow is 40% shorter. ![Onboarding screenshot](images/onboarding.png)
+
+    Capacity planning now follows the tiered model. ![Capacity flow](assets/capacity-flow.svg)
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_image_text_remind.py
+  timeout_seconds: 10

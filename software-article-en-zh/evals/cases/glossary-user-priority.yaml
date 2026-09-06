@@ -1,0 +1,20 @@
+id: glossary-user-priority
+title: 用户指定术语优先于其他译名
+description: 用户显式指定 lease 译作"租约"后，译文必须全程沿用，不得混入被排除的"租期"。
+
+input:
+  prompt: |
+    请把下面的分布式锁文档翻译成简体中文。术语要求：lease 一律译作"租约"，不要译成"租期"。
+
+    Distributed locks in Redis rely on a lease that expires after a fixed TTL. When a client renews the lease before expiry, it keeps ownership of the key. If the lease lapses, another worker may acquire the lock, and the previous owner must stop writing immediately.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["租约"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_glossary_user_priority.py
+  timeout_seconds: 10

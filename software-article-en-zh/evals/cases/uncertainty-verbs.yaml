@@ -1,0 +1,17 @@
+id: uncertainty-verbs
+title: 保留推测动词的弱证据语气
+description: suggest 不得强化为"证明"，appears to confirm 须保留"似乎/初步"级弱化，证实类表述不得脱去弱化词。
+
+input:
+  prompt: |
+    请把下面的排障记录翻译成简体中文：
+
+    RSS keeps climbing between restarts on the api-7 node. Logs suggest the leak originates from the connection pool; the profile appears to confirm this, but the evidence covers only one node so far.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_uncertainty_verbs.py
+  timeout_seconds: 10

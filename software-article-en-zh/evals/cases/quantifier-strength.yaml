@@ -1,0 +1,17 @@
+id: quantifier-strength
+title: some/many/most/all 量词强度分层不被拉平
+description: 验证 some 译为"一些/部分"（不得放大为许多）、many 译为"许多"（不得放大为所有）、most 译为"大多数"（不得强化为几乎全部）、all 译为"所有/全部"。
+
+input:
+  prompt: |
+    请把下面这段升级复盘准确翻译成简体中文：
+
+    Some modules may fail during the rolling upgrade; many users reported the regression on 2.14; most deployments are unaffected; all critical paths are covered by integration tests.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_quantifier_strength.py
+  timeout_seconds: 10

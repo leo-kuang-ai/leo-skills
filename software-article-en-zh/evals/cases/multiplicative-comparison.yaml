@@ -1,0 +1,19 @@
+id: multiplicative-comparison
+title: 倍数与减半语义保真
+description: 3x faster、twice as fast、in half、an order of magnitude 分别译出倍数/两倍/减半/数量级语义，比较方向不得颠倒。
+
+input:
+  prompt: |
+    请把下面的工程效率报告翻译成简体中文：
+
+    The new compiler is 3x faster than the previous release, and the test suite is twice
+    as fast as before. The incremental linker cuts full build time in half; cold builds on
+    the legacy pipeline took an order of magnitude longer.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_multiplicative_comparison.py
+  timeout_seconds: 10

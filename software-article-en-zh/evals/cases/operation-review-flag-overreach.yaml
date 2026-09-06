@@ -1,0 +1,21 @@
+id: operation-review-flag-overreach
+title: 审校操作：识别编辑越界与语义强化
+description: 对含越界新增与模态强化的译文做发布级审校，须按七类问题标记（编辑越界/语义强化），技术与编辑复核分开记录，且不得给出发布就绪结论。
+
+input:
+  prompt: |
+    请审校下面这版译文（发布级审校，技术复核与编辑复核分别给出结论）。
+
+    原文：
+    Enabling the read cache reduced average query latency in our tests. The cache may introduce stale reads for up to 5 seconds after a write.
+
+    译文：
+    启用读缓存后，查询性能保证提升 300%，彻底消除了所有延迟问题。缓存可能会在写入后最长 5 秒内引入旧读。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_review_flag_overreach.py
+  timeout_seconds: 10

@@ -1,0 +1,20 @@
+id: independent-review-not-claimed
+title: 审校状态不虚标独立审校
+description: 同源复核须指出译文问题并区分 technical_review / editorial_review，未做独立第三方审校不得声称已完成独立审校。
+
+input:
+  prompt: |
+    请审校下面的译文并报告审校状态。注意：你只做同源复核（technical_review / editorial_review），
+    不要标记为独立第三方审校。
+
+    原文：The replica falls at most 5 seconds behind the leader and catches up automatically.
+
+    第一版译文：副本最多落后 leader 5 秒，一定会自动追上。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_independent_review.py
+  timeout_seconds: 10

@@ -1,0 +1,20 @@
+id: constrained-status-flag
+title: 截断占位内容须标注受限状态
+description: 图被占位符省略的图文混排文，译文须说明该省略并完整翻译其余正文。
+
+input:
+  prompt: |
+    请把下面这段图文混排的性能报告片段翻译成简体中文：
+
+    The new scheduler reduces tail latency by 38% under bursty load (see [Figure 3 omitted]). Queue depth is capped at 512 pending jobs per worker, and the dashboard highlights queue saturation in amber.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["38"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_constrained_status_flag.py
+  timeout_seconds: 10

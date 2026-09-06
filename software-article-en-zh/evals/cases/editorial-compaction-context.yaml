@@ -1,0 +1,23 @@
+id: editorial-compaction-context
+title: 运行时术语首次解释
+description: 发布型译文首次出现 compaction 时，应保留英文标识并给出上下文机制解释。
+
+input:
+  prompt: |
+    请把下面这段 Codex 产品文章翻译成简体中文并润色为官方技术运营文风：
+
+    Reading a skill takes up context, bringing you closer to compaction and introducing guidance that may not apply to the task.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["上下文", "compaction"]
+  must_not_contain: ["压缩文件", "压缩技能"]
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["上下文", "compaction"]
+

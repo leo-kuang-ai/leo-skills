@@ -1,0 +1,17 @@
+id: unless-only-if
+title: only if 保持必要条件、unless 译出除非
+description: 验证 only if 译为"只有/仅当…才"类必要条件而非"只要…就"充分条件，unless 译出"除非"。
+
+input:
+  prompt: |
+    请把下面两句话准确翻译成简体中文：
+
+    The replication feature is enabled only if the `enable_replication` flag is set to true. The service keeps running unless the watchdog process exits unexpectedly.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_unless_only_if.py
+  timeout_seconds: 10

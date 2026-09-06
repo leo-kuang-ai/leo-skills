@@ -1,0 +1,17 @@
+id: modal-verbs-rfc
+title: RFC 2119 规范性强度分层不被拉平
+description: 验证 MUST NOT 译为禁止性表述、SHOULD 译为应该类建议且不强化为必须、MAY 译为可以类许可且不强化为应该/必须。
+
+input:
+  prompt: |
+    请把下面的协议规范段落完整翻译成简体中文：
+
+    A conforming agent MUST NOT write to the replica while the snapshot is being taken. Clients SHOULD verify the manifest checksum before applying a delta. Agents MAY reuse an existing connection for subsequent requests.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_modal_verbs_rfc.py
+  timeout_seconds: 10

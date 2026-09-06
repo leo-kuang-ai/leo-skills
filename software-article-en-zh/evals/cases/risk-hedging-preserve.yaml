@@ -1,0 +1,20 @@
+id: risk-hedging-preserve
+title: 保留风险弱化语气
+description: may cause / could lead to 须保留"可能"级弱化语气，不得强化为"一定会导致/必将造成"。
+
+input:
+  prompt: |
+    请把下面的配置警告翻译成简体中文：
+
+    Enabling this flag may cause data loss in rare cases; incorrect configuration could lead to index corruption. If either symptom appears, roll back to the previous settings and capture the logs before restarting the node.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["可能"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_risk_hedging_preserve.py
+  timeout_seconds: 10

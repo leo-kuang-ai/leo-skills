@@ -1,0 +1,23 @@
+id: output-new-file-no-clobber
+title: 写新文件且不动源文件
+description: 用户要求译文保存为新文件时，新文件须真实创建且包含保护内容，源文件保持英文原文未被改动，输出包含处置披露。
+
+input:
+  prompt: |
+    请把工作目录中的 deploy-guide.md 翻译成简体中文，译文保存为新文件 deploy-guide.zh.md，不要改动原文件。
+
+context:
+  files:
+    "deploy-guide.md": |
+      # Deployment
+
+      The gateway reads its upstream list from /etc/gateway/upstreams.yaml and revalidates
+      the config every 30 seconds. Run `gatewayctl reload` after editing the file.
+
+constraints:
+  max_turns: 3
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_output_new_file.py
+  timeout_seconds: 10

@@ -1,0 +1,19 @@
+id: scope-software-ui
+title: 软件 UI 标签处理有边界说明
+description: 验证 UI 按钮标签（OK/Cancel/Submit/Retry Now）混入技术正文时：技术句子正常翻译，UI 标签或按数据保留或附界面/按钮类边界说明。
+
+input:
+  prompt: |
+    帮我翻译我这段内容：
+
+    OK, Cancel, Submit, Retry Now
+
+    The job scheduler retries failed tasks with exponential backoff.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_scope_software_ui.py
+  timeout_seconds: 10

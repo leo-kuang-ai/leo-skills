@@ -1,0 +1,22 @@
+id: terminology-decision-disclosure
+title: 附带术语表时沿用并披露术语决策
+description: prompt 附两条目术语表（token→令牌、stream→流）时，译文按表执行且输出附带术语处理说明。
+
+input:
+  prompt: |
+    请把下面的认证服务文档翻译成简体中文。术语表：token → 令牌；stream → 流。
+
+    Each request carries a bearer token that the edge validates before forwarding it upstream. Tokens expire after 24 hours and must be refreshed through the auth service.
+
+    The audit event stream is partitioned by customer ID, and every consumer keeps its own offset into the stream.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["令牌"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_terminology_decision_disclosure.py
+  timeout_seconds: 10

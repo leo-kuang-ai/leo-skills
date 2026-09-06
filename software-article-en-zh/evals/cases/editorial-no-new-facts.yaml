@@ -1,0 +1,21 @@
+id: editorial-no-new-facts
+title: 编辑润色不得新增事实
+description: 官方运营文风可以调整句式，但不得把原文的建议扩展成未经来源支持的承诺。
+
+input:
+  prompt: |
+    请把下面这段产品说明翻译成简体中文并润色为官方技术运营文风，不要补充原文没有的事实：
+
+    The local tests use disposable fixtures and have no production access. Run them and fix failures caused by the requested change.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["一次性", "生产", "修复"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_editorial_no_new_facts.py
+  timeout_seconds: 10
+

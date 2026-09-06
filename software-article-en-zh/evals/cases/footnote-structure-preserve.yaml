@@ -1,0 +1,21 @@
+id: footnote-structure-preserve
+title: 脚注引用与定义成对保留
+description: 脚注 [^1] 与 [^shared] 的引用和定义各出现两次，定义行语法保持 Markdown 脚注形式，定义内容译为中文。
+
+input:
+  prompt: |
+    请把下面的运维文档翻译成简体中文，脚注结构保持原样：
+
+    The retry budget is shared across tenants.[^1] Operators should review the burn rate
+    weekly.[^shared]
+
+    [^1]: See the capacity planning guide for per-tenant limits.
+    [^shared]: Shared budgets were introduced in version 3.2.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_footnote_structure.py
+  timeout_seconds: 10

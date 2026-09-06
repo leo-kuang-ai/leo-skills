@@ -1,0 +1,17 @@
+id: mode-faithful-explicit-no-polish
+title: 显式 faithful：保真直译不做编辑改写
+description: 用户显式要求仅保真直译时，不做发布级编辑改写——隐喻保留原文意象、条件与否定保真，不引入原文没有的表述。
+
+input:
+  prompt: |
+    请只做保真直译（faithful 模式，不要润色、不要意译改写、不需要发布格式）：
+
+    Before you invite users over, clean up your own room: remove the deprecated flags, tidy the logs, and only then flip the public switch.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_mode_faithful_no_polish.py
+  timeout_seconds: 10

@@ -1,0 +1,22 @@
+id: mdx-degrade-explicitly
+title: MDX 不可靠解析时显式降级说明
+description: 验证含内联 JSX 组件与未闭合标签的 MDX 片段：可译文本正常翻译，<Chart> 等标签原样保留，并显式说明保留/无法解析/降级。
+
+input:
+  prompt: |
+    请把这段 MDX 文档翻译成简体中文：
+
+    ## Latency report
+
+    p99 latency dropped by 18% after the rollout. <Chart data={{x:1}} /> visualizes the trend per region.
+
+    <Callout type="warning">
+    Always pin the client SDK version before upgrading.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_mdx_degrade_explicitly.py
+  timeout_seconds: 10

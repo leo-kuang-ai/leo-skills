@@ -1,0 +1,17 @@
+id: mode-polished-explicit-internal
+title: 显式 polished：润色语言但保持内部轻量
+description: 显式请求语言润色（内部评审用途、非发布格式）时，长句可拆但条件与例外关系保真，建议与要求强度不漂移。
+
+input:
+  prompt: |
+    请把下面这段翻译成简体中文并做语言润色（内部评审用途，不需要发布格式、术语表等交付件）：
+
+    The rollout proceeds region by region, and a region is promoted only when its error rate stays below 0.1 percent for 30 minutes; otherwise the controller pauses the rollout and files an incident.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_mode_polished_internal.py
+  timeout_seconds: 10

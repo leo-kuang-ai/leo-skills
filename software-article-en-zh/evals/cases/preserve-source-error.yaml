@@ -1,0 +1,20 @@
+id: preserve-source-error
+title: 不静默修正原文事实错误
+description: 原文中的错误端口号 8080 须原样保留，译文不得替原文改成"正确"的 3306。
+
+input:
+  prompt: |
+    请把下面的运维手册片段翻译成简体中文：
+
+    To verify that the app can reach the database, run `nc -zv db.internal 8080` from the bastion host. MySQL uses port 8080 by default in this guide, and the readiness probe reuses the same port.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["8080"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_preserve_source_error.py
+  timeout_seconds: 10

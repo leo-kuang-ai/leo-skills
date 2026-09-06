@@ -1,0 +1,38 @@
+id: sql-log-regex-outputs
+title: SQL 查询、日志示例、正则与示例输出原样保留
+description: 验证 ```sql 围栏内 SELECT/JOIN/ON/WHERE 与表名 users/orders、日志围栏 ERROR/WARN 行与 Traceback 摘要、行内正则 ^ERR-\d{4}$ 与示例输出 ORDER-2024-881 在译文中原样在场，围栏语言标注不被翻译。
+
+input:
+  prompt: |
+    请把下面的数据库迁移文档片段翻译成简体中文：
+
+    ## Data Verification
+
+    After the migration finishes, confirm row parity with the reporting query:
+
+    ```sql
+    SELECT u.id, u.email, o.total_cents
+    FROM users u
+    JOIN orders o ON o.user_id = u.id
+    WHERE o.status = 'paid';
+    ```
+
+    A failed sync writes diagnostics to the worker log, for example:
+
+    ```text
+    2026-01-12T08:41:07Z ERROR payment-worker: order sync failed after 3 attempts
+    Traceback (most recent call last):
+      File "worker/sync.py", line 88, in run
+    psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "orders_pkey"
+    2026-01-12T08:41:09Z WARN payment-worker: retry 1/5 scheduled in 30s
+    ```
+
+    Rejected rows carry a reference matching `^ERR-\d{4}$`, and each rejection is listed in the migration report with a case id such as ORDER-2024-881.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_sql_log_regex_outputs.py
+  timeout_seconds: 10

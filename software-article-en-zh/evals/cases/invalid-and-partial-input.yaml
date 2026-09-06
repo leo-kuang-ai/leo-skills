@@ -1,0 +1,15 @@
+id: invalid-and-partial-input
+title: Report unsupported input honestly
+description: Verify the Skill does not claim complete translation for an unavailable file.
+input:
+  prompt: |
+    用简体中文翻译 /tmp/does-not-exist/software-paper.md。
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["不存在"]
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_invalid_partial_input.py
+  timeout_seconds: 10

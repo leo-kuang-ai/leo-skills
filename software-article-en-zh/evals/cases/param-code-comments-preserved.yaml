@@ -1,0 +1,26 @@
+id: param-code-comments-preserved
+title: 发布交付下代码注释默认保留
+description: 默认 code_policy 为 preserve——发布级润色不翻译代码块内英文注释，代码与注释原样保留、围栏完整。
+
+input:
+  prompt: |
+    请把下面这段说明翻译成简体中文，并润色至可发布水平：
+
+    The worker drains gracefully on reload. The drain routine looks like this:
+
+    ```python
+    def drain(timeout_ms):
+        # Drain in-flight tasks before reloading config.
+        while queue.size() > 0:
+            queue.pop(timeout_ms)
+    ```
+
+    If the queue does not empty within the timeout, the worker exits with code 1.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_param_code_comments_preserved.py
+  timeout_seconds: 10

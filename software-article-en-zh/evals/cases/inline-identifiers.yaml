@@ -1,0 +1,22 @@
+id: inline-identifiers
+title: 行内代码、命令、路径与配置原样保留
+description: 验证 max_retries、kubectl apply、getUserById()、ENV=prod、/etc/app/config.yaml 等行内标识符不被意译替换。
+
+input:
+  prompt: |
+    请把下面这段排障文档翻译成简体中文，行内代码保持原样：
+
+    The client reads `max_retries` from the environment, then runs `kubectl apply` against the staging cluster. The gateway calls `getUserById()` on every request when `ENV=prod`, and falls back to `/etc/app/config.yaml` when the primary store is unreachable.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["max_retries", "kubectl apply", "getUserById()", "ENV=prod", "/etc/app/config.yaml", "环境", "集群"]
+  must_not_contain: ["获取用户函数"]
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["max_retries", "kubectl apply", "getUserById()", "ENV=prod", "/etc/app/config.yaml", "环境", "集群"]

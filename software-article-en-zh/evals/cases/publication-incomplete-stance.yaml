@@ -1,0 +1,17 @@
+id: publication-incomplete-stance
+title: 发布型不完整立场：不替作者补立场
+description: 作者只给单方面证据、结论留有余地的段落，发布润色不得替作者补充确定性结论、扩大测试范围或排除风险。
+
+input:
+  prompt: |
+    请把下面这段工程周报翻译成简体中文，并按官方技术运营文风润色至可发布水平：
+
+    Our benchmarks suggest the new allocator reduces allocation latency, though we have only tested one workload. We plan to expand coverage in Q4. Early adopters report smoother tail latencies, but we cannot rule out regressions in other environments.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_incomplete_stance.py
+  timeout_seconds: 10

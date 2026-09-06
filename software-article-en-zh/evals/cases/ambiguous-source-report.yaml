@@ -1,0 +1,17 @@
+id: ambiguous-source-report
+title: 歧义句报告而非擅自定夺
+description: 量化词-否定辖域歧义句（All…not…：全部未通过 vs 并非全部通过）须在给出一种译法的同时向用户报告歧义，仅译不报即失败。
+
+input:
+  prompt: |
+    请把下面这句 CI 结论翻译成简体中文：
+
+    All the tests did not pass.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_ambiguous_source_report.py
+  timeout_seconds: 10

@@ -1,0 +1,23 @@
+id: unparseable-structure-report
+title: 结构异常须报告不得静默处理
+description: 源文含未闭合的 python 代码围栏时，译文须翻译正常文本并向用户报告结构异常，不得静默补全或丢弃围栏。
+
+input:
+  prompt: |
+    请把下面的文档片段翻译成简体中文：
+
+    The loader script is small enough to inline here:
+
+    ```python
+    def load(path):
+        return open(path).read()
+
+    After the loader returns, the scheduler polls the queue every five seconds and retries failed jobs twice.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_unparseable_structure_report.py
+  timeout_seconds: 10

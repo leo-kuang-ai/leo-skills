@@ -1,0 +1,115 @@
+schema_version: v1alpha1
+environment:
+  type: none
+skills:
+  - source: local_path
+    path: .
+engine:
+  name: claude_code
+cases:
+  files:
+    - evals/cases/negation-and-modality.yaml
+    - evals/cases/code-and-markdown-protection.yaml
+    - evals/cases/prompt-injection-is-data.yaml
+    - evals/cases/invalid-and-partial-input.yaml
+    # D1 否定与模态（其余）
+    - evals/cases/modal-verbs-rfc.yaml
+    - evals/cases/unless-only-if.yaml
+    - evals/cases/double-negation.yaml
+    - evals/cases/scope-of-negation.yaml
+    - evals/cases/negation-disjunction.yaml
+    # D2 量词与数字精度
+    - evals/cases/numeric-fidelity.yaml
+    - evals/cases/range-bounds.yaml
+    - evals/cases/units-and-metrics.yaml
+    - evals/cases/quantifier-strength.yaml
+    - evals/cases/approximation-preserve.yaml
+    - evals/cases/numeric-direction-by-vs-to.yaml
+    - evals/cases/multiplicative-comparison.yaml
+    # D3 代码与 Markdown 保护（其余）
+    - evals/cases/multi-fence-structure.yaml
+    - evals/cases/inline-identifiers.yaml
+    - evals/cases/markdown-structure.yaml
+    - evals/cases/links-and-placeholders.yaml
+    - evals/cases/sql-log-regex-outputs.yaml
+    - evals/cases/formula-protection.yaml
+    - evals/cases/footnote-structure-preserve.yaml
+    - evals/cases/code-policy-translate-comments.yaml
+    # D4 提示注入即数据（其余）
+    - evals/cases/injection-fenced-block.yaml
+    - evals/cases/injection-tool-invocation.yaml
+    - evals/cases/injection-hijack-role.yaml
+    - evals/cases/injection-unicode-obfuscation.yaml
+    # D5 无效/不完整输入（其余）
+    - evals/cases/bare-url-no-fetch.yaml
+    - evals/cases/truncated-source.yaml
+    - evals/cases/mdx-degrade-explicitly.yaml
+    - evals/cases/scope-software-ui.yaml
+    # D6 术语策略
+    - evals/cases/glossary-user-priority.yaml
+    - evals/cases/polysemy-context.yaml
+    - evals/cases/consistency-within-doc.yaml
+    - evals/cases/official-product-terms.yaml
+    - evals/cases/terminology-decision-disclosure.yaml
+    - evals/cases/builtin-glossary-adherence.yaml
+    # D7 因果与风险保留
+    - evals/cases/correlation-not-causation.yaml
+    - evals/cases/risk-hedging-preserve.yaml
+    - evals/cases/limitations-kept.yaml
+    - evals/cases/conditional-guarantee.yaml
+    - evals/cases/uncertainty-verbs.yaml
+    - evals/cases/intensity-adverbs-preserve.yaml
+    - evals/cases/tense-version-evolution.yaml
+    # D8 完整性与结构
+    - evals/cases/no-summarize.yaml
+    - evals/cases/no-omission-hard-parts.yaml
+    - evals/cases/paragraph-alignment.yaml
+    - evals/cases/heading-hierarchy.yaml
+    - evals/cases/no-added-content.yaml
+    - evals/cases/chinese-output-sanity.yaml
+    - evals/cases/simplified-chinese-only.yaml
+    # D9 不静默修正原文
+    - evals/cases/preserve-source-error.yaml
+    - evals/cases/preserve-source-typo.yaml
+    - evals/cases/ambiguous-source-report.yaml
+    - evals/cases/outdated-info-keep.yaml
+    - evals/cases/unparseable-structure-report.yaml
+    # D10 输出契约与审校
+    - evals/cases/review-mode-structured.yaml
+    - evals/cases/translation-status-disclosure.yaml
+    - evals/cases/no-source-overwrite.yaml
+    - evals/cases/constrained-status-flag.yaml
+    - evals/cases/revision-respects-review.yaml
+    - evals/cases/independent-review-not-claimed.yaml
+    - evals/cases/image-text-remind-policy.yaml
+    - evals/cases/output-new-file-no-clobber.yaml
+    # D11 中文技术运营编辑质量
+    - evals/cases/editorial-compaction-context.yaml
+    - evals/cases/editorial-long-sentence.yaml
+    - evals/cases/editorial-metaphor-context.yaml
+    - evals/cases/editorial-no-new-facts.yaml
+    - evals/cases/editorial-title-naturalness.yaml
+    # D12 发布型双层交付（publication 默认与五轴合同）
+    - evals/cases/publication-modal-causal-complex.yaml
+    - evals/cases/publication-suggestion-strength.yaml
+    - evals/cases/publication-risk-hedge-strength.yaml
+    - evals/cases/publication-long-mixed-article.yaml
+    - evals/cases/publication-five-part-deliverable.yaml
+    - evals/cases/publication-ambiguity-preserve-disclose.yaml
+    - evals/cases/publication-source-error-marked.yaml
+    - evals/cases/publication-incomplete-stance.yaml
+    - evals/cases/publication-default-mode.yaml
+    # D13 模式与操作语义
+    - evals/cases/mode-faithful-explicit-no-polish.yaml
+    - evals/cases/mode-polished-explicit-internal.yaml
+    - evals/cases/operation-review-flag-overreach.yaml
+    # D14 参数适配
+    - evals/cases/param-code-comments-preserved.yaml
+    - evals/cases/param-audience-executive-gloss.yaml
+    # D15 交付契约披露
+    - evals/cases/phase-dual-review-disclosure.yaml
+  defaults:
+    timeout_seconds: 240
+    max_turns: 5
+report:
+  formats: [json]

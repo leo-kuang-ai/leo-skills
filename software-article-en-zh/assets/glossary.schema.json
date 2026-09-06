@@ -1,0 +1,1 @@
+{"type":"object","required":["source","sense","target","scope","authority","status"],"properties":{"source":{"type":"string"},"sense":{"type":"string"},"target":{"type":"string"},"scope":{"type":"string"},"authority":{"type":"string"},"status":{"enum":["proposed","approved"]}}}

@@ -1,0 +1,24 @@
+id: consistency-within-doc
+title: 同篇文档术语前后一致
+description: idempotent 在三段中应统一译作"幂等"，不得在同篇内出现"幂次/等幂"等同义变体。
+
+input:
+  prompt: |
+    请把下面三段关于重试机制的设计说明翻译成简体中文：
+
+    Retry logic only stays safe when every write endpoint is idempotent, because the gateway replays requests after a network partition heals.
+
+    The migration jobs are designed to be idempotent: running the same batch twice leaves the table in exactly the same state as running it once.
+
+    Note that idempotent consumers still cannot deduplicate events without a stable key, so the event schema always carries an event ID.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["幂等"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_consistency_within_doc.py
+  timeout_seconds: 10

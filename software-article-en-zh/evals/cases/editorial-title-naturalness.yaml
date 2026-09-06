@@ -1,0 +1,17 @@
+id: editorial-title-naturalness
+title: 技术文章标题自然度
+description: 发布型译文应保留主题和产品名，同时避免机械直译标题。
+
+input:
+  prompt: |
+    请把下面的标题翻译成简体中文，并采用官方技术运营文章的自然标题表达：
+
+    Rethinking skills and prompts for GPT-6 Astra
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_editorial_title.py
+  timeout_seconds: 10

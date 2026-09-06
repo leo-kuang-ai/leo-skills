@@ -1,0 +1,58 @@
+id: publication-long-mixed-article
+title: 发布型长文：结构保护、覆盖与术语一致
+description: 含多代码块、命令、日志、配置、链接、图片与脚注的工程长文，发布级交付须结构可复核、硬段不丢、术语首现双语并同篇一致。
+
+input:
+  prompt: |
+    请把下面这篇工程博客翻译成简体中文，并按官方技术运营文风润色至可发布水平：
+
+    # Tuning the ingest pipeline for backpressure
+
+    Our ingest pipeline accepts events from regional collectors and writes them to sharded storage. Under sustained load, the queue between the collectors and the writers builds up backpressure, and p99 ingest latency can exceed 400 ms. This note summarizes the knobs we tuned and the caveats we hit.
+
+    ## Retrying failed writes
+
+    Writers retry failed writes with exponential backoff. Before you change any defaults, run the planning command in dry-run mode:
+
+    ```bash
+    ingestctl plan --shards 16 --dry-run
+    ```
+
+    The plan output shows the projected queue depth for each shard. Do not apply a plan that projects sustained backpressure on more than two shards, because the writers will drop retries after `grpc_retry_limit` attempts.
+
+    ## Buffer sizing
+
+    Queue buffers are configured per shard in the writer config:
+
+    ```yaml
+    ingest:
+      shard_count: 16
+      queue_buffer: 2 GiB
+      flush_interval_ms: 250
+    ```
+
+    After we raised `queue_buffer` from 1 GiB to 2 GiB, the p99 ingest latency dropped from 400 ms to 180 ms on our replay workload. The improvement was measured on one replay workload only; we have not re-run the full benchmark suite.
+
+    ## Observability
+
+    Tail dashboards plot queue depth, retry counts, and per-shard throughput. A sample log line looks like this:
+
+    ```text
+    2026-08-30T11:02:41Z WARN shard=07 queue_depth=812 retries=3
+    ```
+
+    Alerting fires when queue depth stays above 800 for five minutes. See the runbook [ingest alerting](https://example.com/docs/ingest) for triage steps, and the architecture diagram below for the shard layout.
+
+    ![Shard layout overview](assets/architecture-overview.png)
+
+    The storage tier replicates each shard across three zones[^1].
+
+    [^1]: Zone replication is asynchronous; a zone failure may expose stale reads for up to 30 seconds.
+
+constraints:
+  max_turns: 5
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_long_mixed.py
+  timeout_seconds: 15

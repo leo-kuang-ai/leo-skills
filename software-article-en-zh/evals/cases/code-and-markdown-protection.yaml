@@ -1,0 +1,22 @@
+id: code-and-markdown-protection
+title: Preserve Markdown and code
+description: Verify code and identifiers remain unchanged.
+input:
+  prompt: |
+    Translate this Markdown into Simplified Chinese. Preserve the code and link target exactly:
+    # Retry
+    Set `max_retries` to `0`.
+    ```yaml
+    max_retries: 0
+    ```
+    [Docs](https://example.com/docs)
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["max_retries", "https://example.com/docs", "```yaml", "重试"]
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["max_retries", "https://example.com/docs", "重试"]

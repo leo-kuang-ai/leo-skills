@@ -1,0 +1,17 @@
+id: double-negation
+title: 双重否定不被翻转或漏译
+description: 验证 not uncommon 译为"并非罕见/并不少见"类双重否定（不得直接翻转），cannot...without 译出条件否定。
+
+input:
+  prompt: |
+    请把下面这句排查文档准确翻译成简体中文：
+
+    It is not uncommon for retries to fail silently in this subsystem; you cannot debug the failures without enabling trace logging.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_double_negation.py
+  timeout_seconds: 10

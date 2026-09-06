@@ -1,0 +1,17 @@
+id: publication-ambiguity-preserve-disclose
+title: 发布型歧义：保留并披露，不替作者选定
+description: 量化词-否定辖域歧义句在发布润色语境下必须披露两种读法或以部分否定译法保留歧义，不得静默选定全称否定。
+
+input:
+  prompt: |
+    请把下面这段发布说明翻译成简体中文，并按官方技术运营文风润色至可发布水平：
+
+    After the rollout, all the integration tests did not pass, so we paused the canary at 5 percent.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_ambiguity_disclose.py
+  timeout_seconds: 10

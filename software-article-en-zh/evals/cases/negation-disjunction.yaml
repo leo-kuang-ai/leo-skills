@@ -1,0 +1,18 @@
+id: negation-disjunction
+title: 否定辖域覆盖析取
+description: does not support A or B 的否定覆盖整个析取（既不…也不），不得只否定第一项，也不得把否定需求句译成肯定。
+
+input:
+  prompt: |
+    请把下面的支持性说明翻译成简体中文：
+
+    The agent does not support Windows or macOS. Batch mode does not require a shell or a
+    terminal emulator.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_negation_disjunction.py
+  timeout_seconds: 10

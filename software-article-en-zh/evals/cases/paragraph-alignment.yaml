@@ -1,0 +1,23 @@
+id: paragraph-alignment
+title: 段落结构与原文对齐
+description: 四个自然段的源文译成中文后仍须保持至少四个内容段落，不得合并改写。
+
+input:
+  prompt: |
+    请把下面的发布流程说明翻译成简体中文，保持原有段落划分：
+
+    The release train departs every Thursday at 10:00 UTC. Features that miss the train wait for the next cycle unless the incident commander declares a hotfix window.
+
+    Staging soak lasts 24 hours by default. The release bot promotes the build only when the error budget has remaining headroom.
+
+    Rollbacks are one command and take about three minutes. The database migrations are always backward-compatible for two releases.
+
+    After each release, the on-call engineer posts a short retro in the team channel, linking the diff, the deploy dashboard, and any customer tickets that arrived during the soak.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_paragraph_alignment.py
+  timeout_seconds: 10

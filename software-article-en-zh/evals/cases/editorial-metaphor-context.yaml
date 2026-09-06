@@ -1,0 +1,17 @@
+id: editorial-metaphor-context
+title: 英文隐喻上下文化
+description: 面向发布的译文应传达隐喻的行动含义，避免造成字面误解。
+
+input:
+  prompt: |
+    请把下面这段模型使用建议翻译成简体中文并润色为官方技术运营文风：
+
+    A new model is a good opportunity to clean your house. Ask GPT-6 Astra to audit your instructions before building something new.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_editorial_metaphor.py
+  timeout_seconds: 10

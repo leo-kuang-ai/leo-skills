@@ -1,0 +1,19 @@
+id: no-omission-hard-parts
+title: 艰深长句不得漏译
+description: 嵌套从句中的 monotonic、happens-before、linearizable 三个核心技术要素须全部译出，不得跳过难句。
+
+input:
+  prompt: |
+    请把下面两段一致性设计说明翻译成简体中文：
+
+    Replication lag alarms fire whenever any follower falls more than 30 seconds behind the leader.
+
+    The correctness argument rests on a subtle chain: because every replica assigns timestamps from a monotonic logical clock, because the coordinator records a happens-before edge for each acknowledged write, and because reads are routed exclusively to replicas whose applied prefix is contiguous, the registry as a whole behaves in a linearizable manner even while individual members restart.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_no_omission_hard_parts.py
+  timeout_seconds: 10

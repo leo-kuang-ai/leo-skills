@@ -1,0 +1,19 @@
+id: review-mode-structured
+title: 审校输出结构化并分级
+description: 审校模式须指出数字误译（128→1280）与模态强度问题（MUST 译成可以），并使用严重性分级词汇。
+
+input:
+  prompt: |
+    请审校下面这段译文。英文原文和现有中译如下，请按严重程度给出结构化的审校意见，逐条指出具体问题：
+
+    原文：Each shard accepts at most 128 concurrent connections. Idle connections MUST be closed by the client within 30 seconds.
+
+    现有中译：每个分片最多接受 1280 个并发连接。客户端可以在 30 秒内关闭空闲连接。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_review_mode_structured.py
+  timeout_seconds: 10

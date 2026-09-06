@@ -1,0 +1,15 @@
+id: bare-url-no-fetch
+title: 仅粘贴 URL 时不抓取不编造
+description: 验证用户只给链接无正文时，输出说明无法访问或未提供正文，不编造"这篇文章讨论…"类内容。
+
+input:
+  prompt: |
+    翻译这篇：https://example.com/blog/post
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_bare_url_no_fetch.py
+  timeout_seconds: 10

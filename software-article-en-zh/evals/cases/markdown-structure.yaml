@@ -1,0 +1,33 @@
+id: markdown-structure
+title: Frontmatter、标题层级、列表与表格结构保留
+description: 验证译文保留 frontmatter 分隔线与 title 键名（值可译）、## 与 ### 标题层级、至少 3 个列表项和表格竖线行。
+
+input:
+  prompt: |
+    请把下面的 Markdown 文档翻译成简体中文，Markdown 结构保持不变：
+
+    ---
+    title: Cache Tuning Guide
+    ---
+
+    ## Why tuning matters
+
+    Latency budgets shrink every quarter.
+
+    ### Quick wins
+
+    - Enable compression on the wire
+    - Raise the connection pool floor
+    - Pin the client library version
+
+    | Knob | Default | Effect |
+    | --- | --- | --- |
+    | max_pool | 20 | caps concurrency |
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_markdown_structure.py
+  timeout_seconds: 10

@@ -1,0 +1,20 @@
+id: readme-doc-translation
+title: 真实文档全文翻译（leo-ppt-generator 英文 README）
+description: 用真实软件工程文档驱动翻译，产物供专家评审轨（Track E）切片评审。
+
+input:
+  prompt: |
+    请把 /Users/kuang/knowledge/leo-skills/leo-ppt-generator/README.en.md 完整翻译成简体中文，
+    遵循 software-article-en-zh 的全部规范：完整翻译不摘要，代码/命令/标识符/路径/链接目标原样保留，
+    保留否定、条件、量词与规范性强度。译文以 Markdown 全文输出。
+
+constraints:
+  max_turns: 2
+
+expect:
+  must_contain: ["MIT", "npx skills add leo-kuang-ai/leo-skills"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_readme_doc_translation.py
+  timeout_seconds: 10

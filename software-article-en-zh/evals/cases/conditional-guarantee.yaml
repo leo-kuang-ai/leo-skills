@@ -1,0 +1,17 @@
+id: conditional-guarantee
+title: 条件性保证不得去条件化
+description: only when 引出的前置条件必须保留，exactly-once 保证不得被译成无条件承诺。
+
+input:
+  prompt: |
+    请把下面的消息系统说明翻译成简体中文：
+
+    The system guarantees exactly-once delivery only when idempotency keys are provided. Without those keys, delivery degrades to at-least-once, and consumers must tolerate duplicates.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_conditional_guarantee.py
+  timeout_seconds: 10

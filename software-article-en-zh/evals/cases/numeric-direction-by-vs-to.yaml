@@ -1,0 +1,18 @@
+id: numeric-direction-by-vs-to
+title: 变化量 by 与终点 to 不混淆
+description: decreased by 30% 是降低 30%，dropped to 1.2% 是降至 1.2%；by/to 不得互换，方向不得颠倒。
+
+input:
+  prompt: |
+    请把下面的监控周报翻译成简体中文：
+
+    After the upgrade, p99 latency decreased by 30% and the error rate dropped to 1.2%.
+    Memory headroom grew by 15%, while the cache hit ratio rose to 92%.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_numeric_direction.py
+  timeout_seconds: 10

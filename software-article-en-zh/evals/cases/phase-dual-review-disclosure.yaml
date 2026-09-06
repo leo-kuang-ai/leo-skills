@@ -1,0 +1,17 @@
+id: phase-dual-review-disclosure
+title: 双轨复核分开记录与合取披露
+description: publication 交付须把 technical_review 与 editorial_review 分开记录并给出发布判定（合取语义），两者不得混同或以编辑通过替代技术复核。
+
+input:
+  prompt: |
+    请把下面这段说明翻译成简体中文，并润色至可发布水平：
+
+    The export job runs nightly at 02:00 UTC and uploads compressed snapshots to cold storage. Snapshots older than 90 days are deleted automatically; administrators can extend retention per project.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_phase_dual_review.py
+  timeout_seconds: 10

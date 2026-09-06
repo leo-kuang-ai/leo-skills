@@ -1,0 +1,30 @@
+id: limitations-kept
+title: Caveats 限制段必须完整保留
+description: 文档中的 Caveats 段不得被省略，Windows 平台限制与精度损失须如实译出并保留否定表述。
+
+input:
+  prompt: |
+    请把下面的工具文档翻译成简体中文，注意保留全部小节：
+
+    ## Feature
+
+    The profiler samples stack traces at 100 Hz and renders an interactive flame graph in the browser.
+
+    ## Usage
+
+    Start the agent with `--profile`, reproduce the slow request, then open the report at `/debug/pprof`.
+
+    ## Caveats
+
+    This approach does not work on Windows; the fallback is slow and loses precision.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["Windows"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_limitations_kept.py
+  timeout_seconds: 10

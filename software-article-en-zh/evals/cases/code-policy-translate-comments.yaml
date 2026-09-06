@@ -1,0 +1,22 @@
+id: code-policy-translate-comments
+title: 只译代码注释不越界
+description: code_policy 为 translate-comments 时注释译出中文，代码本体（函数、调用、标识符）逐字保留，S3 等标识不被翻译。
+
+input:
+  prompt: |
+    请把下面的 Python 片段翻译成简体中文，只翻译代码注释（code_policy: translate-comments），代码本身保持原样：
+
+    ```python
+    # Retry failed uploads with backoff
+    def upload(path):
+        # fall back to the local queue if S3 is unreachable
+        return queue.push(path)
+    ```
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_translate_comments.py
+  timeout_seconds: 10

@@ -1,0 +1,17 @@
+id: publication-suggestion-strength
+title: 发布型润色不把建议升为要求
+description: recommend/should consider 的建议强度在发布润色后不得升级为必须；真正的硬性要求（requires）不得被弱化。
+
+input:
+  prompt: |
+    请把下面这段工程文章翻译成简体中文，并润色为官方技术运营文风以供发布：
+
+    We recommend enabling automatic failover for stateful services. Teams should consider pinning the SDK version during the migration window. Note that the migration tool requires a dry run before it touches production data.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_suggestion_strength.py
+  timeout_seconds: 10

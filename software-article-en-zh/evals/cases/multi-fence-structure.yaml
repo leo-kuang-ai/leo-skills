@@ -1,0 +1,36 @@
+id: multi-fence-structure
+title: 多代码围栏数量与语言标注保留
+description: 验证含 yaml/js/bash 三个 fenced code block 的源文在译文中仍为 3 对围栏，语言标注不被翻译或丢弃。
+
+input:
+  prompt: |
+    请把下面的部署说明翻译成简体中文，代码块原样保留：
+
+    ## Deployment
+
+    The service loads settings from a values file:
+
+    ```yaml
+    replicas: 3
+    image: registry.example.com/app:2.4.1
+    ```
+
+    The entry point registers a shutdown hook:
+
+    ```js
+    process.on("SIGTERM", () => server.close());
+    ```
+
+    Then restart the workers:
+
+    ```bash
+    kubectl rollout restart worker
+    ```
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_multi_fence_structure.py
+  timeout_seconds: 10

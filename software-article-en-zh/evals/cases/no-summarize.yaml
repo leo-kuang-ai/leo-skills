@@ -1,0 +1,30 @@
+id: no-summarize
+title: 完整翻译不摘要
+description: 六段技术内容须逐段完整译出，不得输出摘要，且各段关键数字与细节须全部保留。
+
+input:
+  prompt: |
+    请把下面的迁移复盘文章完整翻译成简体中文，保留全部段落和细节：
+
+    The migration to the new billing service started in March and finished ahead of schedule. We moved 214 tenants across four shards, with the largest tenant holding 31 GB of invoice rows. Downtime per tenant stayed under 40 seconds, measured at the load balancer.
+
+    Cut-over followed a fixed runbook. First, the operator enabled maintenance mode for the tenant and drained the write queue. Second, the legacy exporter produced a consistency report, which the on-call engineer compared against the target cluster. Third, traffic shifted to the new service through a feature flag flip.
+
+    The legacy stack ran MySQL 5.6 on three replicas behind a proxy that pinned connections by tenant. The new stack runs PostgreSQL 15 with one writer and five read replicas, deployed in the same VPC as the billing API. Connection counts dropped from 1,800 to about 600 after the cut-over.
+
+    Invoice numbering required special care. The old system allocated IDs in blocks of 500 per shard, while the new system uses a single sequence per tenant. To keep external references stable, we kept the old ID format and added a mapping table keyed by tenant and legacy ID.
+
+    Observability improved as a side effect. The new service exports RED metrics per endpoint, and the dashboard tracks p50, p95, and p99 latency for the invoice query path. Alert rules fire when the error rate exceeds 0.5% for five minutes or when queue depth passes 2,000 jobs.
+
+    Remaining work is small but real. The reconciliation job still runs on the old cron host until the monitoring handover completes. Two tenants asked for a CSV export of historical invoices, which the support script does not produce yet.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["MySQL"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_no_summarize.py
+  timeout_seconds: 10

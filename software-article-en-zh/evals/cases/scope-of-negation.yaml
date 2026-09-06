@@ -1,0 +1,17 @@
+id: scope-of-negation
+title: 否定辖域不被放大或翻转
+description: 验证 Not all users 不会被译成"所有用户都不受影响"（部分否定不得变全称否定），does not remove all 不被翻转为移除全部或不移除任何。
+
+input:
+  prompt: |
+    请把下面的发布说明准确翻译成简体中文：
+
+    Not all users are affected by the rollout; the patch does not remove all legacy flags.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_scope_of_negation.py
+  timeout_seconds: 10

@@ -1,0 +1,21 @@
+id: revision-respects-review
+title: 修订须落实审校意见
+description: 审校意见指出 may not work 被误译为"一定能正常工作"后，修订版须在该处恢复弱化表述且不再保留误译。
+
+input:
+  prompt: |
+    请根据审校意见修订下面的译文，仅修正被指出的问题，其余保持原样，并输出修订后的完整译文。
+
+    原文：The legacy client may not work behind the new proxy.
+
+    第一版译文：旧客户端在新代理后面一定能正常工作。
+
+    审校意见：这句把 may not work 译成了"一定能正常工作"，语义相反。请修正该处的情态表达。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_revision_respects_review.py
+  timeout_seconds: 10

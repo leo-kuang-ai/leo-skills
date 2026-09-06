@@ -1,0 +1,17 @@
+id: builtin-glossary-adherence
+title: 内置术语表词条遵循
+description: 验证工作流第 3 步加载内置英中术语表后，hallucination/guardrails/alignment 等词条按内置译法统一，不另造译法。
+
+input:
+  prompt: |
+    请把下面这段 AI 工程复盘翻译成简体中文，使用本技能内置的英中术语表：
+
+    Teams that chase vibe coding without guardrails often ship an AI wrapper instead of a product. The postmortem reads like the Bitter Lesson rerun: heavy hallucination in the planning phase, weak alignment with user intent, and no context engineering at all.
+
+constraints:
+  max_turns: 2
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_builtin_glossary.py
+  timeout_seconds: 10

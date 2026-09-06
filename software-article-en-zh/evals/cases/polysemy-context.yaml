@@ -1,0 +1,19 @@
+id: polysemy-context
+title: 同词多义按上下文分别翻译
+description: monitor 一词在"监控节点集群"与"桌面显示器"两种语境中须分别译出，不得全局替换为同一个词。
+
+input:
+  prompt: |
+    请把下面两段内部运维文档翻译成简体中文：
+
+    The platform team uses a single dashboard to monitor the fleet of nodes across three regions, with paging alerts wired to the on-call rotation.
+
+    Ergonomics reviews matter for the on-call staff too: the monitor on your desk should sit about an arm's length away, with its top edge roughly at eye level to reduce neck strain.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_polysemy_context.py
+  timeout_seconds: 10

@@ -1,0 +1,27 @@
+id: formula-protection
+title: 行内与块级 LaTeX 公式原样保留
+description: 验证行内公式 $hit\_rate = \frac{hits}{hits+misses}$ 的 \frac 与标识符、公式块 $$ T_{miss} = T_{lookup} + P \cdot T_{fetch} $$ 的 T_{miss}/\cdot 与 $$ 定界符在译文中原样在场，普通数字单位 240 ms 保真，公式不被中文叙述整体替代。
+
+input:
+  prompt: |
+    请把下面的缓存性能文档片段翻译成简体中文：
+
+    ## Cache Sizing
+
+    The effectiveness of the cache is measured first by
+
+    $hit\_rate = \frac{hits}{hits+misses}$
+
+    When a key is absent, the penalty follows
+
+    $$ T_{miss} = T_{lookup} + P \cdot T_{fetch} $$
+
+    where P is the probability that the fetched row is also absent from the database. Under production load the 95th percentile latency stays below 240 ms, so operators treat the cache as healthy when the hit rate exceeds eighty percent.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_formula_protection.py
+  timeout_seconds: 10

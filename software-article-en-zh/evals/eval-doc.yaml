@@ -1,0 +1,17 @@
+schema_version: v1alpha1
+environment:
+  type: none
+skills:
+  - source: local_path
+    path: .
+engine:
+  name: claude_code
+cases:
+  files:
+    - evals/cases/readme-doc-translation.yaml
+    - evals/cases/pvncher-doc-translation.yaml
+  defaults:
+    timeout_seconds: 300
+    max_turns: 3
+report:
+  formats: [json]

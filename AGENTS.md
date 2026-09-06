@@ -15,6 +15,7 @@
 
 - `evidence-first-writing/` — 证据优先写作技能。
 - `leo-ppt-generator/` — 图片式 / 可编辑 / 升级 PPTX 生成技能。
+- `software-article-en-zh/` — 软件工程英文 → 简体中文翻译技能（保真翻译、代码与 Markdown 保护、注入即数据、诚实状态报告）。
 - `creator-buddy/` — vendored 创作工具箱插件（公众号 / 小红书 / 视频，上游来源与同步见 `creator-buddy/UPSTREAM.md`）。
 - `docs/` — 仓库级文档。
 - `*-workspace/` — 评测运行的生成产物（设计上被 git-ignore）。

@@ -1,0 +1,19 @@
+id: chinese-output-sanity
+title: 中文输出健全性（回显回归）
+description: 翻译请求必须产出以中文为主体的译文：中文字数下限、英文词数不得超过中文字数（整段回显英文即失败），且不得拒译。
+
+input:
+  prompt: |
+    请把下面这段排障记录翻译成简体中文：
+
+    The connection pool saturates under bursty load, and acquire timeouts spike after the
+    nightly batch job starts. Retries amplify the pressure, so the on-call engineer usually
+    disables the batch trigger first.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_chinese_output_sanity.py
+  timeout_seconds: 10

@@ -1,0 +1,21 @@
+id: links-and-placeholders
+title: 链接目标、占位符与路径原样保留
+description: 验证 URL、{USER_TOKEN}、%s、$HOME/bin、图片路径原样保留，且链接标签与 alt 文本确实被翻译（可译义务）。
+
+input:
+  prompt: |
+    请把下面的部署检查清单翻译成简体中文，链接目标、占位符和路径保持原样：
+
+    See the [Configuration Guide](https://docs.example.com/config) before rollout. Replace `{USER_TOKEN}` in the template, format errors with `%s`, add `$HOME/bin` to PATH, and check ![Architecture](/assets/arch.png) for the request flow.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain:
+    ["https://docs.example.com/config", "{USER_TOKEN}", "%s", "$HOME/bin", "/assets/arch.png", "架构"]
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_links_and_placeholders.py
+  timeout_seconds: 10

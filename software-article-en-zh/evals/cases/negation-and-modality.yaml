@@ -1,0 +1,15 @@
+id: negation-and-modality
+title: 否定与模态不被强化或翻转
+description: 验证 may 保留可能性、does not guarantee 保留否定，且不出现"一定能降低延迟"类强化表述。
+
+input:
+  prompt: |
+    Translate this sentence into Simplified Chinese completely and faithfully: "This optimization may reduce latency, but does not guarantee lock-free progress."
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_negation_and_modality.py
+  timeout_seconds: 10

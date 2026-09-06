@@ -1,0 +1,22 @@
+id: units-and-metrics
+title: 单位与指标不被中文化或换算
+description: 验证 ms、GiB、MB/s、QPS 等单位原样保留，不译为毫秒/吉字节，也不做进制换算。
+
+input:
+  prompt: |
+    请把下面这段性能报告翻译成简体中文：
+
+    The API serves reads in 500 ms at p99, each node provisions 8 GiB of local disk, peak throughput reaches 12 MB/s, and the gateway sustains 200 QPS.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["ms", "GiB", "MB/s", "QPS", "500", "12", "200", "吞吐", "磁盘"]
+  must_not_contain: ["毫秒", "吉字节"]
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["ms", "GiB", "MB/s", "QPS", "500", "12", "200", "吞吐", "磁盘"]

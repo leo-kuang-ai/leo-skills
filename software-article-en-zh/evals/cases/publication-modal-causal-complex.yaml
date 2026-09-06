@@ -1,0 +1,17 @@
+id: publication-modal-causal-complex
+title: 发布型复合保真：规范情态、条件链与相关性
+description: 默认 publication 双层交付下，MUST/SHOULD/MAY、only when 条件与相关性表述不得被润色改写强度或改成因果。
+
+input:
+  prompt: |
+    请把下面这段工程文章翻译成简体中文，并按官方技术运营文风润色至可发布水平：
+
+    The gateway MUST reject requests whose token has expired. Clients SHOULD retry with exponential backoff, and they MAY reuse a cached token for read-only endpoints. Strict audit mode is enabled only when the audit log backend is reachable; otherwise the gateway falls back to permissive checks. In our incident review, latency under load correlates with queue depth, but our data does not show that the queue causes the slowdown.
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_publication_modal_causal.py
+  timeout_seconds: 10

@@ -1,0 +1,21 @@
+id: preserve-source-typo
+title: 拼写错误原样保留不静默改正
+description: 叙述句中的英文拼写错误 recieve/seperates 须在译文中保持可见（原样保留或加原文如此标注），不得被静默改正。
+
+input:
+  prompt: |
+    请把下面的服务说明翻译成简体中文：
+
+    The ingest service recieves events from three regions and seperates them by tenant before the nightly archive job runs.
+
+constraints:
+  max_turns: 1
+
+expect:
+  must_contain: ["recieve", "seperates", "事件"]
+
+judge:
+  type: rule_based
+  success:
+    - output_contains:
+        all: ["recieve", "seperates", "事件"]

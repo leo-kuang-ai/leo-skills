@@ -7,6 +7,78 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：本地控制台新增「生成任务」可视化（进展/预览/过程/链路/流程）**：按 `docs/prd/2026-09-07-leo-ppt-run-visualization-prd.md`（5 轮审查）与 `docs/plans/2026-09-07-004`（5 轮审查）实施——
+  - **双 Tab 控制台**：新增规范入口 `leo-ppt ui`（`config ui` 保持兼容同一服务）；「生成任务」Tab 扫描 `${LEO_PPT_HOME}/projects/*/runs/` 呈现任务列表（状态徽标/页进度/陈旧提示/呼吸态）与详情视图；
+  - **详情五视图**：流程条（步骤打勾+耗时+当前态，不显示百分比——业界共识）、页网格（Airflow 式，颜色+图标双重编码，failed/timeout 从 timing.json 与 run.log 推断，骨架占位渐进填充）、事件时间线（events.ndjson 尾窗+坏行计数+失败自动展开+"加载更早"分页）、链路聚合（渠道×调用×尝试×tokens，字符串 tokens 容错）、交付卡（deck 路径缩写复制、六门质量闸、失败回落链）；页图 lightbox（modal 对话语义/Esc/键盘翻页）；
+  - **入口与安全**：`/api/runs`、`/api/runs/{id}`（events_before 分页）、`/api/runs/{id}/pages/{n}.png`（沙箱：客户端只传 run_id+页码、路径取 slide_jobs artifact、resolve+is_relative_to+后缀白名单三层）；首屏注入新增 runs 并修复存量 `<script>` 逃逸面（`<`→`\u003c` 转义，R4 安全评审发现）；URL hash 路由（`#tab=runs`/`#run=`）刷新直达；
+  - **实时与礼仪**：进行中 3s/列表 15s 轮询、document.hidden 暂停+恢复即拉、终态停轮询并更新标题、aria-live 仅播报三类关键变化、数据签名未变跳过 DOM 重建（防缩略图重取风暴与点击打断）；
+  - **架构**：新增只读模块 `runs_console.py`（不 import config 域与写侧 run_index；home 由 web.py 解析注入）；前端单文件扩至 ~1360 行（阈值 1500 内显式决策）；
+  - **质量过程**：3 轮代码审查（独立评审员含实测探针，10 项发现 9 修 1 辨误）+ 浏览器多角色验收（列表/详情/lightbox/过滤/播报/错误路径），验收现场发现并修复列表轮询 DOM 打断（A-1）与失败页事件定位回落（A-3）；
+  - **验证**：新增 `tests/test_runs_console.py`（19 例）+ `tests/runs_fixture.py`（合成 run 工厂，按写侧字段级契约）+ `test_config_web.py` 扩展（runs 端点/沙箱负路径/坏类型容错/注入转义/静态锚点），全套 77 例绿；隔离 home 双 run 场景 Safari 实测全视图通过。 (user-visible)
+
+- **leo-ppt-generator：控制台视觉打磨层（样式迭代，零逻辑变更）**：设计令牌统一（颜色/圆角/阴影 CSS 变量）；sticky Tab 导航（长详情页 backdrop-blur 悬停可达）；状态点光环、流程条当前步骤脉冲点、页网格悬停抬升与图片缩放、pending 骨架 shimmer 微光、进度条渐变过渡、时间线失败左标线与悬停、卡片/按钮微交互与 dialog 入场动效、toast 滑入、等宽数字（时间/计数 tabular-nums）、细滚动条；**prefers-reduced-motion 全局动效静止**（a11y）；空态居中弱化。验证：80/80 测试全绿、JS 语法通过、Safari 实测渲染无错乱。前端单文件增至 1540 行——已如实触及 1500 行拆分阈值（本轮纯 CSS 增量），config-ui.js 拆分列为下一轮首项。 (user-visible)
+- **leo-ppt-generator：控制台多视角专家评审迭代（PM/运维/架构 24 项发现全处置）**：三路独立评审 + 运维复评 + 浏览器现场验收驱动的质量轮——
+  - **正确性修复**：流程条耗时读错字段（生产 writer 是 stage/duration_seconds，合成 fixture 同错掩盖，评测全绿却恒 null）读侧与 fixture 双向对齐；events before_seq 翻页跳段（误取最旧 N 条）改紧邻窗口；时间线阶段名误套"第 X 页"模板；终态交付上移初版未生效（函数位置 TDZ）复验修正；
+  - **性能**：RunScanner 线程锁 + 1.5s TTL 索引缓存 + jobs (mtime,size) 缓存 + 持锁扫描防惊群 + 每 path 单版本驱逐（一轮轮询 13 次全量目录扫描 → 1 次）；页图 ETag(sha256) + 304 + private,max-age（消除 no-store 重传风暴）；asset 模块级缓存（runtime 切换后半残态）；
+  - **可观测**：访问日志（method/path/status 到 stderr）；/api/runs 异常 500 兜底 + traceback 带 path；
+  - **体验**：时间本地化与耗时可读化（"开始于 16:00 · 总耗时 10 分 21 秒"）、route 中文、列表三段进度条（aria progressbar）+ 状态筛选 chips 带计数、死进程停呼吸并明示"⚠ N 分钟无更新"、终态交付第一屏、时间线过滤提示条 + 轮询重放、空态命令与错误重试；
+  - **契约防护**：ROUTE_STEP_SEQUENCES ↔ 写侧 ROUTES 逐路线对齐测试、EVENT_LABELS ↔ 写侧事件 kind 源码提取对齐测试（消灭三份人肉副本漂移）；clock/monotonic 注入、jobs 路径去重、py3.9 死代码清理；
+  - 验证：80/80 全绿；46 run 性能探针（列表/详情 ~0.4ms，12 页图 ~0.6ms）；浏览器复验全部迭代项；defer 台账（拆包/拆 JS/events 尾读等触发条件）记录于交付报告第 7 节。 (user-visible)
+- **leo-ppt-generator：可靠性加固批次 A+（WS2/WS4/WS5/WS7 落地，迭代 3）**：在批次 A（溢出哨兵/渠道矩阵/健康三级/派发警告）之上完成加固方案 2026-09-07-002 的其余可执行项——
+- **leo-ppt-generator：可靠性加固批次 A+（WS2/WS4/WS5/WS7 落地，迭代 3）**：在批次 A（溢出哨兵/渠道矩阵/健康三级/派发警告）之上完成加固方案 2026-09-07-002 的其余可执行项——
+  - **WS5 render-lane deck 合同（终结 D-OBS-01 唯一挂起项）**：ProviderName/registry 新增 `render-lane`（免凭据、免计费、本地确定性、generate 能力），`backend create --provider render-lane` 可满足 generate 路线 run create；样张 `binding.backend` 在该合同下接受 `render:html`/`render:mermaid`（图像 Provider 合同下仍拒绝）；doctor 凭据清单新增 `not_applicable` 条目。0 图像页 deck 不再借图像合同壳。聚焦回归 `tests/test_render_lane_contract.py`（4 用例，含负例）。
+  - **WS2 全册尺寸预算**：`content/size-budget.json`（canvas_ratio/image_lane_px/render_lane_px）+ `scripts/check_size_budget.py` 确定性校验（全册比例一致/渲染页整数 dsf 阶梯/图像页不得超预算，渠道档低于预算 WARN 入交付披露）；执行合同成文。聚焦回归 `tests/test_check_size_budget.py`（3 用例）。
+  - **WS4 交付档位（最小实）**：母版头可选 `delivery_tier: minimal|standard|assured`（非法值 FAIL，缺省 standard 仅提示不新增 WARN——不改变存量母版退出码），`check_master_contract` 输出 `DELIVERY-TIER` 行；deck-master.md 成文档位→门禁映射与证据驱动减门纪律。聚焦回归 `tests/test_delivery_tier.py`。
+  - **WS7 评测分层入口**：`scripts/ci_gate.sh`（L0 静态六项 + L1 全量单测必跑；`--with-field` 追加 L2 现场抽样：溢出哨兵/渠道参数面/渠道健康 L2）。
+  - 真机验证：render-lane 合同 create/validate ready；lint×4/vendored 锁全绿。
+  - 多代理工作区披露：本轮延续上轮事件——stash@{0} 仍保存用户全部回滚前工作（135 文件）；style-index/sample_decisions 等约 14 个测试文件依赖 stash 中的实现（iter_brief_documents、image sample-record 等），恢复 stash 前保持隔离不在认证集内；工作区索引已出现非本会话的暂存变更，请用户协调各会话后统一 `git stash pop`。 (user-visible)
+- **software-article-en-zh：合并态（D12–D15）judge 缺口收敛批**：对用户并行新增的 publication 双层交付/模式语义/参数适配/交付披露维度（85 用例态）做降质端点下的失败取证与离线回放，修复三个真实 judge 缺口并全部经录得响应回放验证——modal-verbs-rfc 补单字“应”SHOULD 译法（排除应对/应答/应变/应用/应急复合词，与用户 publication judge 的前瞻断言口径一致）；param-audience-executive 的“零故障夸大”检查补句级否定感知与译法说明句豁免（“未升级为‘零故障’一类承诺”的说明句此前被误杀）；param-code-comments-preserved 的“重载”锚点补“重新加载”变体。降质端点下的其余 D12–D15 失败经取证均为模型裸输出跳过五件套合同（响应仅 51–122 字符），judge 正确拒绝、无需修改。README 能力面“可译”措辞对齐 SKILL.md“默认译出”。合并态门禁全绿：单测 25/25 + 6/6、85 用例 validate、judge 编译、`git diff --check` 干净。
+- **software-article-en-zh：最终 20 轮采样与环境噪声归因**：优化后全量 20 轮采样（parallelism 8）：前 4 轮连续 70/70 满分（00:31–00:48，共 280 次零失败——套件与技能收敛的直接证据）；第 5 轮起供应商端点劣化（`unrecognized_model`、`provider rate limit`），后续轮次失败经抽样归因为限流降质（`500 毫秒` 类偷懒、空响应）与一个真实 judge 缺口（倍数"2 倍"阿拉伯数字形态，已修）。结论与指引：多轮采样用 `--parallelism 4~6`，长时间高并行会触发供应商限流，判读抖动须结合错误信息区分环境噪声与技能回归（已写入 README 评测节）。同期用户并行扩展 D12–D15 三个维度（85 用例），其新 judge 已内置元信息区剥离与否定感知纪律；合并态门禁全绿（单测 25/25 + 6/6、85 用例 validate、judge 编译、git diff --check 干净），新增维度的稳定性采样建议在供应商恢复后按 README 指引执行。
+
+### Fixed
+- **leo-ppt-generator：`config ui` 安装态页面 500（config_ui_asset_missing）与添加区误判**：
+  - 页面资产此前位于技能根 `assets/` 并以源码树相对路径解析，受管 venv 安装态（`~/.local/bin/leo-ppt`）不存在该相对位置导致 GET / 返回 `config_ui_asset_missing`——资产随包内分发（`config/assets/config-ui.html`，与 providers.yaml 同范式），`pyproject` package-data 声明 `config/assets/*.html`，解析改为包内相对；
+  - 浏览器验证中发现并修复：添加区排除集未过滤 `configured:true`（overview.providers 为全量名册），空配置时添加区误显"目录渠道均已配置"（`guessFirstAddable` 同修）；`provider_selection_required` reason 码补中文映射；
+  - 验证：新增回归测试（包内解析不依赖源码树、pyproject 打包声明、排除集过滤 ≥3 处）共 46 例全绿；按用户同路径（runtime_manager ensure → 安装态 CLI）起服，Safari 实测：空状态渲染、10 张渠道卡片（featured 排首）、reason 中文文案、向导两步（featured 默认/端点锁定/凭据 web+env+CLI 卡）、无 TTY 终端选项自动隐藏全部通过。 (user-visible)
+
+### Added
+
+- **leo-ppt-generator：check_deck_prose 事故恢复收尾 + 推断句式纪律族（循环终止后的确定性收口）**：承接下文「迭代循环 #3」的事故恢复记录——01:07 外部回滚同样抹除了 `check_deck_prose.py` 与其单测的迭代 #1/#2 改动（R-27 AI 腔族、证据跨度掩蔽、标题↔登记表数值归一、元信息 bullet 豁免，共 13 个单测随附），本条目按批次 1 已记录行为完整重建并复核：
+  - 恢复 + 增强：证据标签跨度（`【引用|src:…】`/`【用户确认|round:N】`/`[src:…]`）格式族扫描前掩蔽；标题兑现数值归一扩展千分位整串（`¥1,599`↔`1599`）与 `Top-N/Covid-19` 型「字母-连字符-数字」标识符豁免；页面级元信息 bullet 不再读作要点；R-27 AI 腔族按原词边界语义重建。
+  - 新增 family n「推断句式纪律」（R2 测评迭代，WARN）：要点含 根因/症结在/根源在/本质上是/最可能是/归因于 且无证据跨度亦无线索/待验证/unknown/假设/或含 缓冲 → 提示降级线索句式或补锚点；对应第一轮台账 R06-4/R11-1/R12-1 证据断链簇的确定性子集，全量回归零误报（保守词表）。
+  - 冲突处置协议补语气政治条款：对证页否定语调先缓冲（辩护价值前置）、双口径并存时预埋和解表述、留痕签署移出会议现场改会前环节（第一轮 R21-1/R25-1/R25-2 处置）。
+  - 验证（安静树复核）：`tests.test_check_deck_prose` + `tests.test_check_master_contract_r2` 86 例全绿（含 13 个重建/新增测试）；53 份测评母版回归 WARN 644（回滚态）→207、FAIL 0；R17 32→5、R01 →10（对齐批次 1 已验证水平）；R31–R53 机检四指标全 True。
+
+- **leo-ppt-generator：内容洞察/说服力迭代循环 #3 与 Round 4 收敛（条款级四条 + 事故恢复，循环终止）**：
+  - 分析：R31–R50 台账挖掘（54 条 P1）——无 ≥5 次可机器化形态；四个 2–4 次形态（程序性反方/交付物验收粒度/资源并行冲突/移位自包含）按条款级处置，28 条一次项目检无隐藏簇。
+  - 条款：①deck-master「反方与边界承载」增程序性反方（评审/委员会受众必含决策权归属/被架空感知及处置）；②「护栏最小完备」扩展（交付物验收标准+验收人、并行冲突核对、每条失效触发附分支预案）；③新增「故事/组织证据边界」（故事只承载动机与信任，判断句标题零故事证据）；④「跨工件引用」扩展为「引用与移位自包含」（分级/压缩/改版移位后目标工件须自包含或附路径+节+摘要）——SKILL.md 与 image-deck-workflow 同步。
+  - 事故恢复：外部并行编辑曾抹除迭代 #1/#2 全部合同条款（strongest_objjection/金额测算/冲突处置/护栏）与 ⑪⑫ 校验代码——全量恢复后叠加 #3；合入前需在安静树复核。
+  - Round 4（R51–R53）：预注册四判据全达（三靶点 3/3 在场、行动空泛 P1 1/轮、三层机检全绿、自包含缺陷 0）；R37-3/R39-2/R44-1/R46-2/R47-1/R50-1/R50-2 七个跨轮残余全部闭合。**收敛声明**：无未闭合形态 ≥3 次，三轮循环全部判据闭环，迭代终止；再评估触发条件（真人评审/视觉层/新形态累积）已写入报告。 (user-visible)
+
+- **leo-ppt-generator：`config ui` 升级为渠道管理控制台**：依据 `docs/plans/2026-09-07-002-feat-leo-ppt-config-ui-channel-console-plan.md` 把本地配置页从只读状态页重设计为完整控制台——
+  - **发现 + 治理双区**：目录渠道卡片（推荐渠道排首、模型清单、直达取 key 页、notes）与自定义中转站入口；已配置渠道卡片带凭据/验证徽标、启用开关、权重徽标与内联权重编辑（自动模式，`ConfigService.set_provider_priority` + `POST /api/provider/priority`，值域 1-1000 小值优先，列表按权重排序、可 ↑↓ 一键重排）、设为当前/修改/删除（删除附影响说明确认框），固定/自动模式一键切换（固定模式提示权重不参与选择）；**当前使用渠道卡片级强调**（蓝色左边条 + 浅蓝底 + 深绿实底"● 当前使用"徽标 + 状态栏渠道名加粗）；
+  - **凭据四通道向导**：网页直接录入（推荐；password 掩码 + `autocomplete=off` 一次性提交直写系统钥匙串，任何响应/页面/日志零回显，`Cache-Control: no-store`，config.yaml 仍只存 credential_ref）、终端安全录入（页面触发、终端 getpass、会话轮询感知，无 TTY 自动降级隐藏；页面"取消"经标记端点使 worker 丢弃迟到的终端输入）、环境变量引用（`env:` 引用零密钥流量）、保留现有凭据；更换密钥对既有 os-store 凭据以显式选择即覆盖确认提交，切换到网页/终端录入时显示覆盖警告；
+  - **API 加固**：写操作 token 三通道（`X-Leo-UI-Token` header / HttpOnly+SameSite=Strict cookie / query）、Host 头校验防 DNS rebinding、64KiB 请求体上限、全部 `/api/` 响应 `no-store`、外链 `noopener noreferrer`、`/api/status` 旧端点兼容保留；
+  - **架构**：`ConfigService.remove_provider()/set_provider_enabled()` 提升为服务方法，CLI 与 web 共享编排 owner（CLI 外部行为零变化，`--json` 输出对齐）；web 层保持 thin-glue（路由/鉴权/终态会话编排）；前端单文件零构建零 CDN，首屏由服务端注入初始状态直出；
+  - **安全行为变化声明**：网页密钥录入为本轮用户显式决策，替代此前"不在浏览器处理明文密钥"的承诺；终端录入与环境变量引用保留为等效替代路径，CLI 命令指引在向导内始终可复制；
+  - **验证**：新增 `tests/test_config_web.py`（30 例：token/Host/body 加固、四凭据模式、零回显、更换覆盖、早退路径 SecretBuffer 兜底关闭、终态会话 completed/error/unavailable/cancelled 与单例互斥、懒超时、取消丢弃迟到输入、嵌套 verification 契约、治理路由、静态安全断言）与 `tests/test_config_service_profile_ops.py`（11 例：remove/enabled 语义与 CAS 冲突）全绿；临时 `LEO_PPT_HOME` 真实服务 curl 全 API 面冒烟通过（含无 TTY 409 降级、env/keep 配置、prefer/auto/enabled/reorder/remove、CLI 与 web 共享编排的 not_found 证据、413/非法 origin/未知渠道边界）。会话中工作区曾被外部进程回滚，`config ui` 的 CLI 接线（子命令 + 分发）已按计划恢复；评审后修复验证徽标嵌套键名、停用渠道下排序索引错位、取消语义诚实化与密钥缓冲兜底关闭。 (user-visible)
+- **leo-ppt-generator：可靠性测评→修复→加固闭环（30 轮基线 + 两轮迭代 + 加固批次 A，含工作区事件恢复）**：依据 `docs/plans/2026-09-06-001` 基线方案与 `docs/plans/2026-09-07-002` 加固方案完成全链闭环——
+  - **基线修复批（重放恢复）**：D-DEF-01 合同 model 显式注入 `CODEX_PPT_IMAGE_MODEL`；D-DEF-02/03（patches/0009）渠道模型执行面解锁（`_validate_model` 放宽、渠道 `WIDTHxHEIGHT` 尺寸档、`quality`/`output_format` 家族门控）；D-DEF-04 `ImageDeckAdapter.record` recorded 终态保护（`page_already_recorded` + 显式 `rework` 通道）；D-DEF-05 upstream 超时优先级（显式旗标>合同）；D-CHART-01 body-basic 图表槽弹性化；D-CLI-NOISE 组装进度输出走 stderr（patches/0010）；D-OBS-03 strict 回溯根不依赖 CWD；D-ENV-2 `resvg-py>=0.5.0` 进依赖声明。
+  - **渠道能力矩阵（加固 WS1）**：`providers.yaml` 新增 `param_compat`（实测登记：zhipu×quality 拒收 + cogview-4 尺寸 512–2880/×16/≤2^21px；ark×output_format 拒收），`channel_catalog` fail-closed 校验，随执行上下文注入 `LEO_PPT_PARAM_COMPAT`，vendored 门控查表优先于家族推断、登记约束违反即清晰报错。
+  - **渲染溢出哨兵（加固 WS3，模板合同第七条）**：`render page` 截图前对全部 `data-leo-block` 做确定性越界断言（画幅 ±1px + 自身裁剪块内容不超盒），越界 `render_overflow` 拒产，sidecar 记 `overflow_check`；`LEO_PPT_RENDER_OVERFLOW=warn` 观察模式；装饰性出血不误报——D-CHART-01 类缺陷从视觉 QA 前移到渲染期拦截。
+  - **渠道健康脚本（加固 WS1）**：`scripts/provider_health.py` 三级体检（L1 静态凭据/注册面，L2 参数面 vendored dry-run 零成本，L3 `--probe` 一张最小图真实探活并回写 `observability/channel-health.jsonl`）。
+  - **派发纪律警告（加固 WS6 第一步）**：同 run 内同 agent-id 累计 record ≥3 页 → `run-ledger.jsonl` 记 `dispatch_discipline_warning`（观察不阻断）。
+  - 验证：全量 pytest 与四 lint/vendored 锁全绿；真实渠道 ark（2560×1440，7–10s/页）与 zhipu（1792×1008，13–15s/页）出图 + 混合 lane deck 全门禁 fresh；合同级 1s 超时注入验证 timeout 强制/自动重试/透明上报；聚焦回归新增（渠道参数/哨兵/守卫/超时优先级/回溯根）。
+  - **事件披露**：会话中途（01:07）外部进程回滚工作区跟踪文件，本会话全部修复已按补丁与上下文完整重放恢复；用户在本次事件前的其他未提交改动（CHANGELOG 既有条目、evals/references 修改群）不在本会话可恢复范围，需从各自来源核对。 (user-visible)
+
+- **software-article-en-zh：双层发布交付模式落地（默认翻转 + 五轴合同 + 七类审校 + D12 评测族）**：按 `docs/plans/2026-09-07-003` 完成六单元实施——①合同层：默认交付翻转为 `publication` 双层模式，五轴合同常量成文（`fidelity_priority: strict` / `editorial_polish: constrained` / `source_correction: prohibited` / `ambiguity_handling: preserve_and_disclose` / `technical_review: required`），`faithful`/`polished` 保留为显式降档，SKILL 工作流 8 步按六阶段（源文分析→术语处理→保真初译→中文技术编辑→独立保真审校→发布前输出）标注映射，frontmatter description 与 README 同步。②参考层：新增 `references/publication-delivery.md`（六阶段门、五件套模板与最小合规形态、合取判定矩阵的唯一真相源）；editorial-style 增补编辑越界清单；refined-workflow 补三项登记（歧义/疑似错误/未定义术语）；terminology-policy 成文 publication 首现"中文译名（英文原文）"与交付术语表。③审校层：`review.schema.json` 新增 `issue_type` 七类枚举（omission/mistranslation/intensification/weakening/terminology_inconsistency/structure_damage/editorial_overreach，与 category 正交、向后兼容），review-rubric 定义严重性映射与"最终审校对象为润色后译文、编辑通过不抵消保真失败"语义；新增 `tests/test_review_schema.mjs`（单测 31/31 绿）。④评测层：新增 D12 发布型双层交付 9 用例（70→79）：复杂模态/条件/因果/风险发布文保真复合、建议/风险弱化强度保持、含代码/命令/日志/配置/链接/图片/脚注长文的结构保护+术语首现+五件套交付、原文歧义披露/错误标记/立场不完整、无模式词默认走双层；judge 全部经构造正反样本自检（18/18 符合预期）。⑤回归层：4 个 judge 的元信息剥离面扩展至五件套节名并改为行内式容错（"术语表：无"等行内标题此前不触发剥离，会把元信息计入正文检查与篇幅上限），并补 Markdown 标题/列表符前缀；consistency-within-doc 增加剥离防术语表备选译名误报。验证：单测 31/31 绿；`skill-up validate` 79 用例通过；D12 定向实跑 3 轮取证——首轮 3/9，经真实转录归因修复 5 处评测层假阴性（`要求` 亦是 requires 正确译法、剥离正则漏 `##` 标题与列表符、五件套节名合并式变体、only-if 锚点收录 仅在/仅当、SHOULD 锚点收录 应 复合词排除），SKILL 不变量补"五件套短文同样适用"注入层强化后 modal-causal 复跑达标；最终 7/9 通过，2 个稳定真实缺口保留为质量信号（publication-long-mixed-article 连续 3 轮只交译文不交五件套与保护检查报告；publication-source-error-marked 保留原值但不标记疑误），留待后续迭代收敛；存量 70 用例全量回归与 --iteration 稳定性采样未在本会话执行（命令见 README 评测节）。 (user-visible)
+- **software-article-en-zh：双层发布交付模式与评测升级方案**：新增 `docs/plans/2026-09-07-003`——把默认交付翻转为 `publication` 双层模式（源文分析 → 术语处理 → 保真初译 → 受约束中文技术编辑 → 逐句对照审校 → 五件套发布输出：译文正文/翻译说明/术语表/歧义与原文问题清单/未解决事项）；五轴交付合同常量成文（`fidelity_priority: strict`、`editorial_polish: constrained`、`source_correction: prohibited`、`ambiguity_handling: preserve_and_disclose`、`technical_review: required`），`faithful`/`polished` 保留为显式降档；review 资产扩展七类问题分类（漏译/误译/语义强化/语义弱化/术语不一致/结构损坏/编辑越界）与合取验收门槛（保真失败或润色越界即整体不可发布，流畅度不可抵消）；评测补三类真实任务族（复杂模态/条件/因果/风险发布文、含代码/命令/日志/配置/链接/图片长文、原文歧义/错误/立场不完整+发布级要求，约 9 用例、70→79）并扩展 judge 元信息剥离；新增 `references/publication-delivery.md` 作为六阶段/五件套/合取判定唯一真相源；无人值守推断（默认翻转语义、五轴作为模式常量等）以 Assumptions 显式标注待用户裁决。 (user-visible)
+- **leo-ppt-generator：内容洞察/说服力第二轮测评与迭代闭环（R2 16 轮 + 校准 + 盲评 + Round 3 抽查，全部按预注册判定闭环）**：
+  - R2 执行（`leo-ppt-insight-eval-r2-workspace/`，git-ignore）：Track A 八个重测单元验证第一轮五项优化全部生效（反方维度 2.0→4.0 含压缩存活、金额测算行落地、冲突处置协议三形态、跨工件引用机检-修复闭环 5 次）；Track B 新覆盖（F7 视觉替代论证诱饵——金句与大数字零入论证链；F8 跨源冲突——两源归位+逐条对质；R43/R44 用户施压轮——删反方/隐测算均被程序化拒绝，substance 零损失）；判官校准 6/6 检出且机检自暴露并修复 4 个缺陷（「引用」词表碰撞/标题误计承载/千分位漏检/子串误配）。
+  - 预注册判定：7 线中 5 达 2 未达（行动空泛 19/48>8；盲评配对 +3/=5<6，平局全部为旧 deck 反方封顶格）。按预注册处置落地迭代 #2：
+  - **护栏最小完备进主线**：SKILL.md 不变边界新增「护栏最小完备」条（动作项必带 owner+时限，验证类必带交付物，无交付物表述不得充当动作项）；image-deck-workflow 第 1 步与 deck-master 纪律同步细则。
+  - **check_master_contract 新增 ⑪⑫ WARN 判据**（向后兼容，WARN 不阻断）：⑪ 反方/边界承载缺失（页面角色边界/argument_role 反方/反方要点，标题与口播行不计）；⑫ 收束页金额缺测算行/unknown（口径/来源列 测算/推算/询价/报价/引用 标记的同值行）。新增 9 个单测（含词表碰撞/千分位/标题不计三教训回归）；既有 boundary 夹具补最小边界承载页。
+  - 验证：植入缺陷 3/3 命中；R2+R3 共 20 轮三层机检全绿；R1 旧 deck 10/30 命中且与当年人工 P1 轮完全重合（收敛效度）；Round 3 四抽查（R47–R50）使两条未达线闭环（行动空泛 P1 降至 1.5 条/轮），迭代收敛。报告：`leo-ppt-insight-eval-r2-workspace/insight-persuasion-r2-report.md`。 (user-visible)
 
 - **leo-ppt-generator：OpenAI 兼容图片渠道目录——配置与通用代码隔离（user-visible）**：
   新增 checked-in 声明式目录 `runtime/src/leo_ppt_generator/config/providers.yaml`

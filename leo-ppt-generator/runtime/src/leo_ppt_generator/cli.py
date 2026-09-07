@@ -1292,6 +1292,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     record.add_argument("--attempts", type=int, default=1,
                         help="该页到达 accepted 的尝试次数")
+    record.add_argument("--rework", action="store_true",
+                        help="显式返工通道：对已 recorded 页重录新产物"
+                             "（TF-1 重生成后的合法重录；无旗标一律拒绝覆盖）")
     record.add_argument("--tokens", type=int, default=None,
                         help="该页图片 backend 的 token 用量（worker 回报透传，"
                              "缺省 not-recorded）")
@@ -2580,6 +2583,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 expected_state_hash=args.expected_state_hash,
                 lease=lease,
                 generation=generation,
+                rework=bool(getattr(args, "rework", False)),
             )
             provenance_summary = None
             if getattr(args, "render_receipt", None):

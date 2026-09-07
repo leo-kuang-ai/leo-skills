@@ -24,7 +24,7 @@ import struct
 import sys
 from pathlib import Path
 
-RENDER_LADLE_LOGICAL = (1280, 720)
+RENDER_LADDER_LOGICAL = (1280, 720)
 DEFAULT_BUDGET = {
     "canvas_ratio": "16 / 9",
     "image_lane_px": "2560x1440",
@@ -72,7 +72,7 @@ def main() -> int:
 
     ratio_w, ratio_h = (int(v.strip()) for v in str(budget["canvas_ratio"]).split("/"))
     image_cap = _parse_px(str(budget["image_lane_px"]))
-    ladder = {RENDER_LADLE_LOGICAL[0] * s: RENDER_LADLE_LOGICAL[1] * s for s in (1, 2)}
+    ladder = {RENDER_LADDER_LOGICAL[0] * s: RENDER_LADDER_LOGICAL[1] * s for s in (1, 2)}
 
     fails: list[str] = []
     warns: list[str] = []
@@ -102,7 +102,9 @@ def main() -> int:
                 fails.append(
                     f"{slide['slide_id']}: render_size_off_ladder {width}x{height}"
                 )
-        elif backend and backend not in ("render:html", "render:mermaid"):
+        elif not backend:
+            warns.append(f"{slide['slide_id']}: backend_unlabeled（跳过 lane 检查，仅比例已核）")
+        else:
             if (width, height) == image_cap:
                 pass
             elif width > image_cap[0] or height > image_cap[1]:

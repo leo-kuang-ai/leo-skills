@@ -57,6 +57,24 @@ def _channel_compat() -> dict:
 def _channel_rejects(param: str) -> bool:
     rejects = _channel_compat().get("rejects") or []
     return param in rejects
+
+
+def _apply_family_param_gating(payload: dict, output_format: str, quality) -> None:
+    """按 payload 实际 model 门控家族参数（batch 每任务调用）。
+
+    base_payload 按 args.model 预置 quality/output_format；job 行可覆写 model
+    ——合并后必须按任务实际模型重判，防家族参数泄漏给渠道模型（评审 P2#3）。
+    """
+    family = GPT_IMAGE_MODEL_PREFIX in str(payload.get("model", ""))
+    if family and not _channel_rejects("quality"):
+        if quality is not None:
+            payload["quality"] = quality
+    else:
+        payload.pop("quality", None)
+    if family and not _channel_rejects("output_format"):
+        payload["output_format"] = output_format
+    else:
+        payload.pop("output_format", None)
 DEFAULT_SIZE = "2560x1440"
 DEFAULT_QUALITY = "medium"
 DEFAULT_OUTPUT_FORMAT = "png"
@@ -1132,10 +1150,7 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
             _validate_generate_payload(job_payload)
             effective_output_format = _normalize_output_format(job_payload.get("output_format"))
             _validate_transparency(job_payload.get("background"), effective_output_format)
-            if GPT_IMAGE_MODEL_PREFIX in str(job_payload.get("model", "")) and not _channel_rejects("output_format"):
-                job_payload["output_format"] = effective_output_format
-            else:
-                job_payload.pop("output_format", None)
+            _apply_family_param_gating(job_payload, effective_output_format, args.quality)
 
             n = int(job_payload.get("n", 1))
             outputs = _job_output_paths(
@@ -1198,10 +1213,7 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         _validate_generate_payload(payload)
         effective_output_format = _normalize_output_format(payload.get("output_format"))
         _validate_transparency(payload.get("background"), effective_output_format)
-        if GPT_IMAGE_MODEL_PREFIX in str(payload.get("model", "")) and not _channel_rejects("output_format"):
-            payload["output_format"] = effective_output_format
-        else:
-            payload.pop("output_format", None)
+        _apply_family_param_gating(payload, effective_output_format, args.quality)
         outputs = _job_output_paths(
             out_dir=out_dir,
             output_format=effective_output_format,

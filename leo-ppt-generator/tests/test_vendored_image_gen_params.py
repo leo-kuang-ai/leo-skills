@@ -137,6 +137,33 @@ class BatchCompatGatingTest(unittest.TestCase):
             self.assertNotIn("quality", body)
 
 
+class BatchModelOverrideGatingTest(unittest.TestCase):
+    """评审 P2#3 回归：batch job 覆写 model 后，quality 按任务实际模型重判。"""
+
+    def test_job_model_override_drops_family_quality(self):
+        import subprocess, tempfile, json
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            jobs = Path(tmp) / "jobs.jsonl"
+            # base model = gpt-image-2（家族 → base 带 quality）；job 覆写为渠道模型
+            jobs.write_text(
+                json.dumps({"prompt": "probe", "model": "cogview-4"}) + "\n",
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(IMAGE_GEN), "generate-batch", "--dry-run",
+                 "--model", "gpt-image-2", "--size", "1792x1008",
+                 "--input", str(jobs), "--out-dir", tmp],
+                capture_output=True, text=True, timeout=60,
+                env={"PATH": "/usr/bin:/bin",
+                     "CODEX_PPT_IMAGE_MODEL": "gpt-image-2",
+                     "LEO_PPT_PARAM_COMPAT": json.dumps({"rejects": ["quality"]})},
+            )
+            self.assertEqual(result.returncode, 0, result.stderr[-300:])
+            body = result.stdout
+            # 任务实际模型 cogview-4：quality 必须不在；output_format 同判
+            self.assertNotIn("quality", body.replace("gpt-image-2", ""))
+
+
 class QualityParamFamilyGatingTest(unittest.TestCase):
     def _dry_run_request(self, model: str) -> dict:
         result = subprocess.run(

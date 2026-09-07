@@ -30,18 +30,19 @@
   `runtime/src/leo_ppt_generator/config/providers.yaml`）；聚焦回归为
   `tests/test_channel_catalog.py::test_image_payload_prefers_b64_and_downloads_url`。
 
-- `0009-codex-channel-model-execution.patch`：生成/编辑/batch 三处 payload 的
-  `quality` 仅对 gpt-image 家族发送（渠道模型如 cogview-4 拒收该参数，
-  zhipu 400 code 1214 基线证据）；`_validate_model` 放宽为非空模型名——渠道
-  合同模型（doubao-seedream-* 等）与 gpt-image 家族同等合法，gpt-image 专属
-  选项校验仍由 `_validate_model_specific_options` 条件承担；`_validate_size`
-  对非 gpt-image-2 模型接受 `WIDTHxHEIGHT` 渠道尺寸档（服务端终裁）。聚焦
-  回归为 `tests/test_channel_catalog.py` 渠道模型执行面用例与
-  `tests/test_vendored_image_gen_params.py`。
+- `0009-codex-channel-model-execution.patch`：渠道模型执行面解锁与能力矩阵查表——`_validate_model` 放宽为非空模型名（渠道合同模型与 gpt-image 家族同等合法）；`_validate_size` 对非 gpt-image-2 模型接受渠道 `WIDTHxHEIGHT` 尺寸档，目录登记约束（`LEO_PPT_PARAM_COMPAT` 的 multiples_of/min_edge/max_edge/max_pixels）违反即清晰报错、未登记交服务端终裁；generate/edit/batch 全部 payload 站点（含 batch 每任务合并后的实际模型重判 `_apply_family_param_gating`）对 `quality`/`output_format` 按"gpt-image 家族 AND 未被渠道矩阵拒收"双条件门控，本地写盘格式不变。聚焦回归 `tests/test_vendored_image_gen_params.py`（含 BatchModelOverrideGatingTest）。
 - `0010-codex-assembly-progress-stderr.patch`：组装进度输出（✓ 已添加第 N 页/
   压缩日志）统一改走 stderr——`image assemble` 首装时不再污染
   `leo-ppt-machine/v1` envelope 的 stdout 单 JSON 约定。聚焦回归为
   `tests/test_assemble_envelope_purity.py`。
+- `0011-native-channel-providers.patch`：新增原生协议适配器
+  `image_providers/native.py`（Gemini generateContent / MiniMax
+  image_generation / Ideogram v3 multipart，均同步 REST、返回 b64 契约；
+  仅实现 generate——目录渠道能力声明为 generate-only），`factory.py` 按
+  base_url 精确 hostname 分发（与 atlascloud 同范式）。目录层
+  `providers.yaml` 以 `native: true` 标记这些渠道；OpenAI SDK 执行面
+  （OPENAI_API_KEY/OPENAI_BASE_URL 注入）保持不变。聚焦回归为
+  `tests/test_native_image_providers.py`。
 
 Office 输入信任边界属于当前项目 adapter/route 增强，单独记录为
 `assembly-and-office-boundaries.md`，不伪装成 upstream patch。每个补丁在本文件内

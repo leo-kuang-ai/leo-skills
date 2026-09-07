@@ -51,8 +51,7 @@ class RenderLaneContractTest(unittest.TestCase):
         self.assertIsNone(contract.get("credential_ref"))
         self.assertTrue(contract["capabilities"]["generate"])
         self.assertFalse(contract["capabilities"]["edit"])
-        self.assertEqual(contract["default_model"] if "default_model" in contract
-                         else contract["model"], contract["model"])
+        self.assertEqual(contract["model"], "render:html")
 
     def test_generate_route_run_create_satisfied_without_image_provider(self):
         self._create()

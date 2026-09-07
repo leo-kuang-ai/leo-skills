@@ -38,6 +38,6 @@ if [[ "${1:-}" == "--with-field" ]]; then
 fi
 
 if [[ "$FAIL" -ne 0 ]]; then
-  echo "\nCI GATE: FAIL"; exit 1
+  printf "\nCI GATE: FAIL\n"; exit 1
 fi
-echo "\nCI GATE: PASS"
+printf "\nCI GATE: PASS\n"

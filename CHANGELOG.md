@@ -6,6 +6,9 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Fixed
+- **leo-ppt-generator：代码评审 P2 修复批（3 项）+ P3 顺手批**：对 b1c0882 的内联评审发现落地——CLI 返工通道 `image record --rework`（透传 adapter，无旗标仍拒，幂等重放不受影响，`tests/test_cli_rework_flag.py`）；batch 每任务 quality/output_format 按 job 实际模型经 `_apply_family_param_gating` 重判（防家族参数随 base 泄漏给覆写后的渠道模型，`BatchModelOverrideGatingTest`）；patches/README 0009 描述与补丁内容对齐。P3：哨兵 `=off` 逃生口成文、`check_size_budget` 未标注 backend 页 WARN、`RENDER_LADDER` 拼写、`ci_gate.sh` printf、render-lane 测试实断言；0009 增量补丁再生成 + vendored 重锁。 (user-visible)
+
 ### Added
 - **leo-ppt-generator：提交内容核对与误删防护批（三方核对 + 数值归一修复）**：对 0911bb4 做三层核对（stash⊆提交 / 邻会话 pre-pop 工作包含性 / 索引新鲜度）并修复核对发现的全部内容缺口——
   - **CHANGELOG 条目找回**：stash 中 59 条 Unreleased 条目（本会话外部 stash 事件前的用户工作记录）按条目级去重合并回册（0 重复 / 0 残缺；跳过与本会话合并条目语义重复的 2 条）。

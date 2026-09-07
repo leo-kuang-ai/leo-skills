@@ -387,6 +387,11 @@ dialog::backdrop{background:rgba(0,0,0,.38);backdrop-filter:blur(8px) saturate(1
 *::-webkit-scrollbar-thumb{background:#d1d1d6}
 *::-webkit-scrollbar-thumb:hover{background:#b8b8bf}
 .empty{color:var(--faint)}
+
+/* 已配置渠道卡片：降低视觉权重但保持可重新配置（换密钥入口） */
+.card.card-configured{border-color:rgba(52,199,89,.28)}
+.card.card-configured:hover{transform:none;box-shadow:var(--shadow-panel)}
+.card.card-configured .card-title span:first-child{color:var(--muted)}
 </style>
 </head>
 <body>

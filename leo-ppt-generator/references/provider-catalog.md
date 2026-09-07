@@ -44,7 +44,7 @@ leo-ppt provider configure --provider zhipu --model cogview-3-flash
 
 | 渠道 id | 平台 | 官网 / 控制台 | 取 API Key | 环境变量 | 默认模型 |
 | --- | --- | --- | --- | --- | --- |
-| `qianxing`（推荐） | 乾行AI画廊（new-api 中转） | <https://fast.qianxing.us.ci/> | [令牌页](https://fast.qianxing.us.ci/token) | `QIANXING_API_KEY` | `gpt-image-1` |
+| `qianxing`（推荐） | 乾行AI画廊（new-api 中转） | <https://fast.qianxing.us.ci> | [获取密钥](https://fast.qianxing.us.ci) | `QIANXING_API_KEY` | `gpt-image-1` |
 | `zhipu` | 智谱 AI 开放平台 | <https://open.bigmodel.cn/> | [API Keys 页](https://open.bigmodel.cn/usercenter/apikeys) | `ZHIPU_API_KEY` | `cogview-4` |
 | `dashscope` | 阿里云百炼 | <https://bailian.console.aliyun.com/> | [API-KEY 页](https://bailian.console.aliyun.com/?apiKey=1) | `DASHSCOPE_API_KEY` | `qwen-image` |
 | `ark` | 火山方舟（即梦 Seedream） | <https://www.volcengine.com/product/ark> | [方舟 API Key](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey) | `ARK_API_KEY` | `doubao-seedream-4-0-250828` |

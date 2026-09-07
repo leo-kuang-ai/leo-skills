@@ -1039,5 +1039,247 @@ class StyleSampleTest(unittest.TestCase):
         self.assertIn("赋能", payload["style_sample_words"])
 
 
+class CausalAttributionTest(unittest.TestCase):
+    """Family m（R2 测评迭代）：要点根因断言句式的证据纪律。"""
+
+    def test_bare_causal_attribution_in_point_warns(self):
+        master = """## S1 证据
+- 标题：流失率与计费改版同期出现
+- 要点：
+  - 流失恶化的根因是计费控制台上线
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("根因断言「根因」无引用级证据锚点", result.stdout)
+        self.assertIn("降级为线索句式", result.stdout)
+
+    def test_sourced_attribution_with_evidence_tag_exempt(self):
+        master = """## S1 证据
+- 标题：流失率与计费改版同期出现
+- 要点：
+  - 流失恶化的根因是计费控制台上线【引用|src:客服部回访】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("根因断言", result.stdout)
+
+    def test_hedged_attribution_exempt(self):
+        master = """## S1 证据
+- 标题：流失率与计费改版同期出现
+- 要点：
+  - 流失恶化的根源在最可能是计费改版（线索，回访待验证）
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("根因断言", result.stdout)
+
+    def test_causal_attribution_in_title_not_flagged(self):
+        master = """## S1 证据
+- 标题：流失症结在计费控制台
+- 要点：
+  - 回访数据尚未完成
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("根因断言", result.stdout)
+
+
+class AiFlavorTest(unittest.TestCase):
+    """Family m（R-27）：AI 腔英文套话检测（恢复自 2026-09-07 误回退前的行为）。"""
+
+    def test_banned_phrase_in_title_flags_warn(self):
+        master = """## S1 证据
+- 标题：Dive into the platform architecture
+- 要点：
+  - 先给结论再给数据
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("AI 腔英文套话", result.stdout)
+
+    def test_journey_in_point_flags_warn_but_quoted_span_exempt(self):
+        master = """## S1 证据
+- 标题：客户旅程的两个断点
+- 要点：
+  - 我们要优化 customer journey 的每一步
+  - 「Customer Journey Map」是既有交付物名称
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("（journey）", result.stdout)
+        self.assertEqual(result.stdout.count("ai_flavor")
+                         + result.stdout.count("AI 腔英文套话"), 1)
+
+    def test_allow_flag_exempts_phrase(self):
+        master = """## S1 证据
+- 标题：客户旅程的两个断点
+- 要点：
+  - 我们要优化 customer journey 的每一步
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master), "--allow", "journey"])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("AI 腔英文套话", result.stdout)
+
+    def test_ordinary_english_does_not_flag(self):
+        master = """## S1 证据
+- 标题：The API returns JSON within 200 ms
+- 要点：
+  - 延迟达标
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("AI 腔英文套话", result.stdout)
+
+
+class InteropRegressionTest(unittest.TestCase):
+    """批次 1 互操作修复（恢复自 2026-09-07 误回退前的行为）：
+    证据跨度掩蔽 / 数值归一 / 元信息 bullet 豁免。"""
+
+    def test_source_ref_colon_not_flagged_by_format(self):
+        master = """## S1 证据
+- 标题：存储成本环比上升 23.1%
+- 要点：
+  - 成本增速是收入增速的两倍【引用|src:财务部】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("全角标点", result.stdout)
+
+    def test_user_confirm_round_tag_not_flagged_by_format(self):
+        master = """## S1 证据
+- 标题：流失率口径以财务版为准
+- 要点：
+  - 财务口径月流失 1.2%【用户确认|round:3】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("全角标点", result.stdout)
+
+    def test_halfwidth_colon_in_plain_prose_still_warns(self):
+        master = """## S1 证据
+- 标题：会议时间确定
+- 要点：
+  - 会议安排是周一:下午三点开始
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("全角标点", result.stdout)
+
+    def test_percent_title_matches_bare_ledger_value(self):
+        master = """## S1 证据
+- 标题：自助转化率跌至 2.1%
+- speaker_script：先说结论。
+
+## 数字登记表
+| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2.1 | S1 | 销售部 | 自助转化率 | 2026Q3 | % | 引用 | yes | 2026-09-30 |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字", result.stdout)
+
+    def test_thousands_separator_title_matches_ledger(self):
+        master = """## S1 证据
+- 标题：实验组标价 ¥1,599 转化 2.6%
+- speaker_script：先说结论。
+
+## 数字登记表
+| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1599 | S1 | 来源A | 实验组标价 | 2026-08 | 元 | 引用 | yes | 2026-08-30 |
+| 2.6 | S1 | 来源A | 实验组转化率 | 2026-08 | % | 引用 | yes | 2026-08-30 |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字", result.stdout)
+
+    def test_numeric_difference_still_warns_with_raw_token(self):
+        master = """## S1 证据
+- 标题：营收增长 61%
+- speaker_script：先说结论。
+
+## 数字登记表
+| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 55% | S1 | Q3 财报 | 合并报告期 | 2026Q3 | % | 引用 | yes | 2026-10-28 |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("标题数字「61%」不在本页", result.stdout)
+
+    def test_top_n_identifier_not_flagged(self):
+        master = """## S1 证据
+- 标题：Top-10 客户集中度升至 34%
+- speaker_script：先说结论。
+
+## 数字登记表
+| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 34 | S1 | 客户成功部 | Top-10 集中度 | 2026Q3 | % | 引用 | yes | 2026-09-30 |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字", result.stdout)
+
+    def test_metadata_bullets_not_read_as_isomorphic_points(self):
+        master = """## S1 证据
+- 标题：成本增速背离
+- 页面角色：证据
+- speaker_script：先说结论。
+
+## S2 结构
+- 标题：客户集中度上升
+- 页面角色：证据
+- speaker_script：先说结论。
+
+## S3 服务
+- 标题：服务能力承压
+- 页面角色：证据
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("三连同构", result.stdout)
+
+    def test_audience_takeaway_bullet_not_read_as_diction_point(self):
+        master = """## S1 证据
+- 标题：成本增速背离
+- audience_takeaway：这说明需要关注成本结构
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("这说明", result.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

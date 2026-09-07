@@ -1132,7 +1132,10 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
             _validate_generate_payload(job_payload)
             effective_output_format = _normalize_output_format(job_payload.get("output_format"))
             _validate_transparency(job_payload.get("background"), effective_output_format)
-            job_payload["output_format"] = effective_output_format
+            if GPT_IMAGE_MODEL_PREFIX in str(job_payload.get("model", "")) and not _channel_rejects("output_format"):
+                job_payload["output_format"] = effective_output_format
+            else:
+                job_payload.pop("output_format", None)
 
             n = int(job_payload.get("n", 1))
             outputs = _job_output_paths(
@@ -1195,7 +1198,10 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
         _validate_generate_payload(payload)
         effective_output_format = _normalize_output_format(payload.get("output_format"))
         _validate_transparency(payload.get("background"), effective_output_format)
-        payload["output_format"] = effective_output_format
+        if GPT_IMAGE_MODEL_PREFIX in str(payload.get("model", "")) and not _channel_rejects("output_format"):
+            payload["output_format"] = effective_output_format
+        else:
+            payload.pop("output_format", None)
         outputs = _job_output_paths(
             out_dir=out_dir,
             output_format=effective_output_format,

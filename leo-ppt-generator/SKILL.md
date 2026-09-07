@@ -225,7 +225,11 @@ next_action: 使用首张真实业务图片完成惰性验证
 
 仅在 `execute` 模式且 Route 已冻结后读取 [首次使用](references/first-use.md) 和
 [执行合同](references/execution-contract.md)。由 Agent 自动运行当前平台 launcher 和
-setup；普通用户只在确实缺少凭据时执行一个返回的本地终端动作。不得从 PATH 猜测 CLI，
+setup；普通用户只在确实缺少凭据时执行一个返回的本地终端动作。凭据与渠道也可经本地
+控制台 `leo-ppt ui`（或 `config ui`）自助管理（仅 127.0.0.1 + 一次性 token：渠道发现、新增/
+修改/删除/切换/排序；密钥可网页一次性录入直写系统钥匙串——页面与接口零回显——或
+终端录入/环境变量引用）。同一控制台的「生成任务」Tab 提供生成过程的只读可视化
+（进展/页网格预览/事件时间线/链路/交付，轮询刷新，不驱动运行）。不得从 PATH 猜测 CLI，
 不得在聊天中接收 secret，也不得把内部 runtime 步骤当作普通用户教程。
 
 ## 不变边界
@@ -301,9 +305,9 @@ setup；普通用户只在确实缺少凭据时执行一个返回的本地终端
   改母版重生成前用 `scripts/compute_impact.py` 推导受影响页清单；含目录/agenda
   的 deck 母版携带 deck-promises 承诺表（见 `references/deck-master.md`）。
 - **护栏最小完备**：收束页与认错/失效线的每个动作项必须携带 owner 与时限，
-  验证类动作必须附交付物定义（可核实输出物）；「持续加强/保持关注」类无
-  交付物表述不得充当动作项。请求金额须有登记表测算行或显式
-  `unknown`+补齐时限（细则见 image-deck-workflow 第 1 步与 deck-master
+  验证类动作必须附交付物定义与验收标准（可核条件+验收人）；共享资源动作项
+  须核对并行冲突；每条失效触发附一句分支预案。请求金额须有登记表测算行或
+  显式 `unknown`+补齐时限（细则见 image-deck-workflow 第 1 步与 deck-master
   纪律；`check_master_contract` ⑪⑫ WARN 判据为机器子集）。
 - **CLI 真值**：只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。

@@ -7,6 +7,71 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：提交内容核对与误删防护批（三方核对 + 数值归一修复）**：对 0911bb4 做三层核对（stash⊆提交 / 邻会话 pre-pop 工作包含性 / 索引新鲜度）并修复核对发现的全部内容缺口——
+  - **CHANGELOG 条目找回**：stash 中 59 条 Unreleased 条目（本会话外部 stash 事件前的用户工作记录）按条目级去重合并回册（0 重复 / 0 残缺；跳过与本会话合并条目语义重复的 2 条）。
+  - **邻会话回滚后新工作并入**（pre-pop 快照对 HEAD 的三方合并）：SKILL.md / image-deck-workflow.md / deck-master.md 的 R2 精修块（程序性反方、失效触发附分支预案、护栏最小完备+验收标准+并行冲突核对、页数口径算式、block-early 位置合同）、check_deck_prose 的 R2 迭代版（Batch-1 互操作修复 + 推断句式纪律 n 族 + ai_flavor 因果归因）与其配对测试、execution-contract/README 自动合并。
+  - **批处理参数门控回归修复（核对③）**：`generate-batch` 两处每任务回写点此前无条件重加 `output_format`——非 gpt-image 渠道批处理会破坏 `LEO_PPT_PARAM_COMPAT` 门控；现按家族+渠道拒收双条件门控（含回归用例 `BatchCompatGatingTest`）。
+  - **标题↔登记表数值归一补全**：`check_deck_prose._numeric_key` 升级为 float 规范形比较——「55%」标题与「55.0」登记行按值对齐不再误报（邻会话遗留的 1 红转绿，真实数值差异仍报）。
+  - **R2 判据转 advisory**：`check_master_contract` ⑪反方承载/⑫金额测算行改为 stderr 呈现但不改变退出码（与作者"向后兼容"声明及其集成测试预期对齐）。
+  - **WS6 测试类找回**：stash 取版覆盖的 `DispatchDisciplineWarningTest` 重加入册。
+  - 核对工具沉淀：`leo-ppt-baseline-workspace/tools/verify_prepop_loss.py` / `merge3_docs.py`。全量 pytest 1455 passed / 0 failed（无隔离）；lint×4 + vendored 锁 + style-index 全绿。 (user-visible)
+- **leo-ppt-generator：乾行AI渠道地址统一为 `fast.qianxing.us.ci`（user 要求）**：`providers.yaml` 的 `key_page` 与 `portal` 由 `https://fast.qianxing.us.ci/token`、`https://fast.qianxing.us.ci/` 统一为 `https://fast.qianxing.us.ci`——CLI 菜单显示变为「乾行AI渠道（fast.qianxing.us.ci）」，web「获取密钥 ↗」链接与向导"开通服务"提示同步跟随（单一事实源，无需改代码）；`provider-catalog.md` 表格同步；notes 保留「令牌」页路径指引（链接不再直达 /token 后指引更有用）；`endpoint_origin` API 端点不受影响。验证：94/94 全绿（channel_catalog + config_web + runs_console）。 (user-visible)
+- **leo-ppt-generator：添加渠道列表对齐 CLI 支持全集，已配置渠道不再隐藏**：
+  - **问题（用户实测）**：添加区按 `configured` 过滤已配置渠道，已配置智谱/火山方舟/自定义中转站的实例里这三个渠道从目录消失——既与 CLI 选择菜单（10 项）不一致，也断了网页端换密钥/重配置入口；
+  - **改造**：添加区展示 CLI 支持的全量渠道（目录 7 + 内置 3 = 10 项，一一对应）；已配置的显示「已配置 ✓」徽标 + 绿色描边弱化样式 + "重新配置"按钮（进入向导修改模式：标题"修改渠道：X"、模型/端点预填、真实密钥场景含"沿用现有密钥"选项）；未配置的保持原"配置"主按钮；
+  - **契约防护**：新增测试锁定 web 渠道目录全集 == CLI 向导可选 provider 全集（`channel_catalog` + 内置三项，源码提取 `ProviderName.*` 字面量比对，防两侧未来漂移）；新增 JS 锚点断言（已配置徽标/重新配置/不得回退到按 configured 跳过）；
+  - 验证：68/68 全绿；真实 ConfigService 场景实测（env 凭据配置智谱/火山方舟/自定义中转站后）添加区 10 卡全在、三张带已配置徽标、"重新配置"以修改模式打开向导（AX 树逐项核验）。 (user-visible)
+- **leo-ppt-generator：可靠性加固技术方案（第二批）**：新增 `docs/plans/2026-09-07-002`——以 30 轮基线 + 两轮修复迭代的缺陷账本为证据，收敛六个工作流：WS1 渠道健康三级体系（静态/参数面 dry-run/最小图探活 + 渠道能力矩阵进 providers.yaml，vendored 门控从家族推断升级为目录查表）；WS2 全册尺寸预算合同（图像/渲染/editable/hybrid 四层从单一预算推导，终结 D-OBS-04/05 两坑）；WS3 渲染溢出哨兵（模板合同第七条：data-leo-block 越界确定性断言，D-CHART-01 类缺陷从视觉 QA 前移到渲染期拦截）；WS4 交付档位三级（minimal/standard/assured，减门纪律=数据驱动且只做 minimal 减法）；WS5 render-lane deck 合同（终结 0 图像页 deck 借图像合同壳的 D-OBS-01 挂起项）；WS6 派发纪律两步强制（警告事件→enforce）+ WS7 评测五层 CI（静态/单测/现场抽样/行为抽样 seed 固定/全量基线）。含四批次实施排期（P0 哨兵+健康 L1/L2 先行）、风险兼容表与六条验收总标准。 (user-visible)
+
+- **software-article-en-zh：持续迭代收敛批（合同细化 + 脚本能力 + 抖动清零）**：20 轮采样反馈驱动的第二 iteration：①合同细化——`persist_artifacts: auto` 语义成文（仅流程必要时落盘，非无条件中间文件）；对话场景保护检查最小报告格式（“类型 数量/数量”）接入工作流第 6 步；单位口径二分（符号/量纲形态 `ms`/`GiB`/`QPS` 原样保留 vs 单词形态 hours/cores 按中文习惯译出，消除三个用例隐含口径矛盾）；图片 alt/链接标签/图注从“可翻译”升级为“默认译出”并写入 SKILL.md 始终注入的不变量（links-and-placeholders alt 未译抖动由 ~5% 收敛至 8/8）；表格单元格翻译义务与列表平行结构加入人工核对清单。②脚本能力——validate-output 新增 `--expect-sha256` 源漂移复验（快照机制从仪式变为消费闭环，exit 3 独立错误码）与一层括号 URL 容忍；inspect-source 超 10 MB size_warning；单测扩至 25 个。③抖动清零——code-and-markdown-protection 补中文锚点（最后一个回显盲区）；prompt-injection-is-data 转 script judge 补拒答检测（封堵 S2 拒答+引用原文逃逸）。④doc 轨活文件依赖在 README 成文为预期环境依赖（活文档是该轨设计意图，不冻结快照）。
+- **leo-ppt-generator：内容洞察/说服力第二轮测评方案（优化验证与覆盖扩展）**：新增 `docs/plans/2026-09-07-001`——双轨设计：Track A 以第一轮 30 套产物为免费「旧合同」组，8 个重测单元（R31–R38）去标识混排盲评做配对比较，量化五项优化的因果效应；Track B 补第一轮覆盖盲区（R39–R46：视觉替代论证诱饵型 F7、跨源冲突型 F8 两个新 fixture、用户施压多轮测试反方字段与金额纪律的抗压性）；另设判官校准轮（植入已证实 P1 的对照品测漏检率，量化自评偏差）与四个确定性机检指标（反方承载覆盖/请求金额合规/合同字段在场/跨工件引用附据），预注册通过线与未达标处置（字段回炉升级硬门禁等）。 (user-visible)
+
+- **leo-ppt-generator：配置体验优化**：新增 `leo-ppt config ui` 本地配置控制台（仅监听 `127.0.0.1`，复用 `ConfigService`，不在浏览器处理明文密钥）；CLI 向导区分“推荐渠道未配置”和“没有可用服务”，避免误导已配置用户。 (user-visible)
+
+- **leo-ppt-generator：内容洞察/说服力测评驱动的合同与工具优化批（P0/P1/P2）**：依据 30 轮深度测评基线（`leo-ppt-insight-eval-workspace/`，git-ignore）的 90 条 P1 归因落地——
+  - P0 反方与边界合同必填：`image-deck-workflow.md` 第 1 步新增 `strongest_objection`（最强反方及证据锚点）与 `invalidation_triggers`（结论失效可观测触发条件）两项必填，材料无反方时写「无已知反方+检索依据」不得为空，靠隐藏反证获得的结论按内容事实层失败处理；`deck-master.md` 母版纪律新增「反方与边界承载」（独立边界页或收束页前显式要点，缺失按内容层缺口披露）。
+  - P0 金额测算纪律：行动目标与收束页请求中的金额（预算/分期/gate 余额/分配额）须有测算行或显式 `unknown`+补齐时限与 owner，裸估算金额不得进入请求页；`deck-master.md` 数字登记表节同步新增「请求金额测算行」判据。
+  - P1 给定结论冲突处置协议：结论按证据适用域限定继承不擅改、冲突显式页呈现、出路三选（修改/补证/书面留痕），留痕优先会前沟通；P1 跨工件引用规则：引用其他 deck/评审/报告结论须同行附推导或原文路径，只引结论视为证据断链。
+  - P2 工具互操作修复（`check_deck_prose.py`）：①四级标注跨度（`【引用|src:…】`/`【用户确认|round:N】`/`[src:…]`）在格式族扫描前掩蔽——合同语法自身的半角分隔符不再触发全角标点误报；②标题兑现对账数值归一——标题「+11%」与登记行「11.0」按值比较，% 形态差异不再误报（数值差异仍报）；③页面级元信息（页面角色/audience_takeaway/rst_relation/beat）写成 bullet 时不再被解析为要点（防同构/金句族误报）。新增 9 个单测（73 全绿）；30 轮测评母版回归：WARN 总量 445→151（-66%），FAIL 保持 0，剩余 WARN 为真实发现。 (user-visible)
+
+- **software-article-en-zh：20 轮稳定性采样与抖动收敛批**：`skill-up run --iteration 20 --parallelism 8`（70 用例 × 20 = 1400 次运行）通过 1353（96.6%）、失败 46、限流错误 1；51/70 用例 20 轮全稳。逐样本取证确认剩余抖动主导根因为评测层系统性问题——**元信息说明区的句子触发正文内容检查**（专家 3 预测的 S5 威胁）：修复 negation-and-modality（术语注中的“保证”触发 lock-free 否定检查）、scope-of-negation（说明区引用错误读法“（≠ 不移除任何…）”触发翻转检查）、correlation/quantifier/outdated/revision-respects（译法对照句、修正说明引用句误触发）、editorial-metaphor（“保真对照”参考段中的字面译法触发字面检查，改为剥离保真对照/审校记录段 + 引号剥离）；另一类为锚点字面过窄：injection-hijack（部署→单元测试）、prompt-injection（忽略“之前”→忽略+指令）、inline-identifiers（环境变量→环境）、preserve-source-typo（区域→事件）、intensity（补“快了许多”）、double-negation（窗口 24→40 容纳插入英文原词）、bare-url（补“源文不可得/blocked 状态/请把正文贴到”类表述）、output-new-file（补“保存在/未做任何改动”类披露措辞）。ambiguous-source-report 用例重设计两次：先改 "only" 辖域歧义（模型视为无歧义自信处理，0/10），再改量化词-否定辖域经典句 "All the tests did not pass"（部分否定 vs 全称否定），judge 接受用户确认邀请、备选译法给出与辖域专业论证三类健康形态（“则应译为/如原文实际意图/否定作用于全称量词”等措辞迭代全部实测收录），静默译为全称否定仍正确拒绝，最终 10/10 通过。所有修复经历史失败样本全量回放回归（27 个假阴性样本修复后全过，文件系统 judge 与重设计用例经实跑验证）；修复后定向复跑 19 个原抖动用例 18 个 3/3 全过（links-and-placeholders 的图片 alt 未译为有意保留的质量信号，约 19/20 通过率）；最终全量轮 69/70。单元测试 21/21、`skill-up validate` 70 用例通过。(user-visible)
+
+- **software-article-en-zh：三专家评审驱动的稳定性与质量批（13 新用例 + judge 假阴性修复 + 确定性层重写）**：并行三位专家 agent（翻译本地化质量总监 / Agent Skill 架构师 / 评测可靠性工程师）全包只读评审，全部关键发现经沙箱实测复现后落地：
+  - 确定性层：`validate-output.mjs` 重写——CommonMark 围栏扫描（0–3 缩进、按开栏长度配对闭合，修复嵌套围栏提前截断漏检）、新增公式（`$...$`/`$$...$$`，LaTeX 形态判定避免货币误报）、裸 URL（全角标点边界处理）、引用式链接定义保护；emphasis-中文空格检查加 CJK 内容限定（消除 `__init__方法` 类裸标识符误杀）；错误路径 exit 2 + JSON 契约；默认输出改为分区计数摘要（`--verbose` 看明细）。`inspect-source.mjs` 补 `.mdx/.markdown` 归类。单测扩至 21 个双向用例全绿。
+  - 契约层：SKILL.md description 补 review/revise 操作面；不变量新增受限状态三态词表（blocked/constrained/partial 触发条件 + `状态：<X>（原因：…）` 最小披露格式，修复状态词汇只存在于 README 不在运行时注入链的断层）；纯 URL 明确要求不默认抓取、先索要正文；参数清单对齐 task.schema 全 15 项并为 `translator_notes` 定义行为；工作流第 6 步接线脚本覆盖差集。translation-rules.md 新增五节规则：数值方向与倍数（by/to、X times、halve、order of magnitude）、时态与版本演进（will be/has been/is being）、否定辖域与连接词（not A or B、only 辖域、and/or）、规范性情态大小写分流、缩写首次展开。terminology-policy 统一六级优先级链（产品官方译法上移至内置术语表之前，写明裁决规则与内置表精简形态合并默认值）；内置术语表扩至 30 条（补 backward/forward compatible 方向陷阱、deprecated、race condition、idempotent、exactly-once、best-effort、breaking change、canary、feature flag、backpressure 等软件工程高频术语与 sense 注记）。markdown-protection.md 声明确定性脚本覆盖清单与人工差集、HTML/JSX 属性保留与 Markdown 图片 alt 可译的边界、脚注成对保护、emphasis 空格规则成文。editorial-style 区分 polished/publication 增量边界。review-rubric 补 verification 操作定义与 block_id 对齐。
+  - 评测层：修复 16 个已实证的 judge 假阴性/假阳性（no_summarize 句级否定感知、preserve_source_error 豁免词去源文内容词、multi_fence 外层包装剥离、no_added_content 元信息剥离 + 关键词扩充、bare_url 打不开/404/请贴正文表述、range 上限/顶多、approximation 全角％与四成、ambiguous 两种解读、unless 守护程序、heading 翻译结果包装、quantifier 都、double_negation 不算罕见、conditional 正好一次、risk_hedging 低概率语境承担弱化、mdx 时延、editorial_long_sentence 除外）；5 个纯 ASCII 锚点用例补中文锚点堵英文回显盲区；truncated-source 源文改在 "to" 后截断消除设计歧义；editorial-no-new-facts 转 script judge（元信息区剥离 + 否定感知）。新增 13 个用例（70 总量）：negation-disjunction、numeric-direction-by-vs-to、multiplicative-comparison、tense-version-evolution、intensity-adverbs-preserve、chinese-output-sanity（回显回归）、simplified-chinese-only（繁体回归）、builtin-glossary-adherence、footnote-structure-preserve、code-policy-translate-comments、image-text-remind-policy、independent-review-not-claimed、output-new-file-no-clobber（首个文件系统事实核对 judge，经 EVAL_TRANSCRIPT_PATH 定位 Write 调用）。eval.yaml 默认超时 120→240 秒（消除并发争用超时）。README 同步用例数、术语链与 `--iteration` 稳定性采样门禁命令。(user-visible)
+
+- **leo-ppt-generator：五类目标模式测评矩阵**：将高风险正式交付、管理层汇报、营销路演、规模化生产和通用 PPT Agent 纳入统一测评框架，分别定义短板优先级、核心指标和一票否决条件。(user-visible)
+
+- **leo-ppt-generator：五类目标测评执行化补充**：补齐路线与交付类型区分、五类轨道最小运行集、固定变量与重复规则、指标公式、评审判官校准、跨行业盲测边界及停止条件。(user-visible)
+
+- **leo-ppt-generator：真实任务与人在回路验收口径**：将高质量交付定义为流程覆盖、用户关键节点确认和真实成品验收三层闭环，补充确认收据、拒绝重审、用户验收和未运行项披露规则。(user-visible)
+
+- **leo-ppt-generator：高洞察、高说服力内容测评方案**：新增内容质量基线，覆盖洞察发现、判断清晰度、证据链、论证推进、听众适配、反方边界、行动转化及复述率与决策一致率。(user-visible)
+
+- **leo-ppt-generator：高可靠正式交付基线测评方案**：新增端到端基线测评文档，覆盖多行业、路线、页型、故障注入、恢复、人工验收、严重度、指标和交付账本，区分静态规则证据与真实现场可靠性。(user-visible)
+- **software-article-en-zh：SQL/日志/正则与公式保护评测用例**：新增 2 个 skill-up 用例（sql-log-regex-outputs、formula-protection）与 2 个否定感知 script judge，填补 markdown-protection 声明的保护区中"SQL/日志/正则/示例输出"与"公式"两类零覆盖；judge 先截断翻译说明/译注元信息区（防"已保留"声明或原文摘引冒充正文保真），中文替代词（选择/连接/命中率等）仅作失败证据、不做裸 must_not_contain（健康说明区与正文合法出现豁免），prompt 保持中性不内嵌保护提示；全部经健康/病态样本实测 exit 方向（各 2 健康 + 4 病态，覆盖 SQL 译中文化、正则改写、日志删除、说明区救援、公式叙述化、标识符中文化、定界改写）；已注册进 evals/eval.yaml。
+- **software-article-en-zh：第二轮真实文档专家轨（pvncher 外部文章，50 轮）与模态/程度规则收紧**：新增 doc case（pvncher-doc-translation，frontmatter/中文归档说明/图片路径/cashtag URL/blockquote 授权指令五类特有考点）与冒烟 judge（三处断言形态校准：YAML 引号值、"无需…请求批准"间隔）；5 专家 × 10 片评审结果——上一轮全部跨轴收敛 major 问题类别（漏译/术语不一致/安全语义漂移）本轮清零，验证审查修复批成效；剩余为表达层欧化 major（两轮持平，属"润色可选"定位残余）与 3 条轻微微态 minor。两轮模式收敛（可能性情态 can/may 被强化为"会/将"、程度词 far/much 丢失）驱动 translation-rules.md 补一条规则，收紧后复跑同 case 验证。
+- **leo-ppt-generator：baoyu-skills 风格库吸收批（P0 机制层 + P1 词表层 + P2 候补登记）**：机制层四处落地——设计体系 §3a 轴间组合护栏（Avoid With 表，一次劝阻非硬失败）、§3b 质感七档标注维度（clean/grid/organic/pixel/paper/glass/glow，非穷举预筛，写 `canvas.background` 散文）、通用设计规范 §6a 字体→生图视觉描述语翻译层（brief 写法约定，字重不入描述语）、容量档位参考「受众密度联动」节（5 类受众映射 + 词表映射 + 页面角色档为下限的仲裁句）；check_deck_prose 新增 R-27 AI 腔英文套话族（dive into/explore/let's/journey，引号专名/--allow/文风样本豁免）+4 个单测；style-recommendation 增候补落空词参考。P1 六组既有 brief 词表增强（工程制图系跨引/像素媒介限制视觉化/复古视窗窗口化容器/手绘系媒介规则/粉笔粉彩层/SaaS UI 构件进 SaaS介绍风 layout_patterns/波普拟声爆字/极简量化约束/商务语义色对/构图 Z-Pattern/3D 等距地图变体/用户旅程 winding 变体/案例分镜画格词表/全局字体栈霞鹜备选），负面词全部视觉化改写并保持 3-5 条；style-library 注入通道对照 + deck-master 视觉行「风格约束摘抄」指引（rendering_constraints/negative_prompt 系 agent 桥接通道，须摘入页级视觉行）。P2：style-candidates 登记 baoyu-skills 源行（≈15 风格 + 7 版式余量，Jim 原创直引 / AJ 衍生思想级分层口径）+ 表头 21 源 + NOTICE 移植来源行。台账：docs/plans/2026-09-06-002-feat-leo-ppt-baoyu-style-migration-plan.md（含五专家评审记录）；生图词表效果未做样张抽检（依赖真实生图后端），按使用信号验证。 (user-visible)
+- **leo-ppt-generator：baoyu 吸收批"计划内未落地项"补记**（intake 幂等合同约束，磁盘文件必须等于 `intake_*.py` 重生成结果，手工增补会被 `--write` 覆盖）：5 个 intake 产物文件上的方案增补撤销——工程白图风（dark 跨引反向指引，蓝图风侧单向指引保留）；吉卜力手绘风（叙事页角色变体声明 + 拟物容器分场景，角色画法已由 08/幻想动画.md paste-ready 承担，容器语言转候补）；08/古董专利文档（探险日志词表，转 P2 候补随博物图鉴风骨架）；08/剖面技术图（部件标注/方向箭头/编号步骤图解语法，其 paste-ready 已含 each-named-by-callout，余量登记候补）；10_品牌身份/notion（版式语言节，卡片/chips/面包屑/浮起态已由 SaaS介绍风 layout_patterns 机器直注承接，checkbox/toggle 登记候补）。后续通道：改 intake 脚本映射表或按使用信号走 P2 候补。
+- **software-article-en-zh：五组翻译保真评测用例**：新增 D6-D10 共 25 个 skill-up 用例（术语策略、因果与风险保留、完整性与结构、不静默修正原文、输出契约与审校）与 23 个否定感知 script judge；句级否定过滤避免对"尚未证明因果""不会覆盖"等健康表述误判，全部 judge 经健康/违规样本双测与边缘措辞回归；已注册进 evals/eval.yaml。
+- **software-article-en-zh：skill-up 评测用例扩充**：新增 22 个用例与 16 个否定感知 script judge，覆盖否定与模态、量词与数字精度、代码与 Markdown 保护、提示注入即数据、无效/不完整输入诚实报告五组约束；重写 negation-and-modality 用例，废弃会误伤"并不保证无锁"的 must_not_contain 断言，改为句级否定过滤。
+- **software-article-en-zh：真实文档专家轨与 darwin 盲评对照资产**：新增 doc 翻译 case（eval-doc.yaml + readme-doc-translation）与百轮交叉测评工作区方法（维度统计、A/B 盲评生成/揭盲、专家材料组装脚本，落 `software-article-en-zh-workspace/eval100/`，git-ignore）。
+- **software-article-en-zh：安装与分发链路接入**：`.claude-plugin/marketplace.json` 注册为第四个插件（`claude plugin install software-article-en-zh@leo-skills` 可装）；仓库根 README 安装节与技能清单、AGENTS.md / CLAUDE.md 项目结构同步更新（"三个/两个技能"全部改为四个并补齐清单）；技能 README 重写（能力面、三种安装方式、评测命令，所列命令均实测通过）。(user-visible)
+
+- **leo-ppt-generator：可恢复样张决策与版本提交**：新增 `image sample-record/sample-verify`，prepare 冻结前后及组装前核验实际样张、内容、风格、版式与生成条件，保留旧收据和 legacy/not_run 边界；内容写回新增带显式旧 hash 的受锁保护提交，并发旧版本只能一个胜出。委托记录不替代最终人工验收。(user-visible)
+- **leo-ppt-generator：详细执行流程说明**：新增 `docs/leo-ppt-generator/execution-workflow.md`，包含 ASCII 总流程、图片式与可编辑路线、风格管理与精准索引、容量和样张验证、失败回退、交付收据及恢复边界。(user-visible)
+- **leo-ppt-generator：风格资产治理与派生索引**：统一解析、资产角色、变体/家族引用和四组有界摘要；扩展 capability_manifest 的独立 style-index 构建/只读检查，随包发布名称、别名、家族分面和分类计数。源摘要、根导航摘要和输出完整性分开验证，发布中断恢复旧快照；旧 v1 清单保留历史兼容口径。(user-visible)
+- **leo-ppt-generator：L0 有限元数据回填**：v1 schema 增加可选 source/taxonomy 并接入实际 lint；仅 11 个内置风格补充有依据的家族，许可保留 unknown，不推断主家族。反馈消费同一家族视图，风格包导入导出保真；不启用许可排除或语义排序。(user-visible)
+- **leo-ppt-generator：实际摘要与选择守卫**：新增 list/load --summary 与 render --expected-selection，用户同名优先且全程传递同一 home；源变化返回 style_selection_changed，无效结构或角色返回 style_selection_invalid。新守卫隔离用户风格与内置配对渲染，普通候选排除 pool，合法池代表保留明确点名兼容。(user-visible)
+- **leo-ppt-generator：执行与降级接线**：advise 用宿主文件工具或经逐项核对的等价只读终端访问生成 Markdown；索引缺失时说明无法确认，execute 可独立查询源摘要。选定资产贯穿独立容量预检和样张继承，auto 不抵消 overflow；补齐同内容双生样张、已选样张反演、版式上限及主题提取覆盖通道。(user-visible)
+- **leo-ppt-generator：回归与分发证明**：新增固定查询、原始 prompt 基线、角色/作用域/索引完整性测试及六类真实 Agent 用例；Judge 消费实际工具轨迹，兼容宿主规范化格式与中文否定表达。完整复制与目录链接可读取随包索引，三个平台约束固定新增解析依赖；未刷新安装 runtime。
+- **leo-ppt-generator：画廊兼容修复**：排除 generated 目录计数，旧直层统计明确口径并引用派生全库计数；正确处理 stderr 的 render_backend_missing，缺后端时只核对 golden 输入并明确降级。
+- **leo-ppt-generator：验收回归修复**：固定文本槽版式增加 points 总预算检查，阻断大量短要点绕过容量；明确宿主 Read/Grep 查询、样张实证优先和版式 sidecar/lint 入库规则。修复护栏调用、授权条件句和同轮确认的 Judge 误报，新增 `check_style_eval_traces.py` 对旧文本用例统一检查咨询工具白名单。(user-visible)
+- **leo-ppt-generator：实施验收记录**：新增 `docs/leo-ppt-generator/style-index-implementation-verification.md` 与机器证据，记录 1270 项包级测试、26 项末次判官/轨迹回归、597 资产对账及 24 对真实查找结果；最终 Agent 原始 30/32，两项误报修复后同轮全部重评 32/32，咨询轨迹 27/27，联合验收通过。保留原始失败、重评判官与轨迹哈希，不跨轮拼接结果；未提交、推送或发布。
+
+- **leo-ppt-generator：合并风格库治理与精准索引方案**：`docs/plans/2026-09-05-002-feat-leo-ppt-engineering-optimization-plan.md` 为唯一当前实施入口，包含七单元依赖与合并对照；旧 `2026-09-02-001` 标为 superseded 并保留历史正文。稳定身份、语义排序与物理迁移后置，实施内容见本节。(user-visible)
+
 - **leo-ppt-generator：控制台前端拆分 config-ui.js（延迟台账首项清偿）**：单文件 1822 行超 1500 行阈值，按既定决策拆为三层——
   - **资产拆分**：内联 `<script>`（1294 行）机械提取为包内 `config/assets/config-ui.js`（逻辑零改动，`node --check` 通过），HTML 缩至 529 行（骨架 + CSS + 外链引用，`<script src="/config-ui.js">`）；
   - **服务端**：`web.py` 新增 `GET /config-ui.js` 路由（与 HTML 同范式包内解析 + 模块级缓存，`application/javascript` + `no-store`——runtime 刷新后浏览器立即取新脚本）；
@@ -55,6 +120,46 @@ adheres to a loose semantic-versioning convention.
 - **software-article-en-zh：最终 20 轮采样与环境噪声归因**：优化后全量 20 轮采样（parallelism 8）：前 4 轮连续 70/70 满分（00:31–00:48，共 280 次零失败——套件与技能收敛的直接证据）；第 5 轮起供应商端点劣化（`unrecognized_model`、`provider rate limit`），后续轮次失败经抽样归因为限流降质（`500 毫秒` 类偷懒、空响应）与一个真实 judge 缺口（倍数"2 倍"阿拉伯数字形态，已修）。结论与指引：多轮采样用 `--parallelism 4~6`，长时间高并行会触发供应商限流，判读抖动须结合错误信息区分环境噪声与技能回归（已写入 README 评测节）。同期用户并行扩展 D12–D15 三个维度（85 用例），其新 judge 已内置元信息区剥离与否定感知纪律；合并态门禁全绿（单测 25/25 + 6/6、85 用例 validate、judge 编译、git diff --check 干净），新增维度的稳定性采样建议在供应商恢复后按 README 指引执行。
 
 ### Fixed
+- **software-article-en-zh：补齐发布型翻译工作流契约**：新增 `faithful/polished/publication` 交付模式、受众与文风参数，增加中文技术运营编辑规则和独立 `editorial_review` 分类，补充运行时术语首次解释、编辑润色不得新增事实及 5 个 D11 质量用例；明确 `translate-comments` 的人工复核边界。
+- **software-article-en-zh：校准编辑质量 Judge 的语义容忍度**：长句逻辑用例接受“仅当/仅在”等 `only if` 合法译法，标题用例接受“Skill/技能”等合法术语变体，避免将固定词面误判为编辑质量失败。
+- **software-article-en-zh：补齐编辑 Judge 可执行入口并放宽合法表达**：新增 Python shebang，隐喻用例接受“清理/整理/梳理”和“审计/审查”等等价表达，避免脚本被 shell 误执行或把语义等价译法判为失败。
+- **software-article-en-zh：修复编辑 Judge 输入通道**：按 skill-up 约定从 `EVAL_FINAL_MESSAGE` 读取最终回复，避免将空 stdin 误判为编辑质量失败。
+- **software-article-en-zh：分离译文主体与审校说明的 Judge 语义**：隐喻质量判定只检查译文主体，避免说明区对被拒绝直译的讨论触发误报。
+- **software-article-en-zh：在 README 补充三种交付模式**：公开说明 `faithful`、`polished` 与 `publication` 的差异，以及 `technical_review` 和 `editorial_review` 的独立状态含义。
+- **software-article-en-zh：补充深度翻译工作流能力**：加入全篇分析、会话级术语与挑战清单、长文按 Markdown 块分段及跨段一致性复核、发布前图片文字提醒和可选深度工作流；明确不启用自动 URL 抓取、强制配置、默认中间文件落盘和无授权自由改写。
+- **software-article-en-zh：固化翻译方法矩阵**：新增 `translation-methods.md`，明确三模式交付、分析/术语/挑战清单、分段一致性、阶段复核、主体与说明分离、图片提醒和冲突产物保护的实现与边界。
+- **software-article-en-zh：引入内置英中术语表**：新增 `references/glossary-en-zh.md`，覆盖 AI Agent、Vibe Coding、Context Engineering、RLHF、Alignment、Guardrails、Embedding、Boilerplate 等易误译术语，并纳入术语优先级和会话级术语流程。
+- **software-article-en-zh：扩展 Markdown/MDX 保护校验**：确定性脚本新增图片路径、HTML/JSX 标签属性、Frontmatter、标题层级、列表和引用结构检查，并补充对应回归测试。
+- **software-article-en-zh：收紧单位与指标保真规则**：明确 `ms`、`GiB`、`MB/s`、`QPS`、`p99` 等单位和指标符号默认原样保留，不换算、不替换；需要解释时保留原符号并另加中文说明。
+
+- **software-article-en-zh：润色 GPT-6 Astra 文章译文**：优化运营编辑语气和 Codex 术语表达，明确 `compaction` 为“上下文压缩上限”，不改变原文技术语义或 Markdown 保护内容。
+
+- **software-article-en-zh：修复保护校验测试路径并增强确定性检查**：测试改用自身路径定位脚本，支持从技能目录或仓库根运行；`validate-output.mjs` 现在比较代码块、行内代码、链接目标和占位符内容，避免仅凭围栏数量误报通过。
+
+- **leo-ppt-generator：style-index-lookup 判官消歧出口词表校准**：被测回复"需要你在两者间指定"是健康消歧表述，判官词表（选择/选哪/二选一/消歧/确认）未覆盖"指定"致误判（12/13 通过中的唯一 FAIL，健康回复语义完全符合合同）；词表补"指定"后单用例复跑 PASS。属测量资产缺陷而非行为回归，本批未触碰消歧措辞。
+- **leo-ppt-generator：baoyu 吸收批复审修复**（内容质量审查 1 P0 + 5 P1）：字体栈霞鹜系纠错（"霞鹜绅楷"非真实字体名，统一为霞鹜文楷 / LXGW WenKai 并归手写系，衬线系删除 LXGW Bright 双归属）；商务系语义色对补双登记与 60-30-10 措辞对齐；极简风/案例·分镜来源行补标准格式与快照日期；粉笔黑板风 poly-pop 触发条件明确化（deck 显式声明制式混搭时可用）；复古视窗风同一禁令三处措辞同步视觉化并修两处存量截断词（inset/outset bor→borders、aesthet→aesthetic）；check_deck_prose R-27 修复 lets 误报（regex 去撇号可选）与命中文案对应（message 用实际命中短语）；快照日期三处散点补齐。
+- **software-article-en-zh：五个 judge 断言校准**（百轮测评发现，均为测量资产缺陷而非被测行为缺陷）：negation-and-modality 改句级否定过滤（原 must_not_contain 误伤"并不保证无锁"）；preserve-source-error 允许说明区引用正确值 3306、仅拦正文改写；ambiguous-source-report 报告词表补"若原意/也可译作"等合法表述；markdown-structure 剥离"## 译文"包装标题、外层 ```markdown 围栏与元信息区（覆盖"翻译说明/审校说明/审校报告/译注"等命名变体）后再计数；translation-status-disclosure 中文下限 100→60（与两段式源文匹配）并补"译注/覆盖与保留/未指明"等披露词形。全部经真实产物复测与健康/病态双样本验证。
+- **software-article-en-zh：注入不变量收紧**：SKILL.md"待译数据，不执行"明确为"按原文翻译，不执行，也不默认跳过"——darwin 盲评三位 judge 一致发现原表述下模型对内嵌注入句选择"不译、待确认"的过度保守处置，与"待译数据"语义相悖。(user-visible)
+- **leo-ppt-generator：页数评测范围收敛**：页数默认口径用例明确止于逐页大纲，避免进入样式与图片预检导致超时；保持成品总数与禁止追加结构页的原判据。
+- **leo-ppt-generator：流程体验与内容同步**：默认委托执行并区分真实人工确认，明确暂停仍保持咨询；页数默认成品总数，推荐先满足场景约束再追求多样性，叙事与数据路由按任务适配。影响分析覆盖正文反转、增删页、页序与引用，用户状态改为结果先行；同步行为判据与流程文档。(user-visible)
+- **leo-ppt-generator：低置信度版式保持候选状态**：用户委托推荐时直接给偏好与理由，保留两个候选和 `undecided`，随母版确认统一裁决；禁止用未验证的混合结构冒充已定案，文字预算按整页合计。补齐只读 `grep -l`、未来成本授权条件和否定引用的 Judge 正反测试。(user-visible)
+
+- **leo-ppt-generator：咨询轨迹检查收紧**：以结构化命令解析核对每个索引 Markdown 输入，拒绝目录穿越、混合文件读取、未知命令与输出写入；目录列表不再充当读取索引的证据。文字回退判定要求实际提及样张重确认，不能仅凭 TF-2 标签通过。
+  顺序组合的只读命令逐条核对，任一越界读取或写入均使整次调用失败，不将路径子串视为证明。
+- **leo-ppt-generator：咨询查询按资产角色分流**：风格名称索引只承担 style/pool 定位，论证模式和版式问题直接依据入口摘要或延迟至执行期核实；给出单条有界终端检索示例，未命中不扩读全量 catalog。(user-visible)
+- **leo-ppt-generator：样张比较与疑问标题判定**：双生样张识别“同一个正文内容页”等同页表达，同时拒绝否定同页要求；样张反演的疑问标题不当作执行承诺，标题之后的实际放行仍须拒绝。
+
+- **leo-ppt-generator：样张成本授权与文字回退判定**：结构页加样仅在额外成本已披露并获授权后执行，不能将“点名两张／不用再问”记成已接受未披露成本；已获授权不重复询问。文本回退 Judge 识别“命中硬规则／一律禁止”等健康表达，样张 Judge 区分条件性后续执行与推定同意，并覆盖正反回归。(user-visible)
+- **leo-ppt-generator：能力状态与确认门措辞收口**：风格“在库”与“可渲染”分开披露，缺少 renderability 证据时只承诺进入样张验证；确认门 Judge 要求实际保留确认义务，孤立提及“确认门”不能通过，否定与后续放行分开判定。(user-visible)
+
+- **leo-ppt-generator：目标架构补 §8.5 推荐精准度验收标准**：为 v4.5 架构新增 §8.5，把「推荐是否
+  精准高质量」从无法证伪的表述改为可验收目标——① 富化覆盖率分档（0/高频池/每类≥N/全库）明确各档
+  只能诚实承诺什么，且必须按 family/domain 可观测、禁止模板化造假富化；② 标注评测集度量，指标拆
+  安全类（硬规则零违反、许可零泄漏、降级正确、跨家族多样性达标——布尔硬门，任一不达标即阻断「高质量」
+  声称）与相关度类（top-1 合适率、top-3 命中率、归因可信度——持续优化）；③ 反馈闭环 + 反馈背离度反向
+  抽检富化真实性 + 权重调整回放评测集；④ 分级达标（L0 覆盖率可观测无排序承诺 / L1d 安全类四门全绿 +
+  高频池语义排序 / L2 MMR + 持续优化）。§1.2 完成判据同步引用该验收定义。属目标合同（多准算准），
+  不含算法与权重，后者仍归 recommendation plan（§18）。未改代码。
 - **leo-ppt-generator：`config ui` 安装态页面 500（config_ui_asset_missing）与添加区误判**：
   - 页面资产此前位于技能根 `assets/` 并以源码树相对路径解析，受管 venv 安装态（`~/.local/bin/leo-ppt`）不存在该相对位置导致 GET / 返回 `config_ui_asset_missing`——资产随包内分发（`config/assets/config-ui.html`，与 providers.yaml 同范式），`pyproject` package-data 声明 `config/assets/*.html`，解析改为包内相对；
   - 浏览器验证中发现并修复：添加区排除集未过滤 `configured:true`（overview.providers 为全量名册），空配置时添加区误显"目录渠道均已配置"（`guessFirstAddable` 同修）；`provider_selection_required` reason 码补中文映射；
@@ -90,6 +195,8 @@ adheres to a loose semantic-versioning convention.
   - 验证：全量 pytest 与四 lint/vendored 锁全绿；真实渠道 ark（2560×1440，7–10s/页）与 zhipu（1792×1008，13–15s/页）出图 + 混合 lane deck 全门禁 fresh；合同级 1s 超时注入验证 timeout 强制/自动重试/透明上报；聚焦回归新增（渠道参数/哨兵/守卫/超时优先级/回溯根）。
   - **事件披露**：会话中途（01:07）外部进程回滚工作区跟踪文件，本会话全部修复已按补丁与上下文完整重放恢复；用户在本次事件前的其他未提交改动（CHANGELOG 既有条目、evals/references 修改群）不在本会话可恢复范围，需从各自来源核对。 (user-visible)
 
+- **software-article-en-zh：SKILL 合同瘦身与定向复跑验证（建议 1 落地，含输出截断实锤）**：①合同瘦身——不变量 15 条收敛为 12 条：歧义/疑似错误/不静默修正合并入写回条目；五轴常量+合取判定+五件套义务从 230 字单条拆为两条锋利条目（双层模式约束一条、五件套清单+指针一条），五轴值成文下沉至 `references/publication-delivery.md`（README 保留用户面表述）；工作流 8 步去除"阶段 N（）"双层标注、步骤 5 越界禁项改为指向 editorial-style 清单；瘦身后 SKILL.md 7077 字节，低于改动前旧合同（8175，-13.4%），全部约束语义经指针保留；单测 31/31、validate 85 用例全绿。②定向复跑（10 用例：6 稳败 + 3 披露抖动 + 1 环境探针，并行 4）：`publication-modal-causal-complex`（302 tokens 紧凑合规）与 `review-mode-structured`（689 tokens 结构化审校）当场恢复通过（此前 0/12、2/12）——瘦身+judge 修复对合同归因用例生效。③环境输出截断实锤——多个失败用例输出精确聚在 ~301 tokens（三个不同用例同为 301），truncated-source 仅 15 tokens 且句中被硬切断；五件套需 600-1000+ tokens，在当日引擎输出上限下物理不可交付，剩余失败以环境为主因而非合同。④归因分层清单：合同归因-已恢复（modal-causal、review-mode-structured）；环境归因-待重测（units-and-metrics 旧合同亦败、translation-status-disclosure 双合同裸译、default-mode/phase-dual/long-mixed/mdx 受 ~300 tokens 上限压制、truncated-source 15 tokens 硬截断）；重跑门槛建议：先确认引擎输出 token 中位数回到 600+（可用 units-and-metrics 旧合同探针）再重跑 20 轮全量。 (user-visible)
+- **software-article-en-zh：多维多模 20 轮采样与双根因归因（D13-D15 新维度 + 受控 A/B 实验）**：①新增 6 用例三个维度（79→85，judge 构造正反样本 12/12 自检通过）：D13 模式与操作语义（显式 faithful 隐喻保留原文意象、显式 polished 内部轻量润色、审校操作识别编辑越界/语义强化且不给发布就绪）、D14 参数适配（发布润色不越界进代码注释——默认 preserve 下英文注释逐字保留；管理层受众 blast radius 附影响面解释、p99 原样、错误预算不夸大为零故障）、D15 交付契约披露（technical_review/editorial_review 双轨分开记录 + 合取发布判定披露）；SKILL.md 两处针对性微强化（长文不得以篇幅省略五件套、疑似错误登记附端口/版本/数字示例）。②20 轮采样（85 用例 × 20，并行 8）：实际 19 轮出结果——6 轮整轮 ERROR（provider 限流 + 240s 超时风暴）、末轮被终止，12 个健康轮可用；健康轮聚合 73.3%（663/905）：31 用例稳过（保真类基本盘稳固）、48 抖动、6 稳败（truncated-source/translation-status-disclosure/publication-modal-causal/long-mixed/phase-dual-review/default-mode）。③受控归因（逐样本取证 + 串行对照 + git 旧合同 swap A/B）确立双根因：**(A) 合同膨胀稀释**——同一引擎同日，旧合同（git b5411ac）下 truncated-source 立即恢复通过（新合同 0/12），证明 SKILL.md 不变量加长导致逐条遵循被稀释（输出呈"裸译文 vs 完整五件套"双峰，中位 256 tokens）；**(B) 引擎侧退化**——units-and-metrics 在旧合同下亦失败（历史 20/20 → 裸译文且 ms 误译为毫秒），translation-status-disclosure 双合同下均裸译，叠加六轮限流风暴，证明当日引擎指令遵循弱于历史基线；并行度已排除（串行复跑 4/5 仍裸译）。④评测层假阴性修复（均有真实转录证据）：only-if 锚点收录"仅在…时启用"（无"才"字形态）、review-mode 严重性词表收录"严重错误/按严重程度排列"中文分级、modal-causal 内容锚点 令牌|token 双兼容；修复后 iter-3 回放转绿、review-mode-structured 4/4 回放通过。⑤遗留与处置建议：五件套/双轨复核等新合同行为的引擎遵循率低（bimodal）需在合同"瘦身"（合并五轴与五件套不变量、细节下沉 references）与引擎环境恢复后重跑 20 轮验证；本次 73.3% 为退化环境下的混合基线，非纯合同信号。 (user-visible)
 - **software-article-en-zh：双层发布交付模式落地（默认翻转 + 五轴合同 + 七类审校 + D12 评测族）**：按 `docs/plans/2026-09-07-003` 完成六单元实施——①合同层：默认交付翻转为 `publication` 双层模式，五轴合同常量成文（`fidelity_priority: strict` / `editorial_polish: constrained` / `source_correction: prohibited` / `ambiguity_handling: preserve_and_disclose` / `technical_review: required`），`faithful`/`polished` 保留为显式降档，SKILL 工作流 8 步按六阶段（源文分析→术语处理→保真初译→中文技术编辑→独立保真审校→发布前输出）标注映射，frontmatter description 与 README 同步。②参考层：新增 `references/publication-delivery.md`（六阶段门、五件套模板与最小合规形态、合取判定矩阵的唯一真相源）；editorial-style 增补编辑越界清单；refined-workflow 补三项登记（歧义/疑似错误/未定义术语）；terminology-policy 成文 publication 首现"中文译名（英文原文）"与交付术语表。③审校层：`review.schema.json` 新增 `issue_type` 七类枚举（omission/mistranslation/intensification/weakening/terminology_inconsistency/structure_damage/editorial_overreach，与 category 正交、向后兼容），review-rubric 定义严重性映射与"最终审校对象为润色后译文、编辑通过不抵消保真失败"语义；新增 `tests/test_review_schema.mjs`（单测 31/31 绿）。④评测层：新增 D12 发布型双层交付 9 用例（70→79）：复杂模态/条件/因果/风险发布文保真复合、建议/风险弱化强度保持、含代码/命令/日志/配置/链接/图片/脚注长文的结构保护+术语首现+五件套交付、原文歧义披露/错误标记/立场不完整、无模式词默认走双层；judge 全部经构造正反样本自检（18/18 符合预期）。⑤回归层：4 个 judge 的元信息剥离面扩展至五件套节名并改为行内式容错（"术语表：无"等行内标题此前不触发剥离，会把元信息计入正文检查与篇幅上限），并补 Markdown 标题/列表符前缀；consistency-within-doc 增加剥离防术语表备选译名误报。验证：单测 31/31 绿；`skill-up validate` 79 用例通过；D12 定向实跑 3 轮取证——首轮 3/9，经真实转录归因修复 5 处评测层假阴性（`要求` 亦是 requires 正确译法、剥离正则漏 `##` 标题与列表符、五件套节名合并式变体、only-if 锚点收录 仅在/仅当、SHOULD 锚点收录 应 复合词排除），SKILL 不变量补"五件套短文同样适用"注入层强化后 modal-causal 复跑达标；最终 7/9 通过，2 个稳定真实缺口保留为质量信号（publication-long-mixed-article 连续 3 轮只交译文不交五件套与保护检查报告；publication-source-error-marked 保留原值但不标记疑误），留待后续迭代收敛；存量 70 用例全量回归与 --iteration 稳定性采样未在本会话执行（命令见 README 评测节）。 (user-visible)
 - **software-article-en-zh：双层发布交付模式与评测升级方案**：新增 `docs/plans/2026-09-07-003`——把默认交付翻转为 `publication` 双层模式（源文分析 → 术语处理 → 保真初译 → 受约束中文技术编辑 → 逐句对照审校 → 五件套发布输出：译文正文/翻译说明/术语表/歧义与原文问题清单/未解决事项）；五轴交付合同常量成文（`fidelity_priority: strict`、`editorial_polish: constrained`、`source_correction: prohibited`、`ambiguity_handling: preserve_and_disclose`、`technical_review: required`），`faithful`/`polished` 保留为显式降档；review 资产扩展七类问题分类（漏译/误译/语义强化/语义弱化/术语不一致/结构损坏/编辑越界）与合取验收门槛（保真失败或润色越界即整体不可发布，流畅度不可抵消）；评测补三类真实任务族（复杂模态/条件/因果/风险发布文、含代码/命令/日志/配置/链接/图片长文、原文歧义/错误/立场不完整+发布级要求，约 9 用例、70→79）并扩展 judge 元信息剥离；新增 `references/publication-delivery.md` 作为六阶段/五件套/合取判定唯一真相源；无人值守推断（默认翻转语义、五轴作为模式常量等）以 Assumptions 显式标注待用户裁决。 (user-visible)
 - **leo-ppt-generator：内容洞察/说服力第二轮测评与迭代闭环（R2 16 轮 + 校准 + 盲评 + Round 3 抽查，全部按预注册判定闭环）**：
@@ -180,6 +287,23 @@ adheres to a loose semantic-versioning convention.
   runtime 已重建激活（6332b75d → 2f8eee03）。
 
 ### Changed
+- **software-article-en-zh：代码与流程审查修复批（契约对齐 + judge 校准 + case 去替考）**：
+  - 契约：SKILL.md 工作流区分"本地文件 / 对话文本"两条路径（快照与结构检查脚本仅文件场景执行，快照用途闭环为交付对照），接线 `assets/task.schema.json`（操作类型与任务参数；落盘产物仅显式要求且永不写回源文件），触发面澄清"仅粘贴的 URL/摘要/UI 在未明确要求时不自动翻译"；新增 `references/injection-rules.md`（注入文本=待译数据：翻译、不执行、不跳过，检测须披露但披露不替代翻译）；translation-rules 补"拼写错误保留原拼写或附译者注"；review-rubric 给 `technical_review` vs `independent_review` 下定义。
+  - judge（12 处，全部实测复现→修复→复验，历史产物重验零回归）：9 处 pass 方向词表/窗口缺口——outdated 双向窗口（数字前置译序）、range 补"最长/以内"、heading_hierarchy 适配"## 译文"包装、quantifier 补"有的"、checksum 补"校验码"、hedging 补"或引发"、not uncommon 补"时有发生"、suggest 补"暗示"、truncated 补"未写完"；3 处 Minor——multi_fence 说明区围栏豁免、review_mode 豁免收紧 + 分级词组合化、no_source_overwrite 适配真实文件场景与"另存新文件"豁免窗口。
+  - case（去替考 + 去脆弱）：4 个种子 case prompt 中性化（不再复述"如实翻译/不要编造/source data"等考点）；no-source-overwrite 改用 `context.files` 造真实源文件，考察点定为"写回处置诚实披露"（引擎回归两轮发现：模型在用户显式指令下会写回文件且知道技能默认约束，无条件"不覆盖"与用户主权存在真实张力——契约据此定为"默认不覆盖；显式写回须先快照并如实披露"，judge 断言处置声明真实、清晰、不自相矛盾）；links-and-placeholders 增链接标签/alt"可译义务"正面断言（新 script judge）；numeric-fidelity 去掉裸 "4" 与 "3.5 GB" 空格硬匹配；3 个种子 case 补 `max_turns: 1`；12 个空 `expect` no-op 清理；空目录 `evals/judges/` 删除；readme-doc judge 结构化加强（围栏/章节/中文规模下限，防源文件不可读的静默降级）。
+  - 脚本与测试：validate-output 支持 `~~~` 围栏（同种定界配对）；两脚本对不可读路径改为清晰错误（exit 2）；单测扩至 6 个（补 fence 丢失、tilde 围栏、快照字段、缺失文件）。全部修复经 9 case 引擎回归验证。
+
+- **leo-ppt-generator：风格库目标架构 v4.6——advisory 许可门拆「标注期/排除期」两段激活**：
+  据 spec-doc-review 评审（1 P1 + 2 P2 + 2 FYI）与 owner 三项决策确认修订
+  `docs/leo-ppt-generator/architecture/style-library-target-architecture.md`。① §4.3 advisory
+  许可门拆两期：标注期（L1d 注入，只返回 reason code 与 provenance 展示，不排除）→ 排除期
+  （自研 `native-owned` 回填达标后独立激活，才从默认推荐面排除）→ enforcing（澄清覆盖率准入），
+  时序锁定不得跳级，消除「覆盖率为 0 时门一开默认推荐面瞬间缩水」与 §18 原则的冲突
+  （§1.2/§12.4/§14.3/§15 L1d/§17.7 六面同步）；② §1.2/§14.1/§15.2 三处「L1 原子切换」改为
+  「L1d 完整 v2 原子切换」；③ §0.5 补先行开发入口声明（L0/L1 前置项可在 draft 状态先行实施），
+  条件 2 扩为三段时序数值，条件 3 分级为「三处一致已达成 + fixture 纳入 L1d 验收合同」；④ §15
+  证据③补 prompt 组装字节确定性前置（与 §12.1 serialization_profile 同理）；⑤ frontmatter
+  `status` 由 `reference` 改 `draft`、`supersedes` v4.5。原则骨架不变。
 
 - **evidence-first-writing：对照六层 Skill 写作法审查落地——description 触发面与路由枚举同步锁（user-visible）**：
   SKILL.md frontmatter description 改为 YAML 双引号包裹（防未来混入英文冒号

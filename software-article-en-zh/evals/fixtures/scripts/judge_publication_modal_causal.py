@@ -20,9 +20,9 @@ for anchor, label in ((r"必须", "MUST"), (r"应当|应(?![对答变用])", "SH
         print("正文缺少规范情态锚点 %s（%s）" % (anchor, label), file=sys.stderr)
         sys.exit(1)
 
-# only when 条件：只有/仅在/仅当 …才 形态
-if not re.search(r"只有[^。；]{0,40}才|仅在[^。；]{0,40}才|仅当[^。；]{0,40}(才|方)", body):
-    print("正文缺少 only when 的条件锚点（只有/仅在/仅当…才）", file=sys.stderr)
+# only when 条件：只有/仅在/仅当 形态在场（“仅在…时启用”“只有…才”均合法）
+if not re.search(r"只有|仅当|仅在", body):
+    print("正文缺少 only when 的条件锚点（只有/仅在/仅当）", file=sys.stderr)
     sys.exit(1)
 
 # 相关性不得改因果：提及队列与导致/造成/引起的句子必须带否定或对比语境

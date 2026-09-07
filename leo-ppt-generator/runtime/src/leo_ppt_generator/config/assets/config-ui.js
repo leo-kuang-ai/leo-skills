@@ -272,8 +272,9 @@ async function reorder(from, to) {
 function renderAdd() {
   const grid = $("add-list");
   grid.textContent = "";
-  // overview.providers 是全量 provider 名册（含 configured:false 的条目），
-  // 排除集必须只收 configured:true，否则空配置时添加区误判"均已配置"。
+  // 添加区展示 CLI 支持的全量渠道（目录 + 内置），与 CLI 选择菜单一一对应；
+  // 已配置的不再隐藏——标记「已配置」并提供"重新配置"（可沿用现有密钥），
+  // 否则用户无从换密钥，也会误以为渠道从目录消失。
   const configured = new Set(
     (state.overview && state.overview.providers ? state.overview.providers : [])
       .filter((item) => item.configured)
@@ -281,14 +282,25 @@ function renderAdd() {
   );
   let rendered = 0;
   const addCard = (build) => { grid.appendChild(build()); rendered += 1; };
+  const configuredBadge = () => badge("已配置 ✓", "ok");
+  const cardState = (card, isConfigured) => {
+    if (isConfigured) card.classList.add("card-configured");
+    return card;
+  };
+  const actionButton = (providerId, isConfigured) => {
+    const btn = el("button", { cls: isConfigured ? "btn alt" : "btn", attrs: { type: "button" }, text: isConfigured ? "重新配置" : "配置" });
+    btn.addEventListener("click", () => openWizard(providerId, isConfigured));
+    return btn;
+  };
 
   (state.channels ? state.channels.channels : []).forEach((channel) => {
-    if (configured.has(channel.id)) return;
+    const isConfigured = configured.has(channel.id);
     addCard(() => {
-      const card = el("div", { cls: "card" });
+      const card = cardState(el("div", { cls: "card" }), isConfigured);
       const title = el("div", { cls: "card-title" });
       title.appendChild(el("span", { text: channel.display_name }));
       if (channel.featured) title.appendChild(badge("推荐", "ok"));
+      if (isConfigured) title.appendChild(configuredBadge());
       card.appendChild(title);
       const models = el("div", { cls: "models" });
       channel.models.slice(0, 4).forEach((model) => models.appendChild(badge(model)));
@@ -296,30 +308,28 @@ function renderAdd() {
       const link = el("a", { cls: "link", attrs: { href: channel.key_page, target: "_blank", rel: "noopener noreferrer" }, text: "获取密钥 ↗" });
       card.appendChild(link);
       if (channel.notes) card.appendChild(el("p", { cls: "notes", text: channel.notes.length > 84 ? channel.notes.slice(0, 84) + "…" : channel.notes }));
-      const configureBtn = el("button", { cls: "btn", attrs: { type: "button" }, text: "配置" });
-      configureBtn.addEventListener("click", () => openWizard(channel.id, false));
-      card.appendChild(configureBtn);
+      card.appendChild(actionButton(channel.id, isConfigured));
       return card;
     });
   });
 
   Object.keys(BUILTIN_LABELS).forEach((providerId) => {
-    if (configured.has(providerId)) return;
+    const isConfigured = configured.has(providerId);
     addCard(() => {
-      const card = el("div", { cls: "card" });
-      card.appendChild(el("div", { cls: "card-title", children: [el("span", { text: BUILTIN_LABELS[providerId] })] }));
+      const card = cardState(el("div", { cls: "card" }), isConfigured);
+      const title = el("div", { cls: "card-title", children: [el("span", { text: BUILTIN_LABELS[providerId] })] });
+      if (isConfigured) title.appendChild(configuredBadge());
+      card.appendChild(title);
       const isCompatible = providerId === "openai-compatible";
       card.appendChild(el("p", { cls: "notes", text: isCompatible
         ? "任意 OpenAI 兼容中转站：需填写 Base URL（HTTPS origin）与模型，凭据环境变量 OPENAI_API_KEY。"
         : "官方/托管渠道：端点固定，凭据环境变量 " + BUILTIN_ENV[providerId] + "。" }));
-      const configureBtn = el("button", { cls: "btn", attrs: { type: "button" }, text: "配置" });
-      configureBtn.addEventListener("click", () => openWizard(providerId, false));
-      card.appendChild(configureBtn);
+      card.appendChild(actionButton(providerId, isConfigured));
       return card;
     });
   });
 
-  if (!rendered) grid.appendChild(el("div", { cls: "empty", text: "目录渠道均已配置。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。" }));
+  if (!rendered) grid.appendChild(el("div", { cls: "empty", text: "渠道目录为空。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。" }));
 }
 
 async function load() {

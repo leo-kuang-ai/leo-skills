@@ -113,6 +113,30 @@ class ChannelCompatLookupTest(unittest.TestCase):
         self.assertIn("channel size menu violated", result.stderr)
 
 
+class BatchCompatGatingTest(unittest.TestCase):
+    """批处理每任务回写点：渠道模型不上行 output_format（回归核对③）。"""
+
+    def test_batch_channel_model_omits_output_format(self):
+        import subprocess, tempfile, json
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            jobs = Path(tmp) / "jobs.jsonl"
+            jobs.write_text(
+                json.dumps({"prompt": "probe"}) + "\n", encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(IMAGE_GEN), "generate-batch", "--dry-run",
+                 "--model", "cogview-4", "--size", "1792x1008",
+                 "--input", str(jobs), "--out-dir", tmp],
+                capture_output=True, text=True, timeout=60,
+                env={"PATH": "/usr/bin:/bin", "CODEX_PPT_IMAGE_MODEL": "cogview-4",
+                     "LEO_PPT_PARAM_COMPAT": json.dumps({"rejects": ["quality"]})},
+            )
+            self.assertEqual(result.returncode, 0, result.stderr[-200:])
+            body = result.stdout
+            self.assertNotIn('"output_format"', body)
+            self.assertNotIn("quality", body)
+
+
 class QualityParamFamilyGatingTest(unittest.TestCase):
     def _dry_run_request(self, model: str) -> dict:
         result = subprocess.run(

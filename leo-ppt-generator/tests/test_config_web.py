@@ -788,6 +788,46 @@ class StaticAssetTests(unittest.TestCase):
         text = PYPROJECT_PATH.read_text(encoding="utf-8")
         self.assertIn('"config/assets/*"', text)
 
+    def test_add_section_shows_all_channels_with_reconfigure(self):
+        # 添加区展示 CLI 支持的全量渠道：已配置的标「已配置」并提供
+        # "重新配置"（换密钥入口），不再隐藏（用户实测：已配置渠道
+        # 从添加区消失，误以为页面目录缺渠道且无从换密钥）。
+        js = JS_ASSET_PATH.read_text(encoding="utf-8")
+        self.assertIn("已配置 ✓", js)
+        self.assertIn("重新配置", js)
+        self.assertIn("card-configured", js)
+        self.assertIn("openWizard(providerId, isConfigured)", js)
+        # 渲染循环不得再按 configured 跳过（防回退到隐藏模式）。
+        self.assertNotIn("if (configured.has(channel.id)) return", js)
+        self.assertNotIn("if (configured.has(providerId)) return", js)
+
+    def test_web_channel_catalog_matches_cli_wizard_providers(self):
+        # 契约：web 添加区渠道全集 == CLI 向导可选 provider 全集
+        # （channel_catalog + 内置三项）。两侧同源，此测试防未来漂移
+        # 导致"页面缺渠道"。BUILTIN_IMAGEGEN 是宿主内置非用户配置项，
+        # 不在 CLI 选择菜单。
+        import re as _re
+
+        from leo_ppt_generator.config import channel_catalog
+        from leo_ppt_generator.config.web import _BUILTIN_PROVIDER_LABELS, _channels_payload
+
+        payload = _channels_payload()
+        web_ids = {c["id"] for c in payload["channels"]} | {b["id"] for b in payload["builtin"]}
+        wizard_src = (
+            RUNTIME_SRC / "leo_ppt_generator" / "config" / "wizard.py"
+        ).read_text(encoding="utf-8")
+        cli_builtin = {
+            name.lower().replace("_", "-")
+            for name in _re.findall(r"ProviderName\.([A-Z_]+)\b", wizard_src)
+            if name != "BUILTIN_IMAGEGEN"
+        }
+        cli_ids = {channel.id for channel in channel_catalog.channels()} | cli_builtin
+        self.assertEqual(web_ids, cli_ids)
+        self.assertEqual(
+            set(_BUILTIN_PROVIDER_LABELS),
+            {"openai", "openai-compatible", "atlascloud"},
+        )
+
     def test_asset_has_no_alert_and_no_inline_dynamic_handlers(self):
         for path in (ASSET_PATH, JS_ASSET_PATH):
             text = path.read_text(encoding="utf-8")

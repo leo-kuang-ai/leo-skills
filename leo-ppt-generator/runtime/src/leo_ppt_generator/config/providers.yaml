@@ -19,8 +19,8 @@ channels:
   - id: qianxing
     display_name: 乾行AI
     featured: true
-    portal: https://fast.qianxing.us.ci/
-    key_page: https://fast.qianxing.us.ci/token
+    portal: https://fast.qianxing.us.ci
+    key_page: https://fast.qianxing.us.ci
     credential_environment: QIANXING_API_KEY
     endpoint_origin: https://fast.qianxing.us.ci
     api_path: /v1

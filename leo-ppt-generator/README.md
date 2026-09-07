@@ -91,6 +91,14 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 
 配置状态短语对照：`configured_unverified / locally_configured` = 已配置，首次生成图片时
 顺带完成真实验证；`not_configured / invalid` = 尚未配置或无效，需运行 `leo-ppt config`。
+渠道与凭据也可用本地控制台管理：`leo-ppt ui`（或 `leo-ppt config ui`）打开 127.0.0.1 控制台，支持渠道
+新增/修改/删除/切换/排序与三种密钥录入（网页一次性录入直写系统钥匙串且页面零回显、
+终端安全录入、环境变量引用），目录渠道卡片直达各平台取 key 页面；自动模式下可按
+**权重**（1-1000，小值优先）直接配置各渠道的选用顺序。控制台的「生成任务」Tab 提供
+生成过程可视化：任务列表与详情（流程步骤与耗时、逐页状态网格、页图预览、事件时间线、
+渠道链路统计、交付与质量闸），生成期间实时轮询、纯只读。更新技能后请先让
+受管 runtime 重新安装（`runtime_manager.py ensure`）再启动控制台，否则可能报
+`config_ui_asset_missing`（旧运行时缺页面资产）。
 
 #### 方式三：宿主对话框粘贴安装指引
 

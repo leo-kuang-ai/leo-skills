@@ -318,5 +318,51 @@ class RecordedPageTerminalStateTest(unittest.TestCase):
         self.assertTrue(Path(artifact.artifact_path).is_file())
 
 
+class DispatchDisciplineWarningTest(unittest.TestCase):
+    """加固 WS6 第一步：同 agent-id 累计 record ≥3 页 → run 账本警告事件。"""
+
+    def setUp(self):
+        from PIL import Image
+
+        self._tmp = tempfile.TemporaryDirectory(prefix="leo-ws6-")
+        run_root = Path(self._tmp.name) / "run-001"
+        self.run_dir = run_root / "image-deck"
+        adapter = ImageDeckAdapter(self.run_dir)
+        three = copy.deepcopy(SLIDES) + [{"number": 3, "notes": ""}]
+        adapter.prepare(three)
+        self.png = Path(self._tmp.name) / "page.png"
+        Image.new("RGB", (1600, 900), "#ffffff").save(self.png)
+        self.ledger = run_root / "reports" / "run-ledger.jsonl"
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _record(self, number: int, agent: str) -> None:
+        adapter = ImageDeckAdapter(self.run_dir)
+        jobs = adapter._jobs()
+        adapter.record(
+            number, self.png, backend="render:html",
+            expected_revision=jobs["revision"],
+            operation_id=f"op-{number}-{agent}", agent_id=agent,
+        )
+
+    def test_third_consecutive_record_by_same_agent_warns(self):
+        for n in (1, 2, 3):
+            self._record(n, agent="serial-agent")
+        self.assertTrue(self.ledger.is_file())
+        lines = [json.loads(l) for l in self.ledger.read_text(encoding="utf-8").splitlines()]
+        warnings = [l for l in lines if l.get("step") == "dispatch_discipline_warning"]
+        self.assertEqual(len(warnings), 1)
+        self.assertEqual(warnings[0]["agent_id"], "serial-agent")
+        self.assertEqual(warnings[0]["recorded_by_agent"], 3)
+
+    def test_distinct_agents_do_not_warn(self):
+        for n, agent in ((1, "w1"), (2, "w2"), (3, "w3")):
+            self._record(n, agent=agent)
+        if self.ledger.is_file():
+            lines = [json.loads(l) for l in self.ledger.read_text(encoding="utf-8").splitlines()]
+            self.assertFalse([l for l in lines if l.get("step") == "dispatch_discipline_warning"])
+
+
 if __name__ == "__main__":
     unittest.main()

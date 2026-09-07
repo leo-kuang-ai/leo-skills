@@ -18,8 +18,8 @@ if not re.search(r"必须|强度|规范|MUST|情态|模态|语气", text, re.IGN
     print("未指出 MUST 被弱化为“可以”的模态强度问题", file=sys.stderr)
     sys.exit(1)
 
-# ③ 严重性分级（接受英文分级或中文分级：严重/重要/轻微、分级标题带序号）
-if not re.search(r"critical|major|minor|严重性|严重\s*[:：]?\s*\d|重要问?题|轻微|\d\s*[级类]", text, re.IGNORECASE):
+# ③ 严重性分级（接受英文分级或中文分级：严重（含“严重错误/按严重程度排列”）、重要、轻微、分级标题带序号）
+if not re.search(r"critical|major|minor|严重|重要问?题|轻微|\d\s*[级类]", text, re.IGNORECASE):
     print("审校意见未使用严重性分级（critical/major/minor 等）", file=sys.stderr)
     sys.exit(1)
 

@@ -252,5 +252,71 @@ class CliPrepareSourcesTest(unittest.TestCase):
         self.assertEqual(str(caught.exception), "sources_manifest_invalid")
 
 
+class RecordedPageTerminalStateTest(unittest.TestCase):
+    """D-DEF-04 回归：已 recorded 页只允许幂等重放或显式 rework 再写。"""
+
+    def setUp(self):
+        from PIL import Image
+
+        self._tmp = tempfile.TemporaryDirectory(prefix="leo-ppt-recorded-")
+        self.run_dir = Path(self._tmp.name) / "image-deck"
+        adapter = ImageDeckAdapter(self.run_dir)
+        adapter.prepare(copy.deepcopy(SLIDES))
+        self.png = Path(self._tmp.name) / "page.png"
+        Image.new("RGB", (1600, 900), "#ffffff").save(self.png)
+        self.adapter = ImageDeckAdapter(self.run_dir)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _record_once(self):
+        jobs = self.adapter._jobs()
+        return self.adapter.record(
+            1,
+            self.png,
+            backend="render:html",
+            expected_revision=jobs["revision"],
+            operation_id="op-first",
+        )
+
+    def test_late_record_on_recorded_page_rejected(self):
+        self._record_once()
+        jobs = self.adapter._jobs()
+        with self.assertRaises(ContractError) as caught:
+            self.adapter.record(
+                1,
+                self.png,
+                backend="render:html",
+                expected_revision=jobs["revision"],
+                operation_id="op-late",
+            )
+        self.assertEqual(str(caught.exception), "page_already_recorded")
+
+    def test_idempotent_replay_of_same_operation_still_allowed(self):
+        first = self._record_once()
+        jobs = self.adapter._jobs()
+        replay = self.adapter.record(
+            1,
+            self.png,
+            backend="render:html",
+            expected_revision=jobs["revision"],
+            operation_id="op-first",
+        )
+        self.assertEqual(first.artifact_sha256, replay.artifact_sha256)
+
+    def test_explicit_rework_can_replace_recorded_page(self):
+        self._record_once()
+        jobs = self.adapter._jobs()
+        artifact = self.adapter.record(
+            1,
+            self.png,
+            backend="render:html",
+            expected_revision=jobs["revision"],
+            operation_id="op-rework",
+            rework=True,
+        )
+        self.assertTrue(Path(artifact.artifact_path).is_file())
+
+
 if __name__ == "__main__":
     unittest.main()

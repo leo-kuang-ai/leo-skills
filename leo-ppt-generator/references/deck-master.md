@@ -4,6 +4,10 @@
 > 用户确认的对象、后续审查与修复的第一落点、以及 revision 与 diff 的锚。它不改变
 > 五层质量门，只把「内容事实/叙事结构」两层的检查前移到最便宜的位置。
 
+确认与等待统一按 SKILL.md 的协作方式：委托执行完成内部审查后可置
+`confirmation: confirmed`，同时记录 `decision_source: user-delegated` 与
+`decision_basis`；人工确认使用 `user-confirmed`。两者都不替代最终人工视觉验收。
+
 ## 为什么需要母版
 
 成品图上发现内容问题（断言超源、要点无落位、引用错位）时，修复意味着整页重做；
@@ -43,12 +47,18 @@
    容器**；存在无落位要点或无内容容器即失败。页面用图在此标注**来源三级**
    （实拍 / 生成-氛围 / 生成-示意，规则见通用设计规范图像铁律）。数据页数值按
    `styles/00_索引/图表样式规范.md` 置信度形状语法标注来源级。
+   **风格约束摘抄**：`rendering_constraints` / `negative_prompt` /
+   `visual_elements` 不在 `style render` 的机器注入键内（注入通道对照见
+   [style-library.md](style-library.md)）；组页时须把所选 brief 的
+   rendering_constraints 要点与 negative_prompt 词条**摘入该页视觉行**
+   （约束一行 + 负面词条随图行或生成提示词携带），否则这些词表不进生图链路。
    **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
    [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
    `12_版式库/*.layouts.json` sidecar，`"$LEO_PPT" style layouts` 可查）。
    **undecided 页固定呈现格式**：置信度 <0.5 的页在母版中标注
    `第 <页号> 页版式待定：候选 <P码A> 或 <P码B>，理由 <一行>`，在既有母版
-   确认交互里被人工裁决——不静默任选，不新增确认门（CI-5）。
+   审查节点裁决；委托执行可给出有依据的选择，仍须容量预检和样张验证，不能把低置信度
+   推荐当作已经验证。共创时等待用户选择，不新增确认门（CI-5）。
    **强视觉版式一 deck 一次**：P1/P9/P23/P24/P34/P36（`reuse_friendly=false`）
    全 deck 合计不超 sidecar 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
    定稿前跑 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。
@@ -100,10 +110,10 @@ deck-contract:
 推导链）;`figure_orientation` 取值 figure-first/balanced/text-first（图表取向,
 驱动版式与页数倾向）;`section_priority` 为节级优先级页数表,高优先节多页、低优先
 节压缩或并入,各节 Σ建议页数须与内容页数对账（不等即 WARN）。学术场景缺任一
-字段即校验失败;通用 deck 可省略本块（不阻断）。学术场景还须在合同确认轮问明
+字段即校验失败;通用 deck 可省略本块（不阻断）。学术场景按请求确定
 交付档位：组会简报（minimal）还是答辩证据密集（dense-defense,见
 `references/styles/科研答辩风.md` 双档）——档位决定要点禅档位上限与版式密度,
-未问明前不得默认取密集档。
+无法可靠推断时再问，不得无依据默认取密集档。
 
 ## 数字登记表（数字元数据单源）
 
@@ -133,6 +143,11 @@ deck-contract:
   unknown **例外清单**，不审全表。
 - 对比断言必带基准期间，无基准按编造阻断；统计图缺样本量/误差标注降级示意
   版式；单位制由合同声明，同一物理量全 deck 单位与量级一致。
+- **请求金额测算行**：收束页/行动请求中出现的金额（预算、分期、gate 余额、
+  分配额）必须有对应测算行——数值拆到可核参数或引用报价口径；无测算时显式
+  标 `unknown` 并附补齐时限与 owner。裸估算金额进入请求页按内容层缺口处理，
+  确认摘要必须披露并给补齐计划（与 image-deck-workflow 第 1 步金额测算纪律
+  呼应）。
 
 ## 目录承诺表（deck-promises，可选）
 
@@ -264,11 +279,29 @@ deck-promises:
   替换为测量条件；引号内、示意级标注、`--style-sample` 文风样本高频词
   豁免；非学术母版该族 INFO 跳过（交付档案 `style_sample` 字段即
   `--style-sample` 的样本来源，R-20）。
+- **AI 腔英文套话族（m，R-27）**：标题/要点整短语命中 dive into /
+  explore / let's / journey 词边界（词表来源 baoyu-slide-deck base-prompt
+  禁用清单，MIT 快照 6b7a2e4 2026-07-03）→ WARN，换回具体动作或直陈句；引号内专名
+  （如「Customer Journey Map」）、`--allow`、`--style-sample` 高频词豁免；
+  不阻断，随确认摘要说明取舍。
 - **登记表 diff 判读（R-19）**：TF-1 减法重生成后跑
   `python3 scripts/check_number_ledger.py --diff <旧母版> <新母版>`——exit 1
   （verified?=yes 行按 数值×页×口径 键消失）即数字性证据静默丢失，须显式
   降级示意或经用户确认后重跑通过；INFO 行（新增 / 数值变化）随修订摘要
   如实呈现。
+
+## 交付档位（加固 WS4，可选字段）
+
+母版头部可声明 `delivery_tier: minimal | standard | assured`（缺省 standard，
+非法值 FAIL）：
+
+- `minimal`（≤8 页/内部）：五层质量门与诚实红线不减，确认点允许合并
+  （合同+大纲同轮呈现）；样张以 user-delegated 为默认决策来源。
+- `standard`：现行全部门禁。
+- `assured`（融资/合规/答辩）：现行门禁 + 双评审官档 + 逐页 QA 留忍。
+
+档位只做减法到 minimal 的确认交互；任何档位的门禁集合变更须引用
+backend_stats/缺陷账本数据（证据驱动减门）。
 
 ## 母版纪律
 
@@ -285,6 +318,19 @@ deck-promises:
   只看这页成品,听众能否获得本页声称的结论?** 若这页拿掉原文就立不住,说明它只是
   原文的截图而非论证,回母版重写或降为附录用图。两问均为 agent 自检与确认摘要
   呈现项,不做确定性校验（语义判断归评测 judge）。减法发生在母版层,不在成品图上。
+- **反方与边界承载**：内容合同的 `strongest_objection` 与
+  `invalidation_triggers` 必须在母版中有显式承载——独立边界页（页面角色
+  「边界」或 `argument_role`「反方」）或收束页前的显式要点；确无反方时写
+  「无已知反方+检索依据」。仅有支持性证据链、无任何反方承载的 deck 在确认
+  摘要中按内容层缺口披露（决策型材料天然承载反方；其余场景由本条牵引；
+  `check_master_contract` ⑪ 判据为机器子集，标题/口播提及不计承载）。
+- **护栏最小完备**：收束页与认错/失效线的每个动作项（请求、验证、监控）
+  必须携带 owner 与时限；验证类动作必须附交付物定义（可核实输出物——
+  报告/数据表/签字文件），无交付物的「持续加强/保持关注」表述不得充当
+  动作项。压缩/引用场景下 owner 与时限随内容同行，不得只存在于合同。
+- **跨工件引用**：标题或要点引用其他 deck/评审/报告的结论时，同行附一行
+  推导或原文路径（工件名+节名）；只引用结论不附依据视为证据断链，回母版
+  补齐后再提交确认。
 - 数字与断言按三级标注（引用/估算/示意，见 workflow 第 1 步）；示意项不得声明使用
   图表版式;估算项进量化图形必须带形状语法。
 - 若合同约定版面固定件（页码/页脚/署名位），母版视觉行必须写明其位置与字号。

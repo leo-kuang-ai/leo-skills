@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "style-index-v1.schema.json",
+  "title": "风格派生索引 v1",
+  "type": "object",
+  "required": ["kind", "schema_version", "generation", "source_digest", "counts", "entries", "name_alias_index"],
+  "properties": {
+    "kind": {"const": "style-index"},
+    "schema_version": {"const": 1},
+    "generation": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "counts": {
+      "type": "object",
+      "required": ["assets", "by_role", "independent_styles"],
+      "properties": {
+        "assets": {"type": "integer", "minimum": 0},
+        "by_role": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "independent_styles": {"type": "integer", "minimum": 0}
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "allOf": [{"$ref": "#/definitions/asset_summary"}],
+        "type": "object",
+        "required": ["name", "path", "scope", "asset_role", "coverage", "verification", "display"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^references/styles/"},
+          "scope": {"enum": ["builtin", "user"]},
+          "asset_role": {"enum": ["style", "layout", "axis", "rule", "pool", "reference", "unknown"]},
+          "coverage": {"enum": ["full", "partial", "name-only"]}
+        }
+      }
+    },
+    "name_alias_index": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}}
+  },
+  "definitions": {
+    "digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "display_field": {
+      "type": "object",
+      "required": ["value", "source_field", "present", "truncated"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {"type": ["string", "null"], "maxLength": 160},
+        "source_field": {"type": "string"},
+        "present": {"type": "boolean"},
+        "truncated": {"type": "boolean"}
+      },
+      "if": {"properties": {"present": {"const": false}}},
+      "then": {"properties": {"value": {"type": "null"}, "truncated": {"const": false}}},
+      "else": {"properties": {"value": {"type": "string", "minLength": 1}}}
+    },
+    "display": {
+      "type": "object",
+      "required": ["suitable_for", "visual_character", "density", "layout_hint"],
+      "additionalProperties": false,
+      "properties": {
+        "suitable_for": {"allOf": [{"$ref": "#/definitions/display_field"}, {"properties": {"value": {"maxLength": 120}, "source_field": {"const": "best_for"}}}]},
+        "visual_character": {"allOf": [{"$ref": "#/definitions/display_field"}, {"properties": {"source_field": {"const": "visual_direction"}}}]},
+        "density": {"allOf": [{"$ref": "#/definitions/display_field"}, {"properties": {"value": {"maxLength": 60}, "source_field": {"const": "canvas.density"}}}]},
+        "layout_hint": {"type": "array", "maxItems": 2, "items": {"allOf": [{"$ref": "#/definitions/display_field"}, {"properties": {"value": {"maxLength": 80}, "source_field": {"pattern": "^layout_patterns\\[[01]\\]$"}}}]}}
+      }
+    },
+    "verification_record": {
+      "type": "object",
+      "required": ["status", "evidence_ref", "digest"],
+      "properties": {
+        "status": {"enum": ["not-run", "passed", "failed", "stale"]},
+        "evidence_ref": {"type": ["string", "null"]},
+        "digest": {"anyOf": [{"$ref": "#/definitions/digest"}, {"type": "null"}]}
+      },
+      "if": {"properties": {"status": {"enum": ["passed", "failed"]}}},
+      "then": {"properties": {"evidence_ref": {"type": "string", "minLength": 1}, "digest": {"$ref": "#/definitions/digest"}}}
+    },
+    "asset_summary": {
+      "type": "object",
+      "required": ["name", "load_name", "path", "scope", "aliases", "asset_role", "coverage", "compatibility", "verification", "display", "diagnostics"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "load_name": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+        "scope": {"enum": ["builtin", "user"]},
+        "aliases": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "asset_role": {"enum": ["style", "layout", "axis", "rule", "pool", "reference", "unknown"]},
+        "coverage": {"enum": ["full", "partial", "name-only"]},
+        "compatibility": {"type": "object", "required": ["legacy_callable"], "properties": {"legacy_callable": {"type": "boolean"}}},
+        "display": {"$ref": "#/definitions/display"},
+        "diagnostics": {"type": "array", "items": {"type": "string"}},
+        "verification": {
+          "type": "object", "required": ["schema", "layout", "visual"], "additionalProperties": false,
+          "properties": {
+            "schema": {"$ref": "#/definitions/verification_record"},
+            "layout": {"$ref": "#/definitions/verification_record"},
+            "visual": {"$ref": "#/definitions/verification_record"}
+          }
+        }
+      }
+    },
+    "summary": {
+      "allOf": [{"$ref": "#/definitions/asset_summary"}],
+      "required": ["kind", "schema_version", "source", "style_content_digest", "selection_fingerprint"],
+      "properties": {
+        "kind": {"const": "style-summary"},
+        "schema_version": {"const": 1},
+        "source": {"enum": ["builtin", "reference", "user"]},
+        "style_content_digest": {"$ref": "#/definitions/digest"},
+        "selection_fingerprint": {"$ref": "#/definitions/digest"}
+      },
+      "not": {"required": ["content"]}
+    }
+  }
+}

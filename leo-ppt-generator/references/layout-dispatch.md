@@ -80,12 +80,26 @@ exit 2）；评测对 agent 回复中的非枚举版式名做否定感知拦截�
 
 - 待定行就在既有母版确认交互里被人工裁决（CI-5：确认点数量不变）；
 - 每个待定页给恰好 2 个候选（打分器输出 top 2）；
-- 用户不裁决不得静默任选落版式。
+- 共创时用户不裁决不得静默任选；委托执行可按既有授权在母版审查节点裁决并记录依据，
+  但推荐本身仍为 undecided，必须完成独立容量与实际样张检查才能定稿。
 
 母版视觉行节同时声明：版式选择可由 `suggest_layout.py` 预打分（见
 `deck-master.md` 视觉行）。
 
 ## 与容量预检（B3）的衔接
+
+### 实际作用域与强制出口
+
+先读取选定风格的 summary 并核对同一 home/selection_fingerprint。仅当实际 source 为随包风格，
+且真实同名路由存在时，才用该路由的 preferred/discouraged/capacity_factor。user 同名覆盖没有专属绑定时，
+**调度与容量预检两次都去掉 style 名称**，使用通用 layout-bank；报告“仅通用布局，风格适配待样张”，
+不使用同名 builtin 的配对渲染、预览或容量因子，也不建立新的用户 sidecar 搜索体系。
+
+`suggest_layout.py` 的 `decision=auto` 只表示综合候选分达到阈值，不代表容量已通过。
+两次检查必须保持同一页的文本与要点粒度；一个长要点不能改成大量单字要点。固定文本槽版式还检查 points 总量，避免无限复用最宽槽；定稿应显式映射 slots。
+角色和节奏分可能使 `capacity_fit=0` 的候选仍得到 auto；必须执行下面的独立容量预检。
+独立检查的 overflow 无条件阻断该页定稿，不能因 auto、用户催促或之前样张通过而忽略。
+未知 P 码、空版式库或缺少容量字段时报告缺口，不伪造风格专属支持。
 
 调度环产出候选后、落版式前，对要点文本跑生成前容量预检：
 
@@ -101,6 +115,15 @@ python3 scripts/check_deck_geometry.py --capacity <deck_spec/master JSON>
 - 软超不占退出码（2 语义保留给用法错误），以输出行区分三态。
 - 与交付后 visual_qa 像素断言的职责分界：本预检是**生成前文本级**，
   visual_qa 是**交付后像素级**；一个防患一个兜底，不重复。
+
+### 样张继承
+
+source_digest 只判断目录同步；style_content_digest 判断实际读取内容；layout_binding_digest
+由实际使用的路由/版式和容量因子组成，无绑定为未记录。三者不等于样张接受状态。
+仅 source/taxonomy 改动且视觉投影、实际绑定与生成方法不变时，核验后保留既有样张；
+视觉、绑定、backend、尺寸或生成方法变化时，回既有视觉方向/样张门重确认。
+旧 run 缺历史 digest 不视为相等，可回读其冻结材料核验；材料缺失则报告，不自动重写成品。
+依据放在现有母版 engineering 与 qa_note，禁止把索引/选择元数据放进 deck_spec.style 或最终图片 prompt。
 
 ## page_type 映射表（36 版式治理字段汇总）
 

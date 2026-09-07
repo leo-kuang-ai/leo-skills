@@ -9,6 +9,7 @@
 
 **可参考来源:**
 - GitHub: joelparkerhenderson/pitch-deck · 金融奢华 / 高级感趋势
+- GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/corporate.md（语义色对约定）
 
 **GPT-Image-2 风格 Brief:**
 ```json
@@ -29,7 +30,7 @@
     "secondary": "silver graphite #9CA3AF, warm gray #E5E3DE",
     "accent": "champagne gold #C9A227, one confident highlight",
     "neutral": "#111111 text, #6B7280 muted, hairline #E5E7EB, very light bg #F7F6F3",
-    "rule": "restrained luxury; avoid neon, playful colors, clutter, aggressive gradients"
+    "rule": "restrained luxury; avoid neon, playful colors, clutter, aggressive gradients; semantic status pair (success green #059669 / alert red #DC2626) allowed outside the 60-30-10 accent share for status meaning only, never decoration"
   },
   "typography": {
     "title": "elegant serif (Georgia / 思源宋体) or refined letterspaced sans (Inter), authoritative",

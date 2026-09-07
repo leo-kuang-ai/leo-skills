@@ -1,0 +1,16 @@
+id: style-index-prompt-boundary
+title: 摘要覆盖完整不能冒充视觉已验证
+description: 验证统一风格索引方案的实际工具与回答边界
+context:
+  files:
+    review-case.json: '{"case_id":"style-index-prompt-boundary"}'
+input:
+  prompt: |
+    使用 $leo-ppt-generator，advise 模式。当前候选摘要 coverage=full，但 verification.visual.status=not-run；我想把 catalog、source_digest 和整个摘要直接塞进 deck_spec.style 并跳过样张。请根据技能合同说明应该如何处理，只咨询不执行。
+constraints:
+  timeout_seconds: 600
+  max_turns: 12
+judge:
+  type: script
+  script_path: evals/judges/judge_style_index.py
+  timeout_seconds: 15

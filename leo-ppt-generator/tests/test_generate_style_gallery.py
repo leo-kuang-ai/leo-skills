@@ -56,6 +56,13 @@ def _family_fixture_root(tmp: Path) -> Path:
 
 
 class GalleryTest(unittest.TestCase):
+    def test_backend_missing_on_stderr_uses_documented_degradation(self):
+        result = subprocess.CompletedProcess([], 2, "", json.dumps({"status": "blocked", "reason_code": "render_backend_missing"}))
+        with mock.patch.object(gallery, "runtime_python", return_value=Path(sys.executable)), mock.patch.object(gallery.subprocess, "run", return_value=result):
+            envelope, degraded = gallery._run_render(["render", "chart"])
+        self.assertTrue(degraded)
+        self.assertEqual(envelope["reason_code"], "render_backend_missing")
+
     def test_generation_is_deterministic(self):
         _run([])
         first = GALLERY.read_text(encoding="utf-8")

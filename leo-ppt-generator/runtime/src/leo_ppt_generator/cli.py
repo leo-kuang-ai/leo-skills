@@ -21,6 +21,7 @@ from .application.routes import (
     select_route,
 )
 from .application.run_index import IdempotencyConflict, RevisionConflict, RunIndex
+from .application.sample_decisions import record_sample_decision, verify_sample_decision
 from .backend_execution import BackendExecutionError
 from .config.backend_contract import BackendContractError, BackendRegistry
 from .config.channel_catalog import channel_by_name, channel_names
@@ -77,7 +78,7 @@ from .storage import (
     secure_user_tree,
     sha256_bytes,
 )
-from .styles import StyleStoreError, list_styles, load_style, save_style
+from .styles import StyleStoreError, list_styles, load_style, save_style, style_summary, list_style_summaries
 from .layout_bank import (
     CapacityFilterError,
     filter_layout_bank_by_capacity,
@@ -106,7 +107,7 @@ MAX_SLIDES_CONTRACT_BYTES = 1024 * 1024
 # provider 枚举从 checked-in 渠道目录派生；新增渠道不改本文件。
 CHANNEL_PROVIDERS = channel_names()
 EXTERNAL_PROVIDER_CHOICES = ("openai", "openai-compatible", "atlascloud", *CHANNEL_PROVIDERS)
-BACKEND_PROVIDER_CHOICES = ("builtin-imagegen", *EXTERNAL_PROVIDER_CHOICES)
+BACKEND_PROVIDER_CHOICES = ("builtin-imagegen", "render-lane", *EXTERNAL_PROVIDER_CHOICES)
 PROFILE_CONFIGURABLE_PROVIDERS = ("openai-compatible", *CHANNEL_PROVIDERS)
 PROVIDER_EXAMPLES = "|".join(EXTERNAL_PROVIDER_CHOICES)
 
@@ -1072,6 +1073,9 @@ def build_parser() -> argparse.ArgumentParser:
     config = subcommands.add_parser("config")
     config.add_argument("--key-stdin", action="store_true")
     config_commands = config.add_subparsers(dest="config_command")
+    config_ui = config_commands.add_parser("ui", help="打开本地图片服务配置界面")
+    config_ui.add_argument("--no-browser", action="store_true")
+    config_ui.add_argument("--port", type=int, default=0)
     config_status = config_commands.add_parser("status")
     config_status.add_argument("--route")
     config_status.add_argument(
@@ -1257,10 +1261,23 @@ def build_parser() -> argparse.ArgumentParser:
     prepare.add_argument("run_path", nargs="?")
     prepare.add_argument("--run-dir")
     prepare.add_argument("--slides")
+    prepare.add_argument("--sample-binding", help="样张实际绑定 JSON；提供时必须存在可复用的样张决策")
     prepare.add_argument(
         "--sources",
         help="视觉来源清单（content/sources-manifest.json）；冻结进 run input 并入 prepare_fingerprint",
     )
+    for sample_command in ("sample-record", "sample-verify"):
+        sample_parser = image_commands.add_parser(sample_command)
+        sample_parser.add_argument("run_path", nargs="?")
+        sample_parser.add_argument("--run-dir")
+        sample_parser.add_argument("--slides", required=sample_command == "sample-record")
+        sample_parser.add_argument("--binding", required=sample_command == "sample-record")
+        if sample_command == "sample-record":
+            sample_parser.add_argument("--sample", required=True)
+            sample_parser.add_argument("--decision-source", choices=("user-confirmed", "user-delegated"), required=True)
+            sample_parser.add_argument("--authorization-ref", required=True)
+            sample_parser.add_argument("--authorization-quote", required=True)
+            sample_parser.add_argument("--supersedes", help="显式替换旧样张决策时提供旧回执文件 sha256；保留旧记录")
     record = image_commands.add_parser("record")
     record.add_argument("run_path", nargs="?")
     record.add_argument("--run-dir")
@@ -1431,16 +1448,21 @@ def build_parser() -> argparse.ArgumentParser:
     style_commands = style.add_subparsers(dest="style_command", required=True)
     style_list = style_commands.add_parser("list")
     style_list.add_argument("--home")
+    style_list.add_argument("--summary", action="store_true", help="返回实际作用域的有界候选摘要")
+    style_list.add_argument("--limit", type=int, default=None)
+    style_list.add_argument("--offset", type=int, default=None)
     style_list.add_argument(
         "--filter",
-        help="按名称/别名字符串过滤（大小写不敏感；318 条全量输出前的轻量裁剪）",
+        help="按名称/别名字符串过滤（大小写不敏感；别名查询使用 --summary）",
     )
     style_load = style_commands.add_parser("load")
     style_load.add_argument("name")
     style_load.add_argument("--home")
+    style_load.add_argument("--summary", action="store_true", help="只返回实际文件的摘要和选择指纹")
     style_render = style_commands.add_parser("render")
     style_render.add_argument("style")
     style_render.add_argument("--home")
+    style_render.add_argument("--expected-selection", help="核对摘要选择指纹，源变化时停止组合")
     style_render.add_argument("--mode", help="论证模式名（06_论证模式）")
     style_render.add_argument(
         "--brand", help="品牌身份名（10_品牌身份 或 $LEO_PPT_HOME/brands，用户 VI 优先）"
@@ -1800,6 +1822,14 @@ def _dispatch_config_credential(args: argparse.Namespace) -> dict[str, Any]:
 def _dispatch_config(args: argparse.Namespace) -> dict[str, Any]:
     request = StatusRequest(route=getattr(args, "route", None))
     command = args.config_command
+    if command == "ui":
+        from .config.web import serve_config_ui
+
+        return serve_config_ui(
+            _config_service(),
+            port=getattr(args, "port", 0),
+            open_browser=not getattr(args, "no_browser", False),
+        )
     if command is None:
         report = _config_wizard(
             key_stdin=getattr(args, "key_stdin", False)
@@ -2423,6 +2453,17 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
     if args.command == "image":
         run_path = _run_path(args)
         adapter = ImageDeckAdapter(_domain_path(run_path, "image-deck"))
+        if args.image_command == "sample-record":
+            result = record_sample_decision(
+                run_path, sample=args.sample, slides=args.slides, binding=args.binding,
+                decision_source=args.decision_source, authorization_ref=args.authorization_ref,
+                authorization_quote=args.authorization_quote,
+                supersedes=args.supersedes,
+            )
+            return envelope("ready", "sample_decision_recorded", sample_decision=result)
+        if args.image_command == "sample-verify":
+            result = verify_sample_decision(run_path, slides=args.slides, binding=args.binding)
+            return envelope("ready", "sample_decision_verified", sample_decision=result)
         if args.image_command == "prepare":
             _require_prepare_input(run_path)
             slides_path = args.slides
@@ -2434,7 +2475,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 slides_path = next((str(path) for path in candidates if path.is_file()), None)
             if not slides_path:
                 raise ContractError("slides_required")
+            verify_sample_decision(run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True)
             slides_path = str(_freeze_slides_contract(run_path, slides_path))
+            sample_decision = verify_sample_decision(
+                run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True,
+            )
             slides = _json_file(slides_path)
             if not isinstance(slides, list) or len(slides) > 50:
                 raise ContractError("input_too_large")
@@ -2482,6 +2527,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 "ready",
                 "image_deck_prepared",
                 result=result,
+                sample_decision=sample_decision,
                 **_operation_payload(
                     operation_id=f"image-prepare-{state_hash[:16]}",
                     idempotency_status="replayed" if existed else "created",
@@ -2658,6 +2704,10 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 safe_to_retry=False,
                 next_action={"kind": "inspect_next"},
             )
+        sample_decision = verify_sample_decision(run_path, allow_legacy=True)
+        frozen_slides = Path(run_path).resolve() / "input/slides.json"
+        if sample_decision["status"] == "verified":
+            verify_sample_decision(run_path, slides=frozen_slides)
         output = _delivery_output_path(run_path, args.output)
         assert_run_quota(Path(run_path).resolve(), load_runtime_config())
         result = adapter.finalize(output, rebuild=args.rebuild)
@@ -2674,6 +2724,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
         return envelope(
             "completed",
             "image_delivery_completed",
+            sample_decision=sample_decision,
             artifact_refs=[result["pptx"], *report_refs],
             evidence_refs=report_refs,
             state_hash=adapter.state_hash(),
@@ -3026,6 +3077,13 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
         _home_arg = getattr(args, "home", None)
         home = Path(_home_arg).expanduser().resolve() if _home_arg else None
         if args.style_command == "list":
+            if args.summary:
+                result = list_style_summaries(home=home, needle=getattr(args, "filter", None) or "",
+                                             limit=20 if args.limit is None else args.limit,
+                                             offset=0 if args.offset is None else args.offset)
+                return envelope("ready", "style_summaries_listed", **result, safe_to_retry=True)
+            if args.limit is not None or args.offset is not None:
+                raise StyleStoreError("style_summary_required_for_pagination")
             styles = list_styles(home=home)
             needle = getattr(args, "filter", None)
             if needle:
@@ -3037,6 +3095,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 ]
             return envelope("ready", "style_listed", styles=styles, safe_to_retry=True)
         if args.style_command == "load":
+            if args.summary:
+                return envelope("ready", "style_summary_loaded", style=style_summary(args.name, home=home), safe_to_retry=True)
             result = load_style(args.name, home=home)
             return envelope("ready", "style_loaded", style=result, safe_to_retry=True)
         if args.style_command == "layouts":
@@ -3080,6 +3140,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 )
             result = compose_style(
                 args.style,
+                home=home,
+                expected_selection=getattr(args, "expected_selection", None),
                 mode=args.mode,
                 colors=_parse_color_overrides(getattr(args, "color", None)),
                 var_overrides=_parse_var_overrides(getattr(args, "var", None)),

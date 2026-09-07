@@ -2,13 +2,14 @@
 title: leo-ppt-generator 风格库理想态目标架构（北极星）
 type: architecture
 date: 2026-09-02
-status: reference
-version: v4.5
+status: draft
+version: v4.6
 status_note: >
-  draft — 五 Agent 对抗式评审确认 6 个 P0 与 11 个 P1，v4.4 的 frozen 已撤回。本版闭合全部 P0
-  与关键 P1；重新冻结的前置是 §0.5 解冻退出条件全绿，其中含两项必须由代码/CI 侧提供的载体。
+  draft — v4.6 据 spec-doc-review 评审修订：advisory 许可门补覆盖率激活护栏（评审 P1）、修「L1
+  原子切换」残留表述、补 draft 状态下的先行开发入口与 §0.5 条件 3 分级口径。重新冻结的前置是
+  §0.5 退出条件按分级口径全绿，其中含必须由代码/CI 侧提供的载体。
 scope: 目标架构参考，独立于迁移方案；定义目标合同，不含迁移排期与实现任务
-supersedes: v4.4
+supersedes: v4.5
 authority: 与 related 中任何实现计划冲突时，以本文为准（见 §0.4）
 related:
   - docs/plans/2026-09-02-001-refactor-leo-ppt-style-library-restructure-plan.md   # needs-rewrite：目标目录与字段形状冲突，见 §0.4
@@ -16,6 +17,14 @@ related:
   - leo-ppt-generator/references/style-library.md                                  # 局部过期：stem 式 sidecar 命名与写死计数
   - leo-ppt-generator/references/style-recommendation.md                           # 局部过期：写死计数与家族真值 owner
 revision_note: >
+  v4.6（2026-09-04，据 spec-doc-review 评审 + owner 三项决策确认修订）：① §4.3 advisory 许可门
+  拆「标注期 / 排除期」两段激活——排除期以自研 `native-owned` 回填达标为激活条件，消除「覆盖率为
+  0 时默认推荐面瞬间缩水」与 §18「治理门不得以牺牲现状可用能力为代价一次性开启」原则的冲突
+  （§1.2、§12.4、§14.3、§15 L1d、§17.7 同步修订）；② §1.2/§14.1/§15.2 三处「L1 原子切换」改为
+  「L1d 完整 v2 原子切换」，与 v4.5 的 L1a–L1d 拆分叙事一致；③ §0.5 补先行开发入口声明（L0/L1
+  前置项可在 draft 下实施），并把条件 3 分级为「三处一致已达成 + fixture 纳入 L1d 验收合同」；
+  ④ §15 证据③补 prompt 组装字节确定性前置；⑤ frontmatter `status` 由 `reference` 改 `draft`。
+  原则骨架不变。
   v4.5（2026-09-03，据五 Agent 对抗式评审撤回冻结后修订）：闭合 6 个 P0 与 11 个 P1——
   ① 收据移出 `deck_spec.style`，prompt projection 改为显式白名单，消除架构自身违反 §13.1 的缺陷；
   ② 许可门拆 advisory/enforcing 两级，枚举补自研与已核验值并纳入 versioned vocabulary，
@@ -191,8 +200,8 @@ v4.4 曾在「六项合同已闭合」的结论下标记 `frozen`，随后的对
 | # | 退出条件 | 谁能证明 |
 |---|---|---|
 | 1 | prompt 白名单与「收据不进 prompt」有实际 fixture，且跑在最终逐页 prompt 上 | 代码侧（需先造冻结 deck fixture） |
-| 2 | `license` vocabulary 首版枚举落地，存量回填口径与 advisory→enforcing 的准入数值确定 | 实现计划 + 治理 owner |
-| 3 | 方向基数三处一致，且覆盖不足时的浏览 fallback 有正反 fixture | 代码侧 |
+| 2 | `license` vocabulary 首版枚举落地，存量回填口径与 advisory 标注期→排除期→enforcing 的各级准入数值确定 | 实现计划 + 治理 owner |
+| 3 | 方向基数三处一致（**v4.5 已达成**）；覆盖不足时的浏览 fallback 有正反 fixture（分级口径：fixture 纳入 L1d 查询面验收合同即满足本条件，不要求冻结前已实现） | 实现计划（合同落位）+ 代码侧（L1d 交付） |
 | 4 | L1a–L1d 拆分被实现计划采纳，且**存在 CI 载体**承载 §14.4 的扫描门 | 代码/CI 侧 |
 | 5 | name-keyed 成员表（family 成员、alias 表、golden 代表）有存在性 lint | 代码侧 |
 | 6 | ~~`related` 两份计划已按 §0.4 标注对齐状态~~ **已完成（2026-09-03）** | 治理动作 |
@@ -200,6 +209,10 @@ v4.4 曾在「六项合同已闭合」的结论下标记 `frozen`，随后的对
 条件 4、5 **架构文档无法自证**：截至本版，仓库无 CI 编排文件，§14.4 的「CI 拒绝新增 stem/路径拼接」
 与 §15 退出证据①的「CI 扫描」尚无载体；上述成员表亦无任何 lint 校验其成员可解析到真实 brief。
 在这两项落地前，相关机械门只是**待建门**，不得记为已生效。
+
+**先行的开发入口（v4.6）**：条件 1、2、4、5 的载体本身是代码/治理工作，冻结与开发不是串行关系。
+L0 与 §15 的 L1 前置项是这些退出条件的**指定载体**，可在本文 `draft` 状态下先行实施；L1a 起的
+实施以本文重新冻结 + 对齐后的实现计划为前置。
 
 ---
 
@@ -221,7 +234,7 @@ v4.4 曾在「六项合同已闭合」的结论下标记 `frozen`，随后的对
 本节是目标态全部到位（L3 完成）的判据，不是任一分级的准入线；分级见 §15。目标态只有同时
 满足以下条件才算成立：
 
-- L0 以现有 brief 合同的临时校验 profile 完成 `source`/`taxonomy.families` 富化；L1 原子切换后，
+- L0 以现有 brief 合同的临时校验 profile 完成 `source`/`taxonomy.families` 富化；L1d 完整 v2 原子切换后，
   所有可执行 brief 统一通过完整 `style-brief-v2` schema，且不保留第二套长期 schema；
 - 所有 style 与被引用资产都有持久稳定 ID，ID、名称、别名与文件路径冲突均可检测；
 - L3 后 authored assets 只位于 `styles/canonical/`，每个 style 以
@@ -234,6 +247,8 @@ v4.4 曾在「六项合同已闭合」的结论下标记 `frozen`，随后的对
   未知或缺失信号不被臆测；
 - 候选结果带匹配原因、准入状态、资产指纹和类型化 rule effect；`required_include` / `exclusive_lock`
   与 MMR 的交互可观察；
+- 推荐精准度有可验收定义（§8.5）：安全类四门（硬规则零违反、许可零泄漏、降级正确、多样性达标）在
+  标注评测集上全绿，相关度类指标在已富化覆盖面内达到评测校准目标线，覆盖面外如实降级；
 - L1 后所有身份或路径敏感消费者经 resolver 定位资产，不再拼接编号目录；
 - style → rendering/layout 与 preset fallback 无悬空引用；
 - readiness 能区分 `passed/failed/not_run/stale`，并绑定完整有效组合的 `resolved_input_digest`；
@@ -245,7 +260,7 @@ v4.4 曾在「六项合同已闭合」的结论下标记 `frozen`，随后的对
   且该隔离由机械门看护，不依赖下游逐个过滤；
 - 每次语义查询返回 request-scoped `coverage_state` 与对应降级 reason code，且**响应永不为空**——
   方向数不足时必带浏览/点名 fallback；
-- 许可治理以 advisory 级为默认，enforcing 级独立排级并以澄清覆盖率为准入；`origin: native` 的资产
+- 许可治理以 advisory 级为默认（标注期起步，排除期激活条件见 §4.3），enforcing 级独立排级并以澄清覆盖率为准入；`origin: native` 的资产
   有合法许可取值可填；
 - 全库风格计数只有单一口径，且不在 prose、reference 文档或代码常量中写死；
 - CLI 用户可见输出在身份迁移期保持兼容，或差异已列举并记入 CHANGELOG；
@@ -446,7 +461,7 @@ styles/
 `cleared-no-restriction`。**`origin: native` 必须能取 `native-owned`**：把自研资产逼进 `unknown`
 再由门判死，是判定链设计错误，不是合规严谨。
 
-#### 许可门分两级（v4.5）
+#### 许可门分两级，advisory 内分两期（v4.5；v4.6 拆期）
 
 v4.4 把「不得晋升 + 不得执行 + 不得发布」写成一道同时生效的 fail-closed 门。该设计在
 `source.license` 覆盖率为 0 的现状下会让可用风格池瞬间归零（含全部自研内置），且它被挂在 L1 上，
@@ -454,16 +469,21 @@ v4.4 把「不得晋升 + 不得执行 + 不得发布」写成一道同时生效
 
 | 级别 | 生效内容 | 引入时机 | 准入条件 |
 |---|---|---|---|
-| **advisory** | 计算 `license_policy_result`；`unknown` 不进**默认推荐面**并返回 scope-aware reason code；provenance 索引如实展示 | L1 随许可策略注入 | 无（不依赖回填进度） |
+| **advisory·标注期** | 计算 `license_policy_result`；`unknown` 返回 scope-aware reason code；provenance 索引如实展示；**不从默认推荐面排除** | L1d 随许可策略注入 | 无（不依赖回填进度） |
+| **advisory·排除期** | 追加：`unknown` 不进**默认推荐面**（仍可显式点名解析与执行） | 标注期之后独立激活 | 自研资产 `native-owned` 回填覆盖率达到治理 owner 设定阈值（阈值为实现参数，见 §18） |
 | **enforcing** | 追加：`unknown` 不得晋升 `candidate`/`verified`、不得执行、不进**对外分发子集** | **独立里程碑，不挂 L1** | 许可澄清覆盖率达到治理 owner 设定阈值（阈值为实现参数，见 §18） |
 
-advisory 级不阻断执行与分发，因此可以在回填未完成时安全开启；enforcing 级只有在存量已被澄清到
-足以不伤害可用池时才允许开启。两级都必须可观察，且**不得跳过 advisory 直接开 enforcing**。
+advisory 拆为**标注期 / 排除期**两段激活（v4.6）：标注期不改变任何现有可见能力，可以在回填未开始时
+安全开启；**排除期不得早于自研 `native-owned` 回填达标**——否则在覆盖率为 0 的现状下，advisory 一开
+就会把全部未核验内置风格同时移出默认推荐面，违反 §18 原则层的「治理门不得以牺牲现状可用能力为代价
+一次性开启」。enforcing 级只有在存量已被澄清到足以不伤害可用池时才允许开启。各级都必须可观察，时序
+固定为**标注期 → 排除期 → enforcing**，不得跳级；两级门的结构不变，排除期是 advisory 内部的激活
+升级，不是第三级门。
 
 #### scope 与 owner 边界
 
-- **builtin `unknown`**：advisory 级下留在 inventory/pool、浏览索引与 provenance 索引，可被显式点名
-  解析，但不进默认推荐；enforcing 级下按上表收紧。例外必须有显式、可审计的批准收据，记录 owner、
+- **builtin `unknown`**：advisory 两期都留在 inventory/pool、浏览索引与 provenance 索引，可被显式点名
+  解析；排除期起不进默认推荐；enforcing 级下按上表收紧。例外必须有显式、可审计的批准收据，记录 owner、
   适用 scope 与有效期；**收据过期后自动回落到该级别的默认行为**（不静默延期，也不追溯撤销已交付 deck）；
 - **user-local `unknown`**：在本机**默认可用**，包括 §6.2 的「同场景优先列为候选」——用户自己导入的
   资产不因未填许可字段而被判成风险资产。仅在 export、共享或提升为 builtin 时必须过许可门，此时
@@ -880,6 +900,72 @@ evaluate(request, family_vocabulary) -> RuleEffects
 - family members 从 authored `taxonomy.families` 派生；
 - catalog 缺失/不兼容在 adapter 边界失败，不污染纯规则自测。
 
+### 8.5 推荐精准度验收标准
+
+前四小节定义的是推荐的**形状与下限**（可解释、不臆测、不静默失败、硬约束不被绕过）。本小节回答一个
+形状合同不回答的问题：**多准才算准**。它是「精准」的可验收目标，不是算法本身——具体权重与模型仍归
+recommendation plan（§18）。之所以写进架构，是因为「什么算达标」属目标合同，与 §1.2 完成判据同性质；
+缺了它，「推荐高质量」只是一句无法证伪的话。
+
+#### 8.5.1 富化覆盖率是精准的前置，不是可选优化
+
+语义排序只在**已富化子集**内进行。因此覆盖率不是“锦上添花”，而是“语义推荐面的大小”本身。承诺分档：
+
+| 覆盖率（有 `recommendation_features` 的可执行 style 占比） | 系统只能诚实承诺什么 |
+|---|---|
+| 0（现状） | 只有点名 + facet 浏览 + 硬规则过滤；**无语义排序** |
+| 覆盖到高频池（热门场景/家族的代表风格） | 高频请求可语义推荐；长尾仍 `name-only` |
+| 覆盖到每个 family/domain 至少 N 个 | 每类请求都有可排序候选，跨家族多样性可真实满足 |
+| 全库覆盖 | 语义推荐面 = 全库 |
+
+- 覆盖率必须按 family/domain 分布**可观测**（`counts.md`），不允许只报全局百分比掩盖某类为 0；
+- **禁止用批量模板化标签造假富化**（§15.2）：把一批风格套同一组 features 会制造“覆盖率上去了但推
+  不准”的假象，比不富化更有害，因为它让降级机制误判为“覆盖充足”。富化真实性由抽检 + 反馈背离度看护。
+
+#### 8.5.2 用标注评测集度量，不靠主观感觉
+
+精准度必须有一个 held-out 的 **请求 → 期望方向** 标注集，覆盖真实场景分布（答辩/路演/党政/报告/
+儿童科普…），每条标注“哪些 style 合适、哪些必须排除、期望的家族多样性”。指标分两类：
+
+**A. 安全类（硬门，任一不达标即阻断“高质量”声称）**
+
+| 指标 | 目标 | 失准代价 |
+|---|---|---|
+| 硬规则零违反率 | 100% | 推错冒犯性风格（学术答辩出蒸汽波、儿童出高攻击系）代价远高于排序次优 |
+| 许可门零泄漏 | 100% | 待澄清/不合规风格进入默认推荐面 |
+| 降级正确率（覆盖不足时不硬凑） | 100% | 假装精准比诚实降级更伤信任 |
+| 跨家族多样性达标率（方向≥2 时） | 100% | 三个方向同质等于只给一个 |
+
+**B. 相关度类（质量门，持续优化目标）**
+
+| 指标 | 含义 | 起步目标（示意，最终由评测校准） |
+|---|---|---|
+| top-1 合适率 | 首推方向被标注为“合适”的比例 | 高频场景优先达标 |
+| top-3 命中率 | 期望风格出现在 2–3 方向内 | — |
+| 归因可信度 | 归因句与实际匹配信号一致（非事后编造） | 抽检 |
+
+安全类是**布尔门**，不达标就不能声称“高质量”，与相关度分数无关——这对应 §8.3 “硬约束不被 boost 绕过”。
+
+#### 8.5.3 反馈闭环让它随用变准
+
+一次性调准不现实，精准是长出来的：
+
+- 强正样本（`sample_accepted`/`delivery_accepted`）加权，拒绝按 §6.3 **可达地** decay（纯抵消语义会
+  让 decay 不可达，已在 §6.3 修正）；
+- 定期用**反馈背离度**（推荐被采纳率 vs 富化声称的适配）反向抽检富化质量，揪出 8.5.1 的造假富化；
+- 权重调整必须回放评测集，防止“迎合近期反馈但整体退化”。
+
+#### 8.5.4 分级达标（不要求一次到位）
+
+| 层级 | 推荐质量门 |
+|---|---|
+| L0 | 富化覆盖率可观测（按 family/domain）；name-only 可达；**尚无语义排序承诺** |
+| L1d | typed query 返回带归因候选 + coverage/降级；**安全类四门全绿**；高频池语义排序可用 |
+| L2 | MMR 去同质 + verified 加权；相关度类指标进入持续优化，评测集回放常态化 |
+
+据此，“推荐精准高质量”的**可验收定义**是：安全类四门在评测集上全绿（任何层级的硬前提），且相关度类
+指标在已富化覆盖面内达到评测校准的目标线；覆盖面之外如实降级、绝不假装。达不到就不能这么声称。
+
 ---
 
 ## 9. Agent 与 CLI 查询面
@@ -1178,7 +1264,8 @@ writer 或导出路径；本架构不要求它，但要求实现计划**显式�
 | user catalog 失配且无法同步重建 | 返回 `user_catalog_stale_degraded`，降级到精确 load/list（与 mutation 的 retryable code 区分） |
 | 请求语义覆盖部分不足 | 返回 `semantic_coverage_partial` 与 coverage summary；仅在已富化子集排序，附浏览 fallback |
 | 请求语义覆盖不足 | 返回 `semantic_coverage_insufficient` 与 coverage summary；不声称全库最优，**必须附浏览/点名 fallback**（§8.3 无零出口） |
-| license advisory 判定为待澄清 | 从**默认推荐面**排除并返回 scope-aware reason code；仍可显式点名解析与执行；不降格成相关度扣分 |
+| license advisory（标注期）判定为待澄清 | 返回 scope-aware reason code、provenance 如实展示；**不排除**、不降格成相关度扣分；仍可显式点名解析与执行 |
+| license advisory（排除期）判定为待澄清 | 从**默认推荐面**排除并返回 scope-aware reason code；仍可显式点名解析与执行；不降格成相关度扣分 |
 | license enforcing 判定为不允许 | 追加从**可执行面与对外分发子集**排除；不从 bundle 兼容闭包中删除文件（§12.2） |
 | evidence stale | 收据置 `stale`，tier 由 `verified` 派生为 `candidate`（§11.2），不删除资产 |
 
@@ -1296,7 +1383,7 @@ preset/实际 fallback、component、影响输出的 canon/contracts，以及 co
 
 ### 14.1 Schema / identity
 
-- L0 的现有 brief 合同校验 profile 只增加 `source`/`taxonomy.families` 等地基字段；L1 原子切换后，
+- L0 的现有 brief 合同校验 profile 只增加 `source`/`taxonomy.families` 等地基字段；L1d 完整 v2 原子切换后，
   每个 brief 恰好一个可解析的完整 `style-brief-v2` JSON block，不并存第二套长期 schema；
 - `style_id` 全局唯一且 immutable；非 style 资产 ID 持久化在 canonical asset 或同位 sidecar，
   不得在运行时持续由 stem/P 码派生；
@@ -1340,7 +1427,8 @@ preset/实际 fallback、component、影响输出的 canon/contracts，以及 co
   `candidates[]` 内每条携带 `enrichment`，使「`name-only` 未参与语义排序」可逐条判定而非靠聚合数推断；
 - `coverage_state` 非 `complete` 时 `browse_fallback` 非空；**不存在方向数为 0 且无浏览出口的响应**
   （§8.3 无零出口）；
-- 许可门两级各有正反 fixture：**advisory** 级下待澄清条目不进默认推荐但仍可显式点名执行；
+- 许可门各级各有正反 fixture：**advisory 标注期**下待澄清条目仍进默认推荐但携带 reason code；
+  **advisory 排除期**下不进默认推荐但仍可显式点名执行；
   **enforcing** 级下追加不得晋升/执行/进分发子集，且**不从 bundle 兼容闭包中删除文件**；
   user-local 本机使用与 export/共享分别有正反 fixture；用户点名不能绕过对外分发合规门；
 - `origin: native` 的资产存在合法 `license` 取值，不会被迫落入 `unknown`（§4.3）；
@@ -1389,7 +1477,7 @@ preset/实际 fallback、component、影响输出的 canon/contracts，以及 co
 | **L1a 身份地基（加性、可增量）** | 全量铸造 style 与被引用资产稳定 ID，作为**新增字段**写入；ID 全局唯一性 lint 绿；旧 stem 解析仍是权威 | 身份可用，零行为变更 | 不切换解析权威、不改文件形状、不改 `style_name` |
 | **L1b 消费者收敛（含唯一的原子步）** | resolver 双读等价（同一输入经 stem 路径与 ID 路径返回同一实体，全库 CI 断言）→ 逐个把 composer、loader、pack/gallery、preview/golden、generator、lint/docs 切到 resolver → **最后一步把「按 stem/编号目录定位」从合法降为 CI ERROR** | 路径与身份解耦 | 不改叶子文件形状 |
 | **L1c 叶子成包（单向门）** | 在现有父目录内把每个 style 归一为 `<id-slug>/{brief.md,layouts.json}`；按 §12.2 的 reader-first / writer-second 两次发布完成 | style 成为独立维护与导出单元 | 不搬 canonical 角色父目录、不改 `style_name` |
-| **L1d 查询与治理面（允许输出变化）** | 原子切换完整 `style-brief-v2`；builtin/user 两平面；推荐特征合同；typed query；许可 **advisory** 门；`experimental/candidate/deprecated` 基线资格；request-scoped coverage/degradation；硬规则依赖注入；composition resolution 基础收据（未引入的 L2 角色可 absent） | 用户复用与候选推荐真正闭环 | 不要求全库 golden；**不开许可 enforcing 级**（见 §4.3） |
+| **L1d 查询与治理面（允许输出变化）** | 原子切换完整 `style-brief-v2`；builtin/user 两平面；推荐特征合同；typed query；许可 **advisory** 门（标注期起步，排除期激活条件见 §4.3）；`experimental/candidate/deprecated` 基线资格；request-scoped coverage/degradation；硬规则依赖注入；composition resolution 基础收据（未引入的 L2 角色可 absent） | 用户复用与候选推荐真正闭环 | 不要求全库 golden；**不开许可 enforcing 级**（见 §4.3） |
 | **L2 组合与证据** | bindings、presets、components、pool promotion、verification receipts、`verified/stale` 证据置信、分面 shards 与 MMR；新增角色一旦参与输出即纳入既有 composition resolution | 高质量组合、可解释准入与长期治理 | 不重新定义 L1 candidate 资格；不强迫一次性补齐全部存量 |
 | **L3 物理重构** | 在既有 contracts/evidence/generated 边界上收敛 `canonical/` authored 区；将 L1 已归一化的 style 实体包原字节搬到 `canonical/briefs/<id-slug>/`，按角色搬迁其余 authored assets；重建 Markdown 链接/清单/生成物，退役兼容 adapter 与旧父路径 | source/build 边界清晰、style 可独立维护/导出、编号/来源目录退役 | 不再改叶子文件形状、不迁移消费者、不改变已铸身份或推荐合同 |
 
@@ -1451,6 +1539,10 @@ v4.4 只举了三个点状例子，实际扫描面是四类，其中第四类无
 
 证据③依赖两个当前不存在的前提：可复用的冻结 `deck_spec` fixture，以及把逐页 prompt 落盘用于比对的
 既有入口。落盘入口已存在，fixture 需在 L1a 之前建立并冻结——**基线必须在任何身份改动之前采集**。
+**确定性前置（v4.6）**：证据③还隐含第三个前提——prompt 组装对冻结 `deck_spec` 必须**字节确定**：
+不得含运行时日期、随机量或未钉死的环境值；若确有此类字段，须在 fixture 冻结时替换为常量并记录。
+这与 §12.1 为 catalog 钉死 `serialization_profile` 同理，但作用于 prompt 组装路径；实现计划须为此
+给出断言或显式的人工核验步骤，否则该门会假失败并随后被弱化。
 
 ### 15.1 为什么 L0 必须有最小生成器
 
@@ -1473,7 +1565,7 @@ L0 profile 只是原合同上的迁移期校验投影，不是第二套长期 sc
 
 ### 15.2 存量富化策略
 
-- L0 中新增/修改 brief 只需满足现有 brief 合同及 L0 校验 profile；L1 原子切换完成后，新增/修改及
+- L0 中新增/修改 brief 只需满足现有 brief 合同及 L0 校验 profile；L1d 完整 v2 原子切换完成后，新增/修改及
   全量存量 brief 才统一强制完整 `style-brief-v2`（含 `style_id`），并删除 L0 profile 的过渡职责；
 - 存量可按命中频率、推荐使用和来源批次渐进富化；
 - 缺 recommendation features 的存量只可按名称浏览，不冒充高质量语义推荐；每次 query 的 coverage
@@ -1537,8 +1629,10 @@ L0 profile 只是原合同上的迁移期校验投影，不是第二套长期 sc
 7. **许可门（v4.5 新增）**：引入 scope-aware 的许可治理。
    *代价*：这是本架构对现状**杀伤力最大**的单点。`source.license` 当前覆盖率为 0，若一次性开启完整
    fail-closed，可用风格池会瞬间归零（含全部自研内置），高敏场景家族尤其脆弱。
-   *补偿*：拆 advisory / enforcing 两级（§4.3），enforcing 以澄清覆盖率为准入且不挂 L1；枚举补
-   `native-owned` / `cleared-no-restriction` 使自研与已核验资产有值可填；user-local 本机默认可用。
+   *补偿*：拆 advisory / enforcing 两级且 advisory 内部再分标注期 / 排除期（§4.3）——排除期以自研
+   `native-owned` 回填达标为激活条件，enforcing 以澄清覆盖率为准入且不挂 L1，彻底消除「门一开
+   推荐面瞬间缩水」的路径；枚举补 `native-owned` / `cleared-no-restriction` 使自研与已核验资产
+   有值可填；user-local 本机默认可用。
 8. **覆盖降级（v4.5 新增）**：语义覆盖不足时如实降级，不假装全库最优。
    *代价*：用户可能拿到少于 2 个、甚至 0 个**语义排序**方向，体验上不如「总是给三个」。
    *补偿*：响应永不为空——强制附浏览/点名 fallback（§8.3 无零出口），确认门始终有可确认工件。

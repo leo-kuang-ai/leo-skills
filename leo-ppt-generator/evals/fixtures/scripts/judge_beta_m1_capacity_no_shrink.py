@@ -36,7 +36,9 @@ negators = (
 def positive(patterns):
     for sentence in re.split(r"[。！？\n]+", text):
         body = plain(sentence)
-        for clause in re.split(r"[；;，,]", body):
+        for clause in re.split(r"[；;，,]|但是|但(?=我|可以|仍|还是)", body):
+            if re.search(r"(?:属于视觉降级|会绕过|本该拦截|违反|不通过|走不通)", clause):
+                continue
             if clause and any(re.search(p, clause) for p in patterns) and not any(
                 v in clause for v in negators
             ):

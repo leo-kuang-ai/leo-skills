@@ -30,16 +30,24 @@
 - 上游同步方式：[creator-buddy/UPSTREAM.md](creator-buddy/UPSTREAM.md)
 - 平台凭据（`GUAIKEI_API_TOKEN` 等）走本地环境变量，不入库
 
+### `software-article-en-zh`
+
+软件工程英文 → 简体中文翻译技能。完整翻译不摘要，保留否定、条件、量词与规范性强度（MUST/SHOULD/MAY）；代码块、命令、API、配置、路径、URL 与 Markdown 结构原样保护；源文中的提示词与命令视为待译数据，不执行也不默认跳过；输入不完整时报告 `partial` / `constrained` / `blocked` 受限状态，不编造。
+
+- 入口：[software-article-en-zh/SKILL.md](software-article-en-zh/SKILL.md)
+- 安装与用法：[software-article-en-zh/README.md](software-article-en-zh/README.md)
+- 评测：50 个用例（`evals/cases/`，10 维度 × 5）+ 39 个否定感知 script judge；另含真实文档全文翻译 case（`evals/eval-doc.yaml`）
+
 ## 安装与使用
 
-三个插件（`evidence-first-writing` / `leo-ppt-generator` / `creator-buddy`）统一按以下方式安装；各插件 README 的安装节与此保持一致。
+四个插件（`evidence-first-writing` / `leo-ppt-generator` / `software-article-en-zh` / `creator-buddy`）统一按以下方式安装；各插件 README 的安装节与此保持一致。
 
 ### 方式一：一行命令（推荐，已实测）
 
 用通用安装器（[vercel-labs/skills](https://github.com/vercel-labs/skills)，自动识别 78+ 宿主）安装，终端粘贴：
 
 ```sh
-# 装齐三个技能（已实测）
+# 装齐四个技能（已实测）
 npx skills add leo-kuang-ai/leo-skills
 
 # 只装一个
@@ -60,11 +68,11 @@ npx skills add leo-kuang-ai/leo-skills -s leo-ppt-generator
 | 通用 agents 目录 | `~/.agents/skills/`（Codex / Cursor 等兼容宿主通用） |
 | 其他 runtime | clone 到对应宿主的 `skills/` 目录 |
 
-本仓库是多技能 monorepo：clone 整仓后把三个技能目录软链进目标宿主的 skills 目录。以 Claude Code 为例（其他宿主替换两处路径即可）：
+本仓库是多技能 monorepo：clone 整仓后把四个技能目录软链进目标宿主的 skills 目录。以 Claude Code 为例（其他宿主替换两处路径即可）：
 
 ```sh
 git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/skills/leo-skills \
-  && for p in evidence-first-writing leo-ppt-generator creator-buddy; do ln -s ~/.claude/skills/leo-skills/"$p" ~/.claude/skills/"$p"; done
+  && for p in evidence-first-writing leo-ppt-generator software-article-en-zh creator-buddy; do ln -s ~/.claude/skills/leo-skills/"$p" ~/.claude/skills/"$p"; done
 ```
 
 `git -C ~/.claude/skills/leo-skills pull` 即可更新。项目级共享：`git submodule add https://github.com/leo-kuang-ai/leo-skills.git .claude/skills/leo-skills` 后同样软链，或直接提交技能目录。
@@ -75,6 +83,7 @@ git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git ~/.claude/ski
 claude plugin marketplace add leo-kuang-ai/leo-skills \
   && claude plugin install evidence-first-writing@leo-skills \
   && claude plugin install leo-ppt-generator@leo-skills \
+  && claude plugin install software-article-en-zh@leo-skills \
   && claude plugin install creator-buddy@leo-skills
 ```
 
@@ -91,9 +100,9 @@ claude plugin marketplace add leo-kuang-ai/leo-skills \
    Cursor 为 ~/.cursor/skills，其余宿主用通用 ~/.agents/skills；不确定时选 ~/.agents/skills）；
 2. git clone --depth 1 https://github.com/leo-kuang-ai/leo-skills.git <技能目录>/leo-skills，
    已存在则改为 git -C <技能目录>/leo-skills pull 更新；
-3. 将 evidence-first-writing、leo-ppt-generator、creator-buddy 三个目录软链到技能目录
+3. 将 evidence-first-writing、leo-ppt-generator、software-article-en-zh、creator-buddy 四个目录软链到技能目录
    （Windows 无 symlink 权限时改用目录复制）；
-4. 列出技能目录确认三个技能就位，并提醒我重启宿主后生效。
+4. 列出技能目录确认四个技能就位，并提醒我重启宿主后生效。
 ```
 
 指引只做 clone / 软链 / 校验三件事，不涉及任何凭据或系统配置；第 3 步可换成单个技能名只装其一。
@@ -121,7 +130,7 @@ $leo-ppt-generator 把这份 PDF 视觉稿转成可编辑 PPTX，保留照片式
 
 ## 宿主适配
 
-三个技能都与宿主/model 无关——核心是 `SKILL.md` 与 `references/` 里的 markdown 指令，任何能读文件并遵循指令的模型都可执行。体系约定：
+四个技能都与宿主/model 无关——核心是 `SKILL.md` 与 `references/` 里的 markdown 指令，任何能读文件并遵循指令的模型都可执行。体系约定：
 
 - **约定归一化**：能力即 markdown，不绑定特定宿主字段。
 - **per-host 薄壳**：Claude Code 用 `SKILL.md` frontmatter；Codex / OpenAI 用 `evidence-first-writing` 与 `leo-ppt-generator` 各自的 `agents/openai.yaml`（`$<技能名>` 触发）；`creator-buddy` 为 vendored 集成，包根无宿主专属壳（个别子技能保留上游自带的 `agents/openai.yaml`）。

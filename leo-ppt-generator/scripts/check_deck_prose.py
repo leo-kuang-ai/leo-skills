@@ -48,6 +48,9 @@ xiaoma-durex-copywriter diction.md（人称纪律/数字裸用/禁解释自己�
      同行无量化条件（数字/百分比/对照词）→ 提示替换为测量条件；引号内、
      示意级标注、文风样本高频词（--style-sample）豁免；非学术母版（无
      deck-contract 块）该族跳过（INFO 一条）。
+  m. AI 腔英文套话（R-27，WARN）：标题/要点整短语命中 dive into /
+     explore / let's / journey 词边界 → 提示换回具体动作或直陈句；引号内
+     专名（如「Customer Journey Map」）、--allow、文风样本高频词豁免。
 
 用法：python3 scripts/check_deck_prose.py <deck-master.md> [--json]
     [--allow 词1,词2] [--style-sample 样本文件]
@@ -127,6 +130,12 @@ FORMAT_CHECKS = (
                             re.I),
      "数字与单位之间加空格"),
 )
+# Contract-mandated evidence-tag spans (【引用|src:锚点】/【用户确认|round:N】/
+# [src:锚点]，语法见 deck-master.md「数字登记表」节) are line metadata, not
+# deck prose — mask them before format checks so their halfwidth separators
+# never read as halfwidth-punctuation hits in CJK context.
+EVIDENCE_SPAN_RE = re.compile(
+    r"【(?:引用|估算|示意|用户确认|unknown)[^】]*】|\[src:[^\]]*\]")
 
 # Family g (R-16): speaker-script discipline. Clichés from shuorenhua
 # phrases-zh.md Tier1 (开场套话/过渡废话/正能量收尾) + diction.md.
@@ -199,6 +208,19 @@ VAGUE_QUANTIFIER_RE = re.compile(
 ILLUSTRATIVE_TAG_RE = re.compile(r"【示意|\[示意|\(示意")
 ACADEMIC_MARKER_RE = re.compile(r"deck-contract\s*[:：]|math_load|figure_orientation")
 
+# Family m (R-27): AI-flavored English filler phrases in titles/points. Source:
+# baoyu-slide-deck base-prompt.md banned-phrase list ("dive into" / "explore" /
+# "let's" / "journey" — JimLiu original, MIT snapshot 6b7a2e4 2026-07-03).
+# Deterministic subset = whole-phrase word-boundary matches on title/point
+# text, WARN level (never blocks; quoted product/brand names are exempt via
+# the same --allow / style-sample channels as jargon).
+AI_FLAVOR_PATTERNS = (
+    ("dive into", re.compile(r"\bdive\s+(?:deep\s+)?into\b|\bdeep\s+dive\b", re.I)),
+    ("explore", re.compile(r"\bexplo(?:re|ring)\b", re.I)),
+    ("let's", re.compile(r"\blet's\b|\blet\s+us\b", re.I)),
+    ("journey", re.compile(r"\bjourney(?:s|ed|ing)?\b", re.I)),
+)
+
 # Style-sample high-frequency words (R-20): user voice outranks generic
 # vocabularies; top-N join the exemption side of word-list families
 # (jargon / intensifiers / vague words). Single-char stopwords that would
@@ -228,10 +250,15 @@ ARGUMENT_ROLE_RE = re.compile(
 FUNCTIONAL_ROLE_WORDS = (
     "开场", "封面", "目录", "章节", "隔断", "过渡", "收束", "结尾", "致谢", "问答",
 )
-# Bullet lines matching these keys are metadata, not points.
+# Bullet lines matching these keys are metadata, not points. 页面级元信息
+# (deck-master.md「页面级元信息」节: 页面角色/argument_role/beat/
+# audience_takeaway/rst_relation) may legitimately be written as bullets —
+# keep them out of point lists so isomorphic/quote/judgement families never
+# read metadata as prose.
 NON_POINT_KEYS = (
     "标题", "备注", "视觉行", "视觉", "argument_role", "数字登记表",
     "speaker_script", "engineering", "图[",
+    "页面角色", "audience_takeaway", "rst_relation", "beat：", "beat:",
 )
 # Bare label lines ("要点：" header or the zero-point declaration "要点：无").
 POINT_LABEL_RE = re.compile(r"^要点[：:]\s*(?:无)?$")
@@ -451,6 +478,28 @@ def find_jargon(pages, allow):
     return findings
 
 
+def find_ai_flavor(pages, allow):
+    """Family m (R-27). Whole-phrase word-boundary matches only; quoted spans
+    stay exempt so product names like "Customer Journey Map" survive when the
+    deck author marks them as such."""
+    findings = []
+    for page in pages:
+        segments = [(where, text) for where, text in page.text_segments()
+                    if where == "标题" or where.startswith("要点")]
+        for where, line_text in segments:
+            stripped = QUOTED_SPAN_RE.sub("", line_text)
+            for label, pattern in AI_FLAVOR_PATTERNS:
+                if label in allow:
+                    continue
+                m = pattern.search(stripped)
+                if m:
+                    findings.append(_finding(
+                        "ai_flavor", "WARN", page.label, where,
+                        f"AI 腔英文套话「{m.group(0).lower()}」（{label}）——换回具体动作或直陈句"
+                        f"（产品名可加引号豁免，或 --allow {label}）"))
+    return findings
+
+
 def find_nominalization(pages):
     """Family c. WARN-level counting only (deck-master checklist item 4)."""
     findings = []
@@ -508,12 +557,18 @@ def find_connective(pages):
 
 
 def find_format(pages):
-    """Family f. WARN-level formatting subset over title/points/speaker lines."""
+    """Family f. WARN-level formatting subset over title/points/speaker lines.
+
+    Evidence-tag spans (EVIDENCE_SPAN_RE) are masked first: they carry the
+    contract-mandated halfwidth ``src:``/``round:`` separators that must not
+    read as halfwidth punctuation in CJK context.
+    """
     findings = []
     for page in pages:
         for where, line_text in page.text_segments():
+            scan_text = EVIDENCE_SPAN_RE.sub("", line_text)
             for name, rx, advice in FORMAT_CHECKS:
-                for m in rx.finditer(line_text):
+                for m in rx.finditer(scan_text):
                     findings.append(_finding(
                         "format", "WARN", page.label, where,
                         f"格式[{name}]「{m.group(0)}」——{advice}"))
@@ -589,10 +644,24 @@ def find_diction(pages, sample_words=frozenset()):
     return findings
 
 
+def _numeric_key(token):
+    """Normalize a numeric literal for title↔ledger comparison.
+
+    TITLE_NUMBER_RE captures "11%", "11.0", "48.6" alike; a percent-form title
+    number must reconcile with its decimal-form ledger row (标题「+11%」对
+    登记行「11.0」) — compare by value, not by literal. Non-numeric input is
+    returned unchanged (cannot occur from TITLE_NUMBER_RE, kept defensive).
+    """
+    try:
+        return round(float(token.rstrip("%")), 6)
+    except ValueError:
+        return token
+
+
 def find_title_fulfillment(pages, page_values, ledger_exists):
     """Family i (R-18). Title numbers must be covered by this page's ledger
-    rows (数值 set of the 页-matching rows); masters without a ledger skip
-    the family with a single INFO note."""
+    rows (数值 set of the 页-matching rows, compared numerically so "11%" ≡
+    "11.0"); masters without a ledger skip the family with a single INFO."""
     findings = []
     if not ledger_exists:
         findings.append(_finding(
@@ -606,11 +675,11 @@ def find_title_fulfillment(pages, page_values, ledger_exists):
         if not code_m:
             continue
         code = code_m.group(1)
-        ledger_values = page_values.get(code, set())
+        ledger_keys = {_numeric_key(v) for v in page_values.get(code, set())}
         for token in TITLE_NUMBER_RE.findall(page.title):
             if YEAR_LIKE_RE.match(token):
                 continue  # bare 19xx/20xx reads as a year, not an assertion
-            if token not in ledger_values:
+            if _numeric_key(token) not in ledger_keys:
                 findings.append(_finding(
                     "title-ledger", "WARN", page.label, "标题",
                     f"标题数字「{token}」不在本页（{code}）登记表数值中——"
@@ -758,6 +827,7 @@ def run_checks(pages, allow, ledger=None, sample_words=frozenset(),
     findings = []
     findings += find_reversal(pages)
     findings += find_jargon(pages, allow | sample_words)
+    findings += find_ai_flavor(pages, allow | sample_words)
     findings += find_nominalization(pages)
     findings += find_isomorphic(pages)
     findings += find_connective(pages)

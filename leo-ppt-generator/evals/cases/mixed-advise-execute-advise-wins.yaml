@@ -1,6 +1,6 @@
 id: mixed-advise-execute-advise-wins
-title: 混合咨询与执行指令时以咨询为准
-description: 验证"先别执行……顺手把 runtime 启动、run 创建好"的混合请求只走 advise：首行声明模式、用 Route 名称指认路线、执行切换留给后续明确授权。
+title: 混合表达中明确暂停时仍不执行
+description: 验证明确说先别执行的请求只走advise并不启动runtime；未要求暂停且已委托执行的其他请求不适用该限制。
 
 input:
   prompt: |

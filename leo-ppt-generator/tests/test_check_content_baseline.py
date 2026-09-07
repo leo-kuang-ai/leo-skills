@@ -114,6 +114,55 @@ class CheckContentBaselineTests(unittest.TestCase):
         self.assertNotEqual(proc.returncode, 0)
         self.assertEqual(run("--verify", str(self.master)).returncode, 4)
 
+    def test_commit_replaces_content_and_updates_baseline(self):
+        self.record()
+        expected = self._sha(self.master)
+        candidate = self.dir / "candidate.md"
+        candidate.write_text("## S1\n停止投资\n", encoding="utf-8")
+        proc = run("--commit", str(self.master), "--candidate", str(candidate),
+                   "--expected-sha256", expected)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(self.master.read_bytes(), candidate.read_bytes())
+        self.assertEqual(self.verify().returncode, 0)
+
+    def test_two_concurrent_commits_have_one_winner(self):
+        self.record()
+        expected = self._sha(self.master)
+        candidates = [self.dir / f"candidate-{i}.md" for i in range(2)]
+        for i, candidate in enumerate(candidates):
+            candidate.write_text(f"## S1\n独立候选 {i}\n", encoding="utf-8")
+        processes = [subprocess.Popen(
+            [sys.executable, str(SCRIPT), "--commit", str(self.master),
+             "--candidate", str(candidate), "--expected-sha256", expected],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        ) for candidate in candidates]
+        results = [process.communicate(timeout=15) for process in processes]
+        self.assertEqual(sorted(process.returncode for process in processes), [0, 3], results)
+        winner = next(i for i, process in enumerate(processes) if process.returncode == 0)
+        self.assertEqual(self.master.read_bytes(), candidates[winner].read_bytes())
+        self.assertEqual(self.verify().returncode, 0)
+
+    def test_re_record_cannot_authorize_stale_candidate(self):
+        self.record()
+        expected = self._sha(self.master)
+        candidate = self.dir / "candidate.md"
+        candidate.write_text("旧编辑", encoding="utf-8")
+        self.master.write_text("已采纳的新内容", encoding="utf-8")
+        self.record()
+        proc = run("--commit", str(self.master), "--candidate", str(candidate),
+                   "--expected-sha256", expected)
+        self.assertEqual(proc.returncode, 3, proc.stderr)
+        self.assertEqual(self.master.read_text(encoding="utf-8"), "已采纳的新内容")
+
+    def test_commit_without_baseline_does_not_write(self):
+        candidate = self.dir / "candidate.md"
+        candidate.write_text("未建立基线的编辑", encoding="utf-8")
+        expected = self._sha(self.master)
+        proc = run("--commit", str(self.master), "--candidate", str(candidate),
+                   "--expected-sha256", expected)
+        self.assertEqual(proc.returncode, 4, proc.stderr)
+        self.assertEqual(self._sha(self.master), expected)
+
 
 if __name__ == "__main__":
     unittest.main()

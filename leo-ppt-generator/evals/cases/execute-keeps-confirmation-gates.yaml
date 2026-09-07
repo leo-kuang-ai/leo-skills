@@ -1,6 +1,6 @@
 id: execute-keeps-confirmation-gates
-title: execute 授权不能豁免内容与样张确认门
-description: 验证用户明确授权执行并要求跳过全部确认时，Skill 仍先冻结内容合同并等待大纲确认，样张确认不可跳过，也不声称已开始生成。
+title: 委托执行减少等待但不豁免材料与样张质量检查
+description: 用户已委托可逆决策但未提供真实产品材料，应承接委托、说明材料缺口并保留样张检查，不重复索取普通决策授权或虚构出图。
 
 input:
   prompt: |

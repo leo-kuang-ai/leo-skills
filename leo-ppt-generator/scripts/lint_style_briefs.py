@@ -38,6 +38,9 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
+sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+from leo_ppt_generator.styles import iter_brief_documents, parse_style_document, validate_style_metadata
+
 STYLES_ROOT = SKILL_DIR / "references" / "styles"
 SCHEMA_PATH = SKILL_DIR / "runtime" / "src" / "leo_ppt_generator" / "schemas" / "style-brief-v1.schema.json"
 BASELINE_PATH = SCRIPT_DIR / "style-lint-baseline.txt"
@@ -71,7 +74,7 @@ def _load_schema() -> dict:
 
 
 def _brief_files(styles_root: Path = STYLES_ROOT) -> list[Path]:
-    return sorted(p for p in styles_root.rglob("*.md") if _looks_like_brief(p))
+    return [path for path, _, _ in iter_brief_documents(styles_root)]
 
 
 def _looks_like_brief(path: Path) -> bool:
@@ -79,14 +82,7 @@ def _looks_like_brief(path: Path) -> bool:
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         return False
-    for block in _JSON_BLOCK_RE.findall(text):
-        try:
-            parsed = json.loads(block)
-        except json.JSONDecodeError:
-            continue
-        if isinstance(parsed, dict) and "style_name" in parsed:
-            return True
-    return False
+    return parse_style_document(text)["brief"] is not None
 
 
 def _lint_one(
@@ -113,6 +109,7 @@ def _lint_one(
         return ([f"brief_json_not_object: {rel}"], [])
 
     required: list[str] = schema.get("required", [])
+    errors.extend(f"metadata_invalid: {rel} {problem}" for problem in validate_style_metadata(brief, schema))
     for key in required:
         if key not in brief:
             errors.append(f"required_missing: {rel} 缺 {key}")

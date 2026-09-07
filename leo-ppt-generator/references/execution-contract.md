@@ -19,6 +19,20 @@
   当前 run 的 `final/`。
 - backend contract 由 registry 创建和验证，不手写 capability、credential 或领域状态
   JSON。凭据只允许 `env:`、`host:`、`keychain:` reference。
+- **render-lane deck 合同（加固 WS5）**：全册页产物均为 `render:*` 的 deck 用
+  `backend create --provider render-lane` 满足 generate 路线（免凭据、免计费、
+  本地确定性），不再借图像 Provider 合同的壳；样张 `binding.backend` 在此类
+  合同下接受 `render:html`/`render:mermaid`。任一图像模型页存在时仍须图像合同。
+- **全册尺寸预算（加固 WS2）**：内容合同冻结时声明 `content/size-budget.json`
+  （`canvas_ratio`/`image_lane_px`/`render_lane_px`），交付前
+  `python3 scripts/check_size_budget.py <run>` 确定性校验：全册比例一致、渲染页
+  在 1280×720×整数 dsf 阶梯、图像页不得超过预算（渠道只能给更小档，低于预算
+  输出 WARN 并入交付披露）。
+- **hybrid 混装的 slide 尺寸统一**：`delivery assemble` 混装 image 页与
+  editable 页时按 1e-6 容差校验全册 slide 尺寸一致——image 页统一映射
+  10×5.625in（16:9），editable 页取 manifest `slide` 声明（PDF 源默认
+  13.333×7.5in）。跨源混装前须把可编辑页 manifest 的 `slide`/`content_box`
+  等比改写为 image 侧口径，否则 `page_size_mismatch` 拒绝组装（D-OBS-04）。
 - 创建 run 时冻结输入、backend contract、hash、类型、runtime identity 和 idempotency
   key。响应丢失先查询 operation/status，不用新 key 重复 mutation。
 
@@ -79,8 +93,8 @@
 
 - generate 任务中断后恢复时，以 `<project-root>/content/` 的版本化文档为确认
   状态真值：某确认门已过当且仅当存在 confirmed 基线（含其 `post-confirm`
-  修订链）；`content/` 为空即从内容合同重新开始。视觉方向与样张批准不落盘，
-  恢复到该阶段时重新询问用户。
+  修订链）；`content/` 为空即从内容合同重新开始。视觉方向与样张决策按下节收据恢复，
+  只有缺失或绑定漂移才回对应节点，不从有图片或反演字段推定人工批准。
 - 已有 reason code 时才读取 `reason-codes.md`。重复失败前必须改变输入、配置、backend
   或实现；自动重试只在 `safe_to_retry=true` 时复用同一 idempotency key。
 - 中断保留 checkpoint；cancel 是 terminal。cleanup 必须先 dry-run，再对相同 fingerprint
@@ -89,15 +103,47 @@
 
 ## 内容层状态与恢复
 
-- **基线 CAS（post-confirm 写回前，强制）**：对 `content/` 写回目标（母版 / outline /
-  sources-manifest）先用 `python3 scripts/check_content_baseline.py --record <FILE>`
-  建立基线锁（`<FILE>.base-lock.json` 记 sha256）；写回前必须 `--verify` 通过
-  （exit 0）才允许落笔——即基线哈希 CAS。漂移（exit 3）即停：给有限选项
-  （采纳为新版本：重新 `--record` 重锁 / 丢弃：恢复需人工 / 只查看），**不自动
-  覆盖**（会话外手改保护）；并发会话场景后者停止并报告，不得互相覆盖。写回
-  完成后立即 `--record` 重锁新基线，下次写回前再 `--verify`；verify 与写回
-  之间的竞态窗口由重锁+写前复核缩小（锁为 advisory，并发会话最终以基线锁
-  判冲突）。
+### 样张决策收据
+
+在已完成样张审查并形成 slides 输入后、`image prepare` 前，调用：
+
+```text
+leo-ppt image sample-record <run> --sample <样张.png> --slides <slides.json> --binding <binding.json> --decision-source user-delegated --authorization-ref <授权依据.md> --authorization-quote <真实原话>
+leo-ppt image sample-verify <run> --slides <slides.json> --binding <binding.json>
+leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.json> --sources <sources-manifest.json>
+```
+
+`binding.json` 必须包含 `backend`、`width`、`height`、`generation_method`、
+`style_visual_path`、`layout_binding_path` 六个字段。backend 与冻结 run 合同核对，
+尺寸读实际样张图片；风格填写已投影的视觉规则文件，布局填写实际绑定文件路径，
+没有绑定时显式 `null`；相对路径以 binding 文件所在目录解析。
+
+`reports/sample-decision.json` 保存具体图 hash、canonical slides hash、实际风格/布局
+文件 hash、backend 合同与决策来源。`user-confirmed` 表示记录人工选择声明，
+`user-delegated` 表示授权范围内的 Agent 决策；授权文件必须包含真实引用，不得补造。
+这只是可追溯声明，不是发言人认证，也不能用于设置最终人工验收通过。
+
+新流程必须传 `--sample-binding`。已有收据时即使不传该参数也会在 prepare 与组装前核验；
+从未启用的历史任务显式返回 `legacy/not_run`，可兼容准备但不能声称恢复了样张批准。
+`reports/sample-decision-required.json` 记录启用状态；已启用后丢失收据仍阻断，不能退回 legacy。
+缺失/损坏/漂移必须补足实际审查证据；需要重新决策时通过
+`sample-record ... --supersedes <旧收据文件sha256>` 保存历史并替换，不自动覆盖。
+
+当前保守绑定整套 slides，任一内容变化均需核对后重新记录；纯 JSON 格式变化不失效。
+已 prepare 的 run 仍遵守 slides 冻结不变量，内容改版建立新 run，不能用 supersedes 绕过。
+视觉投影文件不应携带治理元数据；若直接绑定完整 brief，其说明文字变化也会保守触发
+漂移。记录对应实际修改的依据，不能仅为通过校验重复记录未审查的样张。
+
+### 内容与执行账本
+
+- **内容版本提交（post-confirm 写回）**：以当前 runtime Python 运行
+  `scripts/check_content_baseline.py --record <FILE>` 建立初始基线并保留 sha256。
+  在独立候选文件完成编辑后，运行 `--commit <FILE> --candidate <NEW> --expected-sha256 <OLD>`，
+  在共享文件锁内核对显式旧版本、原子发布目标并更新基线。并发协作写入只有一个旧版本
+  提交能成功；冲突 exit 3，先查看差异，不自动重取最新 hash 覆盖他人。
+  `--verify` 仅为诊断，不是写入许可；`--record` 只用于初始化或明确采纳外部版本。
+  所有协作写入必须经过 commit；外部编辑器不遵守锁仍可能竞争，不能宣称阻止任意外部写入。
+  目标已发布但基线更新失败时保留漂移并停止，由恢复核对处理，不伪造整体成功。
 - **run 阶段账本（各阶段完成后）**：每页 prompt / backend / qa / record 各阶段
   与 deck 级 receipt 完成或失败时，`python3 scripts/record_run_step.py --run <run>
   --step <s> --page <N> --status <s> [--artifact <path>]` 追加
@@ -174,6 +220,11 @@ failure report 路径、准确交付类型、结构验证、未运行的 provide
 - 默认 builder 为 `legacy`（vendored zip writer，冻结不动）。对象级
   python-pptx builder（`leo-ppt-generator/object-builder-1`）经
   `LEO_EDITABLE_BUILDER=pptx|legacy` 切换；非法值 fail-closed 回落 legacy。
+- **hybrid 混装的 slide 尺寸统一**：`delivery assemble` 混装 image 页与
+  editable 页时按 1e-6 容差校验全册 slide 尺寸一致——image 页统一映射
+  10×5.625in（16:9），editable 页取 manifest `slide` 声明（PDF 源默认
+  13.333×7.5in）。跨源混装前须把可编辑页 manifest 的 `slide`/`content_box`
+  等比改写为 image 侧口径，否则 `page_size_mismatch` 拒绝组装（D-OBS-04）。
 - run 创建时（`editable prepare`）把生效值冻结进 `page_jobs.json` 的
   `builder` 字段；finalize/重建按冻结字段分派，环境变量改值不影响已创建
   run 的重建一致性。无字段的旧 run 视为 legacy。

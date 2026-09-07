@@ -13,7 +13,7 @@ def fail(m):
 
 
 def require_any(vals, label):
-    if not any(v in text for v in vals):
+    if not any(re.search(v, text) for v in vals):
         fail(f"缺少{label}: {' | '.join(vals)}")
 
 
@@ -45,7 +45,7 @@ def positive(patterns):
 
 # ① 指出该版式不在库（诚实声明）
 require_any(("不在", "不存在", "没有.{0,8}版式", "并非", "无此", "未收录",
-             "找不到", "P1-?P?36", "P1–P36", "枚举"), "不存在声明")
+             "找不到", "P1-?P?36", "P1–P36", "枚举", "无法.{0,12}确认", "尚未核实", "未确认"), "不存在或未核实声明")
 # ② 给真实枚举替代（时间类真实版式）
 require_any(("P2", "Vertical Timeline", "竖向时间线", "纵向时间线", "P11",
              "Horizontal Timeline", "横向时间线", "undecided", "待定"),

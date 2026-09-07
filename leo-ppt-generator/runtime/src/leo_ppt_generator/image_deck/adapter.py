@@ -182,11 +182,22 @@ class ImageDeckAdapter:
         expected_state_hash: str | None = None,
         lease: str | None = None,
         generation: int | None = None,
+        rework: bool = False,
     ) -> PageArtifact:
         self._assert_run_mutable()
         source = Path(image).resolve()
         if not source.is_file():
             raise ContractError("missing_page_artifact")
+        jobs = self._jobs()
+        # 已 recorded 页的终态保护（D-DEF-04）：仅幂等重放或显式 rework 可再写；
+        # 防止绕过 CLI 包装层的迟到/冲突调用静默覆盖已完成页产物。
+        replay = jobs.get("operations", {}).get(operation_id) is not None
+        if not replay and not rework:
+            slide_entry = next(
+                (item for item in jobs["slides"] if item["number"] == number), None
+            )
+            if slide_entry is not None and slide_entry.get("status") == "recorded":
+                raise ContractError("page_already_recorded")
         fingerprint = sha256_bytes(
             canonical_json(
                 {
@@ -240,9 +251,42 @@ class ImageDeckAdapter:
             }
             jobs["revision"] += 1
             atomic_write_json(self.jobs_path, jobs)
+            self._warn_dispatch_discipline(jobs, agent_id, number)
         return PageArtifact.from_source(
             f"page_{number:03d}", "image", target, target, None, notes=slide["notes"]
         )
+
+    def _warn_dispatch_discipline(self, jobs: dict, agent_id: str | None, number: int) -> None:
+        """加固方案 WS6 第一步：同 run 内同 agent-id 累计 record ≥3 页时，
+        向 run 账本追加 dispatch_discipline_warning（观察不阻断——主 Agent
+        串行替代 worker 的协议纪律先有机器证据，再谈 enforce）。"""
+
+        if not agent_id:
+            return
+        recorded_by_agent = sum(
+            1
+            for item in jobs.get("slides", [])
+            if item.get("agent_id") == agent_id and item.get("status") == "recorded"
+        )
+        if recorded_by_agent < 3:
+            return
+        run_root = self.run_dir.parent
+        ledger = run_root / "reports" / "run-ledger.jsonl"
+        try:
+            ledger.parent.mkdir(parents=True, exist_ok=True)
+            import time as _time
+
+            with ledger.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps({
+                    "ts": _time.strftime("%Y-%m-%dT%H:%M:%S"),
+                    "step": "dispatch_discipline_warning",
+                    "page": number,
+                    "agent_id": agent_id,
+                    "recorded_by_agent": recorded_by_agent,
+                    "note": "同 agent 连续 record ≥3 页：疑似主 Agent 串行替代 worker（协议纪律观察）",
+                }, ensure_ascii=False) + "\n")
+        except OSError:
+            pass  # 账本不可写不阻断交付；警告属于观察面
 
     def artifacts(self) -> list[PageArtifact]:
         jobs = self._jobs()

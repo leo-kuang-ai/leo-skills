@@ -37,13 +37,16 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 
 ## 风格库
 
-`references/styles/` 提供 137 个可加载风格 brief（11 个顶层内置 + 126 个子目录参考，
-覆盖通用母版 / 行业 / 场景 / 品牌等 14 类目录）与 146 份分节轴规范（论证模式、信息图、
-渲染、布局、品牌、图表、版式、页面语义），由 `scripts/` 下四条治理 lint
-（brief 结构 / 版式网格 / 索引防漂移 / 治理断言）保证索引、网格与风格路由不漂移。
-R-66 家族去重合并后，126 参考中 16 份同板场景变体（色板指纹相同的周报月报/年终总结
-等五大家族簇）经 `variant_of` 归并至 7 个主风格家族，独立可选风格 121 个；变体文件与
-原名全数保留（主风格 `aliases` 可检索），brief 结构 lint 增同板家族计数校验防回潮。
+风格资产按名称、别名和家族提供[紧凑索引](references/styles/generated/by-name-alias.md)，
+数量统一见[生成计数](references/styles/generated/counts.md)，不再手工维护多个总数。
+普通风格、变体、参考池、版式与规范分别记账；参考池代表不冒充普通风格，未做 golden
+验证也不等于不可点名。执行期摘要核对用户同名覆盖，选择后通过指纹守卫保证实际渲染
+使用同一文件；相同别名多命中时必须消歧。
+
+开发者可使用 `leo-ppt style list --summary --filter terminal` 查询有界摘要，
+再用 `style load <名称> --summary` 取得选择指纹；`style render <名称>
+--expected-selection <指纹>` 会在源变化时停止组合。所有步骤使用同一 `--home`。
+这些工具不运行图片 Provider，生成图片仍须遵循样张确认与交付验收。
 
 ## 使用方式
 
@@ -186,15 +189,18 @@ python3 scripts/lint_style_governance.py
 # --aggregate 重建需外部源，见脚本 docstring 环境变量）
 python3 scripts/chart_palette_pool.py --query <name>
 
-# 行为评测（需 skill-up CLI 与可用引擎；当前 83 个用例）
+# 行为评测（需 skill-up CLI 与可用引擎；用例数以 list-cases 为准）
 skill-up validate evals/eval.yaml
+skill-up list-cases evals/eval.yaml
 skill-up run evals/eval.yaml
+python3 scripts/check_style_eval_traces.py <实际工作区>/iteration-N/result.json
 
 # 评测统计（R-51：多轮结果 → 每 case Wilson 95% CI 与判官修复显著性检验）
 python3 scripts/eval_stats.py <skill>-workspace/iteration-N/result.json ... [--replay-before ... --replay-after ...]
 ```
 
 评测工作区（`leo-ppt-generator-*-workspace/` 等）在 `.gitignore` 中，不提交。
+风格回归须同时通过用例 Judge 与咨询轨迹检查；正确回答不能豁免 Bash/MCP 越界读取。
 
 ## 许可证
 

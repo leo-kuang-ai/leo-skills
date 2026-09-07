@@ -207,6 +207,7 @@ def _isolated_env(
         "SYSTEMROOT",
         "OPENAI_BASE_URL",
         "CODEX_PPT_IMAGE_MODEL",
+        "LEO_PPT_PARAM_COMPAT",
         "IMAGE_TO_EDITABLE_PPT_IMAGE_MODEL",
         "PADDLE_OCR_TOKEN",
     }
@@ -269,7 +270,13 @@ def run_upstream(
                 if backend_contract is not None
                 else None
             )
-            effective_timeout = execution.timeout_seconds if execution else timeout_seconds
+            # 显式 CLI --timeout 优先于合同默认超时（D-DEF-05：此前合同在场时
+            # 旗标被静默丢弃，注入与诊断调用无法收紧超时）。
+            effective_timeout = (
+                timeout_seconds
+                if timeout_seconds is not None
+                else (execution.timeout_seconds if execution else None)
+            )
             command = [sys.executable, str(script), *forwarded]
             result = _run(
                 command,

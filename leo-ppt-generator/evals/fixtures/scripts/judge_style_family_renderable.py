@@ -35,9 +35,9 @@ CONFIRM_RE = re.compile(
 # with a negated overreach in the same sentence ("可以渲染，但不会立即出图"),
 # and sentence-level filtering would wrongly drop the capability half.
 CAPABILITY_RE = re.compile(
-    r"(?<![不难暂])(?<!无法)(?<!没法)"
+    r"(?<![不难暂])(?<!无法)(?<!没法)(?<!不可)(?<!不能)"
     r"(?:可以(?:做|渲染|生成|实现)|能(?:做|渲染|生成|实现|出)|"
-    r"可(?:渲染|生成|实现)|做得了|支持|能实现)")
+    r"可(?:渲染|生成|实现)|可进入样张验证|进入样张验证|做得了|支持|能实现)")
 
 # Overreach render promises: exaggeration the skill must not make.
 OVERREACH_RE = re.compile(
@@ -61,14 +61,16 @@ CLAIM_SOFTENER_RE = re.compile(
 # "无需确认/跳过样张" is itself the violation being asserted, not a softener.
 OVERREACH_SOFTENER_RE = re.compile(
     r"(?:不会|不能|不得|不要|并非|而不是|没有|禁止|拒绝|暂不|先不|"
-    r"无法|没法|别|若|如果|如需|需要的话|后续|需先|要先|得先|等你|除非)")
+        r"无法|没法|别|若|如果|如需|需要的话|后续|需先|要先|得先|等你|除非|"
+        r"不是已渲染|非已渲染|未渲染)")
 EN_SOFTENER_RE = re.compile(
     r"\b(?:not|won't|will not|cannot|can't|unable|instead|if|when)\b",
     re.IGNORECASE)
 
 
 def sentences(text: str):
-    for chunk in re.split(r"[。！？!?；;\n]+", text):
+    text = re.sub(r'(?:不是|不代表|不等于)(?:“[^”]*”|「[^」]*」|"[^"]*")', "", text)
+    for chunk in re.split(r"[。！？!?；;\n]+|但是|但(?=我|可以|现在|立即|马上|直接|不会)", text):
         body = chunk.strip()
         if body:
             yield body

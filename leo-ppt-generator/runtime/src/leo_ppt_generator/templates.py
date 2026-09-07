@@ -16,7 +16,7 @@ import json
 import re
 from pathlib import Path
 
-from .styles import StyleStoreError, builtin_style_path, load_style
+from .styles import StyleStoreError, StyleSelectionChanged, StyleSelectionInvalid, builtin_style_path, load_style, selection_fingerprint, parse_style_document, validate_style_metadata, describe_style_asset
 
 
 class TemplateError(ValueError):
@@ -542,6 +542,8 @@ def compose_style(
     anchor: bool = False,
     guardrail: bool = False,
     layout_lock: bool = False,
+    home: Path | None = None,
+    expected_selection: str | None = None,
 ) -> dict:
     """Merge the visual-style brief, its paired image rendering (paste-ready
     paragraph), and the argument mode into one deterministic dict for
@@ -561,7 +563,30 @@ def compose_style(
     default off so the default output stays byte-identical to the
     no-flag path and snapshot consumers are unaffected.
     """
-    style = load_style(visual_style)
+    if expected_selection is not None and not re.fullmatch(r"[a-f0-9]{64}", expected_selection):
+        raise StyleSelectionInvalid("style_selection_invalid")
+    if expected_selection is not None:
+        style = load_style(visual_style, home=home, enforce_scope=True)
+    elif home is not None:
+        style = load_style(visual_style, home=home)
+    else:
+        style = load_style(visual_style)
+    if expected_selection is not None and selection_fingerprint(style, home=home) != expected_selection:
+        raise StyleSelectionChanged("style_selection_changed")
+    if expected_selection is not None:
+        from jsonschema import Draft7Validator
+
+        document = parse_style_document(style["content"])
+        parsed = document["brief"]
+        selected_path = Path(style["path"])
+        selected_asset = describe_style_asset(selected_path, selected_path.parent,
+                                              body=style["content"].encode("utf-8"))
+        schema = json.loads((Path(__file__).parent / "schemas/style-brief-v1.schema.json").read_text())
+        if (parsed is None or not document["first_block_is_brief"] or document["problems"]
+                or selected_asset["asset_role"] not in {"style", "pool"}
+                or selected_asset["diagnostics"]
+                or validate_style_metadata(parsed) or not Draft7Validator(schema).is_valid(parsed)):
+            raise StyleSelectionInvalid("style_selection_invalid")
     m = re.search(r"```json\n(.*?)\n```", style["content"], re.S)
     if not m:
         raise TemplateError(f"style_brief_missing: {visual_style}")
@@ -613,7 +638,7 @@ def compose_style(
         composed["layout_lock"] = _layout_lock_block(
             brief.get("layout"), token_sidecar
         )
-    rendering_name = paired_rendering(visual_style)
+    rendering_name = None if expected_selection is not None and style["source"] == "user" else paired_rendering(visual_style)
     if rendering_name:
         try:
             composed["image_rendering"] = load_rendering(rendering_name)["paste_ready"]

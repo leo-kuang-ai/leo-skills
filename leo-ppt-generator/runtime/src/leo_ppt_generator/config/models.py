@@ -14,6 +14,9 @@ _BUILTIN_PROVIDER_MEMBERS: dict[str, str] = {
     "OPENAI_COMPATIBLE": "openai-compatible",
     "ATLASCLOUD": "atlascloud",
     "BUILTIN_IMAGEGEN": "builtin-imagegen",
+    # 确定性渲染 lane 的 deck 级合同类型（加固方案 WS5/D-OBS-01）：全册页
+    # 产物均为 render:* 时以此合同满足 generate 路线，不再借图像 Provider 壳。
+    "RENDER_LANE": "render-lane",
 }
 
 

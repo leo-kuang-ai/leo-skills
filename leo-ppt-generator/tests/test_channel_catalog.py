@@ -150,6 +150,29 @@ class ChannelExecutionContextTest(unittest.TestCase):
         self.assertEqual(context.environment["OPENAI_API_KEY"], "sk-zhipu-test-key")
         self.assertNotIn("sk-zhipu-test-key", json.dumps(context.receipt))
 
+    def test_execution_context_injects_channel_param_compat(self):
+        # WS1 回归：目录登记的实测兼容矩阵随执行上下文注入 vendored 环境。
+        from leo_ppt_generator.config.channel_catalog import reset_cache
+        reset_cache()
+        contract_path = self._write_contract("zhipu")
+        context = build_execution_context(contract_path, self._isolated.name)
+        compat = context.environment.get("LEO_PPT_PARAM_COMPAT", "")
+        self.assertIn('"rejects"', compat)
+        self.assertIn("quality", compat)
+        self.assertIn("2097152", compat)
+
+    def test_execution_context_injects_contract_model_into_vendor_env(self):
+        # D-DEF-01 回归：合同 model 必须显式进入 vendored 工具读取的环境变量，
+        # 否则渠道合同（如 ark 的 doubao-seedream）会静默回落 gpt-image-2。
+        contract_path = self._write_contract("zhipu")
+        context = build_execution_context(contract_path, self._isolated.name)
+        self.assertEqual(
+            context.environment["CODEX_PPT_IMAGE_MODEL"],
+            "cogview-4",
+        )
+        self.assertEqual(context.model, "cogview-4")
+        self.assertEqual(context.receipt["model"], "cogview-4")
+
     def test_execution_context_falls_back_to_catalog_default_origin(self):
         contract_path = self._write_contract("zhipu", drop_endpoint=True)
         context = build_execution_context(contract_path, self._isolated.name)
@@ -439,18 +462,19 @@ class ChannelCatalogFailClosedTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="leo-ppt-catalog-") as tmp:
             base = channel_catalog.load_channels()
             good = base[0]
+            base_fields = {k: v for k, v in vars(good).items() if k != "param_compat"}
             cases = {
                 "channel_id_invalid": {
-                    **vars(good),
+                    **base_fields,
                     "id": "OpenAI",
                 },
                 "channel_endpoint_origin_invalid": {
-                    **vars(good),
+                    **base_fields,
                     "endpoint_origin": "https://host/path",
                 },
-                "channel_api_path_invalid": {**vars(good), "api_path": "v4"},
+                "channel_api_path_invalid": {**base_fields, "api_path": "v4"},
                 "channel_default_model_not_listed": {
-                    **vars(good),
+                    **base_fields,
                     "default_model": "not-in-models",
                 },
             }

@@ -40,6 +40,9 @@ def positive(patterns):
     for sentence in re.split(r"[。！？\n]+", text):
         body = plain(sentence)
         for clause in re.split(r"[；;，,]", body):
+            # 假设用户的请求不是 Agent 的承诺；后续子句仍独立扫描。
+            if re.match(r"\s*(?:如果|若)你(?:坚持|想|希望|要求)", clause):
+                continue
             if clause and any(re.search(p, clause) for p in patterns) and not any(
                 v in clause for v in negators
             ):

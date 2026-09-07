@@ -2,9 +2,9 @@
   "files": {
     "runtime/src/leo_ppt_generator/_vendor/__init__.py": "3f79d3175a73efe246bdd012caf851e14466ce019653d0f08c401c83a069cc03",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/__init__.py": "8331ebe29df5b9bf5731847a62aeebab09e9b5f6cda1b978bbcb1c7169600c82",
-    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/assemble_ppt.py": "429b15bfb5cfb2bd6b6f88e6e99a33934dc2e2c3940f9d17294c9ccac44e1a42",
+    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/assemble_ppt.py": "c8498d63d0c5cf02a12616a7673c1dd5d06d108ca1bda51c0da993e52aba9ca9",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/codex_ppt_runtime.py": "f4c9f38c1b6a41c0e79e30e2e1278e517e640556dd529020dce08e301b164d5f",
-    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_gen.py": "c5eccea562b901eea52965c7eebab860b5537593629501325789c5f299ba7f03",
+    "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_gen.py": "d8d254e6f061dcc8b429df621d098dafeef0c216ee83771a1945cdaed46f4725",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/__init__.py": "f4a8db421052b42be962037d7a3df74bec598a67be4bcae6ac3aaefff64a5c3e",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/atlascloud.py": "bcdc6c35afd7c483f01125cb5788ef852c16cd9525eddebb6b206673193fa450",
     "runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/base.py": "027468265d72c0bf4e4372bdbfbe8cf12759f929e873fa10c16c13577a468296",

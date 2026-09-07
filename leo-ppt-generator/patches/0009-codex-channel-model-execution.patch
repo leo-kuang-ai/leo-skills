@@ -1,0 +1,167 @@
+diff --git a/skills/codex-ppt/scripts/image_gen.py b/skills/codex-ppt/scripts/image_gen.py
+--- a/skills/codex-ppt/scripts/image_gen.py
++++ b/skills/codex-ppt/scripts/image_gen.py
+@@ -13,6 +13,7 @@ OpenAI-compatible proxy providers.
+ from __future__ import annotations
+ 
+ import argparse
++import json as _json
+ import asyncio
+ import base64
+ from io import BytesIO
+@@ -34,6 +35,28 @@ from image_providers import create_image_provider
+ from image_providers.atlascloud import atlascloud_model_for_operation
+ 
+ DEFAULT_MODEL = "gpt-image-2"
++
++
++def _channel_compat() -> dict:
++    """渠道能力矩阵（LEO_PPT_PARAM_COMPAT，由 backend_execution 注入）。
++
++    ``rejects``：渠道实测拒收参数（优先于家族规则）；``size``：尺寸档约束
++    （multiples_of/min_edge/max_edge/max_pixels，实测登记，服务端终裁兜底）。
++    缺省/解析失败按无矩阵处理，走家族回退规则。
++    """
++    raw = os.getenv("LEO_PPT_PARAM_COMPAT", "")
++    if not raw.strip():
++        return {}
++    try:
++        value = _json.loads(raw)
++        return value if isinstance(value, dict) else {}
++    except ValueError:
++        return {}
++
++
++def _channel_rejects(param: str) -> bool:
++    rejects = _channel_compat().get("rejects") or []
++    return param in rejects
+ DEFAULT_SIZE = "2560x1440"
+ DEFAULT_QUALITY = "medium"
+ DEFAULT_OUTPUT_FORMAT = "png"
+@@ -449,11 +472,47 @@ def _validate_gpt_image_2_size(size: str) -> None:
+         )
+ 
+ 
++def _validate_channel_size(size: str) -> bool:
++    """渠道矩阵尺寸约束（实测登记）：违反即清晰报错；未登记返回 False 走回退。"""
++    parsed = _parse_size(size)
++    if parsed is None:
++        return False
++    width, height = parsed
++    constraints = _channel_compat().get("size") or {}
++    if not constraints:
++        return False
++    problems = []
++    multiples = constraints.get("multiples_of")
++    if isinstance(multiples, int) and (width % multiples or height % multiples):
++        problems.append(f"both edges must be multiples of {multiples}px")
++    min_edge = constraints.get("min_edge")
++    if isinstance(min_edge, int) and min(width, height) < min_edge:
++        problems.append(f"each edge must be >= {min_edge}px")
++    max_edge = constraints.get("max_edge")
++    if isinstance(max_edge, int) and max(width, height) > max_edge:
++        problems.append(f"each edge must be <= {max_edge}px")
++    max_pixels = constraints.get("max_pixels")
++    if isinstance(max_pixels, int) and width * height > max_pixels:
++        problems.append(f"total pixels must be <= {max_pixels}")
++    if problems:
++        _die(
++            "channel size menu violated: " + "; ".join(problems)
++            + f" (requested {size}; constraints {_channel_compat()['size']})"
++        )
++    return True
++
++
+ def _validate_size(size: str, model: str) -> None:
+     if GPT_IMAGE_2_MODEL in model:
+         _validate_gpt_image_2_size(size)
+         return
+ 
++    if _validate_channel_size(size):
++        return
++    if _parse_size(size) is not None:
++        # 未登记约束的渠道自定义 WIDTHxHEIGHT 尺寸档交由服务端终裁。
++        return
++
+     if size not in ALLOWED_LEGACY_SIZES:
+         _die(
+             "size must be one of 1024x1024, 1536x1024, 1024x1536, or auto for this GPT Image model."
+@@ -476,12 +535,10 @@ def _validate_input_fidelity(input_fidelity: Optional[str]) -> None:
+ 
+ 
+ def _validate_model(model: str) -> None:
+-    if GPT_IMAGE_MODEL_PREFIX not in model:
+-        _die(
+-            "model must be a GPT Image model name containing 'gpt-image-' "
+-            "(for example gpt-image-2, openai/gpt-image-2, gpt-image-1.5, "
+-            "gpt-image-1, or gpt-image-1-mini)."
+-        )
++    # 渠道合同模型（cogview-4、doubao-seedream-* 等）与 gpt-image 家族同等合法；
++    # gpt-image 专属选项校验仍由 _validate_model_specific_options 条件承担。
++    if not model or not model.strip():
++        _die("model must be a non-empty model name.")
+ 
+ 
+ def _is_gpt_image_2_model(model: str) -> bool:
+@@ -1048,12 +1105,16 @@ async def _run_generate_batch(args: argparse.Namespace) -> int:
+         "model": args.model,
+         "n": args.n,
+         "size": args.size,
+-        "quality": args.quality,
+         "background": args.background,
+         "output_format": args.output_format,
+         "output_compression": args.output_compression,
+         "moderation": args.moderation,
+     }
++    if GPT_IMAGE_MODEL_PREFIX in str(args.model):
++        if not _channel_rejects("quality"):
++            base_payload["quality"] = args.quality
++        if not _channel_rejects("output_format"):
++            base_payload["output_format"] = args.output_format
+ 
+     if args.dry_run:
+         for i, job in enumerate(jobs, start=1):
+@@ -1241,7 +1302,6 @@ def _generate(args: argparse.Namespace) -> None:
+         "prompt": prompt,
+         "n": args.n,
+         "size": args.size,
+-        "quality": args.quality,
+         "background": args.background,
+         "output_format": args.output_format,
+         "output_compression": args.output_compression,
+@@ -1251,7 +1311,13 @@ def _generate(args: argparse.Namespace) -> None:
+ 
+     output_format = _normalize_output_format(args.output_format)
+     _validate_transparency(args.background, output_format)
+-    payload["output_format"] = output_format
++    # quality/output_format 为 gpt-image 家族参数且未被渠道矩阵拒收时才上行
++    # （cogview-4 × quality 400 code 1214、doubao × output_format 实测证据）。
++    if GPT_IMAGE_MODEL_PREFIX in str(args.model):
++        if not _channel_rejects("quality"):
++            payload["quality"] = args.quality
++        if not _channel_rejects("output_format"):
++            payload["output_format"] = output_format
+     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
+     downscaled = None
+     if args.downscale_max_dim is not None:
+@@ -1340,7 +1406,6 @@ def _edit_with_images(
+         "prompt": prompt,
+         "n": args.n,
+         "size": args.size,
+-        "quality": args.quality,
+         "background": args.background,
+         "output_format": args.output_format,
+         "output_compression": args.output_compression,
+@@ -1351,7 +1416,11 @@ def _edit_with_images(
+ 
+     output_format = _normalize_output_format(args.output_format)
+     _validate_transparency(args.background, output_format)
+-    payload["output_format"] = output_format
++    if GPT_IMAGE_MODEL_PREFIX in str(args.model):
++        if not _channel_rejects("quality"):
++            payload["quality"] = args.quality
++        if not _channel_rejects("output_format"):
++            payload["output_format"] = output_format
+     _validate_input_fidelity(args.input_fidelity)
+     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
+     downscaled = None

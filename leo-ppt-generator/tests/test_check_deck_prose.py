@@ -159,6 +159,57 @@ class JargonTest(unittest.TestCase):
         self.assertNotIn("[WARN]", result.stdout)
 
 
+class AiFlavorTest(unittest.TestCase):
+    def test_banned_phrase_in_title_flags_warn(self):
+        master = """## S1 方案
+- 标题：Dive into the new pipeline
+- 要点：
+  - 复核登记表后重建
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("AI 腔英文套话「dive into」", result.stdout)
+
+    def test_journey_in_point_flags_warn_but_quoted_span_exempt(self):
+        master = """## S1 方案
+- 标题：客户路径总览
+- 要点：
+  - 按「Customer Journey Map」四阶段拆解
+  - 这一 journey 覆盖购后环节
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("AI 腔英文套话「journey」", result.stdout)
+
+    def test_allow_flag_exempts_phrase(self):
+        master = """## S1 方案
+- 标题：Explore the trade-offs
+- 要点：
+  - 复核登记表后重建
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master), "--allow", "explore"])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("AI 腔英文套话", result.stdout)
+
+    def test_ordinary_english_does_not_flag(self):
+        master = """## S1 方案
+- 标题：容量预检与批量出图
+- 要点：
+  - exploration logs 归档在交付目录
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("AI 腔英文套话", result.stdout)
+
+
 class NominalizationTest(unittest.TestCase):
     def test_light_verb_plus_deverbal_noun_warns(self):
         master = """## S1 动作
@@ -315,6 +366,102 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn("格式[数字裸用]", result.stdout)
         self.assertIn("格式[数字单位]", result.stdout)
+
+
+class EvidenceSpanMaskTest(unittest.TestCase):
+    """合同规定的四级标注跨度不是版面文案——格式族须先掩蔽再扫描。"""
+
+    def test_source_ref_tag_not_flagged_as_halfwidth_punct(self):
+        master = """## S1 证据
+- 标题：成本对账
+- 要点：
+  - 存储成本环比上行【引用|src:财务部】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("格式[", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+
+    def test_user_confirm_round_tag_not_flagged(self):
+        master = """## S1 决策
+- 标题：口径确认
+- 要点：
+  - 分配比例按预算基数【用户确认|round:3】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("格式[", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+
+    def test_unknown_and_estimate_tags_masked_too(self):
+        master = """## S1 缺口
+- 标题：缺口登记
+- 要点：
+  - 归因待回访【unknown】
+  - 节省区间为经验值【估算】
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("格式[", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+
+    def test_halfwidth_punct_outside_annotation_still_warns(self):
+        master = """## S1 流程
+- 标题：口径复核
+- 要点：
+  - 口径见【引用|src:附录A】,已核对
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("格式[全角标点]", result.stdout)
+
+
+class MetadataBulletTest(unittest.TestCase):
+    """页面级元信息写成 bullet 时不得被当作要点（防同构/金句族误报）。"""
+
+    def test_bulleted_page_metadata_not_read_as_points(self):
+        # 若元信息被解析为第一条要点，三页的「页面…」开头会触发同构 WARN。
+        master = """## S1 证据
+- 页面角色：证据
+- argument_role：论据
+- beat：张力
+- audience_takeaway：信任
+- rst_relation：elaboration
+- 标题：证据一
+- 要点：
+  - 通过登记表核对数字
+- speaker_script：先说结论。
+
+## S2 证据
+- 页面角色：证据
+- argument_role：论据
+- 标题：证据二
+- 要点：
+  - 台账复核 37 项口径
+- speaker_script：先说结论。
+
+## S3 证据
+- 页面角色：证据
+- argument_role：论据
+- 标题：证据三
+- 要点：
+  - 对账闭合后断链为零
+- speaker_script：先说结论。
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("同构开头", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+        self.assertNotIn("[FAIL]", result.stdout)
 
 
 class SpeakerDisciplineTest(unittest.TestCase):
@@ -555,6 +702,46 @@ class TitleLedgerTest(unittest.TestCase):
 
     def test_year_like_title_number_is_exempt(self):
         master = LEDGER_DECK.replace("2026 年度新签 37 家", "2026 年度盘点收尾")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+
+    def test_percent_title_reconciles_with_decimal_ledger_row(self):
+        # 标题写「11%」、登记行写「11.0」——按数值归一比较，不再误报。
+        master = LEDGER_DECK.replace("营收增长 55%", "营收增长 55%").replace(
+            "| 55% | S1 |", "| 55.0 | S1 |")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字", result.stdout)
+        self.assertNotIn("[WARN]", result.stdout)
+
+    def test_decimal_title_reconciles_with_percent_ledger_row(self):
+        master = LEDGER_DECK.replace("营收增长 55%", "营收增长 55").replace(
+            "| 55% | S1 |", "| 55% | S1 |")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("标题数字「55」", result.stdout)
+
+    def test_numeric_value_mismatch_still_warns_across_forms(self):
+        # 归一化只解决形态（%/小数），不掩盖数值差异：61% 对 55 仍须报。
+        master = LEDGER_DECK.replace("营收增长 55%", "营收增长 61%").replace(
+            "| 55% | S1 |", "| 55 | S1 |")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = _run([_master(tmp, master)])
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("标题数字「61%」不在本页（S1）登记表数值中", result.stdout)
+
+    def test_cross_page_ledger_cell_covers_both_pages(self):
+        # 页列「S1/S2」的登记行须同时覆盖两页（既有行为回归保护）。
+        master = LEDGER_DECK.replace(
+            "## S2 年度\n- 标题：2026 年度新签 37 家",
+            "## S2 年度\n- 标题：年度营收增长 55%").replace(
+            "| 55% | S1 |", "| 55% | S1/S2 |").replace(
+            "| 37 家 | S2 |", "| 37 家 | 附 |")
         with tempfile.TemporaryDirectory() as tmp:
             result = _run([_master(tmp, master)])
         self.assertEqual(result.returncode, 0, result.stdout)

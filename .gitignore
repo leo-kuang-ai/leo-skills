@@ -49,3 +49,6 @@ graphify-out/
 graphify-out/
 .graphify/
 # spec-first:end
+
+# setuptools build artifacts (leo-ppt runtime)
+leo-ppt-generator/runtime/build/

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "leo-skills",
-  "description": "Leo skills: evidence-first-writing, leo-ppt-generator and creator-buddy",
+  "description": "Leo skills: evidence-first-writing, leo-ppt-generator, software-article-en-zh and creator-buddy",
   "owner": {
     "name": "leo-kuang-ai"
   },
@@ -20,6 +20,15 @@
       "description": "把需求、视觉稿、图片或 PDF 转成可编辑 PowerPoint；支持图片版PPT、可编辑版、hybrid与升级路线",
       "version": "0.2.0",
       "source": "./leo-ppt-generator",
+      "author": {
+        "name": "leo-kuang-ai"
+      }
+    },
+    {
+      "name": "software-article-en-zh",
+      "description": "软件工程英文→简体中文翻译：完整翻译不摘要，保留否定/模态/量词与规范性强度，代码与 Markdown 结构原样保护，源文指令视为待译数据；附 50 用例否定感知评测套件",
+      "version": "0.1.0",
+      "source": "./software-article-en-zh",
       "author": {
         "name": "leo-kuang-ai"
       }

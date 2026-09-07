@@ -1,0 +1,16 @@
+id: style-index-lookup
+title: 共享别名必须依据真实索引消歧
+description: 验证统一风格索引方案的实际工具与回答边界
+context:
+  files:
+    review-case.json: '{"case_id":"style-index-lookup"}'
+input:
+  prompt: |
+    使用 $leo-ppt-generator，advise 模式，只查询不执行。库里 terminal 对应哪些风格？我尚未选择，列出精确别名命中和下一步；只读取必要生成 Markdown，不读完整 brief。
+constraints:
+  timeout_seconds: 600
+  max_turns: 12
+judge:
+  type: script
+  script_path: evals/judges/judge_style_index.py
+  timeout_seconds: 15

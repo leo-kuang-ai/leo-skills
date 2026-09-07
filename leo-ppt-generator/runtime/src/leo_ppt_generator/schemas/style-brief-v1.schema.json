@@ -4,6 +4,16 @@
   "title": "leo-ppt-generator 风格 brief（GPT-Image-2 风格 Brief JSON 块）",
   "description": "风格库 brief 的结构契约。lint（scripts/lint_style_briefs.py）以本文件为单真值源：required 键为 ERROR 级；color_palette 各角色的 pattern（值内至少内嵌一个 #RRGGBB 锚点）与 typography 的身份字体关键词为 WARNING 级（存量偏差进 scripts/style-lint-baseline.txt 白名单，新增文件不得进白名单）。layout_blueprints 声明为可选（现存 brief 均有；lint 只做存在性子集校验）。",
   "type": "object",
+  "x-legacy-family-labels": {
+    "family:government-red": "党政红",
+    "family:academic-defense": "学术答辩",
+    "family:business-professional": "商务专业",
+    "family:art-handdrawn": "艺术手绘",
+    "family:children-cartoon": "卡通儿童",
+    "family:data-chart": "数据图表",
+    "family:minimal-typography": "极简排版",
+    "family:teaching": "教学课件"
+  },
   "required": [
     "type",
     "style_name",
@@ -15,6 +25,32 @@
     "layout_patterns"
   ],
   "properties": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "origin": { "type": "string", "enum": ["native", "imported", "distilled", "user"] },
+        "batch": { "type": "string", "minLength": 1 },
+        "upstream_ref": { "type": ["string", "null"] },
+        "snapshot": { "type": ["string", "null"] },
+        "license": { "type": "string", "enum": ["native-owned", "cleared-no-restriction", "MIT", "CC-BY-4.0", "third-party-licensed", "unknown"] },
+        "license_note": { "type": ["string", "null"] },
+        "license_approval_ref": { "type": ["string", "null"] }
+      },
+      "required": ["license"],
+      "additionalProperties": false,
+      "description": "L0 可选来源对象；缺省不改变旧 brief，unknown 不推断为已核验许可。"
+    },
+    "taxonomy": {
+      "type": "object",
+      "properties": {
+        "visual_family": { "type": "string", "pattern": "^family:[a-z0-9][a-z0-9-]*$" },
+        "families": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^family:[a-z0-9][a-z0-9-]*$" } },
+        "industries": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^domain:[a-z0-9][a-z0-9-]*$" } },
+        "scenarios": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^scenario:[a-z0-9][a-z0-9-]*$" } }
+      },
+      "additionalProperties": false,
+      "description": "L0 可选分类；主 family 若存在，须属于 families；未知主身份不填。"
+    },
     "type": { "type": "string" },
     "style_name": { "type": "string", "minLength": 1 },
     "aliases": {

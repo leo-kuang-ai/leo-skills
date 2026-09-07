@@ -35,6 +35,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -47,6 +48,60 @@ _REGISTRY_REQUIRED_KEYS = ("id", "date", "name", "file", "improvement", "dimensi
 _REGISTRY_CHANGE_VALUES = {"added", "updated", "removed", "none"}
 
 _PAIR_ROW_RE = re.compile(r"^\| ([^|]+) \| ([^|]+) \|$")
+
+
+def check_document_links(documents: dict[str, str], root: Path) -> list[str]:
+    """校验给定 Markdown 发布集；生成前可用内存文档验证虚拟目标。"""
+    from markdown_it import MarkdownIt
+
+    root = root.resolve()
+    parser = MarkdownIt()
+    texts = {(root / path).resolve(): text for path, text in documents.items()}
+    cache = {}
+    errors = []
+
+    def tokens_for(path):
+        if path not in cache:
+            cache[path] = parser.parse(texts[path] if path in texts else path.read_text(encoding="utf-8"))
+        return cache[path]
+
+    def headings(path):
+        values = set()
+        used = {}
+        tokens = tokens_for(path)
+        for i, token in enumerate(tokens):
+            if token.type != "heading_open":
+                continue
+            inline = tokens[i + 1]
+            title = "".join(t.content for t in inline.children or [] if t.type in {"text", "code_inline", "image"})
+            base = re.sub(r"[^\w\- ]", "", title.lower()).replace(" ", "-")
+            suffix = used.get(base, 0)
+            used[base] = suffix + 1
+            values.add(base if suffix == 0 else f"{base}-{suffix}")
+        return values
+
+    def walk(tokens):
+        for token in tokens:
+            yield token
+            yield from walk(token.children or [])
+
+    for relative in sorted(documents):
+        source = (root / relative).resolve()
+        for token in walk(tokens_for(source)):
+            if token.type not in {"link_open", "image"}:
+                continue
+            href = token.attrGet("href" if token.type == "link_open" else "src") or ""
+            parts = urlsplit(href)
+            if parts.scheme or parts.netloc:
+                continue
+            target = (source.parent / unquote(parts.path)).resolve() if parts.path else source
+            if not target.is_relative_to(root.parent):
+                errors.append(f"link_outside_repository: {relative}: {href}")
+            elif target not in texts and not target.exists():
+                errors.append(f"link_target_missing: {relative}: {href}")
+            elif parts.fragment and target.suffix == ".md" and unquote(parts.fragment) not in headings(target):
+                errors.append(f"link_anchor_missing: {relative}: {href}")
+    return errors
 
 
 def _brief_stems() -> list[str]:

@@ -33,6 +33,11 @@ import argparse
 import json
 import re
 import sys
+from pathlib import Path
+
+SKILL_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+from leo_ppt_generator.styles import iter_brief_documents, style_asset_inventory, style_reference_problems, validate_style_metadata
 
 # ---------------------------------------------------------------------------
 # Family vocabulary: keys are rule-facing labels, members reference real style
@@ -333,6 +338,30 @@ RULES: list[dict] = [
 ]
 
 
+def current_family_members(styles_root: Path | None = None) -> dict[str, list[str]]:
+    """试点由 authored families 驱动；未迁移成员仍消费旧兼容表。"""
+    schema = json.loads((SKILL_DIR / "runtime/src/leo_ppt_generator/schemas/style-brief-v1.schema.json").read_text())
+    labels = schema["x-legacy-family-labels"]
+    result = {label: list(names) for label, names in FAMILIES.items()}
+    for _, _, brief in iter_brief_documents(styles_root or SKILL_DIR / "references/styles"):
+        taxonomy = brief.get("taxonomy")
+        if not isinstance(taxonomy, dict) or "families" not in taxonomy:
+            continue
+        problems = validate_style_metadata(brief, schema)
+        if problems:
+            raise ValueError("style_metadata_invalid: " + ",".join(problems))
+        families = taxonomy["families"]
+        if any(family not in labels for family in families):
+            raise ValueError("style_family_mapping_unknown")
+        name = brief["style_name"]
+        for names in result.values():
+            if name in names:
+                names.remove(name)
+        for family in families:
+            result.setdefault(labels[family], []).append(name)
+    return {label: sorted(set(names)) for label, names in result.items()}
+
+
 def _as_text_list(value) -> list[str]:
     # Normalize a scalar / list signal field into a list of strings.
     if value is None:
@@ -426,6 +455,8 @@ def _self_test() -> list[str]:
             failures.append(message)
 
     # Vocabulary integrity: rule effects reference declared families only.
+    for problem in style_reference_problems(style_asset_inventory(SKILL_DIR / "references" / "styles"), members=FAMILIES):
+        failures.append(json.dumps(problem, ensure_ascii=False, sort_keys=True))
     known = set(FAMILIES)
     ids = [r["id"] for r in RULES]
     expect(len(ids) == len(set(ids)), "rule ids not unique")

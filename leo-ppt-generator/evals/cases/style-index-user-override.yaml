@@ -1,0 +1,16 @@
+id: style-index-user-override
+title: 真实工具验证同名用户覆盖与选择守卫
+description: 验证统一风格索引方案的实际工具与回答边界
+context:
+  files:
+    review-case.json: '{"case_id":"style-index-user-override"}'
+input:
+  prompt: |
+    使用 $leo-ppt-generator。已有 generate 执行任务正在视觉方向阶段，本轮授权仅做本地风格查询和选择守卫回归，不生成图片、不调用 setup/Provider。请在当前用例工作区的 user-home/styles/ 创建一个与内置清爽专业风同名但 visual_direction 为“用户红色极简”的合成完整 brief（可从技能的内置清爽专业风复制修改），调用真实 CLI style load 清爽专业风 --summary --home <user-home>，然后用其指纹执行 style render --expected-selection 并确认 user 内容生效。再把 user 文件 visual_direction 改为“已改变”，使用旧指纹重新调用 render，展示 style_selection_changed 的真实结果。全部使用同一 home，保留工具结果为 evidence.json，不修改技能安装目录。可用当前 PATH 的 Python 和安装技能 runtime/src 作为 PYTHONPATH 调用 python -m leo_ppt_generator.cli。
+constraints:
+  timeout_seconds: 600
+  max_turns: 12
+judge:
+  type: script
+  script_path: evals/judges/judge_style_index.py
+  timeout_seconds: 15

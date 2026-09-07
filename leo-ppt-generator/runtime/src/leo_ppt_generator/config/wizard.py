@@ -542,13 +542,12 @@ class ConfigWizard:
             self._write("图片服务设置")
             self._write("状态：需要处理")
         featured = channel_catalog.featured_channel()
-        if (
-            featured is not None
-            and not any(
-                item.provider.value == featured.id and item.configured
-                for item in overview.providers
-            )
-        ):
+        featured_missing = featured is not None and not any(
+            item.provider.value == featured.id and item.configured
+            for item in overview.providers
+        )
+        has_configured = any(item.configured and item.credential_available for item in overview.providers)
+        if featured_missing:
             self._write(
                 f"推荐：配置 {featured.display_name}渠道"
                 f"（{featured.endpoint_origin}），"
@@ -556,6 +555,8 @@ class ConfigWizard:
             )
             if overview.selection_error == "provider_priority_tie":
                 self._write("两个服务的优先级相同，请调整顺序或固定使用其中一个服务。")
+            elif has_configured:
+                self._write("当前已有可用图片服务；配置推荐渠道只会增加备用选项。")
             else:
                 self._write("尚未找到可用于生成图片的服务。")
         self._write("")

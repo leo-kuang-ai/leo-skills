@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # 护栏注入可见性：style render --guardrail 的输出须含护栏摘要关键行。
-# 最终消息须展示 --guardrail 调用与摘要内容（字号双口径/对比度锚点行）。
+# 调用依据实际轨迹；最终消息展示摘要内容（字号双口径/对比度锚点行）。
 
+import json
 import os
 import re
 import sys
+from pathlib import Path
 
 text = os.environ.get("EVAL_FINAL_MESSAGE", "")
 
@@ -43,7 +45,43 @@ def require_positive(patterns, label, exempt=()):
         fail(f"缺少肯定表述{label}（或仅出现在否定语境）: {' | '.join(patterns)}")
 
 
-if "--guardrail" not in text:
+def has_guardrail_call():
+    path = os.environ.get("EVAL_TRANSCRIPT_PATH", "")
+    if not path or not Path(path).is_file():
+        return False
+    raw = Path(path).read_text(encoding="utf-8")
+    try:
+        records = [json.loads(raw)]
+    except ValueError:
+        records = []
+        for line in raw.splitlines():
+            try:
+                records.append(json.loads(line))
+            except ValueError:
+                continue
+
+    def walk(value):
+        if isinstance(value, dict):
+            call = None
+            if value.get("role") == "tool_call":
+                call = value.get("tool_call")
+            elif value.get("type") == "tool_use":
+                call = {"name": value.get("name"), "arguments": value.get("input")}
+            if isinstance(call, dict) and str(call.get("name", "")).lower() in {"bash", "exec_command", "shell"}:
+                arguments = call.get("arguments", {})
+                if isinstance(arguments, dict):
+                    command = str(arguments.get("command", arguments.get("cmd", "")))
+                    if re.search(r"\bstyle\s+render\b", command) and re.search(r"(?:^|\s)--guardrail(?:\s|$)", command):
+                        return True
+            return any(walk(child) for key, child in value.items() if key not in {"thinking", "signature"})
+        if isinstance(value, list):
+            return any(walk(child) for child in value)
+        return False
+
+    return any(walk(record) for record in records)
+
+
+if not has_guardrail_call():
     # 环境态分支：eval 沙箱通常没有内容材料可注入，此时合同正确行为是按
     # 输入材料缺失 blocked 并向用户索要材料，注入参数只作冻结预告，不声称
     # 已注入/已渲染——与真实调用 --guardrail 的可见性等价受认可。

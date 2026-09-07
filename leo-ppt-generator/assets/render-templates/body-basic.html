@@ -33,8 +33,10 @@
   .bullets { list-style: none; display: flex; flex-direction: column; gap: 26px; }
   .bullets li { font-size: 32px; line-height: 1.55; color: #2c3242; display: flex; gap: 18px; }
   .bullets li::before { content: "—"; color: #b08d57; font-weight: 700; flex: none; }
-  .chart-slot { margin-top: 34px; display: flex; justify-content: center; }
-  .chart-slot svg { max-width: 100%; height: auto; }
+  .chart-slot { margin-top: 34px; flex: 1; min-height: 0; display: flex; justify-content: center; }
+  /* 图表槽占据标题+要点之外的剩余高度：svg 受双向 max 约束等比缩放，
+     任意要点条数下图表横轴/数值标签不再被画幅底部裁切（D-CHART-01）。 */
+  .chart-slot svg { max-width: 100%; max-height: 100%; width: auto; height: auto; }
   html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
     animation: none !important; transition: none !important;
   }

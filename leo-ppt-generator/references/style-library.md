@@ -1,64 +1,32 @@
 # 风格库
 
-图片式 PPT 在确认视觉方向前，应读取内置风格、参考风格库或用户自定义风格的
-真实文件，而不是只凭风格名称推断。选择后把完整 style brief 写入
-`deck_spec.json.style`；不得只写名称。
+在视觉方向确认前只接收有界候选摘要，用户选定后才读完整 brief 并经确定性组合器生成视觉投影；不得仅凭名称推断，不得把原始 catalog 或 source/taxonomy 元数据复制进 deck_spec.style。
 
-## 风格库规模（两类实体）
+## 资产与检索入口
 
-| 类别 | 数量 | 说明 |
-|---|---|---|
-| **可加载风格**（含 JSON brief） | 311 份 | 11 顶层内置 + 300 子目录参考（01 轴 155 + 02 轴 70 + 03 轴 40 + 05 轴 3 + 16_来源_slides-grab 25 + 15_来源_officecli 7，不含 `04_来源_guizang/` 的 7 份组件模板）；`leo-ppt style list` 递归枚举全部。R-66 家族合并：其中 17 份同板场景变体经 `variant_of` 归并至 8 个主风格家族（独立可选风格 294 个），变体原名保留、经主风格 `aliases` 检索。规模口径以 [`00_索引/_INDEX.md`](styles/00_索引/_INDEX.md) 顶行为唯一真值（lint_style_index 计数口径 279，不含 15/16 来源目录） |
-| **分节轴规范**（markdown 分节） | 200 份 | 论证模式 19 · 信息图类型 11 · 图片渲染 43 · 结构布局 8 · 品牌身份 36 · 图表语法 18 · 版式库 40（36 版式骨架 + 4 规则文档，含容量档位参考） · 页面语义 25 |
+当前数量只以 [生成计数](styles/generated/counts.md) 为准；[名称/别名入口](styles/generated/by-name-alias.md) 和 [家族入口](styles/generated/by-family-001.md) 来自同一 source_digest。
+原始 brief、版式 sidecar、规则、轴与参考池独立分类，coverage 是摘要字段覆盖，verification 按 schema/layout/visual 分范围报告，不能互相替代。
+固定顶层内置、来源子目录和用户目录是存储位置；多 family 关系是分类数据，不用颜色相似度自动合并身份。具体查询与选择守卫见 [模板推荐合同](style-recommendation.md)。
 
-## 内置风格（11 套，顶层）
+- [设计体系](styles/00_索引/设计体系.md)：多轴组合原则。
+- [视觉风格配对](styles/00_索引/视觉风格配对.md)：随包风格的既有配对；不能因 user 同名就继承。
+- [通用设计规范](styles/00_索引/通用设计规范.md)：上位护栏。
+- [版式调度](layout-dispatch.md)：角色、容量、节奏与独立预检；无用户专属配置时仅声明通用布局。
+- [扩展模板](styles/00_索引/style-extension-template.md)：新增/修订 brief 的治理流程。
 
-固定上游的 11 套完整风格合同保存在 `references/styles/` 顶层：
+## 元数据与兼容
 
-党政红、创意杂志、复古扁平插画、手绘技术解释、手绘白板、教学课件、数据仪表盘、
-清爽专业、温暖手工、电子墨水杂志、科研答辩。
+source 和 taxonomy 是可选的 L0 字段。旧 brief 缺字段继续合法；已声明字段必须过 schema 和实际 lint。许可 unknown 不表示有问题，也不表示已核验；本期不启用许可排除。
+taxonomy.families 是多归属，visual_family 若有必须属于该数组；不得猜测主身份。
+scope=builtin 包含旧 source=builtin/reference 两种随包位置；scope=user 来自当前 home。角色 reference 与旧 source=reference 不是同一概念。
 
-> 2026-08-29 起顶层「麦肯锡风格」去重：与 `01_通用母版/商务专业/麦肯锡咨询风.md`
-> 内容同义且措辞已分叉，按唯一真值原则删除顶层副本（user-visible：`style list`
-> 名称由 `麦肯锡风格` 变更为 `麦肯锡咨询风`）。
+## 查询与降级
 
-## 参考风格库（子目录，六轴正交 + 扩展轴）
-
-在 11 套内置之外，`references/styles/` 下还有候选参考风格与分节轴规范，按
-**六轴正交 + 扩展轴**组织（见 [`00_索引/设计体系.md`](styles/00_索引/设计体系.md)）。
-
-- 元结构：`00_索引/设计体系.md`（六轴正交 + 风格不带 HEX + 配对渲染）
-- 总索引：`00_索引/_INDEX.md`（列出全部风格与路径，含统计口径）
-- 选风格路由：`00_索引/风格路由.md`（内容 → 六维组合推荐）
-- 视觉风格配对：`00_索引/视觉风格配对.md`（视觉风格 ↔ 图片渲染逐条配对，可加载风格全覆盖：每个可加载风格都有渲染锚）
-- 版式内容 Schema：`00_索引/版式内容Schema.md`（36 版式必填内容字段：P1-P22 + P23-P29 + P30-P36）
-- 版式库 sidecar（机器可读真值）：`12_版式库/<stem>.layouts.json`（36 份
-  layout-bank-v1）+ 顶层 `<风格名>.layouts.json`（11 份薄路由视图，只引用
-  不复制）；逐页调度与容量预检按
-  [layout-dispatch.md](layout-dispatch.md) 消费，`"$LEO_PPT" style layouts`
-  只读查询（输出含每文件 sha256 指纹）。sidecar 是 JSON 新文件，不改变
-  上表 markdown 计数口径。
-- 上位护栏：`00_索引/通用设计规范.md`（排印/版式/配色/图像/身份自检/反模式铁律）
-
-各轴目录：
-
-- `01_通用母版/`（155）视觉风格 · `02_行业内容域/`（70）行业身份 ·
-  `03_场景用途结构/`（40）用途场景 · `04_来源_guizang/`（7 组件模板，非风格）·
-  `05_来源_awesome-gpt-image-2/`（3 风格）·
-  `06_论证模式/`（19）·
-  `07_信息图类型/`（11）· `08_图片渲染/`（43）· `09_结构布局/`（8）·
-  `10_品牌身份/`（36）· `11_图表语法/`（18）· `12_版式库/`（40）·
-  `13_页面语义/`（25）· `14_参考池_gpt-image2/`（7 池代表，不计入 brief 口径）·
-  `15_来源_officecli/`（7）· `16_来源_slides-grab/`（25）
-
-`00_索引/` 另有 12 份规则/真值文档：`_INDEX`、`设计体系`、`通用设计规范`、
-`风格路由`、`视觉风格配对`、`版式内容Schema`、`版心Canon`（版面 token 唯一
-真值）、`图表样式规范`（数据图表坐标轴/图例/标签/网格线与数据诚实纪律）、
-`调色板行为参考`（整页用色行为家族，C3 吸收 academic-ppt-master image-palettes）、
-`style-extension-template`（R-29 手工新增风格扩展模板 + 四条治理 lint 合格门）、
-`负面语料参考池`（UB1 渐进补齐取词池）、`构图词汇参考`（UB3 生图一句话构图
-词汇表）——
-数据版式（P6/P7/P20/P21/P35）与图表语法全部引用后者。
+execute 先运行只读索引检查，再通过 `style list --summary --filter <名称或别名>` 与 `style load <解析后的名称> --summary` 核对真实来源。
+两个步骤使用同一 home；原始 file_sha256 与 loader 的 style_content_digest 口径不同，不作直接相等断言。
+摘要只能比较与消歧，不能作为渲染正文；选定后通过同 home 的完整 load 和带 expected-selection 的 render 组合。
+索引缺失或损坏时，summary 查询直接读源且不依赖 generated；advise 不执行工具，按 SKILL.md 的固定降级说明结束本次目录查询。
+不得自动修改用户安装目录，也不将用户摘要回写随包索引。
 
 ## 模板确定性注入（`style render`）
 
@@ -82,6 +50,15 @@ Layout 块 → 每页图片生成 prompt。
 (不带旗标)输出与不带该字段时逐字节一致;可编辑路线继续消费原始 CSS 骨架。
 解析失败(空骨架/歧义名/规则文档误引)时 `render` 返回 `template_store_error`
 族的稳定 reason code,不静默注入空版式。
+
+**注入通道对照（哪些 brief 字段真正进生图 prompt）**：`compose_style` 输出键
+白名单为 `name / visual_direction / color_palette / typography / layout_patterns`
+（+条件键 token_sidecar / brand / guardrail / layout_lock / image_rendering /
+mode / style_anchor）；08 轴以 `paste_ready` 段落与「线条·纹理·深度」表整段注入。
+`rendering_constraints` / `negative_prompt` / `visual_elements` / `canvas` **不在
+机器注入键内**——它们是 agent 桥接词表，组页时按
+[deck-master.md](deck-master.md) 母版要素 3「风格约束摘抄」摘入页级视觉行，否则
+不进生图链路；00_索引 治理文档（通用设计规范/设计体系）约束 agent 行为、无注入路径。
 
 ## 品牌 VI 注入（style render --brand）
 
@@ -126,6 +103,11 @@ Layout 块 → 每页图片生成 prompt。
 纪律：本维度只作标注与预筛，不新建条目、不占风格配额、不改 `variant_of`
 主维度语义；档位写进 brief 散文 `visual_direction`（无专用 schema 键），
 `dark-deck` 预设与色盲安全序列照旧优先。
+
+在此之外还可标注**质感档**（clean/grid/organic/pixel/paper/glass/glow 七档，
+来源 baoyu-skills dimensions 扩写）：同样只作标注与预筛，档位写进 brief 散文
+`canvas.background`（与明度档写 `visual_direction` 分工），七档判据、非穷举
+纪律与忌配表见 [`styles/00_索引/设计体系.md`](styles/00_索引/设计体系.md) §3a/§3b。
 
 ## 照图做（参考图 → 风格 brief）
 

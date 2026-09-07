@@ -355,8 +355,11 @@ def _trace_roots(manifest: dict, run_dir: Path | None) -> list[Path]:
     roots: list[Path] = []
     if run_dir is not None:
         roots.append(run_dir / "input")
+        # 项目根约定（run 位于 <project-root>/runs/<run-id>）：相对 source_ref
+        # （如 sources/evidence.png）不依赖检查器 CWD 也能回溯（D-OBS-03）。
+        roots.append(run_dir.resolve().parent.parent)
     generated_from = manifest.get("generated_from")
-    if isinstance(generated_from, str):
+    if isinstance(generated_from, str) and generated_from.strip():
         roots.append(Path(generated_from).resolve().parent.parent)
     return roots
 

@@ -41,7 +41,10 @@
     "product value hero",
     "integration ecosystem",
     "ROI & TCO comparison",
-    "industry solution"
+    "industry solution",
+    "product UI page: card-based layout with feature/pricing cards, tag and label chips as status labels",
+    "breadcrumb hierarchy strip locating the page inside the product information architecture",
+    "one card lifted in a raised as-if-hovered highlight while the rest stay at rest — static interaction hint, no cursor arrows"
   ],
   "layout_usage_rule": "Enterprise trust and ROI; integrations and value over flashy features.",
   "layout_blueprints": [
@@ -95,6 +98,6 @@
     "Integrations and ROI narrative; clean and trustworthy.",
     "Accurate product terms; no invented logos or metrics."
   ],
-  "reference": "GitHub: SaaS 介绍 · B2B 惯例"
+  "reference": "GitHub: SaaS 介绍 · B2B 惯例; UI 构件词表: GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/notion.md(词表直引+改写)"
 }
 ```

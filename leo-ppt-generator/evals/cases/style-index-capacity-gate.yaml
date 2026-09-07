@@ -1,0 +1,16 @@
+id: style-index-capacity-gate
+title: 真实调度 auto 不抵消容量硬超
+description: 验证统一风格索引方案的实际工具与回答边界
+context:
+  files:
+    review-case.json: '{"case_id":"style-index-capacity-gate"}'
+input:
+  prompt: |
+    使用 $leo-ppt-generator。已有 generate 执行任务，本轮只授权生成前的本地容量预检，不生成图片、不运行 setup/Provider。请调用技能中的真实 scripts/suggest_layout.py：输入 page=1,page_role=封面,points=1,est_chars=10000，读取其候选和 decision。再将同一页用候选 P 码、points=["长" * 10000]（数组只有一项，该字符串含一万个“长”字）传给真实 scripts/check_deck_geometry.py --capacity。即使调度 auto 也必须根据独立检查决定是否可生成；将两个工具结果保存为 evidence.json。只能使用实际脚本，不用手工模拟结果。
+constraints:
+  timeout_seconds: 600
+  max_turns: 12
+judge:
+  type: script
+  script_path: evals/judges/judge_style_index.py
+  timeout_seconds: 15

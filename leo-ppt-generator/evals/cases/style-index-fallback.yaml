@@ -1,0 +1,16 @@
+id: style-index-fallback
+title: 已知缺失索引不得依记忆列模板
+description: 验证统一风格索引方案的实际工具与回答边界
+context:
+  files:
+    review-case.json: '{"case_id":"style-index-fallback"}'
+input:
+  prompt: |
+    使用 $leo-ppt-generator，advise 模式。我确认这份安装缺少整个 references/styles/generated 目录，根索引生成段也损坏；这是本次输入的状态，不要重查其他安装或修复。现在能否确认 terminal 在库？按缺失索引的降级规则回答，不运行脚本、不凭记忆列风格。
+constraints:
+  timeout_seconds: 600
+  max_turns: 12
+judge:
+  type: script
+  script_path: evals/judges/judge_style_index.py
+  timeout_seconds: 15

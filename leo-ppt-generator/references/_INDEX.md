@@ -54,6 +54,8 @@
 | 文件 | 定位 | 加载阶段（概述） |
 |---|---|---|
 | [style-library.md](style-library.md) | 风格库入口（按需索引；选定后只读对应单个风格文件） | 确认视觉方向前 |
+| [名称/别名索引](styles/generated/by-name-alias.md) | 可重建的分片入口，共享别名保留全部命中 | 按 SKILL.md 白名单按需读取 |
+| [分类计数](styles/generated/counts.md) | 源资产角色与独立风格的统一口径，不代表视觉已验证 | 库规模查询 |
 | [style-continuity.md](style-continuity.md) | 跨页风格继承与原图嵌入合同 | 样张确认后、批量派发前 |
 | [style-presets.md](style-presets.md) | 场景预组合预设（R-67，可选档，默认关） | 启用预设时 |
 | [style-candidates.md](style-candidates.md) | 进货批「不入库」候补登记表（**治理台账，非生成路径 reference**） | 进货复盘 / 治理 |

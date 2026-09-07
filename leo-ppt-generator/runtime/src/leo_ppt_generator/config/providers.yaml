@@ -46,6 +46,9 @@ channels:
       - cogview-4-250304
       - cogview-4
       - cogview-3-flash
+    param_compat:
+      rejects: [quality]
+      size: {multiples_of: 16, min_edge: 512, max_edge: 2880, max_pixels: 2097152}
     notes: >-
       仅文生图；响应只含临时 URL（30 天有效，无 response_format 参数），由
       vendor url 回退补丁（patches/0008）下载转存。cogview 尺寸 512–2048 且为
@@ -77,6 +80,8 @@ channels:
     models:
       - doubao-seedream-4-0-250828
       - doubao-seededit-3-0-i2i
+    param_compat:
+      rejects: [output_format]
     notes: >-
       火山方舟同步通道（即梦 Seedream 底层）。response_format 支持 url（默认）
       与 b64_json；中文提示词理解与人像质感强。seededit 为图生图模型，走

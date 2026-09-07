@@ -12,6 +12,13 @@ engine:
 
 cases:
   files:
+    - evals/cases/workflow-policy-matrix.yaml
+    - evals/cases/style-index-lookup.yaml
+    - evals/cases/style-index-long-tail.yaml
+    - evals/cases/style-index-fallback.yaml
+    - evals/cases/style-index-prompt-boundary.yaml
+    - evals/cases/style-index-user-override.yaml
+    - evals/cases/style-index-capacity-gate.yaml
     - evals/cases/advice-only-no-execution.yaml
     - evals/cases/control-plane-blocked-summary.yaml
     - evals/cases/ambiguous-content-and-visual.yaml

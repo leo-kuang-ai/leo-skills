@@ -41,6 +41,12 @@ _BUILTIN_PROVIDER_IDS = frozenset(
 _ID_CHARACTERS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
 _ENV_CHARACTERS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_")
 
+# param_compat 白名单（加固方案 WS1）：仅允许声明实测过的执行面事实。
+_PARAM_REJECTS_VOCAB = frozenset(
+    {"quality", "output_format", "background", "moderation", "output_compression", "input_fidelity"}
+)
+_SIZE_CONSTRAINT_KEYS = frozenset({"multiples_of", "min_edge", "max_edge", "max_pixels"})
+
 
 class ChannelCatalogError(ValueError):
     """只携带稳定原因码的目录校验错误。"""
@@ -49,6 +55,31 @@ class ChannelCatalogError(ValueError):
         self.reason_code = reason_code
         self.detail = detail
         super().__init__(reason_code if detail is None else f"{reason_code}:{detail}")
+
+
+@dataclass(frozen=True)
+class ParamCompat:
+    """渠道执行面兼容矩阵（仅登记实测事实，未登记项走家族回退规则）。
+
+    - ``rejects``：该渠道模型拒收的 OpenAI images 参数（如 cogview-4 ×
+      quality → 400 code 1214、doubao × output_format）。优先级高于
+      gpt-image 家族默认发送规则。
+    - ``size``：尺寸档约束（如 cogview-4 实测 512–2880、×16、≤2^21 px）。
+      缺省表示未实测，服务端终裁。
+    """
+
+    rejects: tuple[str, ...] = ()
+    size: tuple[tuple[str, int], ...] = ()
+
+    def as_env_json(self) -> str:
+        import json
+
+        payload: dict = {}
+        if self.rejects:
+            payload["rejects"] = list(self.rejects)
+        if self.size:
+            payload["size"] = {key: value for key, value in self.size}
+        return json.dumps(payload, ensure_ascii=False, sort_keys=True)
 
 
 @dataclass(frozen=True)
@@ -66,6 +97,7 @@ class ChannelDefinition:
     models: tuple[str, ...]
     notes: str | None = None
     featured: bool = False
+    param_compat: ParamCompat = ParamCompat()
 
     @property
     def api_base_url(self) -> str:
@@ -150,6 +182,41 @@ def _validate_models(value: object, channel_id: str, default_model: str) -> tupl
     return models
 
 
+def _validate_param_compat(value: object, channel_id: str) -> ParamCompat:
+    if value is None:
+        return ParamCompat()
+    if not isinstance(value, dict):
+        raise ChannelCatalogError("channel_param_compat_invalid", channel_id)
+    rejects_value = value.get("rejects", [])
+    if not isinstance(rejects_value, list):
+        raise ChannelCatalogError("channel_param_compat_invalid", f"{channel_id}:rejects")
+    rejects = tuple(_require_text(item, "param_compat.rejects", channel_id) for item in rejects_value)
+    unknown_rejects = sorted(set(rejects) - _PARAM_REJECTS_VOCAB)
+    if unknown_rejects or len(rejects) != len(set(rejects)):
+        raise ChannelCatalogError(
+            "channel_param_compat_invalid",
+            f"{channel_id}:rejects:{','.join(unknown_rejects) or 'duplicated'}",
+        )
+    size_value = value.get("size")
+    if size_value is None:
+        return ParamCompat(rejects=rejects)
+    if not isinstance(size_value, dict):
+        raise ChannelCatalogError("channel_param_compat_invalid", f"{channel_id}:size")
+    unknown_keys = sorted(set(size_value) - _SIZE_CONSTRAINT_KEYS)
+    if unknown_keys:
+        raise ChannelCatalogError(
+            "channel_param_compat_invalid", f"{channel_id}:size:{','.join(unknown_keys)}"
+        )
+    constraints: list[tuple[str, int]] = []
+    for key, raw in size_value.items():
+        if not isinstance(raw, int) or isinstance(raw, bool) or raw <= 0:
+            raise ChannelCatalogError(
+                "channel_param_compat_invalid", f"{channel_id}:size:{key}"
+            )
+        constraints.append((key, raw))
+    return ParamCompat(rejects=rejects, size=tuple(sorted(constraints)))
+
+
 def load_channels(path: Path = CATALOG_PATH) -> tuple[ChannelDefinition, ...]:
     """读取并全量校验目录；任何问题 fail-closed。"""
 
@@ -203,6 +270,7 @@ def load_channels(path: Path = CATALOG_PATH) -> tuple[ChannelDefinition, ...]:
                 models=_validate_models(entry.get("models"), channel_id, default_model),
                 notes=notes,
                 featured=featured,
+                param_compat=_validate_param_compat(entry.get("param_compat"), channel_id),
             )
         )
         seen.add(channel_id)

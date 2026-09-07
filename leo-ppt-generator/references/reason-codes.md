@@ -2,6 +2,8 @@
 
 | Reason code | 含义 | 可恢复性 | 动作 |
 | --- | --- | --- | --- |
+| `style_selection_changed` | 摘要指纹与当前实际加载的风格不一致 | 是 | 重新读取同一 home 的摘要，在既有视觉方向门核对后使用新指纹 |
+| `style_selection_invalid` | 指纹格式或选定 brief 的结构无效 | 是 | 修复指纹参数或源 brief 后重新查询；不能绕过守卫继续渲染 |
 | `runtime_incompatible` | 当前平台无 lock、runtime 缺失或 identity 不匹配 | 条件式 | 恢复原 runtime 或安装已验证兼容版本 |
 | `runtime_install_failed` | venv、依赖或 smoke 失败 | 是 | 保留旧 current，检查 quarantine 与安装日志 |
 | `operation_conflict` | operation id 已绑定不同请求 | 是 | 重新读取 operation/status，生成新 id |

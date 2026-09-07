@@ -52,7 +52,7 @@ provenance 留在 slide_jobs entry 层，不动 PageArtifact schema）。sidecar
 token 成本）；`backend report` 的 token 聚合把 render 行单独看待，不混入
 图像模型成本。
 
-## 3. 模板合同（六条）
+## 3. 模板合同（七条）
 
 模板目录 `assets/render-templates/`（每模板 `<id>.html`；合同与 lint 见该
 目录 `README.md` 与 `scripts/lint_render_templates.py`，缺 ready 信号 =
@@ -62,7 +62,13 @@ ERROR）：deterministic 模式（`?leo_render=1` 禁动画）、`data-leo-ready
 （渲染器以 add_init_script 在页面脚本执行前注入——注入晚于模板脚本是
 "干净空页"竞态，只有像素闸门能抓住）、字体经 `/leo-fonts/` HTTP 供给
 （**禁 `file://` 与远程 CDN**）、根容器 1280×720 + `overflow:hidden`、
-内容容器带 `data-leo-block` 锚点。
+内容容器带 `data-leo-block` 锚点、**溢出哨兵**（加固方案 WS3）：截图前
+对全部 `data-leo-block` 做确定性越界断言——块矩形必须完整落在逻辑画幅
+（±1px 容差）内，且自身裁剪（overflow hidden/clip）的块内容不得超出其盒；
+越界 → `render_overflow` 拒产（不留 PNG），sidecar 记 `overflow_check`。
+`LEO_PPT_RENDER_OVERFLOW=warn` 降级为观察模式（sidecar 记
+`overflow_observed` 警告并照常产出，供存量模板回归摸底）。装饰性出血
+（overflow visible 的合法溢出，如 pull-quote 巨引号）不触发哨兵。
 
 字体 HTTP 服务的工程要点（本地 HTTP server 供字体、`networkidle` +
 `document.fonts.ready` 等待）改编自 frontend-slides `scripts/export-pdf.sh`

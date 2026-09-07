@@ -1,0 +1,20 @@
+id: workflow-policy-matrix
+title: 协作方式与质量边界的反例矩阵
+description: 只读判断不同请求的执行模式、页数、样张和推荐边界；仅验证规则理解，不声称实际制稿。
+input:
+  prompt: |
+    使用 $leo-ppt-generator。本轮只解释规则，不创建任务、不生成图片。
+    请分别判断下列假设请求，仅返回一个JSON对象，不要代码围栏：
+    delegated_mode: 用户说“比较后选合适的直接做”，该假设任务是advise还是execute？
+    paused_mode: 用户说“先比较，暂时不要做”，该假设任务是advise还是execute？
+    total_pages: 用户说“做12页PPT”，未另说正文，成品总页数是多少？
+    single_family_allowed: 场景硬约束仅允许一个家族，可以只给该家族内候选吗？布尔值。
+    sample_binding_required: 中断恢复时有样张图，是否仍要核对对应决策与实际绑定？布尔值。
+    delegation_is_manual_acceptance: 委托决策等于用户已人工视觉验收吗？布尔值。
+    two_refs_authorize_extra_cost: 两张参考图本身是否授权多一张付费样张？布尔值。
+constraints:
+  max_turns: 2
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_workflow_policy_matrix.py
+  timeout_seconds: 10

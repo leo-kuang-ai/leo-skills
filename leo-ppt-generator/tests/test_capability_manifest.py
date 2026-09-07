@@ -143,16 +143,17 @@ class CapabilityManifestTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 2)
 
     def test_real_skill_tree_manifest_is_consistent(self):
-        """真树冒烟：brief 计数与 _INDEX.md 声明互证（137 份口径）。"""
+        """旧清单仍可用；不能再拿人读目录的风格总数代替兼容计数。"""
         real = Path(__file__).resolve().parents[1]
         proc = run("--root", str(real))
         self.assertEqual(proc.returncode, 0, proc.stderr)
         data = json.loads(proc.stdout)
-        index = (real / "references" / "styles" / "00_索引" / "_INDEX.md"
-                 ).read_text(encoding="utf-8")
-        import re
-        declared = int(re.search(r"含 JSON 风格 (\d+) 份", index).group(1))
-        self.assertEqual(data["layers"]["briefs"]["count"], declared)
+        self.assertEqual(data["schema_version"], 1)
+        self.assertEqual(data["kind"], "capability-manifest")
+        briefs = data["layers"]["briefs"]
+        self.assertEqual(briefs["count"], len(briefs["files"]))
+        self.assertTrue(all((real / path).is_file() for path in briefs["files"]))
+        self.assertNotIn("references/styles/00_索引/_INDEX.md", briefs["files"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "description": "开发集与留出集分离；null 表示操作/场景用例，不能按名称匹配评分。",
+  "cases": [
+    {
+      "id": "lookup-01",
+      "category": "exact",
+      "query": "清爽专业风",
+      "split": "development",
+      "expected_names": [
+        "清爽专业风"
+      ]
+    },
+    {
+      "id": "lookup-02",
+      "category": "exact",
+      "query": "科研答辩风",
+      "split": "development",
+      "expected_names": [
+        "科研答辩风"
+      ]
+    },
+    {
+      "id": "lookup-03",
+      "category": "exact",
+      "query": "瑞士网格风",
+      "split": "development",
+      "expected_names": [
+        "瑞士网格风"
+      ]
+    },
+    {
+      "id": "lookup-04",
+      "category": "exact",
+      "query": "Dracula紫风",
+      "split": "holdout",
+      "expected_names": [
+        "Dracula紫风"
+      ]
+    },
+    {
+      "id": "lookup-05",
+      "category": "alias",
+      "query": "whiteboard",
+      "split": "development",
+      "expected_names": [
+        "手绘白板风"
+      ]
+    },
+    {
+      "id": "lookup-06",
+      "category": "alias",
+      "query": "dashboard",
+      "split": "development",
+      "expected_names": [
+        "数据仪表盘风"
+      ]
+    },
+    {
+      "id": "lookup-07",
+      "category": "alias",
+      "query": "clean-corporate",
+      "split": "development",
+      "expected_names": [
+        "清爽专业风"
+      ]
+    },
+    {
+      "id": "lookup-08",
+      "category": "alias",
+      "query": "gruvbox-dark",
+      "split": "holdout",
+      "expected_names": [
+        "Gruvbox暗风"
+      ]
+    },
+    {
+      "id": "lookup-09",
+      "category": "ambiguous",
+      "query": "terminal",
+      "split": "development",
+      "expected_names": [
+        "终端命令行风",
+        "Gruvbox暗风"
+      ]
+    },
+    {
+      "id": "lookup-10",
+      "category": "ambiguous",
+      "query": "TERMINAL",
+      "split": "development",
+      "expected_names": [
+        "终端命令行风",
+        "Gruvbox暗风"
+      ]
+    },
+    {
+      "id": "lookup-11",
+      "category": "ambiguous",
+      "query": " terminal ",
+      "split": "development",
+      "expected_names": [
+        "终端命令行风",
+        "Gruvbox暗风"
+      ]
+    },
+    {
+      "id": "lookup-12",
+      "category": "ambiguous",
+      "query": "Terminal",
+      "split": "holdout",
+      "expected_names": [
+        "终端命令行风",
+        "Gruvbox暗风"
+      ]
+    },
+    {
+      "id": "lookup-13",
+      "category": "variant",
+      "query": "财报季报风",
+      "split": "development",
+      "expected_names": [
+        "财报季报风"
+      ]
+    },
+    {
+      "id": "lookup-14",
+      "category": "variant",
+      "query": "在线教育风",
+      "split": "development",
+      "expected_names": [
+        "在线教育风"
+      ]
+    },
+    {
+      "id": "lookup-15",
+      "category": "variant",
+      "query": "周报月报风",
+      "split": "development",
+      "expected_names": [
+        "周报月报风"
+      ]
+    },
+    {
+      "id": "lookup-16",
+      "category": "variant",
+      "query": "米白樱粉风",
+      "split": "holdout",
+      "expected_names": [
+        "米白樱粉风"
+      ]
+    },
+    {
+      "id": "lookup-17",
+      "category": "scenario",
+      "query": "董事会经营复盘，数据多",
+      "split": "development",
+      "expected_names": null,
+      "assertion": "只记录规则与索引证据，不把名称检索当作语义排名"
+    },
+    {
+      "id": "lookup-18",
+      "category": "scenario",
+      "query": "论文答辩，图表证据为主",
+      "split": "development",
+      "expected_names": null,
+      "assertion": "只记录规则与索引证据，不把名称检索当作语义排名"
+    },
+    {
+      "id": "lookup-19",
+      "category": "scenario",
+      "query": "儿童科普，解释复杂概念",
+      "split": "development",
+      "expected_names": null,
+      "assertion": "只记录规则与索引证据，不把名称检索当作语义排名"
+    },
+    {
+      "id": "lookup-20",
+      "category": "scenario",
+      "query": "投资人路演，科技产品",
+      "split": "holdout",
+      "expected_names": null,
+      "assertion": "只记录规则与索引证据，不把名称检索当作语义排名"
+    },
+    {
+      "id": "lookup-21",
+      "category": "long-tail",
+      "query": "暗线终端风",
+      "split": "development",
+      "expected_names": [
+        "暗线终端风"
+      ]
+    },
+    {
+      "id": "lookup-22",
+      "category": "long-tail",
+      "query": "地图战略风",
+      "split": "development",
+      "expected_names": [
+        "地图战略风"
+      ]
+    },
+    {
+      "id": "lookup-23",
+      "category": "long-tail",
+      "query": "流光液态风",
+      "split": "development",
+      "expected_names": [
+        "流光液态风"
+      ]
+    },
+    {
+      "id": "lookup-24",
+      "category": "long-tail",
+      "query": "咨询精密网格风",
+      "split": "holdout",
+      "expected_names": [
+        "咨询精密网格风"
+      ]
+    },
+    {
+      "id": "lookup-25",
+      "category": "user",
+      "query": "清爽专业风",
+      "split": "development",
+      "expected_names": [
+        "清爽专业风"
+      ],
+      "fixture_scope": "isolated-user-home"
+    },
+    {
+      "id": "lookup-26",
+      "category": "user",
+      "query": "仅用户模板",
+      "split": "development",
+      "expected_names": [
+        "仅用户模板"
+      ],
+      "fixture_scope": "isolated-user-home"
+    },
+    {
+      "id": "lookup-27",
+      "category": "user",
+      "query": "共有别名",
+      "split": "development",
+      "expected_names": [
+        "用户甲",
+        "用户乙"
+      ],
+      "fixture_scope": "isolated-user-home"
+    },
+    {
+      "id": "lookup-28",
+      "category": "user",
+      "query": "默认目录与指定目录",
+      "split": "holdout",
+      "expected_names": null,
+      "fixture_scope": "isolated-user-home"
+    },
+    {
+      "id": "lookup-29",
+      "category": "fallback",
+      "query": "不存在的风格-abcd",
+      "split": "development",
+      "expected_names": []
+    },
+    {
+      "id": "lookup-30",
+      "category": "fallback",
+      "query": "索引整目录缺失",
+      "split": "development",
+      "expected_names": null
+    },
+    {
+      "id": "lookup-31",
+      "category": "fallback",
+      "query": "索引生成段损坏",
+      "split": "development",
+      "expected_names": null
+    },
+    {
+      "id": "lookup-32",
+      "category": "fallback",
+      "query": "儿童受众排除高攻击风格",
+      "split": "holdout",
+      "expected_names": null
+    }
+  ]
+}

@@ -9,7 +9,9 @@
     引用时，引用页一并纳入，迭代至不动点。
 
 语义边界（对齐 chinese-longnovel「事实性修复从受影响点重建投影」）：
-仅 diff 数字值与术语词形——纯文案改（不动数字/术语）不产出任何页。
+完整页块变化均计入影响，再叠加数字、术语及旧/新引用闭包。
+备注（speaker_script / engineering）与未知字段也保守计入；影响清单用于
+复核和重建范围，不等同于必须重新生成页图。删除页保留在清单并单列。
 
 用法：python3 compute_impact.py <old-master.md> <new-master.md> [--json]
 退出码：0 正常（含零受影响页）；2 用法或解析失败。
@@ -51,6 +53,7 @@ def split_pages(text):
         raise ParseError("未发现任何页块（## S<N> 或 ## 附）")
     section_starts = [m.start() for m in ALL_SECTION_RE.finditer(text)]
     pages = []
+    seen = set()
     for m in matches:
         end = len(text)
         for pos in section_starts:
@@ -59,6 +62,9 @@ def split_pages(text):
                 break
         header = m.group(0)
         pid = "附" if header.startswith("## 附") else f"S{m.group(2)}"
+        if pid in seen:
+            raise ParseError(f"重复页标识：{pid}")
+        seen.add(pid)
         pages.append((pid, header, text[m.start():end]))
     return pages
 
@@ -179,11 +185,46 @@ def compute_impact(old_text, new_text):
     terms_added = sorted(new_gloss - old_gloss)
 
     reasons = {}
-    new_page_ids = set(new_seq)
+    all_page_ids = set(old_seq) | set(new_seq)
 
     def add(pid, reason):
-        if pid in new_page_ids:
+        if pid in all_page_ids:
             reasons.setdefault(pid, []).append(reason)
+
+    old_bodies = {pid: body for pid, _h, body in old_pages}
+    new_bodies = {pid: body for pid, _h, body in new_pages}
+    for pid in all_page_ids:
+        if pid not in old_bodies:
+            add(pid, "页面新增")
+        elif pid not in new_bodies:
+            add(pid, "页面删除（移除旧产物并复核引用）")
+        elif old_bodies[pid] != new_bodies[pid]:
+            add(pid, "页块变化（含正文、视觉行、备注或未知字段）")
+        if pid in old_bodies and pid in new_bodies:
+            if old_seq.index(pid) != new_seq.index(pid):
+                add(pid, "页序变化")
+
+    # 非页块未知合同变化可能影响整套；已知表由专属规则处理。
+    def other_content(text, pages):
+        for _pid, _header, body in pages:
+            text = text.replace(body, "", 1)
+        return re.sub(
+            r"^##\s+(?:数字登记表|术语表)\s*\n.*?(?=^##\s|\Z)",
+            "", text, flags=re.M | re.S)
+
+    if other_content(old_text, old_pages) != other_content(new_text, new_pages):
+        for pid in all_page_ids:
+            add(pid, "页外合同或未知内容变化")
+
+    old_rows = set(_table_rows(old_text, LEDGER_SECTION_RE))
+    new_rows = set(_table_rows(new_text, LEDGER_SECTION_RE))
+    for row in old_rows ^ new_rows:
+        cells = _cells(row)
+        if len(cells) >= 2 and cells[0] != "数值" and not _is_separator(row):
+            targets = set(_resolve_page_cell(cells[1], old_seq))
+            targets.update(_resolve_page_cell(cells[1], new_seq))
+            for pid in targets or all_page_ids:
+                add(pid, "数字登记表行变化（含来源与口径）")
 
     for value, pid in numbers_removed:
         add(pid, f"数字登记表:{value}（移除）")
@@ -198,19 +239,23 @@ def compute_impact(old_text, new_text):
                           | _pages_containing(new_pages, abbr)):
             add(pid, f"术语表:{term}（词形新增）")
 
-    # Transitive closure over cross-refs in the NEW structure: a page that
-    # references an affected page must be rebuilt too (iterate to fixpoint).
-    refs = {pid: cross_ref_targets(body, new_seq) for pid, _h, body in new_pages}
+    # 合并新旧引用，删除目标仍可触发原引用页的复核。
+    refs = {}
+    for pages, seq in ((old_pages, old_seq), (new_pages, new_seq)):
+        for pid, _h, body in pages:
+            refs.setdefault(pid, set()).update(cross_ref_targets(body, seq))
     changed = True
     while changed:
         changed = False
         for pid, targets in refs.items():
-            if pid in reasons:
-                continue
-            hits = sorted(t for t in targets if t in reasons)
+            hits = sorted(t for t in targets if t in reasons and t != pid)
             if hits:
-                add(pid, "；".join(f"交叉引用→{t}" for t in hits))
-                changed = True
+                if pid not in reasons:
+                    changed = True
+                for target in hits:
+                    reason = f"交叉引用→{target}"
+                    if reason not in reasons.get(pid, []):
+                        add(pid, reason)
 
     affected = sorted(reasons, key=page_sort_key)
     for pid in affected:
@@ -222,6 +267,8 @@ def compute_impact(old_text, new_text):
         "numbers_added": [f"{v}@{p}" for v, p in numbers_added],
         "terms_removed": [f"{t}|{a}" for t, a in terms_removed],
         "terms_added": [f"{t}|{a}" for t, a in terms_added],
+        "added_pages": sorted(set(new_seq) - set(old_seq), key=page_sort_key),
+        "removed_pages": sorted(set(old_seq) - set(new_seq), key=page_sort_key),
     }
 
 

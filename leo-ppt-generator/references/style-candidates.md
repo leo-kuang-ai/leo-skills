@@ -38,7 +38,7 @@
 - **登记字段**：源项目｜C 批实收｜净新余量｜精选建议｜触发条件｜去重注意
   （六字段，快照口径）。
 
-## 候补源登记（按 C 批后净余量排序，大型矿 9 + 择优杂项 11 = 20 源）
+## 候补源登记（按 C 批后净余量排序，大型矿 9 + 择优杂项 12 = 21 源）
 
 ### 大型矿（主矿已由 C1-C4 开采，余量按信号补货）
 
@@ -122,6 +122,18 @@
   小体量整体对照全库概念清单。
 - **gitee-mirrors/deckjs**｜实收：无（2026-09-01 S5 审查判不收：HTML 演示框架
   同 reveal.js 性质，无独立风格库）｜净新余量：0｜触发：无｜维持不收登记。
+- **baoyu-skills**（MIT，JimLiu/baoyu-skills，快照 6b7a2e4 2026-07-03；AJ 衍生
+  子集按无授权源思想级）｜实收：机制层 4 项 + 既有 brief 词表增强六组（直改
+  references，无风格条目，台账见 docs/plans/2026-09-06-002 迁移方案）｜净新
+  余量：≈15 风格 + 7 版式/图表语法 + 词表层 3 项（探险日志词表→博物图鉴骨架、
+  剖面图解语法余量（方向箭头/编号步骤）、notion checkbox/toggle 构件→SaaS
+  介绍风，均因 intake 幂等合同转候补）｜精选：高价值 7 项（双语技术简报/说明书
+  图解/博物图鉴/实验室标签 + 周期表/故事山/dense-modules 三配方族）｜触发：
+  双语、无字说明书、编目合集、高密度种草点名落空（R-55）｜去重：blueprint 系
+  light 场跨引工程白图风不另立；corporate-memphis 立独立 family 不挂 memphis；
+  cyberpunk-neon 与合成波/蒸汽波消歧；knolling/ui-wireframe 落 08 轴、
+  subway-map 落 07 轴；dense-modules/retro-popup-pop 系 AJ 衍生（无授权）入库时
+  思想级重设计；条目散落各轴 + reference 标注，不建 `NN_来源_baoyu/` 整迁目录。
 
 > 历史快照（2026-08-31 S4b 口径，C 批开采前的原始勘察余量）见 git 历史；
 > known-issues 2026-09-01 C 批终局段与 CHANGELOG C1-C4 条目为收口账。

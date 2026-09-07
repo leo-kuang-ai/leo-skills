@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """compute_impact.py 单元测试（R-35 影响面自动计算）：
-改登记表数字 → 恰含引用页与闭包页 / 纯文案零页 / 双向对称 / 解析失败
+改登记表数字 → 恰含引用页与闭包页 / 可见内容变化 / 双向对称 / 解析失败
 exit 2 / 确定性 / JSON 结构 / 数字挪页 / 术语词形变化 / cross-ref 链式
 传递闭包 / 登记表行删除 / 无术语表节兼容。"""
 import json
@@ -57,8 +57,12 @@ def run(old, new, extra=()):
                                      encoding="utf-8") as f:
         f.write(new)
         new_path = f.name
-    r = subprocess.run([sys.executable, str(SCRIPT), old_path, new_path, *extra],
-                       capture_output=True, text=True)
+    try:
+        r = subprocess.run([sys.executable, str(SCRIPT), old_path, new_path, *extra],
+                           capture_output=True, text=True)
+    finally:
+        Path(old_path).unlink()
+        Path(new_path).unlink()
     return r.returncode, r.stdout, r.stderr
 
 
@@ -80,11 +84,11 @@ class ComputeImpactTest(unittest.TestCase):
         self.assertIn("数字登记表:1.31 亿元", out)
         self.assertIn("交叉引用→S2", out)
 
-    def test_pure_copywriting_change_yields_zero_pages(self):
+    def test_pure_copywriting_change_hits_its_page(self):
         new = BASE.replace("下季度继续提速", "下季度增速再上台阶")
         code, out, _ = run(BASE, new)
         self.assertEqual(code, 0)
-        self.assertEqual(affected(out), [])
+        self.assertEqual(affected(out), ["S3"])
 
     def test_impact_is_symmetric_across_direction(self):
         new = BASE.replace("1.24 亿元", "1.31 亿元")
@@ -173,7 +177,66 @@ class ComputeImpactTest(unittest.TestCase):
         # 无 ## 术语表 节的存量母版：解析为空集，不报错
         code, out, _ = run(BASE, BASE.replace("提速", "扩张"))
         self.assertEqual(code, 0)
-        self.assertEqual(affected(out), [])
+        self.assertEqual(affected(out), ["S3"])
+
+    def test_assertion_reversal_propagates_without_numbers(self):
+        old = BASE.replace("营收 1.24 亿元创单季新高", "继续投资")
+        code, out, _ = run(old, old.replace("继续投资", "停止投资"))
+        self.assertEqual(code, 0)
+        self.assertEqual(affected(out), ["S2", "S3"])
+
+    def test_visible_and_unknown_page_fields_are_conservative(self):
+        for old, new in (("环比 +18%", "环比 -18%"),
+                         ("要点1→KPI 塔", "要点1→趋势图"),
+                         ("argument_role: 支柱1", "argument_role: 证据"),
+                         ("## S2 财务", "## S2 投资"),
+                         ("备注：引用财报", "备注：speaker_script: 新讲稿"),
+                         ("备注：引用财报", "备注：engineering: 新参数")):
+            with self.subTest(new=new):
+                code, out, _ = run(BASE, BASE.replace(old, new))
+                self.assertEqual(code, 0)
+                self.assertEqual(affected(out), ["S2", "S3"])
+
+    def test_added_and_removed_pages_are_explicit(self):
+        new = BASE + "\n## S4 新页\n- 标题：新行动\n"
+        _, out, _ = run(BASE, new, ["--json"])
+        data = json.loads(out)
+        self.assertEqual(data["affected_pages"], ["S4"])
+        self.assertEqual(data["added_pages"], ["S4"])
+        _, out, _ = run(new, BASE, ["--json"])
+        data = json.loads(out)
+        self.assertEqual(data["affected_pages"], ["S4"])
+        self.assertEqual(data["removed_pages"], ["S4"])
+
+    def test_deleted_target_propagates_to_surviving_reference(self):
+        start = BASE.index("## S2")
+        end = BASE.index("## S3")
+        new = BASE[:start] + BASE[end:]
+        _, out, _ = run(BASE, new, ["--json"])
+        data = json.loads(out)
+        self.assertEqual(data["affected_pages"], ["S2", "S3"])
+        self.assertIn("交叉引用→S2", data["reasons"]["S3"])
+
+    def test_page_order_changes_rebuild_moved_pages(self):
+        s2, s3, ledger = (BASE.index(marker) for marker in
+                          ("## S2", "## S3", "## 数字登记表"))
+        new = BASE[:s2] + BASE[s3:ledger] + BASE[s2:s3] + BASE[ledger:]
+        _, out, _ = run(BASE, new)
+        self.assertEqual(affected(out), ["S2", "S3"])
+        self.assertIn("页序变化", out)
+
+    def test_global_unknown_change_affects_all_pages(self):
+        _, out, _ = run(BASE, BASE.replace("# 母版", "# 母版\n受众：董事会"))
+        self.assertEqual(affected(out), ["S1", "S2", "S3"])
+
+    def test_ledger_scope_change_without_number_change_is_affected(self):
+        _, out, _ = run(BASE, BASE.replace("| 合并 |", "| 母公司 |"))
+        self.assertEqual(affected(out), ["S2", "S3"])
+
+    def test_duplicate_page_ids_fail_instead_of_overwriting(self):
+        code, _, err = run(BASE, BASE + "\n## S2 重复\n")
+        self.assertEqual(code, 2)
+        self.assertIn("重复页标识", err)
 
 
 if __name__ == "__main__":

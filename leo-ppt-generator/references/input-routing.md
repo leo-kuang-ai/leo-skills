@@ -4,7 +4,7 @@
 
 | 输入与目标 | Route | 必要确认 |
 | --- | --- | --- |
-| 文章、报告、笔记、大纲，需要新演示文稿 | `generate` | 受众、目标、页数（口径按 image-deck-workflow 第 1 步：默认内容页，封面/收尾额外计入）、大纲、完整逐页稿、风格、backend、样张 |
+| 文章、报告、笔记、大纲，需要新演示文稿 | `generate` | 受众、目标、页数（默认成品总页数，明确正文页才额外计结构页）、大纲、完整逐页稿、风格、backend、样张；是否等待按 SKILL.md 协作方式 |
 | 图片/PDF，或确认可信的 PPT/PPTX，需要对象级可编辑 | `direct-editable` | 输入范围、可信 Office 确认、backend 与 worker 可用性 |
 | 已完成 image-deck，需要全量升级 | `upgrade-full` | 原 run、全部页面、交付类型变化 |
 | 已完成 image-deck，只升级指定页 | `upgrade-selected` | 冻结页集合、默认不允许 partial、失败集合变化后重新确认 |
@@ -19,7 +19,7 @@ PaddleOCR 不是 route 或图片 Provider。它只在 editable 阶段实际需�
 `.webp`/`.gif`/`.bmp`/`.tiff` 等格式尚未纳入白名单：应请用户先转换为受支持格式，
 不得猜测 route 或隐式调用转换工具。
 
-同时存在内容与视觉稿时，先问一个会改变 route 的问题：视觉稿是严格保留布局并
+同时存在内容与视觉稿且目的无法从请求推断时，问一个会改变 route 的问题：视觉稿是严格保留布局并
 转可编辑，还是只作为新演示文稿的风格/素材参考。不要自行串联两条 route。判定为
 风格参考且走 `generate` 时，按 [`style-library.md`](style-library.md)「照图做」节
 把参考图转为风格 brief 并经样张并排比对验证。
@@ -34,16 +34,16 @@ PaddleOCR 不是 route 或图片 Provider。它只在 editable 阶段实际需�
   `[mm:ss - mm:ss 时间范围秒数:(Xs-Ys)]` 预处理协议同构，简化为零填充区间）。
   进入 `generate` 前先用 [`scripts/normalize_transcript.py`](../scripts/normalize_transcript.py)
   校验/规范化；不规范行须修复或退回用户确认，不得丢弃该段内容。
-- 路由与确认：转写稿按既有文本材料走 `generate`，受众、目标、页数、数据分级
-  询问照常，不因来源是录音而豁免；分级按转写内容实际密级判定。
+- 路由与确认：转写稿按既有文本材料走 `generate`，核对受众、目标、页数、数据分级；
+  据当前材料和已有声明判定，重要缺口才问，不因来源是录音追加确认轮次。
 - 引用级回溯：转写稿支撑的"引用"级事实保留可回溯时间点，母版/讲稿引用口头
   发言时注明 `mm:ss` 来源，使口头发言升级为可回溯引用。
 
 ## 材料缺失 → 研究代采轻形态（R-01）
 
 - 触发：`generate` 首轮发现无自备材料（原 `input_material_missing` 直接
-  blocked 的场景）：控制面语义不变，仍先输出五字段固定块（`reason_code:
-  input_material_missing`），再在解释部分给出下述轻形态引导。
+  blocked 的场景）：控制面语义保留 `reason_code: input_material_missing`，用户回复
+  先说明缺失材料与影响，再给下述引导；机器五字段在诊断时展示。
 - 行为：解释部分附**研究问题清单**（按 deck 主题与受众组织，每节 2–4 个该
   deck 需要回答的问题）与**建议检索渠道和素材类型**（公开渠道类型+素材类型
   清单，不含具体链接）；经既有合同确认门确认（材料缺失时仍单独冻结合同），

@@ -280,6 +280,47 @@ def _definitions() -> tuple[ProviderDefinition, ...]:
             internal=True,
         ),
         ProviderDefinition(
+            name=ProviderName.RENDER_LANE.value,
+            adapter=AdapterIdentity(
+                "render-lane", "render-lane/v1", "render-lane"
+            ),
+            capabilities=_capabilities(
+                supported=(Capability.GENERATE,),
+                unsupported=tuple(
+                    capability
+                    for capability in Capability
+                    if capability is not Capability.GENERATE
+                ),
+            ),
+            credential_environments=frozenset(),
+            default_model="render:html",
+            max_reference_images=0,
+            # 本地确定性渲染：免凭据、免计费、无副作用。
+            verification_policy=VerificationPolicy(
+                version=DEFAULT_POLICY_VERSION,
+                auth_probe=SafeOperationPolicy(
+                    support=DeclarationState.SUPPORTED,
+                    free_of_charge=True,
+                    side_effect_free=True,
+                ),
+                model_discovery=SafeOperationPolicy(
+                    support=DeclarationState.SUPPORTED,
+                    free_of_charge=True,
+                    side_effect_free=True,
+                ),
+                idempotency=IdempotencyPolicy(
+                    support=DeclarationState.SUPPORTED,
+                    replay_safe_after_acceptance=True,
+                ),
+                retry=RetryPolicy(
+                    support=DeclarationState.SUPPORTED,
+                    max_attempts=1,
+                ),
+                artifacts=_artifact_policy(),
+                capability_ttls=_ttls(),
+            ),
+        ),
+        ProviderDefinition(
             name=ProviderName.BUILTIN_IMAGEGEN.value,
             adapter=AdapterIdentity(
                 "builtin-imagegen", "builtin-imagegen/v1", "builtin-imagegen"

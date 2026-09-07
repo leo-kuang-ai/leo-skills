@@ -126,6 +126,16 @@ def build_execution_context(
             env["OPENAI_API_KEY"] = credential
         else:
             raise BackendExecutionError("provider_credential_mapping_unsupported")
+    # 合同 model 是冻结的唯一真值：显式注入执行面环境，vendored 工具不再回落
+    # 默认模型（否则渠道合同的模型选择会静默失效——D-DEF-01 基线证据）。
+    env["CODEX_PPT_IMAGE_MODEL"] = str(contract["model"])
+    # 渠道能力矩阵（加固方案 WS1）：目录登记的实测拒收参数与尺寸档约束，
+    # 供 vendored 门控查表（优先于 gpt-image 家族推断规则）。
+    channel_compat = channel_by_name(provider)
+    if channel_compat is not None and (
+        channel_compat.param_compat.rejects or channel_compat.param_compat.size
+    ):
+        env["LEO_PPT_PARAM_COMPAT"] = channel_compat.param_compat.as_env_json()
     channel = channel_by_name(provider)
     endpoint = contract.get("endpoint_origin")
     if channel is not None:

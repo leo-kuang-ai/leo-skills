@@ -163,7 +163,7 @@
 | --- | --- | --- |
 | ![星月夜风 封面金样板](style-gallery/星月夜风/thumb-cover.png) | ![星月夜风 内容金样板](style-gallery/星月夜风/thumb-content.png) | ![星月夜风 图表金样板](style-gallery/星月夜风/thumb-chart.png) |
 
-## 参考轴（16 轴，markdown 份数）
+## 目录直层文档（16 个目录，兼容口径）
 
 | 轴 | 份数 |
 | --- | --- |
@@ -178,11 +178,12 @@
 | 结构布局（09） | 8 |
 | 品牌身份（10） | 36 |
 | 图表语法（11） | 18 |
-| 版式库（12） | 39 |
+| 版式库（12） | 40 |
 | 页面语义（13） | 25 |
 | 参考池_gpt-image2（14） | 15 |
 | 来源_officecli（15） | 7 |
 | 来源_slides-grab（16） | 0 |
 
-合计 markdown 风格/规范文档 221 份（不含 JSON sidecar 与 00_索引规则文档）。
+上述目录直层及内置 Markdown 共 222 份，不递归统计家族子目录，不代表全库资产或可推荐风格总数。
+全库角色与独立风格数量见[派生分类计数](../references/styles/generated/counts.md)。
 选定后由 `style render` 确定性注入，流程见 [`references/style-library.md`](../references/style-library.md)。

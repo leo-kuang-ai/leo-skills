@@ -155,6 +155,30 @@ class ImportBehavior(unittest.TestCase):
         # Round-trip: imported bytes equal the exported source brief.
         self.assertEqual(dest.read_bytes(), exported_bytes)
 
+    def test_import_preserves_optional_governance_metadata(self):
+        path = self.pack / "brief.md"
+        brief = style_pack._parse_brief(path)
+        brief.update(source={"license": "unknown"}, taxonomy={"families": ["family:business-professional"]})
+        path.write_text("```json\n" + json.dumps(brief, ensure_ascii=False) + "\n```\n")
+        self._resync_brief_sha()
+        self.lib.ref_path.unlink()
+        result = run_cli("import", str(self.pack), "--target", "01_通用母版/极简排版", "--root", str(self.lib.root))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        dest = self.lib.root / "references/styles/01_通用母版/极简排版/测试参考风.md"
+        self.assertEqual(dest.read_bytes(), path.read_bytes())
+
+    def test_import_rejects_invalid_governance_metadata(self):
+        path = self.pack / "brief.md"
+        brief = style_pack._parse_brief(path)
+        brief["source"] = {"license": "made-up"}
+        path.write_text("```json\n" + json.dumps(brief, ensure_ascii=False) + "\n```\n")
+        self._resync_brief_sha()
+        self.lib.ref_path.unlink()
+        result = run_cli("import", str(self.pack), "--target", "01_通用母版/极简排版", "--root", str(self.lib.root))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("metadata_invalid", result.stdout + result.stderr)
+        self.assertFalse((self.lib.root / "references/styles/01_通用母版/极简排版/测试参考风.md").exists())
+
     def test_import_missing_manifest_rejected_with_list(self):
         (self.pack / "manifest.json").unlink()
         result = run_cli("import", str(self.pack), "--root", str(self.lib.root))

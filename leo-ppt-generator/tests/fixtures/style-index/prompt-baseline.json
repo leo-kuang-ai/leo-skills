@@ -1,0 +1,212 @@
+{
+  "note": "品牌读取固定；layout-lock 使用固定合成风格；其余风格、组合器和最终逐页 prompt 使用真实源码。",
+  "outputs": {
+    "anchor": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"清爽专业风\",\n  \"visual_direction\": \"clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy\",\n  \"color_palette\": {\n    \"primary\": \"professional blue #2563EB or slate blue #334155\",\n    \"secondary\": \"calm teal #0F766E or muted cyan #0891B2\",\n    \"accent\": \"soft amber #F59E0B for highlights and risk/attention notes\",\n    \"neutral\": \"slate gray #475569, light border #E2E8F0, pale card background #F8FAFC\",\n    \"rule\": \"use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds\"\n  },\n  \"typography\": {\n    \"title\": \"clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative\",\n    \"body\": \"clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability\",\n    \"labels\": \"small but readable labels for timeline, evidence, metrics, and code/process diagrams\",\n    \"text_quality\": \"Chinese text must be exact, readable, and suitable for formal reporting\"\n  },\n  \"layout_patterns\": [\n    \"problem-process-result-next steps\",\n    \"timeline plus milestone cards\",\n    \"technical architecture diagram with key takeaways\",\n    \"summary dashboard with achievements, issues, learnings, and plan\",\n    \"defense slide with research question, method, evidence, and conclusion\"\n  ],\n  \"image_rendering\": \"Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \\\"design-system aesthetic\\\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.\",\n  \"style_anchor\": [\n    \"【风格锚（逐页逐字节相同注入，防风格漂移）】\",\n    \"HEX 锚：#2563EB #334155 #0F766E #0891B2 #F59E0B #475569 #E2E8F0 #F8FAFC\",\n    \"字族锚：clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and aut\",\n    \"渲染锚：Clean flat vector illustration with bold geometric shapes an\"\n  ]\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "color_palette": {
+          "accent": "soft amber #F59E0B for highlights and risk/attention notes",
+          "neutral": "slate gray #475569, light border #E2E8F0, pale card background #F8FAFC",
+          "primary": "professional blue #2563EB or slate blue #334155",
+          "rule": "use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds",
+          "secondary": "calm teal #0F766E or muted cyan #0891B2"
+        },
+        "image_rendering": "Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \"design-system aesthetic\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+        "layout_patterns": [
+          "problem-process-result-next steps",
+          "timeline plus milestone cards",
+          "technical architecture diagram with key takeaways",
+          "summary dashboard with achievements, issues, learnings, and plan",
+          "defense slide with research question, method, evidence, and conclusion"
+        ],
+        "name": "清爽专业风",
+        "style_anchor": [
+          "【风格锚（逐页逐字节相同注入，防风格漂移）】",
+          "HEX 锚：#2563EB #334155 #0F766E #0891B2 #F59E0B #475569 #E2E8F0 #F8FAFC",
+          "字族锚：clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and aut",
+          "渲染锚：Clean flat vector illustration with bold geometric shapes an"
+        ],
+        "typography": {
+          "body": "clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability",
+          "labels": "small but readable labels for timeline, evidence, metrics, and code/process diagrams",
+          "text_quality": "Chinese text must be exact, readable, and suitable for formal reporting",
+          "title": "clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative"
+        },
+        "visual_direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy"
+      }
+    },
+    "brand": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"清爽专业风\",\n  \"visual_direction\": \"clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy\",\n  \"color_palette\": {\n    \"primary\": \"#111111\",\n    \"secondary\": \"calm teal #0F766E or muted cyan #0891B2\",\n    \"accent\": \"#333333\",\n    \"neutral\": \"slate gray #475569, light border #E2E8F0, pale card background #F8FAFC\",\n    \"rule\": \"use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds\"\n  },\n  \"typography\": {\n    \"title\": \"clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative\",\n    \"body\": \"clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability\",\n    \"labels\": \"small but readable labels for timeline, evidence, metrics, and code/process diagrams\",\n    \"text_quality\": \"Chinese text must be exact, readable, and suitable for formal reporting\"\n  },\n  \"layout_patterns\": [\n    \"problem-process-result-next steps\",\n    \"timeline plus milestone cards\",\n    \"technical architecture diagram with key takeaways\",\n    \"summary dashboard with achievements, issues, learnings, and plan\",\n    \"defense slide with research question, method, evidence, and conclusion\"\n  ],\n  \"brand\": {\n    \"name\": \"回归品牌\",\n    \"tone\": \"清晰\",\n    \"typography\": \"Noto Sans SC\",\n    \"verified_at\": \"2026-09-05\"\n  },\n  \"image_rendering\": \"Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \\\"design-system aesthetic\\\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.\",\n  \"style_anchor\": [\n    \"【风格锚（逐页逐字节相同注入，防风格漂移）】\",\n    \"HEX 锚：#111111 #0F766E #0891B2 #333333 #475569 #E2E8F0 #F8FAFC\",\n    \"字族锚：clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and aut\",\n    \"渲染锚：Clean flat vector illustration with bold geometric shapes an\"\n  ]\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "brand": {
+          "name": "回归品牌",
+          "tone": "清晰",
+          "typography": "Noto Sans SC",
+          "verified_at": "2026-09-05"
+        },
+        "color_palette": {
+          "accent": "#333333",
+          "neutral": "slate gray #475569, light border #E2E8F0, pale card background #F8FAFC",
+          "primary": "#111111",
+          "rule": "use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds",
+          "secondary": "calm teal #0F766E or muted cyan #0891B2"
+        },
+        "image_rendering": "Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \"design-system aesthetic\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+        "layout_patterns": [
+          "problem-process-result-next steps",
+          "timeline plus milestone cards",
+          "technical architecture diagram with key takeaways",
+          "summary dashboard with achievements, issues, learnings, and plan",
+          "defense slide with research question, method, evidence, and conclusion"
+        ],
+        "name": "清爽专业风",
+        "style_anchor": [
+          "【风格锚（逐页逐字节相同注入，防风格漂移）】",
+          "HEX 锚：#111111 #0F766E #0891B2 #333333 #475569 #E2E8F0 #F8FAFC",
+          "字族锚：clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and aut",
+          "渲染锚：Clean flat vector illustration with bold geometric shapes an"
+        ],
+        "typography": {
+          "body": "clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability",
+          "labels": "small but readable labels for timeline, evidence, metrics, and code/process diagrams",
+          "text_quality": "Chinese text must be exact, readable, and suitable for formal reporting",
+          "title": "clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative"
+        },
+        "visual_direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy"
+      }
+    },
+    "dark": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"Dracula紫风\",\n  \"visual_direction\": \"Dracula classic dark theme, neon pink and lavender highlights over charcoal panels, syntax-glow developer slides\",\n  \"color_palette\": {\n    \"primary\": \"#F8F8F2(主色/标题锚)\",\n    \"secondary\": \"#B3B8C3(辅助色)\",\n    \"accent\": \"#FF79C6(强调色)\",\n    \"neutral\": \"#0F1117(文字与中性锚)\",\n    \"rule\": \"锚点 #F8F8F2, #B3B8C3, #FF79C6, #BD93F9;标题 #f8f8f2 冷白、正文 #b3b8c3 银灰，强调色 #ff79c6 荧光粉与 #bd93f9 薰衣草紫是 Dracula 的灵魂双色\"\n  },\n  \"typography\": {\n    \"title\": \"标题可以用稍粗的字重，正文保持代码时的等宽感\",\n    \"body\": \"同族常规字重,行高 1.6-1.9\",\n    \"labels\": \"小字号同族,适度字距,克制用色\"\n  },\n  \"layout_patterns\": [\n    \"暗色背景上的代码卡片可以作为视觉中心，终端风格用于营造氛围\",\n    \"布局保持清晰克制，默认低到中密度\",\n    \"不要为了模拟终端而堆多面板、长代码块或密集日志\"\n  ],\n  \"image_rendering\": \"Polished digital UI / dashboard aesthetic. Clean card-based layout with rounded corners (8-12px radius), uniform soft shadows (8% opacity, slight Y-offset), and crisp pixel-aligned edges. Surfaces are flat with restrained color — primarily one neutral background, several brand-color cards or chart elements, and a single accent for the focal data point. Chart-like visual elements (bar graphs, line graphs, sparklines, donut segments, KPI tiles) appear stylized — recognizable as charts but without specific data values. Typography would be small, neutral, almost-text-as-texture if any appeared, but defaults to no-text. Overall feel is product-screenshot — modern, restrained, data-fluent. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.\"\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "color_palette": {
+          "accent": "#FF79C6(强调色)",
+          "neutral": "#0F1117(文字与中性锚)",
+          "primary": "#F8F8F2(主色/标题锚)",
+          "rule": "锚点 #F8F8F2, #B3B8C3, #FF79C6, #BD93F9;标题 #f8f8f2 冷白、正文 #b3b8c3 银灰，强调色 #ff79c6 荧光粉与 #bd93f9 薰衣草紫是 Dracula 的灵魂双色",
+          "secondary": "#B3B8C3(辅助色)"
+        },
+        "image_rendering": "Polished digital UI / dashboard aesthetic. Clean card-based layout with rounded corners (8-12px radius), uniform soft shadows (8% opacity, slight Y-offset), and crisp pixel-aligned edges. Surfaces are flat with restrained color — primarily one neutral background, several brand-color cards or chart elements, and a single accent for the focal data point. Chart-like visual elements (bar graphs, line graphs, sparklines, donut segments, KPI tiles) appear stylized — recognizable as charts but without specific data values. Typography would be small, neutral, almost-text-as-texture if any appeared, but defaults to no-text. Overall feel is product-screenshot — modern, restrained, data-fluent. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+        "layout_patterns": [
+          "暗色背景上的代码卡片可以作为视觉中心，终端风格用于营造氛围",
+          "布局保持清晰克制，默认低到中密度",
+          "不要为了模拟终端而堆多面板、长代码块或密集日志"
+        ],
+        "name": "Dracula紫风",
+        "typography": {
+          "body": "同族常规字重,行高 1.6-1.9",
+          "labels": "小字号同族,适度字距,克制用色",
+          "title": "标题可以用稍粗的字重，正文保持代码时的等宽感"
+        },
+        "visual_direction": "Dracula classic dark theme, neon pink and lavender highlights over charcoal panels, syntax-glow developer slides"
+      }
+    },
+    "default": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"清爽专业风\",\n  \"visual_direction\": \"clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy\",\n  \"color_palette\": {\n    \"primary\": \"professional blue #2563EB or slate blue #334155\",\n    \"secondary\": \"calm teal #0F766E or muted cyan #0891B2\",\n    \"accent\": \"soft amber #F59E0B for highlights and risk/attention notes\",\n    \"neutral\": \"slate gray #475569, light border #E2E8F0, pale card background #F8FAFC\",\n    \"rule\": \"use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds\"\n  },\n  \"typography\": {\n    \"title\": \"clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative\",\n    \"body\": \"clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability\",\n    \"labels\": \"small but readable labels for timeline, evidence, metrics, and code/process diagrams\",\n    \"text_quality\": \"Chinese text must be exact, readable, and suitable for formal reporting\"\n  },\n  \"layout_patterns\": [\n    \"problem-process-result-next steps\",\n    \"timeline plus milestone cards\",\n    \"technical architecture diagram with key takeaways\",\n    \"summary dashboard with achievements, issues, learnings, and plan\",\n    \"defense slide with research question, method, evidence, and conclusion\"\n  ],\n  \"image_rendering\": \"Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \\\"design-system aesthetic\\\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.\"\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "color_palette": {
+          "accent": "soft amber #F59E0B for highlights and risk/attention notes",
+          "neutral": "slate gray #475569, light border #E2E8F0, pale card background #F8FAFC",
+          "primary": "professional blue #2563EB or slate blue #334155",
+          "rule": "use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds",
+          "secondary": "calm teal #0F766E or muted cyan #0891B2"
+        },
+        "image_rendering": "Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \"design-system aesthetic\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+        "layout_patterns": [
+          "problem-process-result-next steps",
+          "timeline plus milestone cards",
+          "technical architecture diagram with key takeaways",
+          "summary dashboard with achievements, issues, learnings, and plan",
+          "defense slide with research question, method, evidence, and conclusion"
+        ],
+        "name": "清爽专业风",
+        "typography": {
+          "body": "clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability",
+          "labels": "small but readable labels for timeline, evidence, metrics, and code/process diagrams",
+          "text_quality": "Chinese text must be exact, readable, and suitable for formal reporting",
+          "title": "clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative"
+        },
+        "visual_direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy"
+      }
+    },
+    "guardrail": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"清爽专业风\",\n  \"visual_direction\": \"clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy\",\n  \"color_palette\": {\n    \"primary\": \"professional blue #2563EB or slate blue #334155\",\n    \"secondary\": \"calm teal #0F766E or muted cyan #0891B2\",\n    \"accent\": \"soft amber #F59E0B for highlights and risk/attention notes\",\n    \"neutral\": \"slate gray #475569, light border #E2E8F0, pale card background #F8FAFC\",\n    \"rule\": \"use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds\"\n  },\n  \"typography\": {\n    \"title\": \"clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative\",\n    \"body\": \"clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability\",\n    \"labels\": \"small but readable labels for timeline, evidence, metrics, and code/process diagrams\",\n    \"text_quality\": \"Chinese text must be exact, readable, and suitable for formal reporting\"\n  },\n  \"layout_patterns\": [\n    \"problem-process-result-next steps\",\n    \"timeline plus milestone cards\",\n    \"technical architecture diagram with key takeaways\",\n    \"summary dashboard with achievements, issues, learnings, and plan\",\n    \"defense slide with research question, method, evidence, and conclusion\"\n  ],\n  \"guardrail\": [\n    \"【设计护栏摘要】（依据 00_索引/通用设计规范.md 与 00_索引/版心Canon.md）\",\n    \"字号下限双口径：1920 HTML 画布 正文≥18px/卡片图注≥16px/meta≥14px；2560 生图画布 正文≥32px/caption≥28px/meta≥24px。\",\n    \"对比度：正文对背景 ≥4.5:1；大字与非文本 ≥3:1；双重编码铁律（关键信息不得只靠颜色区分）。\",\n    \"字号一律取 版心Canon 字阶刻度；大字 min(Xvw,Yvh) 双约束且 Y≥1.6X；数值落 0.4vw 模数。\",\n    \"图表数值呈现遵守 00_索引/图表样式规范.md（直接标注优先；估算 ~ 前缀+虚线；示意禁入量化图形）。\",\n    \"accent 锚点：#F59E0B（deck 级覆盖用 --color accent=#RRGGBB）。\"\n  ],\n  \"image_rendering\": \"Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \\\"design-system aesthetic\\\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.\"\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "color_palette": {
+          "accent": "soft amber #F59E0B for highlights and risk/attention notes",
+          "neutral": "slate gray #475569, light border #E2E8F0, pale card background #F8FAFC",
+          "primary": "professional blue #2563EB or slate blue #334155",
+          "rule": "use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds",
+          "secondary": "calm teal #0F766E or muted cyan #0891B2"
+        },
+        "guardrail": [
+          "【设计护栏摘要】（依据 00_索引/通用设计规范.md 与 00_索引/版心Canon.md）",
+          "字号下限双口径：1920 HTML 画布 正文≥18px/卡片图注≥16px/meta≥14px；2560 生图画布 正文≥32px/caption≥28px/meta≥24px。",
+          "对比度：正文对背景 ≥4.5:1；大字与非文本 ≥3:1；双重编码铁律（关键信息不得只靠颜色区分）。",
+          "字号一律取 版心Canon 字阶刻度；大字 min(Xvw,Yvh) 双约束且 Y≥1.6X；数值落 0.4vw 模数。",
+          "图表数值呈现遵守 00_索引/图表样式规范.md（直接标注优先；估算 ~ 前缀+虚线；示意禁入量化图形）。",
+          "accent 锚点：#F59E0B（deck 级覆盖用 --color accent=#RRGGBB）。"
+        ],
+        "image_rendering": "Clean flat vector illustration with bold geometric shapes and confident solid fills. Crisp outlines (1.5-2px equivalent stroke weight, consistent across all elements) define every form. No gradients within shapes — color is applied as flat blocks. Subtle shadow only where it adds depth (soft 8% opacity drop, no harsh edges). Composition is grid-aware and balanced, with deliberate negative space carrying as much weight as filled areas. Iconography is simplified to essential geometry — recognizable at small sizes. Overall feel is modern, professional, and confidently restrained — a quality often called \"design-system aesthetic\" in product/SaaS contexts. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.",
+        "layout_patterns": [
+          "problem-process-result-next steps",
+          "timeline plus milestone cards",
+          "technical architecture diagram with key takeaways",
+          "summary dashboard with achievements, issues, learnings, and plan",
+          "defense slide with research question, method, evidence, and conclusion"
+        ],
+        "name": "清爽专业风",
+        "typography": {
+          "body": "clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability",
+          "labels": "small but readable labels for timeline, evidence, metrics, and code/process diagrams",
+          "text_quality": "Chinese text must be exact, readable, and suitable for formal reporting",
+          "title": "clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative"
+        },
+        "visual_direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy"
+      }
+    },
+    "layout-lock": {
+      "prompt": "# Codex PPT Slide Image Prompt\n\n## Canvas\n{\n  \"type\": \"16:9 full-slide PowerPoint image\",\n  \"language\": \"Chinese\",\n  \"slide_number\": 1,\n  \"render_slide_number\": false\n}\n\n## Deck Goal\n核验治理元数据不改变视觉投影\n\n## Global Style\n{\n  \"name\": \"布局回归风\",\n  \"visual_direction\": \"clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy\",\n  \"color_palette\": {\n    \"primary\": \"professional blue #2563EB or slate blue #334155\",\n    \"secondary\": \"calm teal #0F766E or muted cyan #0891B2\",\n    \"accent\": \"soft amber #F59E0B for highlights and risk/attention notes\",\n    \"neutral\": \"slate gray #475569, light border #E2E8F0, pale card background #F8FAFC\",\n    \"rule\": \"use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds\"\n  },\n  \"typography\": {\n    \"title\": \"clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative\",\n    \"body\": \"clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability\",\n    \"labels\": \"small but readable labels for timeline, evidence, metrics, and code/process diagrams\",\n    \"text_quality\": \"Chinese text must be exact, readable, and suitable for formal reporting\"\n  },\n  \"layout_patterns\": [\n    \"problem-process-result-next steps\",\n    \"timeline plus milestone cards\",\n    \"technical architecture diagram with key takeaways\",\n    \"summary dashboard with achievements, issues, learnings, and plan\",\n    \"defense slide with research question, method, evidence, and conclusion\"\n  ],\n  \"layout_lock\": [\n    \"【版式锚（逐页逐字节相同注入，防网格/页码/边距漂移）】\",\n    \"网格锚：12 columns\",\n    \"安全边距锚：5%\",\n    \"页码位锚：bottom-right\",\n    \"圆角锚：0\",\n    \"线重锚：1px\"\n  ]\n}\n\n## Deck Style Lock\n{\n  \"shell\": \"固定样式\",\n  \"constants\": [\n    \"左对齐\"\n  ]\n}\n\n## Slide\n{\n  \"number\": 1,\n  \"title\": \"固定基线\",\n  \"role\": null,\n  \"intent\": null\n}\n\n## Text\n{\n  \"title\": \"固定基线\",\n  \"key_points\": [\n    \"结果可复核\"\n  ],\n  \"speaker_focus\": null\n}\n\n## Required Text Only\nRender exactly and only these visible text items (verbatim):\n- 固定基线\n- 结果可复核\nNo other content-bearing text, labels, or micro-annotations beyond this list.\n\n## Universal Constraints\n- The final image itself must contain the title and key points.\n- Render Chinese text exactly and legibly; avoid garbled characters.\n- Keep the confirmed deck style consistent while varying layout by slide role.\n- No watermark, unrelated logo, or extra slide number.\n",
+      "style": {
+        "color_palette": {
+          "accent": "soft amber #F59E0B for highlights and risk/attention notes",
+          "neutral": "slate gray #475569, light border #E2E8F0, pale card background #F8FAFC",
+          "primary": "professional blue #2563EB or slate blue #334155",
+          "rule": "use restrained professional colors; avoid playful neon, luxury gold, or heavy dark backgrounds",
+          "secondary": "calm teal #0F766E or muted cyan #0891B2"
+        },
+        "layout_lock": [
+          "【版式锚（逐页逐字节相同注入，防网格/页码/边距漂移）】",
+          "网格锚：12 columns",
+          "安全边距锚：5%",
+          "页码位锚：bottom-right",
+          "圆角锚：0",
+          "线重锚：1px"
+        ],
+        "layout_patterns": [
+          "problem-process-result-next steps",
+          "timeline plus milestone cards",
+          "technical architecture diagram with key takeaways",
+          "summary dashboard with achievements, issues, learnings, and plan",
+          "defense slide with research question, method, evidence, and conclusion"
+        ],
+        "name": "布局回归风",
+        "typography": {
+          "body": "clean sans-serif (思源黑体 / Inter), strong hierarchy, left-aligned for readability",
+          "labels": "small but readable labels for timeline, evidence, metrics, and code/process diagrams",
+          "text_quality": "Chinese text must be exact, readable, and suitable for formal reporting",
+          "title": "clear bold sans-serif (思源黑体 Source Han Sans / Noto Sans SC), report-like and authoritative"
+        },
+        "visual_direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy"
+      }
+    },
+    "layout-materialize": {
+      "composition_hint": "P4 · Six Cells · 六格定义:构图区块与占比——2×3 网格 / 每格上方 lucide 图标 + 编号 + 短标题 + 一行描述 / 单元间用 hairline 分隔。",
+      "content_requirements": "**6 个对等概念 / 功能列举**(数量必须 = 6,过少用 P5,过多用 P15/P16)。每格仅承载「图标 + 编号 + 短标题 + 一行描述」,**不承载需要展开的数据 / 段落**。",
+      "layout_name": "P4 · Six Cells · 六格定义",
+      "purpose": "6 个并列概念定义、6 项功能并列。",
+      "skeleton": "2×3 网格 / 每格上方 lucide 图标 + 编号 + 短标题 + 一行描述 / 单元间用 hairline 分隔。"
+    }
+  },
+  "schema_version": 1,
+  "source_revision": "6a8578ba16624550c2150ed72245fa9bc3c9fa8c"
+}

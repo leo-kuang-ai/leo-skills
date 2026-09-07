@@ -555,6 +555,93 @@ class ConfigService:
         except RuntimeConfigError as error:
             raise ConfigServiceError(error.reason_code) from error
 
+    def remove_provider(
+        self,
+        provider: ProviderName | str,
+        *,
+        operation_id: str,
+    ) -> str:
+        """移除 Provider profile 并清理 preferred 选择与验证 receipt。
+
+        返回稳定 reason_code：``provider_removed`` 或 ``provider_not_found``。
+        钥匙串中的历史凭据条目不自动删除（与既有 CLI 语义一致）。
+        """
+
+        provider = ProviderName(provider)
+        snapshot = self.config_store.read()
+        profiles = dict(snapshot.document.get("provider_profiles", {}))
+        if provider.value not in profiles:
+            return "provider_not_found"
+        profiles.pop(provider.value)
+        candidate = dict(snapshot.document)
+        candidate["provider_profiles"] = profiles
+        if candidate.get("preferred_provider") == provider.value:
+            candidate.pop("preferred_provider", None)
+        try:
+            self.config_store.compare_and_swap(snapshot.canonical_digest, candidate)
+        except RuntimeConfigError as error:
+            raise ConfigServiceError(error.reason_code) from error
+        self.receipt_store.invalidate(provider, "provider_removed", operation_id)
+        return "provider_removed"
+
+    def set_provider_enabled(
+        self,
+        provider: ProviderName | str,
+        *,
+        enabled: bool,
+    ) -> None:
+        """启用/停用 Provider profile，保留其余字段与 priority。"""
+
+        provider = ProviderName(provider)
+        snapshot = self.config_store.read()
+        profiles = dict(snapshot.document.get("provider_profiles", {}))
+        profile = profiles.get(provider.value)
+        if not isinstance(profile, dict):
+            raise ConfigServiceError("provider_profile_invalid")
+        updated = dict(profile)
+        updated["enabled"] = bool(enabled)
+        profiles[provider.value] = updated
+        candidate = dict(snapshot.document)
+        candidate["provider_profiles"] = profiles
+        try:
+            self.config_store.compare_and_swap(snapshot.canonical_digest, candidate)
+        except RuntimeConfigError as error:
+            raise ConfigServiceError(error.reason_code) from error
+
+    def set_provider_priority(
+        self,
+        provider: ProviderName | str,
+        *,
+        priority: int,
+    ) -> None:
+        """直接设置自动选择权重（1..1000，小值优先）。
+
+        重复权重不在此拒绝：选择层以 provider_priority_tie 暴露并列，
+        由调用方（向导/控制台 reorder 动作）引导整体重排。
+        """
+
+        provider = ProviderName(provider)
+        if (
+            isinstance(priority, bool)
+            or not isinstance(priority, int)
+            or not 1 <= priority <= 1000
+        ):
+            raise ConfigServiceError("provider_priority_invalid")
+        snapshot = self.config_store.read()
+        profiles = dict(snapshot.document.get("provider_profiles", {}))
+        profile = profiles.get(provider.value)
+        if not isinstance(profile, dict):
+            raise ConfigServiceError("provider_profile_invalid")
+        updated = dict(profile)
+        updated["priority"] = priority
+        profiles[provider.value] = updated
+        candidate = dict(snapshot.document)
+        candidate["provider_profiles"] = profiles
+        try:
+            self.config_store.compare_and_swap(snapshot.canonical_digest, candidate)
+        except RuntimeConfigError as error:
+            raise ConfigServiceError(error.reason_code) from error
+
     def repair(self, request: StatusRequest) -> ConfigReport:
         """从 Reason catalog 的最早未完成步骤续接配置。
 

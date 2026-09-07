@@ -33,6 +33,9 @@ import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+from leo_ppt_generator.styles import iter_brief_documents
+
 STYLES_ROOT = SKILL_DIR / "references" / "styles"
 
 JSON_BLOCK_RE = re.compile(r"```json\n(.*?)\n```", re.S)
@@ -87,20 +90,7 @@ def normalize_name(name: str) -> str:
 
 def brief_entries(styles_root: Path = STYLES_ROOT) -> list[dict]:
     entries: list[dict] = []
-    for path in sorted(styles_root.rglob("*.md")):
-        try:
-            text = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            continue
-        match = JSON_BLOCK_RE.search(text)
-        if not match:
-            continue
-        try:
-            brief = json.loads(match.group(1))
-        except json.JSONDecodeError:
-            continue
-        if not (isinstance(brief, dict) and "style_name" in brief):
-            continue
+    for path, text, brief in iter_brief_documents(styles_root):
         rel = path.relative_to(styles_root)
         axis = "顶层内置" if rel.parent == Path(".") else rel.parts[0]
         subfamily = rel.parent.name if len(rel.parts) > 2 else axis

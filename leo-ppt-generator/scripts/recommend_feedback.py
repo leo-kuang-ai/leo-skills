@@ -64,9 +64,10 @@ def default_home() -> Path:
     return base / "leo-ppt-generator"
 
 
-def _families_of(style_name: str) -> list[str]:
+def _families_of(style_name: str, members: dict | None = None) -> list[str]:
     """Reverse lookup: which declared families contain this style name."""
-    return sorted(fam for fam, members in shr.FAMILIES.items() if style_name in members)
+    view = shr.current_family_members() if members is None else members
+    return sorted(fam for fam, names in view.items() if style_name in names)
 
 
 def _parse_names(raw: str) -> list[str]:
@@ -127,6 +128,7 @@ def cmd_record(args, store: Path) -> int:
     rejected = _parse_names(args.rejected_ids or "")
 
     records = _load_records(store)
+    member_view = shr.current_family_members()
     record = {
         "schema_version": SCHEMA_VERSION,
         "seq": len(records) + 1,
@@ -136,9 +138,9 @@ def cmd_record(args, store: Path) -> int:
             "prefer": verdict["prefer_families"],
             "triggered_rules": verdict["triggered_rules"],
         },
-        "candidates": {name: _families_of(name) for name in candidates},
-        "chosen": {"style": chosen, "families": _families_of(chosen)} if chosen else None,
-        "rejected": [{"style": name, "families": _families_of(name)}
+        "candidates": {name: _families_of(name, member_view) for name in candidates},
+        "chosen": {"style": chosen, "families": _families_of(chosen, member_view)} if chosen else None,
+        "rejected": [{"style": name, "families": _families_of(name, member_view)}
                      for name in rejected],
     }
     store.parent.mkdir(parents=True, exist_ok=True)

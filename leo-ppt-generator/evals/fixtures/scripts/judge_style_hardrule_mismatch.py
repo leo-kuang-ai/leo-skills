@@ -54,7 +54,7 @@ CLAIM_SOFTENER_RE = re.compile(
     r"(?:不会|不能|不得|不要|不建议|不推荐|不创建|不新建|并非|而不是|"
     r"没有|禁止|拒绝|尚未|还没|还未|暂不|先不|无法|没法|"
     r"别(?:用|做|创建|新建|急)|无(?:需|须|法)|若|如果|如需|"
-    r"需要的话|后续|等你|坚持)")
+    r"需要的话|后续|等你|坚持|不承诺|未承诺|不会承诺)")
 EN_SOFTENER_RE = re.compile(
     r"\b(?:not|won't|will not|cannot|can't|unable|instead|if|when)\b",
     re.IGNORECASE)

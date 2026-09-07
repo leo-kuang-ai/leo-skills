@@ -13,7 +13,7 @@ def fail(m):
 
 
 def require_any(vals, label):
-    if not any(v in text for v in vals):
+    if not any(re.search(v, text) for v in vals):
         fail(f"缺少{label}: {' | '.join(vals)}")
 
 
@@ -36,6 +36,8 @@ def positive(patterns):
     """否定感知匹配：句级命中后若含否定词，再降到逗号/分号子句级复核——
     仅当违规模式命中的子句自身无否定词才算真命中。"""
     for sentence in re.split(r"[。！？\n]+", text):
+        if re.match(r"^\s*#{1,6}\s+", sentence) and re.search(r"[，,：:]\s*(?:行不行|可以吗|是否可行)\s*$", sentence):
+            continue
         body = plain(sentence)
         for clause in re.split(r"[；;，,]", body):
             if clause and any(re.search(p, clause) for p in patterns) and not any(
@@ -52,7 +54,7 @@ require_any(("需确认", "needs_confirmation", "是否整套延续", "整套.{0
             "第二组：需确认是否整套延续")
 require_any(("偶然", "one_off", "不锁死", "不建议直接锁", "锁死"), "第三组：偶然不锁死")
 # ② 同一轮呈现 / 零新增等待
-require_any(("同一轮", "无异议", "不新增", "不必再", "不再等待", "一次交互", "随样张确认"),
+require_any(("同一轮", "同回合", "同一.{0,8}确认轮", "无异议", "不新增", "不必再", "不再等待", "一次交互", "随样张确认"),
             "同一轮呈现")
 # ③ 结论随 spec 落盘
 require_any(("style_inversion", "随 spec", "落盘", "manifest", "deck_spec"), "落盘通道")

@@ -259,6 +259,19 @@ def capacity_check(spec_path: Path) -> int:
             if widest:
                 slot_name = widest[0][1]
                 checks = [(slot_name, text) for text in points]
+                # 无重复数量槽的固定版式不能无限复用最宽槽；总量另过全部文本槽预算。
+                if not any("count_min" in slot for slot in capacity.values()):
+                    total_used = sum(vw_of(str(text)) for text in points)
+                    total_limit = sum(slot.get("max_chars", 0) for slot in capacity.values()) * factor
+                    if total_used > total_limit:
+                        total_hard = total_used > total_limit * CAPACITY_TOLERANCE
+                        hard = hard or total_hard
+                        soft = soft or not total_hard
+                        level = "overflow" if total_hard else "over"
+                        problems.append(
+                            f"{level}:total_text {total_used:.1f}/{total_limit:.0f} vw"
+                            "（固定文本槽总预算）→ 改内容或换版式，不缩字号；定稿使用显式 slots"
+                        )
         for slot_name, text in checks:
             slot = capacity.get(slot_name, {})
             if "max_chars" not in slot:

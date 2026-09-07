@@ -44,6 +44,34 @@ READY_SELECTOR = "html[data-leo-ready='1']"
 READY_FALLBACK_WAIT_MS = 800
 DEFAULT_TIMEOUT_MS = 60_000
 RENDERER_NAME = "playwright-chromium"
+OVERFLOW_TOLERANCE_PX = 1.0
+
+# 溢出哨兵（模板合同第七条）：全部 data-leo-block 必须完整落在逻辑画幅内，
+# 且块自身内容不超出其盒（D-CHART-01 类缺陷从视觉 QA 前移到渲染期拦截）。
+# LEO_PPT_RENDER_OVERFLOW=warn 时降级为 sidecar 警告（观察模式），不拒产。
+_OVERFLOW_CHECK_JS = """
+() => {
+  const tol = 1.0;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const violations = [];
+  document.querySelectorAll('[data-leo-block]').forEach((el) => {
+    const v = { block: el.getAttribute('data-leo-block') || el.tagName.toLowerCase() };
+    const r = el.getBoundingClientRect();
+    if (r.bottom > vh + tol) v.bottom_px = +(r.bottom - vh).toFixed(1);
+    if (r.right > vw + tol) v.right_px = +(r.right - vw).toFixed(1);
+    if (r.top < -tol) v.top_px = +(-r.top).toFixed(1);
+    if (r.left < -tol) v.left_px = +(-r.left).toFixed(1);
+    if (el.clientWidth > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowX)
+        && el.scrollWidth > el.clientWidth + tol)
+      v.inner_width_px = +(el.scrollWidth - el.clientWidth).toFixed(1);
+    if (el.clientHeight > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowY)
+        && el.scrollHeight > el.clientHeight + tol)
+      v.inner_height_px = +(el.scrollHeight - el.clientHeight).toFixed(1);
+    if (Object.keys(v).length > 1) violations.push(v);
+  });
+  return violations;
+}
+"""
 
 _SIZE_RE = re.compile(r"^(\d{3,5})x(\d{3,5})$")
 
@@ -207,6 +235,24 @@ def render_page(
                 except Exception as exc:
                     raise RenderError("render_timeout", f"fonts.ready: {exc}") from exc
 
+                # 溢出哨兵：截图前确定性断言（warn 模式降级为 sidecar 警告）。
+                overflow_mode = os.environ.get("LEO_PPT_RENDER_OVERFLOW", "enforce").strip().lower()
+                try:
+                    overflow_violations = page.evaluate(_OVERFLOW_CHECK_JS) or []
+                except Exception as exc:
+                    raise RenderError("render_timeout", f"overflow sentinel: {exc}") from exc
+                if overflow_violations and overflow_mode not in ("warn", "off"):
+                    raise RenderError(
+                        "render_overflow",
+                        "data-leo-block 越界（模板合同第七条）："
+                        + json.dumps(overflow_violations, ensure_ascii=False)[:400],
+                    )
+                if overflow_violations:
+                    warnings.append(
+                        "overflow_observed:" + json.dumps(overflow_violations, ensure_ascii=False)[:200]
+                    )
+                overflow_check = "warn" if overflow_violations else "pass"
+
                 try:
                     page.screenshot(
                         path=str(out),
@@ -247,6 +293,7 @@ def render_page(
         "height": size[1],
         "device_scale_factor": scale,
         "ready_signal": ready_signal,
+        "overflow_check": overflow_check,
         "render_ms": render_ms,
         "rendered_at": _utc_now(),
         "warnings": warnings,

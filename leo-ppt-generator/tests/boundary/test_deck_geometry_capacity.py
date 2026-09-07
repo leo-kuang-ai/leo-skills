@@ -50,6 +50,14 @@ class VwOfTests(unittest.TestCase):
 
 
 class CapacityModeTests(unittest.TestCase):
+    def test_fixed_cover_cannot_repeat_short_points_without_total_limit(self):
+        for points in (["长"] * 10000, ["长" * 10000]):
+            proc = run_capacity({"slides": [{"page": 1, "layout": "P1", "points": points}]})
+            self.assertEqual(proc.returncode, 1, proc.stdout)
+            self.assertIn("overflow:total_text", proc.stdout)
+        proc = run_capacity({"slides": [{"page": 1, "layout": "P1", "points": ["标题", "副标题"]}]})
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+
     def test_capacity_mode_rejects_pptx_and_capacity_together(self):
         proc = subprocess.run(
             [sys.executable, str(GEOMETRY), "foo.pptx", "--capacity",

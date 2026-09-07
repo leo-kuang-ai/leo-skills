@@ -10,10 +10,12 @@
 
 ## 仓库结构
 
-本仓库是**两个独立技能包**的集合（见 `AGENTS.md`），通过 `.claude-plugin/marketplace.json` 作为 Claude Code 插件市场分发：
+本仓库是**四个独立技能包**的集合（见 `AGENTS.md`），通过 `.claude-plugin/marketplace.json` 作为 Claude Code 插件市场分发：
 
 - `evidence-first-writing/` — 证据优先写作技能（`SKILL.md`、`references/`、`scripts/`、`tests/`、`evals/`、`agents/`）。
 - `leo-ppt-generator/` — PPT 生成技能（`SKILL.md`、`references/`、`prompts/`、`scripts/`、`patches/`、`runtime/`、`evals/`、`agents/`）。
+- `software-article-en-zh/` — 软件工程英文 → 简体中文翻译技能（`SKILL.md`、`references/`、`scripts/`、`tests/`、`evals/`、`assets/`）。
+- `creator-buddy/` — vendored 创作工具箱插件（见 `AGENTS.md` 的所有权边界约定）。
 - `docs/` — 仓库级文档与配图。
 - 各技能 `*-workspace/` — 评测运行的生成产物（设计上被 git-ignore）；`graphify-out/` 同为生成产物。
 - `AGENTS.md` — 仓库级约定：每个顶层目录是独立技能包；文件命名、提交风格、测试期望均在其中。

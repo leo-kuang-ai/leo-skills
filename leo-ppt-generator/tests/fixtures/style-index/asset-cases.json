@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "style",
+      "name": "测试风格",
+      "role": "style",
+      "body": "完整风格 JSON"
+    },
+    {
+      "id": "pool",
+      "name": "测试池代表",
+      "role": "pool",
+      "classification": "参考池代表",
+      "body": "完整风格 JSON"
+    },
+    {
+      "id": "rule",
+      "name": "规则文档",
+      "role": "rule",
+      "body": "只有规则说明"
+    },
+    {
+      "id": "axis",
+      "name": "图片渲染说明",
+      "role": "axis",
+      "body": "图片渲染轴"
+    },
+    {
+      "id": "layout",
+      "name": "P1",
+      "role": "layout",
+      "body": "layout-bank-v1"
+    },
+    {
+      "id": "example",
+      "name": "普通JSON示例",
+      "role": "reference",
+      "body": "{\"ok\":1}"
+    },
+    {
+      "id": "broken",
+      "name": "损坏风格",
+      "role": "unknown",
+      "body": "{not-json"
+    },
+    {
+      "id": "variant",
+      "name": "测试风格变体",
+      "role": "style",
+      "variant_of": "测试风格"
+    },
+    {
+      "id": "alias-collision",
+      "name": "同别名",
+      "expected": "保留所有命中"
+    },
+    {
+      "id": "user-override",
+      "name": "同名用户覆盖",
+      "expected": "用户优先，内置源仍可溯源"
+    }
+  ]
+}

@@ -57,6 +57,9 @@ import tempfile
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+from leo_ppt_generator.styles import parse_style_document
+
 STYLES_DIR = SKILL_DIR / "references" / "styles"
 GALLERY = SKILL_DIR / "samples" / "style-gallery.md"
 THUMBS_ROOT = SKILL_DIR / "samples" / "style-gallery"
@@ -138,7 +141,7 @@ def builtin_styles(styles_root: Path = STYLES_DIR) -> "list[tuple[str, list[str]
 def axis_counts(styles_root: Path = STYLES_DIR) -> "list[tuple[str, int]]":
     entries: "list[tuple[str, int]]" = []
     for directory in sorted(p for p in styles_root.iterdir() if p.is_dir()):
-        if directory.name == "00_索引":
+        if directory.name in {"00_索引", "generated", "generated.previous"} or directory.name.startswith(".style-index-"):
             continue
         count = len(list(directory.glob("*.md")))
         label = directory.name.split("_", 1)[1] if "_" in directory.name else directory.name
@@ -169,14 +172,10 @@ def _brief_json(name: str, styles_root: Path = STYLES_DIR) -> dict:
         text = path.read_text(encoding="utf-8")
     except OSError as exc:
         fail(f"cannot read {path}: {exc}")
-    match = JSON_BLOCK_RE.search(text)
-    if not match:
+    parsed = parse_style_document(text)
+    if parsed["brief"] is None:
         fail(f"no JSON brief block in {path}")
-    try:
-        brief = json.loads(match.group(1))
-    except json.JSONDecodeError as exc:
-        fail(f"brief JSON invalid in {path}: {exc}")
-    return brief
+    return parsed["brief"]
 
 
 def _first_hex(*values: object) -> "str | None":
@@ -326,7 +325,7 @@ def _run_render(args: "list[str]") -> "tuple[dict | None, bool]":
         capture_output=True, text=True, timeout=180,
     )
     try:
-        envelope = json.loads(result.stdout)
+        envelope = json.loads(result.stdout or result.stderr)
     except json.JSONDecodeError:
         if result.returncode == 0:
             fail(f"render CLI output not JSON: {result.stdout[:200]}")
@@ -468,6 +467,7 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
             degraded = degraded or chart_degraded
             if degraded:
                 warn("render backend failed mid-run: thumbnail compare skipped for the rest")
+                continue
             for page in PAGES:
                 committed = committed_dir / f"thumb-{page}.png"
                 data = workdir / f"slide-{page}.json"
@@ -593,7 +593,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
 
     lines += [
         "",
-        f"## 参考轴（{len(axes)} 轴，markdown 份数）",
+        f"## 目录直层文档（{len(axes)} 个目录，兼容口径）",
         "",
         "| 轴 | 份数 |",
         "| --- | --- |",
@@ -603,7 +603,8 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
     total = sum(count for _, count in axes) + len(builtins)
     lines += [
         "",
-        f"合计 markdown 风格/规范文档 {total} 份（不含 JSON sidecar 与 00_索引规则文档）。",
+        f"上述目录直层及内置 Markdown 共 {total} 份，不递归统计家族子目录，不代表全库资产或可推荐风格总数。",
+        "全库角色与独立风格数量见[派生分类计数](../references/styles/generated/counts.md)。",
         "选定后由 `style render` 确定性注入，流程见 [`references/style-library.md`](../references/style-library.md)。",
         "",
     ]

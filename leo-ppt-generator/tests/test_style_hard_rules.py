@@ -12,6 +12,7 @@ import json
 import subprocess
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
@@ -33,6 +34,11 @@ def run_cli(*args: str) -> subprocess.CompletedProcess:
 
 class EvaluateBehavior(unittest.TestCase):
     """evaluate() 纯函数层：正反样本与消解语义。"""
+
+    def test_self_test_reports_missing_family_member(self):
+        with mock.patch.dict(shr.FAMILIES, {"测试悬空族": ["不存在的测试风格"]}):
+            failures = shr._self_test()
+        self.assertTrue(any("style_member_missing" in item for item in failures))
 
     def test_academic_defense_excludes_retro_and_locks_academic(self):
         out = shr.evaluate({"genre": "博士论文答辩", "domain": ["高校"]})

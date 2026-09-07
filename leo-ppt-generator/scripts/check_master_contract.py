@@ -24,7 +24,11 @@
      引用级要点必须携带 source_ref（【引用|src:材料锚点】 或行尾
      [src:锚点]），用户确认级要点必须携带会话轮标记（round:N）或说明
      字段（note:/说明:）；估算/示意与无标注要点豁免（向后兼容：
-     旧母版无标注要点不触发本判据）。
+     旧母版无标注要点不触发本判据）；
+  ⑪ 反方与边界承载（R2 测评迭代，WARN 级）：页面角色/argument_role 含
+     「边界/反方」的页或收束页前的反方/失效触发要点（标题与口播行不计）；
+  ⑫ 收束金额测算行（R2 测评迭代，WARN 级）：收束页金额须有口径/来源列
+     含 测算/推算/询价/报价/引用 标记的同值登记行，或行内显式 unknown。
 
 母版机读语法约定（deck-master.md 合同）：
   - 页由 `## S<N> ` 或 `## 附` 起始；
@@ -456,6 +460,120 @@ def check_page(header, body, total_pages, failures, prefix):
     return title.group(1).strip() if title else None, points
 
 
+# --- R2 测评迭代判据（2026-09-07，WARN 级、向后兼容） ---
+# ⑪ 反方与边界承载：deck-master.md「反方与边界承载」纪律的可机检子集——
+#    页面角色/argument_role 含「边界/反方」的页，或收束页前的反方/失效触发
+#    要点（标题与口播行不计：标题提及 ≠ 实质承载，R2 校准 C1 教训）。
+# ⑫ 请求金额测算行：收束页要点中的金额在登记表须有口径/来源列含测算标记
+#    的同值行，或行内显式 unknown（「引用」仅认口径/来源列内的引用口径，
+#    证据等级列的「引用」不算测算标记——R2 校准 C1 词表碰撞教训）。
+COUNTER_CARRIAGE_PAGE_RE = re.compile(
+    r"(?:页面角色|角色|argument_role)[：:][^\n]*(?:边界|反方)")
+COUNTER_CARRIAGE_POINT_RE = re.compile("反方|失效触发|最强反方|invalidation")
+CLOSING_AMOUNT_RE = re.compile(
+    r"[¥$]\s?[\d,]+(?:\.\d+)?"
+    r"|\bUSD\s?[\d,]+(?:\.\d+)?M?\b"
+    r"|[\d,]+(?:\.\d+)?\s?(?:M\b|万|百万|千万|亿|百万元|万元)")
+CLOSING_AMOUNT_DERIV_RE = re.compile(r"测算|推算|＝|=|×|\+|询价|报价|拆到|引用")
+CLOSING_AMOUNT_UNKNOWN_RE = re.compile(r"unknown|待询价|询价中|待定|待补", re.I)
+
+
+def _page_bullets(body):
+    for ln in body.splitlines():
+        s = ln.strip()
+        if s.startswith(("-", "•")) and "标题" not in s and "speaker_script" not in s:
+            yield s
+
+
+DELIVERY_TIERS = ("minimal", "standard", "assured")
+DELIVERY_TIER_RE = re.compile(r"^delivery_tier[：:]\s*(\S+)", re.M)
+
+
+def check_delivery_tier(text, failures, warnings):
+    """加固方案 WS4：母版头可选 delivery_tier 字段，封闭枚举；声明即约束
+    档位门禁集合（minimal 合并确认点/standard 现行/assured 加双评审）。"""
+    m = DELIVERY_TIER_RE.search(text)
+    if m is None:
+        # 缺省档是提示不是 WARN：不改变存量母版的退出码（0 保持 0）。
+        return "standard"
+    tier = m.group(1).strip().lower().rstrip("。）)")
+    if tier not in DELIVERY_TIERS:
+        failures.append(
+            f"全 deck: delivery_tier 非法（{m.group(1)}），枚举："
+            + "/".join(DELIVERY_TIERS))
+        return None
+    return tier
+
+
+def check_counter_carriage(pages, warnings, advisories=None):
+    """⑪ 反方/边界承载缺失 → WARN（决策型材料天然承载；其余场景由合同牵引，
+    本判据给字段装机器牙齿——R2 盲评配对处置）。"""
+    for header, body in pages:
+        if COUNTER_CARRIAGE_PAGE_RE.search(header) or \
+                COUNTER_CARRIAGE_PAGE_RE.search(body):
+            return
+        if any(COUNTER_CARRIAGE_POINT_RE.search(s) for s in _page_bullets(body)):
+            return
+    message = (
+        "全 deck: 未发现反方/边界承载（页面角色「边界」、argument_role「反方」"
+        "或反方/失效触发要点）——按 deck-master.md 纪律回合同补 "
+        "strongest_objection/invalidation_triggers 的母版承载")
+    # R2 判据为 advisory（向后兼容）：如实呈现但不改变退出码。
+    (advisories if advisories is not None else warnings).append(message)
+
+
+def _ledger_scoped_rows(text):
+    tail = text.split("## 数字登记表", 1)
+    if len(tail) < 2:
+        return []
+    rows = [ln for ln in tail[1].splitlines() if ln.strip().startswith("|")]
+    rows = [r for r in rows if not re.match(r"^\|[\s:|-]+\|$", r.strip())]
+    if not rows:
+        return []
+    header = [c.strip() for c in rows[0].strip().strip("|").split("|")]
+    out = []
+    for r in rows[1:]:
+        cells = [c.strip() for c in r.strip().strip("|").split("|")]
+        if len(cells) < len(header):
+            continue
+        scope = ""
+        for col in ("口径", "来源"):
+            if col in header:
+                scope += cells[header.index(col)]
+        out.append((cells[0] if cells else "", scope))
+    return out
+
+
+def check_closing_amounts(text, pages, warnings, advisories=None):
+    """⑫ 收束页金额缺测算行/unknown → WARN（R2 行动空泛处置的机器子集）。"""
+    closings = [
+        (h, b) for h, b in pages
+        if "收束" in h or re.search(r"(?:页面角色|角色)[：:]\s*收束", b)
+    ]
+    if not closings:
+        return
+    scoped = _ledger_scoped_rows(text)
+    bad = []
+    for header, body in closings:
+        for s in _page_bullets(body):
+            for m in CLOSING_AMOUNT_RE.finditer(s):
+                key = re.search(r"[\d,]+(?:\.\d+)?", m.group(0))
+                if not key:
+                    continue
+                key = key.group(0).replace(",", "")
+                covered = any(
+                    re.search(rf"(?<![\d.]){re.escape(key)}(?![\d.])",
+                              c0.replace(",", ""))
+                    and CLOSING_AMOUNT_DERIV_RE.search(sc)
+                    for c0, sc in scoped)
+                if not covered and not CLOSING_AMOUNT_UNKNOWN_RE.search(s):
+                    bad.append(f"{header.strip()}「{m.group(0)}」")
+    if bad:
+        (advisories if advisories is not None else warnings).append(
+            "收束页金额缺测算行/unknown 标注（deck-master.md「请求金额测算行」"
+            "纪律；口径/来源列须含 测算/推算/询价 等标记）：" + "；".join(bad[:3]))
+
+
 def main():
     if len(sys.argv) != 2:
         print("usage: check_master_contract.py <deck-master.md>", file=sys.stderr)
@@ -464,6 +582,7 @@ def main():
     text = path.read_text(encoding="utf-8")
     print("MASTER-SCHEMA: v2")
     failures = []
+    advisories = []
     warnings = []
     pages = split_pages(text)
     if not pages:
@@ -493,6 +612,12 @@ def main():
         page_seq.append("附" if m is None or m.group(1) is None else f"S{m.group(1)}")
     promise_count = check_deck_promises(text, page_seq, failures)
     tier_count = check_bullet_tiers(text, failures)
+    check_counter_carriage(pages, warnings, advisories)
+    tier = check_delivery_tier(text, failures, warnings)
+    if tier:
+        declared = "declared" if DELIVERY_TIER_RE.search(text) else "default"
+        print(f"DELIVERY-TIER: {tier} ({declared})")
+    check_closing_amounts(text, pages, warnings, advisories)
     if failures:
         for f in failures:
             print(f"FAIL: {f}", file=sys.stderr)
@@ -507,6 +632,8 @@ def main():
     print(ok)
     print("TITLE-READTHROUGH: " + " → ".join(titles))
     print("TAKEAWAY-READTHROUGH: " + " → ".join(takeaways))
+    for a in advisories:
+        print(a if a.startswith("WARN") else f"WARN: {a}", file=sys.stderr)
     if warnings:
         for w in warnings:
             print(w if w.startswith("WARN") else f"WARN: {w}", file=sys.stderr)

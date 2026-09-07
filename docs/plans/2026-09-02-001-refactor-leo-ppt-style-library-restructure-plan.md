@@ -7,13 +7,19 @@ artifact_contract: spec-unified-plan/v1
 artifact_readiness: implementation-ready
 product_contract_source: spec-plan-bootstrap
 execution: code
-status: active
+status: superseded
+superseded_by: docs/plans/2026-09-05-002-feat-leo-ppt-engineering-optimization-plan.md
+superseded_on: 2026-09-05
 alignment: needs-rewrite
 alignment_source: docs/leo-ppt-generator/architecture/style-library-target-architecture.md
 alignment_checked: 2026-09-03
 ---
 
 # leo-ppt-generator 风格库结构分层重构 - Plan
+
+> **已合并，停止作为实施入口（2026-09-05）。** 根据用户“合并一份”的要求，有效治理、索引和验证内容已纳入 [PPT 风格模板治理、索引与执行接入统一方案](2026-09-05-002-feat-leo-ppt-engineering-optimization-plan.md)。当前实施与后续路线均以该文件为准。
+>
+> 本文件保留历史正文供溯源，以下 Phase 0–3、目录目标和旧状态表述均不再生效。frontmatter 的 `implementation-ready` 仅保留历史文档形态，不覆盖 `status: superseded`，不得据此启动开发。
 
 > ## ⚠ 对齐标注：本方案的默认交付与目标架构互斥，实施前必须重写
 >

@@ -26,6 +26,10 @@ Vendored 代码（runtime/src/leo_ppt_generator/_vendor/）
 - ian-handdrawn-ppt — MIT, Copyright (c) 2026 Ian（提示词合同结构借鉴）。
 - guizang-social-card-skill — AGPL-3.0（风格规则提取与 16:9 适配，
   references/styles/04_来源_guizang/，据用户线下授权保留）。
+- baoyu-skills — MIT, Copyright (c) 2026 Jim Liu（风格词表/色值直引与机制层
+  借鉴：references/styles/ 词表增补与 00_索引 机制文档、check_deck_prose
+  R-27 词表，快照 6b7a2e4 2026-07-03，台账见 style-candidates.md 登记行；
+  其 README Credits 所列 AJ@WaytoAGI 衍生子集按无授权源仅思想级改写）。
 
 渲染 lane 依赖（vendored / 二进制依赖）
 --------------------------------------

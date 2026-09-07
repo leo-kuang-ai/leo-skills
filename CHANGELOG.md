@@ -7,6 +7,25 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：控制台前端拆分 config-ui.js（延迟台账首项清偿）**：单文件 1822 行超 1500 行阈值，按既定决策拆为三层——
+  - **资产拆分**：内联 `<script>`（1294 行）机械提取为包内 `config/assets/config-ui.js`（逻辑零改动，`node --check` 通过），HTML 缩至 529 行（骨架 + CSS + 外链引用，`<script src="/config-ui.js">`）；
+  - **服务端**：`web.py` 新增 `GET /config-ui.js` 路由（与 HTML 同范式包内解析 + 模块级缓存，`application/javascript` + `no-store`——runtime 刷新后浏览器立即取新脚本）；
+  - **打包防回退**：`pyproject` package-data 收敛为 `config/assets/*`（html+js 一并覆盖）；测试静态锚点按落点迁移（JS 锚点读 js 文件、HTML 骨架锚点留 html），新增外链引用契约测试与 `/config-ui.js` 服务测试；
+  - 验证：66/66 全绿（test_config_web + test_runs_console）；Safari 实测外链加载执行正常——渠道目录渲染、Tab 切换 hash 路由、列表→详情、时间线分组/间隔/跨度徽章、链路表格全功能完好。 (user-visible)
+- **leo-ppt-generator：控制台 Apple 风格层（样式迭代，零逻辑变更）**：按 Apple HIG / apple.com 视觉语言全面换装——
+  - **字体与画布**：`-apple-system`（SF Pro）字栈 + 抗锯齿，背景换 Apple 标志性 `#f5f5f7`，墨色 `#1d1d1f` / 次级 `#6e6e73` 三级灰阶；
+  - **控件语言**：主/次 Tab 与模式切换改 iOS 分段控件（灰轨道 + 白色激活段 + 微投影，sticky 毛玻璃 `blur(20px) saturate(180%)`）；按钮改 apple.com 胶囊（980px 圆角，主行动 `#0071e3` 蓝、次级淡染 tinted）；筛选 chips 灰胶囊 + 深墨激活态；
+  - **系统语义色**：绿 `#34c759`/红 `#ff3b30`/橙 `#ff9500`/蓝 `#007aff` 全量替换旧色板，标签改 iOS 淡染胶囊（15% 底 + 深字）；当前渠道强调改蓝染卡片；
+  - **表单与浮层**：输入框 iOS 灰底圆角 + 聚焦 3.5px 蓝环；Toast 改半透明深色毛玻璃胶囊；对话框 backdrop 加深 + 模糊（macOS 窗口层次）；时间线节点/轴线换系统色，**跨度徽章中性化**（跨度是信息非警示，仅行间间隔 ≥60s 保持警示橙——视觉验收现场发现的语义修正）；
+  - 验证：`test_config_web` + `test_runs_console` 全绿、JS 语法通过；Safari 实测（全屏截图图像分析确认：浅灰底白卡/分段控件/胶囊步骤条/语义色/无错乱，Apple 观感成立；AX 树核验刷新后全部结构与交互完好）。视觉复验途中检测到用户正在使用电脑，后续像素级截图中止——跨度徽章颜色由代码层保证（移除 slow 类）并留待用户自行确认。 (user-visible)
+- **leo-ppt-generator：控制台时间线模块优化（FR6 深化）**：
+  - **连续同类页级事件折叠**：image/editable recorded 等页级完成事件按相邻同类折叠为组行（"页面图片完成 · 6 页（#9 #8 #7 #6 #4 #2）"+"展开 N 条"），组内事件统一新→旧排列（与时间线方向一致），组头显示最新时刻；从页面网格点击失败/超时页时匹配组自动展开并定位；
+  - **行间间隔与跨度徽章**：每行显示距上一行结束的间隔（"+1 分 0 秒"，≥60s 转 warn 色——"卡在哪"一眼可见）；组行额外显示组内跨度（"跨度 5 分 0 秒"）；间隔按行间语义统一计算（本行最新时刻 − 上一行最旧事件），首行不显示；
+  - **事件详情可读化**：data 字段按中文标签键值渲染（操作者/结果/页码/渠道…），失败事件默认展开，原始 JSON 折叠为 `<details>`；
+  - **轴线视觉**：时间线左侧竖向轴线 + 行首状态色节点（成功绿/失败红/阶段蓝），组行虚线边框区隔；
+  - **现场发现并修复组语义 bug**：初版分组 push 顺序产生交错序（组头取到最早时刻、跨度算出负值被吞、间隔徽章缺失），重构为一致的行间时间语义；
+  - **防回归**：恢复被并行会话回滚的 `pyproject` package-data `config/assets/*.html` 声明（即线上 `config_ui_asset_missing` 根因，静态锚点测试复检通过）；
+  - 验证：`test_config_web` + `test_runs_console` 64/64 全绿、JS 语法通过、Safari 实测（AX 树核验组头/间隔/跨度/子行顺序/展开交互全对）；前端单文件增至 1684 行——超 1500 行拆分阈值，config-ui.js 拆分列为下一轮首项。 (user-visible)
 - **leo-ppt-generator：本地控制台新增「生成任务」可视化（进展/预览/过程/链路/流程）**：按 `docs/prd/2026-09-07-leo-ppt-run-visualization-prd.md`（5 轮审查）与 `docs/plans/2026-09-07-004`（5 轮审查）实施——
   - **双 Tab 控制台**：新增规范入口 `leo-ppt ui`（`config ui` 保持兼容同一服务）；「生成任务」Tab 扫描 `${LEO_PPT_HOME}/projects/*/runs/` 呈现任务列表（状态徽标/页进度/陈旧提示/呼吸态）与详情视图；
   - **详情五视图**：流程条（步骤打勾+耗时+当前态，不显示百分比——业界共识）、页网格（Airflow 式，颜色+图标双重编码，failed/timeout 从 timing.json 与 run.log 推断，骨架占位渐进填充）、事件时间线（events.ndjson 尾窗+坏行计数+失败自动展开+"加载更早"分页）、链路聚合（渠道×调用×尝试×tokens，字符串 tokens 容错）、交付卡（deck 路径缩写复制、六门质量闸、失败回落链）；页图 lightbox（modal 对话语义/Esc/键盘翻页）；

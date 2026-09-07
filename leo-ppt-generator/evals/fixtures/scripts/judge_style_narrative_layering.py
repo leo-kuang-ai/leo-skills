@@ -98,6 +98,8 @@ def judge(text: str) -> list[str]:
     for body in sentences(text):
         if CONTROL_FIELD_RE.match(body):
             continue
+        # 引用用户需要说出的授权口令不是当前执行；引用之外的动作仍需检查。
+        body = re.sub(r'(?:明示|回复|说出)[“"「][^”"」]+[”"」]', "用户授权口令", body)
         for pattern in STARTUP_PATTERNS:
             m = re.search(pattern, body)
             if m and not softened(body):

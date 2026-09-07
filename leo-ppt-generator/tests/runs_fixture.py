@@ -50,8 +50,15 @@ def make_run(
     corrupt_run_json: bool = False,
     artifact_override: dict[int, str] | None = None,
     input_path: str = "/tmp/fixture-input.md",
+    render_pages: dict[int, str] | None = None,
+    workspace_root: Path | str | None = None,
 ) -> Path:
-    run_dir = Path(home) / "projects" / project / "runs" / ("run-" + run_id[:8])
+    # workspace 形态（执行合同正式位置）：<project-root>/runs/<run-id>；
+    # 缺省 home 形态：home/projects/<project>/runs/<run-id>。
+    if workspace_root is not None:
+        run_dir = Path(workspace_root) / "runs" / ("run-" + run_id[:8])
+    else:
+        run_dir = Path(home) / "projects" / project / "runs" / ("run-" + run_id[:8])
     (run_dir / "image-deck").mkdir(parents=True, exist_ok=True)
     (run_dir / "editable").mkdir(parents=True, exist_ok=True)
     (run_dir / "reports").mkdir(parents=True, exist_ok=True)
@@ -101,19 +108,30 @@ def make_run(
         )
 
     slides = []
+    # 混排牌组支持：指定页走本地渲染 lane（backend=render:html / render:mermaid），
+    # 其余成功页保持 AI 渠道（zhipu），供 lane 徽标的可视化测试。
+    render_backends = render_pages or {}
     for number in range(1, total + 1):
         slide_id = f"slide_{number:02d}"
         entry = {"number": number, "slide_id": slide_id, "status": "pending", "notes": None}
         if number in recorded_set:
-            artifact = (artifact_override or {}).get(number, f"origin_image/{slide_id}.png")
+            render_backend = render_backends.get(number)
+            artifact = (artifact_override or {}).get(
+                number,
+                f"render/{render_backend.partition(':')[2] or 'html'}/{slide_id}.png"
+                if render_backend
+                else f"origin_image/{slide_id}.png",
+            )
             entry.update(
                 status="recorded",
                 artifact=artifact,
                 sha256="fixture",
-                backend="zhipu",
+                backend=render_backend or "zhipu",
                 agent_id="agent-fixture",
             )
-            if with_png and artifact.startswith("origin_image/"):
+            if with_png and (
+                artifact.startswith("origin_image/") or artifact.startswith("render/")
+            ):
                 target = run_dir / "image-deck" / artifact
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(_png_bytes())
@@ -206,6 +224,11 @@ def make_run(
         {"ts": "2026-09-07T08:01:30Z", "slide": 2, "backend": "zhipu", "page_type": "body", "attempts": 1, "tokens": 1180},
         {"ts": "2026-09-07T08:02:31Z", "slide": 3, "backend": "zhipu", "page_type": "body", "attempts": 2, "tokens": "not-recorded"},
     ]
+    # 本地渲染 lane 不计费：tokens 记 0，链路表可与 AI 渠道并列聚合。
+    for number, render_backend in sorted((render_pages or {}).items()):
+        stats.append(
+            {"ts": "2026-09-07T08:03:00Z", "slide": number, "backend": render_backend, "page_type": "layout", "attempts": 1, "tokens": 0}
+        )
     (run_dir / "observability" / "backend_stats.jsonl").write_text(
         "\n".join(json.dumps(item, ensure_ascii=False) for item in stats) + "\n", encoding="utf-8"
     )

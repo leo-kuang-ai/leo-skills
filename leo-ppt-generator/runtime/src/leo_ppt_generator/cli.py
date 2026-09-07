@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -705,6 +706,58 @@ def _operation_payload(
         "safe_to_retry": safe_to_retry,
         "state_hash": state_hash,
     }
+
+
+_REGISTRY_RUN_ID_RE = re.compile(r"^[0-9a-f]{8,64}$")
+
+
+def _register_run_in_home_registry(
+    run_dir: str | Path,
+    snapshot: dict[str, Any],
+    *,
+    project_root: str | None,
+    home: Path | None = None,
+) -> bool:
+    """run create 成功后向 ``${LEO_PPT_HOME}/runs-registry.jsonl`` 追加登记。
+
+    控制台 RunScanner 以 home 的 ``projects/*/runs/*`` 布局为主发现源；
+    workspace 自包含 run（``<project-root>/runs/<run-id>``，执行合同的正式
+    位置）经该 registry 变为全局可见。幂等（同 run_id 不重复追加）、容错
+    （任何 OSError 打 WARN 后跳过，绝不阻断生成）。
+    """
+
+    run_id = snapshot.get("run_id")
+    if not isinstance(run_id, str) or not _REGISTRY_RUN_ID_RE.match(run_id):
+        return False
+    root = (home if home is not None else default_home()) / "runs-registry.jsonl"
+    entry = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "route": snapshot.get("route"),
+        "project_root": project_root,
+        "run_dir": str(Path(run_dir).resolve()),
+        "created_at": snapshot.get("created_at"),
+    }
+    line = json.dumps(entry, ensure_ascii=False, sort_keys=True) + "\n"
+    try:
+        root.parent.mkdir(parents=True, exist_ok=True)
+        if root.is_file():
+            for existing in root.read_text(encoding="utf-8", errors="replace").splitlines():
+                stripped = existing.strip()
+                if not stripped:
+                    continue
+                try:
+                    payload = json.loads(stripped)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(payload, dict) and payload.get("run_id") == run_id:
+                    return False
+        with root.open("a", encoding="utf-8") as handle:
+            handle.write(line)
+    except OSError as exc:
+        print(f"runs-registry append skipped: {exc.__class__.__name__}", file=sys.stderr)
+        return False
+    return True
 
 
 def _record_event(run_path: str | Path, kind: str, **data: Any) -> None:
@@ -2213,6 +2266,9 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 index = creation.index
                 run_snapshot = index.snapshot()
                 operation_id = args.idempotency_key or f"create-{run_snapshot['run_id']}"
+                _register_run_in_home_registry(
+                    output, run_snapshot, project_root=args.project_root
+                )
                 return _run_result(
                     "ready",
                     "run_created" if creation.idempotency_status == "created" else "run_replayed",
@@ -2225,6 +2281,9 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             existed = (Path(output) / "run.json").is_file()
             index = RunIndex.create(output, route=args.route, runtime_identity=runtime_identity)
             run_snapshot = index.snapshot()
+            _register_run_in_home_registry(
+                output, run_snapshot, project_root=args.project_root
+            )
             return _run_result(
                 "ready",
                 "run_created" if not existed else "run_replayed",

@@ -737,6 +737,18 @@ const DATA_LABELS = {
   subject: "对象", reason_code: "原因", operation_id: "操作",
   artifact_ref: "产物", evidence_refs: "证据", backend: "渠道",
 };
+// lane 呈现：render:* = 本地确定性渲染（免渠道），其余 backend = AI 图片渠道。
+const RENDER_LANE_LABELS = {
+  "render:html": "HTML",
+  "render:mermaid": "Mermaid",
+  "render:echarts": "ECharts",
+};
+function isRenderBackend(backend) {
+  return Boolean(backend) && Object.prototype.hasOwnProperty.call(RENDER_LANE_LABELS, backend);
+}
+function backendLabel(backend) {
+  return isRenderBackend(backend) ? "本地渲染 · " + RENDER_LANE_LABELS[backend] : backend;
+}
 function pageNoOf(data) {
   const match = /^(slide|page)_([0-9]+)$/.exec(String(data.slide_id || data.page_id || ""));
   return match ? parseInt(match[2], 10) : null;
@@ -851,30 +863,21 @@ function renderRunsList() {
     data.home_missing,
     runs.filter,
     data.runs.map((item) => item.run_id + ":" + item.status + ":" + item.stage + ":" + item.updated_at + ":" + item.stale_minutes).join(","),
+    // 相对时间分钟粒度：无数据变化时「N 分钟前」仍每分钟自然推进。
+    Math.floor(Date.now() / 60000),
   ]);
   if (signature === runs.lastListSig && box.childNodes.length) return;
   runs.lastListSig = signature;
   box.textContent = "";
   runs.filter = runs.filter || "all";
+  runs.view = runs.view || (localStorage.getItem("leo-runs-view") === "list" ? "list" : "cards");
   const panel = el("div", { cls: "panel" });
   const head = el("div", { cls: "section-head", style: "margin:0 0 6px" });
   head.appendChild(el("h2", { text: "生成任务" }));
   const refresh = el("button", { cls: "btn alt small", attrs: { type: "button" }, text: "刷新" });
   refresh.addEventListener("click", () => withPending(refresh, loadRunsList));
   head.appendChild(refresh);
-  panel.appendChild(head);
-
-  if (!data.runs.length) {
-    panel.appendChild(el("div", {
-      cls: "empty",
-      text: data.home_missing
-        ? "未找到任务目录：请设置 LEO_PPT_HOME 或先在宿主会话中发起一次生成（leo-ppt run create）。"
-        : "暂无生成任务。在宿主会话发起一次生成（如 leo-ppt run create）后，这里会实时展示进展、预览与过程。",
-    }));
-    box.appendChild(panel);
-    return;
-  }
-  // B2：状态筛选 chips（纯客户端，含计数）。
+  // B2：状态筛选 chips（纯客户端，含计数）；与标题/刷新同行（工具区一行化）。
   const counts = { all: data.runs.length };
   data.runs.forEach((item) => { counts[item.status] = (counts[item.status] || 0) + 1; });
   const chips = el("div", { cls: "filter-chips", attrs: { role: "group", "aria-label": "任务状态筛选" } });
@@ -888,25 +891,56 @@ function renderRunsList() {
     chip.addEventListener("click", () => { runs.filter = key; renderRunsList(); });
     chips.appendChild(chip);
   });
-  panel.appendChild(chips);
+  head.appendChild(chips);
+  // 视图切换：卡片（友好展示，默认）/ 列表（紧凑行）；选择记忆在本地。
+  const viewToggle = el("div", { cls: "view-toggle", attrs: { role: "group", "aria-label": "视图切换" } });
+  [["cards", "卡片"], ["list", "列表"]].forEach(([mode, label]) => {
+    const seg = el("button", {
+      cls: runs.view === mode ? "active" : "",
+      attrs: { type: "button", "aria-pressed": runs.view === mode ? "true" : "false" },
+      text: label,
+    });
+    seg.addEventListener("click", () => {
+      if (runs.view === mode) return;
+      runs.view = mode;
+      try { localStorage.setItem("leo-runs-view", mode); } catch (_storageError) { /* 隐私模式等场景静默降级 */ }
+      runs.lastListSig = null;
+      renderRunsList();
+    });
+    viewToggle.appendChild(seg);
+  });
+  head.appendChild(viewToggle);
+  head.appendChild(refresh); // 移到行尾（appendChild 移动既有节点）
+  panel.appendChild(head);
+
+  if (!data.runs.length) {
+    panel.appendChild(el("div", {
+      cls: "empty",
+      text: data.home_missing
+        ? "未找到任务目录：请设置 LEO_PPT_HOME，或先在宿主会话中发起一次 PPT 生成。"
+        : "暂无生成任务。在宿主会话（如 ZCode / Claude）里让助手生成 PPT 即可：流程签署 backend 合同后会自动创建任务，这里随后实时展示进展、页图预览与过程时间线；此前的合同、大纲与风格确认阶段属于会话内工作，尚不落任务记录。",
+    }));
+    box.appendChild(panel);
+    return;
+  }
   const visible = runs.filter === "all" ? data.runs : data.runs.filter((item) => item.status === runs.filter);
   if (!visible.length) {
     panel.appendChild(el("div", { cls: "empty", text: "该状态下暂无任务。" }));
     box.appendChild(panel);
     return;
   }
+  const cardsWrap = runs.view === "cards" ? el("div", { cls: "run-cards" }) : null;
+  // 列表视图容器：CRM 风表格（表头 + 数据行同列网格）。
+  const listTable = runs.view === "cards" ? null : el("div", { cls: "runs-table", attrs: { role: "list", "aria-label": "生成任务列表" } });
+  if (listTable) {
+    const header = el("div", { cls: "rt-row rt-head", attrs: { "aria-hidden": "true" } });
+    ["任务", "项目", "路线", "状态", "进度", "阶段", "更新"].forEach((label) => {
+      header.appendChild(el("span", { cls: "rt-cell", text: label }));
+    });
+    listTable.appendChild(header);
+  }
   visible.forEach((item) => {
-    const main = el("div", { cls: "run-main" });
-    const title = el("div", { cls: "run-title" });
-    title.appendChild(document.createTextNode("#" + item.short_id + " " + item.project + " "));
-    const statusTag = el("span", { cls: "tag" + (item.status === "failed" ? " err" : (item.status === "completed" ? " ok" : "")) });
-    statusTag.textContent = RUN_STATUS_LABELS[item.status] || item.status;
-    title.appendChild(statusTag);
     const stale = item.stale_minutes != null && item.stale_minutes >= 5;
-    // A3：死进程不得"看起来还活着"——陈旧即停呼吸并明示。
-    if (item.status === "in_progress" && !stale) statusTag.classList.add("breath");
-    main.appendChild(title);
-    const meta = el("div", { cls: "run-meta" });
     const progress = item.progress;
     const total = progress && progress.total_units || 0;
     const completed = progress && progress.completed || 0;
@@ -914,28 +948,83 @@ function renderRunsList() {
     const progressText = total
       ? "页 " + completed + "/" + total + (failed ? "（" + failed + " 失败）" : "")
       : "";
-    const parts = [ROUTE_LABELS[item.route] || item.route, item.stage_label, progressText, timeAgo(Math.max(0, (Date.now() / 1000 - item.updated_at) / 60))];
-    if (stale) parts.push("⚠ " + Math.round(item.stale_minutes) + " 分钟无更新");
-    meta.textContent = parts.filter(Boolean).join(" · ");
-    main.appendChild(meta);
-    // B1：页进度条（真实分母 total_units；阶段级仍不显示百分比）。
-    if (total) {
+    const ariaLabel = "任务 #" + item.short_id + " " + item.project + "，" + (RUN_STATUS_LABELS[item.status] || item.status) + "，" + progressText;
+    const statusBadge = function () {
+      const statusTag = el("span", { cls: "tag st-" + (item.status || "unknown") });
+      statusTag.textContent = RUN_STATUS_LABELS[item.status] || item.status;
+      // A3：死进程不得"看起来还活着"——陈旧即停呼吸并明示。
+      if (item.status === "in_progress" && !stale) statusTag.classList.add("breath");
+      return statusTag;
+    };
+    const buildBar = function () {
+      if (!total) return null;
       const bar = el("div", { cls: "pgbar", attrs: { role: "progressbar", "aria-label": "页进度 " + completed + "/" + total, "aria-valuemin": "0", "aria-valuemax": String(total), "aria-valuenow": String(completed) } });
       if (completed) bar.appendChild(el("span", { cls: "done", attrs: { style: "width:" + Math.round(completed * 100 / total) + "%" } }));
       if (failed) bar.appendChild(el("span", { cls: "fail", attrs: { style: "width:" + Math.round(failed * 100 / total) + "%" } }));
-      main.appendChild(bar);
+      return bar;
+    };
+    const staleLine = function () {
+      return stale
+        ? el("div", { cls: "run-stale", text: "⚠ " + Math.round(item.stale_minutes) + " 分钟无更新——可能停在确认门（等你在宿主会话里确认）或进程已退出" })
+        : null;
+    };
+    if (cardsWrap) {
+      // 卡片视图：友好展示（状态顶条 + 大项目名 + 进度 + 时间脚注）。
+      const card = el("button", { cls: "run-card", attrs: { type: "button", "data-status": item.status || "unknown", "data-run-id": item.run_id, "aria-label": ariaLabel } });
+      const top = el("div", { cls: "rc-top" });
+      top.appendChild(el("span", { cls: "rc-id", text: "#" + item.short_id }));
+      top.appendChild(statusBadge());
+      card.appendChild(top);
+      card.appendChild(el("div", { cls: "rc-project", text: item.project }));
+      card.appendChild(el("div", { cls: "run-meta", text: [ROUTE_LABELS[item.route] || item.route, item.stage_label].filter(Boolean).join(" · ") }));
+      const bar = buildBar();
+      if (bar) card.appendChild(bar);
+      if (progressText) card.appendChild(el("div", { cls: "rc-progress-text", text: progressText }));
+      card.appendChild(el("div", { cls: "rc-foot", text: timeAgo(Math.max(0, (Date.now() / 1000 - item.updated_at) / 60)) }));
+      const warn = staleLine();
+      if (warn) card.appendChild(warn);
+      card.addEventListener("click", () => { location.hash = "run=" + item.run_id; });
+      cardsWrap.appendChild(card);
+      return;
     }
+    // 列表视图：CRM 后台专业表格（表头 + 规整列：任务/项目/路线/状态/进度/阶段/更新）。
     const row = el("button", {
-      cls: "run-row",
+      cls: "rt-row run-tr" + (stale ? " stale" : ""),
       attrs: {
         type: "button",
-        "aria-label": "任务 #" + item.short_id + " " + item.project + "，" + (RUN_STATUS_LABELS[item.status] || item.status) + "，" + progressText,
+        role: "listitem",
+        "data-status": item.status || "unknown",
+        "aria-label": ariaLabel + (stale ? "，" + Math.round(item.stale_minutes) + " 分钟无更新，可能停在确认门或进程已退出" : ""),
       },
-      children: [main],
     });
+    if (stale) {
+      row.title = "已 " + Math.round(item.stale_minutes) + " 分钟无更新——可能停在确认门（等你在宿主会话里确认）或进程已退出";
+    }
+    row.appendChild(el("span", { cls: "rt-cell rt-id", text: "#" + item.short_id }));
+    row.appendChild(el("span", { cls: "rt-cell rt-project", text: item.project }));
+    const routeCell = el("span", { cls: "rt-cell" });
+    const routeTag = el("span", { cls: "tag route" });
+    routeTag.textContent = ROUTE_LABELS[item.route] || item.route;
+    routeCell.appendChild(routeTag);
+    row.appendChild(routeCell);
+    const statusCell = el("span", { cls: "rt-cell" });
+    statusCell.appendChild(statusBadge());
+    row.appendChild(statusCell);
+    const progressCell = el("span", { cls: "rt-cell rt-progress" });
+    const bar = buildBar();
+    if (bar) progressCell.appendChild(bar);
+    if (progressText) progressCell.appendChild(el("span", { cls: "rt-progress-text", text: total ? completed + "/" + total + (failed ? "（" + failed + " 失败）" : "") : "—" }));
+    row.appendChild(progressCell);
+    row.appendChild(el("span", { cls: "rt-cell rt-stage", text: item.stage_label || "—" }));
+    row.appendChild(el("span", {
+      cls: "rt-cell rt-time" + (stale ? " stale" : ""),
+      text: stale ? "⚠ " + Math.round(item.stale_minutes) + " 分钟无更新" : timeAgo(Math.max(0, (Date.now() / 1000 - item.updated_at) / 60)),
+    }));
     row.addEventListener("click", () => { location.hash = "run=" + item.run_id; });
-    panel.appendChild(row);
+    listTable.appendChild(row);
   });
+  if (cardsWrap) panel.appendChild(cardsWrap);
+  if (listTable) panel.appendChild(listTable);
   box.appendChild(panel);
 }
 
@@ -945,12 +1034,15 @@ function renderRunDetail() {
   const detail = runs.detail;
   if (!detail) return;
   // E-R1#2：数据签名未变则跳过重建（3s 轮询 × no-store 缩略图会 otherwise
-  // 每轮全量重取图片并冲掉过滤/加载更早/焦点状态）。
+  // 每轮全量重取图片并冲掉过滤/加载更早/焦点状态）。stale 分钟与相对时间
+  // 分钟粒度入签名：停滞 banner 的出现/推进与「N 分钟前」不冻结。
   const signature = JSON.stringify([
     detail.updated_at, detail.status, detail.stage,
     detail.pages.map((page) => page.number + ":" + page.state + ":" + (page.failure_reason || "")).join(","),
     detail.events_window.events.length,
     detail.events_window.events[0] ? detail.events_window.events[0].seq : null,
+    detail.stale_minutes != null ? Math.round(detail.stale_minutes) : null,
+    Math.floor(Math.max(0, Date.now() / 1000 - (detail.updated_at || 0)) / 60),
   ]);
   if (signature === runs.lastRenderSig && box.childNodes.length) return;
   runs.lastRenderSig = signature;
@@ -962,24 +1054,41 @@ function renderRunDetail() {
 
   const panel = el("div", { cls: "panel", attrs: { style: "margin-top:10px" } });
   const head = el("div", { cls: "run-title", attrs: { style: "font-size:17px" } });
-  head.appendChild(document.createTextNode("#" + detail.short_id + " " + detail.project + " · " + (RUN_STATUS_LABELS[detail.status] || detail.status)));
+  head.appendChild(document.createTextNode("#" + detail.short_id + " " + detail.project + " "));
+  const headStatus = el("span", { cls: "tag st-" + (detail.status || "unknown") });
+  headStatus.textContent = RUN_STATUS_LABELS[detail.status] || detail.status;
+  if (detail.status === "in_progress" && (detail.stale_minutes == null || detail.stale_minutes < 5)) {
+    headStatus.classList.add("breath");
+  }
+  head.appendChild(headStatus);
   const refresh = el("button", { cls: "btn alt small", attrs: { type: "button" }, text: "刷新" });
   refresh.addEventListener("click", () => withPending(refresh, () => loadRunDetail(runs.currentRun)));
   const headRow = el("div", { cls: "wait-row", children: [head, refresh] });
   panel.appendChild(headRow);
-  panel.appendChild(el("div", { cls: "run-meta", text: [ROUTE_LABELS[detail.route] || detail.route, detail.created_at ? "开始于 " + fmtClock(detail.created_at) : null, detail.duration_seconds != null ? "总耗时 " + fmtDur(detail.duration_seconds) : null].filter(Boolean).join(" · ") }));
+  const headMeta = el("div", { cls: "run-meta" });
+  const routeTag = el("span", { cls: "tag route" });
+  routeTag.textContent = ROUTE_LABELS[detail.route] || detail.route;
+  headMeta.appendChild(routeTag);
+  headMeta.appendChild(document.createTextNode(
+    " " + [detail.created_at ? "开始于 " + fmtClock(detail.created_at) : null, detail.duration_seconds != null ? "总耗时 " + fmtDur(detail.duration_seconds) : null].filter(Boolean).join(" · ")
+  ));
+  panel.appendChild(headMeta);
 
   if (detail.stale_minutes != null && detail.stale_minutes >= 5) {
-    panel.appendChild(el("div", { cls: "stale-note", text: "数据已 " + Math.round(detail.stale_minutes) + " 分钟未更新，进程可能已退出（本页仅观察落盘状态）。" }));
+    panel.appendChild(el("div", {
+      cls: "stale-banner",
+      attrs: { role: "status", "aria-live": "polite" },
+      text: "⚠ 已 " + Math.round(detail.stale_minutes) + " 分钟无更新：任务可能停在确认门（回发起生成的宿主会话查看是否在等你确认），或生成进程已退出。本页仅观察落盘状态，不会代为推进。",
+    }));
   }
 
-  // 流程条（FR3）
+  // 流程条（FR3）：胶囊 stepper——完成绿✓、当前蓝（失败红）、待办灰。
   const flow = el("div", { cls: "flow", attrs: { role: "list", "aria-label": "生成流程" } });
   detail.steps.forEach((step, index) => {
     if (index > 0) flow.appendChild(el("span", { cls: "flow-arrow", text: "→" }));
     const cls = "flow-step " + (step.state === "done" ? "done" : step.state === "current" ? (detail.status === "failed" ? "fail" : "current") : "");
     const node = el("span", { cls, attrs: { role: "listitem" } });
-    const mark = step.state === "done" ? "✔ " : step.state === "current" ? "⏳ " : "";
+    const mark = step.state === "done" ? "✓ " : step.state === "current" ? "⏳ " : "";
     node.appendChild(document.createTextNode(mark + step.label + (step.duration_seconds != null ? " " + Math.round(step.duration_seconds) + "s" : "")));
     flow.appendChild(node);
   });
@@ -1018,13 +1127,34 @@ function renderRunDetail() {
 
   // 页网格（FR4/FR12）
   const progress = detail.progress;
+  const renderPageCount = detail.pages.filter((page) => isRenderBackend(page.backend)).length;
   if (progress && progress.total_units) {
-    panel.appendChild(el("div", { cls: "run-meta", text: "页进度 " + (progress.completed || 0) + "/" + progress.total_units + (progress.failed ? "（" + progress.failed + " 失败）" : "") }));
+    panel.appendChild(el("div", { cls: "run-meta", text: "页进度 " + (progress.completed || 0) + "/" + progress.total_units + (progress.failed ? "（" + progress.failed + " 失败）" : "") + (renderPageCount ? " · " + renderPageCount + " 页本地渲染" : "") }));
   }
+  // lane 徽标规则：本地渲染页常显（lane 签名）；AI 页仅在混排（存在渲染页
+  // 或多个图片渠道）时标渠道名，单渠道纯图片牌组保持单元格干净。
+  const pageBackends = new Set();
+  detail.pages.forEach((page) => { if (page.backend) pageBackends.add(page.backend); });
+  const hasRenderLane = Array.from(pageBackends).some(isRenderBackend);
+  const imageBackendCount = Array.from(pageBackends).filter((item) => !isRenderBackend(item)).length;
+  const showImageLaneBadge = (hasRenderLane && imageBackendCount > 0) || imageBackendCount > 1;
   const grid = el("div", { cls: "page-grid", attrs: { role: "list", "aria-label": "页面状态网格" } });
+  if (!detail.pages.length) {
+    // created/prepare 早期：无页单元——给出阶段说明而非空白。
+    panel.appendChild(el("div", {
+      cls: "empty",
+      text: "尚未进入逐页生成：任务创建后由宿主会话推进（风格与样张确认、母版冻结后开始逐页出图），届时此处显示每页状态与预览。",
+    }));
+  }
   detail.pages.forEach((page) => {
     const state = page.state || "unknown";
-    const cell = el("button", { cls: "page-cell st-" + state, attrs: { type: "button", role: "listitem", "aria-label": "第 " + page.number + " 页，" + state + (page.failure_reason ? "，" + reasonText(page.failure_reason) : "") + (page.backend ? "，渠道 " + page.backend : "") } });
+    const laneText = isRenderBackend(page.backend)
+      ? RENDER_LANE_LABELS[page.backend]
+      : (showImageLaneBadge && page.backend ? displayName(page.backend) : null);
+    const laneAria = isRenderBackend(page.backend)
+      ? "本地渲染 " + RENDER_LANE_LABELS[page.backend]
+      : (page.backend ? "渠道 " + page.backend : "");
+    const cell = el("button", { cls: "page-cell st-" + state, attrs: { type: "button", role: "listitem", "aria-label": "第 " + page.number + " 页，" + state + (page.failure_reason ? "，" + reasonText(page.failure_reason) : "") + (laneAria ? "，" + laneAria : "") } });
     cell.appendChild(el("span", { cls: "pg-no", text: "#" + page.number }));
     if (state === "recorded" && detail.route === "generate") {
       const img = el("img", { attrs: { src: "/api/runs/" + encodeURIComponent(detail.run_id) + "/pages/" + page.number + ".png", alt: "" , loading: "lazy" } });
@@ -1032,13 +1162,16 @@ function renderRunDetail() {
     } else {
       cell.appendChild(el("span", { cls: "pg-ico", text: PAGE_STATE_ICONS[state] || "·" }));
     }
+    if (laneText) {
+      cell.appendChild(el("span", { cls: "pg-lane" + (isRenderBackend(page.backend) ? " lane-render" : ""), text: laneText }));
+    }
     cell.addEventListener("click", () => {
       if (state === "recorded" && detail.route === "generate") openLightbox(detail, page.number);
       else focusPageEvents(page.number, detail.route); // FR5 分流
     });
     grid.appendChild(cell);
   });
-  panel.appendChild(grid);
+  if (detail.pages.length) panel.appendChild(grid);
 
   // 时间线（FR6/FR14）
   panel.appendChild(el("h2", { attrs: { style: "font-size:16px;margin:18px 0 4px" }, text: "过程时间线" }));
@@ -1103,11 +1236,11 @@ function renderRunDetail() {
   } else {
     const table = el("table", { cls: "trace-table" });
     const header = el("tr");
-    ["渠道", "调用", "尝试", "tokens"].forEach((label) => header.appendChild(el("th", { text: label })));
+    ["渠道 / lane", "调用", "尝试", "tokens"].forEach((label) => header.appendChild(el("th", { text: label })));
     table.appendChild(header);
     providerNames.forEach((name) => {
       const row = el("tr");
-      [name, providers[name].calls, providers[name].attempts, detail.backend_stats.tokens_recorded ? providers[name].tokens : "未记录"].forEach((value) => row.appendChild(el("td", { text: String(value) })));
+      [backendLabel(name), providers[name].calls, providers[name].attempts, detail.backend_stats.tokens_recorded ? providers[name].tokens : "未记录"].forEach((value) => row.appendChild(el("td", { text: String(value) })));
       table.appendChild(row);
     });
     panel.appendChild(table);
@@ -1243,7 +1376,7 @@ function buildTimelineGroup(row) {
     const data = event.data && typeof event.data === "object" ? event.data : {};
     body.appendChild(el("div", {
       cls: "tl-sub",
-      text: fmtClock(event.at) + " · 第 " + pageNoOf(data) + " 页" + (data.backend ? " · " + data.backend : ""),
+      text: fmtClock(event.at) + " · 第 " + pageNoOf(data) + " 页" + (data.backend ? " · " + backendLabel(data.backend) : ""),
     }));
   });
   const toggle = el("button", { cls: "tl-toggle", attrs: { type: "button", "aria-expanded": "false" }, text: "展开 " + row.events.length + " 条" });
@@ -1323,6 +1456,9 @@ function applyRoute(route) {
   const isRuns = route.tab === "runs";
   $("tab-channels").setAttribute("aria-selected", isRuns ? "false" : "true");
   $("tab-runs").setAttribute("aria-selected", isRuns ? "true" : "false");
+  // roving tabindex：仅选中 tab 可 Tab 聚焦，方向键左右切换（tablist 键盘模式）。
+  $("tab-channels").tabIndex = isRuns ? -1 : 0;
+  $("tab-runs").tabIndex = isRuns ? 0 : -1;
   $("channels-view").hidden = isRuns;
   $("runs-view").hidden = !isRuns;
   document.title = isRuns ? "生成任务 · Leo PPT 控制台" : "Leo PPT · 图片渠道管理";
@@ -1340,6 +1476,12 @@ function applyRoute(route) {
 
 $("tab-channels").addEventListener("click", () => { location.hash = ""; });
 $("tab-runs").addEventListener("click", () => { location.hash = "tab=runs"; });
+document.querySelector(".tabs").addEventListener("keydown", (event) => {
+  if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+  const target = event.key === "ArrowRight" ? $("tab-runs") : $("tab-channels");
+  target.focus();
+  target.click();
+});
 window.addEventListener("hashchange", () => applyRoute(parseHash()));
 document.addEventListener("visibilitychange", () => {
   // FR8：恢复可见立即拉取一次，避免停摆期间的终态延迟。
@@ -1354,6 +1496,11 @@ document.addEventListener("visibilitychange", () => {
 
 /* ------------------------------------------------------------- 启动 */
 function boot() {
+  // 深链视图参数 ?view=cards|list：一次性写入本地偏好（书签/分享友好）。
+  const viewParam = new URLSearchParams(location.search).get("view");
+  if (viewParam === "cards" || viewParam === "list") {
+    try { localStorage.setItem("leo-runs-view", viewParam); } catch (_storageError) { /* 隐私模式静默降级 */ }
+  }
   if (window.__LEO_INITIAL__ && window.__LEO_INITIAL__.overview) {
     state.overview = window.__LEO_INITIAL__.overview;
     state.channels = window.__LEO_INITIAL__.channels;

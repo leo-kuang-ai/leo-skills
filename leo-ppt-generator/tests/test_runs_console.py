@@ -58,6 +58,63 @@ class RunScannerTests(unittest.TestCase):
         self.assertTrue(data["home_missing"])
         self.assertEqual(data["runs"], [])
 
+    # ------------------------------------------------- registry（workspace run）
+    def _register(self, run_dir, run_id, *, project_root=None, home=None):
+        import json as _json
+
+        target = (home or self.home) / "runs-registry.jsonl"
+        entry = {
+            "schema_version": 1,
+            "run_id": run_id,
+            "route": "generate",
+            "project_root": project_root,
+            "run_dir": str(run_dir),
+            "created_at": "2026-09-07T09:00:00Z",
+        }
+        with target.open("a", encoding="utf-8") as handle:
+            handle.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+
+    def test_registry_makes_workspace_run_visible(self):
+        ws = self.home / "ws-fixture"
+        run_dir = make_run(self.home, run_id=RUN_B, workspace_root=ws, total=3, recorded=3, failed_pages=())
+        self._register(run_dir, RUN_B, project_root=str(ws))
+        data = self.scanner.list_runs()
+        by_id = {item["run_id"]: item for item in data["runs"]}
+        self.assertIn(RUN_B, by_id)
+        self.assertEqual(by_id[RUN_B]["project"], "ws-fixture")
+        detail = self.scanner.run_detail(RUN_B)
+        self.assertEqual(len(detail["pages"]), 3)
+
+    def test_registry_bad_lines_and_stale_dirs_degrade(self):
+        ws = self.home / "ws-bad"
+        run_dir = make_run(self.home, run_id=RUN_B, workspace_root=ws, total=2, recorded=2, failed_pages=())
+        registry = self.home / "runs-registry.jsonl"
+        registry.write_text(
+            "{ broken-json\n"
+            + "\n"
+            + '{"schema_version":1,"run_id":"deadbeef","run_dir":"/nonexistent/run"}\n'
+            + '{"schema_version":1,"run_id":"' + RUN_B + '","run_dir":"' + str(run_dir) + '"}\n',
+            encoding="utf-8",
+        )
+        data = self.scanner.list_runs()
+        self.assertEqual([item["run_id"] for item in data["runs"]], [RUN_B])
+        # run_dir 存在但 run.json 的 run_id 对不上：零信任跳过。
+        mismatch_dir = make_run(self.home, run_id=RUN_A, workspace_root=self.home / "ws-mis")
+        with registry.open("a", encoding="utf-8") as handle:
+            handle.write('{"schema_version":1,"run_id":"ffffffff","run_dir":"' + str(mismatch_dir) + '"}\n')
+        self.scanner.invalidate_cache()
+        data = self.scanner.list_runs()
+        self.assertNotIn("ffffffff", {item["run_id"] for item in data["runs"]})
+
+    def test_registry_duplicate_with_home_layout_prefers_home(self):
+        make_run(self.home, run_id=RUN_A)
+        ws = self.home / "ws-dup"
+        dup_dir = make_run(self.home, run_id=RUN_A, workspace_root=ws, project="dup-proj")
+        self._register(dup_dir, RUN_A)
+        data = self.scanner.list_runs()
+        by_id = {item["run_id"]: item for item in data["runs"]}
+        self.assertEqual(by_id[RUN_A]["project"], "demo-proj")
+
     def test_corrupt_run_json_is_skipped_without_breaking_list(self):
         make_run(self.home, run_id=RUN_A)
         make_run(self.home, project="bad", run_id=RUN_B, corrupt_run_json=True)
@@ -99,6 +156,29 @@ class RunScannerTests(unittest.TestCase):
         detail = self.scanner.run_detail(RUN_A)
         by_number = {page["number"]: page for page in detail["pages"]}
         self.assertEqual(by_number[2]["state"], "active")
+
+    def test_detail_pages_expose_render_lane_backends(self):
+        # 混排牌组：render:* 页与 AI 渠道页并存，backend 逐页透传供 lane 徽标渲染；
+        # render 页产物仍在 image-deck 域根内，走同一页图沙箱。
+        make_run(
+            self.home,
+            run_id=RUN_A,
+            total=6,
+            recorded=6,
+            failed_pages=(),
+            render_pages={2: "render:html", 5: "render:mermaid"},
+        )
+        detail = self.scanner.run_detail(RUN_A)
+        by_number = {page["number"]: page for page in detail["pages"]}
+        self.assertEqual(by_number[1]["backend"], "zhipu")
+        self.assertEqual(by_number[2]["backend"], "render:html")
+        self.assertEqual(by_number[5]["backend"], "render:mermaid")
+        self.assertTrue(by_number[2]["artifact"].startswith("render/html/"))
+        content_type = self.scanner.page_image(RUN_A, 2)[1]
+        self.assertEqual(content_type, "image/png")
+        providers = detail["backend_stats"]["providers"]
+        self.assertIn("render:html", providers)
+        self.assertEqual(providers["render:html"]["tokens"], 0)
 
     def test_detail_events_tail_bad_lines_and_pagination(self):
         make_run(self.home, run_id=RUN_A, bad_event_lines=2)

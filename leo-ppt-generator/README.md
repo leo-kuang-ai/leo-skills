@@ -93,8 +93,15 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 顺带完成真实验证；`not_configured / invalid` = 尚未配置或无效，需运行 `leo-ppt config`。
 渠道与凭据也可用本地控制台管理：`leo-ppt ui`（或 `leo-ppt config ui`）打开 127.0.0.1 控制台，支持渠道
 新增/修改/删除/切换/排序与三种密钥录入（网页一次性录入直写系统钥匙串且页面零回显、
-终端安全录入、环境变量引用），目录渠道卡片直达各平台取 key 页面；自动模式下可按
-**权重**（1-1000，小值优先）直接配置各渠道的选用顺序。控制台的「生成任务」Tab 提供
+终端安全录入、环境变量引用）。渠道目录共 18 项（15 家目录渠道 + 3 项内置），涵盖国内
+直连（智谱/阿里云百炼/火山方舟/百度千帆/腾讯混元/魔搭/硅基流动/阶跃星辰/MiniMax/
+乾行AI）、国际服务（Google Gemini「Nano Banana」/Ideogram/xAI Grok/DeepInfra/
+Together AI/OpenAI 官方/AtlasCloud）与自定义中转站；其中 Gemini/MiniMax/Ideogram 为
+原生协议渠道（由原生适配器自动转换协议，使用方式与其他渠道一致）。添加区按上述门槛
+分组为紧凑行式列表，每行直达各平台取 key 页面；
+已配置的行显示「已配置 ✓」，"重新配置"可沿用现有密钥直接换 Key；自动模式下可按
+**权重**（1-1000，小值优先）配置各渠道选用顺序，渠道全表见
+[references/provider-catalog.md](references/provider-catalog.md)。控制台的「生成任务」Tab 提供
 生成过程可视化：任务列表与详情（流程步骤与耗时、逐页状态网格、页图预览、事件时间线、
 渠道链路统计、交付与质量闸），生成期间实时轮询、纯只读。更新技能后请先让
 受管 runtime 重新安装（`runtime_manager.py ensure`）再启动控制台，否则可能报

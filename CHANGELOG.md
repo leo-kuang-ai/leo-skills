@@ -6,8 +6,39 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Added
+- **leo-ppt-generator：跨行业内容质量测评方案（20 行业，业界调研支撑）**：新增 `docs/plans/2026-09-07-005`——业界调研映射（PPTEVAL/PresentBench/UniPPTBench/SlidesGen-Bench 演示文稿基准、MT-Bench/G-Eval/自偏好偏差缓解、promptfoo/DeepEval/Ragas 框架对比→选型结论"借模式不借依赖"）+ 完整设计：G1 规则内 12 + G2 泛化区 8 行业 × 汇报/路演 × 直出/只给目标 × 难度五型的 20 单元矩阵；五维判据 A1–A5（大纲结构/断言三级标注/密度文案/行业语境/风格版式合同层，子判据级分解 + 否定感知）；三层判定 L0 确定性机检 → L1 双评审官异家族 judge → L2 植入缺陷检出率 + 人工抽检校准；预注册通过线与两段式节奏（M0 试点 5 单元校准 → M1 全量挖掘 → M2 加固 → M3 门禁双次复跑 → M4 报告与用例沉淀）。明确边界：不测图片生成（截断在样张前）、风格口径缩窄至选择与合同层、不重测已全绿的 50 行业路由机制、单次运行只出存在性结论。
+
+### Changed
+- **leo-ppt-generator：控制台整体质量走查批（风格/交互/动效/可达性）**：交付前系统走查（代码层审计 + 五视图截图评审：渠道 Tab/卡片/CRM 表格/详情/390px 窄屏）发现并修复四项——
+  - **主色统一**：`--primary` 从 #0071e3 对齐 iOS 系统蓝 #007aff（与 --blue 同值），消除分期叠加造成的双蓝并存；基础 focus ring 残留旧值 #2457d6 一并统一 var(--blue)；
+  - **时间不再冻结**：详情/列表重渲染签名补 stale 分钟与相对时间分钟粒度——停滞 banner 的出现/推进与「N 分钟前」在数据无变化时仍每分钟自然更新（此前会冻结到下一次数据变化）；
+  - **停滞 banner 播报语义**：role=alert → role=status + aria-live=polite（持续状态而非瞬时事件，避免每分钟重建时反复强播）；
+  - **tablist 键盘模式补全**：roving tabindex（仅选中 tab 可 Tab 聚焦）+ ←/→ 方向键切换 + aria-controls 关联视图容器；
+  - 走查确认项：动效时长节奏 150–220ms 一致、prefers-reduced-motion 全局覆盖（呼吸/闪烁/闪光禁用）、7 处 focus-visible 全覆盖、窄屏 390px 表格自动降列无溢出、双 Tab 风格一致（圆角/间距/颜色系统）。验证：渠道域 116/116 全绿；runtime 已刷新。 (user-visible)
+- **leo-ppt-generator：生成任务视图 UX 强化批 + 卡片/列表双视图 (user-visible)**：针对实测痛点（状态徽章全灰、停滞警告被淹没、进度不可视、工具区 L 形）的整批强化——
+  - **状态色彩语义**：徽章与行/卡色条按状态着色（进行中蓝 + 活任务呼吸动效、完成绿、失败红、已创建灰），路线用紫徽章；列表行/卡片左缘（顶缘）3px 状态色条；
+  - **停滞警示升级**：列表行独立橙色警示行、详情页整条橙色 banner（role=alert），文案含行动指引「可能停在确认门（回发起生成的宿主会话查看是否在等你确认）或进程已退出」；停滞任务呼吸动效停止（死进程不得看起来还活着）；
+  - **卡片/列表双视图**：卡片视图为默认（多列栅格：#号、状态徽章、项目名、路线·阶段、进度条、页数、相对时间、停滞警示），列表视图为 CRM 后台专业表格（灰底表头七列：任务/项目/路线/状态/进度/阶段/更新，同列网格严格对齐、行 hover 高亮、左侧状态色竖条、停滞行淡橙底 + 右列「⚠ N 分钟无更新」橙字 + title 指引、窄屏自动降列）；iOS 风 segmented 切换控件，选择记忆于 localStorage（`leo-runs-view`），支持 `?view=cards|list` 深链一次性覆盖；顺带修复列表行重复渲染两次进度条的残留 bug；
+  - **流程 stepper**：文本箭头升级为胶囊 stepper（完成绿✓/当前蓝/失败红/待办灰 + 短横线连接）；工具区一行化（标题/筛选 chips/视图切换/刷新同行）；
+  - **空态引导**：created 任务详情页页网格区域给出「尚未进入逐页生成」阶段说明而非空白；
+  - 验证：test_config_web 增 UX 锚点断言（st-*/data-status/run-stale/stale-banner/flow-step/run-cards/view-toggle 等），74/74 全绿；Chrome headless 四状态 fixture（活跃/停滞/完成/失败）双视图截图经图像分析逐项核对。runtime 已刷新。
+- **leo-ppt-generator：workspace run 全局登记（runs-registry）——控制台可见性修复 (user-visible)**：根因是执行合同把 run 建在项目 workspace（`<project-root>/runs/<run-id>/`，与 content/sources/deliveries 同根自包含），而控制台 RunScanner 只扫 home 的 `projects/*/runs/*` 布局——正在生成的任务在页面上不可见。修复保持 workspace 自包含不变、home 增加全局索引：
+  - **写侧**：`leo-ppt run create` 两个成功分支（create_from_request 与裸 create）追加调用 `_register_run_in_home_registry`——向 `${LEO_PPT_HOME}/runs-registry.jsonl` append `{run_id, route, project_root, run_dir, created_at}`，按 run_id 幂等，OSError 仅打 WARN 不阻断生成；
+  - **读侧**：`RunScanner._scan_all_locked` union registry 登记目录（零信任：run_dir 内 run.json 必须存在且 run_id 与登记行一致才收编，坏行/失效目录跳过；与 home 布局重复时 home 优先；project 名取 project_root/workspace 目录名）；home/projects 缺失不再短路整个扫描；
+  - 配套：runs_fixture 增 `workspace_root` 形态参数；新增 tests/test_run_registry.py（append/幂等/坏行容错/非法 run_id/OSError 吞掉 5 例）与 test_runs_console 3 例（workspace 可见/坏行与失效目录降级/与 home 重复取 home）；execution-contract.md 补「run 目录规范与全局登记」、SKILL.md 控制台段补发现来源。存量在跑任务已手工登记验证（真实 home 扫描出 r1 in_progress·逐页生成 15 页、r2 created）。验证：控制台域 78/78 全绿；runtime 已刷新。
+- **leo-ppt-generator：生成任务空态文案纠偏（去内部命令名）**：空态原文引导「发起一次生成（如 leo-ppt run create）」——`run create` 是宿主 agent 的内部合同命令，不应呈现给用户手动执行；改为用户视角表述：让宿主会话（ZCode/Claude）里的助手生成 PPT，流程签署 backend 合同后自动创建任务，并说明合同/大纲/风格确认阶段属会话内工作、尚不落任务记录（run 记录冻结的是已确认输入，创建时机在 backend 合同签署后）。home_missing 分支同步去掉内部命令名。 (user-visible)
+- **leo-ppt-generator：生成任务 lane 只读呈现批（页网格徽标 + 渠道页免渠道提示）**：「生成什么类型的 PPT」不上控制台配置（生成由宿主会话 CONFIRM-GATE 驱动），改为把任务实际用到的 lane 呈现出来——
+  - **页网格 lane 徽标**：本地渲染页（backend `render:html`/`render:mermaid`/`render:echarts`）常显右下角紫色胶囊（HTML/Mermaid/ECharts，aria「本地渲染 X」）；混排牌组（存在渲染页或多图片渠道）时 AI 页也标渠道名（如「智谱」），单渠道纯图片牌组保持单元格干净；页进度行追加「N 页本地渲染」计数；
+  - **可读化映射共用**：链路表表头改「渠道 / lane」，`render:*` 行显示「本地渲染 · HTML」等；时间线页级事件 backend 同映射（此前裸 `render:html`）；
+  - **渠道 Tab 免渠道提示**：添加区底部静态脚注声明版式 HTML 页与图表 Mermaid 页走本地渲染 lane——免渠道、免密钥、不计费；
+  - 配套：runs_fixture 支持 `render_pages` 混排参数（artifact 落 `render/<kind>/`，走同一页图沙箱；backend_stats 增 render 行 tokens=0）；新增 `test_detail_pages_expose_render_lane_backends` 与 `test_asset_has_lane_presentation_anchors`（枚举与 render/provenance.py RENDER_BACKENDS 对齐）。验证：渠道域 107/107 全绿、Safari 实测混排 run 徽标/aria/链路表逐项核验；runtime 已刷新。 (user-visible)
+
 ### Changed
 - **leo-ppt-generator：添加区卡片重排为紧凑行式列表，移除搜索框（user 要求）**：18 项渠道从大卡片网格（~200px/卡，需 ~6 屏）改为 iOS 设置页式 inset-grouped 行列表（每行：渠道名 + 推荐/已配置徽标 + 模型摘要「首模型 等 N 款」+ 一行截断说明（title 全文）+ 获取密钥链接 + 配置/重新配置按钮）——两屏内可扫完全部渠道，与「已配置渠道」区块行式视觉语言统一；分组保留（国内 10/国际 7/自定义 1，组标题带计数）；空态 CTA 引导目标与光环动效适配行元素；搜索框及关联状态/CSS 移除。验证：渠道域 105/105 全绿、Safari AX 逐行核验；runtime 已刷新。 (user-visible)
+
+### Changed
+- **leo-ppt-generator：用户文档同步批（渠道 18 项与控制台新交互对齐）**：SKILL.md 首次使用段与 README.md 控制台段补渠道目录全貌（15 目录 + 3 内置、国内/国际/自定义分组、原生协议渠道说明、「已配置 ✓ + 重新配置」换 Key 入口）与 provider-catalog 全表指引；UPDATES.md 新增本期速览（渠道批次/添加区重排/时间线增强 + runtime 刷新提示）；backend-selection.md 渠道注册描述去过期枚举；provider-catalog.md 控制台指引对齐行式列表、维护流程补 group 字段；_INDEX.md 目录描述同步。
 
 ### Fixed
 - **leo-ppt-generator：代码评审 P2 修复批（3 项）+ P3 顺手批**：对 b1c0882 的内联评审发现落地——CLI 返工通道 `image record --rework`（透传 adapter，无旗标仍拒，幂等重放不受影响，`tests/test_cli_rework_flag.py`）；batch 每任务 quality/output_format 按 job 实际模型经 `_apply_family_param_gating` 重判（防家族参数随 base 泄漏给覆写后的渠道模型，`BatchModelOverrideGatingTest`）；patches/README 0009 描述与补丁内容对齐。P3：哨兵 `=off` 逃生口成文、`check_size_budget` 未标注 backend 页 WARN、`RENDER_LADDER` 拼写、`ci_gate.sh` printf、render-lane 测试实断言；0009 增量补丁再生成 + vendored 重锁。 (user-visible)

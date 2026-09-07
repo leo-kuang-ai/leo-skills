@@ -17,6 +17,15 @@
   pending 重新确认）。`content/` 区别于 backend contract 专用的 `contracts/`
   与用户素材的 `sources/`。正式状态只写 `runs/<run-id>/`，canonical PPTX 只写
   当前 run 的 `final/`。
+- **run 目录规范与全局登记**：run 的正式位置是项目 workspace 内的
+  `<project-root>/runs/<run-id>/`（与 `content/`、`sources/`、`deliveries/`
+  同根自包含，可整体归档）。`leo-ppt run create` 成功后向全局
+  `${LEO_PPT_HOME}/runs-registry.jsonl` 追加一行登记
+  （`run_id`/`route`/`project_root`/`run_dir`/`created_at`，按 run_id 幂等；
+  登记失败只打 WARN 不阻断生成）。控制台「生成任务」Tab 以 home 的
+  `projects/*/runs/*` 布局为主发现源、registry 登记目录为补充（run_dir 内
+  run.json 的 run_id 必须与登记行一致才收编）。run 记录在 backend 合同签署
+  时创建——此前的合同、大纲与风格确认属会话内工作，不落 run。
 - backend contract 由 registry 创建和验证，不手写 capability、credential 或领域状态
   JSON。凭据只允许 `env:`、`host:`、`keychain:` reference。
 - **render-lane deck 合同（加固 WS5）**：全册页产物均为 `render:*` 的 deck 用

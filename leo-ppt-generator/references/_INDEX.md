@@ -22,7 +22,7 @@
 |---|---|---|
 | [first-use.md](first-use.md) | launcher / setup / Provider 首次准备 | execute + Route 冻结后 |
 | [backend-selection.md](backend-selection.md) | 图片 backend（generate/edit/mask/参考图）声明与选择 | 首次准备与 Provider 状态 / generate 执行 |
-| [provider-catalog.md](provider-catalog.md) | OpenAI 兼容图片渠道目录（官网/取 key/环境变量/模型/新增渠道指引） | 渠道 provider 配置或新增渠道时 |
+| [provider-catalog.md](provider-catalog.md) | 图片渠道目录（15 家：OpenAI 兼容 + Gemini/MiniMax/Ideogram 原生协议；官网/取 key/环境变量/模型/新增渠道指引） | 渠道 provider 配置或新增渠道时 |
 | [execution-contract.md](execution-contract.md) | 跨 Route 的 runtime / 状态 / 恢复 / 交付合同 | 进入对应 Route 后 |
 | [cli-helper.md](cli-helper.md) | 对象级可编辑能力的 CLI 命令手册 | 跨 Route CLI 用法（进入 Route 后） |
 

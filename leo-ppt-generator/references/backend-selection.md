@@ -1,7 +1,8 @@
 # Backend 选择
 
-除内置四类 backend 外，OpenAI 兼容图片渠道（智谱 / 百炼 / 方舟 / 千帆 / 混元 /
-魔搭）以 checked-in 目录注册：条目见
+除内置四类 backend 外，图片渠道以 checked-in 目录注册（15 家：国内直连、国际服务
+与自定义中转分组，其中 Gemini/MiniMax/Ideogram 为原生协议渠道——执行面由原生
+适配器转换协议，配置与其他渠道一致）：条目见
 [`provider-catalog.md`](provider-catalog.md)，数据源为
 `runtime/src/leo_ppt_generator/config/providers.yaml`。渠道能力固定为
 generate-only；`backend create --provider <channel>` 时端点 origin 与默认模型由

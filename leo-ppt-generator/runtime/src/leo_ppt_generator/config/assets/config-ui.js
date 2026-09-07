@@ -180,7 +180,7 @@ function renderConfigured() {
     empty.appendChild(document.createTextNode("暂无已配置渠道——两分钟内即可开始生成："));
     const cta = el("button", { cls: "btn empty-cta", attrs: { type: "button" }, text: "从推荐渠道开始 →" });
     cta.addEventListener("click", () => {
-      const target = document.querySelector("#add-list .card");
+      const target = document.querySelector("#add-list .add-row");
       if (target) {
         target.scrollIntoView({ behavior: "smooth", block: "center" });
         target.classList.add("card-flash");
@@ -293,57 +293,25 @@ const BUILTIN_ADD_GROUPS = {
   "openai-compatible": "custom",
   "atlascloud": "global",
 };
-const addSearch = { query: "" };
 
 function renderAdd() {
   const root = $("add-list");
   root.textContent = "";
   // 添加区展示 CLI 支持的全量渠道（目录 + 内置），与 CLI 选择菜单一一对应；
   // 已配置的不再隐藏——标记「已配置」并提供"重新配置"（可沿用现有密钥）。
-  // UX：按获取门槛分组（国内/国际/自定义）缓解 18 卡选择过载；顶部搜索
-  // 支持按名称/模型/说明快速定位。
+  // 布局：按获取门槛分组（国内/国际/自定义），组内为紧凑行式列表
+  // （iOS 设置页 inset-grouped 语言）——18 项两屏内可扫完，与
+  // 「已配置渠道」区块的行式视觉语言统一。
   const configured = new Set(
     (state.overview && state.overview.providers ? state.overview.providers : [])
       .filter((item) => item.configured)
       .map((item) => item.provider)
   );
-  const configuredBadge = () => badge("已配置 ✓", "ok");
-  const cardState = (card, isConfigured) => {
-    if (isConfigured) card.classList.add("card-configured");
-    return card;
-  };
   const actionButton = (providerId, isConfigured) => {
-    const btn = el("button", { cls: isConfigured ? "btn alt" : "btn", attrs: { type: "button" }, text: isConfigured ? "重新配置" : "配置" });
+    const btn = el("button", { cls: isConfigured ? "btn alt small" : "btn small", attrs: { type: "button" }, text: isConfigured ? "重新配置" : "配置" });
     btn.addEventListener("click", () => openWizard(providerId, isConfigured));
     return btn;
   };
-  const notesOf = (text) => {
-    if (!text) return null;
-    const truncated = text.length > 84;
-    return el("p", {
-      cls: "notes",
-      text: truncated ? text.slice(0, 84) + "…" : text,
-      attrs: truncated ? { title: text } : {},
-    });
-  };
-
-  const searchRow = el("div", { cls: "add-search" });
-  const searchInput = el("input", {
-    attrs: {
-      type: "search",
-      placeholder: "搜索渠道、模型或说明（如 qwen、Kolors、文字渲染）…",
-      "aria-label": "搜索渠道",
-      value: addSearch.query,
-    },
-  });
-  searchInput.addEventListener("input", () => {
-    addSearch.query = searchInput.value;
-    renderAdd();
-    const fresh = root.querySelector("input[type=search]");
-    if (fresh) { fresh.focus(); fresh.setSelectionRange(fresh.value.length, fresh.value.length); }
-  });
-  searchRow.appendChild(searchInput);
-  root.appendChild(searchRow);
 
   const entries = [];
   (state.channels ? state.channels.channels : []).forEach((channel) => {
@@ -356,7 +324,6 @@ function renderAdd() {
       models: channel.models || [],
       notes: channel.notes || "",
       keyPage: channel.key_page,
-      searchHint: [channel.display_name, channel.id, (channel.models || []).join(" "), channel.notes || ""].join(" ").toLowerCase(),
     });
   });
   Object.keys(BUILTIN_LABELS).forEach((providerId) => {
@@ -372,42 +339,48 @@ function renderAdd() {
         ? "任意 OpenAI 兼容中转站：需填写 Base URL（HTTPS origin）与模型，凭据环境变量 OPENAI_API_KEY。"
         : "官方/托管渠道：端点固定，凭据环境变量 " + BUILTIN_ENV[providerId] + "。",
       keyPage: null,
-      searchHint: (BUILTIN_LABELS[providerId] + " " + providerId).toLowerCase(),
     });
   });
 
-  const query = addSearch.query.trim().toLowerCase();
-  const visible = query
-    ? entries.filter((entry) => entry.searchHint.indexOf(query) >= 0)
-    : entries;
   let rendered = 0;
   Object.keys(ADD_GROUP_TITLES).forEach((group) => {
-    const members = visible.filter((entry) => entry.group === group);
+    const members = entries.filter((entry) => entry.group === group);
     if (!members.length) return;
     const section = el("div", { cls: "add-group" });
     section.appendChild(el("h3", { text: ADD_GROUP_TITLES[group] + "（" + members.length + "）" }));
-    const grid = el("div", { cls: "cards" });
+    const list = el("div", { cls: "add-rows" });
     members.forEach((entry) => {
-      const card = cardState(el("div", { cls: "card" }), entry.configured);
-      const title = el("div", { cls: "card-title" });
-      title.appendChild(el("span", { text: entry.title }));
-      if (entry.featured) title.appendChild(badge("推荐", "ok"));
-      if (entry.configured) title.appendChild(configuredBadge());
-      card.appendChild(title);
+      const row = el("div", { cls: "add-row" + (entry.configured ? " row-configured" : "") });
+      const main = el("div", { cls: "add-row-main" });
+      const head = el("div", { cls: "add-row-head" });
+      head.appendChild(el("span", { cls: "add-row-title", text: entry.title }));
+      if (entry.featured) head.appendChild(badge("推荐", "ok"));
+      if (entry.configured) head.appendChild(badge("已配置 ✓", "ok"));
       if (entry.models.length) {
-        const models = el("div", { cls: "models" });
-        entry.models.slice(0, 4).forEach((model) => models.appendChild(badge(model)));
-        card.appendChild(models);
+        const summary = entry.models.length > 1
+          ? entry.models[0] + " 等 " + entry.models.length + " 款"
+          : entry.models[0];
+        head.appendChild(el("span", { cls: "add-row-models", text: summary }));
       }
+      main.appendChild(head);
+      if (entry.notes) {
+        const truncated = entry.notes.length > 110;
+        main.appendChild(el("span", {
+          cls: "add-row-notes",
+          text: truncated ? entry.notes.slice(0, 110) + "…" : entry.notes,
+          attrs: truncated ? { title: entry.notes } : {},
+        }));
+      }
+      row.appendChild(main);
+      const actions = el("div", { cls: "add-row-actions" });
       if (entry.keyPage) {
-        card.appendChild(el("a", { cls: "link", attrs: { href: entry.keyPage, target: "_blank", rel: "noopener noreferrer" }, text: "获取密钥 ↗" }));
+        actions.appendChild(el("a", { cls: "link", attrs: { href: entry.keyPage, target: "_blank", rel: "noopener noreferrer" }, text: "获取密钥 ↗" }));
       }
-      const notes = notesOf(entry.notes);
-      if (notes) card.appendChild(notes);
-      card.appendChild(actionButton(entry.id, entry.configured));
-      grid.appendChild(card);
+      actions.appendChild(actionButton(entry.id, entry.configured));
+      row.appendChild(actions);
+      list.appendChild(row);
     });
-    section.appendChild(grid);
+    section.appendChild(list);
     root.appendChild(section);
     rendered += members.length;
   });
@@ -415,9 +388,7 @@ function renderAdd() {
   if (!rendered) {
     root.appendChild(el("div", {
       cls: "empty",
-      text: query
-        ? "没有匹配「" + addSearch.query.trim() + "」的渠道。清空搜索可查看全部 " + entries.length + " 个。"
-        : "渠道目录为空。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。",
+      text: "渠道目录为空。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。",
     }));
   }
 }

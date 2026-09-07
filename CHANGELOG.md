@@ -6,6 +6,9 @@ adheres to a loose semantic-versioning convention.
 
 ## [Unreleased]
 
+### Changed
+- **leo-ppt-generator：添加区卡片重排为紧凑行式列表，移除搜索框（user 要求）**：18 项渠道从大卡片网格（~200px/卡，需 ~6 屏）改为 iOS 设置页式 inset-grouped 行列表（每行：渠道名 + 推荐/已配置徽标 + 模型摘要「首模型 等 N 款」+ 一行截断说明（title 全文）+ 获取密钥链接 + 配置/重新配置按钮）——两屏内可扫完全部渠道，与「已配置渠道」区块行式视觉语言统一；分组保留（国内 10/国际 7/自定义 1，组标题带计数）；空态 CTA 引导目标与光环动效适配行元素；搜索框及关联状态/CSS 移除。验证：渠道域 105/105 全绿、Safari AX 逐行核验；runtime 已刷新。 (user-visible)
+
 ### Fixed
 - **leo-ppt-generator：代码评审 P2 修复批（3 项）+ P3 顺手批**：对 b1c0882 的内联评审发现落地——CLI 返工通道 `image record --rework`（透传 adapter，无旗标仍拒，幂等重放不受影响，`tests/test_cli_rework_flag.py`）；batch 每任务 quality/output_format 按 job 实际模型经 `_apply_family_param_gating` 重判（防家族参数随 base 泄漏给覆写后的渠道模型，`BatchModelOverrideGatingTest`）；patches/README 0009 描述与补丁内容对齐。P3：哨兵 `=off` 逃生口成文、`check_size_budget` 未标注 backend 页 WARN、`RENDER_LADDER` 拼写、`ci_gate.sh` printf、render-lane 测试实断言；0009 增量补丁再生成 + vendored 重锁。 (user-visible)
 

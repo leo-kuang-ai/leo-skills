@@ -795,7 +795,7 @@ class StaticAssetTests(unittest.TestCase):
         js = JS_ASSET_PATH.read_text(encoding="utf-8")
         self.assertIn("已配置 ✓", js)
         self.assertIn("重新配置", js)
-        self.assertIn("card-configured", js)
+        self.assertIn("row-configured", js)
         self.assertIn("openWizard(providerId, isConfigured)", js)
         # 渲染循环不得再按 configured 跳过（防回退到隐藏模式）。
         self.assertNotIn("if (configured.has(channel.id)) return", js)

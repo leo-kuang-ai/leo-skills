@@ -101,11 +101,32 @@ Together AI/OpenAI 官方/AtlasCloud）与自定义中转站；其中 Gemini/Min
 分组为紧凑行式列表，每行直达各平台取 key 页面；
 已配置的行显示「已配置 ✓」，"重新配置"可沿用现有密钥直接换 Key；自动模式下可按
 **权重**（1-1000，小值优先）配置各渠道选用顺序，渠道全表见
-[references/provider-catalog.md](references/provider-catalog.md)。控制台的「生成任务」Tab 提供
-生成过程可视化：任务列表与详情（流程步骤与耗时、逐页状态网格、页图预览、事件时间线、
-渠道链路统计、交付与质量闸），生成期间实时轮询、纯只读。更新技能后请先让
+[references/provider-catalog.md](references/provider-catalog.md)。更新技能后请先让
 受管 runtime 重新安装（`runtime_manager.py ensure`）再启动控制台，否则可能报
 `config_ui_asset_missing`（旧运行时缺页面资产）。
+
+![渠道管理视图](samples/console/channels-view.png)
+
+控制台的「生成任务」Tab 提供生成过程可视化（生成期间实时轮询、纯只读，不会代为
+推进任务）：在宿主会话（如 ZCode / Claude）里让助手生成 PPT，流程签署 backend
+合同后任务自动登记出现——此前的合同、大纲与风格确认属会话内工作，不落任务记录。
+
+![生成任务卡片视图](samples/console/runs-cards-view.png)
+
+- **任务列表双视图**：默认**卡片**（状态色条 + 进度 + 相对时间 + 停滞警示），可切
+  **列表**（后台表格：任务/项目/路线/状态/进度/阶段/更新七列严格对齐）；右上角
+  「卡片 | 列表」切换，偏好自动记忆，也支持 `?view=cards|list` 链接参数；
+- **状态色彩语义**：进行中（蓝，活跃任务呼吸动效）/已完成（绿）/失败（红）/已创建
+  （灰）；**停滞警示**（≥5 分钟无更新）在列表行与详情页以橙色呈现，并提示可能停在
+  确认门——回发起生成的宿主会话查看是否在等你确认；
+- **任务详情**：流程 stepper（准备→逐页生成→交付，各步耗时）、逐页状态网格（可点开
+  页图放大预览、键盘 ←/→ 翻页）、事件时间线（连续页事件折叠、间隔耗时警示）、链路
+  与渠道统计、交付与质量闸；页网格右下角徽标区分产出 lane——紫色 HTML/Mermaid 为
+  本地渲染页，深色为 AI 渠道页。
+
+![生成任务表格视图](samples/console/runs-table-view.png)
+
+![生成任务详情](samples/console/run-detail.png)
 
 #### 方式三：宿主对话框粘贴安装指引
 

@@ -10,6 +10,7 @@ adheres to a loose semantic-versioning convention.
 - **leo-ppt-generator：跨行业内容质量测评方案（20 行业，业界调研支撑）**：新增 `docs/plans/2026-09-07-005`——业界调研映射（PPTEVAL/PresentBench/UniPPTBench/SlidesGen-Bench 演示文稿基准、MT-Bench/G-Eval/自偏好偏差缓解、promptfoo/DeepEval/Ragas 框架对比→选型结论"借模式不借依赖"）+ 完整设计：G1 规则内 12 + G2 泛化区 8 行业 × 汇报/路演 × 直出/只给目标 × 难度五型的 20 单元矩阵；五维判据 A1–A5（大纲结构/断言三级标注/密度文案/行业语境/风格版式合同层，子判据级分解 + 否定感知）；三层判定 L0 确定性机检 → L1 双评审官异家族 judge → L2 植入缺陷检出率 + 人工抽检校准；预注册通过线与两段式节奏（M0 试点 5 单元校准 → M1 全量挖掘 → M2 加固 → M3 门禁双次复跑 → M4 报告与用例沉淀）。明确边界：不测图片生成（截断在样张前）、风格口径缩窄至选择与合同层、不重测已全绿的 50 行业路由机制、单次运行只出存在性结论。
 
 ### Changed
+- **leo-ppt-generator：用户手册同步批——控制台截图与双视图使用说明 (user-visible)**：README 控制台段对齐本批新交互并首次嵌入界面截图（`samples/console/` 四图：渠道管理/卡片视图/表格视图/任务详情，Chrome headless 1.5x，中文 fixture，图像分析核对入册质量）——新增「生成任务」使用说明：任务自 backend 合同签署起自动登记（无需手动操作）、卡片/表格双视图切换（偏好记忆 + `?view=` 链接参数）、状态色彩语义、停滞橙色警示（确认门指引）、详情页 stepper/页网格/时间线/链路、页网格 lane 徽标含义；UPDATES 本期速览补「生成任务视图升级」条目。补交功能批遗漏的 `tests/test_run_registry.py`（2580c94 提交时未 add，CHANGELOG 已声明）。
 - **leo-ppt-generator：控制台整体质量走查批（风格/交互/动效/可达性）**：交付前系统走查（代码层审计 + 五视图截图评审：渠道 Tab/卡片/CRM 表格/详情/390px 窄屏）发现并修复四项——
   - **主色统一**：`--primary` 从 #0071e3 对齐 iOS 系统蓝 #007aff（与 --blue 同值），消除分期叠加造成的双蓝并存；基础 focus ring 残留旧值 #2457d6 一并统一 var(--blue)；
   - **时间不再冻结**：详情/列表重渲染签名补 stale 分钟与相对时间分钟粒度——停滞 banner 的出现/推进与「N 分钟前」在数据无变化时仍每分钟自然更新（此前会冻结到下一次数据变化）；

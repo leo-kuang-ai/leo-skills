@@ -225,7 +225,13 @@ def _channel_definitions() -> tuple[ProviderDefinition, ...]:
     return tuple(
         ProviderDefinition(
             name=channel.id,
-            adapter=AdapterIdentity(channel.id, f"{channel.id}/v1", "openai-compatible"),
+            # native 渠道挂自有适配器家族（协议由 vendored 原生 provider 实现）；
+            # OpenAI 兼容渠道统一挂 openai-compatible 家族。
+            adapter=AdapterIdentity(
+                channel.id,
+                f"{channel.id}/v1",
+                channel.id if channel.native else "openai-compatible",
+            ),
             capabilities=_capabilities(
                 supported=channel_capabilities,
                 unsupported=tuple(

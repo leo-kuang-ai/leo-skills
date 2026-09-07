@@ -174,7 +174,21 @@ function renderConfigured() {
   list.textContent = "";
   const providers = (state.overview && state.overview.providers ? state.overview.providers : []).filter((item) => item.configured);
   if (!providers.length) {
-    list.appendChild(el("div", { cls: "empty", text: "暂无已配置渠道——从下方「添加渠道」开始，两分钟内即可开始生成。" }));
+    // 空态行动引导（UX）：不止告诉用户"去下方"，直接给可点击的 CTA
+    // 滚动到添加区并聚焦推荐渠道卡。
+    const empty = el("div", { cls: "empty" });
+    empty.appendChild(document.createTextNode("暂无已配置渠道——两分钟内即可开始生成："));
+    const cta = el("button", { cls: "btn empty-cta", attrs: { type: "button" }, text: "从推荐渠道开始 →" });
+    cta.addEventListener("click", () => {
+      const target = document.querySelector("#add-list .card");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        target.classList.add("card-flash");
+        setTimeout(() => target.classList.remove("card-flash"), 2400);
+      }
+    });
+    empty.appendChild(cta);
+    list.appendChild(empty);
     return;
   }
   const enabledProviders = providers.filter((item) => item.enabled !== false);
@@ -269,19 +283,30 @@ async function reorder(from, to) {
   await load();
 }
 
+const ADD_GROUP_TITLES = {
+  domestic: "国内服务 · 直连可用",
+  global: "国际服务 · 需国际网络",
+  custom: "自定义中转",
+};
+const BUILTIN_ADD_GROUPS = {
+  "openai": "global",
+  "openai-compatible": "custom",
+  "atlascloud": "global",
+};
+const addSearch = { query: "" };
+
 function renderAdd() {
-  const grid = $("add-list");
-  grid.textContent = "";
+  const root = $("add-list");
+  root.textContent = "";
   // 添加区展示 CLI 支持的全量渠道（目录 + 内置），与 CLI 选择菜单一一对应；
-  // 已配置的不再隐藏——标记「已配置」并提供"重新配置"（可沿用现有密钥），
-  // 否则用户无从换密钥，也会误以为渠道从目录消失。
+  // 已配置的不再隐藏——标记「已配置」并提供"重新配置"（可沿用现有密钥）。
+  // UX：按获取门槛分组（国内/国际/自定义）缓解 18 卡选择过载；顶部搜索
+  // 支持按名称/模型/说明快速定位。
   const configured = new Set(
     (state.overview && state.overview.providers ? state.overview.providers : [])
       .filter((item) => item.configured)
       .map((item) => item.provider)
   );
-  let rendered = 0;
-  const addCard = (build) => { grid.appendChild(build()); rendered += 1; };
   const configuredBadge = () => badge("已配置 ✓", "ok");
   const cardState = (card, isConfigured) => {
     if (isConfigured) card.classList.add("card-configured");
@@ -292,44 +317,109 @@ function renderAdd() {
     btn.addEventListener("click", () => openWizard(providerId, isConfigured));
     return btn;
   };
+  const notesOf = (text) => {
+    if (!text) return null;
+    const truncated = text.length > 84;
+    return el("p", {
+      cls: "notes",
+      text: truncated ? text.slice(0, 84) + "…" : text,
+      attrs: truncated ? { title: text } : {},
+    });
+  };
 
+  const searchRow = el("div", { cls: "add-search" });
+  const searchInput = el("input", {
+    attrs: {
+      type: "search",
+      placeholder: "搜索渠道、模型或说明（如 qwen、Kolors、文字渲染）…",
+      "aria-label": "搜索渠道",
+      value: addSearch.query,
+    },
+  });
+  searchInput.addEventListener("input", () => {
+    addSearch.query = searchInput.value;
+    renderAdd();
+    const fresh = root.querySelector("input[type=search]");
+    if (fresh) { fresh.focus(); fresh.setSelectionRange(fresh.value.length, fresh.value.length); }
+  });
+  searchRow.appendChild(searchInput);
+  root.appendChild(searchRow);
+
+  const entries = [];
   (state.channels ? state.channels.channels : []).forEach((channel) => {
-    const isConfigured = configured.has(channel.id);
-    addCard(() => {
-      const card = cardState(el("div", { cls: "card" }), isConfigured);
-      const title = el("div", { cls: "card-title" });
-      title.appendChild(el("span", { text: channel.display_name }));
-      if (channel.featured) title.appendChild(badge("推荐", "ok"));
-      if (isConfigured) title.appendChild(configuredBadge());
-      card.appendChild(title);
-      const models = el("div", { cls: "models" });
-      channel.models.slice(0, 4).forEach((model) => models.appendChild(badge(model)));
-      card.appendChild(models);
-      const link = el("a", { cls: "link", attrs: { href: channel.key_page, target: "_blank", rel: "noopener noreferrer" }, text: "获取密钥 ↗" });
-      card.appendChild(link);
-      if (channel.notes) card.appendChild(el("p", { cls: "notes", text: channel.notes.length > 84 ? channel.notes.slice(0, 84) + "…" : channel.notes }));
-      card.appendChild(actionButton(channel.id, isConfigured));
-      return card;
+    entries.push({
+      id: channel.id,
+      title: channel.display_name,
+      group: channel.group || "domestic",
+      featured: Boolean(channel.featured),
+      configured: configured.has(channel.id),
+      models: channel.models || [],
+      notes: channel.notes || "",
+      keyPage: channel.key_page,
+      searchHint: [channel.display_name, channel.id, (channel.models || []).join(" "), channel.notes || ""].join(" ").toLowerCase(),
     });
   });
-
   Object.keys(BUILTIN_LABELS).forEach((providerId) => {
-    const isConfigured = configured.has(providerId);
-    addCard(() => {
-      const card = cardState(el("div", { cls: "card" }), isConfigured);
-      const title = el("div", { cls: "card-title", children: [el("span", { text: BUILTIN_LABELS[providerId] })] });
-      if (isConfigured) title.appendChild(configuredBadge());
-      card.appendChild(title);
-      const isCompatible = providerId === "openai-compatible";
-      card.appendChild(el("p", { cls: "notes", text: isCompatible
+    const isCompatible = providerId === "openai-compatible";
+    entries.push({
+      id: providerId,
+      title: BUILTIN_LABELS[providerId],
+      group: BUILTIN_ADD_GROUPS[providerId] || "global",
+      featured: false,
+      configured: configured.has(providerId),
+      models: [],
+      notes: isCompatible
         ? "任意 OpenAI 兼容中转站：需填写 Base URL（HTTPS origin）与模型，凭据环境变量 OPENAI_API_KEY。"
-        : "官方/托管渠道：端点固定，凭据环境变量 " + BUILTIN_ENV[providerId] + "。" }));
-      card.appendChild(actionButton(providerId, isConfigured));
-      return card;
+        : "官方/托管渠道：端点固定，凭据环境变量 " + BUILTIN_ENV[providerId] + "。",
+      keyPage: null,
+      searchHint: (BUILTIN_LABELS[providerId] + " " + providerId).toLowerCase(),
     });
   });
 
-  if (!rendered) grid.appendChild(el("div", { cls: "empty", text: "渠道目录为空。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。" }));
+  const query = addSearch.query.trim().toLowerCase();
+  const visible = query
+    ? entries.filter((entry) => entry.searchHint.indexOf(query) >= 0)
+    : entries;
+  let rendered = 0;
+  Object.keys(ADD_GROUP_TITLES).forEach((group) => {
+    const members = visible.filter((entry) => entry.group === group);
+    if (!members.length) return;
+    const section = el("div", { cls: "add-group" });
+    section.appendChild(el("h3", { text: ADD_GROUP_TITLES[group] + "（" + members.length + "）" }));
+    const grid = el("div", { cls: "cards" });
+    members.forEach((entry) => {
+      const card = cardState(el("div", { cls: "card" }), entry.configured);
+      const title = el("div", { cls: "card-title" });
+      title.appendChild(el("span", { text: entry.title }));
+      if (entry.featured) title.appendChild(badge("推荐", "ok"));
+      if (entry.configured) title.appendChild(configuredBadge());
+      card.appendChild(title);
+      if (entry.models.length) {
+        const models = el("div", { cls: "models" });
+        entry.models.slice(0, 4).forEach((model) => models.appendChild(badge(model)));
+        card.appendChild(models);
+      }
+      if (entry.keyPage) {
+        card.appendChild(el("a", { cls: "link", attrs: { href: entry.keyPage, target: "_blank", rel: "noopener noreferrer" }, text: "获取密钥 ↗" }));
+      }
+      const notes = notesOf(entry.notes);
+      if (notes) card.appendChild(notes);
+      card.appendChild(actionButton(entry.id, entry.configured));
+      grid.appendChild(card);
+    });
+    section.appendChild(grid);
+    root.appendChild(section);
+    rendered += members.length;
+  });
+
+  if (!rendered) {
+    root.appendChild(el("div", {
+      cls: "empty",
+      text: query
+        ? "没有匹配「" + addSearch.query.trim() + "」的渠道。清空搜索可查看全部 " + entries.length + " 个。"
+        : "渠道目录为空。如需新增目录渠道，参见 references/provider-catalog.md 的贡献流程。",
+    }));
+  }
 }
 
 async function load() {
@@ -340,6 +430,12 @@ async function load() {
   } catch (error) {
     $("status-text").textContent = "加载失败";
     $("status-detail").textContent = reasonText(error && error.reason);
+    const retryHost = $("status-detail").parentElement;
+    if (retryHost && !retryHost.querySelector(".load-retry")) {
+      const retry = el("button", { cls: "btn small load-retry", attrs: { type: "button" }, text: "重试" });
+      retry.addEventListener("click", () => { retry.remove(); load(); });
+      retryHost.appendChild(retry);
+    }
   }
 }
 

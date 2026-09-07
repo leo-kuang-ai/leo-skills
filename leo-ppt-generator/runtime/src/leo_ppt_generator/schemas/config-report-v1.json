@@ -104,7 +104,15 @@
         "qianfan",
         "hunyuan",
         "modelscope",
-        "qianxing"
+        "qianxing",
+        "siliconflow",
+        "stepfun",
+        "xai",
+        "deepinfra",
+        "together",
+        "gemini",
+        "minimax",
+        "ideogram"
       ]
     },
     "capability": {

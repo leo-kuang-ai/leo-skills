@@ -10,6 +10,20 @@ adheres to a loose semantic-versioning convention.
 - **leo-ppt-generator：代码评审 P2 修复批（3 项）+ P3 顺手批**：对 b1c0882 的内联评审发现落地——CLI 返工通道 `image record --rework`（透传 adapter，无旗标仍拒，幂等重放不受影响，`tests/test_cli_rework_flag.py`）；batch 每任务 quality/output_format 按 job 实际模型经 `_apply_family_param_gating` 重判（防家族参数随 base 泄漏给覆写后的渠道模型，`BatchModelOverrideGatingTest`）；patches/README 0009 描述与补丁内容对齐。P3：哨兵 `=off` 逃生口成文、`check_size_budget` 未标注 backend 页 WARN、`RENDER_LADDER` 拼写、`ci_gate.sh` printf、render-lane 测试实断言；0009 增量补丁再生成 + vendored 重锁。 (user-visible)
 
 ### Added
+- **leo-ppt-generator：控制台添加区 UX 优化批（PM/UIUX 走查驱动）**：渠道扩至 18 项后暴露的四个体验痛点逐一处置——
+  - **分组呈现（选择过载）**：`providers.yaml` 新增 `group` 字段（domestic/global/custom 白名单校验），添加区按获取门槛分组渲染——「国内服务 · 直连可用（10）/ 国际服务 · 需国际网络（7）/ 自定义中转（1）」，组标题带计数与分隔线；
+  - **搜索定位**：添加区顶部搜索框（Safari 原生 type=search，含取消按钮），按名称/模型/说明过滤（如输入 qwen 命中百炼/魔搭/硅基流动/DeepInfra 四卡，无匹配组自动隐藏），无结果时空态提示清空恢复全量；
+  - **空态行动引导**：未配置渠道时的空态从纯文案升级为可点击 CTA「从推荐渠道开始 →」——平滑滚动到添加区推荐卡并以蓝色光环闪烁 2.4s（prefers-reduced-motion 静止）；
+  - **信息保全与失败恢复**：notes 截断行加 title 全文提示（悬停/辅助技术可读完整说明）；渠道数据加载失败时状态区出现「重试」按钮（此前只有文案无出口）；
+  - 验证：渠道域 105/105 全绿（.venv）；Safari 实测分组计数/搜索过滤/CTA/notes 全文/取消按钮逐项核验；runtime 已刷新（identity `92b08761`），用户重开 `leo-ppt config ui` 即生效。 (user-visible)
+
+### Added
+- **leo-ppt-generator：业界调研渠道接入批——目录扩至 15 渠道（A 档兼容 5 + B 档原生 3）**：
+  - **A 档（OpenAI 兼容，目录即通）**：`siliconflow` 硅基流动（聚合 Kolors/FLUX/Qwen-Image，免费档）、`stepfun` 阶跃星辰（step-image-edit-2 现行推荐，官方迁移指南）、`xai` Grok Imagine（grok-2-image-1212）、`deepinfra`（base 路径 /v1/openai）、`together`（FLUX.1-schnell-Free 免费端点，另托管 Ideogram 3.0）；
+  - **B 档（原生协议适配器，patches/0011）**：`gemini` Google Nano Banana（generateContent 协议，gemini-2.5-flash-image / gemini-3-pro-image-preview；Imagen 系列已 2026-08 弃用勿接）、`minimax`（/v1/image_generation，image-01 / image-01-live）、`ideogram`（v3 multipart，ideogram-v3-turbo/quality，文字排版强项）——vendored 新增 `image_providers/native.py`（同步 REST、b64 返回契约、generate-only、瞬态重试、尺寸→各家宽高比映射：Gemini/MiniMax `16:9`、Ideogram `16x9`），factory 按 base URL 精确 hostname 分发（atlascloud 同范式）；
+  - **架构**：`providers.yaml` 新增 `native: true` 标记（ChannelDefinition 扩展 + registry 适配器家族声明——native 渠道挂自有家族而非 openai-compatible）；执行面零改动（凭据/端点仍统一经 OPENAI_API_KEY/OPENAI_BASE_URL 注入）；ProviderName 枚举/CLI 菜单/web 添加区/契约测试全部自动跟随；
+  - **暂缓披露（证据见 provider-catalog.md）**：生数 Vidu 与 fal.ai/Replicate（任务轮询异步架构与同步链路冲突）；讯飞（AppID 签名鉴权与"填 Key 即用"模式不匹配）；360 智脑（API 市场申请制无公开文档）；Midjourney（无官方 API）；
+  - 同步：4 个 schema provider enum、provider-catalog.md（表格/注意事项/暂缓项/维护流程）、tests 渠道全集（test_channel_catalog 26 例 + 新增 test_native_image_providers 11 例：分发/协议转换/尺寸映射/错误路径）；Safari 实测添加区 18 卡全渲染、新渠道向导预填（硅基流动模型/端点）。 (user-visible)
 - **leo-ppt-generator：提交内容核对与误删防护批（三方核对 + 数值归一修复）**：对 0911bb4 做三层核对（stash⊆提交 / 邻会话 pre-pop 工作包含性 / 索引新鲜度）并修复核对发现的全部内容缺口——
   - **CHANGELOG 条目找回**：stash 中 59 条 Unreleased 条目（本会话外部 stash 事件前的用户工作记录）按条目级去重合并回册（0 重复 / 0 残缺；跳过与本会话合并条目语义重复的 2 条）。
   - **邻会话回滚后新工作并入**（pre-pop 快照对 HEAD 的三方合并）：SKILL.md / image-deck-workflow.md / deck-master.md 的 R2 精修块（程序性反方、失效触发附分支预案、护栏最小完备+验收标准+并行冲突核对、页数口径算式、block-early 位置合同）、check_deck_prose 的 R2 迭代版（Batch-1 互操作修复 + 推断句式纪律 n 族 + ai_flavor 因果归因）与其配对测试、execution-contract/README 自动合并。
@@ -122,7 +136,6 @@ adheres to a loose semantic-versioning convention.
 - **software-article-en-zh：合并态（D12–D15）judge 缺口收敛批**：对用户并行新增的 publication 双层交付/模式语义/参数适配/交付披露维度（85 用例态）做降质端点下的失败取证与离线回放，修复三个真实 judge 缺口并全部经录得响应回放验证——modal-verbs-rfc 补单字“应”SHOULD 译法（排除应对/应答/应变/应用/应急复合词，与用户 publication judge 的前瞻断言口径一致）；param-audience-executive 的“零故障夸大”检查补句级否定感知与译法说明句豁免（“未升级为‘零故障’一类承诺”的说明句此前被误杀）；param-code-comments-preserved 的“重载”锚点补“重新加载”变体。降质端点下的其余 D12–D15 失败经取证均为模型裸输出跳过五件套合同（响应仅 51–122 字符），judge 正确拒绝、无需修改。README 能力面“可译”措辞对齐 SKILL.md“默认译出”。合并态门禁全绿：单测 25/25 + 6/6、85 用例 validate、judge 编译、`git diff --check` 干净。
 - **software-article-en-zh：最终 20 轮采样与环境噪声归因**：优化后全量 20 轮采样（parallelism 8）：前 4 轮连续 70/70 满分（00:31–00:48，共 280 次零失败——套件与技能收敛的直接证据）；第 5 轮起供应商端点劣化（`unrecognized_model`、`provider rate limit`），后续轮次失败经抽样归因为限流降质（`500 毫秒` 类偷懒、空响应）与一个真实 judge 缺口（倍数"2 倍"阿拉伯数字形态，已修）。结论与指引：多轮采样用 `--parallelism 4~6`，长时间高并行会触发供应商限流，判读抖动须结合错误信息区分环境噪声与技能回归（已写入 README 评测节）。同期用户并行扩展 D12–D15 三个维度（85 用例），其新 judge 已内置元信息区剥离与否定感知纪律；合并态门禁全绿（单测 25/25 + 6/6、85 用例 validate、judge 编译、git diff --check 干净），新增维度的稳定性采样建议在供应商恢复后按 README 指引执行。
 
-### Fixed
 - **software-article-en-zh：补齐发布型翻译工作流契约**：新增 `faithful/polished/publication` 交付模式、受众与文风参数，增加中文技术运营编辑规则和独立 `editorial_review` 分类，补充运行时术语首次解释、编辑润色不得新增事实及 5 个 D11 质量用例；明确 `translate-comments` 的人工复核边界。
 - **software-article-en-zh：校准编辑质量 Judge 的语义容忍度**：长句逻辑用例接受“仅当/仅在”等 `only if` 合法译法，标题用例接受“Skill/技能”等合法术语变体，避免将固定词面误判为编辑质量失败。
 - **software-article-en-zh：补齐编辑 Judge 可执行入口并放宽合法表达**：新增 Python shebang，隐喻用例接受“清理/整理/梳理”和“审计/审查”等等价表达，避免脚本被 shell 误执行或把语义等价译法判为失败。

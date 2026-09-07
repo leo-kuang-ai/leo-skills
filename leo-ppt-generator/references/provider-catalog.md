@@ -51,12 +51,26 @@ leo-ppt provider configure --provider zhipu --model cogview-3-flash
 | `qianfan` | 百度千帆（文心一格） | <https://cloud.baidu.com/product/qianfan> | [IAM API Key](https://console.bce.baidu.com/iam/#/iam/apikey/list) | `QIANFAN_API_KEY` | `ernie-vig-v2` |
 | `hunyuan` | 腾讯混元（TokenHub） | <https://cloud.tencent.com/product/hunyuan> | [TokenHub apikey](https://console.cloud.tencent.com/tokenhub) | `HUNYUAN_API_KEY` | `hy-image-v3.0` |
 | `modelscope` | 魔搭 ModelScope | <https://modelscope.cn/> | [SDK Token](https://modelscope.cn/my/keys) | `MODELSCOPE_API_TOKEN` | `Qwen/Qwen-Image` |
+| `siliconflow` | 硅基流动（聚合） | <https://siliconflow.cn/> | [API Key 页](https://cloud.siliconflow.cn/account/ak) | `SILICONFLOW_API_KEY` | `Kwai-Kolors/Kolors` |
+| `stepfun` | 阶跃星辰开放平台 | <https://platform.stepfun.com/> | [开放平台 Key](https://platform.stepfun.com/docs/zh/guides/developer/openai) | `STEPFUN_API_KEY` | `step-image-edit-2` |
+| `xai` | xAI Grok Imagine | <https://x.ai/api> | [Console](https://console.x.ai) | `XAI_API_KEY` | `grok-2-image-1212` |
+| `deepinfra` | DeepInfra（聚合） | <https://deepinfra.com/> | [API Keys](https://deepinfra.com/dash/api_keys) | `DEEPINFRA_API_KEY` | `black-forest-labs/FLUX.1-schnell` |
+| `together` | Together AI（聚合） | <https://www.together.ai/> | [API Keys](https://api.together.ai/settings/api-keys) | `TOGETHER_API_KEY` | `black-forest-labs/FLUX.1-schnell-Free` |
+| `gemini` | Google AI（Nano Banana）† | <https://ai.google.dev/> | [AI Studio Key](https://aistudio.google.com/apikey) | `GEMINI_API_KEY` | `gemini-2.5-flash-image` |
+| `minimax` | MiniMax 开放平台 † | <https://platform.minimaxi.com/> | [开放平台](https://platform.minimaxi.com/) | `MINIMAX_API_KEY` | `image-01` |
+| `ideogram` | Ideogram † | <https://developer.ideogram.ai/> | [API Setup](https://developer.ideogram.ai/ideogram-api/api-setup) | `IDEOGRAM_API_KEY` | `ideogram-v3-turbo` |
+
+† 原生协议渠道（`native: true`）：非 OpenAI 格式，由原生适配器
+（`patches/0011`）在执行面按 base URL hostname 分发转换。
 
 乾行AI是目录中唯一 `featured` 渠道：向导菜单排第一位并标注（推荐），首配引导直接指向它——只需输入 API Key 与模型，端点自动用默认。
 
 所有渠道走同一条 OpenAI 兼容执行面：`endpoint_origin + api_path` 派生 base URL
 （不会误拼 `/v1`），凭据从上表环境变量（或 keychain）解析后注入受控执行环境；
-只返回临时 URL 的渠道由 url 回退补丁（`patches/0008`）自动下载转存。
+只返回临时 URL 的渠道由 url 回退补丁（`patches/0008`）自动下载转存。原生协议
+渠道（gemini / minimax / ideogram）的凭据与端点注入路径完全相同，仅最终 HTTP
+协议由原生适配器转换（尺寸 → 各家宽高比映射：Gemini/MiniMax `16:9`、
+Ideogram `16x9`）。
 
 ## 模型与注意事项
 
@@ -74,6 +88,22 @@ leo-ppt provider configure --provider zhipu --model cogview-3-flash
   旧控制台 TC3 签名与异步接口不在本通道内。
 - **modelscope**：模型名用仓库全路径（如 `Qwen/Qwen-Image`），凭据为 SDK Token；
   有每日免费额度，适合测试。
+- **siliconflow**：一个 Key 聚合 Kolors / FLUX / Qwen-Image 等开源模型（模型名用
+  仓库全路径、以站内模型广场为准）；FLUX.1-schnell 有免费档，Kolors 仅正方尺寸档。
+- **stepfun**：官方 OpenAI 兼容（提供从 OpenAI 迁移指南）。`step-image-edit-2`
+  为现行推荐；step-1x 系列 prompt ≤512 字符、固定分辨率档、单请求限 1 图。
+- **xai**：`grok-2-image-1212`（OpenAI 兼容 images 端点）；需国际网络与美元计费。
+- **deepinfra**：注意 base 路径为 `/v1/openai`；按张低价计费，模型以站内列表为准。
+- **together**：FLUX.1-schnell-Free 免费端点；另托管 Ideogram 3.0（$0.06/百万像素，
+  文字渲染强——需要 Ideogram 能力时可经此通道，无需单独 key）。
+- **gemini**（原生）：Nano Banana 系列——`gemini-2.5-flash-image` /
+  `gemini-3-pro-image-preview`（Pro）。文字渲染与世界知识强，适合 PPT 配图；
+  尺寸经 aspectRatio 最近值映射（16:9 在支持列）。**Imagen 系列已于 2026-08
+  弃用关停，勿再接入**；需国际网络。
+- **minimax**（原生）：`image-01`（文生图 + 人物参考，prompt ≤1500 字）/
+  `image-01-live`（手绘卡通画风）；aspect_ratio 控制画幅。
+- **ideogram**（原生）：`ideogram-v3-turbo` / `ideogram-v3-quality`；文字排版
+  与海报级设计是强项；响应为临时 URL，由适配器下载转 b64。
 
 ## 能力边界与暂缓项
 
@@ -82,6 +112,12 @@ leo-ppt provider configure --provider zhipu --model cogview-3-flash
 - 暂缓（需原生异步任务适配器，不在本目录承诺内）：wanx（通义万相）t2i 异步、
   可灵 kling、腾讯混元旧控制台异步、百度文心一格企业版异步接口。渠道内如后续
   上线同步兼容端点，加目录条目即可接入。
+- 2026-09 业界调研批的其余暂缓项及理由：**生数 Vidu**（platform.vidu.cn，4K
+  图像生成）与 **fal.ai / Replicate** 为任务提交-轮询异步模型，与本目录同步
+  调用链路冲突（待异步任务架构）；**讯飞开放平台**为 AppID+签名鉴权体系，
+  与「填 API Key 即用」的目录模式不匹配；**360 智脑**图片 API 经智汇云市场
+  申请制分发，无公开自助文档；**Midjourney** 无官方 API。Google Imagen 系列
+  已于 2026-08-17 弃用，由 `gemini`（Nano Banana）取代。
 - 尺寸：生成管线默认尺寸（1024x1024 / 1536x1024 / 1024x1536）在全部渠道合法；
   其他自定义尺寸以各渠道文档为准，越界会得到清晰的 provider 报错。
 
@@ -89,7 +125,9 @@ leo-ppt provider configure --provider zhipu --model cogview-3-flash
 
 1. `providers.yaml` 加一条（id / portal / key_page / credential_environment /
    endpoint_origin / api_path / default_model / models / notes），加载器 fail-closed
-   校验（id 冲突、origin-only 端点、默认模型必须在 models 内等）。
+   校验（id 冲突、origin-only 端点、默认模型必须在 models 内等）。OpenAI 兼容
+   渠道到目录即通；**非 Open 协议渠道**另需 `native: true` + vendored 原生适配器
+   （`image_providers/native.py`，经 patches 流程登记 hostname 分发）。
 2. 同步本文件"渠道一览 / 模型与注意事项"。
 3. 同步 `runtime/src/leo_ppt_generator/schemas/` 下 4 个 schema 的 provider enum
    （`tests/test_channel_catalog.py` 有一致性看护）。

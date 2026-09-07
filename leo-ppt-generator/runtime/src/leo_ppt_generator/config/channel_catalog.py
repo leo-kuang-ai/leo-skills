@@ -28,6 +28,9 @@ CATALOG_PATH = Path(__file__).with_name("providers.yaml")
 CATALOG_SCHEMA_VERSION = 1
 CHANNEL_CAPABILITIES = frozenset({"generate"})
 
+# 添加区分组白名单（UX：按获取门槛分组——国内直连 / 国际服务 / 自定义中转）。
+_CHANNEL_GROUPS = frozenset({"domestic", "global", "custom"})
+
 _BUILTIN_PROVIDER_IDS = frozenset(
     {
         "openai",
@@ -98,6 +101,11 @@ class ChannelDefinition:
     notes: str | None = None
     featured: bool = False
     param_compat: ParamCompat = ParamCompat()
+    # native=true：渠道走自有协议（generateContent/multipart 等），执行面
+    # 由 vendored 原生适配器按 base_url 分发；OpenAI 兼容层仅作配置载体。
+    native: bool = False
+    # group：获取门槛分组（UX：添加区按组呈现，缓解选择过载）。
+    group: str = "domestic"
 
     @property
     def api_base_url(self) -> str:
@@ -257,6 +265,12 @@ def load_channels(path: Path = CATALOG_PATH) -> tuple[ChannelDefinition, ...]:
             featured_count += 1
             if featured_count > 1:
                 raise ChannelCatalogError("channel_featured_duplicated", channel_id)
+        native = entry.get("native", False)
+        if not isinstance(native, bool):
+            raise ChannelCatalogError("channel_native_invalid", channel_id)
+        group = entry.get("group", "domestic")
+        if group not in _CHANNEL_GROUPS:
+            raise ChannelCatalogError("channel_group_invalid", f"{channel_id}:{group}")
         channels.append(
             ChannelDefinition(
                 id=channel_id,
@@ -271,6 +285,8 @@ def load_channels(path: Path = CATALOG_PATH) -> tuple[ChannelDefinition, ...]:
                 notes=notes,
                 featured=featured,
                 param_compat=_validate_param_compat(entry.get("param_compat"), channel_id),
+                native=native,
+                group=group,
             )
         )
         seen.add(channel_id)

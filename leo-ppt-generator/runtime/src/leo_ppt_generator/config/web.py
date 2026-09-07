@@ -264,6 +264,7 @@ def _channels_payload() -> dict[str, Any]:
                 "models": list(channel.models),
                 "notes": channel.notes,
                 "featured": channel.featured,
+                "group": channel.group,
             }
         )
     channels.sort(key=lambda item: not item["featured"])

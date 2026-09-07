@@ -17,6 +17,7 @@
 schema_version: 1
 channels:
   - id: qianxing
+    group: domestic
     display_name: 乾行AI
     featured: true
     portal: https://fast.qianxing.us.ci
@@ -34,6 +35,7 @@ channels:
       支持 gpt-image 系列及站内上架的聚合模型。配置时只需填 API Key
       与模型，端点回车用默认。
   - id: zhipu
+    group: domestic
     display_name: 智谱
     portal: https://open.bigmodel.cn/
     key_page: https://open.bigmodel.cn/usercenter/apikeys
@@ -55,6 +57,7 @@ channels:
       16 的倍数；glm-image 需 1024–2048 且为 32 的倍数、仅支持 hd。个人测试
       可用 cogview-3-flash 免费额度。
   - id: dashscope
+    group: domestic
     display_name: 阿里云百炼
     portal: https://bailian.console.aliyun.com/
     key_page: https://bailian.console.aliyun.com/?apiKey=1
@@ -70,6 +73,7 @@ channels:
       渲染）。wanx（通义万相）与可灵 kling 走百炼原生异步任务接口，不在本
       通道内；尺寸以官方推荐集合为准。
   - id: ark
+    group: domestic
     display_name: 火山方舟
     portal: https://www.volcengine.com/product/ark
     key_page: https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
@@ -87,6 +91,7 @@ channels:
       与 b64_json；中文提示词理解与人像质感强。seededit 为图生图模型，走
       images 数组而非 images/edits，v1 仅声明 generate。
   - id: qianfan
+    group: domestic
     display_name: 百度千帆
     portal: https://cloud.baidu.com/product/qianfan
     key_page: https://console.bce.baidu.com/iam/#/iam/apikey/list
@@ -100,6 +105,7 @@ channels:
       百度千帆 v2 OpenAI 兼容通道（文心一格）。API Key 在百度智能云 IAM 创建；
       可用模型以千帆控制台模型列表为准。
   - id: hunyuan
+    group: domestic
     display_name: 腾讯混元
     portal: https://cloud.tencent.com/product/hunyuan
     key_page: https://console.cloud.tencent.com/tokenhub
@@ -114,6 +120,7 @@ channels:
       混元生图 3.0。旧控制台 TC3 签名与异步任务接口不在本通道内；图生图可
       通过请求中的 images 数组实现，v1 仅声明 generate。
   - id: modelscope
+    group: domestic
     display_name: 魔搭 ModelScope
     portal: https://modelscope.cn/
     key_page: https://modelscope.cn/my/keys
@@ -126,3 +133,132 @@ channels:
     notes: >-
       魔搭 API-Inference 兼容通道，模型名用仓库全路径（如 Qwen/Qwen-Image），
       凭据为 ModelScope SDK Token。有每日免费额度，适合测试与科研。
+  - id: siliconflow
+    group: domestic
+    display_name: 硅基流动
+    portal: https://siliconflow.cn/
+    key_page: https://cloud.siliconflow.cn/account/ak
+    credential_environment: SILICONFLOW_API_KEY
+    endpoint_origin: https://api.siliconflow.cn
+    api_path: /v1
+    default_model: Kwai-Kolors/Kolors
+    models:
+      - Kwai-Kolors/Kolors
+      - black-forest-labs/FLUX.1-schnell
+    notes: >-
+      硅基流动 OpenAI 兼容聚合通道：一个 Key 覆盖 Kolors、FLUX、Qwen-Image
+      等多家开源模型，模型名用仓库全路径、以站内「模型广场」为准；FLUX.1
+      -schnell 有免费档，Kolors 仅支持 1024x1024 等正方尺寸档。
+  - id: stepfun
+    group: domestic
+    display_name: 阶跃星辰
+    portal: https://platform.stepfun.com/
+    key_page: https://platform.stepfun.com/docs/zh/guides/developer/openai
+    credential_environment: STEPFUN_API_KEY
+    endpoint_origin: https://api.stepfun.com
+    api_path: /v1
+    default_model: step-image-edit-2
+    models:
+      - step-image-edit-2
+      - step-2x-large
+      - step-1x-medium
+      - step-1x-turbo
+    notes: >-
+      阶跃星辰开放平台 OpenAI 兼容通道（官方提供从 OpenAI 迁移指南）。
+      step-image-edit-2 为现行推荐（文生图与编辑一体、单图限 1 张）；
+      step-1x 系列 prompt 上限 512 字符、固定分辨率档（256/512/768/1024）。
+  - id: xai
+    group: global
+    display_name: xAI Grok
+    portal: https://x.ai/api
+    key_page: https://console.x.ai
+    credential_environment: XAI_API_KEY
+    endpoint_origin: https://api.x.ai
+    api_path: /v1
+    default_model: grok-2-image-1212
+    models:
+      - grok-2-image-1212
+    notes: >-
+      xAI Grok Imagine 图片生成，OpenAI 兼容 images 端点（base_url
+      api.x.ai/v1）。需国际网络与美元计费账号；支持批量与宽高比控制。
+  - id: deepinfra
+    group: global
+    display_name: DeepInfra
+    portal: https://deepinfra.com/
+    key_page: https://deepinfra.com/dash/api_keys
+    credential_environment: DEEPINFRA_API_KEY
+    endpoint_origin: https://api.deepinfra.com
+    api_path: /v1/openai
+    default_model: black-forest-labs/FLUX.1-schnell
+    models:
+      - black-forest-labs/FLUX.1-schnell
+    notes: >-
+      DeepInfra OpenAI 兼容通道（注意 base 路径为 /v1/openai），按张低价
+      计费，托管 FLUX、Qwen-Image 等开源模型；可用模型以站内列表为准。
+  - id: together
+    group: global
+    display_name: Together AI
+    portal: https://www.together.ai/
+    key_page: https://api.together.ai/settings/api-keys
+    credential_environment: TOGETHER_API_KEY
+    endpoint_origin: https://api.together.xyz
+    api_path: /v1
+    default_model: black-forest-labs/FLUX.1-schnell-Free
+    models:
+      - black-forest-labs/FLUX.1-schnell-Free
+      - black-forest-labs/FLUX.1-schnell
+    notes: >-
+      Together AI OpenAI 兼容通道：FLUX.1-schnell-Free 免费端点，另托管
+      Ideogram 3.0（文字渲染强，$0.06/百万像素）等；需国际网络与美元计费。
+  - id: gemini
+    group: global
+    display_name: Google Gemini
+    portal: https://ai.google.dev/
+    key_page: https://aistudio.google.com/apikey
+    credential_environment: GEMINI_API_KEY
+    endpoint_origin: https://generativelanguage.googleapis.com
+    api_path: /v1beta
+    default_model: gemini-2.5-flash-image
+    models:
+      - gemini-2.5-flash-image
+      - gemini-3-pro-image-preview
+    native: true
+    notes: >-
+      Google Nano Banana 原生通道（generateContent 协议，非 OpenAI 格式，
+      由原生适配器转换）：文字渲染与世界知识强，适合 PPT 配图；尺寸经
+      aspectRatio 映射（16:9 在支持列）。Imagen 系列已于 2026-08 弃用，
+      请使用 gemini-*-image 模型。需国际网络。
+  - id: minimax
+    group: domestic
+    display_name: MiniMax
+    portal: https://platform.minimaxi.com/
+    key_page: https://platform.minimaxi.com/
+    credential_environment: MINIMAX_API_KEY
+    endpoint_origin: https://api.minimaxi.com
+    api_path: /v1
+    default_model: image-01
+    models:
+      - image-01
+      - image-01-live
+    native: true
+    notes: >-
+      MiniMax 图片生成原生通道（/v1/image_generation 协议，由原生适配器
+      转换）：image-01 支持文生图与人物参考（prompt ≤1500 字），image-01
+      -live 主打手绘卡通画风；aspect_ratio 控制画幅（默认 1:1）。
+  - id: ideogram
+    group: global
+    display_name: Ideogram
+    portal: https://developer.ideogram.ai/
+    key_page: https://developer.ideogram.ai/ideogram-api/api-setup
+    credential_environment: IDEOGRAM_API_KEY
+    endpoint_origin: https://api.ideogram.ai
+    api_path: /v1
+    default_model: ideogram-v3-turbo
+    models:
+      - ideogram-v3-turbo
+      - ideogram-v3-quality
+    native: true
+    notes: >-
+      Ideogram v3 原生通道（multipart 表单协议，由原生适配器转换）：文字
+      排版与海报级排版是强项，适合含文字配图页；宽高比用 16x9 形式。
+      需国际网络与美元计费。

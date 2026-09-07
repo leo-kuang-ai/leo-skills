@@ -43,7 +43,12 @@ from leo_ppt_generator.config.runtime_config import (  # noqa: E402
 from leo_ppt_generator.credentials import PROVIDERS  # noqa: E402
 
 CHANNEL_IDS = frozenset(
-    {"qianxing", "zhipu", "dashscope", "ark", "qianfan", "hunyuan", "modelscope"}
+    {
+        "qianxing", "zhipu", "dashscope", "ark", "qianfan", "hunyuan", "modelscope",
+        # 2026-09 业界调研接入批：OpenAI 兼容聚合/厂商通道 + 原生协议通道。
+        "siliconflow", "stepfun", "xai", "deepinfra", "together",
+        "gemini", "minimax", "ideogram",
+    }
 )
 BUILTIN_PROVIDER_IDS = frozenset(
     {"openai", "openai-compatible", "atlascloud", "builtin-imagegen", "fixture"}
@@ -262,6 +267,10 @@ class ConfigCodeIsolationTest(unittest.TestCase):
         offenders = []
         for path in sorted(src_root.rglob("*.py")):
             if "__pycache__" in path.parts:
+                continue
+            # 厂商适配器目录按厂商命名文件/类/hostname 是设计意图
+            # （atlascloud.py 同范式）；渠道 id 只在此目录作为分发键出现。
+            if "_vendor" in path.parts and "image_providers" in path.parts:
                 continue
             text = path.read_text(encoding="utf-8")
             if pattern.search(text):

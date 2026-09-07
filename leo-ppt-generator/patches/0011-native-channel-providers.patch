@@ -1,0 +1,357 @@
+diff --git a/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py b/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py
+index bcf59bb..b23283f 100644
+--- a/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py
++++ b/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py
+@@ -5,15 +5,34 @@ from urllib.parse import urlparse
+ 
+ from .atlascloud import AtlasCloudImageProvider
+ from .base import ImageProvider
++from .native import GeminiImageProvider, IdeogramImageProvider, MiniMaxImageProvider
+ from .openai_compatible import OpenAICompatibleImageProvider
+ 
+ 
+ def create_image_provider(*, api_key: Optional[str], base_url: Optional[str]) -> ImageProvider:
++    hostname = _hostname_of(base_url)
+     if _is_atlascloud_base_url(base_url):
+         return AtlasCloudImageProvider(api_key=api_key, base_url=base_url)
++    if hostname in _NATIVE_HOSTS:
++        return _NATIVE_HOSTS[hostname](api_key=api_key, base_url=base_url)
+     return OpenAICompatibleImageProvider(api_key=api_key, base_url=base_url)
+ 
+ 
++# Native-protocol channel dispatch (catalog native:true): exact hostnames only.
++_NATIVE_HOSTS = {
++    "generativelanguage.googleapis.com": GeminiImageProvider,
++    "api.minimaxi.com": MiniMaxImageProvider,
++    "api.minimax.io": MiniMaxImageProvider,
++    "api.ideogram.ai": IdeogramImageProvider,
++}
++
++
++def _hostname_of(base_url: Optional[str]) -> str:
++    if not base_url:
++        return ""
++    return (urlparse(base_url).hostname or "").lower()
++
++
+ def _is_atlascloud_base_url(base_url: Optional[str]) -> bool:
+     if not base_url:
+         return False
+diff --git a/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/native.py b/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/native.py
+new file mode 100644
+index 0000000..5ae0c08
+--- /dev/null
++++ b/leo-ppt-generator/runtime/src/leo_ppt_generator/_vendor/codex_ppt/image_providers/native.py
+@@ -0,0 +1,312 @@
++"""Native protocol image providers (non-OpenAI-compatible channels).
++
++The channel catalog marks these channels with ``native: true``. The OpenAI
++SDK execution plane stays the configuration carrier (credential + base URL);
++these adapters translate the OpenAI-style images payload into each vendor's
++own synchronous REST protocol:
++
++- ``GeminiImageProvider``  - Google ``generateContent`` (Nano Banana models).
++- ``MiniMaxImageProvider`` - MiniMax ``/v1/image_generation``.
++- ``IdeogramImageProvider`` - Ideogram v3 multipart ``generate``.
++
++Only ``generate`` is implemented: the channel registry declares generate-only
++capability for catalog channels, so ``edit`` fails fast.
++"""
++
++from __future__ import annotations
++
++import asyncio
++import json
++import sys
++import urllib.error
++import urllib.request
++import uuid
++from pathlib import Path
++from typing import Any, Dict, List, Optional, Tuple
++
++from .base import ImageProvider
++from .openai_compatible import (
++    _download_image_b64,
++    _extract_retry_after_seconds,
++    _is_transient_error,
++)
++
++
++DEFAULT_TIMEOUT_SECONDS = 180.0
++
++
++def _parse_size(size: object) -> Optional[Tuple[int, int]]:
++    if not isinstance(size, str) or "x" not in size:
++        return None
++    width_text, _, height_text = size.partition("x")
++    try:
++        width, height = int(width_text), int(height_text)
++    except ValueError:
++        return None
++    if width <= 0 or height <= 0:
++        return None
++    return width, height
++
++
++def _ratio_value(width: int, height: int) -> float:
++    return width / height
++
++
++def _nearest_ratio_label(size: object, supported: Tuple[Tuple[str, float], ...]) -> Optional[str]:
++    parsed = _parse_size(size)
++    if parsed is None:
++        return None
++    width, height = parsed
++    target = _ratio_value(width, height)
++    return min(supported, key=lambda item: abs(item[1] - target))[0]
++
++
++def _ratio_string(size: object) -> Optional[str]:
++    parsed = _parse_size(size)
++    if parsed is None:
++        return None
++    width, height = parsed
++    gcd = _gcd(width, height)
++    return f"{width // gcd}:{height // gcd}"
++
++
++def _gcd(a: int, b: int) -> int:
++    while b:
++        a, b = b, a % b
++    return a
++
++
++def _post_json(
++    url: str,
++    *,
++    headers: Dict[str, str],
++    body: Dict[str, Any],
++    timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
++) -> Dict[str, Any]:
++    data = json.dumps(body).encode("utf-8")
++    request = urllib.request.Request(url, data=data, method="POST")
++    for key, value in headers.items():
++        request.add_header(key, value)
++    request.add_header("Content-Type", "application/json")
++    try:
++        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
++            return json.loads(response.read().decode("utf-8"))
++    except urllib.error.HTTPError as exc:
++        detail = exc.read().decode("utf-8", "replace")[:400]
++        raise RuntimeError(f"native_image_http_error status={exc.code} body={detail}") from exc
++
++
++def _post_multipart(
++    url: str,
++    *,
++    headers: Dict[str, str],
++    fields: Dict[str, str],
++    timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
++) -> Dict[str, Any]:
++    boundary = "----LeoNativeBoundary" + uuid.uuid4().hex
++    buffer: List[bytes] = []
++    for name, value in fields.items():
++        buffer.append(
++            (
++                f"--{boundary}\r\n"
++                f'Content-Disposition: form-data; name="{name}"\r\n\r\n'
++                f"{value}\r\n"
++            ).encode("utf-8")
++        )
++    buffer.append(f"--{boundary}--\r\n".encode("utf-8"))
++    data = b"".join(buffer)
++    request = urllib.request.Request(url, data=data, method="POST")
++    for key, value in headers.items():
++        request.add_header(key, value)
++    request.add_header("Content-Type", f"multipart/form-data; boundary={boundary}")
++    try:
++        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
++            return json.loads(response.read().decode("utf-8"))
++    except urllib.error.HTTPError as exc:
++        detail = exc.read().decode("utf-8", "replace")[:400]
++        raise RuntimeError(f"native_image_http_error status={exc.code} body={detail}") from exc
++
++
++class NativeImageProvider(ImageProvider):
++    """Shared plumbing for vendor-native synchronous protocols."""
++
++    supports_edit = False
++
++    def __init__(self, *, api_key: Optional[str], base_url: Optional[str]) -> None:
++        self.api_key = api_key
++        self.base_url = base_url
++
++    def edit(
++        self,
++        payload: Dict[str, Any],
++        image_paths: List[Path],
++        mask_path: Optional[Path],
++    ) -> List[str]:
++        raise RuntimeError(
++            "native_channel_edit_unsupported: catalog channels are generate-only"
++        )
++
++    async def generate_batch(
++        self,
++        payload: Dict[str, Any],
++        *,
++        attempts: int,
++        job_label: str,
++    ) -> List[str]:
++        last_exc: Optional[Exception] = None
++        for attempt in range(1, attempts + 1):
++            try:
++                return await asyncio.to_thread(self.generate, payload)
++            except Exception as exc:
++                last_exc = exc
++                if not _is_transient_error(exc):
++                    raise
++                if attempt == attempts:
++                    raise
++                sleep_s = _extract_retry_after_seconds(exc)
++                if sleep_s is None:
++                    sleep_s = min(60.0, 2.0**attempt)
++                print(
++                    f"{job_label} attempt {attempt}/{attempts} failed "
++                    f"({exc.__class__.__name__}); retrying in {sleep_s:.1f}s",
++                    file=sys.stderr,
++                )
++                await asyncio.sleep(sleep_s)
++        raise last_exc or RuntimeError("unknown error")
++
++
++class GeminiImageProvider(NativeImageProvider):
++    aspect_ratios: Tuple[Tuple[str, float], ...] = (
++        ("1:1", 1.0),
++        ("2:3", 2 / 3),
++        ("3:2", 1.5),
++        ("3:4", 0.75),
++        ("4:3", 4 / 3),
++        ("4:9", 4 / 9),
++        ("9:4", 2.25),
++        ("9:16", 9 / 16),
++        ("16:9", 16 / 9),
++        ("21:9", 21 / 9),
++    )
++
++    def generate(self, payload: Dict[str, Any]) -> List[str]:
++        if not self.base_url:
++            raise RuntimeError("gemini_base_url_missing")
++        model = str(payload.get("model") or "")
++        prompt = str(payload.get("prompt") or "")
++        if not model or not prompt:
++            raise RuntimeError("gemini_payload_invalid: model and prompt are required")
++        url = f"{self.base_url.rstrip('/')}/models/{model}:generateContent"
++        generation_config: Dict[str, Any] = {
++            "responseModalities": ["TEXT", "IMAGE"],
++        }
++        ratio = _nearest_ratio_label(payload.get("size"), self.aspect_ratios)
++        if ratio:
++            generation_config["imageConfig"] = {"aspectRatio": ratio}
++        body = {
++            "contents": [{"parts": [{"text": prompt}]}],
++            "generationConfig": generation_config,
++        }
++        response = _post_json(
++            url,
++            headers={"x-goog-api-key": self.api_key or ""},
++            body=body,
++        )
++        images: List[str] = []
++        for candidate in response.get("candidates") or []:
++            for part in ((candidate.get("content") or {}).get("parts")) or []:
++                inline = part.get("inlineData") or part.get("inline_data")
++                if isinstance(inline, dict) and isinstance(inline.get("data"), str):
++                    images.append(inline["data"])
++        if not images:
++            raise RuntimeError(
++                "gemini_image_missing: response carried no inline image data"
++            )
++        return images
++
++
++class MiniMaxImageProvider(NativeImageProvider):
++    aspect_ratios: Tuple[Tuple[str, float], ...] = (
++        ("1:1", 1.0),
++        ("16:9", 16 / 9),
++        ("9:16", 9 / 16),
++        ("4:3", 4 / 3),
++        ("3:4", 3 / 4),
++        ("3:2", 1.5),
++        ("2:3", 2 / 3),
++        ("21:9", 21 / 9),
++    )
++
++    def generate(self, payload: Dict[str, Any]) -> List[str]:
++        if not self.base_url:
++            raise RuntimeError("minimax_base_url_missing")
++        model = str(payload.get("model") or "image-01")
++        prompt = str(payload.get("prompt") or "")
++        if not prompt:
++            raise RuntimeError("minimax_payload_invalid: prompt is required")
++        url = f"{self.base_url.rstrip('/')}/image_generation"
++        body: Dict[str, Any] = {"model": model, "prompt": prompt}
++        ratio = _nearest_ratio_label(payload.get("size"), self.aspect_ratios)
++        if ratio:
++            body["aspect_ratio"] = ratio
++        response = _post_json(
++            url,
++            headers={"Authorization": f"Bearer {self.api_key or ''}"},
++            body=body,
++        )
++        base_resp = response.get("base_resp")
++        if isinstance(base_resp, dict) and base_resp.get("status_code") not in (None, 0):
++            raise RuntimeError(
++                "minimax_api_error status=%s message=%s"
++                % (base_resp.get("status_code"), base_resp.get("status_msg"))
++            )
++        data = response.get("data")
++        if isinstance(data, dict) and isinstance(data.get("data"), dict):
++            data = data.get("data")
++        urls = (data or {}).get("image_urls") if isinstance(data, dict) else None
++        if not urls:
++            raise RuntimeError("minimax_image_missing: response carried no image_urls")
++        return [_download_image_b64(str(url)) for url in urls]
++
++
++class IdeogramImageProvider(NativeImageProvider):
++    # v3 aspect_ratio uses "WxH" labels; supported set per official docs.
++    aspect_ratios: Tuple[Tuple[str, float], ...] = (
++        ("1x1", 1.0),
++        ("16x9", 16 / 9),
++        ("9x16", 9 / 16),
++        ("4x3", 4 / 3),
++        ("3x4", 3 / 4),
++        ("3x2", 1.5),
++        ("2x3", 2 / 3),
++        ("21x9", 21 / 9),
++    )
++
++    def generate(self, payload: Dict[str, Any]) -> List[str]:
++        if not self.base_url:
++            raise RuntimeError("ideogram_base_url_missing")
++        model = str(payload.get("model") or "ideogram-v3-turbo")
++        prompt = str(payload.get("prompt") or "")
++        if not prompt:
++            raise RuntimeError("ideogram_payload_invalid: prompt is required")
++        url = f"{self.base_url.rstrip('/')}/ideogram-v3/generate"
++        fields: Dict[str, str] = {
++            "prompt": prompt,
++            "model": model,
++            "magic_prompt_option": "Auto",
++        }
++        ratio = _nearest_ratio_label(payload.get("size"), self.aspect_ratios)
++        if ratio:
++            fields["aspect_ratio"] = ratio
++        response = _post_multipart(
++            url,
++            headers={"Api-Key": self.api_key or ""},
++            fields=fields,
++        )
++        items = response.get("data")
++        if not isinstance(items, list) or not items:
++            raise RuntimeError("ideogram_image_missing: response carried no data")
++        urls = [item.get("url") for item in items if isinstance(item, dict)]
++        if not any(urls):
++            raise RuntimeError("ideogram_image_missing: data items carry no url")
++        return [_download_image_b64(str(url)) for url in urls if url]

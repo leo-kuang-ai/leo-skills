@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p24-p24-number-hero-layouts",
+  "name": "Number Hero",
+  "aliases": [
+    "P24"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "hero_number": {
+      "region": "content",
+      "desc": "中央单一巨数（引用级）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    },
+    "hero_caption": {
+      "region": "content",
+      "desc": "数字下一句话（≤14 字）",
+      "max_chars": 34,
+      "chars_per_line": 29,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "全幅留白 + 中央单一巨数（≥12vw）+ 数字下一句话 + 页脚单位/口径/来源小字"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P24_Number_Hero.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 1
+}

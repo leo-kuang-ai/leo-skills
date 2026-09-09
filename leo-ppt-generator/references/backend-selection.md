@@ -24,7 +24,7 @@ capability 过滤，再按凭据状态和用户既有确认排序。需要 mask 
 OpenAI 与 AtlasCloud 是图片 Provider 的选择关系；OCR 不参与图片 Provider 选择。
 数据密度是路线与 backend 推荐的输入（与 `image-deck-workflow.md` 3a 步联动）：
 数据版式页 ≥6 个数据点或含估算序列的 deck，默认推荐 direct-editable / hybrid——
-图片路线的 stylized 图表不承载精确数值标注（`styles/00_索引/图表样式规范.md` §五）；
+图片路线的 stylized 图表不承载精确数值标注（`../template-library/governance/authoring/index/图表样式规范.md` §五）；
 ≤4 个巨数的数据海报页是图片路线最强项。
 普通图片式生成不披露 PaddleOCR。只有 editable 阶段明确需要文字 hints 时，setup
 才把 PaddleOCR 作为非必需在线增强列出；凭据缺失时使用本地 `builtin-ink`，不得阻断
@@ -133,7 +133,7 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
 
 - **提议条件**（满足其一，派发前提议）：
   1. 页型命中数据密度路由的"≥6 数据点或含估算序列"档
-     （`styles/00_索引/图表样式规范.md` §五）——图表/表格/文字密集页的
+     （`../template-library/governance/authoring/index/图表样式规范.md` §五）——图表/表格/文字密集页的
      数值逐字保真由确定性渲染承担；
   2. `backend report` 显示某页型在当前图像 backend 一次通过率持续低
      （既有"换 backend 或改走 direct-editable"提示的第三选项）。

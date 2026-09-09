@@ -1,0 +1,133 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:粉笔黑板风",
+  "name": "粉笔黑板风",
+  "aliases": [
+    "chalkboard",
+    "黑板风",
+    "板书风",
+    "粉笔课风",
+    "classroom board"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/粉笔黑板风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "教学课件",
+      "艺术手绘",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "classroom chalkboard deck, dark slate field with chalk-stroke line work, slightly diffused dry-medium edges, sketched boxes brackets and arrows, off-white chalk carries most marks, powdery pastel accents used sparingly, chalk-dust grain, nostalgic instructional warmth"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "chalkboard",
+      "黑板风",
+      "板书风",
+      "粉笔课风",
+      "classroom board"
+    ],
+    "best_for": "以深石板场、粉笔笔触线稿与粉彩粉笔强调的板书语言,做教学、教程与课堂讲解;怀旧而有秩序,一板一焦点",
+    "visual_direction": "classroom chalkboard deck, dark slate field with chalk-stroke line work, slightly diffused dry-medium edges, sketched boxes brackets and arrows, off-white chalk carries most marks, powdery pastel accents used sparingly, chalk-dust grain, nostalgic instructional warmth",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "深石板板面 #1E3A5F(藏青石板场,板尘质感),板面即呼吸位",
+      "composition": "黑板教学法:分区组织 + 明确中心焦点;粉笔框/括号/箭头做结构与推导线",
+      "density": "low-to-medium,让粉笔迹呼吸,不拥挤"
+    },
+    "color_palette": {
+      "primary": "#1E3A5F(深石板板面)",
+      "secondary": "#F5F0E8(粉笔暖白,承担大部分笔迹)",
+      "accent": "#F97316(粉笔橙强调,克制点睛)",
+      "neutral": "#F5F0E8(粉笔白文字与小注)",
+      "rule": "deck 的颜色以「软粉感粉彩」出场,克制稀疏——永不饱和填充;强调只用于下划线/圈注/关键词;备选「粉彩粉笔层」(chalk pastel layer)彩粉笔板:chalk yellow #FFE566 / pink #FF9999 / blue #66B3FF / green #90EE90 / orange #FFB366——同页出场 ≤4 色,一律以粉感透明度/噪点出场(HEX 本身满饱和,粉感靠透明度实现),不做饱和填充;deck 显式声明 poly-pop 制式混搭时可用下的备选色板"
+    },
+    "typography": {
+      "title": "手写粉笔字气质标题(Caveat / Kalam / 霞鹜手写系),干性笔触感",
+      "body": "可读正文(思源黑体 / Nunito),白色粉笔感",
+      "labels": "小注与图例同手写气质,粉彩点色"
+    },
+    "layout_patterns": [
+      "标题区 = 粉笔下划线 + 手写大标题,顶角可缀粉笔星点",
+      "内容 = 粉笔草图框/括号/箭头组织区块,推导过程逐步画出",
+      "章节页 = 满板单焦点:一词/一式/一图居中,板面留黑呼吸",
+      "图示 = 粉笔简图(线稿 + 少量粉彩填色),禁照片感"
+    ],
+    "layout_usage_rule": "一板一焦点,黑板教学法:粉笔框组织分节,推导线讲过程;粉彩只做点睛",
+    "negative_prompt": [
+      "no saturated marker fills — accents stay powdery pastel",
+      "no mechanical vector edges; chalk strokes stay confident but slightly diffuse",
+      "no dark-theme neon glow; this is chalk dust, not cyberpunk",
+      "no crowding — the board reads as room"
+    ],
+    "paired_illustration": {
+      "family": "hand-drawn",
+      "density": "core"
+    },
+    "palette_family": "macaron(粉彩粉笔)/ duotone(双色板书);源规格颜色行为分离——粉笔纪律是风格本体,HEX 可被品牌侧替换",
+    "visual_elements": {
+      "allowed": "粉笔笔触线稿,草图框/括号/箭头,下划线与强调符,粉笔星点,板尘颗粒",
+      "avoid": "饱和马克笔填充;机械矢量边缘;霓虹辉光;照片写实"
+    },
+    "rendering_constraints": [
+      "Depth comes from chalk-stroke weight, not material; flat board, no drop shadows.",
+      "Chalk-dust grain across the board is on-brand.",
+      "Handwritten baselines sit slightly uneven — the imperfect baseline adds classroom authenticity.",
+      "Chalk dust and eraser smudges appear across the board as authenticity cues, not dirt.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: M1n-n9/academic-ppt-master · visual-styles/chalkboard.md + image-palettes/macaron fewshot; 彩粉笔层/板擦痕词表: GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/chalkboard.md(词表直引+改写)"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Depth comes from chalk-stroke weight, not material; flat board, no drop shadows.",
+      "Chalk-dust grain across the board is on-brand.",
+      "Handwritten baselines sit slightly uneven — the imperfect baseline adds classroom authenticity.",
+      "Chalk dust and eraser smudges appear across the board as authenticity cues, not dirt.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p13-13-three-forces-cards-layouts",
+  "name": "Three Forces Cards",
+  "aliases": [
+    "P13"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "cards": {
+      "region": "content",
+      "desc": "水平卡（巨编号 01/02/03 为编号锚点而非真实数据 + 标题 + 双列段落）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "card_title": {
+      "region": "content",
+      "desc": "每卡标题",
+      "max_chars": 15,
+      "chars_per_line": 13,
+      "max_lines": 1
+    },
+    "card_desc": {
+      "region": "content",
+      "desc": "每卡双列段落描述",
+      "max_chars": 104,
+      "chars_per_line": 29,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左 5/16 ink hero 块（t-cat + 4 行标题 + 点阵装饰）；右 11/16 三张水平卡堆叠（巨编号 + 标题 + 双列段落）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/13_Three_Forces_Cards.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

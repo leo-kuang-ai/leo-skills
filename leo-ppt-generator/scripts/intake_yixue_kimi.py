@@ -53,7 +53,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 YIXUE_ROOT = Path("/Users/kuang/knowledge/ppt-github/yixueAIganhuo-PPT/references")
 KIMI_ROOT = Path(
     "/Users/kuang/knowledge/ppt-github/open-kimi-ppt-skill/skills/"

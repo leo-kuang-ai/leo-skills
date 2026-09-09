@@ -50,12 +50,13 @@
 | `style_sensitive_content_forbidden` | 风格内容包含疑似密钥、令牌、密码或邮箱等敏感信息 | 是 | 移除敏感信息；凭据只允许由宿主注入 |
 | `style_name_conflict` | 用户风格名称已存在且未明确覆盖 | 是 | 使用 `--overwrite` 或 `--rename` 明确处理重名 |
 | `style_not_found` | 请求的内置或用户风格不存在 | 是 | 先用 `style list` 查看可用风格名称 |
-| `style_listed` | 风格列表已读取 | 不适用 | 从返回列表选择名称后执行 load/save |
+| `style_catalog_incomplete` | catalog 已登记的风格实体无法读取或 materialize，列表不提供部分 ready 结果 | 是 | 修复或移除损坏的 canonical brief，重新运行 `style list --summary` |
+| `style_listed` | 风格列表已读取；返回项含 `registry_source`，可为 `catalog` 或 `canonical-rebuild` | 不适用 | 仅将 `catalog` 视为新鲜索引证据；`canonical-rebuild` 需先重建/修复 catalog |
 | `style_loaded` | 风格内容已读取 | 不适用 | 使用返回的内容与 sha256 作为本次运行的风格输入 |
 | `style_saved` | 用户风格已原子保存 | 不适用 | 保存返回的路径与 sha256，后续运行优先读取该风格 |
 | `style_store_error` | 风格库操作的兜底错误 | 条件式 | 读取具体子 reason code 后修复并重试 |
 | `style_rendered` | 模板确定性注入内容已渲染 | 不适用 | 将返回的 template 写入 deck_spec.style 与 slides[].layout |
-| `layout_bank_capacity_filtered` | 版式库容量过滤结果已返回 | 不适用 | 按 matched/missing 消费；槽名语法见 `styles/12_版式库/00_容量档位参考.md` |
+| `layout_bank_capacity_filtered` | 版式库容量过滤结果已返回 | 不适用 | 按 matched/missing 消费；槽名语法见 `template-library/governance/rules/layouts/00_容量档位参考.md` |
 | `capacity_filter_invalid` | --capacity 条件语法错误（含空条件/互斥冲突） | 条件式 | 按 `槽名<=N` 语法修正后重试；与 --style/--layout 互斥 |
 | `templates_listed` | 模板轴清单已枚举 | 不适用 | 从清单选择渲染/版式/信息图/模式名 |
 | `template_store_error` | 模板知识库加载失败或模板不存在 | 是 | 用 `style render --list-templates` 查看可用名后重试 |
@@ -264,7 +265,7 @@
 | `render_backend_ready` | playwright + chromium + 离线字体目录探测通过 | 不适用 | 允许路由提议进入 render lane（寄生既有 backend 确认点） |
 | `render_backend_missing` | 渲染依赖未安装或 chromium 二进制缺失 | 是 | 按安装指引装 playwright + chromium 后重跑 `render ready`；期间路由提议被抑制并披露，图像 lane 不受影响 |
 | `render_backend_unknown` | 组件在场但 chromium 启动探测不可判 | 是 | 按 missing 抑制路由提议并披露探测不可判；排查启动错误后重跑 `render ready` |
-| `render_template_not_found` | 模板 id 不在 assets/render-templates/ | 是 | 核对模板 id 后重试；模板清单见该目录 README |
+| `render_template_not_found` | 模板 id 不在 template-library/canonical/templates/ | 是 | 核对模板 id 后重试；运行 `lint_render_templates.py` 查看模板清单 |
 | `render_template_contract_violation` | 模板缺 ready 信号/禁动画条款等合同失败（lint 级 FAIL） | 是 | 修模板或换模板；lint 见 `scripts/lint_render_templates.py` |
 | `render_data_invalid` | slide data / mermaid 块不可解析、`--source` 无 ```mermaid-example 块或语法渲染失败 | 是 | 修数据后重试；示例数字必须替换为 approved 真实数据 |
 | `render_timeout` | 渲染超过时限（goto/fonts.ready/screenshot） | 是 | 增大 `--timeout` 或简化页内容 |

@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:微立体轻拟态风",
+  "name": "微立体轻拟态风",
+  "aliases": [
+    "轻拟物风",
+    "微立体风",
+    "semi-skeuomorphism"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/微立体轻拟态风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "soft 3D / micro-skeuomorphic style, gentle bevels, micro-gradients, isometric diagrams, modern subtle depth, refined detailed icons, approachable precision"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "轻拟物风",
+      "微立体风",
+      "semi-skeuomorphism"
+    ],
+    "best_for": "以轻拟态、微渐变、等距图形与现代立体感塑造精致、可信、立体表达",
+    "visual_direction": "soft 3D / micro-skeuomorphic style, gentle bevels, micro-gradients, isometric diagrams, modern subtle depth, refined detailed icons, approachable precision",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "light neutral ground",
+      "composition": "isometric modules, subtle 3D blocks, refined icons",
+      "density": "medium, detailed"
+    },
+    "color_palette": {
+      "primary": "light ground #EEF2F7, one brand color #6366F1",
+      "secondary": "supporting tints #E0E7FF",
+      "accent": "one accent #8B5CF6",
+      "neutral": "near-black #1F2937, mid-gray #6B7280, white",
+      "rule": "polished, subtle 3D, refined; avoid hard/glossy excess"
+    },
+    "typography": {
+      "title": "modern semi-bold sans (Inter / 思源黑体)",
+      "body": "clean",
+      "labels": "soft badges",
+      "text_quality": "clear, polished"
+    },
+    "layout_patterns": [
+      "isometric process diagram",
+      "soft 3D feature blocks",
+      "layered architecture with depth",
+      "detailed micro-icon clusters"
+    ],
+    "layout_usage_rule": "Use refined detail and gentle isometric depth; crafted but not cartoonish.",
+    "layout_blueprints": [
+      {
+        "name": "架构/等距图",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "等距三维结构"
+            ]
+          },
+          {
+            "position": "side",
+            "count": 3,
+            "labels": [
+              "模块",
+              "数据",
+              "表述"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "产品细节页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "微立体图标主图"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "工艺",
+              "优势",
+              "规格"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "iso diagrams, soft bevels, micro-gradients, refined icons, gentle depth",
+      "avoid": "gross cartoon 3D, glossy stock, random colors, clutter"
+    },
+    "rendering_constraints": [
+      "Polished and modern, with crafted depth.",
+      "Depth is soft and refined, never glossy or cartoonish.",
+      "Accurate detail; no invented logos."
+    ],
+    "reference": "GitHub: 微立体/轻拟态趋势 · 常见PPT风格类型"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Polished and modern, with crafted depth.",
+      "Depth is soft and refined, never glossy or cartoonish.",
+      "Accurate detail; no invented logos."
+    ]
+  }
+}

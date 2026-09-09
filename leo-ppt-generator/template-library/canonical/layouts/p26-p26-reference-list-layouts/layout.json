@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p26-p26-reference-list-layouts",
+  "name": "Reference List",
+  "aliases": [
+    "P26"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "refs": {
+      "region": "content",
+      "desc": "文献行（编号 + 作者 + 机构/期刊 + 年份）",
+      "count_min": 4,
+      "count_max": 12
+    },
+    "ref_line": {
+      "region": "content",
+      "desc": "每条文献行",
+      "max_chars": 105,
+      "chars_per_line": 44,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "双栏编号列表（[1] 作者. 机构/期刊. 年份.）+ 右下「附」标记，不占正式页码"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P26_Reference_List.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

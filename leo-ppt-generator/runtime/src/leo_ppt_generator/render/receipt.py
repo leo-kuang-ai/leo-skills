@@ -18,7 +18,7 @@
 4. ``render_previews``  渲染预览：``reports/render-preview/**``、
    ``final/render-preview/**``。
 5. ``template_style_sources`` 模板样式源：``input/**`` 中
-   style/deck-spec/theme 命名文件 + run 内 ``assets/render-templates/**``。
+   style/deck-spec/theme 命名文件 + run 内 ``template-library/canonical/templates/**``。
 
 排除项（churn，不属于交付语义）：``logs/**``、``observability/**``、
 ``run.json``、全部点文件/锁文件与符号链接。

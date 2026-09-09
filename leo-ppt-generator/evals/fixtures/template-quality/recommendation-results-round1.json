@@ -1,0 +1,2404 @@
+{
+  "ac-den-undergrad-lecture": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:高桥流糖果舞台风",
+        "conservatism": "balanced",
+        "density": "low",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件",
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "高桥流糖果舞台风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 讲座, 教学",
+          "正式度匹配（任务 0.4 vs 风格 0.5）",
+          "受众保守度一致（balanced）",
+          "密度匹配（low）"
+        ],
+        "score": 7.15,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:teaching-courseware",
+        "conservatism": "expressive",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "卡通儿童",
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "教学课件风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 讲座, 高校, 教学",
+          "正式度匹配（任务 0.4 vs 风格 0.5）"
+        ],
+        "score": 6.15,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:粉笔黑板风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件",
+          "艺术手绘",
+          "艺术表现"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "粉笔黑板风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 教学",
+          "正式度匹配（任务 0.4 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 5.85,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "教学课件"
+    ]
+  },
+  "ac-mgmt-grant-closeout": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:academic-austere",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review",
+          "print"
+        ],
+        "families": [
+          "学术方向"
+        ],
+        "features": [
+          "黑白或近单色 + 规范中西文排印的学术版面",
+          "图表/公式/引用的编号纪律",
+          "论证链（问题-方法-证据-结论）结构优先"
+        ],
+        "formality": 0.9,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "学术克制风",
+        "reasons": [
+          "任务语境命中家族 学术方向（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.9 vs 风格 0.9）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 6.45,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:research-defense",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "学术答辩"
+        ],
+        "features": [],
+        "formality": 0.85,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "科研答辩风",
+        "reasons": [
+          "任务语境命中家族 学术答辩（来自任务 audience/domain/genre）",
+          "适用场景命中 结题验收, 结题验, 题验收",
+          "正式度匹配（任务 0.9 vs 风格 0.85）"
+        ],
+        "score": 6.2,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:consulting-pyramid",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review"
+        ],
+        "families": [
+          "咨询方向"
+        ],
+        "features": [
+          "浅暖底 + 分组线 + 严格脚注层级的咨询语法",
+          "结论先行标题行（action title）",
+          "矩阵/瀑布等比较结构优先"
+        ],
+        "formality": 0.85,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "咨询金字塔风",
+        "reasons": [
+          "任务语境命中家族 咨询方向（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.9 vs 风格 0.85）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 5.4,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "学术方向",
+      "学术答辩",
+      "咨询方向"
+    ]
+  },
+  "ac-pro-paper-prereview": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:academic-austere",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review",
+          "print"
+        ],
+        "families": [
+          "学术方向"
+        ],
+        "features": [
+          "黑白或近单色 + 规范中西文排印的学术版面",
+          "图表/公式/引用的编号纪律",
+          "论证链（问题-方法-证据-结论）结构优先"
+        ],
+        "formality": 0.9,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "学术克制风",
+        "reasons": [
+          "任务语境命中家族 学术方向（来自任务 audience/domain/genre）",
+          "适用场景命中 学术, 方向",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 6.95,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:学术期刊风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "学术答辩"
+        ],
+        "features": [],
+        "formality": 0.85,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "学术期刊风",
+        "reasons": [
+          "任务语境命中家族 学术答辩（来自任务 audience/domain/genre）",
+          "适用场景命中 论文, 学术出版, 学术出",
+          "正式度匹配（任务 0.7 vs 风格 0.85）"
+        ],
+        "score": 6.3,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:象牙账本风",
+        "conservatism": "balanced",
+        "density": "high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "极简排版"
+        ],
+        "features": [],
+        "formality": 0.6,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "象牙账本风",
+        "reasons": [
+          "任务语境命中家族 极简排版（来自任务 audience/domain/genre）",
+          "适用场景命中 研究",
+          "正式度匹配（任务 0.7 vs 风格 0.6）",
+          "受众保守度一致（balanced）",
+          "密度匹配（high）"
+        ],
+        "score": 6.15,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "学术方向",
+      "学术答辩",
+      "极简排版"
+    ]
+  },
+  "br-env-popstore-loop": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:单色满版海报风",
+        "conservatism": "expressive",
+        "density": "low",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "消费营销",
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.45,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "单色满版海报风",
+        "reasons": [
+          "任务语境命中家族 消费营销, 设计流派（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌, 消费",
+          "正式度匹配（任务 0.4 vs 风格 0.45）",
+          "密度匹配（low）"
+        ],
+        "score": 8.7,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:brand-creative",
+        "conservatism": "expressive",
+        "density": "low",
+        "environments": [
+          "store-loop-screen",
+          "conference-screen",
+          "bright-large-venue"
+        ],
+        "families": [
+          "品牌方向"
+        ],
+        "features": [
+          "真实素材满版 + 可控纸感/贴纸设计语言",
+          "大图 + 引语 + 叙事卡的品牌叙事节奏",
+          "黑底白字/白底黑字的高对比极简骨架"
+        ],
+        "formality": 0.5,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "品牌创意风",
+        "reasons": [
+          "任务语境命中家族 品牌方向（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌",
+          "正式度匹配（任务 0.4 vs 风格 0.5）",
+          "密度匹配（low）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:时尚品牌风",
+        "conservatism": "expressive",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "消费营销"
+        ],
+        "features": [],
+        "formality": 0.4,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "时尚品牌风",
+        "reasons": [
+          "任务语境命中家族 消费营销（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌, 消费",
+          "正式度匹配（任务 0.4 vs 风格 0.4）"
+        ],
+        "score": 7.45,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "消费营销",
+      "设计流派",
+      "品牌方向"
+    ]
+  },
+  "br-mgmt-strategy-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:新闻播报风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "新闻编辑",
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.6,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "新闻播报风",
+        "reasons": [
+          "任务语境命中家族 设计流派（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌, 营销",
+          "正式度匹配（任务 0.7 vs 风格 0.6）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 7.85,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:多巴胺活力撞色风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.45,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "多巴胺活力撞色风",
+        "reasons": [
+          "任务语境命中家族 设计流派（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌, 营销",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.45,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:杂志大字风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.45,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "杂志大字风",
+        "reasons": [
+          "任务语境命中家族 设计流派（来自任务 audience/domain/genre）",
+          "适用场景命中 品牌, 营销",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.45,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "消费营销",
+      "设计流派",
+      "品牌方向",
+      "咨询方向",
+      "管理方向"
+    ]
+  },
+  "br-pro-growth-data-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:电商大促风",
+        "conservatism": "expressive",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "消费营销"
+        ],
+        "features": [],
+        "formality": 0.4,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "电商大促风",
+        "reasons": [
+          "任务语境命中家族 消费营销（来自任务 audience/domain/genre）",
+          "适用场景命中 大促, 电商, 营销",
+          "正式度匹配（任务 0.6 vs 风格 0.4）"
+        ],
+        "score": 7.05,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:达人营销风",
+        "conservatism": "expressive",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "消费营销"
+        ],
+        "features": [],
+        "formality": 0.4,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "达人营销风",
+        "reasons": [
+          "任务语境命中家族 消费营销（来自任务 audience/domain/genre）",
+          "适用场景命中 营销",
+          "正式度匹配（任务 0.6 vs 风格 0.4）"
+        ],
+        "score": 6.25,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:快消营销风",
+        "conservatism": "expressive",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "消费营销"
+        ],
+        "features": [],
+        "formality": 0.4,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "快消营销风",
+        "reasons": [
+          "任务语境命中家族 消费营销（来自任务 audience/domain/genre）",
+          "适用场景命中 营销",
+          "正式度匹配（任务 0.6 vs 风格 0.4）",
+          "密度错配（任务 high vs 风格 balanced，差 2 档）"
+        ],
+        "score": 4.55,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "消费营销",
+      "品牌方向"
+    ]
+  },
+  "con-den-workshop": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:深蓝极简工作坊风",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "深蓝极简工作坊风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 工作坊, 工作, 作坊"
+        ],
+        "score": 5.95,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:创业大赛路演风",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业"
+        ],
+        "features": [],
+        "formality": 0.45,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "创业大赛路演风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.6 vs 风格 0.45）"
+        ],
+        "score": 5.3,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:风投路演风",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "质感专业"
+        ],
+        "features": [],
+        "formality": 0.45,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "风投路演风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.6 vs 风格 0.45）"
+        ],
+        "score": 5.3,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "商务专业",
+      "韩式咨询",
+      "咨询方向",
+      "极简排版"
+    ]
+  },
+  "con-mgmt-steering-close": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:MBB幽灵框架风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "韩式咨询"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "MBB幽灵框架风",
+        "reasons": [
+          "任务语境命中家族 韩式咨询（来自任务 audience/domain/genre）",
+          "适用场景命中 战略, 咨询, 高管",
+          "正式度匹配（任务 0.9 vs 风格 0.8）",
+          "密度匹配（balanced）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:咨询精密网格风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "精密网格",
+          "韩式咨询"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "咨询精密网格风",
+        "reasons": [
+          "任务语境命中家族 韩式咨询（来自任务 audience/domain/genre）",
+          "适用场景命中 汇报, 咨询",
+          "正式度匹配（任务 0.9 vs 风格 0.8）",
+          "密度匹配（balanced）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:成果汇报风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "成果汇报风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 汇报, 高管",
+          "正式度匹配（任务 0.9 vs 风格 0.8）",
+          "密度匹配（balanced）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "商务专业",
+      "韩式咨询",
+      "咨询方向"
+    ]
+  },
+  "con-pro-analysis-appendix": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:色谱图表风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "色谱图表风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 数据, 分析",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 7.35,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:麦肯锡咨询风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "麦肯锡咨询风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 数据, 分析, 咨询",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 7.35,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:consulting-pyramid",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review"
+        ],
+        "families": [
+          "咨询方向"
+        ],
+        "features": [
+          "浅暖底 + 分组线 + 严格脚注层级的咨询语法",
+          "结论先行标题行（action title）",
+          "矩阵/瀑布等比较结构优先"
+        ],
+        "formality": 0.85,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "咨询金字塔风",
+        "reasons": [
+          "任务语境命中家族 咨询方向（来自任务 audience/domain/genre）",
+          "适用场景命中 咨询",
+          "正式度匹配（任务 0.7 vs 风格 0.85）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 7.3,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "商务专业",
+      "韩式咨询",
+      "咨询方向"
+    ]
+  },
+  "edu-kids-science-class": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:edu-bright",
+        "conservatism": "balanced",
+        "density": "low",
+        "environments": [
+          "classroom-screen",
+          "lecture-hall"
+        ],
+        "families": [
+          "教育方向"
+        ],
+        "features": [
+          "清晰明度节奏 + 图文共讲的认知负荷控制",
+          "教学顺序（目标→讲解→练习）结构化",
+          "问答/少量信息组的亲和排印"
+        ],
+        "formality": 0.4,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "教育明快风",
+        "reasons": [
+          "任务语境命中家族 教育方向（来自任务 audience/domain/genre）",
+          "适用场景命中 教育",
+          "正式度匹配（任务 0.2 vs 风格 0.4）",
+          "受众保守度一致（balanced）",
+          "密度匹配（low）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 8.05,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:高桥流糖果舞台风",
+        "conservatism": "balanced",
+        "density": "low",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件",
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "高桥流糖果舞台风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 课件, 教育",
+          "受众保守度一致（balanced）",
+          "密度匹配（low）"
+        ],
+        "score": 6.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:粉笔黑板风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件",
+          "艺术手绘",
+          "艺术表现"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "粉笔黑板风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 课堂, 课件",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.45,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "教学课件",
+      "教育方向"
+    ]
+  },
+  "edu-mgmt-teaching-audit": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:祖母绿刊头风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "质感专业"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "祖母绿刊头风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 汇报, 领导",
+          "正式度匹配（任务 0.85 vs 风格 0.8）",
+          "密度匹配（balanced）"
+        ],
+        "score": 6.7,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:clean-professional",
+        "conservatism": "balanced",
+        "density": "balanced",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review",
+          "conference-screen"
+        ],
+        "families": [
+          "商务专业"
+        ],
+        "features": [
+          "浅底 + 专业蓝主色的克制层级",
+          "左对齐强层级排印",
+          "留白充足的技术证据区"
+        ],
+        "formality": 0.7,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "清爽专业风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.85 vs 风格 0.7）",
+          "受众保守度一致（balanced）",
+          "密度匹配（balanced）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 6.1,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:互联网产品风",
+        "conservatism": "balanced",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "互联网产品风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 教育",
+          "受众保守度一致（balanced）",
+          "密度匹配（balanced）"
+        ],
+        "score": 5.75,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "教学课件",
+      "教育方向",
+      "商务专业"
+    ]
+  },
+  "edu-pro-math-open-class": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:数学可视化教学风",
+        "conservatism": "balanced",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "数学可视化教学风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 课件, 教育, 数学",
+          "正式度匹配（任务 0.6 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:teaching-courseware",
+        "conservatism": "expressive",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "卡通儿童",
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "教学课件风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 课件",
+          "正式度匹配（任务 0.6 vs 风格 0.5）"
+        ],
+        "score": 6.15,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:互联网产品风",
+        "conservatism": "balanced",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "互联网产品风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 课件, 教育",
+          "正式度匹配（任务 0.6 vs 风格 0.5）",
+          "受众保守度一致（balanced）",
+          "密度错配（任务 high vs 风格 balanced，差 2 档）"
+        ],
+        "score": 6.15,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "教学课件",
+      "教育方向"
+    ]
+  },
+  "fin-env-annual-meeting": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:商务几何风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "商务几何风",
+        "reasons": [
+          "任务语境命中家族 商务专业, 数据图表（来自任务 audience/domain/genre）",
+          "正式度匹配（任务 0.85 vs 风格 0.8）"
+        ],
+        "score": 6.2,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:投资机构风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "金融审计"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "投资机构风",
+        "reasons": [
+          "任务语境命中家族 金融审计（来自任务 audience/domain/genre）",
+          "适用场景命中 金融",
+          "正式度匹配（任务 0.85 vs 风格 0.9）"
+        ],
+        "score": 6.2,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:金融奢华风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "金融奢华风",
+        "reasons": [
+          "任务语境命中家族 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 金融",
+          "正式度匹配（任务 0.85 vs 风格 0.8）"
+        ],
+        "score": 6.2,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "金融审计",
+      "商务专业",
+      "数据图表",
+      "金融方向"
+    ]
+  },
+  "fin-mgmt-board-report": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:商业计划书风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "金融审计"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "商业计划书风",
+        "reasons": [
+          "任务语境命中家族 金融审计, 商务专业（来自任务 audience/domain/genre）",
+          "适用场景命中 金融",
+          "正式度匹配（任务 0.95 vs 风格 0.9）",
+          "密度匹配（balanced）"
+        ],
+        "score": 7.7,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:finance-navy",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review",
+          "print"
+        ],
+        "families": [
+          "金融方向"
+        ],
+        "features": [
+          "藏青主色 + 细网格线的可核验排印",
+          "数字右对齐 + 制表数字字体的表格纪律",
+          "涨跌色只用于数据序列"
+        ],
+        "formality": 0.9,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "金融藏青风",
+        "reasons": [
+          "任务语境命中家族 金融方向（来自任务 audience/domain/genre）",
+          "适用场景命中 金融",
+          "正式度匹配（任务 0.95 vs 风格 0.9）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 7.4,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:四大审计风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "金融审计"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "四大审计风",
+        "reasons": [
+          "任务语境命中家族 金融审计（来自任务 audience/domain/genre）",
+          "适用场景命中 汇报, 金融",
+          "正式度匹配（任务 0.95 vs 风格 0.9）"
+        ],
+        "score": 7.4,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "金融审计",
+      "商务专业",
+      "数据图表",
+      "金融方向",
+      "管理方向"
+    ]
+  },
+  "fin-pro-quant-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:色谱图表风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "色谱图表风",
+        "reasons": [
+          "任务语境命中家族 商务专业, 数据图表（来自任务 audience/domain/genre）",
+          "适用场景命中 数据, 分析, 专业",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 8.35,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:麦肯锡咨询风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "麦肯锡咨询风",
+        "reasons": [
+          "任务语境命中家族 商务专业, 数据图表（来自任务 audience/domain/genre）",
+          "适用场景命中 数据, 分析, 专业",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 8.35,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:数据新闻编辑风",
+        "conservatism": "balanced",
+        "density": "high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "数据图表",
+          "质感专业"
+        ],
+        "features": [],
+        "formality": 0.75,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "数据新闻编辑风",
+        "reasons": [
+          "任务语境命中家族 数据图表（来自任务 audience/domain/genre）",
+          "适用场景命中 数据, 专业",
+          "正式度匹配（任务 0.7 vs 风格 0.75）",
+          "受众保守度一致（balanced）",
+          "密度匹配（high）"
+        ],
+        "score": 8.2,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "金融审计",
+      "商务专业",
+      "数据图表",
+      "金融方向",
+      "咨询方向"
+    ]
+  },
+  "gov-env-party-day-screen": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:official-red-classic",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "党政红"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "党政红风格",
+        "reasons": [
+          "任务语境命中家族 党政红（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 党建",
+          "正式度匹配（任务 0.9 vs 风格 0.9）"
+        ],
+        "score": 6.25,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:党建活动风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "党政红"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "党建活动风",
+        "reasons": [
+          "任务语境命中家族 党政红（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 主题, 党建",
+          "正式度匹配（任务 0.9 vs 风格 0.9）",
+          "密度错配（任务 low vs 风格 balanced，差 2 档）"
+        ],
+        "score": 5.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:政府工作报告风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "党政红"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "政府工作报告风",
+        "reasons": [
+          "任务语境命中家族 党政红（来自任务 audience/culture/domain/genre）",
+          "正式度匹配（任务 0.9 vs 风格 0.9）"
+        ],
+        "score": 5.25,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "党政红",
+      "政务方向"
+    ]
+  },
+  "gov-mgmt-workreport": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:gov-red",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "meeting-room-projector",
+          "large-venue-screen"
+        ],
+        "families": [
+          "政务方向"
+        ],
+        "features": [
+          "庄重对称版式 + 规范中文排印",
+          "红金克制配色（红为主、金仅点缀）",
+          "清单/规格表/时间线的公务语法"
+        ],
+        "formality": 0.95,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "政务庄重风",
+        "reasons": [
+          "任务语境命中家族 政务方向（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 政务",
+          "正式度匹配（任务 0.95 vs 风格 0.95）",
+          "密度匹配（balanced）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 7.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:official-red-classic",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "党政红"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "党政红风格",
+        "reasons": [
+          "任务语境命中家族 党政红（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 工作汇报, 工作汇, 作汇报",
+          "正式度匹配（任务 0.95 vs 风格 0.9）"
+        ],
+        "score": 7.2,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:政府工作报告风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "党政红"
+        ],
+        "features": [],
+        "formality": 0.9,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "政府工作报告风",
+        "reasons": [
+          "任务语境命中家族 党政红（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 工作, 政务, 政府",
+          "正式度匹配（任务 0.95 vs 风格 0.9）"
+        ],
+        "score": 7.2,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "党政红",
+      "政务方向",
+      "商务专业"
+    ]
+  },
+  "gov-pro-open-data-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:麦肯锡咨询风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "麦肯锡咨询风",
+        "reasons": [
+          "任务语境命中家族 数据图表, 商务专业（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 数据, 信息",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 8.35,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:数据新闻编辑风",
+        "conservatism": "balanced",
+        "density": "high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "数据图表",
+          "质感专业"
+        ],
+        "features": [],
+        "formality": 0.75,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "数据新闻编辑风",
+        "reasons": [
+          "任务语境命中家族 数据图表（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 数据, 信息",
+          "正式度匹配（任务 0.7 vs 风格 0.75）",
+          "受众保守度一致（balanced）",
+          "密度匹配（high）"
+        ],
+        "score": 8.2,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:色谱图表风",
+        "conservatism": "reserved",
+        "density": "medium-high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "商务专业",
+          "数据图表"
+        ],
+        "features": [],
+        "formality": 0.8,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "色谱图表风",
+        "reasons": [
+          "任务语境命中家族 数据图表, 商务专业（来自任务 audience/culture/domain/genre）",
+          "适用场景命中 数据",
+          "正式度匹配（任务 0.7 vs 风格 0.8）"
+        ],
+        "score": 7.35,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "党政红",
+      "政务方向",
+      "数据图表",
+      "商务专业",
+      "咨询方向",
+      "工程蓝图"
+    ]
+  },
+  "med-mgmt-annual-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:医院品牌风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "医院品牌风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 医疗, 医院, 与科室",
+          "正式度匹配（任务 0.85 vs 风格 0.7）",
+          "密度匹配（balanced）"
+        ],
+        "score": 7.6,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:health-clean",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "meeting-room-projector",
+          "desktop-review",
+          "classroom-screen"
+        ],
+        "families": [
+          "医疗方向"
+        ],
+        "features": [
+          "浅底蓝绿 + 大字号少装饰的洁净排印",
+          "层级/时间线/KPI 的临床信息秩序",
+          "术语全称与缩写并用的可读性纪律"
+        ],
+        "formality": 0.8,
+        "lifecycle": "active",
+        "modes": [
+          "light"
+        ],
+        "name": "医疗洁净风",
+        "reasons": [
+          "任务语境命中家族 医疗方向（来自任务 audience/domain/genre）",
+          "适用场景命中 医疗",
+          "正式度匹配（任务 0.85 vs 风格 0.8）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 7.4,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:冷蓝斜切医学风",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "冷蓝斜切医学风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 汇报, 医疗",
+          "正式度匹配（任务 0.85 vs 风格 0.7）"
+        ],
+        "score": 7.3,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "医疗健康",
+      "医疗方向",
+      "商务专业"
+    ]
+  },
+  "med-pro-trial-review": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:临床试验风",
+        "conservatism": "reserved",
+        "density": "high",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "临床试验风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 方案, 医疗, 临床",
+          "正式度匹配（任务 0.8 vs 风格 0.7）",
+          "密度匹配（high）"
+        ],
+        "score": 7.65,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:医疗学术风",
+        "conservatism": "reserved",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "医疗学术风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 医疗",
+          "正式度匹配（任务 0.8 vs 风格 0.7）"
+        ],
+        "score": 6.15,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:医院品牌风",
+        "conservatism": "reserved",
+        "density": "balanced",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "医院品牌风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 医疗, 专业",
+          "正式度匹配（任务 0.8 vs 风格 0.7）",
+          "密度错配（任务 high vs 风格 balanced，差 2 档）"
+        ],
+        "score": 5.65,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "医疗健康",
+      "医疗方向",
+      "商务专业",
+      "咨询方向"
+    ]
+  },
+  "med-pub-patient-education": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:teaching-courseware",
+        "conservatism": "expressive",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "卡通儿童",
+          "教学课件"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "教学课件风",
+        "reasons": [
+          "任务语境命中家族 教学课件, 卡通儿童（来自任务 audience/domain/genre）",
+          "适用场景命中 科普, 讲座",
+          "正式度匹配（任务 0.3 vs 风格 0.5）"
+        ],
+        "score": 7.05,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:高桥流糖果舞台风",
+        "conservatism": "balanced",
+        "density": "low",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "教学课件",
+          "设计流派"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "高桥流糖果舞台风",
+        "reasons": [
+          "任务语境命中家族 教学课件（来自任务 audience/domain/genre）",
+          "适用场景命中 讲座",
+          "正式度匹配（任务 0.3 vs 风格 0.5）",
+          "受众保守度一致（balanced）",
+          "密度匹配（low）"
+        ],
+        "score": 6.05,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:冷蓝斜切医学风",
+        "conservatism": "reserved",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "医疗健康"
+        ],
+        "features": [],
+        "formality": 0.7,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "冷蓝斜切医学风",
+        "reasons": [
+          "任务语境命中家族 医疗健康（来自任务 audience/domain/genre）",
+          "适用场景命中 医疗, 健康"
+        ],
+        "score": 5.95,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "医疗健康",
+      "医疗方向",
+      "教学课件",
+      "卡通儿童",
+      "艺术手绘"
+    ]
+  },
+  "tech-env-atrium-launch": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:Stripe蓝白风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技浅色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "Stripe蓝白风",
+        "reasons": [
+          "任务语境命中家族 科技浅色（来自任务 audience/domain/genre）",
+          "适用场景命中 品发布, 品发, 发布",
+          "正式度匹配（任务 0.6 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 7.85,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:产品发布会风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技浅色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "产品发布会风",
+        "reasons": [
+          "任务语境命中家族 科技浅色（来自任务 audience/domain/genre）",
+          "适用场景命中 品发布, 新品, 品发",
+          "正式度匹配（任务 0.6 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 7.85,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:Catppuccin拿铁风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技浅色",
+          "终端配色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "Catppuccin拿铁风",
+        "reasons": [
+          "任务语境命中家族 科技浅色（来自任务 audience/domain/genre）",
+          "适用场景命中 科技",
+          "正式度匹配（任务 0.6 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.85,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "科技暗色",
+      "科技浅色",
+      "科技方向",
+      "医疗健康",
+      "艺术手绘"
+    ]
+  },
+  "tech-mgmt-investor-pitch": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:黑底数字剧场风",
+        "conservatism": "balanced",
+        "density": "low",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技暗色",
+          "质感专业"
+        ],
+        "features": [],
+        "formality": 0.75,
+        "lifecycle": "draft",
+        "modes": [
+          "dark"
+        ],
+        "name": "黑底数字剧场风",
+        "reasons": [
+          "任务语境命中家族 科技暗色（来自任务 audience/domain/genre）",
+          "适用场景命中 科技",
+          "正式度匹配（任务 0.8 vs 风格 0.75）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.9,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:Stripe蓝白风",
+        "conservatism": "balanced",
+        "density": "low-medium",
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技浅色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "Stripe蓝白风",
+        "reasons": [
+          "任务语境命中家族 科技浅色（来自任务 audience/domain/genre）",
+          "适用场景命中 融资路演, 融资路, 资路演",
+          "受众保守度一致（balanced）",
+          "密度匹配（low-medium）"
+        ],
+        "score": 6.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:tech-dark",
+        "conservatism": "balanced",
+        "density": "balanced",
+        "environments": [
+          "conference-screen",
+          "roadshow-stage",
+          "bright-large-venue",
+          "desktop-review"
+        ],
+        "families": [
+          "科技方向"
+        ],
+        "features": [
+          "暗底受控强调色 + 等宽字体点缀的系统图示",
+          "系统拓扑/回路/时间线结构优先",
+          "亮环境自动切浅色变体（light 双模式声明）"
+        ],
+        "formality": 0.6,
+        "lifecycle": "active",
+        "modes": [
+          "dark",
+          "light"
+        ],
+        "name": "科技暗色风",
+        "reasons": [
+          "任务语境命中家族 科技方向（来自任务 audience/domain/genre）",
+          "适用场景命中 科技",
+          "受众保守度一致（balanced）",
+          "结构完整 active（主题绑定/特征齐备）"
+        ],
+        "score": 6.45,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "科技暗色",
+      "科技浅色",
+      "科技方向",
+      "商务专业"
+    ]
+  },
+  "tech-pro-arch-deepdive": {
+    "candidates": [
+      {
+        "asset_id": "builtin:style:工程蓝图风",
+        "conservatism": "balanced",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "工程蓝图"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "工程蓝图风",
+        "reasons": [
+          "任务语境命中家族 工程蓝图（来自任务 audience/domain/genre）",
+          "适用场景命中 工程",
+          "正式度匹配（任务 0.5 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:暗黑科技风",
+        "conservatism": "balanced",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技暗色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "dark"
+        ],
+        "name": "暗黑科技风",
+        "reasons": [
+          "任务语境命中家族 科技暗色（来自任务 audience/domain/genre）",
+          "适用场景命中 AI",
+          "正式度匹配（任务 0.5 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.75,
+        "stale_disclosure": null,
+        "verified": false
+      },
+      {
+        "asset_id": "builtin:style:科技未来感风",
+        "conservatism": "balanced",
+        "density": null,
+        "environments": [
+          "desktop-review"
+        ],
+        "families": [
+          "科技暗色"
+        ],
+        "features": [],
+        "formality": 0.5,
+        "lifecycle": "draft",
+        "modes": [
+          "light"
+        ],
+        "name": "科技未来感风",
+        "reasons": [
+          "任务语境命中家族 科技暗色（来自任务 audience/domain/genre）",
+          "适用场景命中 技术",
+          "正式度匹配（任务 0.5 vs 风格 0.5）",
+          "受众保守度一致（balanced）"
+        ],
+        "score": 6.75,
+        "stale_disclosure": null,
+        "verified": false
+      }
+    ],
+    "defaults_applied": true,
+    "disclosures": [
+      "受众保守度缺失：按 balanced 试探（default 来源）"
+    ],
+    "kind": "style-recommendation",
+    "match_type": "recommended",
+    "schema_version": 1,
+    "signal_families": [
+      "工程蓝图",
+      "科技暗色",
+      "科技浅色",
+      "科技方向"
+    ]
+  }
+}

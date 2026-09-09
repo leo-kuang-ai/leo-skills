@@ -1,0 +1,132 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:知识卡片风",
+  "name": "知识卡片风",
+  "aliases": [
+    "卡片风",
+    "知识卡风",
+    "knowledge card风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/教学分享/知识卡片风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "knowledge-card style, card-based term explanation, question-answer, short labels, high scannability, clean modular"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "卡片风",
+      "知识卡风",
+      "knowledge card风"
+    ],
+    "best_for": "知识卡片、术语解释和速查卡,需要一问一答、短标签、高可扫性",
+    "visual_direction": "knowledge-card style, card-based term explanation, question-answer, short labels, high scannability, clean modular",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light, card grid",
+      "composition": "术语 + 定义 + 例子 + 关联",
+      "density": "medium, card-scannable"
+    },
+    "color_palette": {
+      "primary": "white, category accent colors #3B82F6 / #F59E0B / #10B981",
+      "secondary": "light gray #E5E7EB",
+      "accent": "one category accent #3B82F6",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "清晰、可扫、分类色区分;不花哨"
+    },
+    "typography": {
+      "title": "clean sans (Inter / 思源黑体), term-emphasized",
+      "body": "concise",
+      "labels": "term/category tags",
+      "text_quality": "准确术语,不误导"
+    },
+    "layout_patterns": [
+      "术语 + 定义",
+      "例子 / 类比",
+      "关联概念",
+      "分类标签"
+    ],
+    "layout_usage_rule": "一问一答、短定义、一个例子;分类用颜色区分;卡片网格保持可扫。",
+    "layout_blueprints": [
+      {
+        "name": "卡片页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 6,
+            "labels": [
+              "术语1",
+              "术语2",
+              "术语3",
+              "术语4",
+              "术语5",
+              "术语6"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "card grid, term labels, short definition, category colors",
+      "avoid": "长段定义, 密集, 无分类, 花哨"
+    },
+    "rendering_constraints": [
+      "一问一答、短定义。",
+      "分类色区分。",
+      "卡片可扫。"
+    ],
+    "reference": "GitHub: 知识卡片 · 速查卡惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "一问一答、短定义。",
+      "分类色区分。",
+      "卡片可扫。"
+    ]
+  }
+}

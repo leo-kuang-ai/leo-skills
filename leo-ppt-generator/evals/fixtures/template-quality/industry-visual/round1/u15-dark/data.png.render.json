@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "981bc7ad67eddca01a9c1d627e4be9f91a71a0f425937e38d4737fb6e53427bd",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/industry-visual/round1/u15-dark/data.png",
+  "out_sha256": "23520fc95b547a8f13c56d28b0dbcd02000c88bcad35a5da4d5027032202eb2d",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1262,
+  "rendered_at": "2026-09-08T02:42:29.797Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "spec-table",
+  "template_sha256": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+  "warnings": [],
+  "width": 2560
+}

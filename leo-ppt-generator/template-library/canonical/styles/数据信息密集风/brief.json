@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:数据信息密集风",
+  "name": "数据信息密集风",
+  "aliases": [
+    "데이터 인포그래픽 헤비",
+    "data infographic heavy",
+    "信息密集看板"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/数据信息密集风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "dense data infographic slide, F-pattern dashboard of 4-8 chart and KPI card modules on near-white ground, four-color data coding with strict hierarchy, compact grotesk typography"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "데이터 인포그래픽 헤비",
+      "data infographic heavy",
+      "信息密集看板"
+    ],
+    "best_for": "图表/KPI 卡高密度填充的仪表盘式信息页;适合运营复盘/数据汇报/增长报告",
+    "visual_direction": "dense data infographic slide, F-pattern dashboard of 4-8 chart and KPI card modules on near-white ground, four-color data coding with strict hierarchy, compact grotesk typography",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F8FA、#FFFFFF(变体锚)",
+      "composition": "一页 4-8 个图表/KPI 卡模块,F 字动线排布,密度即身份",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#F7F8FA(浅灰白底)",
+      "secondary": "#FFFFFF(KPI 卡面白)",
+      "accent": "#2563EB(数据蓝主强调)",
+      "neutral": "#1E2229(墨字)"
+    },
+    "typography": {
+      "title": "Inter 700 24pt,tracking -0.01em",
+      "body": "Inter 400,卡头 13pt semibold",
+      "labels": "Inter 600 KPI 数字 40pt;涨跌用绿 #16A34A/红 #EF4444"
+    },
+    "layout_patterns": [
+      "一页 4-8 个图表/KPI 卡模块,F 字动线排布",
+      "四色数据编码(蓝/青/琥珀/红),不超四色",
+      "KPI 数字 40pt 级,辅助文字小两档",
+      "圆角 ≤8px,无渐变底"
+    ],
+    "layout_usage_rule": "一页 4-8 个图表/KPI 卡模块,F 字动线排布",
+    "visual_elements": {
+      "allowed": "一页 4-8 个图表/KPI 卡模块,F 字动线排布,密度即身份",
+      "avoid": "不要一页只有 1-2 个模块——密度是身份,至少 4 个; 不要超过四色或装饰性配色"
+    },
+    "rendering_constraints": [
+      "不要一页只有 1-2 个模块——密度是身份,至少 4 个",
+      "不要超过四色或装饰性配色",
+      "不要大圆角(>8px)与渐变背景",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要一页只有 1-2 个模块——密度是身份,至少 4 个",
+      "不要超过四色或装饰性配色",
+      "不要大圆角(>8px)与渐变背景"
+    ],
+    "paired_illustration": {
+      "family": "dashboard",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD09 데이터 인포그래픽 헤비"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要一页只有 1-2 个模块——密度是身份,至少 4 个",
+      "不要超过四色或装饰性配色",
+      "不要大圆角(>8px)与渐变背景",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "d9e9d5ec0ecf7c6f7bd6a2b3c4c4b4bf897a09d7505e9c2da655391a5dbf4cbc",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/pull-quote-minimal.png",
+  "out_sha256": "a66f543420df319b409d322720c0b98c89e72419c76d86508b151ff8a4c9d461",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1238,
+  "rendered_at": "2026-09-07T19:26:56.951Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "759f5de944499f0553a6be3746cea6ad91928cde101fb7fe812992c73455bd2d",
+  "warnings": [],
+  "width": 2560
+}

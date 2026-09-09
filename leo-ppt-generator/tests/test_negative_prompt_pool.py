@@ -13,7 +13,7 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 SCRIPT = SKILL_DIR / "scripts" / "draft_negative_prompts.py"
-POOL_DOC = SKILL_DIR / "references" / "styles" / "00_索引" / "负面语料参考池.md"
+POOL_DOC = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "00_索引" / "负面语料参考池.md"
 
 
 def _load_module():
@@ -45,7 +45,7 @@ class NegativePromptPoolDocContract(unittest.TestCase):
         """非通用组名须与 01_通用母版/ 家族目录名一致，保证路径匹配可靠。"""
         mod = _load_module()
         groups = mod._load_pool(POOL_DOC)
-        root = SKILL_DIR / "references" / "styles" / "01_通用母版"
+        root = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "01_通用母版"
         family_dirs = {p.name for p in root.iterdir() if p.is_dir()}
         for name in groups:
             if name == "通用":

@@ -3,7 +3,7 @@
 > 本文档是「五层非补偿质量门」中**「视觉呈现」层**的可执行展开。leo-ppt 已有
 > 质量门框架（`image-deck-workflow.md` 第 10 步）与 worker 自查清单
 > （`prompts/slide-worker.md`），本文档把它们整合成**闭环 + 对抗式审查 + 具体判据**。
-> 判据阈值引用 [`styles/00_索引/通用设计规范.md`](styles/00_索引/通用设计规范.md)，不重复定义。
+> 判据阈值引用 [`../template-library/governance/authoring/index/通用设计规范.md`](../template-library/governance/authoring/index/通用设计规范.md)，不重复定义。
 
 ## 一、质检定位：对抗式审查，不是正向核对
 
@@ -49,7 +49,7 @@
 - 标题 / 数字 / 单位 / 标签 / 引用是否与 `slide_jobs.json` **逐字一致**？
 - 有没有把「智能补全/实时协作」这类概念硬塞进数据图表并编造百分比？
 
-**数据**(判据全文见 [`styles/00_索引/图表样式规范.md`](styles/00_索引/图表样式规范.md))
+**数据**(判据全文见 [`../template-library/governance/authoring/index/图表样式规范.md`](../template-library/governance/authoring/index/图表样式规范.md))
 - 图表数值 / 单位 / 标签 / 图例 / 排序是否与 approved 完全一致?
 - 有没有「无量化数据的内容用了 H-Bar/KPI 塔」这种**版式滥用**（编数据）?
 - 有没有**无数据授权的 chart-like 形状**(装饰竖线/塔/条)?编形状 = 编数据。

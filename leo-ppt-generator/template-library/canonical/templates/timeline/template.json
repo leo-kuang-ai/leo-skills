@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:timeline",
+  "name": "timeline",
+  "input_fields": [
+    {
+      "name": "title",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "steps",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "page-no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "timeline",
+      "selector": "[data-leo-block='timeline']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "tl-axis",
+      "selector": "[data-leo-block='tl-axis']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "tl-names",
+      "selector": "[data-leo-block='tl-names']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "tl-nos",
+      "selector": "[data-leo-block='tl-nos']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "accent"
+  ],
+  "dependencies": [
+    "builtin:layout:timeline"
+  ],
+  "layout_profiles": [
+    "builtin:layout:timeline"
+  ],
+  "lane": "render:html",
+  "notes": "机械迁移：HTML 仍含硬编码色/字体，待 U5 切换主题变量"
+}

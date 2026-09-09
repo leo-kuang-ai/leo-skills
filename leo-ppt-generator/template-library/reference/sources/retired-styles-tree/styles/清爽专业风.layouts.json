@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "清爽专业风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：清爽网格正文按版式默认容量承载"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    },
+    {
+      "page_type": "agenda",
+      "preferred": [
+        "P32"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P23"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P4",
+        "P5",
+        "P19",
+        "P8"
+      ],
+      "discouraged": [
+        "P13"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P6",
+        "P20",
+        "P21",
+        "P25"
+      ],
+      "discouraged": [
+        "P24"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

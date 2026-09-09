@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "0024a26063ac6e91a5b4e54bb6ba970fc097635ccd5f11528019219580e57a1c",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/body-basic-near-capacity.png",
+  "out_sha256": "466c39c27f16113a91bb1a6526f6b3839a86b46f889bd5080f30e13000109a73",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1230,
+  "rendered_at": "2026-09-07T19:26:42.815Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "ebb64f9216648b3eff734966629fc2212d8536d1bc385ef46fea5031772beadf",
+  "warnings": [],
+  "width": 2560
+}

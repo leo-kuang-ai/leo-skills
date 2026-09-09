@@ -14,7 +14,7 @@
     python3 scripts/draft_negative_prompts.py            # dry-run：列出草案
     python3 scripts/draft_negative_prompts.py --apply    # 把草案写入不足 3 条的
                                                          # brief（去重后补足，最多 5 条）
-    python3 scripts/draft_negative_prompts.py --pool references/styles/00_索引/负面语料参考池.md
+    python3 scripts/draft_negative_prompts.py --pool template-library/reference/sources/retired-styles-tree/styles/00_索引/负面语料参考池.md
                                                           # 叠加语料池词条（家族组按
                                                           # brief 所在目录名匹配，
                                                           # 通用组全适用）
@@ -33,7 +33,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 DEFAULT_POOL = STYLES_ROOT / "00_索引" / "负面语料参考池.md"
 
 _JSON_BLOCK = re.compile(r"```json\n(.*?)\n```", re.S)

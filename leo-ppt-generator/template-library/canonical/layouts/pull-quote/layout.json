@@ -1,0 +1,51 @@
+{
+ "schema_version": 1,
+ "entity": "layout-profile",
+ "asset_id": "builtin:layout:pull-quote",
+ "name": "引语金句",
+ "aliases": [
+  "pull-quote"
+ ],
+ "canvas": {
+  "width": 1280,
+  "height": 720,
+  "units": "logical-px"
+ },
+ "page_role": "quote",
+ "layout_type": "fixed-regions",
+ "regions": {
+  "content": {
+   "x": 150,
+   "y": 90,
+   "width": 980,
+   "height": 540
+  }
+ },
+ "slots": {
+  "quote": {
+   "region": "content",
+   "max_chars": 24,
+   "max_lines": 2,
+   "desc": "引语（大字，两行内）"
+  },
+  "source": {
+   "region": "content",
+   "max_chars": 40,
+   "desc": "出处"
+  }
+ },
+ "padding": {
+  "block": 76,
+  "inline": 96
+ },
+ "font_size_refs": {
+  "title": "title",
+  "body": "body",
+  "page_no": "page_no"
+ },
+ "renderer_support": {
+  "render:html": "builtin:template:pull-quote",
+  "image": "quote hero: oversized centered statement with attribution rule"
+ },
+ "notes": "html lane 几何真值；字号/行高引用 effective_theme 字体角色"
+}

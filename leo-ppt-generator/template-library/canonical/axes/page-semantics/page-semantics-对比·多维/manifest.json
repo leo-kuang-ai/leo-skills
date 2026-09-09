@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:page-semantics-对比-多维",
+  "name": "页面语义：对比·多维（comparison）",
+  "kind": "page-semantics",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

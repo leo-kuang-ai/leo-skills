@@ -1,0 +1,15 @@
+# 版式：P34 · Quote Hero · 引用金句
+
+**分类:** canonical/layouts（陈述结构版式）
+
+**用途:** 权威引用页 / 用户证言 / 文献金句 / 章节转场金句。
+
+**适用内容类型:** **恰好 1 条引用 + 1 个出处**(出处 = 人名 + 头衔/机构 + 可选时间,三件至少两件)。引用必须是可溯源的真实原话(评审/报道/访谈/文献),**禁止杜撰引语与假出处**;自产口号(无外部出处)用 P3 Statement;引用 + 数据佐证的组合改用 P18 Why Now。
+
+**骨架:** 页面垂直居中单列:顶部装饰引号(hairline 级,禁止彩色大引号图标)/ 引文主体(display 9.2vw,限高 `min(9.2vw,15vh)`,CJK 正字距、语义断行)/ 底部出处块:短 hairline + 人名(h3 4.0vw)+ 头衔·机构·时间(meta 1.2vw,灰)/ 全页留白 ≥40%,活跃构图占页比可降至 40–60%(极简类档位,须有引号为锚点)。
+
+**关键类:** `.quote-hero` `.quote-mark` `.quote-source` `.quote-rule`
+
+**动效 recipe:** `quote-settle` — 引文整体 fade + 轻微上移(200ms),出处块延迟 300ms 后 hairline 由左向右画出
+
+> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。引语逐字保真:缩略须用省略号标注,译文引用须注明译本。数值呈现遵守 `template-library/governance/authoring/index/图表样式规范.md`。

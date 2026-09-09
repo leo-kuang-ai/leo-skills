@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "ec71abf38bf5a09d55d1ffc3a7ad9803f335792c96f37e656160eee75c636bbb",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/health-clean/content.png",
+  "out_sha256": "342f0bc8c0de9abcc5e904f805f1f41b03d60f165ba576a13516ddebf0dbf24d",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1304,
+  "rendered_at": "2026-09-08T02:00:08.529Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "f267cbdae12c9bc9d14c73c0c8cc579702dceee4f658a3486ba265304a35131a",
+  "warnings": [],
+  "width": 2560
+}

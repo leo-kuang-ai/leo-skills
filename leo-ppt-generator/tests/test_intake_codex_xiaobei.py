@@ -16,8 +16,8 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPT = SKILL_DIR / "scripts" / "intake_codex_xiaobei.py"
-RENDER_DIR = SKILL_DIR / "references" / "styles" / "08_图片渲染"
-BRAND_DIR = SKILL_DIR / "references" / "styles" / "10_品牌身份"
+RENDER_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "08_图片渲染"
+BRAND_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "10_品牌身份"
 
 spec = importlib.util.spec_from_file_location("intake_codex_xiaobei", SCRIPT)
 intake = importlib.util.module_from_spec(spec)

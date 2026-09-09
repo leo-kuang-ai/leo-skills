@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p1-01-cover-layouts",
+  "name": "Cover",
+  "aliases": [
+    "P1"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "cover",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "title": {
+      "region": "content",
+      "desc": "主标题（反白 weight 200，min(11.6vw,19vh) 双约束）",
+      "max_chars": 8,
+      "chars_per_line": 7,
+      "max_lines": 1
+    },
+    "subtitle": {
+      "region": "content",
+      "desc": "底部副标",
+      "max_chars": 34,
+      "chars_per_line": 29,
+      "max_lines": 1
+    },
+    "meta": {
+      "region": "content",
+      "desc": "底部元信息带",
+      "max_chars": 105,
+      "chars_per_line": 44,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "IKB 满屏 + ASCII 呼吸场；主标题反白 weight 200（min(11.6vw,19vh) 双约束大字），强调字用斜体；底部副标 + 元信息带"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/01_Cover.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 1
+}

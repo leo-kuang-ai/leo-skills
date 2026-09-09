@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:日落暖风",
+  "name": "日落暖风",
+  "aliases": [
+    "日落暖",
+    "Sunset Warm",
+    "sunset",
+    "暖",
+    "日落",
+    "生活方式",
+    "sunset-warm"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/柔和治愈/日落暖风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "柔和治愈"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "warm sunset tones, golden-hour gradient comfort with soft apricot glow, cozy evening warmth"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "日落暖",
+      "Sunset Warm",
+      "sunset",
+      "暖",
+      "日落",
+      "生活方式",
+      "sunset-warm"
+    ],
+    "best_for": "橘色珊瑚琥珀三色铺满天际，温度本身就是叙事;适合年度庆典/生活方式/品牌营销",
+    "visual_direction": "warm sunset tones, golden-hour gradient comfort with soft apricot glow, cozy evening warmth",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FED7AA→#FDBA74→#FB923C",
+      "composition": "卡片在暖色渐变上自由排列，留白充足但不冷清",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#7C2D12(主色/标题锚)",
+      "secondary": "#9A3412(辅助色)",
+      "accent": "#F97316(强调色)",
+      "neutral": "#FED7AA(文字与中性锚)",
+      "rule": "锚点 #7C2D12, #9A3412, #F97316, #FBBF24;标题 #7c2d12 深焦糖、正文 #9a3412 焦橙，强调色 #f97316 亮橙与 #fbbf24 金黄是日落的两种光泽"
+    },
+    "typography": {
+      "title": "圆润思源黑体 / Nunito;标题温暖但不沉重，正文轻松可读",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "卡片在暖色渐变上自由排列，留白充足但不冷清",
+      "布局像一张明信片",
+      "圆角和柔和的阴影保持温暖的触感"
+    ],
+    "layout_usage_rule": "卡片在暖色渐变上自由排列，留白充足但不冷清",
+    "visual_elements": {
+      "allowed": "卡片在暖色渐变上自由排列，留白充足但不冷清",
+      "avoid": "不要使用冷色调或暗色;不要用过于正式的排版;不要让暖色变成压迫感，保持轻盈"
+    },
+    "rendering_constraints": [
+      "不要使用冷色调或暗色",
+      "不要用过于正式的排版",
+      "不要让暖色变成压迫感，保持轻盈",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要使用冷色调或暗色",
+      "不要用过于正式的排版",
+      "不要让暖色变成压迫感，保持轻盈",
+      "不要用深色背景破坏日落的氛围"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/sunset-warm"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要使用冷色调或暗色",
+      "不要用过于正式的排版",
+      "不要让暖色变成压迫感，保持轻盈",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

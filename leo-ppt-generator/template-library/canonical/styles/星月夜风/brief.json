@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:星月夜风",
+  "name": "星月夜风",
+  "aliases": [
+    "星月夜风",
+    "星月夜",
+    "梵高",
+    "Starry Night",
+    "Van Gogh"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/印象派油画/星月夜风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "印象派油画"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "van gogh starry night oil swirl, deep ultramarine sky with molten gold star spirals and expressive impasto brushwork, dreamlike night drama"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "星月夜风",
+      "星月夜",
+      "梵高",
+      "Starry Night",
+      "Van Gogh"
+    ],
+    "best_for": "梵高《星月夜》的流动笔触与强烈色彩对比,梦幻而具情感张力;适合艺术赏析/夜间活动/情感表达",
+    "visual_direction": "van gogh starry night oil swirl, deep ultramarine sky with molten gold star spirals and expressive impasto brushwork, dreamlike night drama",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#010410→#03102A→#0B2A54 (星月夜风底)",
+      "composition": "深夜群青渐变 + 切角内容面板 + 金色星芒强调",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#0B2A54(群青夜空/标题锚)",
+      "secondary": "#4A90E2(星夜蓝)",
+      "accent": "#F9D71C(熔金星芒)",
+      "neutral": "#E0E6F1(月光白字)",
+      "rule": "锚点 #0B2A54, #4A90E2, #F9D71C, #E0E6F1;来源:LandPPT html_template CSS 实测 token;灵感源于梵高的《星月夜》。通过模拟流动的油画笔触、强烈的色彩对比和手写艺术字体，营造出极具视觉冲击力和情感张力的梦幻风格。"
+    },
+    "typography": {
+      "title": "标题用楷体手写艺术感,金渐变着色",
+      "body": "正文浅白无衬线,群青底高对比",
+      "labels": "手写体小字,星芒符号引导"
+    },
+    "layout_patterns": [
+      "深夜蓝渐变底 + 切角多边形内容面板",
+      "标题配金渐变分隔线,星芒点缀",
+      "文字浅色高对比,群青底金色数字",
+      "装饰性笔触涡旋置于角落负空间"
+    ],
+    "layout_usage_rule": "深夜蓝渐变底 + 切角多边形内容面板",
+    "visual_elements": {
+      "allowed": "深夜群青渐变 + 切角内容面板 + 金色星芒强调",
+      "avoid": "不要白天浅底或办公白;不要粉色系柔化,保持群青金对冲"
+    },
+    "rendering_constraints": [
+      "不要白天浅底或办公白",
+      "不要粉色系柔化,保持群青金对冲",
+      "不要扁平无纹理色块",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要白天浅底或办公白",
+      "不要粉色系柔化,保持群青金对冲",
+      "不要扁平无纹理色块"
+    ],
+    "reference": "GitHub: LandPPT · template_examples/星月夜风.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要白天浅底或办公白",
+      "不要粉色系柔化,保持群青金对冲",
+      "不要扁平无纹理色块",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

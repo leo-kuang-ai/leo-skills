@@ -2,9 +2,10 @@
 """Generate the browsable style gallery (samples/style-gallery.md) and the
 builtin styles' golden sample thumbnails (R-26 / R-65).
 
-Scans ``references/styles/`` directly (filesystem is the truth, not the
-hand-maintained index): the 11 top-level builtin briefs with their 适用场景
-bullets, plus per-axis markdown counts for the subdirectories.
+Reads executable styles and axes through the canonical template-library
+resolver.  The resolver fixes the catalog generation for the whole run, so the
+gallery cannot silently drift to a retired markdown tree.  Tests may pass an
+explicit temporary legacy root to exercise migration fixtures.
 
 Golden samples (金样板, 一物三用: 预览图 / 编译回归基准 / 审美对照):
 for each golden style three pages are rendered through the M1 render lane
@@ -58,9 +59,11 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
 from leo_ppt_generator.styles import parse_style_document
 
-STYLES_DIR = SKILL_DIR / "references" / "styles"
+LIBRARY_DIR = SKILL_DIR / "template-library"
+STYLES_DIR = LIBRARY_DIR / "canonical" / "styles"
 GALLERY = SKILL_DIR / "samples" / "style-gallery.md"
 THUMBS_ROOT = SKILL_DIR / "samples" / "style-gallery"
 SCENARIO_HEADER = "**适用场景"
@@ -79,7 +82,7 @@ GOLDEN_CHART_MMD = """xychart-beta
 """
 PAGES = ("cover", "content", "chart")
 
-# S5 intake families (references/styles/01_通用母版/<家族>/) and the one
+# S5 intake families (canonical/styles/<style>/) and the one
 # representative brief per family admitted to the golden baseline — picked
 # for the most complete palette / strongest family character; every family
 # brief has the full 5-role palette, so the tiebreakers are family-iconic
@@ -115,7 +118,39 @@ def warn(message: str) -> None:
 
 # ---------------------------------------------------------------- styles ---
 
+def _canonical_resolver() -> AssetResolver:
+    try:
+        # Supplying an explicit home keeps this standalone generator independent
+        # of optional runtime-config dependencies and prevents user overlays from
+        # changing the builtin gallery roster.
+        return AssetResolver(library=LIBRARY_DIR, home=SKILL_DIR / ".gallery-no-user-home")
+    except ResolverError as exc:
+        fail(f"canonical template library unavailable: {exc}")
+    raise AssertionError("unreachable")
+
+
+def _is_legacy_fixture(styles_root: Path) -> bool:
+    return Path(styles_root).resolve() != STYLES_DIR.resolve()
+
+
 def builtin_styles(styles_root: Path = STYLES_DIR) -> "list[tuple[str, list[str]]]":
+    """Return execution-ready builtin styles from the resolver snapshot."""
+    if not _is_legacy_fixture(styles_root):
+        resolver = _canonical_resolver()
+        entries: list[tuple[str, list[str]]] = []
+        for entity in resolver.entities:
+            if entity["kind"] != "style" or entity.get("lifecycle") != "active":
+                continue
+            data = resolver.resolve(entity["asset_id"])["data"]
+            taxonomy = data.get("taxonomy") or {}
+            scenarios = taxonomy.get("scenarios") or []
+            if not scenarios:
+                direction = (data.get("visual_language") or {}).get("direction")
+                if direction:
+                    scenarios = [direction]
+            entries.append((entity["name"], [str(item) for item in scenarios]))
+        return sorted(entries, key=lambda item: item[0])
+
     entries: "list[tuple[str, list[str]]]" = []
     for path in sorted(styles_root.glob("*.md")):
         scenarios: list[str] = []
@@ -139,6 +174,18 @@ def builtin_styles(styles_root: Path = STYLES_DIR) -> "list[tuple[str, list[str]
 
 
 def axis_counts(styles_root: Path = STYLES_DIR) -> "list[tuple[str, int]]":
+    """Return canonical axis counts grouped by resolver directory family."""
+    if not _is_legacy_fixture(styles_root):
+        resolver = _canonical_resolver()
+        counts: dict[str, int] = {}
+        for entity in resolver.entities:
+            if entity["kind"] != "axis":
+                continue
+            parts = Path(entity["path"]).parts
+            group = parts[2] if len(parts) >= 4 else "ungrouped"
+            counts[group] = counts.get(group, 0) + 1
+        return [(f"{group}（axis）", counts[group]) for group in sorted(counts)]
+
     entries: "list[tuple[str, int]]" = []
     for directory in sorted(p for p in styles_root.iterdir() if p.is_dir()):
         if directory.name in {"00_索引", "generated", "generated.previous"} or directory.name.startswith(".style-index-"):
@@ -154,6 +201,13 @@ def _brief_path(name: str, styles_root: Path = STYLES_DIR) -> Path:
     the family directory for S5 representatives, then a single-name search
     across the sub-directory axes (explicit golden renders of later intake
     batches, e.g. S5 gap briefs living under 01/02)."""
+    if not _is_legacy_fixture(styles_root):
+        resolver = _canonical_resolver()
+        try:
+            return Path(resolver.require(name, kind="style")["path"])
+        except ResolverError as exc:
+            fail(f"style {name!r} not found in canonical catalog: {exc}")
+
     top_level = styles_root / f"{name}.md"
     if top_level.is_file():
         return top_level
@@ -167,6 +221,13 @@ def _brief_path(name: str, styles_root: Path = STYLES_DIR) -> Path:
 
 
 def _brief_json(name: str, styles_root: Path = STYLES_DIR) -> dict:
+    if not _is_legacy_fixture(styles_root):
+        resolver = _canonical_resolver()
+        try:
+            return resolver.require(name, kind="style")["data"]
+        except ResolverError as exc:
+            fail(f"style {name!r} not found in canonical catalog: {exc}")
+
     path = _brief_path(name, styles_root)
     try:
         text = path.read_text(encoding="utf-8")
@@ -218,8 +279,8 @@ def _clip(text: str, limit: int) -> str:
 # ---------------------------------------------------------- golden data ---
 
 def golden_style_names(styles_root: Path = STYLES_DIR) -> "list[str]":
-    """Golden baseline roster: 11 top-level builtins + one representative
-    per S5 intake family (R-65, 19 styles total)."""
+    """Golden baseline roster: active builtins + one S5 family representative
+    per intake family (R-65, 18 styles in the current catalog)."""
     names = [name for name, _ in builtin_styles(styles_root)]
     names += [representative for _, representative, _ in FAMILY_REPRESENTATIVES]
     return names
@@ -231,13 +292,22 @@ def golden_inputs(name: str, styles_root: Path = STYLES_DIR) -> dict:
     Fixed sample data (kicker/bullets/chart numbers are constants; per-style
     variation comes from style name, best_for, layout patterns and palette).
     """
-    brief = _brief_json(name)
-    palette = brief.get("color_palette", {})
-    canvas = brief.get("canvas", {})
-    best_for = _clip(str(brief.get("best_for", name)), 56)
+    brief = _brief_json(name, styles_root)
+    legacy = brief.get("legacy_payload") or {}
+    palette = brief.get("color_palette") or legacy.get("color_palette", {})
+    canvas = brief.get("canvas") or legacy.get("canvas", {})
+    visual_language = brief.get("visual_language") or {}
+    best_for = _clip(str(
+        brief.get("best_for") or legacy.get("best_for")
+        or visual_language.get("direction") or name
+    ), 56)
     patterns = [
         _clip(str(item), 44)
-        for item in (brief.get("layout_patterns") or [])[:4]
+        for item in (
+            brief.get("layout_patterns") or legacy.get("layout_patterns")
+            or visual_language.get("features")
+            or visual_language.get("composition_discipline") or []
+        )[:4]
     ] or ["problem-process-result-next steps"]
 
     background = _lightest_hex(canvas.get("background"), palette.get("neutral"))
@@ -522,9 +592,9 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
     lines = [
         "# 风格画廊（生成物）",
         "",
-        "> 由 `python3 scripts/generate_style_gallery.py` 从 `references/styles/` 文件系统确定性生成；",
-        "> 手工编辑会被 `--check` 判漂移。完整索引与选风格路由见",
-        "> [`references/styles/00_索引/_INDEX.md`](../references/styles/00_索引/_INDEX.md)。",
+        "> 由 `python3 scripts/generate_style_gallery.py` 从 `template-library/catalog/current.json` 指向的 canonical catalog 确定性生成；",
+        "> 手工编辑会被 `--check` 判漂移。执行期身份索引见",
+        "> [`template-library/catalog/current.json`](../template-library/catalog/current.json) 与其 generation 下的 `registry.json`。",
         "",
         f"## 内置风格（{len(builtins)} 套，直接可选）",
         "",
@@ -593,7 +663,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
 
     lines += [
         "",
-        f"## 目录直层文档（{len(axes)} 个目录，兼容口径）",
+        f"## 结构轴目录（{len(axes)} 个分组，catalog 口径）",
         "",
         "| 轴 | 份数 |",
         "| --- | --- |",
@@ -603,8 +673,8 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
     total = sum(count for _, count in axes) + len(builtins)
     lines += [
         "",
-        f"上述目录直层及内置 Markdown 共 {total} 份，不递归统计家族子目录，不代表全库资产或可推荐风格总数。",
-        "全库角色与独立风格数量见[派生分类计数](../references/styles/generated/counts.md)。",
+        f"上述结构轴与 active 内置风格共 {total} 项；draft 风格和治理参考资产不计入直接可选区。",
+        "全库实体数量以 catalog generation 的 `registry.json` 为准，不以画廊条目数代替可执行资格。",
         "选定后由 `style render` 确定性注入，流程见 [`references/style-library.md`](../references/style-library.md)。",
         "",
     ]
@@ -612,15 +682,14 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
 
 
 def main(argv: "list[str] | None" = None) -> int:
-    parser = argparse.ArgumentParser(description="Generate the style gallery from the styles directory.")
+    parser = argparse.ArgumentParser(description="Generate the style gallery from the canonical template library.")
     parser.add_argument("--check", action="store_true", help="verify the gallery and golden samples are up to date instead of writing")
     parser.add_argument("--render-golden", action="store_true",
-                        help="render the golden sample thumbnails for the 19 golden styles "
-                             "(11 builtins + 8 family representatives, R-26/R-65) before writing the gallery")
+                        help="render golden sample thumbnails for active styles and family representatives (R-26/R-65) before writing the gallery")
     args = parser.parse_args(argv)
 
-    if not STYLES_DIR.is_dir():
-        fail(f"styles directory not found: {STYLES_DIR}")
+    if not LIBRARY_DIR.is_dir():
+        fail(f"template library not found: {LIBRARY_DIR}")
 
     if args.render_golden:
         render_golden()

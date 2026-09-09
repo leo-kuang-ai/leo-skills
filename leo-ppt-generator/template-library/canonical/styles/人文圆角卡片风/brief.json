@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:人文圆角卡片风",
+  "name": "人文圆角卡片风",
+  "aliases": [
+    "人文圆角卡片风",
+    "人文圆角",
+    "圆角卡片",
+    "humanist rounded cards",
+    "khan style"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/柔和治愈/人文圆角卡片风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "humanist rounded cards,米白暖底+森林绿双调+Source Serif 人文衬线标题+大圆角卡片组件与柔和阴影,Khan Academy 人文主义设计系统气质"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "人文圆角卡片风",
+      "人文圆角",
+      "圆角卡片",
+      "humanist rounded cards",
+      "khan style"
+    ],
+    "best_for": "森林绿+衬线标题+大圆角卡片的人文亲和表达;适合教育产品/亲和力课件/公益与非盈利deck/温暖品牌提案",
+    "visual_direction": "humanist rounded cards,米白暖底+森林绿双调+Source Serif 人文衬线标题+大圆角卡片组件与柔和阴影,Khan Academy 人文主义设计系统气质",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F4EE 米白暖底(依源『米白底』合成近似)",
+      "composition": "大圆角卡片组件组承载内容,衬线标题+亲和正文,卡片间留白充足,几何插画块点缀",
+      "density": "medium, 卡片内信息克制,每卡一个主题"
+    },
+    "color_palette": {
+      "primary": "#14BF96 森林绿主色/标题与图形(源直迁)",
+      "secondary": "#0A5C4B 深森林绿/卡片描边与次级强调(源直迁)",
+      "accent": "#FFB100 暖色辅助/少量点睛(源未定值,依『暖色辅助』合成近似)",
+      "neutral": "#F7F4EE 米白底与暖灰文字 #4A4440(合成近似)",
+      "rule": "锚点 #14BF96/#0A5C4B 源直迁;柔和不刺眼,绿色主导+暖色辅助;禁止高饱和撞色与深黑底"
+    },
+    "typography": {
+      "title": "Source Serif 4 衬线标题(源指定,人文气)/中文思源宋体 SemiBold",
+      "body": "Nunito Sans/Inter 正文(源指定,Nunito 圆润呼应人文)/中文思源黑体 Regular",
+      "labels": "Inter Medium 圆角标签与图标注记,森林绿线性图标"
+    },
+    "layout_patterns": [
+      "母版一:圆角卡片组件组(2-4 卡),每卡 border-radius 16-24px+柔和 box-shadow,一卡一主题",
+      "母版二:衬线大标题+亲和正文页,左对齐层级,绿色系几何插画块/大圆角纯色占位(源降级方案替真摄影)",
+      "母版三:标题+要点列表页,圆点符号与绿色对勾交替,行距宽松"
+    ],
+    "layout_usage_rule": "整套 deck 以圆角卡片与衬线标题构建人文亲和秩序;真实师生摄影缺失时统一降级为绿色系几何插画块,不混用写实库存照片",
+    "visual_elements": {
+      "allowed": "大圆角卡片/柔和阴影/森林绿几何插画/衬线标题/圆角标签/暖白底",
+      "avoid": "尖锐直角与硬阴影;高饱和撞色;深黑背景;企业蓝灰冷调"
+    },
+    "rendering_constraints": [
+      "圆角半径全 deck 统一(16-24px),不逐页漂移",
+      "衬线标题必须保留人文气,不可换冷感无衬线",
+      "暖色辅助只做点睛,面积远小于森林绿",
+      "卡片阴影保持柔和低透明度,不出现硬偏移影"
+    ],
+    "negative_prompt": [
+      "不要尖锐直角边框与硬阴影",
+      "不要高饱和撞色与霓虹点缀",
+      "不要深色背景",
+      "不要冷感企业蓝灰主调",
+      "不要卡片内信息过载(每卡一主题)"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "supportive"
+    },
+    "reference": "GitHub: huashu-design · references/design-styles.md L341 人文圆角卡片 / Humanist Rounded Cards (Khan式, 安静·还原80%)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "圆角半径全 deck 统一(16-24px),不逐页漂移",
+      "衬线标题必须保留人文气,不可换冷感无衬线",
+      "暖色辅助只做点睛,面积远小于森林绿",
+      "卡片阴影保持柔和低透明度,不出现硬偏移影"
+    ]
+  }
+}

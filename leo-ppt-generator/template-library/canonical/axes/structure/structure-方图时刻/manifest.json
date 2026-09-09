@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:structure-方图时刻",
+  "name": "结构布局：方图时刻（moments_square）",
+  "kind": "structure",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

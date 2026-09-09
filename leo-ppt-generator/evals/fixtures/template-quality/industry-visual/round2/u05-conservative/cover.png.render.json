@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "f541f356c82956950d111166be7f86c4c830faa613a602d6e230062709cad802",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/industry-visual/round2/u05-conservative/cover.png",
+  "out_sha256": "3d2364541113f81313b00045572cc48efc78bf93d97cad9195360c9ce8123140",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1276,
+  "rendered_at": "2026-09-08T02:46:09.749Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "cover-basic",
+  "template_sha256": "bea9ecfcc2d2f5071d61680232f3c3189288a60a0ca6e4ec96f9484d5e01471c",
+  "warnings": [],
+  "width": 2560
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:body-basic",
+  "name": "body-basic",
+  "input_fields": [
+    {
+      "name": "title",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "bullets",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "chart_svg",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "bullets",
+      "selector": "[data-leo-block='bullets']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "chart",
+      "selector": "[data-leo-block='chart']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page-no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "accent"
+  ],
+  "dependencies": [
+    "builtin:layout:body-basic"
+  ],
+  "layout_profiles": [
+    "builtin:layout:body-basic"
+  ],
+  "lane": "render:html",
+  "notes": "机械迁移：HTML 仍含硬编码色/字体，待 U5 切换主题变量"
+}

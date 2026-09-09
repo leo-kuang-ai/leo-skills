@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:珊瑚紫双色调风",
+  "name": "珊瑚紫双色调风",
+  "aliases": [
+    "珊瑚紫双色调",
+    "创意机构双色调演示模板",
+    "creative-agency"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/珊瑚紫双色调风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "strict coral and deep purple duotone agency deck, oversized condensed typography, thin structural accents, monochrome image treatment, bold modern creative credentials"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "珊瑚紫双色调",
+      "创意机构双色调演示模板",
+      "creative-agency"
+    ],
+    "best_for": "A bold, modern presentation style featuring a strict coral a…;适合Creative agency portfolios/Design and marketing pitches/Modern corporate profile",
+    "visual_direction": "strict coral and deep purple duotone agency deck, oversized condensed typography, thin structural accents, monochrome image treatment, bold modern creative credentials",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "50/50 vertical split layout Solid color block on one side, duotone image on the other Massive up…",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#6A4C79(主色/标题锚)",
+      "secondary": "#FF7A59(辅助色)",
+      "accent": "#FFFFFF(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #FF7A59, #6A4C79, #FFFFFF;A bold, modern presentation style featuring a strict cor…"
+    },
+    "typography": {
+      "title": "思源黑体 Heavy / Futura;Header: Bold Condensed Sans-serif",
+      "body": "Body: Clean Serif/Sans-serif",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "50/50 split mirroring the cover layout Bold thank you message and contact details separated by thin lines"
+    ],
+    "layout_usage_rule": "版式骨架 cover/agenda/section/content/data/quote/closing;按版式骨架排布,同 deck 内封面/收尾构图呼应",
+    "visual_elements": {
+      "allowed": "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "avoid": "Full-color photographs (must be duotone/monochrome);Soft gradients or drop shadows;Script or handwritten fonts"
+    },
+    "rendering_constraints": [
+      "Full-color photographs (must be duotone/monochrome)",
+      "Soft gradients or drop shadows",
+      "Script or handwritten fonts",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "Full-color photographs (must be duotone/monochrome)",
+      "Soft gradients or drop shadows",
+      "Script or handwritten fonts",
+      "Cluttered layouts without clear grid alignment",
+      "Curved or organic structural shapes"
+    ],
+    "reference": "gpt-image2-ppt-skills · styles/featured/creative-agency.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Full-color photographs (must be duotone/monochrome)",
+      "Soft gradients or drop shadows",
+      "Script or handwritten fonts",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

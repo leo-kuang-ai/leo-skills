@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:argument-结论先行金字塔",
+  "name": "论证模式：结论先行金字塔",
+  "kind": "argument",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

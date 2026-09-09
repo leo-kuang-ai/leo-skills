@@ -1,24 +1,23 @@
 # 风格画廊（生成物）
 
-> 由 `python3 scripts/generate_style_gallery.py` 从 `references/styles/` 文件系统确定性生成；
-> 手工编辑会被 `--check` 判漂移。完整索引与选风格路由见
-> [`references/styles/00_索引/_INDEX.md`](../references/styles/00_索引/_INDEX.md)。
+> 由 `python3 scripts/generate_style_gallery.py` 从 `template-library/catalog/current.json` 指向的 canonical catalog 确定性生成；
+> 手工编辑会被 `--check` 判漂移。执行期身份索引见
+> [`template-library/catalog/current.json`](../template-library/catalog/current.json) 与其 generation 下的 `registry.json`。
 
-## 内置风格（11 套，直接可选）
+## 内置风格（10 套，直接可选）
 
 | 风格 | 适用场景（摘自 brief） |
 | --- | --- |
-| **党政红风格** | 党政机关工作汇报、专题学习与会议材料 / 政策宣讲、党建活动、年度总结与重点工作部署 / 国企、事业单位和公共服务机构的正式汇报 |
-| **创意杂志风** | 创意提案 / 品牌展示 / 设计作品集 / 文化活动 |
-| **复古扁平插画风** | 文化创意项目展示 / 品牌故事讲述 / 旅游景点介绍 / 复古产品发布 |
-| **手绘技术解释风** | 中文技术文章配图 / 技术概念解释 / 课程课件 / 知识卡片 |
-| **手绘白板风** | 教学讲解 / 培训课程 / 头脑风暴 / 概念说明 |
-| **教学课件风** | 高校课程、专题讲座与课堂教学 / 技术培训、知识科普与专业能力建设 / 概念讲解、体系梳理、案例分析与研究进展介绍 / 需要同时呈现文字、图解、图片和数据的教学型演示 |
-| **数据仪表盘风** | 数据分析报告 / 业绩展示 / KPI 汇报 / 实时数据展示 |
-| **清爽专业风** | 毕业答辩 / 工作总结 / 工作 review / 技术分享 |
-| **温暖手工风** | 儿童教育 / 文化活动 / 手工艺展示 / 温馨主题 |
-| **电子墨水杂志风** | 线下分享 / 行业内部讲话 / AI / 科技产品发布 / Demo day / 个人观点型演讲 / 非虚构叙事 / 强节奏主题演讲 / 户外 / 生活方式 / 人文题材 / 文化叙事 |
-| **科研答辩风** | 科研项目申报答辩 / 基金申请与重点专项汇报 / 中期检查与结题验收 / 论文开题、预答辩和毕业答辩 |
+| **医疗洁净风** | seed direction per plan section 8.1 |
+| **咨询金字塔风** | seed direction per plan section 8.1 |
+| **品牌创意风** | seed direction per plan section 8.1 |
+| **学术克制风** | seed direction per plan section 8.1 |
+| **政务庄重风** | seed direction per plan section 8.1 |
+| **教育明快风** | seed direction per plan section 8.1 |
+| **清爽专业风** | 毕业答辩 / 工作总结 / 技术分享 / 项目复盘 |
+| **科技暗色风** | seed direction per plan section 8.1 |
+| **管理清晰风** | seed direction per plan section 8.1 |
+| **金融藏青风** | seed direction per plan section 8.1 |
 
 ## 内置风格金样板（R-26 / R-65）
 
@@ -26,47 +25,41 @@
 > `python3 scripts/generate_style_gallery.py --render-golden` 重建，
 > `--check` 以 sha256 对比金样板防漂移（编译回归判据）。
 
-### 党政红风格
+### 医疗洁净风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![党政红风格 封面金样板](style-gallery/党政红风格/thumb-cover.png) | ![党政红风格 内容金样板](style-gallery/党政红风格/thumb-content.png) | ![党政红风格 图表金样板](style-gallery/党政红风格/thumb-chart.png) |
+| ![医疗洁净风 封面金样板](style-gallery/医疗洁净风/thumb-cover.png) | ![医疗洁净风 内容金样板](style-gallery/医疗洁净风/thumb-content.png) | ![医疗洁净风 图表金样板](style-gallery/医疗洁净风/thumb-chart.png) |
 
-### 创意杂志风
-
-| 封面 | 内容 | 图表 |
-| --- | --- | --- |
-| ![创意杂志风 封面金样板](style-gallery/创意杂志风/thumb-cover.png) | ![创意杂志风 内容金样板](style-gallery/创意杂志风/thumb-content.png) | ![创意杂志风 图表金样板](style-gallery/创意杂志风/thumb-chart.png) |
-
-### 复古扁平插画风
+### 咨询金字塔风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![复古扁平插画风 封面金样板](style-gallery/复古扁平插画风/thumb-cover.png) | ![复古扁平插画风 内容金样板](style-gallery/复古扁平插画风/thumb-content.png) | ![复古扁平插画风 图表金样板](style-gallery/复古扁平插画风/thumb-chart.png) |
+| ![咨询金字塔风 封面金样板](style-gallery/咨询金字塔风/thumb-cover.png) | ![咨询金字塔风 内容金样板](style-gallery/咨询金字塔风/thumb-content.png) | ![咨询金字塔风 图表金样板](style-gallery/咨询金字塔风/thumb-chart.png) |
 
-### 手绘技术解释风
-
-| 封面 | 内容 | 图表 |
-| --- | --- | --- |
-| ![手绘技术解释风 封面金样板](style-gallery/手绘技术解释风/thumb-cover.png) | ![手绘技术解释风 内容金样板](style-gallery/手绘技术解释风/thumb-content.png) | ![手绘技术解释风 图表金样板](style-gallery/手绘技术解释风/thumb-chart.png) |
-
-### 手绘白板风
+### 品牌创意风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![手绘白板风 封面金样板](style-gallery/手绘白板风/thumb-cover.png) | ![手绘白板风 内容金样板](style-gallery/手绘白板风/thumb-content.png) | ![手绘白板风 图表金样板](style-gallery/手绘白板风/thumb-chart.png) |
+| ![品牌创意风 封面金样板](style-gallery/品牌创意风/thumb-cover.png) | ![品牌创意风 内容金样板](style-gallery/品牌创意风/thumb-content.png) | ![品牌创意风 图表金样板](style-gallery/品牌创意风/thumb-chart.png) |
 
-### 教学课件风
-
-| 封面 | 内容 | 图表 |
-| --- | --- | --- |
-| ![教学课件风 封面金样板](style-gallery/教学课件风/thumb-cover.png) | ![教学课件风 内容金样板](style-gallery/教学课件风/thumb-content.png) | ![教学课件风 图表金样板](style-gallery/教学课件风/thumb-chart.png) |
-
-### 数据仪表盘风
+### 学术克制风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![数据仪表盘风 封面金样板](style-gallery/数据仪表盘风/thumb-cover.png) | ![数据仪表盘风 内容金样板](style-gallery/数据仪表盘风/thumb-content.png) | ![数据仪表盘风 图表金样板](style-gallery/数据仪表盘风/thumb-chart.png) |
+| ![学术克制风 封面金样板](style-gallery/学术克制风/thumb-cover.png) | ![学术克制风 内容金样板](style-gallery/学术克制风/thumb-content.png) | ![学术克制风 图表金样板](style-gallery/学术克制风/thumb-chart.png) |
+
+### 政务庄重风
+
+| 封面 | 内容 | 图表 |
+| --- | --- | --- |
+| ![政务庄重风 封面金样板](style-gallery/政务庄重风/thumb-cover.png) | ![政务庄重风 内容金样板](style-gallery/政务庄重风/thumb-content.png) | ![政务庄重风 图表金样板](style-gallery/政务庄重风/thumb-chart.png) |
+
+### 教育明快风
+
+| 封面 | 内容 | 图表 |
+| --- | --- | --- |
+| ![教育明快风 封面金样板](style-gallery/教育明快风/thumb-cover.png) | ![教育明快风 内容金样板](style-gallery/教育明快风/thumb-content.png) | ![教育明快风 图表金样板](style-gallery/教育明快风/thumb-chart.png) |
 
 ### 清爽专业风
 
@@ -74,23 +67,23 @@
 | --- | --- | --- |
 | ![清爽专业风 封面金样板](style-gallery/清爽专业风/thumb-cover.png) | ![清爽专业风 内容金样板](style-gallery/清爽专业风/thumb-content.png) | ![清爽专业风 图表金样板](style-gallery/清爽专业风/thumb-chart.png) |
 
-### 温暖手工风
+### 科技暗色风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![温暖手工风 封面金样板](style-gallery/温暖手工风/thumb-cover.png) | ![温暖手工风 内容金样板](style-gallery/温暖手工风/thumb-content.png) | ![温暖手工风 图表金样板](style-gallery/温暖手工风/thumb-chart.png) |
+| ![科技暗色风 封面金样板](style-gallery/科技暗色风/thumb-cover.png) | ![科技暗色风 内容金样板](style-gallery/科技暗色风/thumb-content.png) | ![科技暗色风 图表金样板](style-gallery/科技暗色风/thumb-chart.png) |
 
-### 电子墨水杂志风
-
-| 封面 | 内容 | 图表 |
-| --- | --- | --- |
-| ![电子墨水杂志风 封面金样板](style-gallery/电子墨水杂志风/thumb-cover.png) | ![电子墨水杂志风 内容金样板](style-gallery/电子墨水杂志风/thumb-content.png) | ![电子墨水杂志风 图表金样板](style-gallery/电子墨水杂志风/thumb-chart.png) |
-
-### 科研答辩风
+### 管理清晰风
 
 | 封面 | 内容 | 图表 |
 | --- | --- | --- |
-| ![科研答辩风 封面金样板](style-gallery/科研答辩风/thumb-cover.png) | ![科研答辩风 内容金样板](style-gallery/科研答辩风/thumb-content.png) | ![科研答辩风 图表金样板](style-gallery/科研答辩风/thumb-chart.png) |
+| ![管理清晰风 封面金样板](style-gallery/管理清晰风/thumb-cover.png) | ![管理清晰风 内容金样板](style-gallery/管理清晰风/thumb-content.png) | ![管理清晰风 图表金样板](style-gallery/管理清晰风/thumb-chart.png) |
+
+### 金融藏青风
+
+| 封面 | 内容 | 图表 |
+| --- | --- | --- |
+| ![金融藏青风 封面金样板](style-gallery/金融藏青风/thumb-cover.png) | ![金融藏青风 内容金样板](style-gallery/金融藏青风/thumb-content.png) | ![金融藏青风 图表金样板](style-gallery/金融藏青风/thumb-chart.png) |
 
 ## 新家族代表金样板（S5 进货 · R-65）
 
@@ -163,27 +156,17 @@
 | --- | --- | --- |
 | ![星月夜风 封面金样板](style-gallery/星月夜风/thumb-cover.png) | ![星月夜风 内容金样板](style-gallery/星月夜风/thumb-content.png) | ![星月夜风 图表金样板](style-gallery/星月夜风/thumb-chart.png) |
 
-## 目录直层文档（16 个目录，兼容口径）
+## 结构轴目录（6 个分组，catalog 口径）
 
 | 轴 | 份数 |
 | --- | --- |
-| 通用母版（01） | 0 |
-| 行业内容域（02） | 0 |
-| 场景用途结构（03） | 0 |
-| 来源_guizang（04） | 1 |
-| 来源_awesome-gpt-image-2（05） | 0 |
-| 论证模式（06） | 7 |
-| 信息图类型（07） | 11 |
-| 图片渲染（08） | 43 |
-| 结构布局（09） | 8 |
-| 品牌身份（10） | 36 |
-| 图表语法（11） | 18 |
-| 版式库（12） | 40 |
-| 页面语义（13） | 25 |
-| 参考池_gpt-image2（14） | 15 |
-| 来源_officecli（15） | 7 |
-| 来源_slides-grab（16） | 0 |
+| argument（axis） | 19 |
+| chart（axis） | 18 |
+| infographic（axis） | 11 |
+| page-semantics（axis） | 25 |
+| rendering（axis） | 43 |
+| structure（axis） | 8 |
 
-上述目录直层及内置 Markdown 共 222 份，不递归统计家族子目录，不代表全库资产或可推荐风格总数。
-全库角色与独立风格数量见[派生分类计数](../references/styles/generated/counts.md)。
+上述结构轴与 active 内置风格共 134 项；draft 风格和治理参考资产不计入直接可选区。
+全库实体数量以 catalog generation 的 `registry.json` 为准，不以画廊条目数代替可执行资格。
 选定后由 `style render` 确定性注入，流程见 [`references/style-library.md`](../references/style-library.md)。

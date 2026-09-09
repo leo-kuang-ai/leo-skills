@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "手绘技术解释风",
+  "capacity_factor": {
+    "text": 0.85,
+    "note": "留白/笔迹占位：手绘讲解线条让渡约 15% 文本区"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P22"
+      ]
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P3"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P17",
+        "P14",
+        "P11",
+        "P30"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P6"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

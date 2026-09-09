@@ -1,0 +1,143 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:在线教育风",
+  "name": "在线教育风",
+  "aliases": [],
+  "variant_of": "互联网产品风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/教育学术/在线教育风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "教学课件"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "online-course aesthetic, digital clean, course-card UI, learning-path narrative, conversion-friendly, modern ed-tech clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "互联网产品风",
+    "best_for": "在线教育与课程产品,需要数字化、课程卡、路径清晰、可转化",
+    "visual_direction": "online-course aesthetic, digital clean, course-card UI, learning-path narrative, conversion-friendly, modern ed-tech clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light, product-UI feel",
+      "composition": "course cards + learning path",
+      "density": "medium, product-clean"
+    },
+    "color_palette": {
+      "primary": "ed-tech blue #2563EB / purple #7C3AED, white",
+      "secondary": "light neutral cards #F1F5F9",
+      "accent": "one bright conversion accent #3B82F6",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "clean digital, modern; bright but tidy"
+    },
+    "typography": {
+      "title": "clean modern sans (Inter / 思源黑体), UI-friendly",
+      "body": "crisp body",
+      "labels": "price/level tags",
+      "text_quality": "clear, conversion-aware"
+    },
+    "layout_patterns": [
+      "course card grid",
+      "learning path / roadmap",
+      "instructor & outcome",
+      "social proof metrics"
+    ],
+    "layout_usage_rule": "Product-clean and conversion-aware; path clarity and credible outcomes.",
+    "layout_blueprints": [
+      {
+        "name": "课程说明",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "课程名/主视觉"
+            ]
+          },
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "模块1",
+              "模块2",
+              "模块3",
+              "模块4"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "路径页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "入门",
+              "进阶",
+              "实战"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "course cards, path nodes, UI chips, outcome badges, digital clean",
+      "avoid": "cartoon, clutter, chaotic, unreadable UI, hard-sell hype"
+    },
+    "rendering_constraints": [
+      "Clean digital ed-tech, conversion-aware.",
+      "Course cards and clear learning path.",
+      "Accurate course info; no invented rankings or outcomes."
+    ],
+    "reference": "GitHub: 在线教育 · ed-tech 惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Clean digital ed-tech, conversion-aware.",
+      "Course cards and clear learning path.",
+      "Accurate course info; no invented rankings or outcomes."
+    ]
+  }
+}

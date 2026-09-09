@@ -1,0 +1,101 @@
+[
+  {
+    "seed": "management-clear",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "finance-navy",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/finance-navy/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "consulting-pyramid",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "tech-dark",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "gov-red",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "health-clean",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/health-clean/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "edu-bright",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/edu-bright/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "brand-creative",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  },
+  {
+    "seed": "academic-austere",
+    "pptx": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/deck.pptx",
+    "slide_count": 4,
+    "picture_count": 4,
+    "size": [
+      12192000,
+      6858000
+    ],
+    "ok": true
+  }
+]

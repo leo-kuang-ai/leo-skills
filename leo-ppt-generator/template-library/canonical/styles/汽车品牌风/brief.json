@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:汽车品牌风",
+  "name": "汽车品牌风",
+  "aliases": [
+    "汽车风",
+    "车企风",
+    "automotive风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/汽车交通/汽车品牌风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "automotive brand aesthetic, sculpted car render, premium metal finish, performance data, dramatic studio lighting, aspirational power, engineered elegance"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "汽车风",
+      "车企风",
+      "automotive风"
+    ],
+    "best_for": "汽车品牌与发布,需要雕塑感车身、金属质感、性能数据与高端感",
+    "visual_direction": "automotive brand aesthetic, sculpted car render, premium metal finish, performance data, dramatic studio lighting, aspirational power, engineered elegance",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark studio / gradient ground",
+      "composition": "car render hero + performance data",
+      "density": "low-medium, premium"
+    },
+    "color_palette": {
+      "primary": "graphite #1F2937 / metal gray #6B7280, black",
+      "secondary": "chrome silver #C0C5CC, deep blue #1F3A93",
+      "accent": "one brand accent (red #DC2626 or electric blue #2563EB)",
+      "neutral": "near-black #0A0A0A, metal gray #6B7280, white",
+      "rule": "premium, sculpted, dramatic; no cartoon, no flat"
+    },
+    "typography": {
+      "title": "bold engineered sans (DIN / 思源黑体), premium",
+      "body": "precise spec body",
+      "labels": "spec/model tags",
+      "text_quality": "exact specs, model numbers, no overclaim"
+    },
+    "layout_patterns": [
+      "car render hero",
+      "performance spec table",
+      "design detail crop",
+      "driving scene"
+    ],
+    "layout_usage_rule": "Sculpted car + precise specs; premium metal and dramatic light.",
+    "layout_blueprints": [
+      {
+        "name": "车型页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "整车渲染"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "型号",
+              "性能"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "参数页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "规格表"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "性能",
+              "设计",
+              "科技"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "car renders, spec tables, metal finish, dramatic light, performance data",
+      "avoid": "cartoon, clutter, glossy stock, misleading specs"
+    },
+    "rendering_constraints": [
+      "Premium, sculpted, engineered.",
+      "Car render + accurate specs; dramatic light.",
+      "Exact specs/model numbers; no invented logos."
+    ],
+    "reference": "GitHub: 汽车品牌 · 高端发布风"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Premium, sculpted, engineered.",
+      "Car render + accurate specs; dramatic light.",
+      "Exact specs/model numbers; no invented logos."
+    ]
+  }
+}

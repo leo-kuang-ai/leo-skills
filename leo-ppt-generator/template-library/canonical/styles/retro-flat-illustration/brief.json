@@ -1,0 +1,243 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:retro-flat-illustration",
+  "name": "复古扁平插画风",
+  "aliases": [
+    "扁平插画风",
+    "复古插画风",
+    "retro-flat",
+    "vintage-flat-illustration"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/复古扁平插画风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "retro flat vector illustration slide, cream paper texture, monoline black outlines, vintage palette, playful handcrafted design"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p10-10-dot-matrix-statement-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p4-04-six-cells-layouts",
+          "builtin:layout:p5-05-three-sub-cards-layouts",
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p15-15-image-matrix-hero-stat-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts",
+          "builtin:layout:p7-07-h-bar-chart-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.0,
+      "note": "中性折减：插画面积由图区承担，文本区按默认"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 14）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 14,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:art-handdrawn"
+      ]
+    },
+    "aliases": [
+      "扁平插画风",
+      "复古插画风",
+      "retro-flat",
+      "vintage-flat-illustration"
+    ],
+    "best_for": "文化创意、品牌故事、生活方式、城市旅游和带叙事感的主题演示",
+    "visual_direction": "retro flat vector illustration slide, cream paper texture, monoline black outlines, vintage palette, playful handcrafted design",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "cream/off-white paper #F5F3E8 with subtle grain",
+      "composition": "panoramic illustration band plus structured content cards or labels",
+      "density": "moderate, decorative but still clear"
+    },
+    "color_palette": {
+      "base": "cream background and dark slate text #34495E",
+      "vintage_colors": "coral red #FF6B6B, mint green #95E1D3, mustard yellow #F9CA24, burnt orange #E17055, slate blue #6C7A89",
+      "line": "uniform black or deep charcoal outline",
+      "rule": "flat fills only, no glossy 3D, no heavy gradients",
+      "primary": "cream base #F5EDDC with bold ink #2B2B2B",
+      "secondary": "retro teal #2E6E65 and olive #7A8450",
+      "accent": "burnt orange #D96C3F and mustard #D9A441",
+      "neutral": "warm gray #6B655B, border #D8CFC0"
+    },
+    "typography": {
+      "title": "bold retro serif (Georgia / 思源宋体) or chunky vintage display type",
+      "body": "geometric sans-serif, clear and friendly",
+      "labels": "small badge labels with outlined shapes",
+      "text_quality": "Chinese text must be exact and readable"
+    },
+    "layout_patterns": [
+      "top panoramic flat illustration with bottom content cards",
+      "central retro title with three outlined icon cards",
+      "2.5D simplified scene with callout labels",
+      "vintage poster composition adapted to presentation readability"
+    ],
+    "layout_usage_rule": "Use layout_blueprints as candidate starting points only. Choose and adapt the composition according to each slide's semantic role; avoid repeating the same blueprint on adjacent slides unless it is a deliberate repeated sequence.",
+    "layout_blueprints": [
+      {
+        "name": "panoramic illustration plus cards",
+        "sections": [
+          {
+            "position": "top third",
+            "count": 1,
+            "labels": [
+              "panoramic flat vector illustration"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 1,
+            "labels": [
+              "large retro title"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 3,
+            "labels": [
+              "outlined content card 1",
+              "outlined content card 2",
+              "outlined content card 3"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "retro poster diagram",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "main simplified scene or object"
+            ]
+          },
+          {
+            "position": "around center",
+            "count": 4,
+            "labels": [
+              "callout label",
+              "badge",
+              "mini icon",
+              "decorative note"
+            ]
+          },
+          {
+            "position": "bottom-right",
+            "count": 1,
+            "labels": [
+              "summary plaque"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "flat vector scenes, 2-3px monoline outlines, simplified buildings as rectangular blocks with grid windows, lollipop/triangle trees, plants, pill-shaped clouds, people as minimal geometric figures, badges, dotted textures, dot stars, sunburst rays, small geometric decorations, free-form 2.5D perspective, depth via layering and overlap instead of atmospheric perspective",
+      "avoid": "photorealism, complex shadows, neon palette, overly detailed linework, unreadable decorative type"
+    },
+    "negative_prompt": [
+      "photorealism or complex shadows",
+      "glossy 3D or heavy gradients",
+      "neon palette",
+      "overly detailed linework",
+      "unreadable decorative type"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "rendering_constraints": [
+      "The slide should feel like a polished retro illustration system, not a random cartoon.",
+      "Maintain consistent outline weight across objects.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ],
+    "reference": "GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/vector-illustration.md"
+  },
+  "constraints": {
+    "negative": [
+      "The slide should feel like a polished retro illustration system, not a random cartoon.",
+      "Maintain consistent outline weight across objects.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

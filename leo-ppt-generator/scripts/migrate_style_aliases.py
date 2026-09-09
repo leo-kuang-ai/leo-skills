@@ -28,7 +28,7 @@ import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 
 JSON_BLOCK_RE = re.compile(r"```json\n(.*?)\n```", re.S)
 
@@ -231,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", help="技能根目录覆盖（默认脚本所在仓库）")
     args = parser.parse_args(argv)
 
-    styles_root = Path(args.root).resolve() / "references" / "styles" \
+    styles_root = Path(args.root).resolve() / Path("template-library/reference/sources/retired-styles-tree/styles") \
         if args.root else STYLES_ROOT
 
     if args.check:

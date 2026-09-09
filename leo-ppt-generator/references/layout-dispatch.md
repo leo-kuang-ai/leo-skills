@@ -4,8 +4,9 @@
 > 本文档是调度规则合同：四步链、打分口径、undecided 呈现格式、禁编造纪律、
 > 与容量预检（B3）的衔接。打分器为无状态只读脚本
 > `scripts/suggest_layout.py`；版式真值为
-> `references/styles/12_版式库/*.layouts.json`（layout-bank-v1 sidecar，
-> `"$LEO_PPT" style layouts` 可查，输出含 sha256 指纹）。
+> `template-library/canonical/layouts/*/layout.json`（layout-profile-v1，
+> `"$LEO_PPT" style layouts` 可查，输出含 sha256 指纹）；风格路由来自同一
+> style brief 的 `bindings.layout_routes`。
 
 ## 四步链
 
@@ -14,23 +15,23 @@
 ```
 
 1. **角色对齐**：`deck_spec.slides[].page_role`（13_页面语义 25 角色）映射
-   到版式 `page_type` 六值枚举（cover / agenda / section / content / data /
-   closing），角色不符的候选直接出局（不参与打分）。未识别角色按中性
+   到版式 `page_role` 七值枚举（cover / agenda / section / content / data /
+   quote / evidence / closing），角色不符的候选直接出局（不参与打分）。未识别角色按中性
    0.5 评分（不硬排除）。数据点 ≥3 的页对非 data 版式减半。
 2. **结构匹配**：页面侧 `{要点条数, 每要点预估字数, 数据点数, 图源数}`
-   （母版内容行已有）对 sidecar `content_capacity`：
+   （母版内容行已有）对 canonical profile 的 `slots`：
    - **区间包含度**：条数落在 `count_min/count_max` 区间内 = 1.0；不足
      按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 容量分乘 0。
    容量预检的人工/agent 选页通道：`leo-ppt style layouts --capacity "槽名<=N"`
    只读过滤（计数槽按 `count_max`、文本槽按 `max_chars`），档位速查见
-   `styles/12_版式库/00_容量档位参考.md`。
+   `template-library/governance/rules/layouts/00_容量档位参考.md`。
    - **字数覆盖度**：每要点预估字数（vw 视觉宽度）对最宽文本 slot 的
      `max_chars`（× 风格 `capacity_factor.text`）；装得下 = 1.0；
      ≤1.2 倍 = 0.5；硬超 = 容量分乘 0。
 3. **节奏感**：`reuse_friendly=false` 且已用 → **硬排除**（与
    `scripts/check_layout_reuse.py` 同口径）；已用版式 -0.4；与上一页同
    版式再 -0.4；同 `page_type` 连续 ≥3 页应提示换型（人工判断项）。
-   风格路由视图（`references/styles/<风格名>.layouts.json`）的
+   风格 brief 的 `bindings.layout_routes` 中的
    `preferred` 命中 +0.1、`discouraged` 命中 -0.2——**风格层参与但不越权**
    （软权重，不构成硬排除）。
 4. **置信度裁决**：top1 综合分 < 0.5 → 该页 `decision: "undecided"`。
@@ -64,8 +65,8 @@ python3 scripts/suggest_layout.py --json-schema   # 输入 schema 自校验
 
 ## 禁编造版式 id（纪律）
 
-候选 id 只能来自 sidecar 枚举集（`P1`–`P36`，`"$LEO_PPT" style layouts`
-或 `style render --list-templates` 可枚举）。用户要求不存在的版式（如
+候选 id 只能来自 resolver 枚举集（当前含 P1–P36 与 HTML lane 的命名别名，
+`"$LEO_PPT" style layouts` 或 `style render --list-templates` 可枚举）。用户要求不存在的版式（如
 「时间瀑布版式」）时：引用真实枚举 id 给近似候选，或输出 undecided 交人工；
 **绝不编造**非枚举 id。打分器对输出 id 做枚举集防御断言（触发即脚本 bug，
 exit 2）；评测对 agent 回复中的非枚举版式名做否定感知拦截。
@@ -127,7 +128,7 @@ source_digest 只判断目录同步；style_content_digest 判断实际读取内
 
 ## page_type 映射表（36 版式治理字段汇总）
 
-| page_type | 版式 |
+| page_role | 版式 |
 |---|---|
 | cover | P1 |
 | agenda | P32 |
@@ -136,6 +137,6 @@ source_digest 只判断目录同步；style_content_digest 判断实际读取内
 | data | P2, P6, P7, P18, P20, P21, P24, P25, P35 |
 | closing | P9, P36 |
 
-`reuse_friendly=false`（强视觉锚点，一 deck 受 `max_per_deck` 限制）：
+`reuse_friendly=false`（canonical profile 中的强视觉锚点，一 deck 受 `max_per_deck` 限制）：
 P1、P9、P23、P24、P34（上限 1）与 P36（上限 2）。定稿前跑
 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。

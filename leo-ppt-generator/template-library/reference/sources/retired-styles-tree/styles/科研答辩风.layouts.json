@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "科研答辩风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：答辩档密度由档位而非风格折减表达"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    },
+    {
+      "page_type": "agenda",
+      "preferred": [
+        "P32"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P23"
+      ],
+      "discouraged": [
+        "P10"
+      ]
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P26",
+        "P28",
+        "P30",
+        "P31"
+      ],
+      "discouraged": [
+        "P12"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P25",
+        "P21",
+        "P6"
+      ],
+      "discouraged": [
+        "P24"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

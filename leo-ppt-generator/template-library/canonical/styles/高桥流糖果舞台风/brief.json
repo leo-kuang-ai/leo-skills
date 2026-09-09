@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:高桥流糖果舞台风",
+  "name": "高桥流糖果舞台风",
+  "aliases": [
+    "CS50 糖果舞台",
+    "高桥流",
+    "Takahashi",
+    "一屏一词",
+    "candy lecture stage"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/高桥流糖果舞台风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "教学课件",
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "CS50-style candy lecture stage, deep black field with one saturated candy-colored giant word floating centered per slide (magenta, cyan, yellow, green rotating), monospace syntax-highlighted code blocks, faint stage-spot vignette, minimal text Takahashi method"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "CS50 糖果舞台",
+      "高桥流",
+      "Takahashi",
+      "一屏一词",
+      "candy lecture stage"
+    ],
+    "best_for": "以深黑舞台、高饱和糖果色大字轮换与一屏一概念的高桥流纪律,做教育课件、技术讲座与代码教学;文字极少,概念即舞台",
+    "visual_direction": "CS50-style candy lecture stage, deep black field with one saturated candy-colored giant word floating centered per slide (magenta, cyan, yellow, green rotating), monospace syntax-highlighted code blocks, faint stage-spot vignette, minimal text Takahashi method",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "深黑舞台 #0A0A0A(极淡径向暗角聚光感,非粒子光效)",
+      "composition": "一屏一概念:单个糖果色大词居中漂浮,或一个等宽代码块;别无他物",
+      "density": "low,文字极少——每页 ≤ 7 词是常态"
+    },
+    "color_palette": {
+      "primary": "#0A0A0A(深黑舞台底)",
+      "secondary": "#FF2D95(糖果品红,大字轮换色之一)",
+      "accent": "#00E5FF(糖果青,高亮轮换)",
+      "neutral": "#FFFFFF(白字与代码正文)",
+      "rule": "糖果色每页只上一个(品红/青/明黄 #FFD500/绿 #39FF14 轮换),永不同页混多彩;代码块用语法高亮例外"
+    },
+    "typography": {
+      "title": "超粗无衬线大字(Inter Black / 思源黑体 Heavy),居中漂浮,一词一屏",
+      "body": "几乎无正文;概念推进入大字而非段落",
+      "labels": "代码与术语用等宽(JetBrains Mono),语法高亮上色"
+    },
+    "layout_patterns": [
+      "概念页 = 深黑底 + 单个糖果色大词居中(一词一屏,轮换色)",
+      "代码页 = 等宽代码块 + 语法高亮 span 上色,聚焦行加亮",
+      "节奏页 = 大词 → 大词 → 代码 → 大词的讲台节拍;强舞台聚光暗角",
+      "结论页 = 单句断言,白字或单一糖果色"
+    ],
+    "layout_usage_rule": "一屏一概念,文字极少:概念拆成大字序列而不是图文混排;糖果色一页一色轮换",
+    "negative_prompt": [
+      "no multi-color word salads — one candy hue per slide, rotating across the deck",
+      "no dense bullet lists or paragraphs; concepts go big-word by big-word",
+      "no particle light effects or lens flares — just a faint stage vignette",
+      "no uniform deep-blue GitHub-dark + neon glow combo (0D1117-style); the stage is neutral black"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "糖果色大字,等宽代码块,语法高亮,舞台暗角,单句断言",
+      "avoid": "多色混排;长段落;粒子光效;图表堆砌"
+    },
+    "rendering_constraints": [
+      "Deep neutral black stage (not blue-dark); faint radial vignette only.",
+      "One candy accent hue per slide, rotating magenta/cyan/yellow/green.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: huashu-design · design-styles.md PPT 库「CS50单概念糖果舞台」"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Deep neutral black stage (not blue-dark); faint radial vignette only.",
+      "One candy accent hue per slide, rotating magenta/cyan/yellow/green.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

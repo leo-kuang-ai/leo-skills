@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-实景标注导览",
+  "name": "图片渲染：实景标注导览（visual-info-guide）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

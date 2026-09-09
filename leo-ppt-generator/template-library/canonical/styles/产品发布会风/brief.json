@@ -1,0 +1,147 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:产品发布会风",
+  "name": "产品发布会风",
+  "aliases": [
+    "品牌发布会风",
+    "展会博览会风",
+    "新品上市风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/发布营销/产品发布会风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技浅色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "keynote-style product launch, staged reveal, stage polish, emotional-plus-informational rhythm, hero-first dramatic clarity, brand-stage energy"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "品牌发布会风",
+      "展会博览会风",
+      "新品上市风"
+    ],
+    "variants": [
+      "品牌发布会风: 同板场景变体，品牌价值观宣言与品牌资产发布",
+      "展会博览会风: 同板场景变体，现场展陈、导览与展品突出",
+      "新品上市风: 同板场景变体，人群定位与上市战役节奏"
+    ],
+    "best_for": "产品发布会,需要舞台感、渐进揭晓、情绪与信息并重",
+    "visual_direction": "keynote-style product launch, staged reveal, stage polish, emotional-plus-informational rhythm, hero-first dramatic clarity, brand-stage energy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "deep or bold ground, stage-like",
+      "composition": "reveal: hero → features → value",
+      "density": "low-to-medium, dramatic but clean"
+    },
+    "color_palette": {
+      "primary": "bold brand color (fallback #2563EB) / deep tech #0F172A, white",
+      "secondary": "supporting accents #3B82F6 / #22D3EE",
+      "accent": "one signature accent #F59E0B",
+      "neutral": "near-black/white #111827, gray #6B7280",
+      "rule": "stage-ready, punchy, brand-consistent"
+    },
+    "typography": {
+      "title": "bold showy sans (Arial Black / 思源黑体 Heavy), dramatic scale",
+      "body": "short punchy body",
+      "labels": "feature tags",
+      "text_quality": "clear brand claims, no overclaim"
+    },
+    "layout_patterns": [
+      "hero reveal with tagline",
+      "why-now problem",
+      "feature storytelling",
+      "timeline/ecosystem"
+    ],
+    "layout_usage_rule": "Stage reveal; hero, why-now, feature story, closing momentum.",
+    "layout_blueprints": [
+      {
+        "name": "揭晓页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "产品名 + 揭晓时刻"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "特性页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "特性1",
+              "特性2",
+              "特性3",
+              "特性4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "hero reveal, feature callouts, motion/silhouette, big type, spotlight",
+      "avoid": "clutter, generic template, muddy palette, misleading claims"
+    },
+    "rendering_constraints": [
+      "Stage-ready reveal, brand-consistent, dramatic but clean.",
+      "One signature accent and big type; hero-first.",
+      "Clear claims; no invented logos or benchmarks."
+    ],
+    "reference": "GitHub: 产品发布会 · 舞台揭示惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Stage-ready reveal, brand-consistent, dramatic but clean.",
+      "One signature accent and big type; hero-first.",
+      "Clear claims; no invented logos or benchmarks."
+    ]
+  }
+}

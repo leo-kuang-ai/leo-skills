@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:地产空间风",
+  "name": "地产空间风",
+  "aliases": [
+    "地产风",
+    "房地产风",
+    "空间风",
+    "楼盘推介风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/制造能源/地产空间风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "minimal architectural real-estate style, spacious premium restraint, large renders and plan-inspired grids, muted stone palette with deep green accent, material moodboards and location maps"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "地产风",
+      "房地产风",
+      "空间风",
+      "楼盘推介风"
+    ],
+    "best_for": "地产与空间行业内容,需要极简、开阔、材质感的高端空间叙事",
+    "visual_direction": "minimal architectural real-estate style, spacious premium restraint, large renders and plan-inspired grids, muted stone palette with deep green accent, material moodboards and location maps",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F5F3F0 暖石白底,干净网格,大量留白",
+      "composition": "大效果图/平面图 + 区位图 + 材质卡三段结构",
+      "density": "low-to-medium, 开阔克制"
+    },
+    "color_palette": {
+      "primary": "#F5F3F0(暖石白底)配 #2B2B28(炭灰文字锚)",
+      "secondary": "#D9D2C7(米石面板)",
+      "accent": "#3E5E52(松石绿单强调)",
+      "neutral": "#9A948C(暖灰注释)与 #E8E4DE(浅分隔)",
+      "rule": "石白 + 炭灰 + 松石绿;禁高饱和售楼处红金"
+    },
+    "typography": {
+      "title": "细字重无衬线(Inter/Helvetica)大标题,建筑图纸感",
+      "body": "思源黑体正文,参数化小表",
+      "labels": "户型/面积/区位等宽小注(DIN)"
+    },
+    "layout_patterns": [
+      "项目封面页:大效果图 + 项目名 + 一句主张",
+      "区位交通页:区位地图 + 配套标注",
+      "户型讲解页:平面图 + 尺寸标注 + 亮点卡",
+      "材质与景观页:材质拼贴 + 景观渲染 + 说明行"
+    ],
+    "layout_usage_rule": "图优先、字克制;平面图语言组织信息层级",
+    "visual_elements": {
+      "allowed": "建筑渲染、平面线图、材质样板、区位图、细线网格",
+      "avoid": "售楼处大红大金、爆炸促销字、密集小字、廉价样机"
+    },
+    "rendering_constraints": [
+      "石白底松石绿单强调,材质真实",
+      "平面图与效果图分层清晰",
+      "不虚构价格、学位与规划承诺"
+    ],
+    "negative_prompt": [
+      "不要售楼处红金促销风",
+      "不要夸张滤镜渲染与失真效果图",
+      "不要虚构价格与规划配套承诺"
+    ],
+    "reference": "GitHub: awesome-ppt-skills · theme-style-prompt-library（Real Estate/Architecture,思想级改写）"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "石白底松石绿单强调,材质真实",
+      "平面图与效果图分层清晰",
+      "不虚构价格、学位与规划承诺"
+    ]
+  }
+}

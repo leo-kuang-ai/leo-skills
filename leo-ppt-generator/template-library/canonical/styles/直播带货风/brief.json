@@ -1,0 +1,144 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:直播带货风",
+  "name": "直播带货风",
+  "aliases": [
+    "带货风",
+    "直播风",
+    "livestream风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/发布营销/直播带货风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "live-commerce style, product-forward, direct selling points, promo/urgency rhythm, countdown, high-conversion energetic"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "带货风",
+      "直播风",
+      "livestream风"
+    ],
+    "best_for": "直播带货和口播卖点,需要商品醒目、卖点直给、优惠与倒计时节奏",
+    "visual_direction": "live-commerce style, product-forward, direct selling points, promo/urgency rhythm, countdown, high-conversion energetic",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "high-energy promo ground",
+      "composition": "商品 + 卖点 + 价格 + 倒计时",
+      "density": "medium-high, conversion"
+    },
+    "color_palette": {
+      "primary": "promo red #E11D48 / vibrant, white",
+      "secondary": "gold #F59E0B / warm accents #F97316",
+      "accent": "one deal accent #FF4D4F",
+      "neutral": "near-black #111827, white, bright #FDE047",
+      "rule": "高转化、醒目;优惠与紧迫感"
+    },
+    "typography": {
+      "title": "bold friendly sans (Arial Black / 思源黑体 Heavy), big claims",
+      "body": "short punchy",
+      "labels": "price/timer tags",
+      "text_quality": "准确价格/优惠,不虚假稀缺"
+    },
+    "layout_patterns": [
+      "商品 hero",
+      "卖点直给",
+      "价格 / 优惠",
+      "倒计时 / CTA"
+    ],
+    "layout_usage_rule": "商品醒目、卖点直给、优惠清楚、倒计时营造节奏;价格/优惠真实,不虚假稀缺。",
+    "layout_blueprints": [
+      {
+        "name": "带货页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "商品 hero"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "卖点1",
+              "卖点2",
+              "卖点3"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "价格/优惠",
+              "倒计时"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "product hero, selling points, price/promo, countdown, CTA",
+      "avoid": "虚假稀缺, 卖点不清, 价格含糊, 杂乱"
+    },
+    "rendering_constraints": [
+      "商品醒目、卖点直给。",
+      "优惠/倒计时清楚。",
+      "价格真实,不虚假稀缺。"
+    ],
+    "reference": "GitHub: 直播带货 · 电商直播惯例"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "商品醒目、卖点直给。",
+      "优惠/倒计时清楚。",
+      "价格真实,不虚假稀缺。"
+    ]
+  }
+}

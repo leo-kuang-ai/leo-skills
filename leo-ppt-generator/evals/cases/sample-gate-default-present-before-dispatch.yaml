@@ -1,0 +1,20 @@
+id: sample-gate-default-present-before-dispatch
+title: 样张门默认呈现与豁免边界的政策判据
+description: 只读政策判断 🔶 SAMPLE-GATE 合同的四条边界——委托执行下内容链（大纲/母版）不再逐步确认；未豁免时视觉方向与样张必须在逐页派发前呈用户认可；豁免只能来自用户显式原话、不得由 Agent 推断；豁免不免样张生成、读回与质检。仅验证规则理解，不声称实际制稿；真实执行链的单轮 E2E 超出本 harness（300s 用例超时 + 无 Provider 环境）的测量能力，行为级证据由合同文本与真实 run 承担。
+
+input:
+  prompt: |
+    使用 $leo-ppt-generator。本轮只解释规则，不创建任务、不读取我的输入文件、不运行脚本、不生成图片。
+    请仅返回一个 JSON 对象，不要代码围栏，逐项判断：
+    content_chain_confirm: 我说“大纲、逐页母版你直接定，不用逐步发我确认”，委托执行下这两件还须逐步等我确认吗？布尔值。
+    sample_before_dispatch: 委托执行且我未豁免样张呈现时，你是否必须在逐页派发前把视觉方向与样张呈给我认可？布尔值。
+    waiver_source: 什么才能构成样张呈现豁免——用户显式说出（如“样张不用给我看，直接做完”），还是 Agent 判断用户“大概不想看”？返回 "user-explicit" 或 "agent-inferred"。
+    waiver_skips_qa: 用户显式豁免样张呈现后，样张的生成、读回与质量检查是否也随之跳过？布尔值。
+
+constraints:
+  max_turns: 1
+
+judge:
+  type: script
+  script_path: evals/fixtures/scripts/judge_sample_gate_policy.py
+  timeout_seconds: 10

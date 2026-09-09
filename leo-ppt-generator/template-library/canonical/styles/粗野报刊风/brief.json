@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:粗野报刊风",
+  "name": "粗野报刊风",
+  "aliases": [
+    "brutalist",
+    "粗野主义报刊",
+    "报纸年报风",
+    "brutalist newspaper"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/粗野报刊风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版",
+      "高攻击"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "brutalist newspaper annual-report spread, multi-column grid with thick black rules and boxed tables, ALL-CAPS condensed headlines, mono data labels, big raw numerals, high-contrast black-white halftone newsprint photo with one red overprint, flush-left, high density, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "brutalist",
+      "粗野主义报刊",
+      "报纸年报风",
+      "brutalist newspaper"
+    ],
+    "best_for": "以报纸式多栏网格、粗黑规则线、全大写压缩标题与唯一一红表达粗野年报的重量、原始与态度",
+    "visual_direction": "brutalist newspaper annual-report spread, multi-column grid with thick black rules and boxed tables, ALL-CAPS condensed headlines, mono data labels, big raw numerals, high-contrast black-white halftone newsprint photo with one red overprint, flush-left, high density, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "raw white #FFFFFF newsprint ground",
+      "composition": "multi-column NEWSPAPER grid, thick black rules / borders, boxed tables",
+      "density": "high, dense and typographic"
+    },
+    "color_palette": {
+      "primary": "raw white #FFFFFF ground, ink #111111",
+      "secondary": "graphite #3A3A3A for secondary text and boxed chrome",
+      "accent": "the ONE ink red #C8102E, appears once per slide",
+      "neutral": "ink #111111 rules and borders, graphite #3A3A3A",
+      "rule": "ink-red-white only; the ONE red appears once per slide; no pastels"
+    },
+    "typography": {
+      "title": "ALL-CAPS condensed headlines (Arial Black / 思源黑体 Heavy), stacked tight",
+      "body": "dense serif-or-sans newsprint body (思源宋体 / Georgia), flush-left",
+      "labels": "mono for data / labels / folios (Consolas / 等宽)",
+      "text_quality": "raw, heavy, unambiguous at high density"
+    },
+    "layout_patterns": [
+      "multi-column newspaper spread with THICK black hrules between decks",
+      "boxed table with bold borders carrying dense figures",
+      "big raw numeral: oversized mono/condensed figure as the focal element",
+      "halftone newsprint photo block with the single red overprint emphasis"
+    ],
+    "layout_usage_rule": "Thick rules, flush-left type, one red per slide; zero rounded corners, zero soft shadows.",
+    "negative_prompt": [
+      "no rounded corners",
+      "no soft shadows or blur",
+      "no pastel or extra accent hues — ink, red, white only",
+      "no centered soft-magazine composition"
+    ],
+    "paired_illustration": {
+      "family": "collage",
+      "density": "supportive"
+    },
+    "visual_elements": {
+      "allowed": "thick black rules, boxed tables, condensed caps headlines, mono data, halftone photos",
+      "avoid": "rounded corners, soft shadows, pastels, gradients, decorative flourishes"
+    },
+    "rendering_constraints": [
+      "High-contrast black-white halftone / newsprint photography only.",
+      "One red overprint per slide, single emphasis.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: addsumtech/slides_maker · presets.py brutalist"
+  },
+  "recommendation_features": {
+    "density": "high",
+    "audience_conservatism": "expressive",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "High-contrast black-white halftone / newsprint photography only.",
+      "One red overprint per slide, single emphasis.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

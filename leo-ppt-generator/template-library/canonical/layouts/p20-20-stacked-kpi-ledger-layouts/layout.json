@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+  "name": "Stacked KPI Ledger",
+  "aliases": [
+    "P20"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "rows": {
+      "region": "content",
+      "desc": "账单行（数值 + 标签 + 图标）",
+      "count_min": 4,
+      "count_max": 6
+    },
+    "row_label": {
+      "region": "content",
+      "desc": "每行标签",
+      "max_chars": 26,
+      "chars_per_line": 22,
+      "max_lines": 1
+    },
+    "row_number": {
+      "region": "content",
+      "desc": "每行左侧巨数（真实数值）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "每行一道 hairline 分隔：左侧巨数（min(13vw,21vh) 限高）+ 中部标签 + 右侧 lucide 图标"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/20_Stacked_KPI_Ledger.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

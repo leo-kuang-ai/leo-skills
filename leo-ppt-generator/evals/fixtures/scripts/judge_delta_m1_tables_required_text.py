@@ -66,7 +66,17 @@ if window_positive(
 ) is None:
     fail("缺少登记 required_text/text_inventory 的动作")
 
-# 4. 陷阱：不得声明表格文本免于校验（窗口化禁止，未被否定的声明）
+# 4. 陷阱：不得声明表格文本免于校验（窗口化禁止，未被否定的声明）。
+# 校准（it-126 replay）：健康回复会引用同事的错误原话（“validation 不会管
+# 表格”）再驳回——forbid 检查先剥离引号内引用，只拦回复者自己的声明。
+import re as _re
+_QUOTE_SPAN = _re.compile(r"(「[^」]*」|『[^』]*』|“[^”]*”|‘[^’]*’|\"[^\"]*\"|`[^`]*`)")
+bare = _QUOTE_SPAN.sub("", text)
+# 疑问式归一化：标题"管不管表格？"是正被回答的问题，不是否定声明。
+bare = _re.sub(r"管不管", "管", bare)
+bare = _re.sub(r"(会|能|要|该)不\1", r"\1", bare)
+_orig_text = text
+text = bare
 forbid_window_positive(
     [
         r"(表格|tables|单元格).{0,30}(可以|可|能|免|跳过|豁免).{0,16}(不进|免|跳过|豁免|省略)",
@@ -75,6 +85,7 @@ forbid_window_positive(
     ],
     "表格免校验声明",
 )
+text = _orig_text
 
 # 5. 术语在场
 if not (("tables" in text.lower()) or ("表格" in text)):

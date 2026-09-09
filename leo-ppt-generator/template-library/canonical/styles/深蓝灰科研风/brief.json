@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:深蓝灰科研风",
+  "name": "深蓝灰科研风",
+  "aliases": [
+    "深蓝灰科研风",
+    "深蓝灰",
+    "深蓝灰医学",
+    "slate medical research"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/深蓝灰科研风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "dark slate medical research system, monochrome clinical imagery under deep slate bands with engineering-amber highlight tags, hospital-grade formal reporting"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "深蓝灰科研风",
+      "深蓝灰",
+      "深蓝灰医学",
+      "slate medical research"
+    ],
+    "best_for": "黑白灰医学图像底色+深蓝灰压色+工程黄高亮的严谨学院化汇报;适合临床研究汇报/病例分析/医学答辩/公共卫生课题",
+    "visual_direction": "dark slate medical research system, monochrome clinical imagery under deep slate bands with engineering-amber highlight tags, hospital-grade formal reporting",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F8F8→#FFFFFF→#D9DEE1 (深蓝灰科研风底)",
+      "composition": "黑白灰医学图像底色 + 深蓝灰压色块 + 工程黄高亮点缀",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#152A36(深蓝灰主色/标题锚)",
+      "secondary": "#263946(压色块)",
+      "accent": "#F2A900(医学信息高亮黄)",
+      "neutral": "#1F2F3A(深文字锚)",
+      "rule": "锚点 #152A36, #263946, #F2A900, #1F2F3A;来源:源文件色板原文直迁;为 GPT Image 2 提供深蓝灰压色块、黑白医学影像背景、工程黄点缀的医学学术 PPT 全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "思源黑体 Heavy 超粗中文标题,字面宽大,层级明确",
+      "body": "思源黑体/微软雅黑 Regular 小字号,行距紧凑但清晰",
+      "labels": "DIN/Arial Narrow 大写英文,粗体几何编号置于黄色标签"
+    },
+    "layout_patterns": [
+      "黑白医学底图叠深蓝灰半透明横向色带",
+      "黄色编号标签 + 圆形/六边形编号建立识别",
+      "内容页白底细线框 + 顶部小标题栏 + 页脚细线",
+      "高信息密度但留白充足,视觉稳定学院化"
+    ],
+    "layout_usage_rule": "黑白医学底图叠深蓝灰半透明横向色带",
+    "visual_elements": {
+      "allowed": "黑白灰医学图像底色 + 深蓝灰压色块 + 工程黄高亮点缀",
+      "avoid": "不要大面积鲜艳渐变、霓虹或科幻 UI;不要黄色点缀滥用或深蓝灰色块遮挡主体内容"
+    },
+    "rendering_constraints": [
+      "不要大面积鲜艳渐变、霓虹或科幻 UI",
+      "不要黄色点缀滥用或深蓝灰色块遮挡主体内容",
+      "不要卡通插画或杂志海报化",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要大面积鲜艳渐变、霓虹或科幻 UI",
+      "不要黄色点缀滥用或深蓝灰色块遮挡主体内容",
+      "不要卡通插画或杂志海报化",
+      "不要虚构医院/大学名称或伪参考文献"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/003_深蓝灰医学研究汇报PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要大面积鲜艳渐变、霓虹或科幻 UI",
+      "不要黄色点缀滥用或深蓝灰色块遮挡主体内容",
+      "不要卡通插画或杂志海报化",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:黏土定格风",
+  "name": "黏土定格风",
+  "aliases": [
+    "claymation",
+    "黏土动画风",
+    "定格动画风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/黏土定格风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "卡通儿童",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "claymation style, clay texture, stop-motion feel, hand-crafted warmth, fingerprint detail, soft organic volume, tactile storybook charm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "claymation",
+      "黏土动画风",
+      "定格动画风"
+    ],
+    "best_for": "黏土质感、指纹痕迹、定格动画感营造手工、温暖、有亲和力的视觉",
+    "visual_direction": "claymation style, clay texture, stop-motion feel, hand-crafted warmth, fingerprint detail, soft organic volume, tactile storybook charm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "soft warm ground (clay studio)",
+      "composition": "one clay scene / character hero",
+      "density": "low-medium, warm"
+    },
+    "color_palette": {
+      "primary": "clay beige #D8B78A / terracotta #C97B4A",
+      "secondary": "soft sage #A3B18A, muted blue #7A9BA8",
+      "accent": "one warm accent (soft red #C25B4A)",
+      "neutral": "near-black #33302B, warm gray, cream",
+      "rule": "warm, tactile, hand-crafted; no slick 3D gloss, no cold hard"
+    },
+    "typography": {
+      "title": "rounded friendly sans",
+      "body": "readable, warm",
+      "labels": "soft badge labels",
+      "text_quality": "exact, gentle, no harsh wording"
+    },
+    "layout_patterns": [
+      "clay scene / character hero",
+      "clay object array",
+      "stop-motion frame sequence",
+      "warm storybook layout"
+    ],
+    "layout_usage_rule": "Tactile clay warmth; fingerprint detail and soft volume, never slick or cold.",
+    "layout_blueprints": [
+      {
+        "name": "角色页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "黏土角色/场景"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "阵列页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "黏土物体1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "clay texture, fingerprint marks and imperfections, extruded clay letters, soft organic volume, warm palette, stop-motion charm",
+      "avoid": "slick glossy 3D, photoreal, cold hard surfaces, clutter"
+    },
+    "rendering_constraints": [
+      "Warm, tactile, hand-crafted storybook charm.",
+      "Clay texture and soft volume; never slick or cold.",
+      "Exact gentle copy; no invented characters or logos."
+    ],
+    "reference": "GitHub: OhMyStyle (claymation) · 黏土定格风; GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-infographic/references/styles/claymation.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Warm, tactile, hand-crafted storybook charm.",
+      "Clay texture and soft volume; never slick or cold.",
+      "Exact gentle copy; no invented characters or logos."
+    ]
+  }
+}

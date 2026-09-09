@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:出行服务风",
+  "name": "出行服务风",
+  "aliases": [
+    "网约车风",
+    "出行风",
+    "mobility风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/汽车交通/出行服务风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "mobility service aesthetic, clean map + route UI, functional clarity, urban navigation, service trust, modern tech, approachable efficiency"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "网约车风",
+      "出行风",
+      "mobility风"
+    ],
+    "best_for": "出行服务,需要地图路线、功能清晰与服务信任",
+    "visual_direction": "mobility service aesthetic, clean map + route UI, functional clarity, urban navigation, service trust, modern tech, approachable efficiency",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean light / map-tint ground",
+      "composition": "route map + service modules",
+      "density": "medium, functional"
+    },
+    "color_palette": {
+      "primary": "service blue #2563EB / cyan #0891B2, white",
+      "secondary": "light gray, map green #4ADE80",
+      "accent": "one accent (teal #0D9488)",
+      "neutral": "near-black #1F2937, gray, hairline",
+      "rule": "clean, functional, trustworthy; no clutter, no dark-heavy"
+    },
+    "typography": {
+      "title": "clean modern sans (Inter / 思源黑体)",
+      "body": "concise functional body",
+      "labels": "route/time/price tags",
+      "text_quality": "accurate service info, no overclaim"
+    },
+    "layout_patterns": [
+      "route map hero",
+      "service / price modules",
+      "pickup-dropoff flow",
+      "safety & reliability"
+    ],
+    "layout_usage_rule": "Functional clarity; map, route and service with trust.",
+    "layout_blueprints": [
+      {
+        "name": "路线页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "路线地图"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "时间",
+              "价格",
+              "车辆"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "服务页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "功能1",
+              "功能2",
+              "功能3",
+              "功能4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "route maps, service cards, price/time tags, clean UI",
+      "avoid": "clutter, misleading, cartoon, dark-heavy"
+    },
+    "rendering_constraints": [
+      "Clean, functional, trustworthy.",
+      "Map, route, price and service clarity.",
+      "Accurate; no invented prices or guarantees."
+    ],
+    "reference": "GitHub: 出行服务 · 地图导航风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Clean, functional, trustworthy.",
+      "Map, route, price and service clarity.",
+      "Accurate; no invented prices or guarantees."
+    ]
+  }
+}

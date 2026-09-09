@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:战略藏青风",
+  "name": "战略藏青风",
+  "aliases": [
+    "Strategy Navy Deck",
+    "strategy navy",
+    "藏青战略"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/战略藏青风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "韩式咨询"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "strategy consulting deck, layered two-blue system of deep navy and vivid blue on white, serif headings over sans body, 12-column grid with action titles and evidence modules"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Strategy Navy Deck",
+      "strategy navy",
+      "藏青战略"
+    ],
+    "best_for": "双蓝层级 + 衬线标题的战略咨询语法;适合战略规划/咨询建议书/管理层汇报",
+    "visual_direction": "strategy consulting deck, layered two-blue system of deep navy and vivid blue on white, serif headings over sans body, 12-column grid with action titles and evidence modules",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF、#F1F4F9(变体锚)",
+      "composition": "藏青+鲜蓝+灰三档蓝色系层级,衬线标题 + 无衬线正文",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)",
+      "secondary": "#F1F4F9(蓝灰面)",
+      "accent": "#2563EB(鲜蓝强调)",
+      "neutral": "#14213D(藏青墨字)"
+    },
+    "typography": {
+      "title": "PT Serif 700(Georgia/Source Serif 兜底)26pt",
+      "body": "Inter 400",
+      "labels": "Inter 600 kicker 11pt,tracking 0.08em"
+    },
+    "layout_patterns": [
+      "每页顶部动作标题(完整结论句)",
+      "藏青 + 鲜蓝 + 灰三档层级,不用蓝灰外色相",
+      "衬线(PT Serif 系)标题 + 无衬线正文",
+      "12 列网格证据模块"
+    ],
+    "layout_usage_rule": "每页顶部动作标题(完整结论句)",
+    "visual_elements": {
+      "allowed": "藏青+鲜蓝+灰三档蓝色系层级,衬线标题 + 无衬线正文",
+      "avoid": "不要蓝灰之外的色相——层级只用三档蓝灰; 动作标题不要退化为名词标签"
+    },
+    "rendering_constraints": [
+      "不要蓝灰之外的色相——层级只用三档蓝灰",
+      "动作标题不要退化为名词标签",
+      "不要标题无衬线/正文衬线的反向混排",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要蓝灰之外的色相——层级只用三档蓝灰",
+      "动作标题不要退化为名词标签",
+      "不要标题无衬线/正文衬线的反向混排"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD29 Strategy Navy Deck"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要蓝灰之外的色相——层级只用三档蓝灰",
+      "动作标题不要退化为名词标签",
+      "不要标题无衬线/正文衬线的反向混排",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

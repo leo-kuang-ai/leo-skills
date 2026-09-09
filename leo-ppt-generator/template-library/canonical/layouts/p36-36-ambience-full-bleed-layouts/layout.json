@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p36-36-ambience-full-bleed-layouts",
+  "name": "Ambience Full Bleed",
+  "aliases": [
+    "P36"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "closing",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "assertion": {
+      "region": "content",
+      "desc": "断言一句（≤12 字，display 9.6vw）",
+      "max_chars": 12,
+      "chars_per_line": 5,
+      "max_lines": 2
+    },
+    "kicker": {
+      "region": "content",
+      "desc": "kicker（meta 1.2vw，accent）",
+      "max_chars": 69,
+      "chars_per_line": 29,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "图片全幅出血（cover，主体避开文案区，九宫格中心不与文字重叠）；文案块贴版心左下/右下：kicker + display 断言（min(9.6vw,16vh)）；文字下垫底部局部渐变遮罩（≤28vh，峰值 alpha ≤0.30）；主内容守 93vh 安全区"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/36_Ambience_Full_Bleed.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 2
+}

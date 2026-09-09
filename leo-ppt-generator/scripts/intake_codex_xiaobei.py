@@ -37,8 +37,8 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-RENDER_DIR = SKILL_DIR / "references" / "styles" / "08_图片渲染"
-BRAND_DIR = SKILL_DIR / "references" / "styles" / "10_品牌身份"
+RENDER_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "08_图片渲染"
+BRAND_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "10_品牌身份"
 
 # Axis-standard suffix: 08 轴渲染合同（图内无字 + 16:9 画幅）与现库 20 条
 # 完全同文，保证 load_rendering 的 paste_ready 段落合同一致。

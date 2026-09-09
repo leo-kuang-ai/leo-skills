@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:工具清单风",
+  "name": "工具清单风",
+  "aliases": [
+    "工具清单",
+    "清单风",
+    "工具合集风",
+    "资源清单风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/工具清单风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "curated tool-list style, unified card grid on light ground, one card per tool with icon/name/use-case/recommendation tag, orderly and collectible, like a premium knowledge inventory"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "工具清单",
+      "清单风",
+      "工具合集风",
+      "资源清单风"
+    ],
+    "best_for": "工具与资源合集内容,需要清单感、收藏感、秩序感的实用叙事",
+    "visual_direction": "curated tool-list style, unified card grid on light ground, one card per tool with icon/name/use-case/recommendation tag, orderly and collectible, like a premium knowledge inventory",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F7F5 浅灰白底,统一卡片网格,清晰留白",
+      "composition": "标题区 + 6-8 张同构工具卡网格 + 分类标签",
+      "density": "medium-high, 卡片同构不拥挤"
+    },
+    "color_palette": {
+      "primary": "#F7F7F5(浅灰白底)配 #26292E(墨字锚)",
+      "secondary": "#FFFFFF(卡片白)",
+      "accent": "#3E63DD(链接蓝单强调)",
+      "neutral": "#8A9099(灰注释)与 #E3E5E8(卡分隔)",
+      "rule": "浅灰白 + 链接蓝;卡片统一同构,禁花哨贴纸与彩色图标海"
+    },
+    "typography": {
+      "title": "中等字重无衬线(思源黑体/MiSans)清楚不夸张",
+      "body": "工具名清晰 + 使用场景一句话",
+      "labels": "分类/推荐指数/标签小注(Nunito/思源黑体)"
+    },
+    "layout_patterns": [
+      "清单封面:合集名 + 一句价值主张 + 数量徽标",
+      "工具卡片页:统一卡片 × 6-8,每卡图标+名+场景+标签",
+      "分类页:分类标签行 + 分组卡列",
+      "对比页:两工具对照卡 + 选型建议行"
+    ],
+    "layout_usage_rule": "卡片同构统一;每卡一个工具一句话场景,整体留白清晰",
+    "visual_elements": {
+      "allowed": "统一卡片、图标、评分、分类标签、列表编号",
+      "avoid": "图标模糊、卡片拥挤、应用商店截图感、花哨贴纸"
+    },
+    "rendering_constraints": [
+      "卡片网格统一规格,间距一致",
+      "图标风格统一线性",
+      "不虚构工具评分与虚构功能"
+    ],
+    "negative_prompt": [
+      "不要像应用商店截图",
+      "不要卡片拥挤或图标风格混杂",
+      "不要虚构评分与不存在的功能"
+    ],
+    "reference": "file-github: xhs-visual-director-skill · style_system「高级工具清单风」（改画幅吸收,C4）"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "卡片网格统一规格,间距一致",
+      "图标风格统一线性",
+      "不虚构工具评分与虚构功能"
+    ]
+  }
+}

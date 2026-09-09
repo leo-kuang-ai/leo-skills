@@ -1,0 +1,238 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:warm-handcraft",
+  "name": "温暖手工风",
+  "aliases": [
+    "手工风",
+    "温暖插画风",
+    "暖手工风",
+    "warm-handcraft"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/温暖手工风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "warm handmade paper collage slide, tactile paper craft, gentle human-centered storytelling, cozy scrapbook composition"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts"
+        ]
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p10-10-dot-matrix-statement-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p5-05-three-sub-cards-layouts",
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p33-33-team-grid-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts",
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ],
+        "discouraged": []
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.0,
+      "note": "中性折减：手工质感由材质纹理承担，不占文本区"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 12）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:art-handdrawn"
+      ]
+    },
+    "aliases": [
+      "手工风",
+      "温暖插画风",
+      "暖手工风",
+      "warm-handcraft"
+    ],
+    "best_for": "教育、公益、文化、成长、社区和需要温度感的主题演示",
+    "visual_direction": "warm handmade paper collage slide, tactile paper craft, gentle human-centered storytelling, cozy scrapbook composition",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm cream paper #F5F1E8 or pale wood #E8DCC8 with subtle paper fibers",
+      "composition": "paper cutout title area, 3 paper note cards for key points, gentle illustration accents",
+      "density": "airy and comforting, generous breathing room"
+    },
+    "color_palette": {
+      "primary": "warm brown #A67C52 and deep cocoa #5C4033 for text",
+      "soft_colors": "dusty pink #F5C4B8, sage green #B8D4A8, sky blue #A8D8EA, sunset orange #FFA574, lavender #C9B1D0",
+      "surface": "cream, handmade paper, kraft paper, pastel sticky notes",
+      "rule": "all colors should feel soft, matte, and paper-like",
+      "secondary": "soft linen beige #EAE0D1 and sage #A8B5A0",
+      "accent": "terracotta #C97B5A for hand-drawn underlines and stitches",
+      "neutral": "cream #F5EFE6, kraft brown border #C9B79C"
+    },
+    "typography": {
+      "title": "rounded handwritten or friendly display style",
+      "body": "clear friendly handwritten or rounded sans-serif Chinese text",
+      "emphasis": "paper labels, stitched tags, small handwritten captions",
+      "text_quality": "Chinese text must be accurate and legible",
+      "labels": "rounded friendly labels (站酷圆体 / Nunito), small stitches and dots as bullets"
+    },
+    "layout_patterns": [
+      "three torn-paper cards aligned naturally across the slide",
+      "scrapbook title ribbon with small illustrated stickers",
+      "central handmade diagram with taped labels",
+      "soft paper collage with one warm illustration and supporting notes"
+    ],
+    "layout_usage_rule": "Use layout_blueprints as candidate starting points only. Choose and adapt the composition according to each slide's semantic role; avoid repeating the same blueprint on adjacent slides unless it is a deliberate repeated sequence.",
+    "layout_blueprints": [
+      {
+        "name": "paper note cards",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "torn-paper title ribbon"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 3,
+            "labels": [
+              "paper card 1",
+              "paper card 2",
+              "paper card 3"
+            ]
+          },
+          {
+            "position": "corners",
+            "count": 4,
+            "labels": [
+              "small sticker",
+              "tape strip",
+              "plant doodle",
+              "paper clip"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "scrapbook story",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "warm illustration or paper collage scene"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "key point note",
+              "example note",
+              "takeaway note"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "handwritten closing line"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "paper texture, torn edges, tape, paper clips, buttons, watercolor blocks, simple doodles, plant stickers, soft shadows",
+      "avoid": "glossy plastic look, corporate sharp edges, harsh black text, neon colors, overly childish clutter"
+    },
+    "negative_prompt": [
+      "glossy plastic look",
+      "corporate sharp edges",
+      "harsh black text",
+      "neon colors",
+      "overly childish clutter"
+    ],
+    "paired_illustration": {
+      "family": "collage",
+      "density": "core"
+    },
+    "rendering_constraints": [
+      "The slide should feel handmade but still presentation-ready.",
+      "Paper shadows and textures should be subtle and not reduce text legibility.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "The slide should feel handmade but still presentation-ready.",
+      "Paper shadows and textures should be subtle and not reduce text legibility.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

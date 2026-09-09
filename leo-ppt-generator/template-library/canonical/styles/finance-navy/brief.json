@@ -1,0 +1,115 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:finance-navy",
+  "name": "金融藏青风",
+  "aliases": [
+    "金融",
+    "finance-navy"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "金融方向"
+    ],
+    "industries": [
+      "金融"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "density": "medium-high",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review",
+      "print"
+    ],
+    "components": [
+      "密集规格表",
+      "KPI",
+      "对照表"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "seed direction per plan section 8.1",
+    "features": [
+      "藏青主色 + 细网格线的可核验排印",
+      "数字右对齐 + 制表数字字体的表格纪律",
+      "涨跌色只用于数据序列"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止无来源数字进入表格",
+      "涨跌不得只用红绿区分（需符号+单位）",
+      "禁止霓虹强调色"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:finance-navy-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p4-04-six-cells-layouts",
+          "builtin:layout:p19-19-four-cards-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+          "builtin:layout:p6-06-kpi-tower-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "数字右对齐、单位/口径/来源齐全、地区涨跌惯例正确",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

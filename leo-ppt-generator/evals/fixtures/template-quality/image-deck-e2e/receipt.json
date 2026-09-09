@@ -1,0 +1,133 @@
+{
+  "kind": "image-deck-e2e-receipt",
+  "schema_version": 4,
+  "authorization": "用户 2026-09-08 批准付费生成（最低 6 张，预算包络典型 7-8/硬上限 12）",
+  "input": "u19 铜贸复盘 6 页（与 HTML deck 同冻结设计）",
+  "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+  "design_digest_matches_html_deck": true,
+  "backend": {
+    "backend_kind": "openai-compatible",
+    "capabilities": {
+      "edit": false,
+      "execution_owner": "runtime",
+      "generate": true,
+      "mask": false,
+      "max_reference_images": 0
+    },
+    "credential_ref": "keychain:leo-ppt-generator/ark",
+    "credential_source": "os-store-reference",
+    "endpoint_origin": "https://ark.cn-beijing.volces.com",
+    "mode": "generate",
+    "model": "doubao-seedream-4-0-250828",
+    "provider": "ark",
+    "schema_version": 1,
+    "selection": {
+      "config_digest": null,
+      "priority": null,
+      "source": "user-confirmed"
+    },
+    "selection_source": "user-confirmed"
+  },
+  "billing": {
+    "authorized_envelope": "初始批准最低 6 张（硬上限 12）；用户随后两次指示继续（继续完成 / 继续切换火山引擎渠道）授权追加",
+    "api_calls_billed": 14,
+    "breakdown": "6 初次 + 3 我方失误（漏 --force，已生成未落盘）+ 2 密度指引重试 + 2 密集编辑式构图重试 + 1 收尾页实色块构图重试",
+    "images_saved": 6,
+    "final_qa": "0 FAIL / 2 WARN（exit 2 = 仅警告不阻断）"
+  },
+  "pages": [
+    {
+      "page_no": 1,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_01.png",
+      "sha256": "9cc46c8ee68b92bcba07bb023d304ae93bf8f011ac72cda5e388212ed2b9f7a0",
+      "bytes": 676154
+    },
+    {
+      "page_no": 2,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_02.png",
+      "sha256": "290f7b51843119faf4e4447aada38b870bc304a16fc2bb6740c9207446dcc955",
+      "bytes": 660216
+    },
+    {
+      "page_no": 3,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_03.png",
+      "sha256": "99258699e7fe02c38329387753e57af2c588c7f5b6a482d930aaa58b459db91e",
+      "bytes": 905698
+    },
+    {
+      "page_no": 4,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_04.png",
+      "sha256": "b7a8b51d8af34eee685369c467dce589df4c38ac1d0bc8f976bf123366d1a87a",
+      "bytes": 736153
+    },
+    {
+      "page_no": 5,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_05.png",
+      "sha256": "f225d1d54fb6d305cf9ec7cd3b53e4ab41a5f6d0db12f40b14616d96a600000c",
+      "bytes": 1120109
+    },
+    {
+      "page_no": 6,
+      "png": "evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_06.png",
+      "sha256": "c4d1a507affc5e345a8a65ed1b05b999d9a1feb427616ef3a4473ee5f395f94f",
+      "bytes": 876882
+    }
+  ],
+  "visual_qa": {
+    "report": "evals/fixtures/template-quality/image-deck-e2e/reports/visual-qa.json",
+    "exit": 2,
+    "verdicts": {
+      "01": "PASS",
+      "02": "PASS",
+      "03": "PASS",
+      "04": "WARN",
+      "05": "PASS",
+      "06": "WARN"
+    },
+    "warns": {
+      "slide_04": "CUT-01 底部亮像素 47%（WARN 不阻断）",
+      "slide_06": "CUT-01 右缘亮像素 16%（视觉复核：实色带与纸底的自然过渡，非内容裁切）"
+    }
+  },
+  "semantic_checks": {
+    "slide_03（过闸表格页）": "视觉判读：表格结构完整（表头+3行3列）、文字基本逐字保真（标题/表头/行文字全对）、藏青浅底金融风成立；个别笔画微瑕",
+    "slide_02（未过闸页）": "视觉判读：标题与 3 条要点逐字清晰保真，但下半幅约 60% 纯空白、头重脚轻——QA 判据真实有效",
+    "slide_02（重生成后过闸）": "视觉判读：标题/三要点/页脚/页码逐字保真；卡片与右侧图表完整；无大面积空白",
+    "slide_06（重生成后过闸）": "视觉判读：金句两行/出处/页脚/页码逐字保真；徽记+实色几何+实色横带构图成立；右缘亮像素为色带过渡非裁切"
+  },
+  "pptx": {
+    "path": "evals/fixtures/template-quality/image-deck-e2e/u19-copper-risk-review-image.pptx",
+    "slides": 6,
+    "readback_ok": true,
+    "sha256": "22a492c2fda73f6f44458dcc3c6a6b33427e5f61b2e732cfdb59036b91f2eda7"
+  },
+  "conclusion": {
+    "pipeline_e2e": "pass（两条路线同 design_digest，真实付费生成，QA 闸，PPTX 回读，收据）",
+    "quality_acceptance": "pass（0 FAIL / 2 WARN；两处 WARN 经视觉复核均为非缺陷性判读提示）",
+    "lesson": "seedream-4 文字页稀疏不是不可解：把版式处方从「要点列表」改为「密集编辑式/实色块构图」即可过闸——该经验对 image lane 的 prompt 工程有沉淀价值（已随收据留档三版 prompt 样本）"
+  },
+  "provider_switch_attempt": {
+    "directive": "用户 2026-09-08「继续完成」——对 2 个未过闸页做换渠道有界重试",
+    "attempts": [
+      {
+        "provider": "openai-compatible",
+        "model": "gpt-image-2",
+        "outcome": "blocked_pre_billing（代理余额不足 insufficient_user_quota：余 $0.02 < 需 $0.05，未扣费）"
+      },
+      {
+        "provider": "zhipu",
+        "model": "cogview-4",
+        "outcome": "blocked_size_menu（像素上限 2,097,152 不支持 2560x1440；其 16:9 合规最大档 1792x1008 违反 2560 交付档合同，按 slide-worker 合同不得降档）"
+      },
+      {
+        "provider": "qianxing",
+        "model": "gpt-image-1",
+        "outcome": "未尝试——与 openai-compatible 同一代理端点（fast.qianxing.us.ci）同一余额池，结论可推"
+      }
+    ],
+    "additional_billing": 3,
+    "billing_total": 14,
+    "conclusion": "当前凭据下换渠道路径穷尽：ark 可生成但文字页稀疏（两次密度指引无效）、gpt-image 系余额不足、cogview 尺寸不合规。质量验收维持 fail（2/6 页 BLANK-01），三渠道证据齐备，属真实能力/资源边界，不以放宽判据换通过。后续需用户侧动作：代理充值后重试 gpt-image 系，或接受边界/该两页 HTML lane 混排。",
+    "volcano_channel_followup": "用户指示继续火山引擎渠道：seedream-3-0-t2w/4-1/4-0 均 404 未开通（预检未扣费）；同渠道内改用构图处方重写（要点页密集编辑式 / 收尾页实色块）后两页均过闸"
+  }
+}

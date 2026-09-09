@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:松烟画报风",
+  "name": "松烟画报风",
+  "aliases": [
+    "松烟画报风",
+    "松烟画报",
+    "电影画报",
+    "pine soot pictorial"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/松烟画报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "pine-soot cinematic pictorial, near-black fields hard-split with full-bleed cinematic photography, white Inter type and one-off cover red-magenta bursts"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "松烟画报风",
+      "松烟画报",
+      "电影画报",
+      "pine soot pictorial"
+    ],
+    "best_for": "近黑场与全幅电影感摄影硬分割+白色字组;适合品牌画报/影视宣发/视觉叙事/机构形象",
+    "visual_direction": "pine-soot cinematic pictorial, near-black fields hard-split with full-bleed cinematic photography, white Inter type and one-off cover red-magenta bursts",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#000101→#000000 (松烟画报风底)",
+      "composition": "近黑场与全幅电影感摄影硬分割(约 44%/56%),白字只落在黑场/压暗层,红洋红仅封面一次性",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#000101(近黑场/标题锚)",
+      "secondary": "#FFFFFF(白色正文字)",
+      "accent": "#EF1722(封面红一次性爆发)",
+      "neutral": "#FD1AEE(封面洋红窄条纹)",
+      "rule": "锚点 #000101, #FFFFFF, #EF1722, #FD1AEE;来源:源文件色板原文直迁;近黑场与全幅电影感摄影硬分割+白色字组"
+    },
+    "typography": {
+      "title": "Inter SemiBold 大标题,可 2-3 行,行高 0.6-0.7em 收紧",
+      "body": "Inter Regular 双栏正文",
+      "labels": "Inter SemiBold 全大写属性胶囊标签,四位索引竖排"
+    },
+    "layout_patterns": [
+      "照片/黑场硬分割 43.7%/56.3% 可镜像,方角贴边,黑发丝线接缝",
+      "顶部五个微导航锚点+左下四位页码,贴页缘且在正文网格外",
+      "下部属性标签组:4-10 个透明细白描边胶囊,ALL CAPS 两行排布",
+      "封面左 59% 全幅特写+右 41% 黑场与红洋红竖条纹"
+    ],
+    "layout_usage_rule": "照片/黑场硬分割 43.7%/56.3% 可镜像,方角贴边,黑发丝线接缝",
+    "visual_elements": {
+      "allowed": "近黑场与全幅电影感摄影硬分割(约 44%/56%),白字只落在黑场/压暗层,红洋红仅封面一次性",
+      "avoid": "不要在正文页使用红/洋红或彩色界面块;不要圆角照片、悬浮卡片或阴影白边"
+    },
+    "rendering_constraints": [
+      "不要在正文页使用红/洋红或彩色界面块",
+      "不要圆角照片、悬浮卡片或阴影白边",
+      "不要白字直接压在亮部照片上(先重新裁剪)",
+      "不要用插画或 3D 替代摄影证据",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要在正文页使用红/洋红或彩色界面块",
+      "不要圆角照片、悬浮卡片或阴影白边",
+      "不要白字直接压在亮部照片上(先重新裁剪)",
+      "不要用插画或 3D 替代摄影证据"
+    ],
+    "reference": "GitHub: open-kimi-ppt-skill · reference/design_system/promotion/pine-soot-pictorial/design.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要在正文页使用红/洋红或彩色界面块",
+      "不要圆角照片、悬浮卡片或阴影白边",
+      "不要白字直接压在亮部照片上(先重新裁剪)",
+      "不要用插画或 3D 替代摄影证据",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

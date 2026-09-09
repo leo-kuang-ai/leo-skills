@@ -10,7 +10,8 @@
 > 规格抽取自其 `references/`（platform-specs / style-system / components /
 > content-planning / portrait-fill / layout-recipes / theme-presets / qa-checklist）
 > 与 `validate-social-deck.mjs`（R1-R9 规则实现）。本文与其上游的关系类似
-> [`styles/04_来源_guizang/`](styles/04_来源_guizang/00_README.md) 的组件模板先例：
+> [`template-library/reference/sources/来源_guizang/`](../template-library/reference/sources/来源_guizang/00_README.md)
+> 的组件模板先例（这是 provenance/reference 来源，不是活动风格真值）：
 > 判定式抽取，不整篇搬运。
 
 ## 一、画板规格
@@ -81,9 +82,9 @@ h-hero 双列，1080×1440 基准）：
 判定式补充：
 
 - 仍放不下 → **先缩文案**；3 行即上限，方形画布上 3 行几乎必错（换标题句，
-  参见 [`styles/04_来源_guizang/组件模板/标题压缩模板.md`](styles/04_来源_guizang/组件模板/标题压缩模板.md)）。
+  参见 [`template-library/reference/sources/来源_guizang/标题压缩模板.md`](../template-library/reference/sources/来源_guizang/标题压缩模板.md)）。
 - 字重双系统规则（越大越细、越小越粗）沿用风格库既有表述，判据见
-  [`styles/00_索引/通用设计规范.md`](styles/00_索引/通用设计规范.md) 与
+  [`../template-library/governance/authoring/index/通用设计规范.md`](../template-library/governance/authoring/index/通用设计规范.md) 与
   [`visual-qa.md`](visual-qa.md)「字重阶梯」行：按风格表情档校验，同组图不跨档。
 - 1:1 方图短标题 4-10 字（1-2 行、每行 ≤6 字）；21:9 宽图 1 行 ≤14 字；
   3:4 组图页标题 12-30 字、1-2 行。
@@ -126,8 +127,8 @@ h-hero 双列，1080×1440 基准）：
 | `accent_soft` | `--accent-soft` | —（不使用） | 强调色的浅衬 |
 | `accent_on` | —（不使用） | `--accent-on` | 强调色上的文字色 |
 
-与风格库的映射先例：[`styles/电子墨水杂志风.md`](styles/电子墨水杂志风.md) 与
-[`styles/01_通用母版/极简排版/瑞士网格风.md`](styles/01_通用母版/极简排版/瑞士网格风.md)
+与活动风格库的映射先例：[`eink-magazine/brief.json`](../template-library/canonical/styles/eink-magazine/brief.json) 与
+[`瑞士网格风/brief.json`](../template-library/canonical/styles/瑞士网格风/brief.json)
 的 `theme_presets` 数组即按本表键名（`paper`/`paper2`/`ink`/`muted`/`line`/
 `accent`/`accent_soft` 与 `grey1`/`grey2`/`grey3`/`accent_on`）登记上游
 6 + 4 个预设。判定式规则：

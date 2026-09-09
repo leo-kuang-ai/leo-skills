@@ -79,7 +79,7 @@ from .storage import (
     secure_user_tree,
     sha256_bytes,
 )
-from .styles import StyleStoreError, list_styles, load_style, save_style, style_summary, list_style_summaries
+from .styles import StyleStoreError, list_styles_with_source, load_style, save_style, style_summary, list_style_summaries
 from .layout_bank import (
     CapacityFilterError,
     filter_layout_bank_by_capacity,
@@ -1389,7 +1389,7 @@ def build_parser() -> argparse.ArgumentParser:
     render_ready_cmd.add_argument("--json", action="store_true")
     render_page_cmd = render_commands.add_parser("page", help="HTML 模板 → PNG 页产物")
     render_page_cmd.add_argument("--template", required=True,
-                                 help="assets/render-templates/<id>.html 的模板 id")
+                                 help="template-library/canonical/templates/<id>/page.html 的模板 id")
     render_page_cmd.add_argument("--data", required=True, help="slide data JSON 路径")
     render_page_cmd.add_argument("--out", required=True, help="PNG 输出路径")
     render_page_cmd.add_argument("--size", default="2560x1440",
@@ -1527,7 +1527,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--anchor", action="store_true",
         help="附加风格锚附录（HEX/字族/渲染逐字节注入每页，防漂移；--brand 隐含开启）",
     )
-    style_render.add_argument("--layout", help="版式名（12_版式库，如 P6 / KPI Tower）")
+    style_render.add_argument("--layout", help="版式名（canonical layout profile，如 P6 / KPI Tower）")
     style_render.add_argument("--image-type", help="信息图类型名（07_信息图类型）")
     style_render.add_argument(
         "--materialize",
@@ -3147,7 +3147,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 return envelope("ready", "style_summaries_listed", **result, safe_to_retry=True)
             if args.limit is not None or args.offset is not None:
                 raise StyleStoreError("style_summary_required_for_pagination")
-            styles = list_styles(home=home)
+            listing = list_styles_with_source(home=home)
+            styles = listing["styles"]
             needle = getattr(args, "filter", None)
             if needle:
                 needle = str(needle).strip().lower()
@@ -3156,7 +3157,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     if needle in str(item.get("name", "")).lower()
                     or any(needle in str(a).lower() for a in item.get("aliases", []) or [])
                 ]
-            return envelope("ready", "style_listed", styles=styles, safe_to_retry=True)
+            return envelope("ready", "style_listed", styles=styles,
+                            registry_source=listing["registry_source"], safe_to_retry=True)
         if args.style_command == "load":
             if args.summary:
                 return envelope("ready", "style_summary_loaded", style=style_summary(args.name, home=home), safe_to_retry=True)
@@ -3218,6 +3220,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     args.layout,
                     image_type=args.image_type,
                     materialize=bool(getattr(args, "materialize", False)),
+                    home=home,
                 )
             return envelope(
                 "ready", "style_rendered", template=result, safe_to_retry=True,

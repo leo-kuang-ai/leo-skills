@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p22-22-image-hero-layouts",
+  "name": "Image Hero",
+  "aliases": [
+    "P22"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "hero_stats": {
+      "region": "content",
+      "desc": "下半屏三列 KPI（真实数值）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "desc": {
+      "region": "content",
+      "desc": "下半屏长说明",
+      "max_chars": 158,
+      "chars_per_line": 44,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "上半屏 60% 全幅图片 + 左上白底标题块叠加（top:11vh）；下半屏 40% 长说明 + 三列 KPI"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/22_Image_Hero.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

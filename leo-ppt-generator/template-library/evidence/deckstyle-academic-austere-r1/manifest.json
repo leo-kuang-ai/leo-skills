@@ -1,0 +1,83 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-academic-austere-r1",
+  "assets": {
+    "style": "builtin:style:academic-austere",
+    "theme": "builtin:theme:academic-austere-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[academic-austere]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 1"
+  },
+  "outputs": {
+    "cover.png": "3bc8ae36f071cb024ae4b56a2d04edcc668f39880d6bf9cfd3ce1f46f40eecb1",
+    "content.png": "ecdea0b3a65ac99a9cf383c79ae55d8fb0fa684b2070be000dac5146229bb511",
+    "evidence.png": "c79afc22ecf47dcfd676deb745d738ec9be2b2cde6e0133f32db1c6b63605800",
+    "closing.png": "23c172431b4dde789bbf740e046cdf6baca3ed72f2cc874e08287a22e348e93a"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": []
+}

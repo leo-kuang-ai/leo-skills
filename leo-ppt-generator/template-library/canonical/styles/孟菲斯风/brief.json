@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:孟菲斯风",
+  "name": "孟菲斯风",
+  "aliases": [
+    "Memphis",
+    "孟菲斯设计",
+    "后现代拼贴风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/孟菲斯风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "波普孟菲斯"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "memphis design style, playful geometric shapes, bold clashing colors, squiggles and zigzags, neo-postmodern cheer, energetic graphic fun, creative youthful energy"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Memphis",
+      "孟菲斯设计",
+      "后现代拼贴风"
+    ],
+    "best_for": "以几何色块、波普撞色与有趣构成表达活泼、好玩、有创意的视觉",
+    "visual_direction": "memphis design style, playful geometric shapes, bold clashing colors, squiggles and zigzags, neo-postmodern cheer, energetic graphic fun, creative youthful energy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "off-white or a bright accent ground",
+      "composition": "scattered playful geometry, bold color blocks",
+      "density": "medium, lively"
+    },
+    "color_palette": {
+      "primary": "off-white #FAF7F0 / bright ground",
+      "secondary": "candy colors (pink #FF6B9D, cyan #4DD0E1, yellow #FFD54F, purple #9575CD)",
+      "accent": "one wild accent pair (#FF4081 / #00E5FF)",
+      "neutral": "near-black #212121, white, playful grays #B0BEC5",
+      "rule": "playful, clashing, energetic; no muted corporate restraint"
+    },
+    "typography": {
+      "title": "friendly geometric sans-serif (Nunito / 站酷圆体)",
+      "body": "legible, light",
+      "labels": "playful chips",
+      "text_quality": "clear, lively, brand-consistent"
+    },
+    "layout_patterns": [
+      "squiggle + block composition",
+      "geometric color burst",
+      "playful process with shapes",
+      "creative idea collage"
+    ],
+    "layout_usage_rule": "Let the fun geometry and bold clashes do the work; keep it graphic and cheerful.",
+    "layout_blueprints": [
+      {
+        "name": "开场",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "几何创意主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "创意模块页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "创意1",
+              "创意2",
+              "创意3",
+              "创意4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "squiggles, zigzags, geometric blocks, bold clashing colors, playful icons",
+      "avoid": "corporate restraint, dense infographic, muted palette, photo-realism"
+    },
+    "rendering_constraints": [
+      "Playful and energetic, strongly branded.",
+      "Bold clashing geometry; keep it graphic and fun.",
+      "No invented logos; brand-appropriate only."
+    ],
+    "reference": "GitHub: OhMyStyle (Memphis) · 孟菲斯风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Playful and energetic, strongly branded.",
+      "Bold clashing geometry; keep it graphic and fun.",
+      "No invented logos; brand-appropriate only."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:地图战略风",
+  "name": "地图战略风",
+  "aliases": [
+    "地图战略风",
+    "地图战略",
+    "图集战略",
+    "cartographic strategy",
+    "map strategy",
+    "战略地图风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/商务专业/地图战略风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "contemporary strategy atlas,暖纸白底+深藏青标题与主航线+钴蓝推荐路径+朱砂风险坐标,等高线/经纬网格/航线/图例编号构建方向感,一页一个战略判断"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "地图战略风",
+      "地图战略",
+      "图集战略",
+      "cartographic strategy",
+      "map strategy",
+      "战略地图风"
+    ],
+    "best_for": "把战略放进空间的地图叙事:暖纸白+深藏青+钴蓝+朱砂坐标的当代战略图集气质;适合国际化/区域扩张/业务组合/生态布局/资源配置/长期路线图",
+    "visual_direction": "contemporary strategy atlas,暖纸白底+深藏青标题与主航线+钴蓝推荐路径+朱砂风险坐标,等高线/经纬网格/航线/图例编号构建方向感,一页一个战略判断",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F4F0E8 暖纸白(内容页主场,章节页可 #0B1F33 深藏青)",
+      "composition": "顶部标题与页码坐标区 14-18%,中部主图工作区 65-72%,底部来源/假设/图例区;四角可有极小坐标刻度,内容永不贴边",
+      "density": "medium, 一页只承载一个战略判断,至多 3 条支撑证据"
+    },
+    "color_palette": {
+      "primary": "#0B1F33 深藏青/标题·章节底·主航线·核心文字(源直迁)",
+      "secondary": "#2F5BFF 钴蓝/推荐项·关键路径·关键数字(源直迁)",
+      "accent": "#E4572E 朱砂/风险·关键坐标·必决节点,面积严格小于钴蓝且每页最多一处(源直迁)",
+      "neutral": "#F4F0E8 暖纸白底;辅 #9BD5D8 雾青次级区域与 #5B6570 石墨灰注记(源直迁)",
+      "rule": "常页=纸白+藏青+钴蓝,朱砂一页只出现一次;禁彩虹地图/荧光渐变/大红大绿对抗"
+    },
+    "typography": {
+      "title": "MiSans Bold 页标题(2-2.6x 正文)+Unna/思源宋体图集式衬线 display(封面 4-5x,最多两行,源指定)",
+      "body": "MiSans/思源黑体 Regular 短句正文,编号与直标;关键数字 2.5-3.5x 正文加粗无衬线",
+      "labels": "JetBrains Mono 坐标/图例/来源/年份与区域编码(源指定 customFonts);0.55-0.75x 小字但保持可读"
+    },
+    "layout_patterns": [
+      "封面=大标题(左或左下)+抽象区域图(右 45-60%)+一条主航线;标题最多两行",
+      "母版 A 战略地图页:左 25-32% 结论与 2-3 条要点,右侧抽象区域图,点=市场/能力节点,线宽=优先级,实/虚线=已建/待建",
+      "母版 B 三市场对比带:页面横分三等距平行带,各含市场名+一个主数字+小区位图+2-3 个评估维度;三列必须同构,推荐项以钴蓝描边或朱砂坐标点强调",
+      "母版 C 机会-难度矩阵页:矩阵占 60-70%,右侧结论;象限名为可执行判断(先行进入/建伙伴/保持观察),点标签直接写市场名",
+      "母版 D 路线阶段页:左下到右上一条主航线串 3-5 阶段,每阶段带时机/关键动作/门槛/退出条件,可拐弯,不用等宽流程卡",
+      "母版 E 能力网络页:中央能力锚点连接渠道/交付/合规/产品/人才节点,连线=依赖,节点大小=优先级,只画真正影响落地的 5-8 个节点",
+      "母版 F 决策页:左侧一个大结论,右侧「立刻决策/进入条件/90 天行动」三段清单;可放缩小的路线图回顾全程——不是普通致谢页"
+    ],
+    "layout_usage_rule": "每页先回答一个决策问题再给位置/路径/优先级证据;一主图统领全页,图例解释所有颜色与线型;地理信息不足时用抽象区位图/路线图,绝不虚构精确边界",
+    "visual_elements": {
+      "allowed": "坐标点/同心圆节点/三类线(主路径·备选·依赖)/等高线与经纬网格/短刻度/页码编码/图例/标尺式分隔/细线注记",
+      "avoid": "咨询蓝白卡墙;随机世界地图水印;假国界;3D 地球;发光航线;彩虹热力图;圆角 UI 面板;emoji;装饰罗盘;无结论满版地图"
+    },
+    "rendering_constraints": [
+      "地图必须带图例与方向/比例线索,抽象地图必须标注『示意』",
+      "关键差异直接标注在点旁,减少独立图例",
+      "表格用于市场评分/进入条件:藏青表头或雾青浅底,行间细线,推荐行左缘钴蓝坐标条,风险格小朱砂点",
+      "照片非默认元素;用城市/场景照时只允许一张去饱和大图",
+      "标题读起来像管理层真会说的判断,禁『战略蓝图』『携手共赢』类空话"
+    ],
+    "negative_prompt": [
+      "不要默认咨询蓝白卡片墙",
+      "不要随机世界地图水印与假国界线",
+      "不要 3D 地球与发光航线",
+      "不要彩虹热力图与大红大绿对抗",
+      "不要无结论的满版装饰地图"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "supportive"
+    },
+    "reference": "GitHub: open-kimi-ppt-skill · skills/open-kimi-ppt/reference/design_system/01_strategy/06/en/map-strategy.md (theme.md 44 预设之一,S5 批吸收)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "地图必须带图例与方向/比例线索,抽象地图必须标注『示意』",
+      "关键差异直接标注在点旁,减少独立图例",
+      "表格用于市场评分/进入条件:藏青表头或雾青浅底,行间细线,推荐行左缘钴蓝坐标条,风险格小朱砂点",
+      "照片非默认元素;用城市/场景照时只允许一张去饱和大图",
+      "标题读起来像管理层真会说的判断,禁『战略蓝图』『携手共赢』类空话"
+    ]
+  }
+}

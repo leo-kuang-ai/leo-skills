@@ -54,8 +54,8 @@ token 成本）；`backend report` 的 token 聚合把 render 行单独看待，
 
 ## 3. 模板合同（七条）
 
-模板目录 `assets/render-templates/`（每模板 `<id>.html`；合同与 lint 见该
-目录 `README.md` 与 `scripts/lint_render_templates.py`，缺 ready 信号 =
+模板目录 `template-library/canonical/templates/`（每模板 `<id>/page.html`；合同与 lint 见
+目录 `README.md`、`scripts/lint_template_contract.py` 与 `scripts/lint_render_templates.py`，缺 ready 信号 =
 ERROR）：deterministic 模式（`?leo_render=1` 禁动画）、`data-leo-ready`
 显式就绪信号（渲染主门；缺失 → `document.fonts.ready + 800ms` 回退并 WARN
 `ready_signal_missing_fallback_wait`）、数据只读 `window.__LEO_SLIDE_DATA__`
@@ -76,7 +76,8 @@ ERROR）：deterministic 模式（`?leo_render=1` 禁动画）、`data-leo-ready
 （MIT；upstreams.yaml 登记）；其"四段魔法等待"反面教训即 ready 信号合同的
 动机。
 
-R-28 扩面模板（槽位语义对齐 12_版式库 对应 P 码 sidecar）：
+R-28 扩面模板（槽位语义对齐 `template-library/canonical/layouts/*/layout.json`
+对应 P 码 profile；模板实现仍在 `template-library/canonical/templates/`）：
 
 - `spec-table.html` 规格参数表（P25）：`columns`/`column_align`/`rows`，
   表头角色底色 + 斑马纹行 + 数值列右对齐。

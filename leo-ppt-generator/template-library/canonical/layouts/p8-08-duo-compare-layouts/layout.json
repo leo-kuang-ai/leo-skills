@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+  "name": "Duo Compare",
+  "aliases": [
+    "P8"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "sides": {
+      "region": "content",
+      "desc": "对照侧（t-cat 标签 + 大字标题 + 说明）",
+      "count_min": 2,
+      "count_max": 2
+    },
+    "side_title": {
+      "region": "content",
+      "desc": "每侧大字标题",
+      "max_chars": 12,
+      "chars_per_line": 10,
+      "max_lines": 1
+    },
+    "side_desc": {
+      "region": "content",
+      "desc": "每侧段落/列表说明",
+      "max_chars": 79,
+      "chars_per_line": 22,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左右两半屏中间一根纵向 1px 长线分隔（scaleY 拉开）；各自 t-cat 标签 + 大字标题 + 段落/列表说明"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/08_Duo_Compare.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

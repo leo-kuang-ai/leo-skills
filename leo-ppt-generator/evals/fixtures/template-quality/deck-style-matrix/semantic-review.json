@@ -1,0 +1,58 @@
+{
+  "kind": "semantic-review-registration",
+  "schema_version": 1,
+  "scope": "U7/§3 九方向整稿矩阵（deck-style-matrix round1/round2 重跑后产物）",
+  "date": "2026-09-08",
+  "reviewer": "维护者（会话内单评审，模型辅助视觉判读）",
+  "sampling": [
+    {
+      "sample": "round2/finance-navy/evidence.png（修复前首轮产物）",
+      "verdict": "pass",
+      "note": "表格完整/可读/藏青浅底/右对齐；该样本实际评估的是修复前旧模板渲染（旧模板默认色恰与金融主题接近）；修复后状态由主题生效闸（逐像素）覆盖。"
+    },
+    {
+      "sample": "round2/management-clear/evidence.png（修复后）",
+      "verdict": "pass",
+      "note": "表头+3行完整、表格位于内容区（四周留白正常，修复前曾顶到页面左上角）、深色表头浅色字、数字右对齐、页码存在、无重叠/裁切/缺字方块。"
+    },
+    {
+      "sample": "round2/tech-dark/cover.png（修复后）",
+      "verdict": "pass",
+      "evidence": "确定性像素：角与中心均 #0B1220（暗色主题背景）；tests/render/test_theme.py 暗色变体 4 模板 getComputedStyle 实测；矩阵 theme_applied 硬闸（逐种子角像素 vs effective 背景）。",
+      "caveat": "外部视觉通道对该对象键命中陈旧 CDN 边缘缓存（返回修复前浅色副本），故以像素/回归证据为准，视觉通道结论不采信。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-B1",
+      "severity": "blocker-found-then-fixed",
+      "summary": "RenderAssetServer 站点根指向旧平铺目录，HTTP 供给无主题消费的旧模板——九方向矩阵 72 页首轮全部未换肤（字节/尺寸硬闸未拦截）",
+      "detection": "语义抽查（tech-dark 封面应为深底，视觉判读为浅底）→ 确定性像素分析证实为模板默认纸色 #F7F5F0",
+      "fix": "render/assets.py 新增 template_http_entry（与 template_path 同一新库优先策略）；render/fonts.py translate_path 对 *.html 走该策略",
+      "regression": "tests/render/test_theme.py RenderPipelineThemeRegressionTest：HTTP 入口映射 canonical page.html + render_page 全链路像素级换肤断言"
+    },
+    {
+      "id": "F-B2",
+      "severity": "major-found-then-fixed",
+      "summary": "spec-table 为几何真值全外置模板，而矩阵执行器传 geometry={}——表格被挤到页面左上角（F4 合同违反）",
+      "detection": "重跑后 theme_applied 闸 0/18 + 像素扫描（左边缘出现表头主色带）",
+      "fix": "执行器 _theme_vars_for 按 layout profile 编译几何（compile_geometry），column_weights 按模板合同以 theme.column_weights 顶层传递；7 模板 applyThemeVariables 改为仅消费数值几何变量",
+      "alignment": "evidence fixture 由 4 列收敛至 p25-spec-table 声明的 3 列（columns.count=3，容量合同：未声明列数不得硬套）"
+    }
+  ],
+  "final_matrix": {
+    "combinations": 18,
+    "hard_pass": 18,
+    "pages": 72,
+    "pptx_readback_ok": 9,
+    "hard_checks": [
+      "overflow",
+      "dimensions",
+      "blank>=40k(校准)",
+      "theme_applied(逐像素)",
+      "ready_signal",
+      "title_nonempty"
+    ]
+  },
+  "coverage_caveat": "抽样语义评审（3 页视觉 + 全量逐像素硬闸），非逐页双人独立评审；方案要求的两位独立评审 80% 一致率在本会话不可得，如实登记。"
+}

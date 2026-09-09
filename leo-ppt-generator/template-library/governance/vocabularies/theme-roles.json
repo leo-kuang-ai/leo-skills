@@ -1,0 +1,53 @@
+{
+  "kind": "vocabulary",
+  "schema_version": 1,
+  "id": "theme_roles",
+  "description": "主题语义角色词表：theme 唯一拥有精确值；layout/template 按角色引用",
+  "color_roles": {
+    "required": [
+      "background",
+      "surface",
+      "text",
+      "primary",
+      "on_primary",
+      "muted",
+      "border",
+      "accent"
+    ],
+    "optional": [
+      "warn",
+      "on_surface",
+      "on_accent",
+      "chart_series_1..n",
+      "chart_negative",
+      "chart_positive",
+      "table_header_bg",
+      "table_header_text",
+      "table_body_text",
+      "table_row_alt",
+      "quote_mark",
+      "page_no"
+    ],
+    "notes": "普通文字对比至少 4.5:1；大文字/信息标记至少 3:1；透明/图案背景按实际承载面验证"
+  },
+  "font_roles": {
+    "required": [
+      "title",
+      "body"
+    ],
+    "optional": [
+      "caption",
+      "kicker",
+      "table_header",
+      "table_body",
+      "quote",
+      "page_no",
+      "mono",
+      "chart_label"
+    ],
+    "notes": "theme 拥有 family/weight/size/line_height；所有空间尺寸归 layout"
+  },
+  "qa_profile_refs": {
+    "description": "theme 只能引用 governance/rules/render-qa-profiles.json 的可用档（U5 实现），不得自带数值阈值"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p25-spec-table",
+  "name": "规格参数表",
+  "aliases": [
+    "P25",
+    "Spec Table"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "table",
+  "regions": {
+    "content": {
+      "x": 90,
+      "y": 170,
+      "width": 1100,
+      "height": 470
+    }
+  },
+  "slots": {
+    "rows": {
+      "region": "content",
+      "count_min": 3,
+      "count_max": 8,
+      "desc": "数据行"
+    },
+    "columns": {
+      "region": "content",
+      "count_min": 2,
+      "count_max": 3,
+      "desc": "列（行列表头 schema 必填）"
+    },
+    "cell": {
+      "region": "content",
+      "max_chars": 40,
+      "max_lines": 1,
+      "desc": "单元格文本"
+    }
+  },
+  "columns": {
+    "count": 3,
+    "weights": [
+      30,
+      45,
+      25
+    ]
+  },
+  "font_size_refs": {
+    "table_header": "table_header",
+    "table_body": "table_body"
+  },
+  "padding": {
+    "block": 15,
+    "inline": 18
+  },
+  "renderer_support": {
+    "render:html": "builtin:template:spec-table",
+    "image": "表头行（角色区分底色）+ 斑马纹数据行 + 单位列右对齐；最小字号 24px（2560 画布）"
+  },
+  "notes": "几何真值唯一源：列宽/边距/区域在此文件；HTML 不再拥有列宽真值。行数 >8 → 强制 direct-editable 原生表格。",
+  "reuse_friendly": true
+}

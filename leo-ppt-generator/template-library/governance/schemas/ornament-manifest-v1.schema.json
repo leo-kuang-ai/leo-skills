@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/ornament-manifest/v1",
+  "title": "装饰清单（静态文件 + 允许参数；不携带脚本或自行 fetch）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "asset_type"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "ornament-manifest"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "asset_type": {
+      "enum": [
+        "static-svg",
+        "static-image"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_params": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "layout_impact": {
+      "type": "object",
+      "description": "占用空间的边框/内距必须进入 layout"
+    }
+  }
+}

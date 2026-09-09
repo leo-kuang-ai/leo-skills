@@ -9,6 +9,9 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+import capability_manifest as cm  # noqa: E402
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "capability_manifest.py"
 
@@ -22,7 +25,8 @@ def run(*args):
 def make_skill(tmp: Path) -> Path:
     """A minimal but realistic skill tree: styles axes + briefs + scripts."""
     root = tmp / "skill"
-    styles = root / "references" / "styles"
+    import capability_manifest as cm
+    styles = root / cm.STYLES_DIR
     styles.mkdir(parents=True)
     (styles / "清爽专业风.md").write_text("brief A\n", encoding="utf-8")
     (styles / "01_通用母版").mkdir()
@@ -34,7 +38,12 @@ def make_skill(tmp: Path) -> Path:
     (styles / "06_论证模式" / "三段论.md").write_text("axis doc\n", encoding="utf-8")
     (styles / "00_索引").mkdir()
     (styles / "00_索引" / "_INDEX.md").write_text("index\n", encoding="utf-8")
-    (root / "references" / "style-library.md").write_text("lib\n", encoding="utf-8")
+    refs = root / "references"
+    refs.mkdir(exist_ok=True)
+    (refs / "style-library.md").write_text("lib\n", encoding="utf-8")
+    for extra in ("render-contract.md", "layout-dispatch.md", "style-recommendation.md",
+                  "deck-templates.md", "image-deck-workflow.md", "manifest-schema.md"):
+        (refs / extra).write_text("doc\n", encoding="utf-8")
     (root / "scripts").mkdir()
     (root / "scripts" / "visual_qa.py").write_text("# qa\n", encoding="utf-8")
     (root / "scripts" / "leo-bootstrap.sh").write_text("# boot\n", encoding="utf-8")
@@ -63,9 +72,9 @@ class CapabilityManifestTests(unittest.TestCase):
         self.assertEqual(layers["briefs"]["count"], 3)
         self.assertEqual(
             sorted(layers["briefs"]["files"]),
-            ["references/styles/01_通用母版/商务蓝.md",
-             "references/styles/02_行业内容域/金融风.md",
-             "references/styles/清爽专业风.md"])
+            ["template-library/reference/sources/retired-styles-tree/styles/01_通用母版/商务蓝.md",
+             "template-library/reference/sources/retired-styles-tree/styles/02_行业内容域/金融风.md",
+             "template-library/reference/sources/retired-styles-tree/styles/清爽专业风.md"])
         self.assertEqual(layers["styles"]["count"], 6)  # every .md incl rules
         self.assertEqual(layers["references"]["count"], 7)
         self.assertEqual(layers["scripts"]["count"], 2)
@@ -90,7 +99,7 @@ class CapabilityManifestTests(unittest.TestCase):
         old_path = self.tmp / "old.json"
         run("--root", str(self.root), "--out", str(old_path))
         # mutate: add a brief, remove a script, change a reference
-        (self.root / "references" / "styles" / "新风格.md").write_text(
+        (self.root / cm.STYLES_DIR / "新风格.md").write_text(
             "brief N\n", encoding="utf-8")
         (self.root / "scripts" / "leo-bootstrap.sh").unlink()
         (self.root / "references" / "style-library.md").write_text(
@@ -105,7 +114,7 @@ class CapabilityManifestTests(unittest.TestCase):
         briefs = diff["layers"]["briefs"]
         self.assertEqual(briefs["count_delta"], 1)
         self.assertEqual(briefs["added"],
-                         ["references/styles/新风格.md"])
+                         ["template-library/reference/sources/retired-styles-tree/styles/新风格.md"])
         scripts = diff["layers"]["scripts"]
         self.assertEqual(scripts["removed"], ["scripts/leo-bootstrap.sh"])
         self.assertEqual(scripts["count_delta"], -1)
@@ -153,7 +162,7 @@ class CapabilityManifestTests(unittest.TestCase):
         briefs = data["layers"]["briefs"]
         self.assertEqual(briefs["count"], len(briefs["files"]))
         self.assertTrue(all((real / path).is_file() for path in briefs["files"]))
-        self.assertNotIn("references/styles/00_索引/_INDEX.md", briefs["files"])
+        self.assertNotIn("template-library/reference/sources/retired-styles-tree/styles/00_索引/_INDEX.md", briefs["files"])
 
 
 if __name__ == "__main__":

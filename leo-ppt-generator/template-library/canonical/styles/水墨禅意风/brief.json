@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:水墨禅意风",
+  "name": "水墨禅意风",
+  "aliases": [
+    "水墨风",
+    "国风禅意风",
+    "shuimo"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/水墨禅意风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "水墨国风",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "ink wash / sumi-e style, black ink gradients, generous negative space, expressive brush strokes, zen minimalism, refined cultural depth, sparse and profound"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "水墨风",
+      "国风禅意风",
+      "shuimo"
+    ],
+    "best_for": "黑白水墨、飞白、留白与写意,营造禅意、空灵、高格调的视觉",
+    "visual_direction": "ink wash / sumi-e style, black ink gradients, generous negative space, expressive brush strokes, zen minimalism, refined cultural depth, sparse and profound",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "rice paper white #FAF8F3",
+      "composition": "one ink motif + vast negative space",
+      "density": "very low, meditative"
+    },
+    "color_palette": {
+      "primary": "ink black #1A1A1A, paper white",
+      "secondary": "mid-ink grays #6E6E6E (淡墨)",
+      "accent": "a single cinnabar red #B03A2E",
+      "neutral": "paper white #F7F4EC, ink grays #4A4A4A, hairline gray #D9D4C8",
+      "rule": "monochrome ink + paper; red only for a seal/one accent; no color splash"
+    },
+    "typography": {
+      "title": "楷体 / 宋体 / calligraphic-feel display（霞鹜文楷）",
+      "body": "quiet serif or light sans",
+      "labels": "small seal/caption",
+      "text_quality": "exact, poetic, sparse"
+    },
+    "layout_patterns": [
+      "ink mountain / landscape",
+      "flying-white brush stroke",
+      "single-word zen statement",
+      "ink + seal composition"
+    ],
+    "layout_usage_rule": "Sparse and profound; one ink motif, vast whitespace, a single seal-red accent.",
+    "layout_blueprints": [
+      {
+        "name": "意境页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "水墨山形/飞白"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题 + 印章"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "金句页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "单字/金句"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "小注"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "ink gradients, flying-white strokes, negative space, seal-red accent, rice-paper texture",
+      "avoid": "color splash, clutter, photoreal, commercial density, ornate decoration"
+    },
+    "rendering_constraints": [
+      "Zen, sparse, high-grade ink-wash atmosphere.",
+      "Monochrome ink + paper; a single seal-red for emphasis.",
+      "Exact poetic copy; no fabricated calligraphy or seals.",
+      "May fuse a portrait silhouette with ink-wash double exposure and layered atmosphere; keep it restrained, high-grade, readable. Avoid cheap fantasy collage. (awesome-gpt-image-2 · ink-double-exposure-poster)"
+    ],
+    "reference": "GitHub: GPT Image 2 presets (sumi-e) · 水墨风"
+  },
+  "recommendation_features": {
+    "density": "very-low",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Zen, sparse, high-grade ink-wash atmosphere.",
+      "Monochrome ink + paper; a single seal-red for emphasis.",
+      "Exact poetic copy; no fabricated calligraphy or seals.",
+      "May fuse a portrait silhouette with ink-wash double exposure and layered atmosphere; keep it restrained, high-grade, readable. Avoid cheap fantasy collage. (awesome-gpt-image-2 · ink-double-exposure-poster)"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:minimal-table",
+  "name": "最小三列规格表",
+  "aliases": [
+    "P25"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "table",
+  "regions": {
+    "content": {
+      "x": 90,
+      "y": 170,
+      "width": 1100,
+      "height": 470
+    }
+  },
+  "slots": {
+    "rows": {
+      "region": "content",
+      "count_min": 3,
+      "count_max": 6,
+      "desc": "数据行"
+    },
+    "columns": {
+      "region": "content",
+      "count_min": 2,
+      "count_max": 3,
+      "desc": "列"
+    },
+    "cell": {
+      "region": "content",
+      "max_chars": 40,
+      "max_lines": 1
+    }
+  },
+  "columns": {
+    "count": 3,
+    "weights": [
+      30,
+      45,
+      25
+    ]
+  },
+  "font_size_refs": {
+    "table_header": "table_header",
+    "table_body": "table_body"
+  },
+  "padding": {
+    "block": 15,
+    "inline": 18
+  },
+  "renderer_support": {
+    "render:html": "builtin:template:minimal-table",
+    "image": null
+  }
+}

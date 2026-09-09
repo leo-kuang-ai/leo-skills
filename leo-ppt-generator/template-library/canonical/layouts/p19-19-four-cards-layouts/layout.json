@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p19-19-four-cards-layouts",
+  "name": "Four Cards",
+  "aliases": [
+    "P19"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "cards": {
+      "region": "content",
+      "desc": "等权卡（编号 + 大字标题 + 一段描述）",
+      "count_min": 4,
+      "count_max": 4
+    },
+    "card_title": {
+      "region": "content",
+      "desc": "每卡大字标题",
+      "max_chars": 6,
+      "chars_per_line": 5,
+      "max_lines": 1
+    },
+    "card_desc": {
+      "region": "content",
+      "desc": "每卡一段描述",
+      "max_chars": 39,
+      "chars_per_line": 11,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部 80px IKB 蓝短发丝顶线 + 大字双行标题；下方 4 列均分卡（t-meta 编号 + 大字标题 + 段落描述）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/19_Four_Cards.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

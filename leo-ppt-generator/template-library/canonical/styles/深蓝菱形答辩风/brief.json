@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:深蓝菱形答辩风",
+  "name": "深蓝菱形答辩风",
+  "aliases": [
+    "深蓝菱形答辩风",
+    "深蓝菱形",
+    "菱形答辩",
+    "indigo diamond defense"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/深蓝菱形答辩风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "indigo diamond defense deck, warm white ground with deep-blue diamond nodes and diagonal geometry blocks, disciplined thesis order"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "深蓝菱形答辩风",
+      "深蓝菱形",
+      "菱形答辩",
+      "indigo diamond defense"
+    ],
+    "best_for": "低饱和论文深蓝+菱形几何+高留白答辩秩序;适合医学博士答辩/课题开题/中期汇报/科研成果报告",
+    "visual_direction": "indigo diamond defense deck, warm white ground with deep-blue diamond nodes and diagonal geometry blocks, disciplined thesis order",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F6F6F4→#FFFFFF→#D9DEE8 (深蓝菱形答辩风底)",
+      "composition": "大面积暖白高留白 + 低饱和论文深蓝菱形/斜切几何 + 隐形网格信息秩序",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1F2A66(论文深蓝/标题锚)",
+      "secondary": "#C9CDD6(银灰辅助)",
+      "accent": "#33407A(靛蓝强调)",
+      "neutral": "#111111(近黑标题副字)",
+      "rule": "锚点 #1F2A66, #C9CDD6, #33407A, #111111;来源:源文件色板原文直迁;为 GPT Image 2 提供深蓝菱形、斜切几何、论文答辩式医学学术 PPT 生图的全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "思源黑体 Bold 近黑 #111111,层级明确",
+      "body": "思源黑体 Regular 深灰 #333333",
+      "labels": "全大写无衬线 Light 字距加宽,深蓝菱形白色页码"
+    },
+    "layout_patterns": [
+      "左上深蓝竖向双条 + 黑色中文标题 + 右上深蓝菱形页码",
+      "隐形网格组织图文分栏/四宫格卡片/圆形节点/菱形流程",
+      "深蓝填充卡 + 白色线性图标与白色短文字",
+      "封面左侧大面积深蓝斜切几何块 + 浅灰斜线纹理三角"
+    ],
+    "layout_usage_rule": "左上深蓝竖向双条 + 黑色中文标题 + 右上深蓝菱形页码",
+    "visual_elements": {
+      "allowed": "大面积暖白高留白 + 低饱和论文深蓝菱形/斜切几何 + 隐形网格信息秩序",
+      "avoid": "不要整页深色背景;不要菱形和卡片过度堆叠"
+    },
+    "rendering_constraints": [
+      "不要整页深色背景",
+      "不要菱形和卡片过度堆叠",
+      "不要斜切装饰压迫正文",
+      "不要复制固定答辩示例内容或虚构机构信息",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要整页深色背景",
+      "不要菱形和卡片过度堆叠",
+      "不要斜切装饰压迫正文",
+      "不要复制固定答辩示例内容或虚构机构信息"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/011_深蓝菱形论文答辩PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要整页深色背景",
+      "不要菱形和卡片过度堆叠",
+      "不要斜切装饰压迫正文",
+      "不要复制固定答辩示例内容或虚构机构信息",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

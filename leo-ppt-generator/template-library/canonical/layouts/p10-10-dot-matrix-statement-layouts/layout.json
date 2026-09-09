@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p10-10-dot-matrix-statement-layouts",
+  "name": "Dot Matrix Statement",
+  "aliases": [
+    "P10"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "section",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "statement": {
+      "region": "content",
+      "desc": "巨字宣言（三行以内）",
+      "max_chars": 26,
+      "chars_per_line": 11,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "中段 7vw 巨字三行宣言；右上角 36vw 圆点矩阵 + 左下角描边圆环矩阵"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/10_Dot_Matrix_Statement.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

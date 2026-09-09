@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-大字产品广告",
+  "name": "图片渲染：大字产品广告（bold-product-ad）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

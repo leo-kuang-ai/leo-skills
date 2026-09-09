@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "b01a3a8996fab527ed7a85d62ca8ec72e14e0a2fb91aeae66778088b690555a0",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p6.png",
+  "out_sha256": "2edf538f94b1cde14a797538bcee5f76460ab8dde4c485a6fb0227312445621f",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1264,
+  "rendered_at": "2026-09-08T02:42:25.265Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

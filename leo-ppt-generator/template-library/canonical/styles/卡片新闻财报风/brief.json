@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:卡片新闻财报风",
+  "name": "卡片新闻财报风",
+  "aliases": [
+    "카카오 1Q26 보수 IR",
+    "kakao conservative earnings",
+    "卡新闻财报"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/卡片新闻财报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "韩式咨询"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "conservative quarterly-earnings analyst deck, gray canvas with one or two yellow accents, half-pill title tab on the left, quarter-compare tables with a red box highlight on the current quarter"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "카카오 1Q26 보수 IR",
+      "kakao conservative earnings",
+      "卡新闻财报"
+    ],
+    "best_for": "灰底黄点的保守季度业绩卡式新闻;适合季度 IR/分析师简报/财务速览",
+    "visual_direction": "conservative quarterly-earnings analyst deck, gray canvas with one or two yellow accents, half-pill title tab on the left, quarter-compare tables with a red box highlight on the current quarter",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F2F2F2",
+      "composition": "灰底 + 黄一两点强调 + 左端半胶囊标题条 + 红框圈本季",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#F2F2F2(灰底)",
+      "secondary": "#FFFFFF(卡面白)",
+      "accent": "#FAE232(黄强调一两点)",
+      "neutral": "#000000(墨字)"
+    },
+    "typography": {
+      "title": "Pretendard 700(Noto Sans KR 兜底)40pt",
+      "body": "Pretendard 400",
+      "labels": "Pretendard 800 封面 logo 字"
+    },
+    "layout_patterns": [
+      "灰底 #F2F2F2 + 黄 #FAE232 一两点强调",
+      "左端半胶囊标题条(半 pill)",
+      "季度对比表:本季格红 #FF0000 框圈注",
+      "红/黄仅作圈注与涨跌语义,不进正文文字"
+    ],
+    "layout_usage_rule": "灰底 #F2F2F2 + 黄 #FAE232 一两点强调",
+    "visual_elements": {
+      "allowed": "灰底 + 黄一两点强调 + 左端半胶囊标题条 + 红框圈本季",
+      "avoid": "不要高饱和大面色——灰底黄点是保守气质; 不要装饰插画与圆角卡堆叠"
+    },
+    "rendering_constraints": [
+      "不要高饱和大面色——灰底黄点是保守气质",
+      "不要装饰插画与圆角卡堆叠",
+      "不要把黄/红用于正文文字",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和大面色——灰底黄点是保守气质",
+      "不要装饰插画与圆角卡堆叠",
+      "不要把黄/红用于正文文字"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD55 카카오 1Q26 보수 IR"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和大面色——灰底黄点是保守气质",
+      "不要装饰插画与圆角卡堆叠",
+      "不要把黄/红用于正文文字",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

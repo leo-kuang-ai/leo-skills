@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:户外运动风",
+  "name": "户外运动风",
+  "aliases": [
+    "户外风",
+    "越野风",
+    "outdoor"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/体育健身/户外运动风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "outdoor sports aesthetic, natural landscape, gear ledger, trail/mountain mood, adventurous field-note, earthy vitality, grounded energy"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "户外风",
+      "越野风",
+      "outdoor"
+    ],
+    "best_for": "户外运动,需要自然景观、装备台账与户外探险的田野感",
+    "visual_direction": "outdoor sports aesthetic, natural landscape, gear ledger, trail/mountain mood, adventurous field-note, earthy vitality, grounded energy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "natural landscape ground, earthy",
+      "composition": "landscape hero + gear ledger",
+      "density": "medium, grounded"
+    },
+    "color_palette": {
+      "primary": "forest green #166534 / earth brown #92400E, cream",
+      "secondary": "sky blue #38BDF8, sand #FDE68A",
+      "accent": "one warm accent (amber #F59E0B)",
+      "neutral": "near-black #1F2937, warm gray, cream",
+      "rule": "natural, grounded, adventurous; no neon, no synthetic"
+    },
+    "typography": {
+      "title": "rugged friendly sans (Roboto / 思源黑体), adventurous",
+      "body": "readable field-note",
+      "labels": "trail/gear tags",
+      "text_quality": "accurate route/gear info, no false difficulty"
+    },
+    "layout_patterns": [
+      "landscape hero",
+      "gear / equipment ledger",
+      "trail / route map",
+      "weather & difficulty"
+    ],
+    "layout_usage_rule": "Grounded adventure; landscape, gear and route with field-note clarity.",
+    "layout_blueprints": [
+      {
+        "name": "路线页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "山景/路线"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "海拔",
+              "天气",
+              "难度"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "装备页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 4,
+            "labels": [
+              "装备1",
+              "装备2",
+              "装备3",
+              "装备4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "landscape photography, gear rows, route maps, earthy palette",
+      "avoid": "neon, synthetic, clutter, misleading difficulty"
+    },
+    "rendering_constraints": [
+      "Grounded, adventurous, natural.",
+      "Landscape, gear and route; field-note clarity.",
+      "Accurate route/difficulty; no false claims."
+    ],
+    "reference": "GitHub: guizang category-cookbook (户外) · 户外运动风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Grounded, adventurous, natural.",
+      "Landscape, gear and route; field-note clarity.",
+      "Accurate route/difficulty; no false claims."
+    ]
+  }
+}

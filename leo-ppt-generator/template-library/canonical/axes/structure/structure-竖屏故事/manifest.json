@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:structure-竖屏故事",
+  "name": "结构布局：竖屏故事（story_vertical）",
+  "kind": "structure",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

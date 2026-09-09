@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:thesis-defense",
+  "id": "thesis-defense",
+  "name_zh": "学术答辩",
+  "match_signals": {
+    "genre": [
+      "答辩",
+      "开题",
+      "结题",
+      "中期检查"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:学术论文答辩风",
+    "layouts": [],
+    "density": "balanced"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:research-defense",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

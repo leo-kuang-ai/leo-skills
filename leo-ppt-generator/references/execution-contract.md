@@ -130,6 +130,9 @@ leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.jso
 `reports/sample-decision.json` 保存具体图 hash、canonical slides hash、实际风格/布局
 文件 hash、backend 合同与决策来源。`user-confirmed` 表示记录人工选择声明，
 `user-delegated` 表示授权范围内的 Agent 决策；授权文件必须包含真实引用，不得补造。
+按 SKILL.md 协作方式，样张门（🔶 SAMPLE-GATE）默认经用户呈现认可后记
+`user-confirmed`；仅当用户显式豁免样张呈现时记 `user-delegated`，
+`authorization-quote` 须为豁免原话。
 这只是可追溯声明，不是发言人认证，也不能用于设置最终人工验收通过。
 
 新流程必须传 `--sample-binding`。已有收据时即使不传该参数也会在 prepare 与组装前核验；

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:annual-review",
+  "id": "annual-review",
+  "name_zh": "年终述职",
+  "match_signals": {
+    "genre": [
+      "年终总结",
+      "述职",
+      "晋升"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:成果汇报风",
+    "layouts": [],
+    "density": "balanced"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:商务几何风",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

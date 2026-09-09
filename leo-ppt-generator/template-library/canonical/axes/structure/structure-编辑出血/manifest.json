@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:structure-编辑出血",
+  "name": "结构布局：编辑出血（editorial_bleed）",
+  "kind": "structure",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

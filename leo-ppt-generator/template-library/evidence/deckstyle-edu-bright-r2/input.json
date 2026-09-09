@@ -1,0 +1,51 @@
+{
+  "cover": {
+    "kicker": "教师培训公开课",
+    "title": "怎样讲好一节概念课",
+    "subtitle": "从认知负荷到课堂节奏",
+    "footer_left": "区教研中心",
+    "footer_right": "第 4 期",
+    "page_no": 1
+  },
+  "content": {
+    "title": "一节课只教一个核心概念",
+    "bullets": [
+      "先用学生已知的生活例子引入",
+      "一个概念配一个正例一个反例",
+      "课堂练习只练当堂概念"
+    ],
+    "page_no": 2
+  },
+  "evidence": {
+    "title": "两种讲法的效果对照",
+    "columns": [
+      "讲法",
+      "当堂正确率",
+      "一周后保持"
+    ],
+    "column_align": [
+      "left",
+      "right",
+      "right"
+    ],
+    "rows": [
+      [
+        "先定义后例子",
+        "71%",
+        "54%"
+      ],
+      [
+        "先例子后定义",
+        "83%",
+        "72%"
+      ]
+    ],
+    "page_no": 3
+  },
+  "closing": {
+    "quote": "教得少，才学得多。",
+    "source_name": "培训要点回顾",
+    "source_meta": "",
+    "page_no": 4
+  }
+}

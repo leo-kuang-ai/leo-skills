@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:新粗野主义风",
+  "name": "新粗野主义风",
+  "aliases": [
+    "neubrutalism",
+    "新野兽派风",
+    "粗野主义风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/新粗野主义风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "高攻击"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "neubrutalism style, thick black outlines, hard shadows, flat bold colors, raw grid, desaturated or pop color blocking, chunky strokes, confident unapologetic edge, graphic punk clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "neubrutalism",
+      "新野兽派风",
+      "粗野主义风"
+    ],
+    "best_for": "以粗轮廓、硬阴影、平涂原色与醒目排版制造大胆、直白、有态度",
+    "visual_direction": "neubrutalism style, thick black outlines, hard shadows, flat bold colors, raw grid, desaturated or pop color blocking, chunky strokes, confident unapologetic edge, graphic punk clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white or a single bold ground",
+      "composition": "blocky panels with hard offset shadows, thick borders",
+      "density": "medium, bold and graphic"
+    },
+    "color_palette": {
+      "primary": "white #FFFFFF / one bold ground, near-black type #111111",
+      "secondary": "pop flat colors (yellow #FFD600, red #FF3B30, electric blue #2979FF)",
+      "accent": "one saturated accent #FF3B30",
+      "neutral": "#111111, white, flat colors",
+      "rule": "bold, raw, confident; thick strokes and hard shadows, limited palette"
+    },
+    "typography": {
+      "title": "heavy chunky sans-serif (Arial Black / 思源黑体 Heavy), assertive",
+      "body": "bold, direct",
+      "labels": "raw ticker labels",
+      "text_quality": "direct, punchy, no fluff"
+    },
+    "layout_patterns": [
+      "hard-shadow blocky card",
+      "thick-border highlight",
+      "raw grid with bold blocks",
+      "offset-highlight statement"
+    ],
+    "layout_usage_rule": "Be bold and direct; thick borders and hard offset shadows give the punch.",
+    "layout_blueprints": [
+      {
+        "name": "主张页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "粗描边巨型主张"
+            ]
+          },
+          {
+            "position": "corner",
+            "count": 2,
+            "labels": [
+              "标签",
+              "编号"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "特性展示",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "块1",
+              "块2",
+              "块3",
+              "块4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "thick outlines, hard shadows, flat bold colors, chunky type, raw grid",
+      "avoid": "soft gradients, delicate type, glossy, subtle shadow, decoration-heavy"
+    },
+    "rendering_constraints": [
+      "Bold, raw, confident; the edge is intentional.",
+      "Thick strokes, hard shadows, limited flat palette.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: GPT Image 2 presets (neubrutalism) · 新粗野主义风口"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Bold, raw, confident; the edge is intentional.",
+      "Thick strokes, hard shadows, limited flat palette.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

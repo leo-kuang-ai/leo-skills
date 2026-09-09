@@ -22,7 +22,7 @@ the structural contract that keeps the entry honest:
      - lines carrying upstream-narrative words (上游/改编自/upstream/vendor/
        frontend-slides/未转写) are skipped: they cite the upstream repo's
        files, not ours;
-     - vendored source-provenance docs (``references/styles/0[45]_来源_*``)
+     - vendored source-provenance docs (``template-library/reference/sources/retired-styles-tree/styles/0[45]_来源_*``)
        are excluded from scanning: their links target the upstream asset
        tree we deliberately do not copy.
   3. Frontmatter contract: SKILL.md must start with YAML frontmatter and

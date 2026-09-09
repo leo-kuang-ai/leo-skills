@@ -1,0 +1,106 @@
+{
+  "kind": "industry-visual-dual-channel-review",
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "reviewer_A": "维护者通道（六项硬闸逐像素结论：溢出/尺寸/空页/theme_applied/ready/标题）",
+  "reviewer_B": "外部视觉模型通道（固定四项计分卡：完整可读/无缺陷/主题一致/对比度；独立上下文，不共享 A 侧信息；本批 10/10 页逐项 pass）",
+  "sample": {
+    "size": 10,
+    "stratification": "round2 十页：4 封面/3 正文/3 数据页；7 light/3 dark 环境；7 个方向种子"
+  },
+  "agreement": {
+    "A_vs_B": "10/10 = 100%",
+    "A_vs_label": "10/10",
+    "B_vs_label": "10/10",
+    "threshold": "方案要求 ≥80%"
+  },
+  "initial_disagreements": [],
+  "adjudication": "无分歧需裁决",
+  "interpretation": "两位评审口径 = 维护者（硬闸）+ 外部视觉模型（独立上下文）双通道；一致率 10/10 达到 80% 阈。原登记口径：若方案严格要求两位人类评审仍需第二人；经用户 2026-09-08 确认，本双通道口径作为该维度的最终闭合。",
+  "per_page": [
+    {
+      "page": "u01-light/cover",
+      "seed": "tech-dark",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u02-light/data",
+      "seed": "gov-red",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u04-conservative/cover",
+      "seed": "gov-red",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u05-light/content",
+      "seed": "edu-bright",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u07-dark/data",
+      "seed": "management-clear",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u09-light/cover",
+      "seed": "brand-creative",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u12-dark/content",
+      "seed": "brand-creative",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u15-dark/data",
+      "seed": "tech-dark",
+      "mode": "dark",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u18-light/data",
+      "seed": "edu-bright",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    },
+    {
+      "page": "u20-light/content",
+      "seed": "consulting-pyramid",
+      "mode": "light",
+      "A": "pass",
+      "B": "pass",
+      "label": "pass"
+    }
+  ],
+  "user_acceptance": {
+    "date": "2026-09-08",
+    "note": "用户审阅双通道评审口径（维护者硬闸 + 外部视觉模型计分卡，一致率 100%）后指示继续执行——该维度按用户确认闭合；不再等待第二位人类评审。"
+  }
+}

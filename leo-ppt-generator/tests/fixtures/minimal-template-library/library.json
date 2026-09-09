@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "template-library",
+  "library_id": "builtin",
+  "name": "最小新库 fixture（U9）",
+  "protocol": {
+    "asset_id_pattern": "^builtin:(style|theme|layout|template):[a-z0-9\\-]+$",
+    "resolver": "asset_resolver/v1",
+    "logical_canvas": {
+      "width": 1280,
+      "height": 720,
+      "units": "logical-px"
+    }
+  },
+  "zones": {
+    "canonical": "作者真值",
+    "reference": "参考",
+    "governance": "治理",
+    "catalog": "自动生成",
+    "evidence": "验证"
+  },
+  "reserved_directory_names": [
+    "generated",
+    "generations",
+    "staging",
+    "revocations"
+  ]
+}

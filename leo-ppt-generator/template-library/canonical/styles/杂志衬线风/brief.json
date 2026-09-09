@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:杂志衬线风",
+  "name": "杂志衬线风",
+  "aliases": [
+    "杂志衬线",
+    "Editorial Serif",
+    "editorial",
+    "serif",
+    "magazine",
+    "杂志",
+    "编排"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/杂志衬线风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "serif editorial magazine layout, elegant headline typography with generous margins, refined print feel"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "杂志衬线",
+      "Editorial Serif",
+      "editorial",
+      "serif",
+      "magazine",
+      "杂志",
+      "编排"
+    ],
+    "best_for": "奶油纸上衬线娓娓道来，故事感从标题开始流淌;适合杂志编辑/艺术视觉/品牌营销",
+    "visual_direction": "serif editorial magazine layout, elegant headline typography with generous margins, refined print feel",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FEF7ED→#FFF7ED→#FFFBEB",
+      "composition": "杂志式的叙事布局——大标题、副标题、正文段落层次分明",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#431407(主色/标题锚)",
+      "secondary": "#7C2D12(辅助色)",
+      "accent": "#EA580C(强调色)",
+      "neutral": "#FFFBEB(文字与中性锚)",
+      "rule": "锚点 #431407, #7C2D12, #EA580C, #F97316;标题 #431407 深褐、正文 #7c2d12 焦棕，强调色 #ea580c 深橙与 #f97316 亮橙是编辑的红色铅笔"
+    },
+    "typography": {
+      "title": "思源宋体 / Georgia;衬线标题 + 无衬线正文是经典的杂志编排",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "杂志式的叙事布局",
+      "首字母可以放大作为装饰",
+      "引文区块用卡片承载，与正文区分",
+      "留白像杂志翻页间的节奏"
+    ],
+    "layout_usage_rule": "杂志式的叙事布局——大标题、副标题、正文段落层次分明",
+    "visual_elements": {
+      "allowed": "杂志式的叙事布局——大标题、副标题、正文段落层次分明",
+      "avoid": "不要使用无衬线做标题;不要使用冷色调;不要用密集排版压缩文字的呼吸"
+    },
+    "rendering_constraints": [
+      "不要使用无衬线做标题",
+      "不要使用冷色调",
+      "不要用密集排版压缩文字的呼吸",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要使用无衬线做标题",
+      "不要使用冷色调",
+      "不要用密集排版压缩文字的呼吸",
+      "不要让装饰元素打断叙事的节奏"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/editorial-serif"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要使用无衬线做标题",
+      "不要使用冷色调",
+      "不要用密集排版压缩文字的呼吸",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

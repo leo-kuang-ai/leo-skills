@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "e994dc5d6e3c98d3d8852643b35d2d2917a930c4a1e55c2050dd3c7b5bdb7b1c",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/closing.png",
+  "out_sha256": "0eac3129180882260208908bca5a84bd5b4dc51eba8d3f377f00a58a2e1b14f0",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1245,
+  "rendered_at": "2026-09-08T02:00:46.643Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

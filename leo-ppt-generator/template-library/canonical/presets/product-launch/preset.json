@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:product-launch",
+  "id": "product-launch",
+  "name_zh": "产品发布",
+  "match_signals": {
+    "genre": [
+      "发布会",
+      "新品",
+      "上市",
+      "品牌发布"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:产品发布会风",
+    "layouts": [],
+    "density": "low"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:暗黑科技风",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

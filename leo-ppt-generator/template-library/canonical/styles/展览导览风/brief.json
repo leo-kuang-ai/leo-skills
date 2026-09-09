@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:展览导览风",
+  "name": "展览导览风",
+  "aliases": [
+    "导览风",
+    "展陈风",
+    "exhibition风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/对外宣传/展览导览风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "exhibition-guide style, spatial clarity, clear circulation flow, spot-based guidance, visitor-friendly wayfinding, curated exhibition navigation"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "导览风",
+      "展陈风",
+      "exhibition风"
+    ],
+    "best_for": "展览导览,需要空间感、动线清晰、展点突出与导览指引",
+    "visual_direction": "exhibition-guide style, spatial clarity, clear circulation flow, spot-based guidance, visitor-friendly wayfinding, curated exhibition navigation",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "light / blueprint, spatial",
+      "composition": "空间 → 动线 → 展点 → 指引",
+      "density": "medium, spatial"
+    },
+    "color_palette": {
+      "primary": "blueprint blue #1E3A5F / light, white",
+      "secondary": "cool gray #94A3B8, cyan #22D3EE",
+      "accent": "one amber accent #F59E0B",
+      "neutral": "near-black #1F2937, gray #6B7280, white",
+      "rule": "spatial, curated, clear wayfinding"
+    },
+    "typography": {
+      "title": "clear technical sans (IBM Plex / 思源黑体), spatial",
+      "body": "short guide body",
+      "labels": "zone/spot codes",
+      "text_quality": "accurate, useful"
+    },
+    "layout_patterns": [
+      "site/venue overview",
+      "circulation diagram",
+      "exhibit spot highlights",
+      "wayfinding & info"
+    ],
+    "layout_usage_rule": "Spatial clarity and easy wayfinding; overview, circulation, spots, guidance.",
+    "layout_blueprints": [
+      {
+        "name": "空间页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "展馆/场地"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "动线页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "参观动线图"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "site plan, circulation arrows, zone codes, spot callouts, wayfinding",
+      "avoid": "clutter, small text, confused-flow, off-map"
+    },
+    "rendering_constraints": [
+      "Spatial, clear, curatorial guidance.",
+      "Overview, circulation, spots, clear wayfinding.",
+      "Accurate spatial info; no invented rooms."
+    ],
+    "reference": "GitHub: 展览导览 · 展陈导览惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Spatial, clear, curatorial guidance.",
+      "Overview, circulation, spots, clear wayfinding.",
+      "Accurate spatial info; no invented rooms."
+    ]
+  }
+}

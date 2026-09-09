@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p11-11-horizontal-timeline-layouts",
+  "name": "Horizontal Timeline",
+  "aliases": [
+    "P11"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "steps": {
+      "region": "content",
+      "desc": "流程节点（mono 编号 + 步骤名）",
+      "count_min": 4,
+      "count_max": 7
+    },
+    "step_name": {
+      "region": "content",
+      "desc": "每步名称",
+      "max_chars": 45,
+      "chars_per_line": 19,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部大标题；中段 1px hairline 横轴 + N 个均布节点（8×8 直角方块 + 上方 mono 编号 + 下方步骤名）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/11_Horizontal_Timeline.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

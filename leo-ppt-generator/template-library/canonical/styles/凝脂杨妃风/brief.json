@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:凝脂杨妃风",
+  "name": "凝脂杨妃风",
+  "aliases": [
+    "米白樱粉风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/东方意蕴/凝脂杨妃风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "东方意蕴",
+      "水墨国风"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "chinese traditional named-color system, rose yangfei pink and warm gold on ivory porcelain paper, classical elegant branding"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "米白樱粉风"
+    ],
+    "best_for": "凝脂杨妃双主色，瓷韵典雅国风;适合传统文化/品牌营销/艺术视觉",
+    "visual_direction": "chinese traditional named-color system, rose yangfei pink and warm gold on ivory porcelain paper, classical elegant branding",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "对称或居中布局，强调平衡与和谐",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#F5F2E9(主色/标题锚)",
+      "secondary": "#F091A0(辅助色)",
+      "accent": "#F5BFC8(强调色)",
+      "neutral": "#333333(文字与中性锚)",
+      "rule": "锚点 #F5F2E9, #F091A0, #F5BFC8, #FAF7F0;主色：凝脂 `#F5F2E9`（暖米白，温润如玉）、杨妃 `#F091A0`（沉静玫瑰粉）"
+    },
+    "typography": {
+      "title": "标题用 Noto Serif SC 或方正清刻本悦宋，墨黛色，加粗，字距适中",
+      "body": "正文用思源宋体，行高 1.8，暖灰色，温润可读",
+      "labels": "色名（凝脂/杨妃）用书法体或楷体，强调传统命名"
+    },
+    "layout_patterns": [
+      "对称或居中布局，强调平衡与和谐",
+      "顶部品牌名，中部大标题，下部色名 + hex 纵向排列",
+      "底部点缀象征性插画（如瓷器）",
+      "充足留白，让柔和色彩呼吸"
+    ],
+    "layout_usage_rule": "对称或居中布局，强调平衡与和谐",
+    "visual_elements": {
+      "allowed": "对称或居中布局，强调平衡与和谐",
+      "avoid": "不要高饱和荧光、不要赛博霓虹;不要暗黑背景、不要锋利金属;不要拥挤排版、不要过度装饰"
+    },
+    "rendering_constraints": [
+      "不要高饱和荧光、不要赛博霓虹",
+      "不要暗黑背景、不要锋利金属",
+      "不要拥挤排版、不要过度装饰",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和荧光、不要赛博霓虹",
+      "不要暗黑背景、不要锋利金属",
+      "不要拥挤排版、不要过度装饰",
+      "不要现代无衬线粗体与传统色名混搭不当"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/chinese-porcelain-rose",
+    "variants": [
+      "米白樱粉风: 樱粉置换杨妃红为主倾向,暖棕灰文字,同板春日叙事"
+    ]
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和荧光、不要赛博霓虹",
+      "不要暗黑背景、不要锋利金属",
+      "不要拥挤排版、不要过度装饰",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

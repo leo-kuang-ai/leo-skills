@@ -9,11 +9,9 @@
 > 整条预设缺失→回落常规推荐。
 
 - **风格**：主风格名，R-66 合并后口径（变体经主风格 `aliases` 命中）。
-- **版式集**：P 码真值见 [`styles/12_版式库`](styles/12_版式库)（36 版式骨架）；
+- **版式集**：P 码及命名版式真值见 [`template-library/canonical/layouts`](../template-library/canonical/layouts)（当前 42 个 layout profile）；
   按页序为骨干，非每 deck 全用。
-- **叙事参考**：`06_论证模式` 六轴之一；`06_论证模式/叙事方法论/` 子类（12 条，如
-  融资路演/事故复盘/主旨演讲）亦可作叙事取值——叙事层管「怎么说」、与六轴论证模式
-  （管「怎么证」）正交可叠加，拍选配按 [`styles/06_论证模式/叙事拍库.md`](styles/06_论证模式/叙事拍库.md) 白名单。
+- **叙事参考**：canonical argument axis 六轴之一；`template-library/canonical/axes/argument/` 子类亦可作叙事取值——叙事层管「怎么说」、与六轴论证模式（管「怎么证」）正交可叠加，拍选配按该目录的 manifest/body 白名单。
 - **密度**：low / low-medium / balanced / high（对应 canvas.density 档位语义，与 style-presets.json fields 枚举一致）。
 - **fallback 链**：主风格 → 降级 1 → 降级 2（末位为内置 11 之一，永远可加载）。
 

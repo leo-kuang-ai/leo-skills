@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:高管汇报风",
+  "name": "高管汇报风",
+  "aliases": [],
+  "variant_of": "成果汇报风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/汇报述职/高管汇报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "executive-briefing style, decision-oriented, strategic altitude, signal over noise, crisp topline, leadership-grade confidence"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "成果汇报风",
+    "best_for": "面向高层,需要决策导向、战略清晰、抓重点的经营表达",
+    "visual_direction": "executive-briefing style, decision-oriented, strategic altitude, signal over noise, crisp topline, leadership-grade confidence",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light gray, generous",
+      "composition": "results-first: overview → detail → next step",
+      "density": "medium, structured"
+    },
+    "color_palette": {
+      "primary": "professional blue #2563EB / slate #334155, white",
+      "secondary": "calm teal #14B8A6, light gray #E5E7EB",
+      "accent": "one accent #0D9488 for highlights",
+      "neutral": "near-black #1F2937, slate #64748B, hairline #E5E7EB",
+      "rule": "restrained, evidence-forward; low saturation"
+    },
+    "typography": {
+      "title": "clear authoritative sans (Inter / 思源黑体)",
+      "body": "concise evidence body",
+      "labels": "metric/date tags",
+      "text_quality": "exact figures, formal tone"
+    },
+    "layout_patterns": [
+      "executive summary topline",
+      "strategic decision options",
+      "what-why-now",
+      "recommendation"
+    ],
+    "layout_usage_rule": "Decision-oriented; signal over noise, clear recommendation at the top.",
+    "layout_blueprints": [
+      {
+        "name": "决策摘要",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "核心判断"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "信号1",
+              "信号2",
+              "信号3"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "建议页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "方案对比"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "选择",
+              "依据",
+              "影响"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "KPI cards, timeline, milestone bars, evidence blocks, progress charts",
+      "avoid": "cartoon, clutter, marketing hype, random stock, over-decoration"
+    },
+    "rendering_constraints": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ],
+    "reference": "GitHub: 高管汇报 · 决策导向风格"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ]
+  }
+}

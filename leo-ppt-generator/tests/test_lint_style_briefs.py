@@ -11,7 +11,7 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPT = SKILL_DIR / "scripts" / "lint_style_briefs.py"
-SAMPLE = SKILL_DIR / "references" / "styles" / "清爽专业风.md"
+SAMPLE = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "清爽专业风.md"
 
 BRIEF = """# {name}
 
@@ -49,7 +49,7 @@ def _run(args):
 
 def _fixture(tmp: Path, builtin_extra: str, reference_extra: str = "") -> Path:
     root = tmp / "skill"
-    styles = root / "references" / "styles"
+    styles = root / Path("template-library/reference/sources/retired-styles-tree/styles")
     styles.mkdir(parents=True)
     (styles / "测试内置风.md").write_text(
         BRIEF.format(name="测试内置风", primary="#2563EB", extra=builtin_extra),
@@ -147,12 +147,12 @@ class FamilyMergeLintTest(unittest.TestCase):
 
     def _root(self) -> Path:
         root = self.tmp / "skill"
-        (root / "references" / "styles").mkdir(parents=True, exist_ok=True)
+        (root / Path("template-library/reference/sources/retired-styles-tree/styles")).mkdir(parents=True, exist_ok=True)
         return root
 
     def _write(self, root: Path, rel: str, name: str, primary: str = "#2563EB",
                extra: str = "") -> None:
-        p = root / "references" / "styles" / rel
+        p = root / Path("template-library/reference/sources/retired-styles-tree/styles") / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(BRIEF.format(name=name, primary=primary, extra=extra),
                      encoding="utf-8")

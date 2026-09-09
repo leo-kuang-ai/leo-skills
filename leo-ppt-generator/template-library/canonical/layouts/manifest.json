@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile-manifest",
+  "owner": "template-library/canonical/layouts",
+  "notes_policy": {
+    "filename": "notes.md",
+    "required": true,
+    "projection_of": "layout.json",
+    "digest": "sha256"
+  },
+  "entries": [
+    {
+      "profile": "body-basic/layout.json",
+      "asset_id": "builtin:layout:body-basic",
+      "notes": "body-basic/notes.md",
+      "revision": "1a77e0fdccd0010f",
+      "layout_sha256": "1a77e0fdccd0010f860cecc0ed755bba62c4b0f28049b2c90af0d1293b63553e",
+      "notes_sha256": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09"
+    },
+    {
+      "profile": "compare/layout.json",
+      "asset_id": "builtin:layout:compare",
+      "notes": "compare/notes.md",
+      "revision": "d4d2f85f9739a37f",
+      "layout_sha256": "d4d2f85f9739a37faa62a64dc138b38271b8a61f549a0a80d9e69cd03274e79a",
+      "notes_sha256": "1be3272a3d896d1d6f775f43aad3e7c916dc9bdbde884ba23b5e2fa75c03787b"
+    },
+    {
+      "profile": "cover-basic/layout.json",
+      "asset_id": "builtin:layout:cover-basic",
+      "notes": "cover-basic/notes.md",
+      "revision": "351b67def0b6a95f",
+      "layout_sha256": "351b67def0b6a95f32d7d8be92a6b114d942c632e9eafdc09f2fa09d511173f9",
+      "notes_sha256": "a585dc592ca5db657fab3755c8f4c545166f969ffc5b86c634a2ead1ebb1b5bc"
+    },
+    {
+      "profile": "frame-shot/layout.json",
+      "asset_id": "builtin:layout:frame-shot",
+      "notes": "frame-shot/notes.md",
+      "revision": "0cf5424dbb805f03",
+      "layout_sha256": "0cf5424dbb805f0350d5406f27b6120aa90d01e22c4410628fd399d0a3a1835f",
+      "notes_sha256": "0565fe0eeb48d751542551c456e8a104235a167d182fbfdced28a8fb270d4247"
+    },
+    {
+      "profile": "p1-01-cover-layouts/layout.json",
+      "asset_id": "builtin:layout:p1-01-cover-layouts",
+      "notes": "p1-01-cover-layouts/notes.md",
+      "revision": "cd1b2822001f4e19",
+      "layout_sha256": "cd1b2822001f4e196c7d59d2c928823e8d7a65f3326754f2cf9a879f2cdba737",
+      "notes_sha256": "8e700f20a74b1c289d192bf83ba4ade43c89db83378ac3f78ac71f5748639c8a"
+    },
+    {
+      "profile": "p10-10-dot-matrix-statement-layouts/layout.json",
+      "asset_id": "builtin:layout:p10-10-dot-matrix-statement-layouts",
+      "notes": "p10-10-dot-matrix-statement-layouts/notes.md",
+      "revision": "6f18a602b6516d0d",
+      "layout_sha256": "6f18a602b6516d0d2c9fc6df71335a73883e12640a901643f5a8ede332694409",
+      "notes_sha256": "3e4079675cc5419aa361715052be3f715826f681fda5442559274d132137ecb0"
+    },
+    {
+      "profile": "p11-11-horizontal-timeline-layouts/layout.json",
+      "asset_id": "builtin:layout:p11-11-horizontal-timeline-layouts",
+      "notes": "p11-11-horizontal-timeline-layouts/notes.md",
+      "revision": "4cbb2cc8a118c71c",
+      "layout_sha256": "4cbb2cc8a118c71cce7fe69e67071460649d322537c6601d7b90b6f63ea36551",
+      "notes_sha256": "754be3c82e2e704ef92228adb247f5023d8a4686090b4b078475dc8df9c36b6f"
+    },
+    {
+      "profile": "p12-12-manifesto-ink-banner-layouts/layout.json",
+      "asset_id": "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+      "notes": "p12-12-manifesto-ink-banner-layouts/notes.md",
+      "revision": "977dd42843f134d3",
+      "layout_sha256": "977dd42843f134d3d6a6b61aeb4fd1b1a324cf6c9e7b14f8bea4603ee109cd3c",
+      "notes_sha256": "5cc3adf5158af9806a3fe3e66879289f11d7b38a5e55fabf98ca61d6ac7a367b"
+    },
+    {
+      "profile": "p13-13-three-forces-cards-layouts/layout.json",
+      "asset_id": "builtin:layout:p13-13-three-forces-cards-layouts",
+      "notes": "p13-13-three-forces-cards-layouts/notes.md",
+      "revision": "190abed04a8467ed",
+      "layout_sha256": "190abed04a8467ed35a04c7686c0c83932abda19296cb9d1eb362df9e5fa674c",
+      "notes_sha256": "5786b239470678412d18a1333ad3f7db5b31ded244232a1de67c14ad5dc96620"
+    },
+    {
+      "profile": "p14-14-loop-diagram-layouts/layout.json",
+      "asset_id": "builtin:layout:p14-14-loop-diagram-layouts",
+      "notes": "p14-14-loop-diagram-layouts/notes.md",
+      "revision": "4af5abdcbaa92564",
+      "layout_sha256": "4af5abdcbaa92564daeacdf07be300bf28f2253bfe1711be31d51e17dc59e115",
+      "notes_sha256": "2f393d66b2ec869e385f06edf126a4491cd27faed52fa8b9dacfec7400400a6e"
+    },
+    {
+      "profile": "p15-15-image-matrix-hero-stat-layouts/layout.json",
+      "asset_id": "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+      "notes": "p15-15-image-matrix-hero-stat-layouts/notes.md",
+      "revision": "b9dcefee846f589c",
+      "layout_sha256": "b9dcefee846f589c35a33ab1816cf0c800ec289e9a2bfdbba92dbdaa0ca87f70",
+      "notes_sha256": "4006c8e6bf6e40765ce538d924a7834d097c4f5add6fa9ba3cd54c50c6e4041b"
+    },
+    {
+      "profile": "p16-16-multi-card-brief-layouts/layout.json",
+      "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+      "notes": "p16-16-multi-card-brief-layouts/notes.md",
+      "revision": "8246db7045699f86",
+      "layout_sha256": "8246db7045699f86621978a3f478ef3ceee07ab85fad4017fde0447d39b741f1",
+      "notes_sha256": "5a0cd907b5c4f533fd5927e4210d171c333366f25ab1e5143ae2ab4315375558"
+    },
+    {
+      "profile": "p17-17-system-diagram-layouts/layout.json",
+      "asset_id": "builtin:layout:p17-17-system-diagram-layouts",
+      "notes": "p17-17-system-diagram-layouts/notes.md",
+      "revision": "1f6cd113a4ee4b43",
+      "layout_sha256": "1f6cd113a4ee4b4319eeac6409c9e0aa65a5abbe1e8ade430d6b306a9dc910d1",
+      "notes_sha256": "0305ce06d255ebfecbbb83f6974352cb6c0fe4d255cf6afe5aa9d422c2bc3753"
+    },
+    {
+      "profile": "p18-18-why-now-layouts/layout.json",
+      "asset_id": "builtin:layout:p18-18-why-now-layouts",
+      "notes": "p18-18-why-now-layouts/notes.md",
+      "revision": "7a8147f8f0786287",
+      "layout_sha256": "7a8147f8f07862878e93bc228427a6a717b276ed0ebbdae4372f66ec5fcfcc73",
+      "notes_sha256": "b48dc25f2e1df282579e9cac7d45be684366ca583b58ecf515e1470546e8f43f"
+    },
+    {
+      "profile": "p19-19-four-cards-layouts/layout.json",
+      "asset_id": "builtin:layout:p19-19-four-cards-layouts",
+      "notes": "p19-19-four-cards-layouts/notes.md",
+      "revision": "d3ac76ec60aea4e8",
+      "layout_sha256": "d3ac76ec60aea4e89b43e3922e827ddce8ca91b52fbfef9d199e983bfc22effc",
+      "notes_sha256": "31321d9bb0f23f112ec3e625569b5e99d1ddd84e4627696b31355c8e99e73ba3"
+    },
+    {
+      "profile": "p2-02-vertical-timeline-layouts/layout.json",
+      "asset_id": "builtin:layout:p2-02-vertical-timeline-layouts",
+      "notes": "p2-02-vertical-timeline-layouts/notes.md",
+      "revision": "0719a40a4ea8c4fa",
+      "layout_sha256": "0719a40a4ea8c4fa5c71e2de8996308123135802abefef2aa5274a69f7d749f4",
+      "notes_sha256": "401f3352d947e1fb77b42e89432b3f5092407db927030d172c613e0ebc2ca57c"
+    },
+    {
+      "profile": "p20-20-stacked-kpi-ledger-layouts/layout.json",
+      "asset_id": "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+      "notes": "p20-20-stacked-kpi-ledger-layouts/notes.md",
+      "revision": "cdaad25756398ef6",
+      "layout_sha256": "cdaad25756398ef63f7a00464a29b562db53688c9ded01a5382f6b8332382038",
+      "notes_sha256": "203f250530f247d791bf3aaf17475914054aa9306f2c867dd76532d1fe3c9d44"
+    },
+    {
+      "profile": "p21-21-tech-spec-sheet-layouts/layout.json",
+      "asset_id": "builtin:layout:p21-21-tech-spec-sheet-layouts",
+      "notes": "p21-21-tech-spec-sheet-layouts/notes.md",
+      "revision": "bb080bc92bf302a2",
+      "layout_sha256": "bb080bc92bf302a21fab6537cf28abaaa59f6dfdf7d86782d08f708854d0d9ab",
+      "notes_sha256": "d7ea6f06145d01d052624e2b74cfbe70a1f2e02d4dcfd2d43d55b17702aef7ee"
+    },
+    {
+      "profile": "p22-22-image-hero-layouts/layout.json",
+      "asset_id": "builtin:layout:p22-22-image-hero-layouts",
+      "notes": "p22-22-image-hero-layouts/notes.md",
+      "revision": "9519c20b54ca3175",
+      "layout_sha256": "9519c20b54ca31757c97dd77f88ec5a1fbb1a99fb3bbf9baf741d9c5f4785c71",
+      "notes_sha256": "56739afa4a20970b534ba182b2b8543fa7dd0b610e1f541b281126181733e2bf"
+    },
+    {
+      "profile": "p23-p23-section-divider-layouts/layout.json",
+      "asset_id": "builtin:layout:p23-p23-section-divider-layouts",
+      "notes": "p23-p23-section-divider-layouts/notes.md",
+      "revision": "e68db77eb1ae580f",
+      "layout_sha256": "e68db77eb1ae580f05ecc3073ba581273a7e8f256d61ded0f419b3437b91313e",
+      "notes_sha256": "21fa5d0c667c608aa422d2db8bc9c63ff383aafe3aa9e8c166e982b4fa9d9d76"
+    },
+    {
+      "profile": "p24-p24-number-hero-layouts/layout.json",
+      "asset_id": "builtin:layout:p24-p24-number-hero-layouts",
+      "notes": "p24-p24-number-hero-layouts/notes.md",
+      "revision": "5d4180c77cce9942",
+      "layout_sha256": "5d4180c77cce99423733b67a013613c13b25773f73e136b2e33c0a41dd843610",
+      "notes_sha256": "4638d41cb4e51b2c369744146f8f01883234d1ffe734feb78f0b3fb3ef765736"
+    },
+    {
+      "profile": "p25-spec-table/layout.json",
+      "asset_id": "builtin:layout:p25-spec-table",
+      "notes": "p25-spec-table/notes.md",
+      "revision": "a4200adc8a5ae5e6",
+      "layout_sha256": "a4200adc8a5ae5e6cd67afbcf8f729be2f839e9b2dc98d0704cd3af1c22f7578",
+      "notes_sha256": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2"
+    },
+    {
+      "profile": "p26-p26-reference-list-layouts/layout.json",
+      "asset_id": "builtin:layout:p26-p26-reference-list-layouts",
+      "notes": "p26-p26-reference-list-layouts/notes.md",
+      "revision": "d651896fd25ff1a0",
+      "layout_sha256": "d651896fd25ff1a052d4b702bf259f80acb540a53ea025d798a16e76201fd7d3",
+      "notes_sha256": "9f547a327c6a7199dcedcfab75d3b2f623d1486fa9581eea6554ec809ac148d9"
+    },
+    {
+      "profile": "p27-p27-learning-objectives-layouts/layout.json",
+      "asset_id": "builtin:layout:p27-p27-learning-objectives-layouts",
+      "notes": "p27-p27-learning-objectives-layouts/notes.md",
+      "revision": "e0e42d70e0d27873",
+      "layout_sha256": "e0e42d70e0d2787335bbe5a07c62a15860da80d554c0c7ba2e87d2249f02c957",
+      "notes_sha256": "4eb8ca10c02174d4d623ee5254b6f779717899da1d680427cc1c4596b92e72d8"
+    },
+    {
+      "profile": "p28-p28-recap-layouts/layout.json",
+      "asset_id": "builtin:layout:p28-p28-recap-layouts",
+      "notes": "p28-p28-recap-layouts/notes.md",
+      "revision": "a2cbc0b9d42fab86",
+      "layout_sha256": "a2cbc0b9d42fab862895ca7ed4a0c9e3555a57a3ac69093a939634ddd2d1c876",
+      "notes_sha256": "5f86d257a31b50021241dd9db5a8a697a26e2655000611af869e715211187bd0"
+    },
+    {
+      "profile": "p29-p29-quiz-layouts/layout.json",
+      "asset_id": "builtin:layout:p29-p29-quiz-layouts",
+      "notes": "p29-p29-quiz-layouts/notes.md",
+      "revision": "2667d5ac32aa6343",
+      "layout_sha256": "2667d5ac32aa634345602e8701985f51513c9219a5c31e1e94dc8f64b795c08c",
+      "notes_sha256": "6809f7580f1e5a6d00e757f998b5486b7a42a360586d14aa1a85a84f8cc993db"
+    },
+    {
+      "profile": "p3-03-statement-layouts/layout.json",
+      "asset_id": "builtin:layout:p3-03-statement-layouts",
+      "notes": "p3-03-statement-layouts/notes.md",
+      "revision": "6b1908bd7c5bf614",
+      "layout_sha256": "6b1908bd7c5bf614872e68ab677051fd530fda3e1a4eb21d688870d10f7c1633",
+      "notes_sha256": "cddb1b4deb23162aaf7224b5fc142774bc5f71f362d0df034a5a6d9f989e145f"
+    },
+    {
+      "profile": "p30-30-swiss-image-split-layouts/layout.json",
+      "asset_id": "builtin:layout:p30-30-swiss-image-split-layouts",
+      "notes": "p30-30-swiss-image-split-layouts/notes.md",
+      "revision": "8f043e2c652af612",
+      "layout_sha256": "8f043e2c652af612d07e016bf3957ea19ef5db222d475f5030ccdf1955f0d304",
+      "notes_sha256": "379bfcfa5816a4238dd23fedd5a0a4ccb87b7966be95a98e35c082aced6ae337"
+    },
+    {
+      "profile": "p31-31-swiss-evidence-grid-layouts/layout.json",
+      "asset_id": "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+      "notes": "p31-31-swiss-evidence-grid-layouts/notes.md",
+      "revision": "ba06d546a1b216bf",
+      "layout_sha256": "ba06d546a1b216bf45d85e1f53fb3da7425f4e216b3b118806db50523b8da26b",
+      "notes_sha256": "dd2af248478532b797c3e10b3e7e3473513fbe4807a16e5bdb27df51d2201d72"
+    },
+    {
+      "profile": "p32-32-agenda-layouts/layout.json",
+      "asset_id": "builtin:layout:p32-32-agenda-layouts",
+      "notes": "p32-32-agenda-layouts/notes.md",
+      "revision": "2b3f8018a9b6d394",
+      "layout_sha256": "2b3f8018a9b6d3943a1d2c0ff9c5a27d3af0825d3928d272fe8d1b4ad27cc167",
+      "notes_sha256": "92cf2d1d43def4f8f07aa4fb1c0cfb585d1ae2b8bf4bc37c5e9d3cc83acd02af"
+    },
+    {
+      "profile": "p33-33-team-grid-layouts/layout.json",
+      "asset_id": "builtin:layout:p33-33-team-grid-layouts",
+      "notes": "p33-33-team-grid-layouts/notes.md",
+      "revision": "cf2677ec8a6b2701",
+      "layout_sha256": "cf2677ec8a6b27017d357fa2339139c54ee3dd17c814f3730746617874c4752a",
+      "notes_sha256": "d6c14c85cc86e3776eddacaba9c4fbf22002d768c1638accabaeac85e2e81d7d"
+    },
+    {
+      "profile": "p34-34-quote-hero-layouts/layout.json",
+      "asset_id": "builtin:layout:p34-34-quote-hero-layouts",
+      "notes": "p34-34-quote-hero-layouts/notes.md",
+      "revision": "3b9bd61be5d583db",
+      "layout_sha256": "3b9bd61be5d583dbb44908c1654fd16fb4edc2202329ec514f623a9315111298",
+      "notes_sha256": "3e4887b9cc516ee222d6c7ff7f48058c77691ba6ad212de6d3357cd4815826ec"
+    },
+    {
+      "profile": "p35-35-data-wall-layouts/layout.json",
+      "asset_id": "builtin:layout:p35-35-data-wall-layouts",
+      "notes": "p35-35-data-wall-layouts/notes.md",
+      "revision": "320e93f1845f42bf",
+      "layout_sha256": "320e93f1845f42bf77959556300c841685f408b3f053a5e283db2d6ebf32c821",
+      "notes_sha256": "c2a27cb069434b23082b4b27b46d44f2346d296eb880f8aa532a667fde55e13e"
+    },
+    {
+      "profile": "p36-36-ambience-full-bleed-layouts/layout.json",
+      "asset_id": "builtin:layout:p36-36-ambience-full-bleed-layouts",
+      "notes": "p36-36-ambience-full-bleed-layouts/notes.md",
+      "revision": "8fbf31f7cb7b25f0",
+      "layout_sha256": "8fbf31f7cb7b25f0f0ffa3216d04670e463ff2e3d519f6a5de36c02930664f7e",
+      "notes_sha256": "5f7b1ca5d551aa9ba672889844046fb7219628806576741a94dd340e8b3bd365"
+    },
+    {
+      "profile": "p4-04-six-cells-layouts/layout.json",
+      "asset_id": "builtin:layout:p4-04-six-cells-layouts",
+      "notes": "p4-04-six-cells-layouts/notes.md",
+      "revision": "c4b28724ae6d0fe0",
+      "layout_sha256": "c4b28724ae6d0fe011b1075e156b9cffa40d1e508d76a809f609f121b1bddc8b",
+      "notes_sha256": "580cbfc1204bea3a9b3a615aed0b72f35538b1e2fa80046fc7f190d5c879bb1e"
+    },
+    {
+      "profile": "p5-05-three-sub-cards-layouts/layout.json",
+      "asset_id": "builtin:layout:p5-05-three-sub-cards-layouts",
+      "notes": "p5-05-three-sub-cards-layouts/notes.md",
+      "revision": "129f16ebfafb1f54",
+      "layout_sha256": "129f16ebfafb1f54734949c0a413b18e435a0a058a16ef25f58889126e499754",
+      "notes_sha256": "103693b43288596c53a666ec188dc27922bcd0a520ee5463618854df8b48e4ec"
+    },
+    {
+      "profile": "p6-06-kpi-tower-layouts/layout.json",
+      "asset_id": "builtin:layout:p6-06-kpi-tower-layouts",
+      "notes": "p6-06-kpi-tower-layouts/notes.md",
+      "revision": "3d17dd1610809e3f",
+      "layout_sha256": "3d17dd1610809e3f13f6e94a29d5cd26fc43732f16e899174bbeced45d807ddf",
+      "notes_sha256": "a41b13ef4ecfab1987af33cb41079f870c96d22f2bb18b6567aea6bef99cb046"
+    },
+    {
+      "profile": "p7-07-h-bar-chart-layouts/layout.json",
+      "asset_id": "builtin:layout:p7-07-h-bar-chart-layouts",
+      "notes": "p7-07-h-bar-chart-layouts/notes.md",
+      "revision": "51b71a7a849621f5",
+      "layout_sha256": "51b71a7a849621f570be5c09a327ac08b06b818b40b40a14f8e529c1413119fc",
+      "notes_sha256": "47086028e2b3d78fc7579bd39362abb7ae0d2c868996f7a11f8ee35bb57d1483"
+    },
+    {
+      "profile": "p8-08-duo-compare-layouts/layout.json",
+      "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+      "notes": "p8-08-duo-compare-layouts/notes.md",
+      "revision": "646a1eafa7689836",
+      "layout_sha256": "646a1eafa768983691e25e9a9ad305fc9ca82a55b5f6272f6c1994feebb921f4",
+      "notes_sha256": "08f78f937a757b5a77fe0ab95e7b8ba371bf50f2216c753b10fb0ffb21454b4b"
+    },
+    {
+      "profile": "p9-09-closing-manifesto-layouts/layout.json",
+      "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+      "notes": "p9-09-closing-manifesto-layouts/notes.md",
+      "revision": "9b2b0239a45995f1",
+      "layout_sha256": "9b2b0239a45995f122175edc98270bc95584f551dfa1450cbe9541f419f67e3f",
+      "notes_sha256": "b400bfeb0b0ffd37318af49cb30c3bbdaae671b28a631c3cec348619cbdce915"
+    },
+    {
+      "profile": "pull-quote/layout.json",
+      "asset_id": "builtin:layout:pull-quote",
+      "notes": "pull-quote/notes.md",
+      "revision": "eba8addd2ad544c0",
+      "layout_sha256": "eba8addd2ad544c03228e7172219ac8715a26171fca1a788298cf82cf1826f3d",
+      "notes_sha256": "80a95befd193be0546fe2b3e9b3aad191104e7dba813a2991d43c67e6948f05c"
+    },
+    {
+      "profile": "timeline/layout.json",
+      "asset_id": "builtin:layout:timeline",
+      "notes": "timeline/notes.md",
+      "revision": "c86c0d272b6be316",
+      "layout_sha256": "c86c0d272b6be316b731bda920363cc3c1fa18f132ccb5db1996ce3244b7f37c",
+      "notes_sha256": "2f63c4b555569104e14151472732da0343be9ae93cb78d7a65a33514af618b9d"
+    }
+  ]
+}

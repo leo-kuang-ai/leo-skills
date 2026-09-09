@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:咨询精密网格风",
+  "name": "咨询精密网格风",
+  "aliases": [
+    "컨설팅 정밀그리드",
+    "consulting precision grid",
+    "action title grid"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/咨询精密网格风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格",
+      "韩式咨询"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "korean consulting precision grid, white ground on a 12-column modular grid, action-title header over a 1px hairline rule, grayscale body with a single electric-blue accent reserved for KPI numerals and active data-box borders, square corners, zero shadow, fixed bottom-right source caption"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "컨설팅 정밀그리드",
+      "consulting precision grid",
+      "action title grid"
+    ],
+    "best_for": "韩式咨询报告正型:白底 12 列精密网格 + 动作标题 + 唯一电蓝数据强调;适合咨询报告/策略汇报/数据审查",
+    "visual_direction": "korean consulting precision grid, white ground on a 12-column modular grid, action-title header over a 1px hairline rule, grayscale body with a single electric-blue accent reserved for KPI numerals and active data-box borders, square corners, zero shadow, fixed bottom-right source caption",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF、#F4F5F7(变体锚)",
+      "composition": "12 列模块网格 + 顶部动作标题(完整结论句)+ 右下角来源脚注",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(纸白底)",
+      "secondary": "#F4F5F7(面板浅灰面)",
+      "accent": "#0B5FFF(唯一电蓝,仅数据/KPI)",
+      "neutral": "#1A1A1A(墨字)"
+    },
+    "typography": {
+      "title": "Inter 700(Arial 兜底),动作标题完整句,tracking -0.01em",
+      "body": "Inter 400 灰阶正文,leading 1.3",
+      "labels": "Inter 700 kicker,tracking 0.08em;来源脚注 9pt 右下"
+    },
+    "layout_patterns": [
+      "每页顶部动作标题(完整结论句)+ 其下 1px 发丝线",
+      "数据盒 1px 灰边直角框,激活项 4px 电蓝左边框",
+      "正文全灰阶;KPI 数字用电蓝单色强调",
+      "直角零阴影;图解用方形节点 + 0.75pt 直连线"
+    ],
+    "layout_usage_rule": "每页顶部动作标题(完整结论句)+ 其下 1px 发丝线",
+    "visual_elements": {
+      "allowed": "12 列模块网格 + 顶部动作标题(完整结论句)+ 右下角来源脚注",
+      "avoid": "不要第二个强调色或彩色正文——强调仅 #0B5FFF 且只落在数据/KPI; 不要圆角、阴影、渐变"
+    },
+    "rendering_constraints": [
+      "不要第二个强调色或彩色正文——强调仅 #0B5FFF 且只落在数据/KPI",
+      "不要圆角、阴影、渐变",
+      "不要 3D 图表/彩虹配色/截断 Y 轴等业余图表回潮;柱图全灰 + 单柱电蓝",
+      "不要全居中排版——正文一律左对齐;不要缺失来源脚注",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要第二个强调色或彩色正文——强调仅 #0B5FFF 且只落在数据/KPI",
+      "不要圆角、阴影、渐变",
+      "不要 3D 图表/彩虹配色/截断 Y 轴等业余图表回潮;柱图全灰 + 单柱电蓝",
+      "不要全居中排版——正文一律左对齐;不要缺失来源脚注"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD01 컨설팅 정밀그리드"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要第二个强调色或彩色正文——强调仅 #0B5FFF 且只落在数据/KPI",
+      "不要圆角、阴影、渐变",
+      "不要 3D 图表/彩虹配色/截断 Y 轴等业余图表回潮;柱图全灰 + 单柱电蓝",
+      "不要全居中排版——正文一律左对齐;不要缺失来源脚注",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

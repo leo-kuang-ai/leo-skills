@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:美妆个护风",
+  "name": "美妆个护风",
+  "aliases": [
+    "美妆风",
+    "护肤风",
+    "美妆护肤风",
+    "beauty风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/消费时尚/美妆个护风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "消费营销"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "soft premium beauty and skincare editorial, warm neutrals with blush accents, refined product-focused layouts, ingredient/benefit clarity, gentle gradients and rounded frames, modern feminine restraint"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "美妆风",
+      "护肤风",
+      "美妆护肤风",
+      "beauty风"
+    ],
+    "best_for": "美妆护肤与个护品牌内容,需要柔和精致、可信赖的产品化叙事",
+    "visual_direction": "soft premium beauty and skincare editorial, warm neutrals with blush accents, refined product-focused layouts, ingredient/benefit clarity, gentle gradients and rounded frames, modern feminine restraint",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FAF6F1 米白暖底,柔和留白,细发丝线分区",
+      "composition": "产品/成分主视觉 + 卖点标签 + 功效图解三段式",
+      "density": "medium, 柔和呼吸感,不堆砌"
+    },
+    "color_palette": {
+      "primary": "#FAF6F1(米白暖底)配 #3D2E2A(深可可文字锚)",
+      "secondary": "#EAD7D0(裸粉柔面板)",
+      "accent": "#C1697F(玫瑰豆沙强调)",
+      "neutral": "#8C7B74(雾陶灰)与 #E5DDD6(发丝线)",
+      "rule": "柔和暖调单强调;禁高饱和撞色与廉价促销感"
+    },
+    "typography": {
+      "title": "优雅衬线(思源宋体/Garamond)标题,精致字距",
+      "body": "思源黑体正文,小而清晰",
+      "labels": "成分名/功效词细标签,可配英文小注(Inter)"
+    },
+    "layout_patterns": [
+      "产品 hero 页:大图 + 品牌主张 + 系列标签",
+      "成分图解页:成分卡 + 功效连线 + 安全背书",
+      "使用步骤页:三步圆角流程 + 质感细节图",
+      "对比实证页:使用前后对照 + 数据小卡"
+    ],
+    "layout_usage_rule": "产品主视觉优先,留白承载高级感;每页一个主张",
+    "visual_elements": {
+      "allowed": "圆角图框、柔阴影、发丝线、成分分子小图形、水润质感底纹",
+      "avoid": "高饱和撞色、爆炸贴、促销红黄、堆砌小字"
+    },
+    "rendering_constraints": [
+      "柔和暖调,单一玫瑰豆沙强调",
+      "产品图框圆角化,阴影克制",
+      "不虚构品牌 logo 与成分浓度数据"
+    ],
+    "negative_prompt": [
+      "不要高饱和撞色或廉价促销爆炸贴",
+      "不要夸张滤镜感磨皮人像",
+      "不要虚构品牌标识与成分数值"
+    ],
+    "reference": "GitHub: awesome-ppt-skills · theme-style-prompt-library（Beauty/Skincare,思想级改写）"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.4,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "柔和暖调,单一玫瑰豆沙强调",
+      "产品图框圆角化,阴影克制",
+      "不虚构品牌 logo 与成分浓度数据"
+    ]
+  }
+}

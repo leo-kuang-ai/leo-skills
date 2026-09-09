@@ -33,12 +33,14 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 风格可发现性见[风格画廊](samples/style-gallery.md)（由
 `scripts/generate_style_gallery.py` 从风格库确定性生成，11 套内置风格与适用场景
 一览，另含 8 个新家族代表金样板）；完整索引与选风格路由见
-`references/styles/00_索引/_INDEX.md`。
+`template-library/governance/authoring/index/_INDEX.md`。
 
 ## 风格库
 
-风格资产按名称、别名和家族提供[紧凑索引](references/styles/generated/by-name-alias.md)，
-数量统一见[生成计数](references/styles/generated/counts.md)，不再手工维护多个总数。
+风格资产按名称、别名和家族统一登记在
+`template-library/catalog/generations/<gen>/registry.json`，`<gen>` 由
+`template-library/catalog/current.json` 确定；执行期可用
+`leo-ppt style list --summary --filter <名称或别名>` 查询，不手工维护静态计数。
 普通风格、变体、参考池、版式与规范分别记账；参考池代表不冒充普通风格，未做 golden
 验证也不等于不可点名。执行期摘要核对用户同名覆盖，选择后通过指纹守卫保证实际渲染
 使用同一文件；相同别名多命中时必须消歧。
@@ -199,7 +201,7 @@ Together AI/OpenAI 官方/AtlasCloud）与自定义中转站；其中 Gemini/Min
 
 详细规则见：
 
-- [reference 全量导航索引](references/_INDEX.md)（按功能八组一览 30 份 reference 的定位与加载阶段）
+- [reference 全量导航索引](references/_INDEX.md)（按功能八组一览 31 份 reference 的定位与加载阶段）
 - [输入路由](references/input-routing.md)
 - [首次使用](references/first-use.md)
 - [执行合同](references/execution-contract.md)
@@ -218,8 +220,10 @@ worker 能力取决于当前宿主现场；安装成功不代表这些外部能�
 # 风格库治理 lint（在技能目录内执行）
 python3 scripts/lint_style_briefs.py
 python3 scripts/lint_layout_grid.py
-python3 scripts/lint_style_index.py
 python3 scripts/lint_style_governance.py
+
+# 仅迁移/旧 fixture 输入（不代表当前执行库）
+python3 scripts/lint_style_briefs.py --legacy-fixtures
 
 # chart_series 调色板弹药池查询（echarts 36 + ppt-mcp 17，快照随包；
 # --aggregate 重建需外部源，见脚本 docstring 环境变量）

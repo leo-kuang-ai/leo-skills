@@ -50,7 +50,7 @@ class InjectBehavior(unittest.TestCase):
     def test_injects_missing_master_and_skips_variant_and_existing(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            styles = root / "references" / "styles"
+            styles = root / Path("template-library/reference/sources/retired-styles-tree/styles")
             _write_brief(styles, "01_通用母版/x/水墨禅意风.md", _base("水墨禅意风"))
             _write_brief(styles, "03_场景用途结构/x/年报风.md",
                          {**_base("年报风"), "variant_of": "成果汇报风"})
@@ -87,7 +87,7 @@ class InjectBehavior(unittest.TestCase):
 
     def test_injection_is_idempotent(self):
         with tempfile.TemporaryDirectory() as tmp:
-            styles = Path(tmp) / "references" / "styles"
+            styles = Path(tmp) / Path("template-library/reference/sources/retired-styles-tree/styles")
             _write_brief(styles, "01/a/扁平风.md", _base("扁平风"))
             first = msa.inject_aliases(styles)
             second = msa.inject_aliases(styles)

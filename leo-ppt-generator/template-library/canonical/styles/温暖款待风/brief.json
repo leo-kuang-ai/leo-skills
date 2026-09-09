@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:温暖款待风",
+  "name": "温暖款待风",
+  "aliases": [
+    "Warm Hospitality Deck",
+    "warm hospitality",
+    "款待暖调"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/温暖款待风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "warm hospitality deck, pure white canvas with a single coral-red accent, rounded humanist sans and full-bleed round-corner photography, welcoming refined mood"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Warm Hospitality Deck",
+      "warm hospitality",
+      "款待暖调"
+    ],
+    "best_for": "白底珊瑚红 + 圆角全幅摄影的款待体验风;适合酒店旅行/服务体验/客户提案",
+    "visual_direction": "warm hospitality deck, pure white canvas with a single coral-red accent, rounded humanist sans and full-bleed round-corner photography, welcoming refined mood",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF、#FBF7F4(变体锚)",
+      "composition": "白底 + 珊瑚红单强调 + 20px 圆角全幅照片的款待气质",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)",
+      "secondary": "#FBF7F4(暖面)",
+      "accent": "#F4625F(珊瑚红唯一强调)",
+      "neutral": "#2B2B2E(墨字)"
+    },
+    "typography": {
+      "title": "Poppins 600 52pt(兜底 Nunito Sans)",
+      "body": "Poppins 400 32pt 级",
+      "labels": "Poppins 600 kicker 12pt,tracking 0.06em"
+    },
+    "layout_patterns": [
+      "白底 + 珊瑚红 #F4625F 单强调连接 CTA/评分点/KPI",
+      "照片全幅 20px 圆角,不直角裁切",
+      "圆润人文无衬线(Poppins 系)标题",
+      "暖面 #FBF7F4 分区,无深阴影"
+    ],
+    "layout_usage_rule": "白底 + 珊瑚红 #F4625F 单强调连接 CTA/评分点/KPI",
+    "visual_elements": {
+      "allowed": "白底 + 珊瑚红单强调 + 20px 圆角全幅照片的款待气质",
+      "avoid": "不要第二强调色或珊瑚色正文; 不要直角照片与 0 圆角"
+    },
+    "rendering_constraints": [
+      "不要第二强调色或珊瑚色正文",
+      "不要直角照片与 0 圆角",
+      "不要深阴影/多重阴影/任何渐变(含珊瑚渐变)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要第二强调色或珊瑚色正文",
+      "不要直角照片与 0 圆角",
+      "不要深阴影/多重阴影/任何渐变(含珊瑚渐变)"
+    ],
+    "paired_illustration": {
+      "family": "photographic",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD23 Warm Hospitality Deck"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要第二强调色或珊瑚色正文",
+      "不要直角照片与 0 圆角",
+      "不要深阴影/多重阴影/任何渐变(含珊瑚渐变)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

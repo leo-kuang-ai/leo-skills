@@ -46,7 +46,7 @@ class StyleMetadataBackfillTest(unittest.TestCase):
         self.assertEqual(styles.validate_style_metadata({"taxonomy": {"families": ["family:teaching"]}}), [])
 
     def test_lint_checks_new_metadata_instead_of_only_declaring_schema(self):
-        sample = styles.parse_style_document((SKILL / "references/styles/清爽专业风.md").read_text())["brief"]
+        sample = styles.parse_style_document((SKILL / "template-library/reference/sources/retired-styles-tree/styles/清爽专业风.md").read_text())["brief"]
         sample["source"] = {"license": "made-up-license"}
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -58,20 +58,45 @@ class StyleMetadataBackfillTest(unittest.TestCase):
     def test_eleven_builtins_have_only_evidenced_metadata(self):
         for name in BUILTINS:
             with self.subTest(name=name):
-                brief = styles.parse_style_document((SKILL / "references/styles" / f"{name}.md").read_text())["brief"]
+                brief = styles.parse_style_document((SKILL / "template-library/reference/sources/retired-styles-tree/styles" / f"{name}.md").read_text())["brief"]
                 self.assertEqual(brief["source"], {"license": "unknown"})
                 self.assertNotIn("visual_family", brief["taxonomy"])
                 self.assertEqual(styles.validate_style_metadata(brief), [])
 
-    def test_current_family_membership_equals_legacy_fixture(self):
-        self.assertEqual(rules.current_family_members(), {key: sorted(set(values)) for key, values in rules.FAMILIES.items()})
+    def test_current_family_membership_driven_by_authored_taxonomy(self):
+        # U10 后成员真值源是 template-library brief 的 taxonomy.families：
+        # 兼容表成员必须都存在于库中（防失明，池代表在 reference/pools）。
+        members = rules.current_family_members()
+        library_names = rules._library_style_names()
+        for label, names in members.items():
+            for name in names:
+                self.assertIn(name, library_names,
+                              f"家族 {label} 引用库中不存在的风格 {name}")
+        self.assertIn("手绘白板风", members["艺术手绘"])
+        self.assertIn("清爽专业风", members["商务专业"])
+        self.assertIn("朋克深底撞色池", members["参考池代表"])
+        # 垂直切片行业皮肤声明自己的方向家族（开放词表，不并入语义家族）。
+        self.assertIn("品牌创意风", members["品牌方向"])
 
     def test_bad_family_mapping_does_not_silently_change_candidates(self):
+        # v2 词表开放：未知家族标签不得静默并入已知家族——自成可见桶，
+        # 已知家族成员不变（静默改判=候选池漂移，才是要拦的回归）。
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "synthetic.md").write_text('```json\n{"style_name":"x","taxonomy":{"families":["family:unmapped"]}}\n```\n')
-            with self.assertRaisesRegex(ValueError, "style_family_mapping_unknown"):
-                rules.current_family_members(root)
+            style_dir = root / "synthetic-style"
+            style_dir.mkdir()
+            (style_dir / "brief.json").write_text(json.dumps({
+                "schema_version": 2, "entity": "style-brief",
+                "asset_id": "builtin:style:synthetic-style", "name": "合成风",
+                "lifecycle": "active",
+                "taxonomy": {"families": ["family:unmapped"]},
+                "visual_language": {"direction": "synthetic direction"},
+                "bindings": {},
+            }, ensure_ascii=False), encoding="utf-8")
+            members = rules.current_family_members(root)
+        self.assertIn("合成风", members["family:unmapped"])
+        for label in ("商务专业", "学术答辩", "党政红"):
+            self.assertNotIn("合成风", members[label])
 
 
 if __name__ == "__main__":

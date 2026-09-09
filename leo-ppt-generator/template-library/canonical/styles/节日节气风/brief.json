@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:节日节气风",
+  "name": "节日节气风",
+  "aliases": [
+    "节日风",
+    "节气风",
+    "festival风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/活动典礼/节日节气风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "festival / solar-term style, cultural seasonal atmosphere, themed motif, warm cultural resonance, shareable festival energy, on-theme"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "节日风",
+      "节气风",
+      "festival风"
+    ],
+    "best_for": "节日节气,需要氛围、文化、主题鲜明的表达",
+    "visual_direction": "festival / solar-term style, cultural seasonal atmosphere, themed motif, warm cultural resonance, shareable festival energy, on-theme",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "festive themed ground, cultural",
+      "composition": "氛围 → 文化 → 主题",
+      "density": "low-medium, atmospheric"
+    },
+    "color_palette": {
+      "primary": "festive seasonal color #C7000B, white",
+      "secondary": "cultural accents #D4AF37",
+      "accent": "one themed accent #B03A2E",
+      "neutral": "near-black/white #1A1A1A, warm #F5EFE6",
+      "rule": "atmospheric, on-theme, warm"
+    },
+    "typography": {
+      "title": "bold themed serif (思源宋体) or sans (思源黑体), warm",
+      "body": "short warm copy",
+      "labels": "festival tags",
+      "text_quality": "accurate, on-theme"
+    },
+    "layout_patterns": [
+      "festival atmosphere hero",
+      "cultural element",
+      "theme activity",
+      "festive wish/wrap"
+    ],
+    "layout_usage_rule": "Atmospheric and themed; celebrate the occasion with cultural resonance.",
+    "layout_blueprints": [
+      {
+        "name": "主题页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "节日氛围主视觉"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "活动页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "习俗/活动1",
+              "活动2",
+              "活动3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "seasonal motif, cultural imagery, festive accents, themed colors",
+      "avoid": "off-brand, gloomy, clutter, misusing cultural elements"
+    },
+    "rendering_constraints": [
+      "Atmospheric, cultural, on-theme.",
+      "Mood, culture, theme; shareable festival energy.",
+      "On-theme accurate; respect cultural meaning."
+    ],
+    "reference": "GitHub: 节日节气 · 主题传播惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Atmospheric, cultural, on-theme.",
+      "Mood, culture, theme; shareable festival energy.",
+      "On-theme accurate; respect cultural meaning."
+    ]
+  }
+}

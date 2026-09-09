@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:蓝焰作战室风",
+  "name": "蓝焰作战室风",
+  "aliases": [
+    "蓝焰作战室风",
+    "蓝焰作战室",
+    "作战室",
+    "blue flame war room"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/蓝焰作战室风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技暗色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "late-night operations war room, near-black blue ground with flame-cyan and ice-blue data tiers, amber anomalies, fixed four-corner monitoring skeleton"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "蓝焰作战室风",
+      "蓝焰作战室",
+      "作战室",
+      "blue flame war room"
+    ],
+    "best_for": "近黑蓝底作战室监控+火焰青/冰蓝数据双层+琥珀异常语义;适合运营复盘/经营分析/指标监控/项目状态汇报",
+    "visual_direction": "late-night operations war room, near-black blue ground with flame-cyan and ice-blue data tiers, amber anomalies, fixed four-corner monitoring skeleton",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#06070B→#020307 (蓝焰作战室风底)",
+      "composition": "近黑蓝底作战室:火焰青=达成/进度,冰蓝大数字,琥珀=异常与后果,摄影只留封面",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#06070B(近黑蓝底/标题锚)",
+      "secondary": "#F7F8FA(冷白主标题)",
+      "accent": "#1FB9D5(火焰青品牌锚)",
+      "neutral": "#DFA93C(琥珀异常语义)",
+      "rule": "锚点 #06070B, #F7F8FA, #1FB9D5, #DFA93C;来源:源文件色板原文直迁;近黑蓝底作战室监控+火焰青/冰蓝数据双层+琥珀异常语义"
+    },
+    "typography": {
+      "title": "思源黑体同句混排:常规陈述+粗体结论,2.3-2.5 倍正文",
+      "body": "思源黑体正文;表格可整体换宋体/明朝体衬线对撞",
+      "labels": "窄数字工业仪表感,单位同基线缩小约半"
+    },
+    "layout_patterns": [
+      "固定四角骨架:业务属主左上/报告信息右上/结论带 83%-90%/页脚依据页码",
+      "环形进度仪表+12 点刻度,火焰青=达成,琥珀=缺口,每页至多 3 个",
+      "正文栏比 35:65 或 60:40,超细竖线分栏,比较型 23% 总览+三同构栏",
+      "发丝线+留白+字重分层组织模块,不用面板"
+    ],
+    "layout_usage_rule": "固定四角骨架:业务属主左上/报告信息右上/结论带 83%-90%/页脚依据页码",
+    "visual_elements": {
+      "allowed": "近黑蓝底作战室:火焰青=达成/进度,冰蓝大数字,琥珀=异常与后果,摄影只留封面",
+      "avoid": "不要默认圆角卡片墙或无依据的均匀等分版式;不要蓝紫渐变/霓虹玻璃卡等无依据配色"
+    },
+    "rendering_constraints": [
+      "不要默认圆角卡片墙或无依据的均匀等分版式",
+      "不要蓝紫渐变/霓虹玻璃卡等无依据配色",
+      "不要图表背景另填色块(与页底同色或透明)",
+      "不要摄影进入正文页(封面除外)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要默认圆角卡片墙或无依据的均匀等分版式",
+      "不要蓝紫渐变/霓虹玻璃卡等无依据配色",
+      "不要图表背景另填色块(与页底同色或透明)",
+      "不要摄影进入正文页(封面除外)"
+    ],
+    "reference": "GitHub: open-kimi-ppt-skill · reference/design_system/work/blue-flame-brand/design.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要默认圆角卡片墙或无依据的均匀等分版式",
+      "不要蓝紫渐变/霓虹玻璃卡等无依据配色",
+      "不要图表背景另填色块(与页底同色或透明)",
+      "不要摄影进入正文页(封面除外)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

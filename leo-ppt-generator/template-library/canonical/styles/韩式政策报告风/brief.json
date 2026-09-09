@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:韩式政策报告风",
+  "name": "韩式政策报告风",
+  "aliases": [
+    "한국 정책보고서 네이비",
+    "korea policy navy",
+    "政策报告"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/韩式政策报告风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "korean government policy report, white ground under a fixed 12%-height navy header band with white gothic title, numbered section chips on the left, aligned box body and restrained point colors"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 4）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "한국 정책보고서 네이비",
+      "korea policy navy",
+      "政策报告"
+    ],
+    "best_for": "韩国公共报告正型:藏青头带 + 编号分区 + 浅蓝面板;适合政府工作报告/政策宣讲/机关汇报",
+    "visual_direction": "korean government policy report, white ground under a fixed 12%-height navy header band with white gothic title, numbered section chips on the left, aligned box body and restrained point colors",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF、#E8F1FB(变体锚)",
+      "composition": "顶部 12% 高藏青头带 + 左侧编号分区 + 浅蓝面板正文",
+      "density": "medium-low, 呼吸留白"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)",
+      "secondary": "#0B2C5C(藏青头带/主墨)",
+      "accent": "#1B66C9(亮蓝强调)",
+      "neutral": "#1A1A1A(墨字)"
+    },
+    "typography": {
+      "title": "Pretendard 700(Noto Sans KR/苹方兜底),头带白字 26pt",
+      "body": "Pretendard 400,20pt 级",
+      "labels": "Pretendard 700 章节号 chip,tracking 0.06em"
+    },
+    "layout_patterns": [
+      "顶部 12% 高(0.9in)藏青头带白字标题,全 deck 固定",
+      "正文区块左侧编号片(①②③ / 01·02·03)",
+      "浅蓝 #E8F1FB 面板承载图表与要点",
+      "红 #E03B3B / 绿 #1F9D57 仅作增减语义点色"
+    ],
+    "layout_usage_rule": "顶部 12% 高(0.9in)藏青头带白字标题,全 deck 固定",
+    "visual_elements": {
+      "allowed": "顶部 12% 高藏青头带 + 左侧编号分区 + 浅蓝面板正文",
+      "avoid": "不要整页藏青平涂——头带之外保持白底; 不要偏离 12% 头带比例"
+    },
+    "rendering_constraints": [
+      "不要整页藏青平涂——头带之外保持白底",
+      "不要偏离 12% 头带比例",
+      "不要非韩文兼容的装饰字体(韩文页面须 Pretendard/Noto Sans KR)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要整页藏青平涂——头带之外保持白底",
+      "不要偏离 12% 头带比例",
+      "不要非韩文兼容的装饰字体(韩文页面须 Pretendard/Noto Sans KR)"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "supportive"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD06 한국 정책보고서 네이비"
+  },
+  "constraints": {
+    "negative": [
+      "不要整页藏青平涂——头带之外保持白底",
+      "不要偏离 12% 头带比例",
+      "不要非韩文兼容的装饰字体(韩文页面须 Pretendard/Noto Sans KR)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

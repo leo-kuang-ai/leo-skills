@@ -1,0 +1,169 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:暖调柔形风",
+  "name": "暖调柔形风",
+  "aliases": [
+    "暖色有机风",
+    "柔和几何风",
+    "warm organic"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/暖调柔形风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "warm minimalism with soft organic shapes: warm neutral paper base, rounded blob forms and pebble cards, one intentional accent color used like a friendly nudge, soft long shadows instead of hard borders, cozy and humane without losing grid discipline"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 9）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "暖色有机风",
+      "柔和几何风",
+      "warm organic"
+    ],
+    "best_for": "品牌宣传、团队文化、教育科普、生活方式提案；适合「温暖、可亲近、去科技感」的叙事 deck；金融/法务/硬科技等冷峻场景禁用",
+    "visual_direction": "warm minimalism with soft organic shapes: warm neutral paper base, rounded blob forms and pebble cards, one intentional accent color used like a friendly nudge, soft long shadows instead of hard borders, cozy and humane without losing grid discipline",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm off-white #FAF6F0, never pure white; soft shapes float on it with generous margins",
+      "composition": "one rounded focal block per page carrying the assertion; asymmetric but balanced; organic curves obey the 版心 grid",
+      "density": "low to medium"
+    },
+    "color_palette": {
+      "primary": "warm paper base #FAF6F0 with deep warm brown text #4A3F35",
+      "secondary": "oat beige #E8DFD2 panels and terracotta #C97B5A secondary shapes",
+      "accent": "one intentional honey-orange accent #E8842C, used like a friendly nudge on the single most important element per page",
+      "neutral": "warm gray #8C837B for captions, hairline #E5DDD1, pebble fill #F1EAE0",
+      "rule": "mono 制式：全 deck 只有一个强调色 #E8842C；暖中性底永远 ≥60%；柔形状不描边、用色块和软阴影分层"
+    },
+    "typography": {
+      "title": "身份字体声明：中文主字族 思源黑体（Source Han Sans，Medium 500–SemiBold 600）圆润亲和、去锋利感；英文搭配 Inter（Medium）；Speak 档（400–600，大标题 ≤600，禁 700+），标题不带衬线不斜体",
+      "body": "思源黑体 / MiSans Regular 400–500，行高 1.5–1.6 取上限，段落短、语气口语但准确",
+      "labels": "kicker/图注 思源黑体 Regular + 正字距；可用小圆点与手绘式下划弧作强调（不是色块）",
+      "text_quality": "中文逐字准确；不用手写体承载正文（手写仅限单行点缀）"
+    },
+    "layout_patterns": [
+      "pebble cards（大圆角有机形卡片）承载 3 要点",
+      "左柔形图右文字列分栏",
+      "全幅暖光场景图 + 一句断言（配 P36 Ambience）"
+    ],
+    "layout_usage_rule": "概念页用 pebble cards（P5/P19）；叙事页配 P30 Swiss Image Split；金句配 P34；数据页守 图表样式规范 并优先可编辑路线",
+    "layout_blueprints": [
+      {
+        "name": "pebble_three",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "assertion title"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 3,
+            "labels": [
+              "pebble card 1",
+              "pebble card 2",
+              "pebble card 3 (accent nudge on one)"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "warm_split",
+        "sections": [
+          {
+            "position": "left 5/12",
+            "count": 1,
+            "labels": [
+              "soft illustration panel"
+            ]
+          },
+          {
+            "position": "right 7/12",
+            "count": 2,
+            "labels": [
+              "title stack",
+              "friendly paragraph + takeaway line"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": [
+        "大圆角有机形（blob/pebble）",
+        "软长阴影（无硬描边）",
+        "暖光场景插画",
+        "小圆点/弧线强调"
+      ],
+      "avoid": [
+        "直角硬边卡片",
+        "纯白背景",
+        "冷蓝科技渐变",
+        "多余图标堆砌",
+        "玻璃拟态高光"
+      ]
+    },
+    "rendering_constraints": [
+      "配对渲染：暖光场景（见 视觉风格配对.md）；AI 图遵守 paste-ready 守卫（no text/lettering/numbers/logos/watermarks，2560×1440 宽幅构图）",
+      "圆角半径全 deck 统一（16–24px 档），不混直角",
+      "强调色 #E8842C 每页至多一个落点（mono 制式纪律）",
+      "对比度守正文 ≥4.5:1——暖底浅字是本风格最常见违例"
+    ],
+    "reference": "本土新增 2026-08-29（风格系统优化计划 U9；趋势来源 微软官方设计博客 2026；非上游 guizang/awesome 来源）"
+  },
+  "constraints": {
+    "negative": [
+      "配对渲染：暖光场景（见 视觉风格配对.md）；AI 图遵守 paste-ready 守卫（no text/lettering/numbers/logos/watermarks，2560×1440 宽幅构图）",
+      "圆角半径全 deck 统一（16–24px 档），不混直角",
+      "强调色 #E8842C 每页至多一个落点（mono 制式纪律）",
+      "对比度守正文 ≥4.5:1——暖底浅字是本风格最常见违例"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

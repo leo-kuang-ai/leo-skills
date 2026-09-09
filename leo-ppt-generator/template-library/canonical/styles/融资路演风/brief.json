@@ -1,0 +1,140 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:融资路演风",
+  "name": "融资路演风",
+  "aliases": [],
+  "variant_of": "商业计划书风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/路演提案/融资路演风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "fundraising-roadshow style, high-persuasion, growth-and-returns narrative, investor resonance, momentum and evidence, confident scale story"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "商业计划书风",
+    "best_for": "融资路演,需要高说服力、围绕增长与回报、能打动投资人",
+    "visual_direction": "fundraising-roadshow style, high-persuasion, growth-and-returns narrative, investor resonance, momentum and evidence, confident scale story",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean white / light, persuasive",
+      "composition": "problem → solution → traction → ask",
+      "density": "medium, persuasive"
+    },
+    "color_palette": {
+      "primary": "ink navy #1F2937 / accent blue, white",
+      "secondary": "slate #64748B, light gray #E5E7EB",
+      "accent": "one bold accent #F59E0B for the ask",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "credible, confident, not flashy"
+    },
+    "typography": {
+      "title": "bold confident sans (Arial Black / 思源黑体 Heavy), big headline",
+      "body": "concise persuasive body",
+      "labels": "market/traction tags",
+      "text_quality": "accurate, no overclaim"
+    },
+    "layout_patterns": [
+      "investment thesis hook",
+      "growth & traction data",
+      "unit economics",
+      "use of proceeds & ask"
+    ],
+    "layout_usage_rule": "Persuasive and evidence-led; momentum, unit economics and clear ask.",
+    "layout_blueprints": [
+      {
+        "name": "增长页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "增长曲线"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "单位经济页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "LTV/CAC/Burn"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "单元",
+              "真相",
+              "规模"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "problem/solution, market size, business model, traction, team, ask",
+      "avoid": "clutter, exaggeration, caricature, unsupported traction"
+    },
+    "rendering_constraints": [
+      "Credible, confident, persuasive arc.",
+      "Lead with problem-traction-ask; one accent for the ask.",
+      "Accurate numbers; no invented traction or logos."
+    ],
+    "reference": "GitHub: 融资路演 · 创投惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior+lexical (U3)"
+  },
+  "constraints": {
+    "negative": [
+      "Credible, confident, persuasive arc.",
+      "Lead with problem-traction-ask; one accent for the ask.",
+      "Accurate numbers; no invented traction or logos."
+    ]
+  }
+}

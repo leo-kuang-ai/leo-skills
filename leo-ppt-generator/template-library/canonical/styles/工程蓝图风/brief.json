@@ -1,0 +1,177 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:工程蓝图风",
+  "name": "工程蓝图风",
+  "aliases": [
+    "蓝图风",
+    "engineering blueprint",
+    "制图风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/工程蓝图风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "工程蓝图"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "technical blueprint aesthetic, white/cyan linework on dark navy, engineering schematic annotations, construction-grid discipline, drafting detail and measure callouts, rigorous hard-tech clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 4）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "蓝图风",
+      "engineering blueprint",
+      "制图风"
+    ],
+    "best_for": "以工程制图的蓝底线稿与精确标注呈现严谨的研发与系统逻辑",
+    "visual_direction": "technical blueprint aesthetic, white/cyan linework on dark navy, engineering schematic annotations, construction-grid discipline, drafting detail and measure callouts, rigorous hard-tech clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark navy #0F1B33 engineering field",
+      "composition": "schematic linework, annotation callouts, dimension marks",
+      "density": "medium-high technical density, precise"
+    },
+    "color_palette": {
+      "primary": "dark navy #0F1B33 field",
+      "secondary": "cyan #67E8F9 linework",
+      "accent": "one amber #F59E0B callout",
+      "neutral": "white #E2E8F0 labels, cyan hairlines",
+      "rule": "technical, precise, monochrome + cyan; avoid warm backgrounds and color splash; 浅底场景（明度档 light）跨引「工程白图风」锚点色板,不另建第二份 light 色板"
+    },
+    "typography": {
+      "title": "drafting-style condensed type (DIN Condensed / mono 等宽), crisp",
+      "body": "technical small labels",
+      "labels": "dimension/measure notes, node codes",
+      "text_quality": "exact engineering notation"
+    },
+    "layout_patterns": [
+      "system architecture schematic",
+      "dimensioned component breakdown",
+      "process/flow with measure notes",
+      "hardware spec with callouts"
+    ],
+    "layout_usage_rule": "Operate like a real blueprint: precise linework, measured annotations, rigorous hierarchy.",
+    "layout_blueprints": [
+      {
+        "name": "系统架构图",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "系统标题与版本"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "架构线稿"
+            ]
+          },
+          {
+            "position": "side",
+            "count": 3,
+            "labels": [
+              "模块",
+              "接口",
+              "标注"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "部件/规格页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "部件线稿"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "尺寸",
+              "参数",
+              "说明"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "linework, dimension marks, node codes, grid, technical callouts, craft-lineweight variety",
+      "avoid": "real-world photos, cartoon, gradients, warm color, decorative flourish, curved connector lines, hand-drawn organic shapes"
+    },
+    "rendering_constraints": [
+      "Feels like a real engineering blueprint / technical spec.",
+      "Precise linework and annotation; monochrome + one cyan is the identity.",
+      "Exact technical notation; no invented logos or watermarks.",
+      "For R&D boards, define the artifact type, components, labels, material logic, and display format; use clear annotation and a controlled technical style with short labels and clear component relations. (awesome-gpt-image-2 · concept-product-breakdown)",
+      "Connector lines use straight lines or 90-degree angles only.",
+      "Cross-section diagrams and isometric/orthographic projections for component views."
+    ],
+    "negative_prompt": [
+      "no curved connector lines or hand-drawn organic shapes",
+      "no photographic elements or real-world photo textures",
+      "no cartoon rendering or decorative flourishes",
+      "no smooth gradients or warm color splash"
+    ],
+    "reference": "GitHub: GPT Image 2 presets (technical blueprint) · 工程蓝图风"
+  },
+  "constraints": {
+    "negative": [
+      "Feels like a real engineering blueprint / technical spec.",
+      "Precise linework and annotation; monochrome + one cyan is the identity.",
+      "Exact technical notation; no invented logos or watermarks.",
+      "For R&D boards, define the artifact type, components, labels, material logic, and display format; use clear annotation and a controlled technical style with short labels and clear component relations. (awesome-gpt-image-2 · concept-product-breakdown)",
+      "Connector lines use straight lines or 90-degree angles only.",
+      "Cross-section diagrams and isometric/orthographic projections for component views."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

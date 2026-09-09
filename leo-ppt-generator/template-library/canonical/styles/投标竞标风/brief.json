@@ -1,0 +1,162 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:投标竞标风",
+  "name": "投标竞标风",
+  "aliases": [
+    "投标风",
+    "竞标风",
+    "bid风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/路演提案/投标竞标风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "bidding-proposal style, RFP-response rigor, advantage evidence, capability commitment, credible and compliant, win-focused clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "投标风",
+      "竞标风",
+      "bid风"
+    ],
+    "best_for": "投标竞标,需要响应招标、凸显差异优势、表达承诺与实力",
+    "visual_direction": "bidding-proposal style, RFP-response rigor, advantage evidence, capability commitment, credible and compliant, win-focused clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / formal, structured",
+      "composition": "应答 → 方案 → 优势 → 承诺",
+      "density": "medium-high, structured"
+    },
+    "color_palette": {
+      "primary": "slate blue #334155 / navy, white",
+      "secondary": "cool gray #94A3B8, cyan #22D3EE",
+      "accent": "one decisive accent #F97316",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "formal, credible, compliance-aware; not flashy"
+    },
+    "typography": {
+      "title": "clear authoritative sans (Georgia / 思源宋体)",
+      "body": "formal precise body",
+      "labels": "score/tag labels",
+      "text_quality": "exact compliance and technical terms"
+    },
+    "layout_patterns": [
+      "scorecard requirement response",
+      "solution architecture",
+      "bid advantage",
+      "team & delivery"
+    ],
+    "layout_usage_rule": "Coherent, compliant and advantage-led; respond to each requirement clearly.",
+    "layout_blueprints": [
+      {
+        "name": "响应页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "招标要求"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "响应表"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "应答结论"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "优势页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "方案"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "差异",
+              "案例",
+              "承诺"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "scorecard tables, solution diagrams, advantage blocks, trust badges",
+      "avoid": "flashy, clutter, vague promises, cartoon"
+    },
+    "rendering_constraints": [
+      "Compliant, credible, advantage-forward.",
+      "Respond to requirements; clear advantage and delivery commitment.",
+      "Accurate terms; no invented credentials or logos."
+    ],
+    "reference": "GitHub: 投标竞标 · 招标响应惯例"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Compliant, credible, advantage-forward.",
+      "Respond to requirements; clear advantage and delivery commitment.",
+      "Accurate terms; no invented credentials or logos."
+    ]
+  }
+}

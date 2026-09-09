@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "6c45c1d2dff8313dcd3b726cd6c8d7264cb503b48818f7c850004bb664db6261",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/finance-navy/content.png",
+  "out_sha256": "0ae4128f1a4f63849ad3143071a3a1890207f67e9425af58c2d967dca5f517c6",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1249,
+  "rendered_at": "2026-09-08T01:59:48.021Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "f267cbdae12c9bc9d14c73c0c8cc579702dceee4f658a3486ba265304a35131a",
+  "warnings": [],
+  "width": 2560
+}

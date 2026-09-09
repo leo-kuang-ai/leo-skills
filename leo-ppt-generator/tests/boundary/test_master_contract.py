@@ -93,6 +93,14 @@ class MasterContractTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("交叉引用", err)
 
+    def test_same_unit_relation_is_a_hard_failure(self):
+        split = GOOD.replace(
+            "argument_role: 支柱1\n- 标题：营收",
+            "argument_role: 支柱1\nrst_relation: same-unit\n- 标题：营收")
+        code, err, _ = run(split)
+        self.assertEqual(code, 1)
+        self.assertIn("same-unit", err)
+
 
 # --- deck-promises 承诺表判据（R-34） ---
 

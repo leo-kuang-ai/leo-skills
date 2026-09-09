@@ -18,7 +18,7 @@ from leo_ppt_generator.render.chart import (
 from leo_ppt_generator.render.errors import RenderError
 
 SKILL_ROOT = Path(__file__).resolve().parents[2]
-LINE_CHART_MD = SKILL_ROOT / "references/styles/11_图表语法/折线图.md"
+LINE_CHART_MD = SKILL_ROOT / "template-library/reference/sources/retired-styles-tree/styles/11_图表语法/折线图.md"
 
 
 class ExtractMermaidExampleBlock(unittest.TestCase):
@@ -70,10 +70,13 @@ class ThemeVariableMapping(unittest.TestCase):
         self.assertEqual(variables["xyChart"]["backgroundColor"], "#f0f4f8")
         self.assertEqual(warnings, [])
 
-    def test_unmatched_anchors_warn(self):
-        variables, warnings = build_theme_variables({"nothing": "matches"})
-        self.assertEqual(variables, {})
-        self.assertTrue(any("matched no mermaid keys" in w for w in warnings))
+    def test_unmatched_anchors_block_not_default(self):
+        """§8.2 治理合同：给了主题但映射键全落空 → 阻断，不回落 mermaid 默认。"""
+        from leo_ppt_generator.render.errors import RenderError
+
+        with self.assertRaises(RenderError) as ctx:
+            build_theme_variables({"nothing": "matches"})
+        self.assertEqual(ctx.exception.reason_code, "chart_theme_mapping_missing")
 
 
 class RenderChartBrowser(browser_test_case()):

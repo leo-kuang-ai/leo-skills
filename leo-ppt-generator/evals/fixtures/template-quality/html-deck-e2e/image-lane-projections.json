@@ -1,0 +1,206 @@
+[
+  {
+    "page_no": 1,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "cover",
+      "layout_id": "builtin:layout:cover-basic",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  },
+  {
+    "page_no": 2,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "content",
+      "layout_id": "builtin:layout:body-basic",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  },
+  {
+    "page_no": 3,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "data",
+      "layout_id": "builtin:layout:p25-spec-table",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  },
+  {
+    "page_no": 4,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "content",
+      "layout_id": "builtin:layout:body-basic",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  },
+  {
+    "page_no": 5,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "data",
+      "layout_id": "builtin:layout:p25-spec-table",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  },
+  {
+    "page_no": 6,
+    "deterministic": true,
+    "block": {
+      "schema_version": 1,
+      "kind": "design-prompt-projection",
+      "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+      "style": "builtin:style:finance-navy",
+      "mode": "light",
+      "colors": [
+        "accent=#0369A1",
+        "background=#F8FAFC",
+        "border=#64748B",
+        "muted=#475569",
+        "on_primary=#FFFFFF",
+        "primary=#1E3A8A",
+        "surface=#FFFFFF",
+        "text=#1F2430",
+        "warn=#92400E"
+      ],
+      "typography": [
+        "body:Noto Sans SC 400; kicker:Noto Sans SC 400; page_no:Noto Sans SC 400; table_body:Noto Sans SC 400; table_header:Noto Sans SC 700; title:Noto Sans SC 700"
+      ],
+      "negative_constraints": [
+        "禁止无来源数字进入表格",
+        "涨跌不得只用红绿区分（需符号+单位）",
+        "禁止霓虹强调色"
+      ],
+      "page_role": "closing",
+      "layout_id": "builtin:layout:pull-quote",
+      "composition_hint": "",
+      "canvas": "16:9 full-slide, 2560x1440 render target"
+    }
+  }
+]

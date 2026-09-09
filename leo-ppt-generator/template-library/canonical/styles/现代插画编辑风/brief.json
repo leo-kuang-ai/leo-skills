@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:现代插画编辑风",
+  "name": "现代插画编辑风",
+  "aliases": [
+    "modern illustration editorial",
+    "矢量编辑插画风",
+    "雾蓝陶橙插画风",
+    "illustration editorial"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/现代插画编辑风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "modern vector illustration editorial, soft beige or white ground, muted blue and dusty orange illustration palette, smooth curves and rounded organic layered flat shapes, conceptual subjects of people workflows and abstract systems, balanced editorial proportions with large negative space, thin charcoal strokes, nearly invisible texture, soft pale grounding shadows only, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "modern illustration editorial",
+      "矢量编辑插画风",
+      "雾蓝陶橙插画风",
+      "illustration editorial"
+    ],
+    "best_for": "以雾蓝陶橙的现代矢量插画、圆润有机形与大负空间表达沉静、聪明、干净而微艺术的编辑感",
+    "visual_direction": "modern vector illustration editorial, soft beige or white ground, muted blue and dusty orange illustration palette, smooth curves and rounded organic layered flat shapes, conceptual subjects of people workflows and abstract systems, balanced editorial proportions with large negative space, thin charcoal strokes, nearly invisible texture, soft pale grounding shadows only, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white #FFFFFF or soft beige #F7F3EE",
+      "composition": "one strong illustration area + one clear text area, asymmetric",
+      "density": "low-medium, airy and refined"
+    },
+    "color_palette": {
+      "primary": "soft beige #F7F3EE / white #FFFFFF ground, charcoal gray #2F2F2F text",
+      "secondary": "muted blue #A7C7E7 and pale blue field #EAF4FC",
+      "accent": "dusty orange #E8A87C with pale orange field #FCE8DA",
+      "neutral": "divider #DED8D1, charcoal #2F2F2F",
+      "rule": "blue and orange as illustration colours and accent signals; charcoal is the primary text colour"
+    },
+    "typography": {
+      "title": "modern bold sans (Inter / 思源黑体), 700-800 weight",
+      "body": "clean sans (Inter / 思源黑体), 400-500 weight",
+      "labels": "small section labels (Inter / 黑体), 600-700 weight",
+      "text_quality": "calm, intelligent, clean — no decorative type"
+    },
+    "layout_patterns": [
+      "illustration-text split: one strong illustration area and one clear text area, asymmetric",
+      "conceptual illustration plate: people / workflow / system concepts in rounded organic flat shapes",
+      "illustrated diagram: rounded nodes, curved paths and layered shapes with direct labels",
+      "quiet texture field: nearly invisible low-opacity dot or speckle fields to avoid sterile flatness"
+    ],
+    "layout_usage_rule": "Preserve large negative space; do not over-frame the illustration; modules stay light and open.",
+    "negative_prompt": [
+      "no cartoon mascots, clipart or exaggerated cartoon proportions",
+      "no 3D realism or glossy highlights",
+      "no heavy drop shadows or neon colors",
+      "no dense dashboard aesthetics or busy full-scene illustrations"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "smooth organic shapes, layered flat illustration, subtle local gradients, pale grounding shadows, thin charcoal strokes",
+      "avoid": "mascots, 3D, gloss, neon, busy scenes, heavy shadows"
+    },
+    "rendering_constraints": [
+      "Refined sparse vector illustration, editorial proportions.",
+      "Gradients only subtle and local; shadows only pale grounding.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: Awesome-PPT-Design-Skills · modern-illustration-editorial style-system"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Refined sparse vector illustration, editorial proportions.",
+      "Gradients only subtle and local; shadows only pale grounding.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

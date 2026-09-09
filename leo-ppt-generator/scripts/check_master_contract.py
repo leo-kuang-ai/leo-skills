@@ -127,6 +127,21 @@ def page_is_functional(body):
     return False
 
 
+def check_rst_relations(pages, failures, advisories=None):
+    """Enforce the hard same-unit invariant at the page boundary.
+
+    ``rst_relation`` describes this page relative to the preceding page, so
+    ``same-unit`` necessarily means the unit was split across two pages.
+    Other relations remain advisory metadata.
+    """
+    relation_re = re.compile(r"(?:rst_relation|rst)\s*[：:]\s*([a-z-]+)", re.I)
+    for header, body in pages:
+        match = relation_re.search(body)
+        if match and match.group(1).lower() == "same-unit":
+            failures.append(
+                f"{header.strip()}: rst_relation=same-unit 跨页拆分；同单元必须整体置于一页")
+
+
 def collect_figure_rows(text):
     """收集图行：`图[F<N>]` 起始行 + 后续承载/服务/避免误读续行。"""
     lines = text.splitlines()
@@ -606,6 +621,7 @@ def main():
     if "## 数字登记表" not in text:
         failures.append("全 deck: 缺少「## 数字登记表」节")
     check_figure_rows(text, failures)
+    check_rst_relations(pages, failures, advisories)
     content_pages = total - functional_count
     check_deck_contract(text, content_pages, failures, warnings)
     page_seq = []

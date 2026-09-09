@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:韩式政府浅蓝风",
+  "name": "韩式政府浅蓝风",
+  "aliases": [
+    "과기정통부 정부 라이트",
+    "korea gov light",
+    "政府浅蓝简报"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/韩式政府浅蓝风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "korean government light-tone briefing, pale sky-blue ground with deep navy text, navy ribbon at page bottom exposing key words, governance satellite-node diagram as climax"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "과기정통부 정부 라이트",
+      "korea gov light",
+      "政府浅蓝简报"
+    ],
+    "best_for": "浅天蓝正统政府轻调简报;适合政府简报/公共治理/部委汇报",
+    "visual_direction": "korean government light-tone briefing, pale sky-blue ground with deep navy text, navy ribbon at page bottom exposing key words, governance satellite-node diagram as climax",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#E7F1FA、#FFFFFF(变体锚)",
+      "composition": "浅天蓝底 + 深藏青文字,页底藏青带露关键词,治理卫星图作高潮",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#E7F1FA(浅天蓝底)",
+      "secondary": "#FFFFFF(卡面白)",
+      "accent": "#0F41BD(深亮蓝强调)",
+      "neutral": "#1C2848(深墨蓝字)"
+    },
+    "typography": {
+      "title": "Pretendard 800(Noto Sans KR 兜底)58pt 封面主标",
+      "body": "Pretendard 400 正文",
+      "labels": "Pretendard 500 meta 标签 16pt"
+    },
+    "layout_patterns": [
+      "浅天蓝 #E7F1FA 底 + 深藏青文字",
+      "页底 11% 藏青带露出核心关键词",
+      "中央部委节点 + 卫星节点治理图是高潮页",
+      "浓色只用于底带与标题"
+    ],
+    "layout_usage_rule": "浅天蓝 #E7F1FA 底 + 深藏青文字",
+    "visual_elements": {
+      "allowed": "浅天蓝底 + 深藏青文字,页底藏青带露关键词,治理卫星图作高潮",
+      "avoid": "不要暗色高级主题——本风格是浅色正统政府调; 不要高饱和商业配色"
+    },
+    "rendering_constraints": [
+      "不要暗色高级主题——本风格是浅色正统政府调",
+      "不要高饱和商业配色",
+      "不要花哨装饰字体",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要暗色高级主题——本风格是浅色正统政府调",
+      "不要高饱和商业配色",
+      "不要花哨装饰字体"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD57 과기정통부 정통 정부 라이트"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要暗色高级主题——本风格是浅色正统政府调",
+      "不要高饱和商业配色",
+      "不要花哨装饰字体",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

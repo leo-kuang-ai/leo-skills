@@ -1,0 +1,101 @@
+{
+  "kind": "render-qa-profiles",
+  "schema_version": 1,
+  "plan": "docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md §8.2",
+  "description": "visual_qa.py 消费的档位合同；theme 只能引用档位 id，不得自带数值阈值。档位由固定正常/缺陷样本校准，不逐图调参。",
+  "profiles": {
+    "html-light-balanced": {
+      "lane": "html",
+      "mode": "light",
+      "density": [
+        "balanced",
+        "low-medium"
+      ],
+      "checks": {
+        "overflow": "hard",
+        "contrast_text_min": 4.5,
+        "contrast_large_min": 3.0,
+        "blank_bytes_min": 40000,
+        "blank_bytes_warn": 80000,
+        "min_width": 2560,
+        "aspect": "16:9"
+      }
+    },
+    "html-dark-balanced": {
+      "lane": "html",
+      "mode": "dark",
+      "density": [
+        "balanced",
+        "low-medium"
+      ],
+      "checks": {
+        "overflow": "hard",
+        "contrast_text_min": 4.5,
+        "contrast_large_min": 3.0,
+        "blank_bytes_min": 40000,
+        "blank_bytes_warn": 80000,
+        "min_width": 2560,
+        "aspect": "16:9"
+      }
+    },
+    "html-light-dense": {
+      "lane": "html",
+      "mode": "light",
+      "density": [
+        "medium-high",
+        "high"
+      ],
+      "checks": {
+        "overflow": "hard",
+        "contrast_text_min": 4.5,
+        "contrast_large_min": 3.0,
+        "blank_bytes_min": 40000,
+        "blank_bytes_warn": 80000,
+        "min_width": 2560,
+        "aspect": "16:9"
+      }
+    },
+    "image-default": {
+      "lane": "image",
+      "mode": "any",
+      "density": [
+        "low",
+        "low-medium",
+        "balanced"
+      ],
+      "checks": {
+        "overflow": "image-verify",
+        "contrast_text_min": 4.5,
+        "contrast_large_min": 3.0,
+        "blank_bytes_min": 200000,
+        "blank_bytes_warn": 600000,
+        "min_width": 2560,
+        "aspect": "16:9",
+        "note": "图像路线 DOM 测量不作通过证据，结果仍需图像核验"
+      }
+    }
+  },
+  "calibration": {
+    "policy": "固定正常/缺陷样本各≥10 页校准；WCAG 下限、内容完整性及溢出不放宽",
+    "hard_defect_classes": [
+      "blank",
+      "overflow",
+      "white_on_white",
+      "cropped_text"
+    ],
+    "note": "无法同时避免误阻与漏检时修检测器或声明不支持，不降阈值",
+    "html_blank_samples": {
+      "method": "固定正常/缺陷样本实测校准（2026-09-08，非逐图调参）",
+      "defect_blank_samples_bytes": [
+        14142,
+        14363
+      ],
+      "normal_minimal_samples_bytes": [
+        87699,
+        98815,
+        113374
+      ],
+      "floor_rationale": "FAIL 40K ≈ 空白样本 2.8×、正常最小样本 0.46×；WARN 80K 接近正常样本下界"
+    }
+  }
+}

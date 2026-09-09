@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+  "name": "Closing Manifesto",
+  "aliases": [
+    "P9"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "closing",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "manifesto": {
+      "region": "content",
+      "desc": "左侧宣言短句（断言句 ≤12 字）",
+      "max_chars": 6,
+      "chars_per_line": 5,
+      "max_lines": 1
+    },
+    "takeaways": {
+      "region": "content",
+      "desc": "右侧 takeaway 条（编号 + 标题 + 一行说明）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "takeaway_note": {
+      "region": "content",
+      "desc": "每条 takeaway 的一行说明",
+      "max_chars": 105,
+      "chars_per_line": 44,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左右 5/7 分屏；左 ink/IKB 底色大字宣言（min(9.2vw,15vh) 限高 + ASCII 点纹理）；右白底 3 条 takeaway（编号 mono + 标题 + 一行说明，行间距 ≥9vh）+ 底部 hairline"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/09_Closing_Manifesto.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 1
+}

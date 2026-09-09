@@ -28,6 +28,7 @@ from ..storage import sha256_file
 from .assets import vendor_dir
 from .errors import RenderError
 from .readiness import _apply_browsers_path
+from .svg_policy import sanitize_chart_output
 
 DIALECTS = ("mermaid",)
 MERMAID_BUNDLE = vendor_dir("mermaid", "mermaid.min.js")
@@ -50,12 +51,40 @@ THEME_VARIABLE_MAP = {
 # themeVariables.xyChart 域（plotColorPalette 是序列调色板）。锚 → xyChart
 # 键的补充映射，保证"主色进 SVG 可 grep 验证"对图表方言成立。
 XYCHART_VARIABLE_MAP = {
-    "plotColorPalette": ("primary", "accent", "accent_color"),
+    "plotColorPalette": ("chart_series_csv", "primary", "accent", "accent_color"),
     "backgroundColor": ("background", "bg", "canvas"),
     "titleColor": ("on_primary", "title_color", "primary_text"),
 }
 
 DEFAULT_THEME_WARNING = "chart_theme_missing_using_mermaid_defaults"
+
+
+def _governed_mapping() -> dict[str, dict[str, str]]:
+    """治理区逐方言映射（chart-theme-mapping.json）；缺失即配置错误。"""
+    from ..asset_resolver import builtin_library_root
+
+    path = builtin_library_root() / "governance" / "rules" / "chart-theme-mapping.json"
+    if not path.is_file():
+        raise RenderError("chart_theme_mapping_missing",
+                          f"governance mapping absent: {path}")
+    mapping = json.loads(path.read_text(encoding="utf-8"))
+    return mapping.get("dialects") or {}
+
+
+def _flatten_theme(theme: dict[str, Any]) -> dict[str, Any]:
+    """effective theme {colors, fonts, chart_palette} → 扁平语义角色锚。"""
+    if "colors" in theme and isinstance(theme["colors"], dict):
+        flat = dict(theme["colors"])
+        chart = theme.get("chart_palette") or {}
+        series = chart.get("series") or []
+        if series:
+            flat["chart_series_csv"] = ",".join(str(s) for s in series)
+        fonts = theme.get("fonts") or {}
+        label = fonts.get("chart_label") or fonts.get("body") or {}
+        if isinstance(label.get("size"), (int, float)):
+            flat["chart_label_size"] = label["size"]
+        return flat
+    return dict(theme)
 
 
 def extract_mermaid_example(text: str) -> tuple[str, int]:
@@ -112,6 +141,8 @@ def build_theme_variables(theme: dict[str, Any] | None) -> tuple[dict[str, Any],
     if not theme:
         warnings.append(DEFAULT_THEME_WARNING)
         return {}, warnings
+    theme = _flatten_theme(theme)
+    governed = _governed_mapping()
     resolved: dict[str, Any] = {}
     for mermaid_key, anchor_keys in THEME_VARIABLE_MAP.items():
         for anchor in anchor_keys:
@@ -130,7 +161,13 @@ def build_theme_variables(theme: dict[str, Any] | None) -> tuple[dict[str, Any],
     if xychart:
         resolved["xyChart"] = xychart
     if not resolved:
-        warnings.append("theme anchors matched no mermaid keys; using mermaid defaults")
+        # §8.2：给了主题但一个映射键都对不上 → 阻断，不回落 mermaid 默认。
+        missing = sorted(set(governed.get("mermaid-flowchart", {})) -
+                         set(resolved))
+        raise RenderError(
+            "chart_theme_mapping_missing",
+            f"theme provided but no mermaid keys resolved (missing: {missing[:6]}); "
+            "governance mapping requires semantic roles, not silent defaults")
     return resolved, warnings
 
 
@@ -184,7 +221,7 @@ def render_mermaid_svg(
                         mermaid.initialize({
                             startOnLoad: false,
                             fontFamily: fontFamily,
-                            securityLevel: 'loose',
+                            securityLevel: 'strict',
                             themeVariables: themeVariables,
                         });
                         const parsed = await mermaid.parse(code);
@@ -199,6 +236,10 @@ def render_mermaid_svg(
                 raise RenderError("render_data_invalid", f"mermaid render failed: {message}") from exc
             if not isinstance(svg, str) or "<svg" not in svg:
                 raise RenderError("render_data_invalid", "mermaid returned no SVG")
+            try:
+                svg = sanitize_chart_output(svg, dialect="mermaid")
+            except Exception as exc:
+                raise RenderError("render_data_invalid", f"mermaid SVG policy rejected output: {exc}") from exc
             context.close()
             return svg
         finally:

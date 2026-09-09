@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:page-semantics-拆解-目录",
+  "name": "页面语义：拆解·目录（breakdown）",
+  "kind": "page-semantics",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

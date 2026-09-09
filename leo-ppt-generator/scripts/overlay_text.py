@@ -144,6 +144,9 @@ def plan_anchored(items: list[str], anchors: list[dict], font_size: int) -> list
     missing = [item for item in items if item not in by_text]
     if missing:
         fail(f"白名单条目缺少锚点，拒绝不完整渲染：{missing}")
+    duplicate = sorted(item for item in items if len(by_text[item]) != 1)
+    if duplicate:
+        fail(f"白名单条目必须恰好一个锚点，发现重复锚点：{duplicate}")
     plan = []
     for item in items:
         anchor = by_text[item][0]

@@ -1,14 +1,19 @@
-"""可执行的内置/用户风格库合同。"""
+"""可执行的内置/用户风格库合同（v2：template-library 新协议，KTD6）。
+
+旧 MD 内嵌 JSON 树已退役（U1 账本 + reference/sources/retired-styles-tree
+归档）。本模块是语义入口：身份/路径/依赖解析全部委托 asset_resolver，
+不自行扫描目录。用户库为 ${LEO_PPT_HOME}/template-library/。
+"""
 
 from __future__ import annotations
 
 import hashlib
 import json
-import os
-import time
 import re
+import time
 from pathlib import Path
 
+from .asset_resolver import AssetResolver, ResolverError, revision_of
 from .storage import atomic_write_bytes, sha256_bytes
 
 
@@ -24,6 +29,22 @@ class StyleSelectionInvalid(StyleStoreError):
     reason_code = "style_selection_invalid"
 
 
+class StyleNotFound(StyleStoreError):
+    reason_code = "style_not_found"
+
+
+class StyleCatalogStale(StyleStoreError):
+    """Catalog evidence is stale; never present a partial ready list."""
+
+    reason_code = "stale_catalog"
+
+
+class StyleCatalogIncomplete(StyleStoreError):
+    """A catalog entity cannot be materialized; never return a partial list."""
+
+    reason_code = "style_catalog_incomplete"
+
+
 _NAME = re.compile(r"^[\w\-\u4e00-\u9fff]{1,80}$", re.UNICODE)
 _SECRET = re.compile(
     r"(?i)(api[_-]?key|access[_-]?token|secret|password|bearer\s+[a-z0-9._-]+)"
@@ -34,14 +55,17 @@ ASSET_ROLES = {"style", "layout", "axis", "rule", "pool", "reference", "unknown"
 
 
 def default_home() -> Path:
-    # 只读资产工具不应因未安装配置依赖而无法导入解析器。
     from .config.runtime_config import default_home as configured_home
 
     return configured_home()
 
 
+# --------------------------------------------------------------------------- #
+# 旧合同解析工具（迁移/审计工具与历史 fixture 消费；不再用于活动加载）
+# --------------------------------------------------------------------------- #
+
 def parse_style_document(text: str) -> dict:
-    """只解析，不把可读取 JSON 自动判为可执行风格。"""
+    """旧 MD 合同解析：供迁移与历史审计使用，活动加载不走此函数。"""
     parsed = []
     problems = []
     for block in _JSON_BLOCK.findall(text):
@@ -55,10 +79,12 @@ def parse_style_document(text: str) -> dict:
 
 
 def iter_brief_documents(root: Path):
-    """共用 brief 发现口径；发布索引和链接外的内容不进入源集合。"""
+    """旧树 brief 发现（仅迁移工具使用；旧树已归档时产出为空）。"""
     root = Path(root)
+    if not root.is_dir():
+        return
     for path in sorted(root.rglob("*.md")):
-        if any(part in {"generated", "generated.previous"} or part.startswith(".style-index-") for part in path.relative_to(root).parts) or not path.resolve().is_relative_to(root.resolve()):
+        if any(part in {"generated", "generated.previous"} or part.startswith(".style-index-") for part in path.relative_to(root).parts):
             continue
         try:
             text = path.read_text(encoding="utf-8")
@@ -69,30 +95,294 @@ def iter_brief_documents(root: Path):
             yield path, text, brief
 
 
-def _display_field(value, source_field: str, limit: int) -> dict:
-    present = isinstance(value, str) and bool(value.strip())
-    normalized = " ".join(value.split()) if present else ""
-    return {"value": normalized[:limit] if present else None, "source_field": source_field,
-            "present": present, "truncated": len(normalized) > limit}
+# --------------------------------------------------------------------------- #
+# 新协议：list / load / save / summary
+# --------------------------------------------------------------------------- #
+
+def _resolver(home: Path | None = None) -> AssetResolver:
+    try:
+        return AssetResolver(home=home)
+    except ResolverError as exc:
+        raise StyleStoreError(f"style_library_missing: {exc}") from exc
 
 
-def style_display(brief: dict) -> dict:
-    canvas = brief.get("canvas") if isinstance(brief.get("canvas"), dict) else {}
-    patterns = brief.get("layout_patterns")
-    patterns = patterns if isinstance(patterns, list) else []
+def list_styles(*, home: Path | None = None) -> list[dict]:
+    """新协议枚举：用户同名覆盖内置；来源按 origin_scope。"""
+    return list_styles_with_source(home=home)["styles"]
+
+
+def list_styles_with_source(*, home: Path | None = None) -> dict:
+    """用同一个 resolver 快照返回列表和来源，空列表也保留来源。"""
+    resolver = _resolver(home)
+    by_name: dict[str, dict] = {}
+    try:
+        entities = resolver.entities
+    except ResolverError as exc:
+        if getattr(exc, "reason_code", "") == "stale_catalog":
+            raise StyleCatalogStale(str(exc)) from exc
+        raise StyleStoreError(f"style_library_unavailable: {exc}") from exc
+    for entity in entities:  # user 覆盖已在 resolver 内生效
+        if entity["kind"] != "style":
+            continue
+        by_name[entity["name"]] = {
+            "name": entity["name"],
+            "aliases": list(entity.get("aliases") or []),
+            "source": entity["origin_scope"],
+            "path": str(Path(entity["trusted_root"]) / entity["path"]),
+            "registry_source": resolver.registry_source,
+        }
+    return {"styles": [by_name[name] for name in sorted(by_name)],
+            "registry_source": resolver.registry_source}
+
+
+def load_style(name: str, *, home: Path | None = None, enforce_scope: bool = False) -> dict:
+    """按名称/别名/完整 ID 加载风格；返回新协议 content（含 brief 与 legacy_payload）。"""
+    resolver = _resolver(home)
+    try:
+        resolved = resolver.require(name, kind="style")
+    except ResolverError as exc:
+        if getattr(exc, "reason_code", "") == "stale_catalog":
+            raise StyleCatalogStale(str(exc)) from exc
+        raise StyleNotFound(f"style_not_found: {name} ({exc.reason_code})") from exc
+    brief = resolved["data"]
+    # 兼容旧 content 消费者：重建旧形状 brief（legacy_payload 优先）。
+    legacy = brief.get("legacy_payload") or {}
+    compat_brief = {"style_name": brief.get("name") or resolved["name"], **legacy}
+    document = {
+        "name": brief.get("name") or resolved["name"],
+        "source": resolved["origin_scope"],
+        "path": resolved["path"],
+        "content": json.dumps(compat_brief, ensure_ascii=False),
+        "brief": brief,
+        "asset_id": resolved["asset_id"],
+        "revision": resolved["revision"],
+        "lifecycle": resolved["lifecycle"],
+        "sha256": sha256_bytes(json.dumps(brief, ensure_ascii=False, sort_keys=True).encode("utf-8")),
+    }
+    return document
+
+
+def selection_fingerprint(loaded: dict, *, home: Path | None = None) -> str:
+    identity = {"scope": loaded["source"], "asset_id": loaded.get("asset_id"),
+                "name": loaded["name"], "revision": loaded.get("revision") or loaded["sha256"]}
+    return sha256_bytes(json.dumps(identity, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode())
+
+
+def _validate_name(name: str) -> str:
+    if not isinstance(name, str) or not _NAME.fullmatch(name.strip()):
+        raise StyleStoreError("style_name_invalid")
+    return name.strip()
+
+
+def _sanitize(content: str) -> str:
+    if not isinstance(content, str) or not content.strip():
+        raise StyleStoreError("style_content_empty")
+    if _SECRET.search(content) or _EMAIL.search(content):
+        raise StyleStoreError("style_sensitive_content_forbidden")
+    return content.strip() + "\n"
+
+
+def user_style_dir(*, home: Path | None = None) -> Path:
+    return (home or default_home()) / "template-library" / "canonical" / "styles"
+
+
+def _ensure_user_library(home: Path) -> None:
+    """确保用户库声明存在（resolver 只认 template-library/library.json）。
+
+    首次 save_style 时创建最小 user 声明；已存在则不动（用户可自定义 zones
+    描述）。缺声明时用户 overlay 对 resolver 完全不可见——那会让「保存成功
+    但加载回落内置」静默发生，违反用户同名覆盖合同。
+    """
+    library = home / "template-library"
+    declaration = library / "library.json"
+    if declaration.is_file():
+        return
+    library.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": 1,
+        "kind": "template-library",
+        "library_id": "user",
+        "name": "用户模板库",
+        "protocol": {"resolver": "asset_resolver/v1"},
+        "zones": {"canonical": "作者真值", "reference": "参考", "governance": "治理",
+                  "catalog": "自动生成", "evidence": "验证"},
+        "reserved_directory_names": ["generated", "generations", "staging", "revocations"],
+        "note": "由 save_style 首次保存时自动创建；用户风格保存在 canonical/styles/。",
+    }
+    atomic_write_bytes(declaration, json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8") + b"\n")
+
+
+def user_style_path(name: str, *, home: Path | None = None) -> Path:
+    """新协议用户风格路径：${LEO_PPT_HOME}/template-library/canonical/styles/<slug>/brief.json。"""
+    slug = _slugify(_validate_name(name))
+    return user_style_dir(home=home) / slug / "brief.json"
+
+
+def _slugify(name: str) -> str:
+    return re.sub(r"[^\w\-\u4e00-\u9fff]+", "-", name.strip()).strip("-")
+
+
+def save_style(
+    name: str,
+    content: str,
+    *,
+    home: Path | None = None,
+    overwrite: bool = False,
+    rename: str | None = None,
+) -> dict:
+    """保存用户风格：接受含 ```json brief 的内容（旧输入离线转换语义）或纯 JSON。"""
+    home = home or default_home()
+    _ensure_user_library(home)
+    target = user_style_path(rename or name, home=home)
+    if target.exists() and not overwrite:
+        raise StyleStoreError("style_name_conflict")
+    body = _sanitize(content)
+    parsed = parse_style_document(body)
+    brief = parsed["brief"]
+    if brief is None:
+        try:
+            brief = json.loads(body)
+        except ValueError as exc:
+            raise StyleStoreError("style_content_not_brief") from exc
+    brief_name = _validate_name(str(brief.get("style_name") or (rename or name)))
+    slug = _slugify(brief_name)
+    document = {
+        "schema_version": 2,
+        "entity": "style-brief",
+        "asset_id": f"user:style:{slug}",
+        "name": brief_name,
+        "aliases": brief.get("aliases") or [],
+        "variant_of": None,
+        "lifecycle": "draft",
+        "source": {"origin": "user-imported"},
+        "taxonomy": {"families": ["未分类"]},
+        "visual_language": {"direction": (str(brief.get("visual_direction") or "imported-style-pending-review")[:400])},
+        "bindings": {},
+        "adaptation_gaps": ["theme_not_extracted", "user_import_pending_review"],
+        "content_review": {"reviewed": False, "disposition": "draft"},
+        "legacy_payload": {k: v for k, v in brief.items() if k not in {"style_name", "type"}},
+    }
+    payload = json.dumps(document, ensure_ascii=False, indent=2).encode("utf-8")
+    atomic_write_bytes(target, payload)
     return {
-        "suitable_for": _display_field(brief.get("best_for"), "best_for", 120),
-        "visual_character": _display_field(brief.get("visual_direction"), "visual_direction", 160),
-        "density": _display_field(canvas.get("density"), "canvas.density", 60),
-        "layout_hint": [_display_field(value, f"layout_patterns[{i}]", 80) for i, value in enumerate(patterns[:2])],
+        "name": brief_name,
+        "source": "user",
+        "path": str(target),
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "asset_id": document["asset_id"],
     }
 
 
+def style_display(brief: dict) -> dict:
+    def field(value, source: str, limit: int) -> dict:
+        present = isinstance(value, str) and bool(value.strip())
+        normalized = " ".join(value.split()) if present else ""
+        return {"value": normalized[:limit] if present else None, "source_field": source,
+                "present": present, "truncated": len(normalized) > limit}
+
+    features = (brief.get("visual_language") or {})
+    legacy = brief.get("legacy_payload") or {}
+    recommendation = brief.get("recommendation_features") or {}
+    return {
+        "suitable_for": field(" ".join((brief.get("taxonomy") or {}).get("scenarios") or [])
+                              or legacy.get("best_for"), "scenarios|best_for", 120),
+        "visual_character": field(features.get("direction") or legacy.get("visual_direction"),
+                                  "visual_language.direction", 160),
+        "density": field(recommendation.get("density") or (legacy.get("canvas") or {}).get("density"),
+                         "recommendation_features.density", 60),
+        "lifecycle": brief.get("lifecycle"),
+        "adaptation_gaps": brief.get("adaptation_gaps", []),
+    }
+
+
+def style_summary(name: str, *, home: Path | None = None) -> dict:
+    loaded = load_style(name, home=home, enforce_scope=True)
+    brief = loaded["brief"]
+    result = {
+        "kind": "style-summary", "schema_version": 2,
+        "name": loaded["name"], "asset_id": loaded["asset_id"],
+        "source": loaded["source"], "lifecycle": loaded["lifecycle"],
+        "aliases": brief.get("aliases") or [],
+        "path": loaded["path"], "revision": loaded["revision"],
+        "display": style_display(brief),
+        "compatibility": {"legacy_callable": loaded["lifecycle"] in {"active", "draft"}},
+        "verification": {key: {"status": "not-run", "evidence_ref": None, "digest": None}
+                         for key in ("schema", "layout", "visual")},
+        "selection_fingerprint": selection_fingerprint(loaded, home=home),
+    }
+    if len(json.dumps(result, ensure_ascii=False).encode()) > 12 * 1024:
+        raise StyleStoreError("style_summary_too_large")
+    return result
+
+
+def list_style_summaries(*, home: Path | None = None, needle: str = "", limit: int = 20, offset: int = 0) -> dict:
+    if isinstance(limit, bool) or not 1 <= limit <= 40 or offset < 0:
+        raise StyleStoreError("style_summary_pagination_invalid")
+    needle = needle.strip().casefold()
+    items = []
+    problems = []
+    listing = list_styles_with_source(home=home)
+    entries = listing["styles"]
+    for entry in entries:
+        try:
+            summary = style_summary(entry["name"], home=home)
+        except StyleStoreError as exc:
+            detail = str(exc)
+            nested_reason = "stale_catalog" if "stale_catalog" in detail else None
+            if nested_reason:
+                raise StyleCatalogStale(detail) from exc
+            problems.append({
+                "name": entry["name"],
+                "reason_code": nested_reason or getattr(exc, "reason_code", "style_summary_unavailable"),
+            })
+            continue
+        names = {summary["name"].strip().casefold(),
+                 *(alias.strip().casefold() for alias in summary["aliases"])}
+        if needle and needle not in names:
+            continue
+        items.append(summary)
+    if problems:
+        details = "; ".join(
+            f"{problem['name']}:{problem['reason_code']}"
+            for problem in problems
+        )
+        raise StyleCatalogIncomplete(
+            "style_catalog_incomplete: " + details
+        )
+    registry_source = listing["registry_source"]
+    match_kind = "browse"
+    if needle:
+        exact = [item for item in items if item["name"].strip().casefold() == needle]
+        exact_alias = [item for item in items if needle in
+                       {alias.strip().casefold() for alias in item["aliases"]}]
+        if exact:
+            items, match_kind = exact, "exact-name"
+        elif exact_alias:
+            items, match_kind = exact_alias, "exact-alias"
+        else:
+            match_kind = "partial" if items else "none"
+    return {"kind": "style-summary-list", "schema_version": 2, "total": len(items),
+            "match_kind": match_kind,
+            "items": items[offset:offset + limit], "offset": offset,
+            "next_offset": offset + limit if offset + limit < len(items) else None,
+            "registry_source": registry_source,
+            "problems": problems}
+
+
+# --------------------------------------------------------------------------- #
+# 旧合同审计函数（迁移/账本工具消费；新协议加载不走此面）
+# --------------------------------------------------------------------------- #
+
 def validate_style_metadata(brief: dict, schema: dict | None = None) -> list[str]:
-    """校验 L0 子集，约束值只从已有 schema 读取。"""
+    """旧 v1 可选元数据（source/taxonomy）子集校验。
+
+    消费面：lint_style_briefs / style_pack / 迁移对账工具（旧树退役前仍在
+    服务）；新协议 v2 brief 的治理校验由 template-library/governance 的
+    style-brief-v2 schema 拥有，不走此函数。
+    """
     if schema is None:
         schema = json.loads((Path(__file__).parent / "schemas" / "style-brief-v1.schema.json").read_text())
-    errors = []
+    errors: list[str] = []
 
     def check(value, definition, location):
         types = definition.get("type", [])
@@ -125,6 +415,8 @@ def validate_style_metadata(brief: dict, schema: dict | None = None) -> list[str
             for i, item in enumerate(value):
                 check(item, definition.get("items", {}), f"{location}[{i}]")
 
+    if not isinstance(brief, dict):
+        return ["brief_not_object"]
     for name in ("source", "taxonomy"):
         if name in brief:
             check(brief[name], schema["properties"][name], name)
@@ -137,12 +429,12 @@ def validate_style_metadata(brief: dict, schema: dict | None = None) -> list[str
 
 
 def describe_style_asset(path: Path, root: Path, *, scope: str = "builtin", body: bytes | None = None) -> dict:
-    """生成可追溯摘要；不回写 authored 字段，也不推断视觉验收通过。"""
+    """旧树资产摘要（冻结脚本/审计工具消费；对归档树运行）。"""
     root = Path(root).absolute()
     path = Path(path).absolute()
     rel = path.relative_to(root).as_posix()
     result = {"path": rel, "scope": scope, "name": path.stem, "load_name": path.stem,
-              "aliases": [], "asset_role": "unknown", "role_basis": "unclassified",
+              "aliases": [], "asset_role": "unknown", "role_basis": "retired-tree",
               "compatibility": {"legacy_callable": False}, "diagnostics": [],
               "coverage": "name-only", "display": style_display({}),
               "verification": {key: {"status": "not-run", "evidence_ref": None, "digest": None}
@@ -153,349 +445,31 @@ def describe_style_asset(path: Path, root: Path, *, scope: str = "builtin", body
     try:
         body = path.read_bytes() if body is None else body
         result["file_sha256"] = sha256_bytes(body)
-        if path.suffix not in {".md", ".json"}:
-            result.update(asset_role="reference", role_basis="non_document_asset")
-            return result
-        text = body.decode("utf-8")
-    except (OSError, UnicodeError):
+    except OSError:
         result["diagnostics"].append("asset_unreadable")
         return result
-    parsed = parse_style_document(text) if path.suffix == ".md" else {"brief": None, "legacy_parseable": False, "problems": []}
-    brief = parsed["brief"] or {}
-    result["diagnostics"].extend(parsed["problems"])
-    if brief:
-        result["diagnostics"].extend(validate_style_metadata(brief))
-    if path.suffix == ".json":
-        try:
-            data = json.loads(text)
-        except (ValueError, RecursionError):
-            result["diagnostics"].append("invalid_json")
-            return result
-        entity = data.get("entity") if isinstance(data, dict) else None
-        result.update(asset_role="layout" if entity in {"layout", "style-layout-bank"} else "reference",
-                      role_basis=f"entity:{entity}" if entity else "json_reference")
-        return result
-    required = json.loads((Path(__file__).parent / "schemas" / "style-brief-v1.schema.json").read_text())["required"]
-    complete = bool(brief) and all(key in brief for key in required) and parsed.get("first_block_is_brief", False)
-    if brief and not parsed.get("first_block_is_brief", False):
-        result["diagnostics"].append("style_brief_not_first_block")
-    declared = brief.get("asset_role")
-    pool = bool(re.search(r"^\*\*分类[:：]?\*\*[:：]?.*参考池|^\*\*适用场景[:：]?\*\*[:：]?\s*\n- 整池选用", text, re.M))
-    if declared is not None and (not isinstance(declared, str) or declared not in ASSET_ROLES):
-        result["diagnostics"].append("asset_role_invalid")
-    elif pool and declared not in {None, "pool"}:
-        result["diagnostics"].append("asset_role_conflict")
-    elif declared:
-        result.update(asset_role=declared, role_basis="brief.asset_role")
-    elif pool:
-        result.update(asset_role="pool", role_basis="explicit_pool_declaration")
-    elif complete:
-        result.update(asset_role="style", role_basis="complete_brief")
-    elif brief:
-        result["diagnostics"].append("brief_incomplete")
-    elif not parsed["problems"]:
-        # 轴/规则按文件自身声明识别；目录名称不承担推荐语义。
-        title = text.splitlines()[0] if text.splitlines() else ""
-        role = "rule" if re.search(r"规范|规则|原则|纪律", title) else "axis" if re.search(r"版式|论证模式|图片渲染|页面语义|品牌身份", title) else "reference"
-        result.update(asset_role=role, role_basis="document_heading" if role != "reference" else "reference_document")
-    if isinstance(brief.get("style_name"), str):
-        result["name"] = brief["style_name"]
-    aliases = brief.get("aliases", [])
-    if not isinstance(aliases, list) or any(not isinstance(a, str) or not a.strip() for a in aliases):
-        result["diagnostics"].append("aliases_invalid")
-    else:
-        result["aliases"] = list(dict.fromkeys(aliases))
-    result["variant_of"] = brief.get("variant_of")
-    variants = brief.get("variants", [])
-    if not isinstance(variants, list):
-        result["diagnostics"].append("variants_invalid")
-        variants = []
-    result["variants"] = variants
-    result["authored_source"] = brief.get("source")
-    result["taxonomy"] = brief.get("taxonomy")
-    result["display"] = style_display(brief)
-    display = result["display"]
-    known = sum(display[key]["present"] for key in ("suitable_for", "visual_character", "density"))
-    known += bool(display["layout_hint"]) and all(item["present"] for item in display["layout_hint"])
-    result["coverage"] = "full" if known == 4 else "partial" if known else "name-only"
-    result["style_content_digest"] = sha256_bytes((text.strip() + "\n").encode("utf-8"))
-    result["compatibility"]["legacy_callable"] = bool(complete and parsed["legacy_parseable"])
-    result["verification"] = {key: {"status": "not-run", "evidence_ref": None, "digest": None}
-                              for key in ("schema", "layout", "visual")}
     return result
 
 
 def style_asset_inventory(root: Path) -> list[dict]:
     root = Path(root).absolute()
+    if not root.is_dir():
+        return []
     return [describe_style_asset(path, root) for path in sorted(root.rglob("*"))
-            if path.is_file() and not any(part in {"generated", "generated.previous"} or part.startswith(".style-index-")
+            if path.is_file() and not any(part in {"generated", "generated.previous"}
+                                          or part.startswith(".style-index-")
                                           for part in path.relative_to(root).parts)]
 
 
 def style_reference_problems(entries: list[dict], *, members: dict | None = None) -> list[dict]:
-    """名称/变体/成员表的引用检查；共享别名是集合，不是唯一键。"""
-    problems = []
-    by_name = {}
+    """旧名称/变体检查（归档对账用）。"""
+    problems: list[dict] = []
+    by_name: dict[str, list[dict]] = {}
     for entry in entries:
         if entry.get("compatibility", {}).get("legacy_callable"):
             by_name.setdefault(entry["name"], []).append(entry)
     for name, matches in sorted(by_name.items()):
         if len(matches) > 1:
-            problems.append({"code": "duplicate_style_name", "name": name, "paths": [m["path"] for m in matches]})
-        for entry in matches:
-            parent = entry.get("variant_of")
-            if parent:
-                parents = by_name.get(parent, []) if isinstance(parent, str) else []
-                if len(parents) != 1:
-                    problems.append({"code": "variant_parent_missing", "path": entry["path"]})
-                elif parent == name or parents[0].get("variant_of"):
-                    problems.append({"code": "variant_cycle_or_chain", "path": entry["path"]})
-                elif not any(isinstance(v, str) and v.split(":", 1)[0].strip() == name for v in parents[0].get("variants", [])):
-                    problems.append({"code": "variant_reverse_missing", "path": entry["path"]})
-    for group, names in sorted((members or {}).items()):
-        for name in sorted(set(names)):
-            if name not in by_name:
-                problems.append({"code": "style_member_missing", "group": group, "name": name})
+            problems.append({"code": "duplicate_style_name", "name": name,
+                             "paths": [m["path"] for m in matches]})
     return problems
-
-
-def _validate_name(name: str) -> str:
-    if not isinstance(name, str) or not _NAME.fullmatch(name.strip()):
-        raise StyleStoreError("style_name_invalid")
-    return name.strip()
-
-
-def _sanitize(content: str) -> str:
-    if not isinstance(content, str) or not content.strip():
-        raise StyleStoreError("style_content_empty")
-    if _SECRET.search(content) or _EMAIL.search(content):
-        raise StyleStoreError("style_sensitive_content_forbidden")
-    return content.strip() + "\n"
-
-
-def user_style_path(name: str, *, home: Path | None = None) -> Path:
-    return (home or default_home()) / "styles" / f"{_validate_name(name)}.md"
-
-
-def builtin_style_path(name: str) -> Path:
-    return _builtin_styles_dir() / f"{_validate_name(name)}.md"
-
-
-def _marker_bundle_root() -> Path | None:
-    """定位 runtime_manager 安装时写入的技能包根标记。
-
-    托管 venv 把包复制进 site-packages，``parents[3]`` 布局回不到 bundle 根；
-    安装器在 runtime 目录（venv 的上级）写 ``bundle_root`` 标记文件，本函数
-    从当前文件向上（至多 8 层，覆盖 site-packages→venv→runtime_dir 链）查找。
-    """
-    for parent in Path(__file__).resolve().parents[:8]:
-        marker = parent / "bundle_root"
-        try:
-            text = marker.read_text(encoding="utf-8").strip()
-        except OSError:
-            continue
-        if text:
-            candidate = Path(text).expanduser()
-            if candidate.is_dir():
-                return candidate
-    return None
-
-
-def _builtin_styles_dir() -> Path:
-    """Locate references/styles in both layouts: the installed launcher exports
-    LEO_PPT_BUNDLE (the skill bundle root), while in-repo development falls back
-    to the parents[3] relative layout."""
-    override = os.environ.get("LEO_PPT_BUNDLE")
-    if override and override.strip():
-        candidate = Path(override).expanduser() / "references/styles"
-        if candidate.is_dir():
-            return candidate
-    marked = _marker_bundle_root()
-    if marked is not None:
-        candidate = marked / "references/styles"
-        if candidate.is_dir():
-            return candidate
-    return Path(__file__).resolve().parents[3] / "references/styles"
-
-
-def _builtin_root() -> Path:
-    return builtin_style_path("_placeholder").parent
-
-
-def _is_style_md(path: Path) -> bool:
-    """A style file carries a parseable GPT-Image-2 JSON brief; docs/axes don't.
-
-    The reference library mixes two kinds of markdown: full style briefs
-    (which embed a ```json``` block) and axis/rule documents (论证模式、信息图
-    类型、图片渲染、版式库 etc., which are prose-only). Only the former are
-    loadable styles; this predicate keeps the prose axes out of list_styles.
-    A fenced json block that fails json.loads does not count, so a malformed
-    or future non-brief format cannot silently appear/disappear from the list.
-    """
-    try:
-        text = path.read_text(encoding="utf-8")
-    except (OSError, UnicodeError):
-        return False
-    for block in re.findall(r"```json\n(.*?)\n```", text, re.S):
-        try:
-            json.loads(block)
-        except json.JSONDecodeError:
-            continue
-        return True
-    return False
-
-
-def _find_builtin_style(name: str) -> Path:
-    """Top-level builtin first, then any subdirectory reference style."""
-    top = builtin_style_path(name)
-    if top.is_file():
-        return top
-    for path in sorted(_builtin_root().rglob(f"{_validate_name(name)}.md")):
-        if path.is_file() and _is_style_md(path):
-            return path
-    return top
-
-
-def save_style(
-    name: str,
-    content: str,
-    *,
-    home: Path | None = None,
-    overwrite: bool = False,
-    rename: str | None = None,
-) -> dict:
-    target = user_style_path(rename or name, home=home)
-    if target.exists() and not overwrite:
-        raise StyleStoreError("style_name_conflict")
-    body = _sanitize(content).encode("utf-8")
-    atomic_write_bytes(target, body)
-    return {
-        "name": target.stem,
-        "source": "user",
-        "path": str(target),
-        "sha256": hashlib.sha256(body).hexdigest(),
-    }
-
-
-def _load_effective_style(name: str, *, home: Path | None = None, enforce_scope: bool = False) -> tuple[dict, bytes]:
-    user = user_style_path(name, home=home)
-    path = user if user.is_file() else _find_builtin_style(name)
-    if not path.is_file():
-        raise StyleStoreError("style_not_found")
-    scope_root = user.parent if path == user else _builtin_root()
-    if enforce_scope and not path.resolve().is_relative_to(scope_root.resolve()):
-        raise StyleStoreError("style_outside_scope")
-    try:
-        try:
-            body = path.read_bytes()
-        except OSError:
-            # 多 worker 并发高峰期的瞬态读失败（fd/资源压力）重试一次；
-            # UnicodeError 是确定性损坏，不重试。
-            time.sleep(0.05)
-            body = path.read_bytes()
-        content = body.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
-    except (OSError, UnicodeError) as exc:
-        raise StyleStoreError("style_unreadable") from exc
-    content = _sanitize(content)
-    if path == user:
-        source = "user"
-    elif path.parent == _builtin_root():
-        source = "builtin"
-    else:
-        source = "reference"
-    return {
-        "name": path.stem,
-        "source": source,
-        "path": str(path),
-        "content": content,
-        "sha256": sha256_bytes(content.encode("utf-8")),
-    }, body
-
-
-def load_style(name: str, *, home: Path | None = None, enforce_scope: bool = False) -> dict:
-    return _load_effective_style(name, home=home, enforce_scope=enforce_scope)[0]
-
-
-def selection_fingerprint(loaded: dict, *, home: Path | None = None) -> str:
-    scope = "user" if loaded["source"] == "user" else "builtin"
-    root = (home or default_home()) / "styles" if scope == "user" else _builtin_root()
-    path = Path(loaded["path"]).resolve()
-    try:
-        relative = path.relative_to(root.resolve()).as_posix()
-    except ValueError as exc:
-        raise StyleStoreError("style_outside_scope") from exc
-    identity = {"scope": scope, "path": relative, "name": loaded["name"], "content": loaded["sha256"]}
-    return sha256_bytes(json.dumps(identity, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode())
-
-
-def style_summary(name: str, *, home: Path | None = None) -> dict:
-    home = Path(home or default_home()).resolve()
-    loaded, body = _load_effective_style(name, home=home, enforce_scope=True)
-    scope = "user" if loaded["source"] == "user" else "builtin"
-    root = home / "styles" if scope == "user" else _builtin_root()
-    result = describe_style_asset(Path(loaded["path"]), root, scope=scope, body=body)
-    result.update(kind="style-summary", schema_version=1, source=loaded["source"],
-                  style_content_digest=loaded["sha256"], selection_fingerprint=selection_fingerprint(loaded, home=home))
-    if len(json.dumps(result, ensure_ascii=False).encode()) > 12 * 1024:
-        raise StyleStoreError("style_summary_too_large")
-    return result
-
-
-def list_style_summaries(*, home: Path | None = None, needle: str = "", limit: int = 20, offset: int = 0) -> dict:
-    if isinstance(limit, bool) or not 1 <= limit <= 40 or offset < 0:
-        raise StyleStoreError("style_summary_pagination_invalid")
-    home = Path(home or default_home()).resolve()
-    needle = needle.strip().casefold()
-    items = []
-    problems = []
-    # 与旧 list 相同的名称覆盖顺序；候选摘要读取实际文件，不使用 generated。
-    for entry in sorted(list_styles(home=home), key=lambda e: e["name"]):
-        try:
-            summary = style_summary(entry["name"], home=home)
-        except StyleStoreError:
-            problems.append({"name": entry["name"], "reason_code": "style_summary_unavailable"})
-            continue
-        explicit_names = {summary["name"].strip().casefold(), summary["load_name"].casefold(),
-                          *(alias.strip().casefold() for alias in summary["aliases"])}
-        if summary["asset_role"] != "style" and not (needle and needle in explicit_names):
-            continue
-        if needle and needle not in summary["name"].casefold() and not any(needle in a.casefold() for a in summary["aliases"]):
-            continue
-        items.append(summary)
-    match_kind = "browse"
-    if needle:
-        exact_names = [item for item in items if item["name"].strip().casefold() == needle]
-        exact_aliases = [item for item in items if needle in {alias.strip().casefold() for alias in item["aliases"]}]
-        if exact_names:
-            items, match_kind = exact_names, "exact-name"
-        elif exact_aliases:
-            items, match_kind = exact_aliases, "exact-alias"
-        else:
-            match_kind = "partial" if items else "none"
-    return {"kind": "style-summary-list", "schema_version": 1, "total": len(items),
-            "match_kind": match_kind,
-            "items": items[offset:offset + limit], "offset": offset,
-            "next_offset": offset + limit if offset + limit < len(items) else None, "problems": problems}
-
-
-def list_styles(*, home: Path | None = None) -> list[dict]:
-    builtin_root = _builtin_root()
-    names: dict[str, dict] = {}
-    # Top-level builtins take precedence over same-named reference styles.
-    for path in sorted(builtin_root.glob("*.md")):
-        if not _is_style_md(path):
-            continue
-        names[path.stem] = {"name": path.stem, "source": "builtin", "path": str(path)}
-    # Subdirectory reference styles; skip prose axis documents via _is_style_md.
-    for path in sorted(builtin_root.rglob("*.md")):
-        if path.parent == builtin_root:
-            continue
-        if not _is_style_md(path):
-            continue
-        if path.stem in names:
-            continue
-        names[path.stem] = {"name": path.stem, "source": "reference", "path": str(path)}
-    user_root = (home or default_home()) / "styles"
-    for path in sorted(user_root.glob("*.md")) if user_root.is_dir() else []:
-        names[path.stem] = {"name": path.stem, "source": "user", "path": str(path)}
-    return list(names.values())

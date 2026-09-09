@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:宣纸风",
+  "name": "宣纸风",
+  "aliases": [
+    "宣纸风",
+    "宣纸",
+    "rice paper",
+    "xuan paper"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/中式载体/宣纸风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "中式载体"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "xuan rice-paper carrier, fibrous warm-white sheet with faint ink bleed and soft ochre mist-blue corner glows, literati blank-space layout"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "宣纸风",
+      "宣纸",
+      "rice paper",
+      "xuan paper"
+    ],
+    "best_for": "传统宣纸的水墨质感,典雅而富有变化;适合水墨艺术/文人雅集/茶道养生",
+    "visual_direction": "xuan rice-paper carrier, fibrous warm-white sheet with faint ink bleed and soft ochre mist-blue corner glows, literati blank-space layout",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FDFAF3 (宣纸风底)",
+      "composition": "大面积留白 + 墨字呼吸,细边小圆角容器,角落光晕",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#F4F1EA(宣纸米/底色锚)",
+      "secondary": "#FDFAF3(暖宣白)",
+      "accent": "#C8A064(暖赭晕)",
+      "neutral": "#2C2C2C(墨字)",
+      "rule": "锚点 #F4F1EA, #FDFAF3, #C8A064, #2C2C2C;来源:LandPPT html_template CSS 实测 token;传统宣纸的水墨质感，营造出一种典雅而又富有变化的视觉风格。"
+    },
+    "typography": {
+      "title": "标题用楷体大字,竖排或横排皆宜",
+      "body": "正文用宋体墨色,行距呼吸",
+      "labels": "楷体小字,克制用色"
+    },
+    "layout_patterns": [
+      "大留白居中或偏轴构图,文字为画面主体",
+      "内容容器细边框小圆角,半透明宣纸底",
+      "角落暖赭/雾蓝光晕点缀",
+      "要点以墨点或细线引导"
+    ],
+    "layout_usage_rule": "大留白居中或偏轴构图,文字为画面主体",
+    "visual_elements": {
+      "allowed": "大面积留白 + 墨字呼吸,细边小圆角容器,角落光晕",
+      "avoid": "不要厚重色块或深底;不要高对比荧光强调"
+    },
+    "rendering_constraints": [
+      "不要厚重色块或深底",
+      "不要高对比荧光强调",
+      "不要拥挤排版,必须保持留白",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要厚重色块或深底",
+      "不要高对比荧光强调",
+      "不要拥挤排版,必须保持留白"
+    ],
+    "reference": "GitHub: LandPPT · template_examples/宣纸风.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要厚重色块或深底",
+      "不要高对比荧光强调",
+      "不要拥挤排版,必须保持留白",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

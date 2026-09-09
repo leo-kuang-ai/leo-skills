@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:infographic-循环图",
+  "name": "信息图类型：循环图（cycle）",
+  "kind": "infographic",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

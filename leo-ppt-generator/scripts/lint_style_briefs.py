@@ -22,7 +22,8 @@
 
 用法::
 
-    python3 scripts/lint_style_briefs.py            # lint（错误非 0 退出）
+    python3 scripts/lint_style_briefs.py            # 默认 lint canonical v2 brief
+    python3 scripts/lint_style_briefs.py --legacy-fixtures  # 迁移输入/旧 fixture
     python3 scripts/lint_style_briefs.py --write-baseline  # 重新生成基线白名单
 
 退出码：0 = ERROR 为 0；2 = 存在 ERROR。
@@ -33,6 +34,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -40,9 +42,12 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 from leo_ppt_generator.styles import iter_brief_documents, parse_style_document, validate_style_metadata
+from leo_ppt_generator.asset_resolver import ASSET_ID_RE
 
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+CANONICAL_STYLES_ROOT = SKILL_DIR / Path("template-library/canonical/styles")
+LEGACY_STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SCHEMA_PATH = SKILL_DIR / "runtime" / "src" / "leo_ppt_generator" / "schemas" / "style-brief-v1.schema.json"
+CANONICAL_SCHEMAS = SKILL_DIR / "template-library" / "governance" / "schemas"
 BASELINE_PATH = SCRIPT_DIR / "style-lint-baseline.txt"
 
 # R-68 插画配对词汇表（family 取自 ppt-master paired-rendering 家族 +
@@ -73,8 +78,57 @@ def _load_schema() -> dict:
         return json.load(fh)
 
 
-def _brief_files(styles_root: Path = STYLES_ROOT) -> list[Path]:
+def _brief_files(styles_root: Path = LEGACY_STYLES_ROOT) -> list[Path]:
     return [path for path, _, _ in iter_brief_documents(styles_root)]
+
+
+def _canonical_brief_files(styles_root: Path = CANONICAL_STYLES_ROOT) -> list[Path]:
+    return sorted(path for path in styles_root.glob("*/brief.json") if path.is_file())
+
+
+def _load_canonical_validator():
+    from jsonschema import Draft7Validator
+    from referencing import Registry, Resource
+
+    resources = []
+    for path in CANONICAL_SCHEMAS.glob("*.schema.json"):
+        document = json.loads(path.read_text(encoding="utf-8"))
+        if "$id" in document:
+            resources.append((document["$id"], Resource.from_contents(document)))
+    schema = json.loads((CANONICAL_SCHEMAS / "style-brief-v2.schema.json").read_text(encoding="utf-8"))
+    return Draft7Validator(schema, registry=Registry().with_resources(resources))
+
+
+def _lint_canonical_one(path: Path, validator, *, rel_to: Path | None = None) -> tuple[list[str], list[str], dict | None]:
+    """Validate canonical shape from its owning schema plus active semantics."""
+    rel = path.relative_to(rel_to or SKILL_DIR)
+    try:
+        brief = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return [f"brief_json_invalid: {rel} ({exc})"], [], None
+    if not isinstance(brief, dict):
+        return [f"brief_json_not_object: {rel}"], [], None
+    errors: list[str] = []
+    warnings: list[str] = []
+    for error in validator.iter_errors(brief):
+        field = ".".join(str(part) for part in error.path) or "$"
+        errors.append(f"schema_invalid: {rel}.{field}: {error.message}")
+    identity = ASSET_ID_RE.fullmatch(brief.get("asset_id", "")) if isinstance(brief.get("asset_id"), str) else None
+    if identity is None or identity.group("kind") != "style":
+        errors.append(f"asset_id_invalid: {rel} 须为 style 身份")
+    visual = brief.get("visual_language")
+    if brief.get("lifecycle") == "active":
+        features = visual.get("features") if isinstance(visual, dict) else None
+        if not isinstance(features, list) or len(features) < 2:
+            errors.append(f"active_features_missing: {rel}")
+        bindings = brief.get("bindings")
+        if not isinstance(bindings, dict) or not bindings.get("theme_default"):
+            errors.append(f"active_theme_missing: {rel}")
+    return errors, warnings, brief
+
+
+def _brief_name(brief: dict, fallback: str = "") -> str:
+    return str(brief.get("name") or brief.get("style_name") or fallback)
 
 
 def _looks_like_brief(path: Path) -> bool:
@@ -232,7 +286,7 @@ def _alias_collision_check(parsed: list[tuple[str, dict]]) -> list[str]:
     alias_owners: dict[str, list[str]] = {}
     for rel, brief in parsed:
         for alias in brief.get("aliases", []) or []:
-            alias_owners.setdefault(str(alias), []).append(brief.get("style_name") or rel)
+            alias_owners.setdefault(str(alias), []).append(_brief_name(brief, rel))
     errors: list[str] = []
     for alias in sorted(alias_owners):
         owners = alias_owners[alias]
@@ -252,14 +306,14 @@ def _palette_fingerprint(brief: dict) -> frozenset[str]:
     return frozenset(h.upper() for h in HEX_RE.findall(palette_src))
 
 
-def _family_merge_check(parsed: list[tuple[str, dict]]) -> list[str]:
+def _family_merge_check(parsed: list[tuple[str, dict]], *, legacy_bookkeeping: bool = True) -> list[str]:
     """R-66 anti-regression: identical palette fingerprints may not back more
     than one independent top-level style, and variant/primary bookkeeping must
     stay bidirectionally consistent. Deterministic set arithmetic only."""
     errors: list[str] = []
     by_name: dict[str, tuple[str, dict]] = {}
     for rel, brief in parsed:
-        name = str(brief.get("style_name") or "")
+        name = _brief_name(brief)
         if name:
             by_name[name] = (rel, brief)
 
@@ -274,6 +328,9 @@ def _family_merge_check(parsed: list[tuple[str, dict]]) -> list[str]:
             errors.append(f"variant_target_missing: {rel} variant_of 指向不存在的 {target!r}")
         elif by_name[target][1].get("variant_of") is not None:
             errors.append(f"variant_chain: {rel} 指向的 {target} 自身也是变体（禁止链式归属）")
+
+    if not legacy_bookkeeping:
+        return errors
 
     # variants list vs actual variant files: bidirectional set equality.
     actual_variants: dict[str, set[str]] = {}
@@ -335,34 +392,63 @@ def main(argv: list[str] | None = None) -> int:
         "--root",
         help="技能根目录覆盖（默认脚本所在仓库；供单测用 fixture 根）",
     )
+    parser.add_argument(
+        "--legacy-fixtures", action="store_true",
+        help="显式检查 retired-styles-tree Markdown 迁移输入（不代表当前执行库）",
+    )
     args = parser.parse_args(argv)
 
     root = Path(args.root).resolve() if args.root else SKILL_DIR
-    styles_root = root / "references" / "styles"
+    canonical_root = root / Path("template-library/canonical/styles")
+    legacy_root = root / Path("template-library/reference/sources/retired-styles-tree/styles")
+    # --root 的仅旧树 fixture 兼容现有迁移单测；仓库默认入口始终 canonical。
+    legacy_mode = args.legacy_fixtures or (args.root is not None and not canonical_root.is_dir())
+    styles_root = legacy_root if legacy_mode else canonical_root
+    if not styles_root.is_dir():
+        print(f"ERROR: styles directory not found: {styles_root}", file=sys.stderr)
+        return 2
 
     schema = _load_schema()
+    validator = None
+    if not legacy_mode:
+        try:
+            validator = _load_canonical_validator()
+        except ImportError:
+            runtime_python = SKILL_DIR / "runtime" / ".venv" / "bin" / "python"
+            runtime_prefix = runtime_python.parent.parent.resolve()
+            if runtime_python.is_file() and Path(sys.prefix).resolve() != runtime_prefix:
+                return subprocess.run([str(runtime_python), str(Path(__file__).resolve()),
+                                       *(sys.argv[1:] if argv is None else argv)]).returncode
+            print("ERROR: canonical schema lint requires jsonschema; use the managed runtime Python", file=sys.stderr)
+            return 2
     errors: list[str] = []
     warnings: list[str] = []
-    files = _brief_files(styles_root)
+    files = _brief_files(styles_root) if legacy_mode else _canonical_brief_files(styles_root)
     parsed: list[tuple[str, dict]] = []
     for path in files:
-        e, w = _lint_one(
-            path, schema, is_builtin=path.parent == styles_root, rel_to=root
-        )
+        if legacy_mode:
+            e, w = _lint_one(
+                path, schema, is_builtin=path.parent == styles_root, rel_to=root
+            )
+        else:
+            e, w, brief = _lint_canonical_one(path, validator, rel_to=root)
+            if brief is not None and not e:
+                parsed.append((str(path.relative_to(root)), brief))
         errors.extend(e)
         warnings.extend(w)
-        text = path.read_text(encoding="utf-8")
-        match = _JSON_BLOCK_RE.search(text)
-        if match:
-            try:
-                brief = json.loads(match.group(1))
-            except json.JSONDecodeError:
-                brief = None
-            if isinstance(brief, dict):
-                parsed.append((str(path.relative_to(root)), brief))
+        if legacy_mode:
+            text = path.read_text(encoding="utf-8")
+            match = _JSON_BLOCK_RE.search(text)
+            if match:
+                try:
+                    brief = json.loads(match.group(1))
+                except json.JSONDecodeError:
+                    brief = None
+                if isinstance(brief, dict):
+                    parsed.append((str(path.relative_to(root)), brief))
 
     # R-66 anti-regression check runs in both lint and write-baseline modes.
-    errors.extend(_family_merge_check(parsed))
+    errors.extend(_family_merge_check(parsed, legacy_bookkeeping=legacy_mode))
 
     # 别名撞名（口语点名消歧债）：存量 28 个撞名串白名单只缩不增；
     # 新增撞名（新风格 aliases 撞既有别名）即 ERROR。
@@ -370,12 +456,13 @@ def main(argv: list[str] | None = None) -> int:
 
     # 顶层内置风格必须有同名 .layouts.json 路由视图（B1-T4；仅顶层，子目录
     # 参考风格不强制——渐进轴，将来按批次纳入时走 baseline 收敛纪律）。
-    for path in sorted(p for p in styles_root.glob("*.md") if _looks_like_brief(p)):
-        sidecar = path.with_name(f"{path.stem}.layouts.json")
-        if not sidecar.is_file():
-            errors.append(
-                f"style_sidecar_missing: 内置风格 {path.name} 缺同名 .layouts.json"
-            )
+    if legacy_mode:
+        for path in sorted(p for p in styles_root.glob("*.md") if _looks_like_brief(p)):
+            sidecar = path.with_name(f"{path.stem}.layouts.json")
+            if not sidecar.is_file():
+                errors.append(
+                    f"style_sidecar_missing: 内置风格 {path.name} 缺同名 .layouts.json"
+                )
 
     baseline = _load_baseline()
     if args.write_baseline:
@@ -414,7 +501,8 @@ def main(argv: list[str] | None = None) -> int:
     if unknown:
         errors.extend(f"warning_not_in_baseline: {w}" for w in unknown)
 
-    print(f"briefs={len(files)} errors={len(errors)} warnings={len(warnings)} "
+    source_label = "retired-reference" if legacy_mode else "canonical"
+    print(f"source={source_label} briefs={len(files)} errors={len(errors)} warnings={len(warnings)} "
           f"(baseline={len(baseline)}, 未登记={len(unknown)})")
     for item in errors:
         print(f"  ✗ {item}")

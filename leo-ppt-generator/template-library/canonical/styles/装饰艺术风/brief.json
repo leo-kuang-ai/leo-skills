@@ -1,0 +1,160 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:装饰艺术风",
+  "name": "装饰艺术风",
+  "aliases": [
+    "Art Deco",
+    "装饰主义风",
+    "爵士时代风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/装饰艺术风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "复古潮流"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "art deco style, symmetrical geometric ornament, metallic gold foil, chevron and fan motifs, elegant linework, bold 1920s luxury and glamour, refined ornamental patterning"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Art Deco",
+      "装饰主义风",
+      "爵士时代风"
+    ],
+    "best_for": "以对称几何、金箔金属质感、菱形与扇形线条再现 1920s 装饰艺术的奢华",
+    "visual_direction": "art deco style, symmetrical geometric ornament, metallic gold foil, chevron and fan motifs, elegant linework, bold 1920s luxury and glamour, refined ornamental patterning",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark emerald / navy or cream, gold accents",
+      "composition": "symmetrical ornamental frame, central motif",
+      "density": "low-medium, ornate"
+    },
+    "color_palette": {
+      "primary": "dark emerald #123A2B / navy #1F2A44 / cream #F3EBDD",
+      "secondary": "gold #D4AF37, champagne #E6C97A",
+      "accent": "gold linework #D4AF37",
+      "neutral": "#1C1C1C, cream, metallic tones",
+      "rule": "ornate, symmetric, gold; elegant and luxurious"
+    },
+    "typography": {
+      "title": "elegant decorative serif (Garamond / 思源宋体), art-deco influence",
+      "body": "refined, spaced",
+      "labels": "ornate small caps",
+      "text_quality": "elegant, precise"
+    },
+    "layout_patterns": [
+      "symmetrical ornamental cover",
+      "gold-foil geometric frame",
+      "fan/chevron pattern band",
+      "luxury monogram centerpiece"
+    ],
+    "layout_usage_rule": "Symmetry, gold ornament and elegant serif; formal luxury is the tone.",
+    "layout_blueprints": [
+      {
+        "name": "邀请/封面",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "金色对称主纹样"
+            ]
+          },
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "活动页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "章节标题"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "金色几何装饰带"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "说明"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "gold foil, symmetric geometry, chevron/fan motifs, elegant serif, ornament",
+      "avoid": "casual modern, flat minimal, cartoon, non-metallic clutter"
+    },
+    "rendering_constraints": [
+      "Elegant, opulent, 1920s glamour.",
+      "Symmetry and gold ornament carry the luxury.",
+      "No invented crests or seals unless brand-accurate."
+    ],
+    "reference": "GitHub: Art Deco 装饰艺术 · 复古奢华风"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Elegant, opulent, 1920s glamour.",
+      "Symmetry and gold ornament carry the luxury.",
+      "No invented crests or seals unless brand-accurate."
+    ]
+  }
+}

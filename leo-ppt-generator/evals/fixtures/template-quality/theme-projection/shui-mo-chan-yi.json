@@ -1,0 +1,48 @@
+{
+  "kind": "theme-projection-fixture",
+  "schema_version": 1,
+  "style_name": "水墨禅意风",
+  "brief_ref": "canonical/styles/水墨禅意风/brief.json",
+  "notes": "极低密度（very low, meditative 已映射）；色板为散文式水墨描述，只有黑白灰锚，无 accent 角色",
+  "candidate": {
+    "modes": {
+      "light": {
+        "background": "#F5F3EE",
+        "surface": "#FFFFFF",
+        "text": "#1F1F1F",
+        "primary": "#2B2B2B",
+        "on_primary": "#F5F3EE",
+        "muted": "#5C5C5C",
+        "border": "#D8D4C8",
+        "accent": "#6B7280",
+        "warn": "#92400E"
+      }
+    },
+    "font_roles": {
+      "title": {
+        "family": "Noto Sans SC",
+        "weight": 700,
+        "size": 46,
+        "line_height": 1.25
+      },
+      "body": {
+        "family": "Noto Sans SC",
+        "weight": 400,
+        "size": 25,
+        "line_height": 1.6
+      }
+    }
+  },
+  "field_sources": {
+    "background": "inferred:散文'宣纸白' → 宣纸系浅底（非第一 HEX 猜测，按语义角色推导）",
+    "primary": "inferred:'墨黑大标题' → 近黑",
+    "accent": "default:原 brief 无对应角色 → 采用具名版本化默认 gray-500，采用依据记录在案",
+    "fonts.family": "default:brief 未声明字体文件 → Noto Sans SC（离线基线），缺口 fonts_missing",
+    "density": "explicit:very low, meditative → very-low（词表映射）"
+  },
+  "adaptation_gaps": [
+    "fonts_missing",
+    "accent_role_absent_defaulted",
+    "brush_texture_not_tokenizable"
+  ]
+}

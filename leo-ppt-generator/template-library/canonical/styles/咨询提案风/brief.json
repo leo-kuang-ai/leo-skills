@@ -1,0 +1,147 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:咨询提案风",
+  "name": "咨询提案风",
+  "aliases": [
+    "提案风",
+    "advisory风",
+    "proposal风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/路演提案/咨询提案风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "consulting-proposal style, demonstrate real problem understanding, professional method, value and delivery, trust-and-execution credibility, disciplined professional pitch"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "提案风",
+      "advisory风",
+      "proposal风"
+    ],
+    "best_for": "咨询提案,需体现理解问题、专业方法、价值与落地执行",
+    "visual_direction": "consulting-proposal style, demonstrate real problem understanding, professional method, value and delivery, trust-and-execution credibility, disciplined professional pitch",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / pale, structured",
+      "composition": "understanding → method → value → delivery",
+      "density": "medium, professional"
+    },
+    "color_palette": {
+      "primary": "navy #1F3A5F / slate, white",
+      "secondary": "steel blue #476A8A, gray #9CA3AF",
+      "accent": "one controlled accent #0F766E",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "professional, disciplined, articulate"
+    },
+    "typography": {
+      "title": "clear confident sans (Inter / 思源黑体)",
+      "body": "concise professional body",
+      "labels": "method tags",
+      "text_quality": "accurate, no overpromise"
+    },
+    "layout_patterns": [
+      "business problem reframed",
+      "methodology & approach",
+      "value & outcome",
+      "team, timeline & next"
+    ],
+    "layout_usage_rule": "Show you understand the problem, then method, value and credible delivery.",
+    "layout_blueprints": [
+      {
+        "name": "理解页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "业务挑战"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "方法页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "方法论"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "价值",
+              "路径"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "method diagrams, value callouts, timeline, professional structure",
+      "avoid": "flashy, vague, clutter, overpromise"
+    },
+    "rendering_constraints": [
+      "Disciplined, value-and-execution professional pitch.",
+      "Clarify understanding, method, value, delivery.",
+      "Accurate; no invented logos or guarantees."
+    ],
+    "reference": "GitHub: 咨询提案 · 一站式惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Disciplined, value-and-execution professional pitch.",
+      "Clarify understanding, method, value, delivery.",
+      "Accurate; no invented logos or guarantees."
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p34-34-quote-hero-layouts",
+  "name": "Quote Hero",
+  "aliases": [
+    "P34"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "quote": {
+      "region": "content",
+      "desc": "引文主体（缩略须用省略号，译文注明译本）",
+      "max_chars": 14,
+      "chars_per_line": 6,
+      "max_lines": 2
+    },
+    "source": {
+      "region": "content",
+      "desc": "出处块（人名 + 头衔/机构 + 时间）",
+      "max_chars": 104,
+      "chars_per_line": 29,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "页面垂直居中单列：hairline 级装饰引号（禁彩色大引号图标）+ display 引文主体（min(9.2vw,15vh) 限高，CJK 正字距、语义断行）+ 底部出处块（短 hairline + 人名 + 头衔·机构·时间）；全页留白 ≥40%"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/34_Quote_Hero.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 1
+}

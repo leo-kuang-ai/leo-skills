@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "kind": "visual_qa_report",
+  "target": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image",
+  "pages": [
+    {
+      "page": "slide_01.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_01.png",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 676,154 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "主色占 59%（背景），内容区 27%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "PASS",
+          "msg": "边缘无异常裁切痕迹"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 0
+    },
+    {
+      "page": "slide_02.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_02.png",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 660,216 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "画面色彩分布正常，主色占比 31%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "PASS",
+          "msg": "边缘无异常裁切痕迹"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 0
+    },
+    {
+      "page": "slide_03.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_03.png",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 905,698 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "主色占 45%（背景），内容区 16%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "PASS",
+          "msg": "边缘无异常裁切痕迹"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 0
+    },
+    {
+      "page": "slide_04.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_04.png",
+      "verdict": "WARN",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 736,153 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "主色占 65%（背景），内容区 23%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "WARN",
+          "msg": "底部边缘有 47% 亮像素，疑似内容被裁切"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 1
+    },
+    {
+      "page": "slide_05.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_05.png",
+      "verdict": "PASS",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 1,120,109 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "画面色彩分布正常，主色占比 20%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "PASS",
+          "msg": "边缘无异常裁切痕迹"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 0
+    },
+    {
+      "page": "slide_06.png",
+      "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/image-deck-e2e/origin_image/slide_06.png",
+      "verdict": "WARN",
+      "checks": [
+        {
+          "id": "SIZE-01",
+          "status": "PASS",
+          "msg": "PNG 876,882 bytes"
+        },
+        {
+          "id": "DIM-01",
+          "status": "PASS",
+          "msg": "分辨率 2560x1440（交付档 16:9）"
+        },
+        {
+          "id": "BLANK-01",
+          "status": "PASS",
+          "msg": "主色占 55%（背景），内容区 31%"
+        },
+        {
+          "id": "VTXT-01",
+          "status": "PASS",
+          "msg": "未检测到竖排异常"
+        },
+        {
+          "id": "CUT-01",
+          "status": "WARN",
+          "msg": "右侧边缘有 16% 亮像素，疑似内容被裁切"
+        },
+        {
+          "id": "CONT-01",
+          "status": "PASS",
+          "msg": "对比度分布正常（低对比区块 0%）"
+        }
+      ],
+      "fail_count": 0,
+      "warn_count": 1
+    }
+  ],
+  "summary": {
+    "pages": 6,
+    "verdict": "WARN",
+    "fail_pages": [],
+    "warn_pages": [
+      "slide_04.png",
+      "slide_06.png"
+    ],
+    "exit_code": 2
+  }
+}

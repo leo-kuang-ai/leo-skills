@@ -1,0 +1,38 @@
+{
+  "kind": "theme-projection-fixture",
+  "schema_version": 1,
+  "style_name": "数据新闻编辑风",
+  "brief_ref": "canonical/styles/数据新闻编辑风/brief.json",
+  "notes": "结构最完整的长尾：色板带明确 HEX 序列与图表语义；可直接候选晋升",
+  "candidate": {
+    "modes": {
+      "light": {
+        "background": "#FBFAF7",
+        "surface": "#FFFFFF",
+        "text": "#26221C",
+        "primary": "#1D4ED8",
+        "on_primary": "#FFFFFF",
+        "muted": "#57534E",
+        "border": "#D6D3D1",
+        "accent": "#B45309",
+        "warn": "#92400E"
+      }
+    },
+    "chart_palette": {
+      "series": [
+        "#1D4ED8",
+        "#B45309",
+        "#57534E"
+      ]
+    }
+  },
+  "field_sources": {
+    "primary": "inferred:色板第一主色 HEX 直接角色化",
+    "chart.series": "inferred:图表序列 HEX 按序角色化",
+    "density": "explicit:high → high",
+    "fonts.family": "default:Noto Sans SC（离线基线），缺口 fonts_missing"
+  },
+  "adaptation_gaps": [
+    "fonts_missing"
+  ]
+}

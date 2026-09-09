@@ -1,0 +1,114 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:health-clean",
+  "name": "医疗洁净风",
+  "aliases": [
+    "医疗",
+    "health-clean"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗方向"
+    ],
+    "industries": [
+      "医疗"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "density": "low-medium",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review",
+      "classroom-screen"
+    ],
+    "components": [
+      "层级清单",
+      "时间线",
+      "KPI"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "seed direction per plan section 8.1",
+    "features": [
+      "浅底蓝绿 + 大字号少装饰的洁净排印",
+      "层级/时间线/KPI 的临床信息秩序",
+      "术语全称与缩写并用的可读性纪律"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止绝对化疗效表述（受内容规则约束）",
+      "禁止高饱和警示色大面积铺底",
+      "长术语不得断行错位"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:health-clean-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p11-11-horizontal-timeline-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "长术语可读、证据限制披露、非绝对化结论",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

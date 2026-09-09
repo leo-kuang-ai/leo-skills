@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "复古扁平插画风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：插画面积由图区承担，文本区按默认"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P10"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P4",
+        "P5",
+        "P19",
+        "P15"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P6",
+        "P7"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": []
+    }
+  ]
+}

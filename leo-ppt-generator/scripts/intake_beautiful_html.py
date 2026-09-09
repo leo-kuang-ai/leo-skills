@@ -51,7 +51,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SOURCE_ROOT = Path("/Users/kuang/knowledge/ppt-github/beautiful-html-templates")
 
 HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}\b")

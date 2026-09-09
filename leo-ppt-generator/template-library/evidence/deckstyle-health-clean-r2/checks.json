@@ -1,0 +1,150 @@
+[
+  {
+    "page": "cover",
+    "checks": [
+      {
+        "id": "overflow",
+        "version": "render_page-sentinel",
+        "result": "pass"
+      },
+      {
+        "id": "dimensions",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "blank",
+        "version": "1",
+        "result": "pass",
+        "detail": "72032 bytes"
+      },
+      {
+        "id": "theme_applied",
+        "version": "1",
+        "result": "pass",
+        "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+      },
+      {
+        "id": "ready_signal",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "title_nonempty",
+        "version": "1",
+        "result": "pass"
+      }
+    ]
+  },
+  {
+    "page": "content",
+    "checks": [
+      {
+        "id": "overflow",
+        "version": "render_page-sentinel",
+        "result": "pass"
+      },
+      {
+        "id": "dimensions",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "blank",
+        "version": "1",
+        "result": "pass",
+        "detail": "77172 bytes"
+      },
+      {
+        "id": "theme_applied",
+        "version": "1",
+        "result": "pass",
+        "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+      },
+      {
+        "id": "ready_signal",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "title_nonempty",
+        "version": "1",
+        "result": "pass"
+      }
+    ]
+  },
+  {
+    "page": "evidence",
+    "checks": [
+      {
+        "id": "overflow",
+        "version": "render_page-sentinel",
+        "result": "pass"
+      },
+      {
+        "id": "dimensions",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "blank",
+        "version": "1",
+        "result": "pass",
+        "detail": "93032 bytes"
+      },
+      {
+        "id": "theme_applied",
+        "version": "1",
+        "result": "pass",
+        "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+      },
+      {
+        "id": "ready_signal",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "title_nonempty",
+        "version": "1",
+        "result": "pass"
+      }
+    ]
+  },
+  {
+    "page": "closing",
+    "checks": [
+      {
+        "id": "overflow",
+        "version": "render_page-sentinel",
+        "result": "pass"
+      },
+      {
+        "id": "dimensions",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "blank",
+        "version": "1",
+        "result": "pass",
+        "detail": "76134 bytes"
+      },
+      {
+        "id": "theme_applied",
+        "version": "1",
+        "result": "pass",
+        "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+      },
+      {
+        "id": "ready_signal",
+        "version": "1",
+        "result": "pass"
+      },
+      {
+        "id": "title_nonempty",
+        "version": "1",
+        "result": "pass"
+      }
+    ]
+  }
+]

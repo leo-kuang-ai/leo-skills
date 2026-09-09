@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:page-semantics-封面",
+  "name": "页面语义：封面（cover）",
+  "kind": "page-semantics",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

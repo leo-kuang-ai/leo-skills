@@ -73,9 +73,9 @@ class SuggestLayoutTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
         data = json.loads(proc.stdout)
         bank_ids = {
-            json.loads(p.read_text(encoding="utf-8"))["layout_id"]
-            for p in (SKILL_DIR / "references" / "styles" / "12_版式库"
-                      ).glob("*.layouts.json")
+            alias
+            for p in (SKILL_DIR / "template-library" / "canonical" / "layouts").glob("*/layout.json")
+            for alias in (json.loads(p.read_text(encoding="utf-8")).get("aliases") or [])[:1]
         }
         for page in data["pages"]:
             for cand in page["candidates"]:

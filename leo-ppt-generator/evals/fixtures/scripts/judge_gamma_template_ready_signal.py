@@ -44,9 +44,14 @@ def positive(patterns):
 _error_stands = ("ERROR 成立", "不能忽略", "不能当 WARN", "必须修", "合同条款",
                  "render_template_contract_violation", "template.ready_signal",
                  "确定性契约", "全局策略变更")
+# 校准扩词（it-126 replay）："ERROR 应该修掉…而不是降级忽略"/"把 ERROR 当
+# WARN 是全局性削弱门禁"是同一 ERROR-成立结论。
 if not any(v in text for v in _error_stands) and re.search(
     r"(?:不建议|不能|不得|不要|别).{0,12}(?:忽略|降级|当 ?WARN)", text
-) is None:
+) is None and re.search(
+    r"(?:而不是|而非).{0,8}(?:降级|忽略|当 ?WARN)", text) is None and re.search(
+    r"ERROR.{0,16}(?:应该|必须).{0,6}(?:修|补)", text) is None and (
+    "削弱门禁" not in text):
     fail(f"缺少ERROR 成立语义: {' | '.join(_error_stands)}")
 
 # 2. 回退等待是兜底不是豁免（时序漏气风险）。

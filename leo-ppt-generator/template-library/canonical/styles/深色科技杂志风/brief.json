@@ -1,0 +1,117 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:深色科技杂志风",
+  "name": "深色科技杂志风",
+  "aliases": [
+    "科技杂志风",
+    "深色杂志风",
+    "暗色科技杂志风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/深色科技杂志风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技暗色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "dark tech-magazine editorial, graphite ground with fine grid and structure lines, code windows and agent-network motifs, silver-white type with one mint accent, composed and rational"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "科技杂志风",
+      "深色杂志风",
+      "暗色科技杂志风"
+    ],
+    "best_for": "技术观点与方法论内容,需要杂志级编辑感 + 深色科技气质的克制叙事",
+    "visual_direction": "dark tech-magazine editorial, graphite ground with fine grid and structure lines, code windows and agent-network motifs, silver-white type with one mint accent, composed and rational",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#101318 石墨黑底,背景细网格与结构线,玻璃面板轻透",
+      "composition": "大标题区 30%-45% + 代码窗/Agent 网络主视觉 + 小注区",
+      "density": "low-to-medium, 杂志式留白"
+    },
+    "color_palette": {
+      "primary": "#101318(石墨黑底)配 #E8EAED(银白文字锚)",
+      "secondary": "#1C2128(石墨面板)",
+      "accent": "#34D399(荧光薄荷单强调)",
+      "neutral": "#7A8699(冷灰注释)与 #2A2F38(细网格线)",
+      "rule": "黑灰白 + 薄荷单强调;禁廉价蓝紫渐变与随机霓虹"
+    },
+    "typography": {
+      "title": "粗黑体(思源黑体 Heavy/MiSans)大标题",
+      "body": "思源黑体正文,层级清晰",
+      "labels": "Inter 小号英文注释与状态标签"
+    },
+    "layout_patterns": [
+      "观点封面:大标题占 1/3 + 代码窗/网络主视觉 + 一句导语",
+      "章节页:编号 + 章名 + 结构线",
+      "拆解页:概念三栏 + 细线分隔 + 小图示",
+      "证据页:数据小卡 + 引用块 + 来源注"
+    ],
+    "layout_usage_rule": "标题先声夺人,细网格组织版面;每页一个论点",
+    "visual_elements": {
+      "allowed": "代码窗口、Agent 网络图形、抽象芯片、数据流、状态标签、细网格底",
+      "avoid": "廉价蓝紫渐变、随机霓虹线条、复杂无意义背景、文字过小"
+    },
+    "rendering_constraints": [
+      "石墨黑底薄荷单强调,银白文字",
+      "网格与结构线克制,面板轻透",
+      "代码示意不得伪造可执行语义"
+    ],
+    "negative_prompt": [
+      "不要廉价蓝紫渐变或随机霓虹",
+      "不要复杂无意义背景",
+      "不要过小文字与文字变形"
+    ],
+    "reference": "file-github: xhs-visual-director-skill · style_system「深色科技杂志风」（改画幅吸收,C4）"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "石墨黑底薄荷单强调,银白文字",
+      "网格与结构线克制,面板轻透",
+      "代码示意不得伪造可执行语义"
+    ]
+  }
+}

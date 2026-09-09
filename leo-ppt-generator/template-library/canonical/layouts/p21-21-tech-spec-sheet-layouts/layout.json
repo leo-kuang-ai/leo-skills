@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p21-21-tech-spec-sheet-layouts",
+  "name": "Tech Spec Sheet",
+  "aliases": [
+    "P21"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "kpis": {
+      "region": "content",
+      "desc": "KPI 组（hairline + 数字 + 单位）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "bars": {
+      "region": "content",
+      "desc": "数据竖线（高度 ∝ 9 项 approved 真实数值序列）",
+      "count_min": 9,
+      "count_max": 9
+    },
+    "spec_number": {
+      "region": "content",
+      "desc": "KPI 数值",
+      "max_chars": 6,
+      "chars_per_line": 5,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左 4 行大标题；中部 3 KPI（顶部 hairline + 数字 + 单位）；右下 9 根竖线（高度绑定 9 项 approved 数值序列并直接标注）；底部巨数 + Yearly goal + 三 tag + 页码"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/21_Tech_Spec_Sheet.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

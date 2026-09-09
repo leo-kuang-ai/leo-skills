@@ -1,0 +1,77 @@
+{
+  "kind": "tech-dark-light-variant-validation",
+  "schema_version": 1,
+  "mode": "light",
+  "theme": "builtin:theme:tech-dark-mode",
+  "roles": [
+    {
+      "role": "cover",
+      "png": "evals/fixtures/template-quality/deck-style-matrix/tech-dark-light/cover.png",
+      "sha256": "8aa721c4075358fec92e3acbec23a92f6f702342a85a0291001f0eef06492cea",
+      "bytes": 63434,
+      "corner": [
+        245,
+        248,
+        252
+      ],
+      "expected_bg": [
+        245,
+        248,
+        252
+      ],
+      "hard_pass": true
+    },
+    {
+      "role": "content",
+      "png": "evals/fixtures/template-quality/deck-style-matrix/tech-dark-light/content.png",
+      "sha256": "fe49740da248003d65c8f2ddccfd7a0565a065aeb9a91522689192a61d18f9e9",
+      "bytes": 111825,
+      "corner": [
+        245,
+        248,
+        252
+      ],
+      "expected_bg": [
+        245,
+        248,
+        252
+      ],
+      "hard_pass": true
+    },
+    {
+      "role": "evidence",
+      "png": "evals/fixtures/template-quality/deck-style-matrix/tech-dark-light/evidence.png",
+      "sha256": "12fe10acd5aca85d7c5743d4edd3666a1b2bc69e99a208ba0fc950b0f9bccf53",
+      "bytes": 78937,
+      "corner": [
+        245,
+        248,
+        252
+      ],
+      "expected_bg": [
+        245,
+        248,
+        252
+      ],
+      "hard_pass": true
+    },
+    {
+      "role": "closing",
+      "png": "evals/fixtures/template-quality/deck-style-matrix/tech-dark-light/closing.png",
+      "sha256": "3b0ec398a3d94cc04099468cd9596532d750315dc3aab7cb597e01a678bfb15f",
+      "bytes": 67634,
+      "corner": [
+        245,
+        248,
+        252
+      ],
+      "expected_bg": [
+        245,
+        248,
+        252
+      ],
+      "hard_pass": true
+    }
+  ],
+  "hard_pass": true
+}

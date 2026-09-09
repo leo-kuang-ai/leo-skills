@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:工作坊风",
+  "name": "工作坊风",
+  "aliases": [
+    "workshop风",
+    "共创风",
+    "研讨会风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/教学分享/工作坊风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "workshop style, collaborative interactive, live-output oriented, dynamic sticky-note energy, shared-canvas flow, facilitator-friendly flexible layout"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "workshop风",
+      "共创风",
+      "研讨会风"
+    ],
+    "best_for": "工作坊,需要共创、交互、即时产出导向,灵活动态",
+    "visual_direction": "workshop style, collaborative interactive, live-output oriented, dynamic sticky-note energy, shared-canvas flow, facilitator-friendly flexible layout",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "bright open / whiteboard, flexible",
+      "composition": "framing → activity → share-out",
+      "density": "low-medium, flexible"
+    },
+    "color_palette": {
+      "primary": "bright blue #2563EB / accent, white",
+      "secondary": "pastel sticky-note tones #FDE68A / #FBCFE8",
+      "accent": "one energetic accent #F59E0B",
+      "neutral": "near-black #1F2937, gray #6B7280, white",
+      "rule": "energetic, collaborative, open; flexible not rigid"
+    },
+    "typography": {
+      "title": "clear friendly sans (Nunito / 思源黑体)",
+      "body": "short activity prompts",
+      "labels": "stage/timer tags",
+      "text_quality": "clear, practical"
+    },
+    "layout_patterns": [
+      "framing & goal",
+      "activity step / sticky boards",
+      "share-out synthesis",
+      "next actions"
+    ],
+    "layout_usage_rule": "Collaborative and interactive; framing, activity, share-out, action — flexible.",
+    "layout_blueprints": [
+      {
+        "name": "目标页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "工作坊目标"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "共创页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "小组1",
+              "小组2",
+              "小组3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "sticky-note boards, activity cards, timer/session tags, flexible layouts",
+      "avoid": "rigid corporate, clutter, over-structured, childish"
+    },
+    "rendering_constraints": [
+      "Collaborative, interactive, live-output.",
+      "Framing, activity, share-out, action; flexible.",
+      "Accurate; neutral open tone."
+    ],
+    "reference": "GitHub: 工作坊 · 共创惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Collaborative, interactive, live-output.",
+      "Framing, activity, share-out, action; flexible.",
+      "Accurate; neutral open tone."
+    ]
+  }
+}

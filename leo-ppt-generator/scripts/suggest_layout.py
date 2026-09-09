@@ -48,8 +48,11 @@ import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-LAYOUT_DIR = SKILL_DIR / "references" / "styles" / "12_版式库"
-STYLES_DIR = SKILL_DIR / "references" / "styles"
+RUNTIME_SRC = SKILL_DIR / "runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
+
+from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
 
 W_ROLE, W_CAPACITY, W_RHYTHM = 0.45, 0.40, 0.15
 CONFIDENCE_FLOOR = 0.5
@@ -111,30 +114,66 @@ INPUT_SCHEMA = {
 }
 
 
-def load_bank() -> dict[str, dict]:
+def _compact_id(entity: dict) -> str:
+    """Return the stable public alias while retaining the canonical asset ID."""
+    aliases = entity.get("aliases") or []
+    return str(aliases[0] if aliases else entity["asset_id"])
+
+
+def load_bank(*, home: Path | None = None) -> dict[str, dict]:
+    """Load layout profiles through the catalog-backed resolver.
+
+    The scorer consumes a small compatibility projection (page type, slots and
+    reuse policy), while ``layout.json`` remains the only source of truth.
+    """
     bank: dict[str, dict] = {}
-    for path in sorted(LAYOUT_DIR.glob("*.layouts.json")):
-        data = json.loads(path.read_text(encoding="utf-8"))
-        if isinstance(data, dict) and data.get("entity") == "layout":
-            bank[str(data["layout_id"])] = data
+    resolver = AssetResolver(home=home)
+    for entity in resolver.entities:
+        if entity.get("kind") != "layout":
+            continue
+        resolved = resolver.resolve(entity["asset_id"])
+        data = resolved["data"]
+        layout_id = _compact_id({**data, "asset_id": entity["asset_id"]})
+        bank[layout_id] = {
+            "layout_id": layout_id,
+            "asset_id": entity["asset_id"],
+            "name": data.get("name"),
+            "page_type": data.get("page_role", "content"),
+            "content_capacity": data.get("slots") or {},
+            "reuse_friendly": data.get("reuse_friendly", True),
+            "max_per_deck": data.get("max_per_deck", 1),
+        }
     return bank
 
 
-def load_style_routing(style_name: str | None) -> tuple[float, dict[str, float]]:
-    """返回 (capacity_factor.text, {P码: 权重调整})；无风格/无 sidecar → 1.0, {}。"""
+def load_style_routing(
+    style_name: str | None, *, home: Path | None = None,
+    resolver: AssetResolver | None = None,
+) -> tuple[float, dict[str, float]]:
+    """Return ``(capacity_factor.text, {compact layout id: adjustment})``.
+
+    Missing user routing is deliberately neutral: a user overlay must not
+    inherit a same-name builtin route by accident.
+    """
     if not style_name:
         return 1.0, {}
-    path = STYLES_DIR / f"{style_name}.layouts.json"
-    if not path.is_file():
+    resolver = resolver or AssetResolver(home=home)
+    try:
+        style = resolver.require(style_name, kind="style")
+    except ResolverError:
         return 1.0, {}
-    data = json.loads(path.read_text(encoding="utf-8"))
-    factor = float(data.get("capacity_factor", {}).get("text", 1.0))
+    bindings = style["data"].get("bindings") or {}
+    factor = float(bindings.get("capacity_factor", {}).get("text", 1.0))
     adjust: dict[str, float] = {}
-    for rule in data.get("routing", []):
-        for ref in rule.get("preferred", []):
-            adjust[ref] = adjust.get(ref, 0.0) + 0.1
-        for ref in rule.get("discouraged", []):
-            adjust[ref] = adjust.get(ref, 0.0) - 0.2
+    for rule in bindings.get("layout_routes", []):
+        for key, delta in (("preferred", 0.1), ("discouraged", -0.2)):
+            for ref in rule.get(key, []) or []:
+                try:
+                    resolved = resolver.resolve(ref)
+                    layout_id = _compact_id(resolved)
+                except ResolverError:
+                    continue
+                adjust[layout_id] = adjust.get(layout_id, 0.0) + delta
     return factor, adjust
 
 
@@ -277,6 +316,14 @@ def main(argv: list[str]) -> int:
     if "--json-schema" in args:
         print(json.dumps(INPUT_SCHEMA, ensure_ascii=False, indent=2))
         return 0
+    home = None
+    if "--home" in args:
+        idx = args.index("--home")
+        if idx + 1 >= len(args):
+            print("用法错误: --home 需要目录", file=sys.stderr)
+            return 2
+        home = Path(args[idx + 1]).expanduser().resolve()
+        args = args[:idx] + args[idx + 2:]
     if "--style" in args:
         idx = args.index("--style")
         if idx + 1 >= len(args):
@@ -309,16 +356,23 @@ def main(argv: list[str]) -> int:
         print("[ERROR] pages[] 每页必须含 page 与 page_role", file=sys.stderr)
         return 2
 
-    bank = load_bank()
+    try:
+        resolver = AssetResolver(home=home)
+        bank = load_bank(home=home)
+    except ResolverError as exc:
+        print(f"[ERROR] canonical 版式目录不可用（{exc.reason_code}）", file=sys.stderr)
+        return 2
     if not bank:
-        print("[ERROR] 版式 sidecar 库为空（12_版式库/*.layouts.json）",
+        print("[ERROR] canonical 版式库为空（template-library/canonical/layouts/*/layout.json）",
               file=sys.stderr)
         return 2
     inline_style = payload.get("style")
     effective_style = style_name or (
         inline_style if isinstance(inline_style, str) else None
     )
-    factor, adjust = load_style_routing(effective_style)
+    factor, adjust = load_style_routing(
+        effective_style, home=home, resolver=resolver
+    )
     results = [score_page(page, bank, factor, adjust) for page in pages]
     output = {"pages": results}
     print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))

@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:年会庆典风",
+  "name": "年会庆典风",
+  "aliases": [
+    "年会风",
+    "庆典风",
+    "annual gala风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/活动典礼/年会庆典风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "annual-gala style, ceremony & celebration, year-in-review, honor and recognition, festive grandeur, warm memorable event atmosphere"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "年会风",
+      "庆典风",
+      "annual gala风"
+    ],
+    "best_for": "年会庆典,需要年度回顾、表彰与热烈氛围,有仪式感",
+    "visual_direction": "annual-gala style, ceremony & celebration, year-in-review, honor and recognition, festive grandeur, warm memorable event atmosphere",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "festive warm ground / deep stage",
+      "composition": "celebration: theme → moment → wrap",
+      "density": "low-to-medium, celebratory"
+    },
+    "color_palette": {
+      "primary": "festive red/gold #C7000B / #D4AF37 or brand, dark/light",
+      "secondary": "warm gold #D4AF37, deep accents #8B0000",
+      "accent": "gold celebratory accent #D4AF37",
+      "neutral": "near-black/white #1A1A1A, warm gray #9C9484",
+      "rule": "grand, warm, celebratory; memorable"
+    },
+    "typography": {
+      "title": "bold celebratory serif (Georgia / 思源宋体) or sans (思源黑体 Heavy), warm",
+      "body": "short warm body",
+      "labels": "date/venue tags",
+      "text_quality": "warm, exact event info"
+    },
+    "layout_patterns": [
+      "year-in-review hero",
+      "honor & award recognition",
+      "celebration moment",
+      "thanks & wrap"
+    ],
+    "layout_usage_rule": "Ceremony and warmth; review, honor, celebrate, and thank.",
+    "layout_blueprints": [
+      {
+        "name": "盛典页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "主题 + 主视觉"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "表彰页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "奖项1",
+              "奖项2",
+              "奖项3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "celebration motif, gold accents, honor frames, warm imagery",
+      "avoid": "clutter, gloomy, stocky, off-brand"
+    },
+    "rendering_constraints": [
+      "Grand, warm, celebratory with ceremony.",
+      "Review, honor, celebrate, thanks.",
+      "Accurate; no invented awards."
+    ],
+    "reference": "GitHub: 年会庆典 · 盛典惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Grand, warm, celebratory with ceremony.",
+      "Review, honor, celebrate, thanks.",
+      "Accurate; no invented awards."
+    ]
+  }
+}

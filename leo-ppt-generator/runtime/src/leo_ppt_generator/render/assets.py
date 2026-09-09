@@ -4,7 +4,7 @@
 ``LEO_PPT_BUNDLE``（技能包根）时优先；仓内开发回退到 ``parents[3]``
 相对布局。资产目录：
 
-- ``assets/render-templates/``   HTML 页渲染模板（每模板 ``<id>.html``）
+- ``template-library/canonical/templates/``   HTML 页渲染模板（每模板 ``<slug>/page.html``）
 - ``assets/render-fonts/``       离线字体（OFL，NOTICE 登记）
 - ``assets/render-vendor/``      浏览器端 vendored 运行时（mermaid 等，
   版本 pin 进包根 ``vendor-lock.json``）
@@ -15,7 +15,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from ..styles import _marker_bundle_root
+from ..asset_resolver import _marker_bundle_root
 
 
 def _bundle_root() -> Path:
@@ -42,10 +42,6 @@ def render_assets_dir(name: str) -> Path:
     return _bundle_root() / "assets" / name
 
 
-def templates_dir() -> Path:
-    return render_assets_dir("render-templates")
-
-
 def fonts_dir() -> Path:
     return render_assets_dir("render-fonts")
 
@@ -54,12 +50,60 @@ def vendor_dir(*parts: str) -> Path:
     return render_assets_dir("render-vendor").joinpath(*parts)
 
 
-def template_path(template_id: str) -> Path:
-    """模板 id → ``<id>.html``；拒绝路径分隔符注入。"""
+def templates_dir() -> Path:
+    """Canonical template root used as the HTTP server document root."""
+    for candidate in _canonical_template_dirs():
+        if candidate.is_dir():
+            return candidate
+    return _canonical_template_dirs()[0]
 
-    if not template_id or any(ch in template_id for ch in "/\\:") or template_id.startswith("."):
+
+def template_path(template_id: str) -> Path:
+    """模板 id → page.html 路径；拒绝路径分隔符注入。
+
+    唯一真源：template-library/canonical/templates/<slug>/page.html。
+    """
+    if not template_id or any(ch in template_id for ch in "/\\") or template_id.startswith("."):
         raise ValueError("invalid_template_id")
-    return templates_dir() / f"{template_id}.html"
+    # Layout profiles carry the canonical asset id (builtin:template:<slug>),
+    # while the CLI commonly receives the short slug. Accept both forms but
+    # never treat an arbitrary colon-containing string as a path.
+    if ":" in template_id:
+        parts = template_id.split(":")
+        if len(parts) != 3 or parts[0] != "builtin" or parts[1] != "template":
+            raise ValueError("invalid_template_id")
+        slug = parts[2]
+    else:
+        slug = template_id
+    for candidate in _canonical_template_dirs():
+        page = candidate / slug / "page.html"
+        if page.is_file():
+            return page
+    raise FileNotFoundError(f"render_template_not_found: {template_id}")
+
+
+def _canonical_template_dirs() -> list[Path]:
+    dirs: list[Path] = []
+    from ..asset_resolver import _candidate_bundle_roots
+
+    for bundle_root in _candidate_bundle_roots():
+        dirs.append(bundle_root / "template-library" / "canonical" / "templates")
+    return dirs
+
+
+def template_http_entry(name: str) -> Path | None:
+    """HTTP 供给的模板入口文件（``<slug>.html`` → 实际 page.html）。
+
+    与 ``template_path`` 使用同一 canonical 解析策略。
+    """
+
+    if not name.endswith(".html"):
+        return None
+    try:
+        path = template_path(name[:-5])
+    except ValueError:
+        return None
+    return path if path.is_file() else None
 
 
 def font_dirs(extra: list[str | Path] | None = None) -> list[Path]:

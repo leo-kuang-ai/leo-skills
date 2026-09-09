@@ -1,0 +1,53 @@
+{
+ "schema_version": 1,
+ "entity": "layout-profile",
+ "asset_id": "builtin:layout:cover-basic",
+ "name": "基础封面",
+ "aliases": [
+  "cover-basic"
+ ],
+ "canvas": {
+  "width": 1280,
+  "height": 720,
+  "units": "logical-px"
+ },
+ "page_role": "cover",
+ "layout_type": "fixed-regions",
+ "regions": {
+  "content": {
+   "x": 110,
+   "y": 96,
+   "width": 1060,
+   "height": 528
+  }
+ },
+ "slots": {
+  "title": {
+   "region": "content",
+   "max_chars": 30,
+   "max_lines": 2,
+   "desc": "主标题"
+  },
+  "subtitle": {
+   "region": "content",
+   "max_chars": 60,
+   "max_lines": 3,
+   "desc": "副标题"
+  }
+ },
+ "padding": {
+  "block": 76,
+  "inline": 96
+ },
+ "font_size_refs": {
+  "kicker": "kicker",
+  "title": "title",
+  "body": "body",
+  "page_no": "page_no"
+ },
+ "renderer_support": {
+  "render:html": "builtin:template:cover-basic",
+  "image": "cover: title zone, structured content zone, evidence zone, takeaway zone"
+ },
+ "notes": "html lane 几何真值；字号/行高引用 effective_theme 字体角色"
+}

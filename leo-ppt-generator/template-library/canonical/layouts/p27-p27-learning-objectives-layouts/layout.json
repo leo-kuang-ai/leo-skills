@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p27-p27-learning-objectives-layouts",
+  "name": "Learning Objectives",
+  "aliases": [
+    "P27"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "objectives": {
+      "region": "content",
+      "desc": "目标卡（编号 + 行为动词短语 + 达标判据）",
+      "count_min": 2,
+      "count_max": 4
+    },
+    "objective_text": {
+      "region": "content",
+      "desc": "每条目标的行为动词短语",
+      "max_chars": 34,
+      "chars_per_line": 29,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "目标卡纵列（编号 + 行为动词短语 + 达标判据小字）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P27_Learning_Objectives.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

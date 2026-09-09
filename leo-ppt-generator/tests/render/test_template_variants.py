@@ -113,7 +113,7 @@ class NewTemplatesLintContract(unittest.TestCase):
 
         rules = lrt.load_rules()
         for template_id in NEW_TEMPLATES:
-            path = lrt.TEMPLATES_DIR / f"{template_id}.html"
+            path = lrt.TEMPLATES_DIR / template_id / "page.html"
             self.assertTrue(path.is_file(), f"missing template: {path}")
             result = lrt.lint_template(path, "render:html", rules)
             self.assertEqual(
@@ -125,15 +125,14 @@ class NewTemplatesLintContract(unittest.TestCase):
     def test_new_templates_declare_data_blocks(self):
         # E2 对账依赖 data-leo-block 锚点；每模板至少声明一个内容块。
         for template_id, block in (
-            ("spec-table", "spec-table"),
+            ("spec-table", "table"),
             ("timeline", "timeline"),
             ("compare", "compare"),
             ("pull-quote", "quote"),
             ("frame-shot", "frame-shot-stage"),
         ):
-            text = (
-                SKILL_DIR / "assets" / "render-templates" / f"{template_id}.html"
-            ).read_text(encoding="utf-8")
+            text = (SKILL_DIR / "template-library" / "canonical" / "templates"
+                    / template_id / "page.html").read_text(encoding="utf-8")
             self.assertIn(f'data-leo-block="{block}"', text)
 
 
@@ -141,7 +140,8 @@ class FrameShotContractTest(unittest.TestCase):
     """R-32 离线恒跑：frame-shot 六参数枚举面与正交纪律（guizang
     screenshot-treatment 移植合同的静态断言）。"""
 
-    FRAME_SHOT = SKILL_DIR / "assets" / "render-templates" / "frame-shot.html"
+    FRAME_SHOT = (SKILL_DIR / "template-library" / "canonical" / "templates"
+                  / "frame-shot" / "page.html")
 
     @classmethod
     def setUpClass(cls):

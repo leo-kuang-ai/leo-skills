@@ -46,7 +46,7 @@
 3. **视觉行**：该页容器清单（卡片/表格/图例条/结论条等），并声明**每个要点落入哪个
    容器**；存在无落位要点或无内容容器即失败。页面用图在此标注**来源三级**
    （实拍 / 生成-氛围 / 生成-示意，规则见通用设计规范图像铁律）。数据页数值按
-   `styles/00_索引/图表样式规范.md` 置信度形状语法标注来源级。
+   `../template-library/governance/authoring/index/图表样式规范.md` 置信度形状语法标注来源级。
    **风格约束摘抄**：`rendering_constraints` / `negative_prompt` /
    `visual_elements` 不在 `style render` 的机器注入键内（注入通道对照见
    [style-library.md](style-library.md)）；组页时须把所选 brief 的
@@ -54,13 +54,14 @@
    （约束一行 + 负面词条随图行或生成提示词携带），否则这些词表不进生图链路。
    **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
    [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
-   `12_版式库/*.layouts.json` sidecar，`"$LEO_PPT" style layouts` 可查）。
+   `template-library/canonical/layouts/*/layout.json`（`layout-profile-v1`）可查，
+   `"$LEO_PPT" style layouts` 返回同一份容量与复用字段）。
    **undecided 页固定呈现格式**：置信度 <0.5 的页在母版中标注
    `第 <页号> 页版式待定：候选 <P码A> 或 <P码B>，理由 <一行>`，在既有母版
    审查节点裁决；委托执行可给出有依据的选择，仍须容量预检和样张验证，不能把低置信度
    推荐当作已经验证。共创时等待用户选择，不新增确认门（CI-5）。
    **强视觉版式一 deck 一次**：P1/P9/P23/P24/P34/P36（`reuse_friendly=false`）
-   全 deck 合计不超 sidecar 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
+   全 deck 合计不超 canonical profile 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
    定稿前跑 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。
    页面用图另按 [academic-figure-evidence.md](academic-figure-evidence.md) 逐图登记
    **图行**：`图[F<N>] 模式:<处理模式> 状态:<审查状态> 焦点:<该图回答的演示问题> |
@@ -112,7 +113,7 @@ deck-contract:
 节压缩或并入,各节 Σ建议页数须与内容页数对账（不等即 WARN）。学术场景缺任一
 字段即校验失败;通用 deck 可省略本块（不阻断）。学术场景按请求确定
 交付档位：组会简报（minimal）还是答辩证据密集（dense-defense,见
-`references/styles/科研答辩风.md` 双档）——档位决定要点禅档位上限与版式密度,
+`template-library/canonical/styles/research-defense/brief.json` 双档）——档位决定要点禅档位上限与版式密度,
 无法可靠推断时再问，不得无依据默认取密集档。
 
 ## 数字登记表（数字元数据单源）

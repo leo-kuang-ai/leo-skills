@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "857013e3ec7483502a9b7680ac98f04fa126abf9740eb7c5aef43b04759b0784",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/closing.png",
+  "out_sha256": "ab3f7400b8e393a3e043aa33bc90b910f3fbc8a841636ae6bea4421cbc4cd4ec",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1244,
+  "rendered_at": "2026-09-08T02:00:51.711Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

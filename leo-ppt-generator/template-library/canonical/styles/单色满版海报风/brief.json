@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:单色满版海报风",
+  "name": "单色满版海报风",
+  "aliases": [
+    "Mono-Brand Type-as-Hero",
+    "单色海报风",
+    "满版品牌色",
+    "type-as-hero",
+    "品牌色海报"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/单色满版海报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "消费营销",
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "single brand color flooded poster deck, one saturated hue filling the canvas with black or white reversed giant type, type-as-hero stacked lockups, two-tone color-block splits, zero imagery — the type is the hero"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Mono-Brand Type-as-Hero",
+      "单色海报风",
+      "满版品牌色",
+      "type-as-hero",
+      "品牌色海报"
+    ],
+    "best_for": "以单一品牌主色满版铺底、黑或白反差巨字的字体即主视觉语言,做品牌策略、campaign 宣讲与文化页;撞色两层,纯色块零素材",
+    "visual_direction": "single brand color flooded poster deck, one saturated hue filling the canvas with black or white reversed giant type, type-as-hero stacked lockups, two-tone color-block splits, zero imagery — the type is the hero",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "单一品牌主色满版(示例 Spotify 绿 #1ED760;每 deck 换用自己品牌色,Mailchimp 黄/Netflix 红同级)",
+      "composition": "字体即主视觉:顶天立地的超大字组占满画面;双色块上下/左右分割做节奏",
+      "density": "low,纯色块+大字,零素材零插画"
+    },
+    "color_palette": {
+      "primary": "#1ED760(品牌主色满版,示例锚;交付时以品牌 HEX 替换)",
+      "secondary": "#0A0A0A(黑反差字/第二色块)",
+      "accent": "#FFFFFF(白反差字与描边)",
+      "neutral": "#0A0A0A(结构性文字)",
+      "rule": "撞色只有两层:品牌主色 × 黑或白反差;禁第三色与渐变;字重 900 + 负字距制造海报感"
+    },
+    "typography": {
+      "title": "超粗无衬线(Inter / Manrope / Archivo Black 气质,思源黑体 Heavy),font-weight 900 + 负 letter-spacing",
+      "body": "同族常规字重,短句;正文尽量少",
+      "labels": "大写小标签,反差色描边或色块载体"
+    },
+    "layout_patterns": [
+      "主视觉页 = 品牌色满版 + 反白/反黑巨字组顶天立地(单色块背景)",
+      "双色页 = 上下/左右两个色块分割(品牌色 × 黑/白),各承载一句主张",
+      "巨型数字页 = 数字撑满画面,反差色",
+      "主张页 = 满版色 + 一行 slogan + hashtag"
+    ],
+    "layout_usage_rule": "字体当图用:每一页的主角都是字,不是图形素材;纯色块零贴图是本风格最强工程优势",
+    "negative_prompt": [
+      "no third color and no gradients — two-tone brand color versus black/white only",
+      "no stock imagery or illustration; the type is the visual",
+      "no thin elegant weights; display stays at 900 with negative tracking",
+      "no quiet low-contrast pastel versions; the brand hue stays saturated"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "满版色块,反差巨字组,双色块分割,巨型数字,hashtag 口号",
+      "avoid": "图片素材;插画;第三色;渐变;细字重"
+    },
+    "rendering_constraints": [
+      "Flooded single-hue canvas; black or white reversed type only.",
+      "Type lockups stack edge-to-edge (clamp-scale).",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: huashu-design · design-styles.md PPT 库「高饱和单色品牌撞色海报」"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "expressive",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Flooded single-hue canvas; black or white reversed type only.",
+      "Type lockups stack edge-to-edge (clamp-scale).",
+      "No invented logos or watermarks."
+    ]
+  }
+}

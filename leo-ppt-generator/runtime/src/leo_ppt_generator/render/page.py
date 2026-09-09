@@ -36,6 +36,7 @@ from .assets import template_path
 from .errors import RenderError
 from .fonts import RenderAssetServer
 from .readiness import _apply_browsers_path
+from .svg_policy import sanitize_svg
 
 LOGICAL_WIDTH = 1280
 LOGICAL_HEIGHT = 720
@@ -124,6 +125,23 @@ def _playwright_version() -> str:
         return "unknown"
 
 
+def _prepare_slide_data(data_text: str) -> Any:
+    """Parse slide data and sanitize an optional chart SVG before browser injection."""
+
+    payload = json.loads(data_text)
+    if isinstance(payload, dict):
+        chart_svg = payload.get("chart_svg")
+        if isinstance(chart_svg, str) and "<svg" in chart_svg:
+            try:
+                payload = dict(payload)
+                payload["chart_svg"] = sanitize_svg(chart_svg)
+            except Exception as exc:
+                raise RenderError(
+                    "render_data_invalid", f"chart SVG policy rejected output: {exc}"
+                ) from exc
+    return payload
+
+
 def _utc_now() -> str:
     return (
         datetime.now(timezone.utc)
@@ -146,18 +164,18 @@ def render_page(
     scale = _device_scale_factor(size)
     try:
         template_file = template_path(template_id)
-    except ValueError as exc:
+    except (ValueError, FileNotFoundError) as exc:
         raise RenderError("render_template_not_found", str(exc)) from exc
     if not template_file.is_file():
         raise RenderError(
             "render_template_not_found",
-            f"template '{template_id}' not found under assets/render-templates/",
+            f"template '{template_id}' not found under template-library/canonical/templates/",
         )
 
     data_file = Path(data_path)
     try:
         data_text = data_file.read_text(encoding="utf-8")
-        json.loads(data_text)
+        data_payload = _prepare_slide_data(data_text)
     except OSError as exc:
         raise RenderError("render_data_invalid", f"slide data unreadable: {exc}") from exc
     except ValueError as exc:
@@ -201,7 +219,7 @@ def render_page(
                 # 注入必须在页面脚本执行前完成（add_init_script），否则模板
                 # 内联脚本读到空数据——竞态产物是"干净空页"，只有像素闸门
                 # 能抓住。数据以 JSON 字面量内嵌，"</" 转义防提前闭合。
-                data_literal = json.dumps(json.loads(data_text), ensure_ascii=False).replace("</", "<\\/")
+                data_literal = json.dumps(data_payload, ensure_ascii=False).replace("</", "<\\/")
                 theme_literal = json.dumps(theme_variables or {}, ensure_ascii=False).replace("</", "<\\/")
                 context.add_init_script(
                     f"window.__LEO_SLIDE_DATA__ = {data_literal};"

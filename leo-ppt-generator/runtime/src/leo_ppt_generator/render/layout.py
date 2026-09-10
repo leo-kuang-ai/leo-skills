@@ -15,6 +15,14 @@ from ..asset_resolver import ResolverError
 
 CANVAS = (1280, 720)
 SUPPORTED_LAYOUT_TYPES = {"fixed-regions", "stack-row", "stack-column", "grid", "table"}
+CAPACITY_TOLERANCE = 1.2
+
+
+def capacity_level(used: float, limit: float) -> str:
+    """推荐与交付预检共用声明容量的三态边界。"""
+    if used <= limit:
+        return "ok"
+    return "over" if used <= limit * CAPACITY_TOLERANCE else "overflow"
 
 
 class LayoutProfileError(ResolverError):

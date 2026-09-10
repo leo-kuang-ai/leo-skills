@@ -44,6 +44,39 @@
           },
           "type": {
             "type": "string"
+          },
+          "count_min": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "数组/媒体字段的数量下限（dashi K3：嵌套输入真实形状）"
+          },
+          "count_max": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "数组/媒体字段的数量上限；与同名 layout slot 声明一致"
+          },
+          "items": {
+            "type": "object",
+            "description": "嵌套数组元素形状（如 compare sides 的 label/title/points）",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "type"],
+                  "properties": {
+                    "name": {"type": "string"},
+                    "type": {"type": "string"},
+                    "items": {"type": "object"}
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "additionalProperties": true
           }
         },
         "additionalProperties": true

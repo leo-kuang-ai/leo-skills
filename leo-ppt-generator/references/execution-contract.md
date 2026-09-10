@@ -122,6 +122,21 @@ leo-ppt image sample-verify <run> --slides <slides.json> --binding <binding.json
 leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.json> --sources <sources-manifest.json>
 ```
 
+**内容冻结绑定（dashi 集成 K4）**：带稳定身份母版的 generate run 在 prepare
+时追加 `--content-pack <page-content-pack.json>`（可选 `--design
+<resolved-design.json>`）——内容包/冻结设计 CAS 冻结进 `<run>/input/` 并登记
+RunIndex `supplemental_inputs`；prepare 校验内容包 `content_digest`（手改即拒
+`content_pack_invalid`）与 slides 页序对账（`content_pack_page_mismatch`）。
+已 prepare 后内容或设计改版必须**建立新 run**：同 run 再注入不同摘要以
+`*_fingerprint_conflict` 显式拒绝。内容包经 `leo-ppt content pack --master
+<母版> --out <包>` 编译，legacy 母版先 `leo-ppt content stamp-page-ids`
+一次性补齐页身份并重新确认。可编辑目标走 `generate → upgrade
+import-baseline` 两段关联 run：baseline 冻结源交付、页图、notes 与内容/设计
+快照副本（`source_binding`：源 run ID、交付 SHA、内容/设计摘要、目标路线），
+复制校验全部通过才发布；导入后移走源目录不影响目标恢复；同一目标输入漂移
+即 `upgrade_baseline_conflict`。父 generate 成功仅表示前一阶段完成，可编辑
+目标只认 upgrade run 的最终对象与视觉回读证据。
+
 `binding.json` 必须包含 `backend`、`width`、`height`、`generation_method`、
 `style_visual_path`、`layout_binding_path` 六个字段。backend 与冻结 run 合同核对，
 尺寸读实际样张图片；风格填写已投影的视觉规则文件，布局填写实际绑定文件路径，

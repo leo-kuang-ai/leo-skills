@@ -56,6 +56,15 @@ def _validator(name: str):
 
 
 class LibraryContractsTest(unittest.TestCase):
+    def test_all_builtin_layout_profiles_validate(self) -> None:
+        validator, _ = _validator("layout-profile-v1.schema.json")
+        paths = sorted((SKILL / "template-library/canonical/layouts").glob("*/layout.json"))
+        self.assertTrue(paths)
+        for path in paths:
+            with self.subTest(layout=path.parent.name):
+                errors = list(validator.iter_errors(json.loads(path.read_text())))
+                self.assertFalse(errors, [error.message for error in errors])
+
     def test_expected_schema_set_present(self) -> None:
         actual = {path.name for path in SCHEMAS.glob("*.schema.json")}
         self.assertEqual(actual, EXPECTED_SCHEMAS)

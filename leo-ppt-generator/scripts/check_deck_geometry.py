@@ -48,6 +48,7 @@ if str(RUNTIME_SRC) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SRC))
 
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
+from leo_ppt_generator.render.layout import CAPACITY_TOLERANCE, capacity_level
 
 NS_P = "http://schemas.openxmlformats.org/presentationml/2006/main"
 NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
@@ -70,7 +71,6 @@ GRID_GUTTER_VW = 2  # 版心 Canon: grid-gutter（桌面）
 GRID_COLS = 12
 FILL_MARGIN = 0.95  # 容器内边距让渡（近似上游 H_MARGIN 的 5%）
 CAPACITY_LINE_HEIGHT = 1.0  # 上游 LINE_HEIGHT：CJK 正文单倍行距
-CAPACITY_TOLERANCE = 1.2  # 上游 TOLERANCE：模型 slack，假阳校准 0-5%
 
 def vw_of(text: str) -> float:
     """文本的视觉宽度（CJK 等效单位）：CJK/全角=1.0，空格=0.35，ASCII=0.5，其他=0.8。"""
@@ -233,8 +233,7 @@ def capacity_check(spec_path: Path) -> int:
                         f"{_capacity_alternatives(bank, layout_id, 0, n) or '无同型'}）"
                     )
                 elif n > hi:
-                    band = hi * CAPACITY_TOLERANCE
-                    if n <= band:
+                    if capacity_level(n, hi) != "overflow":
                         soft = True
                         problems.append(
                             f"over:count:{slot_name} 条数 {n} 超上限 {hi}"
@@ -274,7 +273,7 @@ def capacity_check(spec_path: Path) -> int:
                     total_used = sum(vw_of(str(text)) for text in points)
                     total_limit = sum(slot.get("max_chars", 0) for slot in capacity.values()) * factor
                     if total_used > total_limit:
-                        total_hard = total_used > total_limit * CAPACITY_TOLERANCE
+                        total_hard = capacity_level(total_used, total_limit) == "overflow"
                         hard = hard or total_hard
                         soft = soft or not total_hard
                         level = "overflow" if total_hard else "over"
@@ -291,8 +290,7 @@ def capacity_check(spec_path: Path) -> int:
             used = vw_of(str(text))
             if used <= limit:
                 continue
-            band = limit * CAPACITY_TOLERANCE
-            if used <= band:
+            if capacity_level(used, limit) != "overflow":
                 soft = True
                 problems.append(
                     f"over:{slot_name} {used:.1f}/{limit:.0f} vw（软超 ≤1.2×）→ "

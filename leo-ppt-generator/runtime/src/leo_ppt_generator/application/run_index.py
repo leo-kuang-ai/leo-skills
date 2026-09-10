@@ -790,3 +790,57 @@ class RunIndex:
                 os.fsync(descriptor)
             finally:
                 os.close(descriptor)
+
+
+def projection_view(run_dir: str | Path) -> dict:
+    """dashi K7/U7：从冻结 run 输入重建内容投影视图（只读 View Model）。
+
+    页身份 → 展示页序 → 选中版式 → 绑定摘要 → 内容/设计/选择摘要的映射，
+    全部自 `<run>/input/` 冻结文件派生，可随时删除重建；不构成写状态入口，
+    领域 manifest 继续拥有执行状态。
+    """
+    root = Path(run_dir).resolve()
+    view: dict = {
+        "schema_version": 1,
+        "kind": "deck-projection-view",
+        "rebuildable": True,
+        "pages": [],
+    }
+
+    def _load(name: str) -> dict | None:
+        path = root / "input" / name
+        if not path.is_file():
+            return None
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+
+    pack = _load("page-content-pack.json")
+    selection = _load("layout-selection.json")
+    design = _load("resolved-design.json")
+    if pack is not None:
+        view["content_digest"] = pack.get("content_digest")
+        selected = (selection or {}).get("selection") or {}
+        for page in pack.get("pages", []):
+            entry = selected.get(page.get("page_id")) or {}
+            view["pages"].append({
+                "page_id": page.get("page_id"),
+                "number": page.get("number"),
+                "master_page": page.get("master_page"),
+                "claim": page.get("claim"),
+                "layout_id": entry.get("layout_id"),
+                "binding_digest": entry.get("binding_digest"),
+                "item_count": len(page.get("items", [])),
+            })
+        view["pages"].sort(key=lambda p: p.get("number") or 0)
+    if selection is not None:
+        view["selection_policy"] = selection.get("policy_version")
+        view["selection_status"] = selection.get("status")
+    if design is not None:
+        view["design_digest"] = design.get("design_digest")
+    if pack is None and selection is None and design is None:
+        view["status"] = "no_binding_inputs"
+    else:
+        view["status"] = "ok"
+    return view

@@ -149,6 +149,11 @@
     "authored_digest": {
       "type": "string",
       "description": "归因用；不进入视觉投影"
+    },
+    "design_context_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "共用设计上下文摘要（K2）：候选预编译与最终组合器同源快照的锚"
     }
   },
   "definitions": {

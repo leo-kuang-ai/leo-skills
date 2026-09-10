@@ -4,7 +4,7 @@ date: 2026-09-09
 updated: 2026-09-09
 version: 3
 status: proposed
-implementation_status: not-started
+implementation_status: u1-u7-implemented-local-tests-green
 target_repo: leo-skills
 source_repo: ../dashi-ppt-skill
 claim_ceiling: architecture-and-local-probes-only

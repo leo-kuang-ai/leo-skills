@@ -7,7 +7,29 @@
     {
       "name": "sides",
       "required": true,
-      "type": "array"
+      "type": "array",
+      "count_min": 2,
+      "count_max": 2,
+      "items": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "points",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
     },
     {
       "name": "page_no",
@@ -59,5 +81,5 @@
     "builtin:layout:compare"
   ],
   "lane": "render:html",
-  "notes": "机械迁移：HTML 仍含硬编码色/字体，待 U5 切换主题变量"
+  "notes": "对照模板：sides 恰 2 项（超出/不足由投影层硬拒绝，不静默不渲染）"
 }

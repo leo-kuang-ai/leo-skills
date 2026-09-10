@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "leo-ppt-generator/page-content-pack/v1",
+  "title": "page-content-pack",
+  "description": "confirmed 母版到机器输入的无损单向内容投影（deck-master.md 唯一可改真值；本工件为派生物，手改即被 content_digest 拒绝）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "compiler_version",
+    "source",
+    "deck",
+    "pages",
+    "numbers",
+    "glossary",
+    "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_kind": {"const": "page-content-pack"},
+    "compiler_version": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["master_path", "master_sha256", "decision_source", "post_confirm_chain"],
+      "properties": {
+        "master_path": {"type": "string", "minLength": 1},
+        "master_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "master_revision": {"type": ["string", "null"]},
+        "decision_source": {"enum": ["user-confirmed", "user-delegated"]},
+        "post_confirm_chain": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "deck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delivery_tier"],
+      "properties": {
+        "goal": {"type": ["string", "null"]},
+        "audience": {"type": ["string", "null"]},
+        "argumentation_mode": {"type": ["string", "null"]},
+        "delivery_tier": {"enum": ["minimal", "standard", "assured"]}
+      }
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["page_id", "number", "master_page", "claim", "items", "notes"],
+        "properties": {
+          "page_id": {"type": "string", "pattern": "^pg-[0-9a-f]{8,16}$"},
+          "number": {"type": "integer", "minimum": 1},
+          "master_page": {"type": "string", "minLength": 1},
+          "narrative_role": {"type": ["string", "null"]},
+          "argument_role": {"type": ["string", "null"]},
+          "beat": {"type": ["string", "null"]},
+          "audience_takeaway": {"type": ["string", "null"]},
+          "rst_relation": {"type": ["string", "null"]},
+          "claim": {"type": "string", "minLength": 1},
+          "structures": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "sides": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label", "title", "points"],
+                  "properties": {
+                    "label": {"type": "string", "minLength": 1},
+                    "title": {"type": "string"},
+                    "points": {"type": "array", "items": {"type": "string"}}
+                  }
+                }
+              },
+              "table": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["columns", "rows"],
+                "properties": {
+                  "columns": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+                  "rows": {
+                    "type": "array", "minItems": 1,
+                    "items": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+                  }
+                }
+              }
+            }
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["item_id", "kind", "required"],
+              "properties": {
+                "item_id": {"type": "string", "minLength": 1},
+                "kind": {"enum": ["point", "figure", "number-ref"]},
+                "required": {"const": true},
+                "text": {"type": "string"},
+                "evidence_tier": {"type": ["string", "null"], "enum": ["引用", "估算", "示意", "用户确认", null]},
+                "source_ref": {"type": ["string", "null"]},
+                "session_round": {"type": ["integer", "null"]},
+                "figure_id": {"type": "string", "pattern": "^F\\d+$"},
+                "handling_mode": {"type": "string"},
+                "review_status": {"type": "string"},
+                "focus": {"type": "string"},
+                "number_item_id": {"type": "string"}
+              },
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {"properties": {"kind": {"const": "figure"}}},
+                  "then": {"required": ["figure_id", "handling_mode", "review_status", "focus"]}
+                },
+                {
+                  "if": {"properties": {"kind": {"const": "point"}}},
+                  "then": {"required": ["text"]}
+                },
+                {
+                  "if": {"properties": {"kind": {"const": "number-ref"}}},
+                  "then": {"required": ["number_item_id"]}
+                }
+              ]
+            }
+          },
+          "notes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["speaker_script", "engineering"],
+            "properties": {
+              "speaker_script": {"type": ["string", "null"]},
+              "engineering": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    },
+    "numbers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "kind", "required", "value", "pages", "source", "caliber", "period", "unit", "evidence_tier", "verified", "as_of", "page_ids"],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "kind": {"const": "number"},
+          "required": {"const": true},
+          "value": {"type": "string", "minLength": 1},
+          "pages": {"type": "string"},
+          "source": {"type": "string"},
+          "caliber": {"type": "string"},
+          "period": {"type": "string", "minLength": 1},
+          "unit": {"type": "string", "minLength": 1},
+          "evidence_tier": {"type": "string"},
+          "verified": {"type": "string"},
+          "as_of": {"type": "string"},
+          "page_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^pg-[0-9a-f]{8,16}$"}}
+        }
+      }
+    },
+    "glossary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cells"],
+        "properties": {"cells": {"type": "array", "items": {"type": "string"}}}
+      }
+    },
+    "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

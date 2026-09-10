@@ -928,7 +928,88 @@ class DesignConstraintConflict(DesignCompositionError):
     reason_code = "design_constraint_conflict"
 
 
-_DESIGN_COMPILER = {"name": "leo-ppt-generator/templates.compose_design", "version": "1"}
+_DESIGN_COMPILER = {"name": "leo-ppt-generator/templates.compose_design", "version": "2"}
+
+
+def resolve_design_context(
+    style_query: str,
+    *,
+    mode: str | None = None,
+    theme_query: str | None = None,
+    brand_data: dict | None = None,
+    color_overrides: dict | None = None,
+    font_overrides: dict | None = None,
+    resolver=None,
+) -> dict:
+    """共用设计上下文（dashi 集成 K2）：选择 → 主题 → effective → 约束。
+
+    候选预编译（content_projection）与最终组合器消费同一快照，不另写主题
+    覆盖规则。返回对象包含 style/theme 实体引用、effective theme、硬约束
+    与 context_digest；不解析页面、不做容量、不冻结设计。
+    """
+    import hashlib
+
+    from .asset_resolver import AssetResolver, ResolverError as _ResolverError
+    from .render.theme import ThemeError, compute_effective_theme
+
+    if resolver is None:
+        resolver = AssetResolver()
+
+    try:
+        style = resolver.require(style_query, kind="style")
+    except _ResolverError as exc:
+        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
+
+    theme_query = theme_query or style["data"].get("bindings", {}).get("theme_default")
+    if not theme_query:
+        raise DesignCompositionError(
+            "design_composition_invalid: 风格缺 bindings.theme_default")
+    try:
+        theme_entity = (resolver.require(theme_query, kind="theme")
+                        if ":" in str(theme_query)
+                        else resolver.require(str(theme_query), kind="theme"))
+    except _ResolverError as exc:
+        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
+
+    try:
+        effective = compute_effective_theme(
+            theme_entity["data"], mode=mode, brand=brand_data,
+            color_overrides=color_overrides, font_overrides=font_overrides)
+    except ThemeError as exc:
+        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
+
+    constraints: list[dict] = []
+    seen_texts: set[str] = set()
+    for i, text in enumerate(style["data"].get("constraints", {}).get("negative", [])):
+        if text in seen_texts:
+            continue
+        seen_texts.add(text)
+        constraints.append({"id": f"style:{style['asset_id']}:negative:{i}",
+                            "source": "style", "constraint": text})
+    if brand_data:
+        for role in sorted(brand_data.get("locked_roles") or []):
+            constraints.append({"id": f"brand:{brand_data.get('name', 'brand')}:lock:{role}",
+                                "source": "brand", "constraint": f"角色 {role} 由品牌锁定"})
+
+    context = {
+        "style": style,
+        "theme_entity": theme_entity,
+        "effective": effective,
+        "constraints": constraints,
+        "seen_constraint_texts": seen_texts,
+    }
+    context["context_digest"] = hashlib.sha256(_canonical_json({
+        "style": style["asset_id"],
+        "theme": theme_entity["asset_id"],
+        "effective_theme": {
+            "colors": effective["colors"],
+            "fonts": effective["fonts"],
+            "chart_palette": effective["chart_palette"],
+        },
+        "constraints": sorted(constraints, key=lambda c: c["id"]),
+        "compiler": dict(_DESIGN_COMPILER),
+    })).hexdigest()
+    return context
 
 
 def _canonical_json(value) -> bytes:
@@ -966,57 +1047,25 @@ def compose_design(
 ) -> dict:
     """唯一设计组合器（§7.0 阶段表）：产出冻结 resolved_design。
 
-    阶段：选择（resolver 名称/别名/ID，用户同名优先）→ 基础主题（显式替换
-    须满足角色）→ 明暗变体（未知 mode 拒绝）→ 品牌（声明角色 + 锁）→ 任务
-    覆盖（仅 overrideable_roles）→ 页面解析（页级显式 layout > 风格路由）→
-    容量校验 → 冻结（design_digest 固定键序，不含时间/绝对路径/自身）。
+    阶段：共用设计上下文（resolve_design_context，K2）→ 页面解析（页级显式
+    layout > 风格路由）→ 容量校验 → 冻结（design_digest 固定键序，不含时间/
+    绝对路径/自身）。候选预编译与最终组合器消费同一上下文快照。
     """
     from .asset_resolver import AssetResolver, ResolverError as _ResolverError
-    from .render.theme import ThemeError, compute_effective_theme
-    from .render.layout import CapacityOverflowError, estimate_table_capacity, require_capacity, validate_profile
+    from .render.layout import CapacityOverflowError, require_capacity, validate_profile
 
     if resolver is None:
         resolver = AssetResolver()
 
-    # 1) 选择：名称/别名/ID，用户同名经 resolver 覆盖语义处理；歧义拒绝。
-    try:
-        style = resolver.require(style_query, kind="style")
-    except _ResolverError as exc:
-        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
-
-    # 2) 基础主题：显式替换或风格默认。
-    theme_query = theme_query or style["data"].get("bindings", {}).get("theme_default")
-    if not theme_query:
-        raise DesignCompositionError(
-            "design_composition_invalid: 风格缺 bindings.theme_default")
-    try:
-        theme_entity = (resolver.require(theme_query, kind="theme")
-                        if ":" in str(theme_query)
-                        else resolver.require(str(theme_query), kind="theme"))
-    except _ResolverError as exc:
-        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
-
-    # 3–5) mode → brand → 任务覆盖（render/theme.py 拥有覆盖语义与硬检查）。
-    try:
-        effective = compute_effective_theme(
-            theme_entity["data"], mode=mode, brand=brand_data,
-            color_overrides=color_overrides, font_overrides=font_overrides)
-    except ThemeError as exc:
-        raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
-
-    # 硬约束合取：风格负面约束 + 布局容量规则；同义去重，矛盾即冲突。
-    constraints: list[dict] = []
-    seen_texts: set[str] = set()
-    for i, text in enumerate(style["data"].get("constraints", {}).get("negative", [])):
-        if text in seen_texts:
-            continue
-        seen_texts.add(text)
-        constraints.append({"id": f"style:{style['asset_id']}:negative:{i}",
-                            "source": "style", "constraint": text})
-    if brand_data:
-        for role in sorted(brand_data.get("locked_roles") or []):
-            constraints.append({"id": f"brand:{brand_data.get('name', 'brand')}:lock:{role}",
-                                "source": "brand", "constraint": f"角色 {role} 由品牌锁定"})
+    # 1–5) 共用设计上下文（K2 抽取）：选择/主题/覆盖/约束与候选预编译同源。
+    context = resolve_design_context(
+        style_query, mode=mode, theme_query=theme_query, brand_data=brand_data,
+        color_overrides=color_overrides, font_overrides=font_overrides, resolver=resolver)
+    style = context["style"]
+    theme_entity = context["theme_entity"]
+    effective = context["effective"]
+    constraints = context["constraints"]
+    seen_texts = context["seen_constraint_texts"]
 
     # 6) 页面解析：页级显式 layout 优先，再用风格路由；校验 renderer 与容量。
     routes = {route.get("page_type"): route
@@ -1137,6 +1186,7 @@ def compose_design(
             "chart_palette": effective["chart_palette"],
         },
         "effective_constraints": constraints,
+        "design_context_digest": context["context_digest"],
         "pages": resolved_pages,
         "dependencies": dependencies,
         "compiler": dict(_DESIGN_COMPILER),

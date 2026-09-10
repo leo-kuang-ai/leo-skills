@@ -52,7 +52,20 @@
    [style-library.md](style-library.md)）；组页时须把所选 brief 的
    rendering_constraints 要点与 negative_prompt 词条**摘入该页视觉行**
    （约束一行 + 负面词条随图行或生成提示词携带），否则这些词表不进生图链路。
-   **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
+   **对照结构标记（dashi 集成 K3）**：双栏对照页必须在视觉行区显式声明
+`对照侧: 标签｜标题｜要点；要点`（每侧一行，要点用全角分号分隔）；compare
+类模板按声明数量硬校验（恰 2 侧合法，1/3 侧拒绝），无标记不猜结构——回
+母版补齐标记后重编译。对照侧要点文本须与页面要点行文一致（去「要点 N：」
+标签后逐字匹配），保证必需内容映射可对账。
+
+**表格结构标记（dashi 集成 K6）**：台账/矩阵页在视觉行区显式声明
+`表列: 列1,列2,列3`（一行，逗号分隔）与 `表行: 单元格｜单元格｜单元格`
+（每行一条，全角竖线分隔，单元格数须与列数对齐）；spec-table 类模板按声明
+物化 columns/rows，列数不对齐或只有单侧标记即校验失败，回母版补齐。四类
+高价值任务（指标及基准差异/趋势及事件注释/决策矩阵/流程及责任分工）的承载
+约定与 fixture 见 `tests/fixtures/dashi-integration/`。
+
+**版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
    [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
    `template-library/canonical/layouts/*/layout.json`（`layout-profile-v1`）可查，
    `"$LEO_PPT" style layouts` 返回同一份容量与复用字段）。
@@ -80,6 +93,16 @@
 
 页面级元信息置于页首，在既有字段（角色分类、事实来源、衔接、预计用时）之上新增：
 
+- **`page_id`（稳定页身份，dashi 集成 K1）**：页首 `page_id: pg-<8-16 位十六进制>`
+  行是跨 revision 保留的稳定身份，deck 内唯一；插入、删除或换序不得给未变化页
+  重新编号，展示顺序仍由页块顺序（`S<N>`/`附` 标签）表达。身份**一次性写入**
+  （legacy 母版先经 `runtime` `content_pack.propose_page_id_stamping` 提案补齐
+  形成新的合法母版并确认），编译器不在每次运行时重发 ID；部分页携带身份即
+  损坏母版（`check_master_contract` ⑬ FAIL）。`page-content-pack`（
+  `<run>/input/page-content-pack.json`）是母版的单向派生物：绑定母版 revision、
+  SHA256、编译器版本与内容摘要，同输入重编译摘要一致，手改内容包在校验时被拒；
+  修改内容必须回母版。投影、来源 manifest、影响计算与升级 baseline 均使用
+  同一 page_id 映射，文件名中的 slide/page 序号只是产物定位信息。
 - **`argument_role`**：本页在论证模式中的角色（词表按所选模式取,如金字塔的
   结论/论据/数据;与页面角色「开场/问题/证据…」分列,前者管论证,后者管叙事位）。
 - **`beat`**：叙事节拍（情境 / 张力 / 转折 / 回报 / 新常态,兼记「密 / 呼吸」）——

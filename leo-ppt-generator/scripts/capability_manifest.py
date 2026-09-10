@@ -87,6 +87,47 @@ def sha256_file(path: Path) -> str:
 # template-library registry builder（唯一 builder，方案 §6）
 # --------------------------------------------------------------------------- #
 
+def derive_structure_admission(library_root: Path) -> dict:
+    """dashi K5/U5：结构准入派生——从 canonical 声明与既有验证记录得出，
+    不另存手写准入名单。HTML 绑定声明即验证（renderer 反向绑定经
+    lint_template_contract 核对）；image profile 需 structure 声明 +
+    renderer_support.image 构图说明；缺声明记 unknown 不准入自动池。
+    """
+    layouts_dir = library_root / "canonical" / "layouts"
+    sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+    from leo_ppt_generator.layout_selection import structure_fingerprint
+    total = html_declared = image_declared = unknown = 0
+    families: set[str] = set()
+    for path in sorted(layouts_dir.glob("*/layout.json")):
+        try:
+            profile = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        total += 1
+        renderer = profile.get("renderer_support") or {}
+        fingerprint = structure_fingerprint(profile)
+        declared = fingerprint != "unknown"
+        if declared:
+            families.add(fingerprint)
+        if isinstance(renderer.get("render:html"), str):
+            if declared:
+                html_declared += 1
+            else:
+                unknown += 1
+        elif declared and isinstance(renderer.get("image"), str):
+            image_declared += 1
+        elif not declared:
+            unknown += 1
+    return {
+        "total_layouts": total,
+        "html_declared": html_declared,
+        "image_declared": image_declared,
+        "structure_unknown": unknown,
+        "distinct_families": len(families),
+        "auto_pool": html_declared + image_declared,
+    }
+
+
 def build_template_registry(library_root: Path) -> dict:
     """从 canonical + governance 输入确定性构建 registry（不写盘）。
 
@@ -425,7 +466,8 @@ def main(argv: list[str] | None = None) -> int:
             registry = build_template_registry(library_root)
             result = {"generation": registry["generation"],
                       "entities": len(registry["entities"]),
-                      "source_digest": registry["source_digest"]}
+                      "source_digest": registry["source_digest"],
+                      "structure_admission": derive_structure_admission(library_root)}
             code = 0
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return code

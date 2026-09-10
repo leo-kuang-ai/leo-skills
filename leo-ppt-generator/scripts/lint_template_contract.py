@@ -100,6 +100,32 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
         layout = known_layouts.get(ref)
         if layout and (layout.get("renderer_support") or {}).get("render:html") != data.get("asset_id"):
             errors.append(f"{slug}: layout {ref} renderer_support.render:html does not point to {data.get('asset_id')}")
+    # dashi K3/U3：输入字段数量能力与同名 layout slot 交叉一致；嵌套结构
+    # 字段（items 形状）必须声明数量边界。
+    for field in data.get("input_fields", []):
+        if not isinstance(field, dict):
+            continue
+        name = field.get("name")
+        declared_bounds = (field.get("count_min"), field.get("count_max"))
+        has_items_shape = isinstance(field.get("items"), dict)
+        if has_items_shape and declared_bounds == (None, None):
+            errors.append(
+                f"{slug}: input field {name} declares nested items shape but no count bounds")
+        for ref in profile_ids:
+            layout = known_layouts.get(ref)
+            slot = (layout or {}).get("slots", {}).get(name)
+            if not slot:
+                continue
+            slot_bounds = (slot.get("count_min"), slot.get("count_max"))
+            if slot_bounds == (None, None):
+                continue
+            for label, tpl_value, layout_value in (
+                    ("count_min", declared_bounds[0], slot_bounds[0]),
+                    ("count_max", declared_bounds[1], slot_bounds[1])):
+                if tpl_value is not None and layout_value is not None and tpl_value != layout_value:
+                    errors.append(
+                        f"{slug}: input field {name}.{label}={tpl_value} conflicts with "
+                        f"layout slot {name}.{label}={layout_value}")
     if data.get("lane") != "render:html":
         errors.append(f"{slug}: lane must be render:html")
     return errors

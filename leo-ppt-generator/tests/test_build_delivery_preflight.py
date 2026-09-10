@@ -127,6 +127,26 @@ class DeliveryPreflightTests(unittest.TestCase):
         (self.run_dir / "content" / "deck-master-v1.md").write_text(
             master, encoding="utf-8")
 
+    def _seed_content_binding(self):
+        """dashi K7：全绿 run 携带内容包 + 整册选择（projection 门 through）。"""
+        from leo_ppt_generator.cli import build_parser, dispatch
+        master = self.run_dir / "content" / "deck-master-v1.md"
+        pack = self.run_dir / "input" / "page-content-pack.json"
+        stamped = self.run_dir / "content" / "deck-master-v2.md"
+        dispatch(build_parser().parse_args([
+            "content", "stamp-page-ids", "--master", str(master), "--out", str(stamped)]))
+        dispatch(build_parser().parse_args([
+            "content", "pack", "--master", str(stamped), "--out", str(pack)]))
+        digest = json.loads(pack.read_text(encoding="utf-8"))["content_digest"]
+        page_ids = [p["page_id"] for p in json.loads(
+            pack.read_text(encoding="utf-8"))["pages"]]
+        (self.run_dir / "input" / "layout-selection.json").write_text(json.dumps({
+            "schema_version": 1, "kind": "deck-layout-selection",
+            "policy_version": "1", "status": "complete", "content_digest": digest,
+            "selection": {pid: {"layout_id": "builtin:layout:body-basic",
+                                 "binding_digest": "0" * 64} for pid in page_ids},
+        }), encoding="utf-8")
+
     def seed_receipt(self):
         sys.path.insert(0, str(Path(SCRIPT).parents[0].parent / "runtime" / "src"))
         try:
@@ -141,6 +161,7 @@ class DeliveryPreflightTests(unittest.TestCase):
 
     def test_all_gates_pass_single_report(self):
         self.seed()
+        self._seed_content_binding()
         self.seed_receipt()
         proc = run(str(self.run_dir))
         self.assertEqual(proc.returncode, 0, proc.stderr)
@@ -148,7 +169,7 @@ class DeliveryPreflightTests(unittest.TestCase):
         self.assertEqual(report["kind"], "delivery-preflight")
         self.assertEqual([g["gate"] for g in report["gates"]],
                          ["deck_geometry", "sources_manifest",
-                          "sensitive_text", "delivery_receipt"])
+                          "sensitive_text", "delivery_receipt", "projection"])
         self.assertTrue(all(g["status"] == "passed" for g in report["gates"]))
         self.assertFalse(report["blocked"])
         self.assertEqual(report["not_run"], [])
@@ -202,7 +223,7 @@ class DeliveryPreflightTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, "not_run 是披露不是失败")
         report = json.loads(self.out.read_text(encoding="utf-8"))
         self.assertEqual(report["not_run"], ["deck_geometry", "sources_manifest",
-                                             "sensitive_text", "delivery_receipt"])
+                                             "sensitive_text", "delivery_receipt", "projection"])
         self.assertEqual(len(report["warnings"]), 4)
         self.assertFalse(report["blocked"])
 

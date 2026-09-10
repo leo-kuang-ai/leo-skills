@@ -28,11 +28,12 @@ class SelectionLayoutTest(unittest.TestCase):
 
     def test_auto_high_score_does_not_override_hard_overflow(self):
         bank = suggest.load_bank()
+        # dashi 集成 U1/AE1：硬超候选直接排除（不再乘 0 压分），无合格候选
+        # 返回 undecided；独立几何闸对同输入仍判 overflow，显式指定也不能绕过。
         result = suggest.score_page({"page": 1, "page_role": "封面", "points": 1, "est_chars": 10000}, bank, 1.0, {})
-        self.assertEqual(result["decision"], "auto")
-        chosen = result["candidates"][0]["layout"]
-        self.assertTrue(any("硬超" in reason for reason in result["candidates"][0]["reasons"]))
-        code, output = self.capacity({"slides": [{"page": 1, "layout": chosen, "points": ["长" * 10000]}]})
+        self.assertEqual(result["candidates"], [])
+        self.assertEqual(result["decision"], "undecided")
+        code, output = self.capacity({"slides": [{"page": 1, "layout": "P1", "points": ["长" * 10000]}]})
         self.assertEqual(code, 1)
         self.assertIn("overflow", output)
 

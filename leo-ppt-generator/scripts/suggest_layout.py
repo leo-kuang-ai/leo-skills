@@ -9,7 +9,7 @@
   （cover/agenda/section/content/data/closing）；角色不符的候选直接出局。
 - 结构匹配：页面侧 {要点条数, 预估字数, 数据点数} 对 sidecar
   ``content_capacity``（count 区间包含度 × max_chars 字数覆盖度；超容量
-  候选容量分乘 0）。
+  硬超候选直接排除）。
 - 节奏感：``reuse_friendly=false`` 且已用 → 硬排除（与
   check_layout_reuse.py 同口径）；已用版式 -0.4、与上一页同版式再 -0.4；
   风格路由 preferred +0.1 / discouraged -0.2（风格层参与但不越权）。
@@ -53,40 +53,16 @@ if str(RUNTIME_SRC) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SRC))
 
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
+from leo_ppt_generator.content_projection import ROLE_PAGE_TYPES
+from leo_ppt_generator.render.layout import capacity_level
 
 W_ROLE, W_CAPACITY, W_RHYTHM = 0.45, 0.40, 0.15
 CONFIDENCE_FLOOR = 0.5
-OVERFLOW_TOLERANCE = 1.2
 TOP_CANDIDATES = 2
 
 # 13_页面语义 25 角色 → 版式 page_type（6 值枚举）。未列角色按中性 0.5 评分。
-ROLE_PAGE_TYPES: dict[str, list[str]] = {
-    "封面": ["cover"],
-    "拆解·目录": ["agenda"],
-    "分隔·过渡": ["section"],
-    "陈述·金句": ["section", "content"],
-    "氛围页": ["closing", "section"],
-    "结尾": ["closing"],
-    "指标·计分榜": ["data"],
-    "结论·数字海报": ["data"],
-    "对比·多维": ["content", "data"],
-    "分布·漏斗": ["data"],
-    "趋势·时间线": ["content", "data"],
-    "流程·路径": ["content"],
-    "关系·网络": ["content"],
-    "团队": ["content"],
-    "图片主导": ["content", "closing"],
-    "案例·分镜": ["content"],
-    "小结·回顾": ["content", "closing"],
-    "参考·文献": ["content"],
-    "目标·学习目标": ["content"],
-    "练习·检测": ["content"],
-    "风险·问答": ["content"],
-    "洞察·展望": ["content"],
-    "背景·定位矩阵": ["content", "data"],
-    "落地·下一步": ["content"],
-    "融资路演链": ["content"],
-}
+# 角色映射唯一所有者为 runtime content_projection.ROLE_PAGE_TYPES（dashi
+# 集成 K2 统一入口），推荐脚本只消费不复制。
 
 INPUT_SCHEMA = {
     "type": "object",
@@ -195,8 +171,8 @@ def _role_fit(page: dict, layout: dict) -> tuple[float | None, str]:
 
 def _capacity_fit(
     page: dict, layout: dict, factor: float
-) -> tuple[float, list[str]]:
-    """区间包含度 × 字数覆盖度；超容量乘 0。"""
+) -> tuple[float | None, list[str]]:
+    """区间包含度 × 字数覆盖度；None 表示硬超排除。"""
     reasons: list[str] = []
     capacity = layout.get("content_capacity", {})
     points = page.get("points")
@@ -214,12 +190,12 @@ def _capacity_fit(
             if points < best["count_min"]:
                 containment = max(0.0, points / best["count_min"])
                 reasons.append(f"条数不足:{points}<{best['count_min']}")
-            elif points <= best["count_max"] * OVERFLOW_TOLERANCE:
+            elif capacity_level(points, best["count_max"]) != "overflow":
                 containment = 0.5
                 reasons.append(f"条数偏多:{points}>{best['count_max']}")
             else:
                 reasons.append(f"条数硬超:{points}≫{best['count_max']}")
-                return 0.0, reasons
+                return None, reasons
     est_chars = page.get("est_chars")
     coverage = 1.0
     if est_chars is not None:
@@ -232,14 +208,14 @@ def _capacity_fit(
             limit = widest * factor
             if est_chars <= limit:
                 reasons.append(f"容量 {est_chars:.0f}/{limit:.0f} chars")
-            elif est_chars <= limit * OVERFLOW_TOLERANCE:
+            elif capacity_level(est_chars, limit) != "overflow":
                 coverage = 0.5
                 reasons.append(f"容量偏紧 {est_chars:.0f}/{limit:.0f} chars")
             else:
                 reasons.append(
-                    f"容量硬超 {est_chars:.0f}/{limit:.0f} chars（乘 0）"
+                    f"容量硬超 {est_chars:.0f}/{limit:.0f} chars"
                 )
-                return 0.0, reasons
+                return None, reasons
     return containment * coverage, reasons
 
 
@@ -272,6 +248,8 @@ def score_page(page: dict, bank: dict[str, dict], factor: float,
         if role_fit is None:
             continue
         capacity_fit, cap_reasons = _capacity_fit(page, layout, factor)
+        if capacity_fit is None:
+            continue
         rhythm, rhythm_reasons = _rhythm(page, layout_id, layout)
         routing = adjust.get(layout_id, 0.0)
         score = (

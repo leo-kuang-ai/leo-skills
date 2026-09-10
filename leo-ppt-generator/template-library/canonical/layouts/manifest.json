@@ -13,32 +13,32 @@
       "profile": "body-basic/layout.json",
       "asset_id": "builtin:layout:body-basic",
       "notes": "body-basic/notes.md",
-      "revision": "1a77e0fdccd0010f",
-      "layout_sha256": "1a77e0fdccd0010f860cecc0ed755bba62c4b0f28049b2c90af0d1293b63553e",
+      "revision": "bf90b0405ade2f93",
+      "layout_sha256": "bf90b0405ade2f9375afe2f32db77b7f7a94ba66c0cdd42361fbc2b73153bac4",
       "notes_sha256": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09"
     },
     {
       "profile": "compare/layout.json",
       "asset_id": "builtin:layout:compare",
       "notes": "compare/notes.md",
-      "revision": "d4d2f85f9739a37f",
-      "layout_sha256": "d4d2f85f9739a37faa62a64dc138b38271b8a61f549a0a80d9e69cd03274e79a",
+      "revision": "7a4008b3f9871557",
+      "layout_sha256": "7a4008b3f98715579c0141bfeea7a2e0a354d8b3b9f60a5668eee5112f7874a0",
       "notes_sha256": "1be3272a3d896d1d6f775f43aad3e7c916dc9bdbde884ba23b5e2fa75c03787b"
     },
     {
       "profile": "cover-basic/layout.json",
       "asset_id": "builtin:layout:cover-basic",
       "notes": "cover-basic/notes.md",
-      "revision": "351b67def0b6a95f",
-      "layout_sha256": "351b67def0b6a95f32d7d8be92a6b114d942c632e9eafdc09f2fa09d511173f9",
+      "revision": "636e63b3a4642165",
+      "layout_sha256": "636e63b3a4642165e014941ca3a6b83df67493fb1b497c7aca45bb1542ae3bba",
       "notes_sha256": "a585dc592ca5db657fab3755c8f4c545166f969ffc5b86c634a2ead1ebb1b5bc"
     },
     {
       "profile": "frame-shot/layout.json",
       "asset_id": "builtin:layout:frame-shot",
       "notes": "frame-shot/notes.md",
-      "revision": "0cf5424dbb805f03",
-      "layout_sha256": "0cf5424dbb805f0350d5406f27b6120aa90d01e22c4410628fd399d0a3a1835f",
+      "revision": "d0636428e6fb5653",
+      "layout_sha256": "d0636428e6fb5653d17f68d3d9222cb02e891f1fdf85434bf01087aab2c67f8d",
       "notes_sha256": "0565fe0eeb48d751542551c456e8a104235a167d182fbfdced28a8fb270d4247"
     },
     {
@@ -181,8 +181,8 @@
       "profile": "p25-spec-table/layout.json",
       "asset_id": "builtin:layout:p25-spec-table",
       "notes": "p25-spec-table/notes.md",
-      "revision": "a4200adc8a5ae5e6",
-      "layout_sha256": "a4200adc8a5ae5e6cd67afbcf8f729be2f839e9b2dc98d0704cd3af1c22f7578",
+      "revision": "a8f7c934f105f691",
+      "layout_sha256": "a8f7c934f105f6917f837d7db9f9e65502a1c09ea5db4023e32c782055db86d8",
       "notes_sha256": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2"
     },
     {
@@ -333,16 +333,16 @@
       "profile": "pull-quote/layout.json",
       "asset_id": "builtin:layout:pull-quote",
       "notes": "pull-quote/notes.md",
-      "revision": "eba8addd2ad544c0",
-      "layout_sha256": "eba8addd2ad544c03228e7172219ac8715a26171fca1a788298cf82cf1826f3d",
+      "revision": "ae3908d497011a47",
+      "layout_sha256": "ae3908d497011a47f1a566c776b578cf47be98d9433311dc1249845d479e3920",
       "notes_sha256": "80a95befd193be0546fe2b3e9b3aad191104e7dba813a2991d43c67e6948f05c"
     },
     {
       "profile": "timeline/layout.json",
       "asset_id": "builtin:layout:timeline",
       "notes": "timeline/notes.md",
-      "revision": "c86c0d272b6be316",
-      "layout_sha256": "c86c0d272b6be316b731bda920363cc3c1fa18f132ccb5db1996ce3244b7f37c",
+      "revision": "bc3537133fdae863",
+      "layout_sha256": "bc3537133fdae8633b61df096f389db307da798295f5c22e33219a8472a40560",
       "notes_sha256": "2f63c4b555569104e14151472732da0343be9ae93cb78d7a65a33514af618b9d"
     }
   ]

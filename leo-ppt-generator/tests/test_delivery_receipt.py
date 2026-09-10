@@ -32,6 +32,7 @@ from leo_ppt_generator.cli import (  # noqa: E402
 from leo_ppt_generator.render.receipt import (  # noqa: E402
     FINGERPRINT_CLASSES,
     RECEIPT_RELATIVE_PATH,
+    ReceiptError,
     create_delivery_receipt,
     verify_delivery_receipt,
 )
@@ -151,6 +152,93 @@ class TamperedPageIsStaleWithPageImpact(MiniRunTestCase):
 
 
 class AssetDriftImpactsWholeDeck(MiniRunTestCase):
+    def _bind_template(self):
+        (self.run_root / "input/resolved-design.json").write_text(json.dumps({
+            "entity": "resolved-design", "pages": [{"template_id": "builtin:template:body-basic"}],
+        }))
+
+    def test_library_fallback_templates_use_anchored_keys(self):
+        """库回退 + 冻结绑定时，run 外模板文件以 library/ 前缀键入指纹。"""
+
+        import leo_ppt_generator.asset_resolver as asset_resolver
+
+        self._bind_template()
+        library = Path(self._tmp.name) / "library"
+        template = library / "template-library/canonical/templates/body-basic/page.html"
+        template.parent.mkdir(parents=True)
+        template.write_text("<main>library</main>", encoding="utf-8")
+        original = asset_resolver._candidate_bundle_roots
+        asset_resolver._candidate_bundle_roots = lambda: [library]
+        try:
+            result = create_delivery_receipt(self.run_root)
+            sources = result["receipt"]["fingerprints"]["template_style_sources"]
+            self.assertEqual(
+                set(sources),
+                {"input/style-brief.md", "library/body-basic/page.html"},
+            )
+            self.assertEqual(
+                sources["library/body-basic/page.html"], sha256_file(template)
+            )
+            self.assertEqual(verify_delivery_receipt(self.run_root)["status"], "fresh")
+            template.write_text("<main>drifted</main>", encoding="utf-8")
+            self.assertEqual(verify_delivery_receipt(self.run_root)["status"], "stale")
+        finally:
+            asset_resolver._candidate_bundle_roots = original
+
+    def test_canonical_template_changes_invalidate_receipt(self):
+        self._bind_template()
+        template = self.run_root / "template-library/canonical/templates/body-basic/page.html"
+        template.parent.mkdir(parents=True)
+        template.write_text("<main>original</main>")
+        create_delivery_receipt(self.run_root)
+        template.write_text("<main>changed</main>")
+        self.assertEqual(verify_delivery_receipt(self.run_root)["status"], "stale")
+
+    def test_canonical_template_removal_invalidates_receipt(self):
+        self._bind_template()
+        template = self.run_root / "template-library/canonical/templates/body-basic/page.html"
+        template.parent.mkdir(parents=True)
+        template.write_text("<main>original</main>")
+        create_delivery_receipt(self.run_root)
+        template.unlink()
+        self.assertEqual(verify_delivery_receipt(self.run_root)["status"], "stale")
+
+    def test_unused_canonical_template_does_not_invalidate_receipt(self):
+        self._bind_template()
+        used = self.run_root / "template-library/canonical/templates/body-basic/page.html"
+        used.parent.mkdir(parents=True)
+        used.write_text("used")
+        unused = self.run_root / "template-library/canonical/templates/compare/page.html"
+        unused.parent.mkdir(parents=True)
+        unused.write_text("unused")
+        create_delivery_receipt(self.run_root)
+        unused.write_text("changed")
+        self.assertEqual(verify_delivery_receipt(self.run_root)["status"], "fresh")
+
+    def test_missing_selected_template_blocks_creation(self):
+        self._bind_template()
+        # run 本地 stage 了模板根（库回退不生效）而选中模板缺 page.html → 拒绝。
+        (self.run_root / "template-library/canonical/templates").mkdir(parents=True)
+        with self.assertRaisesRegex(ReceiptError, "delivery_template_source_missing"):
+            create_delivery_receipt(self.run_root)
+
+    def test_unbound_canonical_templates_block_creation(self):
+        (self.run_root / "template-library/canonical/templates").mkdir(parents=True)
+        with self.assertRaisesRegex(ReceiptError, "delivery_template_binding_required"):
+            create_delivery_receipt(self.run_root)
+
+    def test_invalid_binding_and_symlink_block_creation(self):
+        path = self.run_root / "input/resolved-design.json"
+        path.write_text(json.dumps({"entity": "resolved-design", "pages": [None]}))
+        with self.assertRaisesRegex(ReceiptError, "delivery_template_binding_invalid"):
+            create_delivery_receipt(self.run_root)
+        self._bind_template()
+        template = self.run_root / "template-library/canonical/templates/body-basic/page.html"
+        template.parent.mkdir(parents=True)
+        template.symlink_to(self.run_root / "input/slides.json")
+        with self.assertRaisesRegex(ReceiptError, "delivery_template_path_invalid"):
+            create_delivery_receipt(self.run_root)
+
     def test_local_asset_drift_impacts_whole_deck(self):
         create_delivery_receipt(self.run_root)
         (self.run_root / "input" / "slides.json").write_text(

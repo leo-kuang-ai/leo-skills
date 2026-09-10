@@ -93,13 +93,86 @@ def _iter_regular_files(directory: Path) -> list[Path]:
     return files
 
 
-def _fingerprint_map(run_root: Path, files: list[Path]) -> dict[str, str]:
-    return {
-        path.relative_to(run_root).as_posix(): sha256_file(path) for path in files
-    }
+def _fingerprint_map(
+    run_root: Path,
+    files: list[Path],
+    *,
+    external_anchor: Path | None = None,
+) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    for path in files:
+        resolved = path.resolve()
+        try:
+            key = resolved.relative_to(run_root).as_posix()
+        except ValueError:
+            # 库回退：模板文件在 run 之外，锚定模板库根并加 library/ 前缀，
+            # 键仍确定（create/verify 同码路径一致）。
+            if external_anchor is None:
+                raise
+            key = f"library/{resolved.relative_to(external_anchor).as_posix()}"
+        mapping[key] = sha256_file(resolved)
+    return mapping
 
 
-def collect_fingerprints(run_root: str | Path) -> dict[str, dict[str, str]]:
+def _template_library_root(root: Path) -> Path:
+    """模板库根：run 本地优先，退回技能库 canonical（与渲染搜索同源）。"""
+    run_local = root / "template-library/canonical/templates"
+    if run_local.is_dir():
+        return run_local
+    from ..asset_resolver import _candidate_bundle_roots
+    for bundle_root in _candidate_bundle_roots():
+        candidate = Path(bundle_root) / "template-library/canonical/templates"
+        if candidate.is_dir():
+            return candidate
+    return run_local
+
+
+def _used_template_files(root: Path, input_files: list[Path], *, allow_missing: bool) -> list[Path]:
+    run_local_root = root / "template-library/canonical/templates"
+    template_root = _template_library_root(root)
+    selected = set()
+    design_found = False
+    for path in input_files:
+        if path.suffix != ".json":
+            continue
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            continue
+        if not isinstance(value, dict) or value.get("entity") != "resolved-design":
+            continue
+        design_found = True
+        pages = value.get("pages")
+        if not isinstance(pages, list) or any(not isinstance(page, dict) for page in pages):
+            raise ReceiptError("delivery_template_binding_invalid")
+        for page in pages:
+            template_id = page.get("template_id")
+            if template_id is None:
+                continue
+            if not isinstance(template_id, str) or not re.fullmatch(
+                r"builtin:template:[a-z0-9][a-z0-9-]*", template_id
+            ):
+                raise ReceiptError("delivery_template_binding_invalid")
+            selected.add(template_id.rsplit(":", 1)[-1])
+    # 「缺绑定即拒绝」只对 run 本地模板根生效（run 自己 stage 了模板却无
+    # 冻结绑定 = 不可解释）；库回退时无绑定表示该 run 未消费模板，留空清单。
+    if run_local_root.is_dir() and not design_found:
+        raise ReceiptError("delivery_template_binding_required")
+    files = []
+    templates_anchor = template_root.resolve()
+    for slug in sorted(selected):
+        directory = template_root / slug
+        if directory.is_symlink() or not directory.resolve().is_relative_to(templates_anchor):
+            raise ReceiptError("delivery_template_path_invalid")
+        if (directory / "page.html").is_symlink():
+            raise ReceiptError("delivery_template_path_invalid")
+        if not allow_missing and not (directory / "page.html").is_file():
+            raise ReceiptError("delivery_template_source_missing")
+        files.extend(_iter_regular_files(directory))
+    return files
+
+
+def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -> dict[str, dict[str, str]]:
     """采集一个 run 目录的五类指纹；缺失类别记显式空清单。"""
 
     root = Path(run_root).resolve()
@@ -141,15 +214,18 @@ def collect_fingerprints(run_root: str | Path) -> dict[str, dict[str, str]]:
 
     template_files = [
         *style_inputs,
-        *(_iter_regular_files(root / "assets" / "render-templates")),
+        *_used_template_files(root, input_files, allow_missing=allow_missing),
     ]
+    templates_anchor = _template_library_root(root).resolve()
 
     return {
         "page_artifacts": _fingerprint_map(root, page_files),
         "local_assets": _fingerprint_map(root, plain_inputs),
         "qa_reports": _fingerprint_map(root, qa_files),
         "render_previews": _fingerprint_map(root, preview_files),
-        "template_style_sources": _fingerprint_map(root, template_files),
+        "template_style_sources": _fingerprint_map(
+            root, template_files, external_anchor=templates_anchor
+        ),
     }
 
 
@@ -164,6 +240,45 @@ def _run_identity(run_root: Path) -> dict[str, Any]:
         "run_id": value.get("run_id") if isinstance(value.get("run_id"), str) else None,
         "route": value.get("route") if isinstance(value.get("route"), str) else None,
     }
+
+
+def content_binding_summary(run_root: str | Path) -> dict | None:
+    """dashi K7：从冻结 run 输入派生内容绑定摘要（可重建，非第二份真值）。
+
+    关联当前内容包（content_digest/页身份）、整册选择（policy/每页 layout）
+    与冻结设计（design_digest）。输入缺失返回 None（无绑定的 run 不伪造）。
+    """
+    root = Path(run_root).resolve()
+    summary: dict = {}
+    pack_path = root / "input" / "page-content-pack.json"
+    if pack_path.is_file():
+        try:
+            pack = json.loads(pack_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            raise ReceiptError("content_pack_unreadable")
+        summary["content_digest"] = pack.get("content_digest")
+        summary["page_ids"] = [p.get("page_id") for p in pack.get("pages", [])]
+        summary["page_count"] = len(pack.get("pages", []))
+    selection_path = root / "input" / "layout-selection.json"
+    if selection_path.is_file():
+        try:
+            selection = json.loads(selection_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            raise ReceiptError("layout_selection_unreadable")
+        summary["selection_policy"] = selection.get("policy_version")
+        summary["selection_status"] = selection.get("status")
+        summary["selected_layouts"] = {
+            pid: entry.get("layout_id")
+            for pid, entry in (selection.get("selection") or {}).items()}
+    design_path = root / "input" / "resolved-design.json"
+    if design_path.is_file():
+        try:
+            design = json.loads(design_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            raise ReceiptError("resolved_design_unreadable")
+        summary["design_digest"] = design.get("design_digest")
+        summary["design_context_digest"] = design.get("design_context_digest")
+    return summary or None
 
 
 def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
@@ -184,6 +299,7 @@ def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         "delivery_stage": None,
         "builder_id": None,
         "fingerprints": fingerprints,
+        "content_binding": content_binding_summary(root),
         "linked_assets": {
             "sources_manifest": None,
             "beta_sidecars": None,
@@ -332,7 +448,15 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         }
 
     recorded: dict[str, dict[str, str]] = receipt["fingerprints"]
-    current = collect_fingerprints(root)
+    try:
+        current = collect_fingerprints(root, allow_missing=True)
+    except ReceiptError as exc:
+        return {
+            "status": "invalid", "run_root": str(root), "receipt_path": str(target),
+            "fresh": False, "reason_code": str(exc), "changed": [],
+            "impact": {"scope": "deck", "impacted_pages": [], "impacted_page_paths": [],
+                       "recommended_actions": ["修复冻结设计与模板源绑定后重新生成收据"]},
+        }
     changed_by_class = {
         name: _diff_fingerprints(recorded[name], current[name])
         for name in FINGERPRINT_CLASSES
@@ -342,6 +466,20 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         for name in FINGERPRINT_CLASSES
         for entry in changed_by_class[name]
     ]
+    # dashi K7：内容绑定摘要（内容包/整册选择/冻结设计）漂移同样失效收据——
+    # 页身份、页序或选中版式变化不能被指纹类别掩盖。
+    try:
+        current_binding = content_binding_summary(root)
+    except ReceiptError as exc:
+        return {
+            "status": "invalid", "run_root": str(root), "receipt_path": str(target),
+            "fresh": False, "reason_code": str(exc), "changed": [],
+            "impact": {"scope": "deck", "impacted_pages": [], "impacted_page_paths": [],
+                       "recommended_actions": ["修复 run 输入区内容绑定文件后重新生成收据"]},
+        }
+    if receipt.get("content_binding") != current_binding:
+        changed.append({"class": "content_binding", "path": "input/*",
+                        "before": "recorded", "after": "current"})
     impact = _infer_impact(changed_by_class)
     return {
         "status": "stale" if changed else "fresh",

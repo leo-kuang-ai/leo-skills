@@ -191,7 +191,7 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    通道获取，来源 URL+抓取时间戳入 manifest，抓不到如实标 unknown 求证（R-05）。
    按执行合同先 `image sample-record` 保存有依据的样张决策；以下 prepare 调用还必须
    带 `--sample-binding <binding.json>`（六字段定义见执行合同），再调用顶层
-   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json>`——
+   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json> [--content-pack <page-content-pack.json>] [--design <resolved-design.json>]`（dashi K4：内容包/冻结设计 CAS 冻结并校验摘要与页序，改版须建新 run，详见 execution-contract.md「内容冻结绑定」）——
    runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
    `contents_sha256` 并入 `prepare_fingerprint`（不带 `--sources` 时 fingerprint 保持
    旧算法，旧 run 恢复兼容）；这一步创建唯一 `image-deck/slide_jobs.json` canonical

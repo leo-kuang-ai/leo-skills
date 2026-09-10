@@ -63,5 +63,18 @@
     "image": "表头行（角色区分底色）+ 斑马纹数据行 + 单位列右对齐；最小字号 24px（2560 画布）"
   },
   "notes": "几何真值唯一源：列宽/边距/区域在此文件；HTML 不再拥有列宽真值。行数 >8 → 强制 direct-editable 原生表格。",
-  "reuse_friendly": true
+  "reuse_friendly": true,
+  "structure": {
+    "reading_order": [
+      "title",
+      "columns",
+      "rows"
+    ],
+    "encodings": [
+      {
+        "slot": "rows",
+        "kind": "table"
+      }
+    ]
+  }
 }

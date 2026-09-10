@@ -280,3 +280,24 @@
 | `render_sweep_planned` | `image sweep --dry-run` 输出复位计划（完成码） | 不适用 | 确认计划后去掉 `--dry-run` 执行 |
 | `render_sweep_applied` | `image sweep` 已复位非 rendered 页（复用 reset_failed_pages） | 见协议 | 已 rendered 页无条件跳过；按 ≤2 轮上限继续 |
 | `render_sweep_rounds_exhausted` | 清扫轮次已达 `--max-rounds` 上限，拒绝再次复位 | 条件式 | 剩余失败页走缺页拒绝组装 / partial-hybrid 确认（upgrade）或向用户披露（generate） |
+
+## 内容冻结绑定与关联升级（dashi 集成 K4/K7）
+
+| reason code | 含义 | 恢复动作 |
+| --- | --- | --- |
+| `content_master_missing` | `content pack --master` 指向的母版文件不存在 | 核对母版路径后重试 |
+| `content_pack_invalid` | 内容包不可解析 / 摘要不自洽（手改）或母版缺稳定身份/确认标记 | 回母版修复（page_id、confirmation、登记表九列、图行三段）后重新编译 |
+| `content_pack_page_mismatch` | slides 页序与内容包页序不一致 | 对齐 slides 与母版页集后重新 prepare |
+| `resolved_design_invalid` | 冻结设计缺失 `entity: resolved-design` 或不可解析 | 用 compose_design 重新产出设计后重试 |
+| `design_page_mismatch` | 冻结设计页序与内容包页序不一致 | 同一内容包重新组合设计 |
+| `layout_selection_invalid` | 整册选择文件缺 `kind: deck-layout-selection` 或不可解析 | 用 layout_selection.allocate_deck 重新产出 |
+| `layout_selection_content_mismatch` | 选择的 content_digest ≠ 内容包摘要 | 同一内容包重跑选择 |
+| `layout_selection_page_mismatch` | 选择页覆盖 ≠ 内容包页集合 | 同一内容包重跑选择 |
+| `page-content-pack_fingerprint_conflict` | 已 prepare 后注入不同内容包 | 内容改版须建立新 run（同 run 拒绝） |
+| `resolved-design_fingerprint_conflict` | 已 prepare 后注入不同冻结设计 | 设计改版须建立新 run |
+| `layout-selection_fingerprint_conflict` | 已 prepare 后注入不同整册选择 | 重选须建立新 run 或回滚到原选择 |
+| `content_pack_unreadable` / `layout_selection_unreadable` / `resolved_design_unreadable` | 收据绑定时 run 输入区文件损坏 | 从冻结前来源恢复输入文件后重新生成收据 |
+| `delivery_template_binding_invalid` | 冻结设计缺页级 template_id 或格式非法 | 重新组合设计（绑定模板资产） |
+| `delivery_template_binding_required` | run 本地模板根存在但无冻结设计绑定 | 补 `--design` 后重新 prepare |
+| `delivery_template_path_invalid` | 模板目录符号链接/越出模板根 | 修复 run 内模板 stage 或使用 canonical 库 |
+| `delivery_template_source_missing` | 选中模板缺 page.html | 恢复模板目录后重新生成收据 |

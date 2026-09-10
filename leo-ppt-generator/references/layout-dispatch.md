@@ -1,5 +1,17 @@
 # 版式调度合同（layout dispatch）
 
+> **整册分配（dashi 集成 K5/U5）**：canonical layout 携带受 schema 约束的
+> `structure` 声明（阅读顺序/分组关系/图表编码，不含主题、文案、评分或第二
+> 套几何）；结构指纹经版本化规范化——资产重命名不变，顺序/分组/编码改变即
+> 变，缺声明记 `unknown` 不获得多样性加分。母版内容包驱动的整册分配由
+> runtime `layout_selection.allocate_deck` 完成：内部保留**完整合格候选池**
+> （硬资格：角色/容量/媒体/backend/必需覆盖），确定性有界搜索满足禁复用与
+> `max_per_deck`（仅对 `reuse_friendly=false` 生效，普通版式可复用），预算
+> 耗尽与无候选分别报告；Top-2 仅是面向人的推荐摘要。准入集合由
+> `scripts/capability_manifest.py --template-library` 的 `structure_admission`
+> 从 canonical 声明派生（当前 7 个 HTML 绑定版式入自动池，35 个 image 版式
+> 未声明记 unknown），不另存手写名单。
+
 > 逐页版式匹配从「Agent 自由裁量」升级为「确定性打分 + 人工裁决 undecided」。
 > 本文档是调度规则合同：四步链、打分口径、undecided 呈现格式、禁编造纪律、
 > 与容量预检（B3）的衔接。打分器为无状态只读脚本
@@ -21,13 +33,13 @@
 2. **结构匹配**：页面侧 `{要点条数, 每要点预估字数, 数据点数, 图源数}`
    （母版内容行已有）对 canonical profile 的 `slots`：
    - **区间包含度**：条数落在 `count_min/count_max` 区间内 = 1.0；不足
-     按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 容量分乘 0。
+     按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 候选直接排除（dashi U1）。
    容量预检的人工/agent 选页通道：`leo-ppt style layouts --capacity "槽名<=N"`
    只读过滤（计数槽按 `count_max`、文本槽按 `max_chars`），档位速查见
    `template-library/governance/rules/layouts/00_容量档位参考.md`。
    - **字数覆盖度**：每要点预估字数（vw 视觉宽度）对最宽文本 slot 的
      `max_chars`（× 风格 `capacity_factor.text`）；装得下 = 1.0；
-     ≤1.2 倍 = 0.5；硬超 = 容量分乘 0。
+     ≤1.2 倍 = 0.5；硬超 = 候选直接排除（返回 undecided 与原因）。
 3. **节奏感**：`reuse_friendly=false` 且已用 → **硬排除**（与
    `scripts/check_layout_reuse.py` 同口径）；已用版式 -0.4；与上一页同
    版式再 -0.4；同 `page_type` 连续 ≥3 页应提示换型（人工判断项）。
@@ -98,7 +110,7 @@ exit 2）；评测对 agent 回复中的非枚举版式名做否定感知拦截�
 
 `suggest_layout.py` 的 `decision=auto` 只表示综合候选分达到阈值，不代表容量已通过。
 两次检查必须保持同一页的文本与要点粒度；一个长要点不能改成大量单字要点。固定文本槽版式还检查 points 总量，避免无限复用最宽槽；定稿应显式映射 slots。
-角色和节奏分可能使 `capacity_fit=0` 的候选仍得到 auto；必须执行下面的独立容量预检。
+硬超候选在推荐层即被排除（无合格候选返回 undecided 与具体原因）；独立容量预检仍须执行——显式指定同样不能绕过几何闸。
 独立检查的 overflow 无条件阻断该页定稿，不能因 auto、用户催促或之前样张通过而忽略。
 未知 P 码、空版式库或缺少容量字段时报告缺口，不伪造风格专属支持。
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """suggest_layout.py（B2 调度师打分器）边界测试：确定性、强视觉硬排除、
-undecided 兜底、禁编造 id、容量硬超乘 0、输入 schema 错误 exit 2。"""
+undecided 兜底、禁编造 id、容量硬超排除、输入 schema 错误 exit 2。"""
 import json
 import subprocess
 import sys
@@ -81,8 +81,7 @@ class SuggestLayoutTests(unittest.TestCase):
             for cand in page["candidates"]:
                 self.assertIn(cand["layout"], bank_ids)
 
-    def test_capacity_overflow_zeroes_capacity_fit(self):
-        # est_chars 远超最宽 slot（×1.2）→ capacity_fit=0，得分只剩角色+节奏。
+    def test_capacity_overflow_excludes_candidate(self):
         tight = {"pages": [
             {"page": 1, "page_role": "指标·计分榜", "points": 4, "est_chars": 30},
         ]}
@@ -92,16 +91,16 @@ class SuggestLayoutTests(unittest.TestCase):
         ]}
         ok_tight = json.loads(run(tight).stdout)["pages"][0]
         ok_over = json.loads(run(overflow).stdout)["pages"][0]
-        top_tight = ok_tight["candidates"][0]
-        top_over = ok_over["candidates"][0]
-        self.assertGreater(
-            top_tight["score"], top_over["score"],
-            "容量硬超候选应被乘 0 压分",
-        )
-        self.assertTrue(
-            any("硬超" in r or "乘 0" in r for r in top_over["reasons"]),
-            top_over,
-        )
+        self.assertTrue(ok_tight["candidates"])
+        self.assertEqual(ok_over["candidates"], [])
+        self.assertEqual(ok_over["decision"], "undecided")
+
+    def test_cover_hard_overflow_cannot_be_offset_by_role_score(self):
+        page = json.loads(run({"pages": [{
+            "page": 1, "page_role": "封面", "est_chars": 99999,
+        }]}).stdout)["pages"][0]
+        self.assertEqual(page["candidates"], [])
+        self.assertEqual(page["decision"], "undecided")
 
     def test_style_routing_adjusts_score(self):
         payload = {"pages": [

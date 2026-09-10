@@ -135,6 +135,11 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 
 generate 命中数据图表/表格/文字密集页时读 `references/render-contract.md`（render
 page/chart 确定性渲染 lane）；逐页版式匹配进母版前读 `references/layout-dispatch.md`（P 码调度与容量预检）。按容量预筛版式用 `leo-ppt style layouts --capacity "槽名<=N"`（只读查询，档位速查与语法见 `template-library/governance/rules/layouts/00_容量档位参考.md`）；负面提示词补齐取词与生图构图词汇分别见 `template-library/governance/authoring/index/负面语料参考池.md`（`scripts/draft_negative_prompts.py --pool`）与 `template-library/governance/authoring/index/构图词汇参考.md`。
+generate 使用带稳定身份母版（`page_id: pg-<hex>`）时，prepare 前先
+`leo-ppt content pack --master <母版> --out <page-content-pack.json>` 编译内容包
+（legacy 母版先 `content stamp-page-ids` 一次性补齐身份并重新确认；对照页须在
+母版声明 `对照侧:` 标记），`image prepare --content-pack` 冻结绑定——摘要手改即
+拒、改版须建新 run（dashi 集成 K4，合同细则见 execution-contract.md）。
 generate 全出血封面/大图井（文字压图）页读 `references/image-text-composition.md`
 （四步事前构图协议）；素材入库/检索读 `references/library-schema.md`（经
 `scripts/library_catalog.py` 登记 sha256 出处），点名市场/行业数据读

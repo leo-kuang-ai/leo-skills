@@ -7,6 +7,7 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：补充表达优先方案独立复审证据校准**：刷新当前源码快照哈希与盘点分母，记录 point 隐式回填、v1 binding、canonical rebuild、causal/system 压平及 R75/U5 提案语义冲突；补充项目虚拟环境下 focused/full test 结果，并明确独立 worker 因 429 未返回。 (user-visible)
 - **leo-ppt-generator：U11 容量重排提案与六节点决策简报**：新增 runtime `layout_proposals.py`——容量 overflow → ≤3 项带一句话代价的菜单（换版式优先、内容减法次之），逐项可 `preview_apply` 纯函数预演并按门同口径复检闭环（宽度真源 `visual_width` 收编 `render/layout.py`，check_deck_geometry 同源委托）；不可行如实报告并给拆页/降密度/混合确认替代路线，不硬凑；永不自动改正文、不缩字号。新增 `references/decision-brief.md` 六节点三行简报模板与确定性构建器（术语白名单通俗化、单行 60 字上限、页码"计数＋区间"格式、波及页数与 `compute_impact.py` 输出对账不编造、委托模式仍生成仅豁免呈现）；执行合同补六节点挂点。17 项测试新增。 (user-visible)
 - **leo-ppt-generator：U14 交付披露面（diffs 拼图/alt 清单/讲稿时长）**：新增 runtime `delivery_disclosure.py`——R-78 新旧页图拼图写 `<run>/diffs/`（页集合与波及面严格相等、缺图/多图拒绝、图注带 regime 版本戳）；R-79 alt 清单写 `<run>/disclosure/`（负责人裁决：reports/ 属 qa_reports 指纹类，披露工件移出该命名空间），缺失按 missing 披露不静默；R-82 讲稿时长校准（页级预算优先→整册均分→双缺失 unknown，advisory 不阻断）接入 `export_speaker_notes --duration-check`（DURATION-WARN 出口）；收据新增**非指纹** `disclosure` 摘要块，旧收据验证不受影响（负例断言披露工件不落入五类指纹类）；控制台新增 `/diffs/` serve（严格包含检查防穿越）。15 项测试新增。 (user-visible)
 - **leo-ppt-generator：U12 批次回滚机制**：`capability_manifest --library-rollback <generation>` 将 catalog `current.json` 指针原子切回既有 generation（构建锁内、目标代 registry 自洽校验、当前代空操作、坏代 exit 2）；回滚不移动不删除 generation 目录。语义执行资格晋升本身仍被真实视觉验收门阻塞，未硬凑。3 项测试新增。 (user-visible)

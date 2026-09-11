@@ -45,6 +45,7 @@ adheres to a loose semantic-versioning convention.
   - 语义抽查 3 页 + 全量像素硬闸，发现并修复两个真实缺陷（见 Fixed）；双人独立评审不可得，如实登记为缺口（`evals/fixtures/template-quality/deck-style-matrix/semantic-review.json`）。
 
 ### Removed
+- **docs：移除空的 `docs/evidence-first-writing/` 目录**：2026-09-04 目录重组后遗留的空壳（0 文件、未入 git），同步删除 `docs/README.md` 中的"待补充"索引。
 - **仓库级：清理全部评测 workspace 产物与 graphify-out（约 4.3G）**：均为 git-ignored 可再生产物（重跑 `skill-up run evals/eval.yaml` 或 spec-runtime-setup 刷新即可重建），仅保留当日活跃的 `ppt-flow-diagram-workspace/`。同步改写 `docs/` 与 `evidence-first-writing/` 中指向已删工作区的悬空证据路径为"原存 git-ignored 工作区（已于 2026-09-11 清理）"表述，含命令块中指向已删任务隔离 `.venv` 的路径（改 `<python>` 占位并注明等价形式）；保留 CHANGELOG 历史条目、机器证据 JSON（`docs/leo-ppt-generator/evidence/style-index-verification.json` 的轨迹/判官哈希记录）与 `docs/tasks/` 冻结任务清单 context_refs、评测 fixture 中的历史记录性引用。
 
 ### Fixed

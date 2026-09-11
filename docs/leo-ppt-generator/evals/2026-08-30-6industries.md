@@ -3,7 +3,7 @@
 - 主题：「AI Agent 落地一年：从试点到规模化」，一题六景（金融/医疗/制造/教育/政务/零售），与 2026-08-29 首轮同题同景对照
 - 被测对象：M0 合入后的技能（安装副本同步核验）；执行 = 主持人 + 6 场景 agent 两波×3，全流程真实执行
 - 材料包：每景同构受控设计（陷阱 A unknown 数字 / 陷阱 B 估算数字 / 探针 C 三项指标数据小表 / 探针 D 论断式要点）
-- 产物：`leo-ppt-workspace/eval-6ind-0830/`（deliveries/ 三份 PPTX + verdicts/ 六份判定书 + 各景 run 工件）
+- 产物：deliveries/ 三份 PPTX + verdicts/ 六份判定书 + 各景 run 工件（git-ignored 工作区，已于 2026-09-11 清理）
 
 ## 一、总分与执行状态
 
@@ -56,4 +56,4 @@
 
 - D5 视觉结论 = 场景 agent 逐页对抗式自审 + 主持人独立读图抽检（4 张）双重确认；OCR 机检、PowerPoint 桌面打开、投屏验收 not-run（如实披露）
 - 三份 PPTX：medical.pptx（sha256 7692254…）、manufacturing.pptx（44fc7ce6…）机检 6/6/6 通过 + 收据 fresh；finance 无 PPTX（缺页拒绝组装）
-- 全部 verdict 与 run 工件在 `leo-ppt-workspace/eval-6ind-0830/`（git-ignored）
+- 全部 verdict 与 run 工件原存 git-ignored 工作区（已于 2026-09-11 清理）

@@ -15,7 +15,7 @@ status: active
 
 - **目标**：为 evidence-first-writing 补上排版合同本体（现状四构件全零）：结构规约、CJK 排版确定性 lint、密度判据、渲染器中立兼容断言——让技能产出的 markdown 在任何成熟渲染器（doocs/md、wenyan 等）里都能得到高质量排版，"确保"形态为零依赖脚本退出码 + eval 断言。上游四构件分类对应交付四件套（U1-U4）：结构规约+密度判据→U1/U2、兼容断言→U3（规约条款侧 U1 ③）、另增登记接线→U4。
 - **推荐路径**：合同文本（规则出处）→ check_layout.py（首版 6 类规则+四保护区）→ eval 断言 → 接线与登记升级；渲染实现不建（线 2 已由 leo-ppt 承接、线 3 登记成熟产品）。
-- **权威层级**：排版赛道漏斗裁决（upstream-absorption-workspace/layout/07-funnel-verdict.md，用户已裁决"线 1 立项"）为最高输入；深读报告（deepread-line1/line2.md）为机制证据。
+- **权威层级**：排版赛道漏斗裁决（用户已裁决"线 1 立项"；裁决文件原存 git-ignored 工作区，已于 2026-09-11 清理）为最高输入；深读报告（同工作区）为机制证据。
 - **决策焦点**：check_layout 的 FAIL/WARN 分档边界（密度配额哪些进 FAIL 级、哪些留 WARN 级线索——全部均为诊断级，无交付阻断）。
 - **验证焦点**：单测（保护区与邻接正反例）+ 新 eval case 首跑基线 + 既有测试零回归。
 - **最大风险/边界**：与 check_prose 职责混淆（vendored 契约不可混入）；膨胀红线（新 reference ×1、脚本 ×1、case ≤2、SKILL.md 合同字段 0 改动——接线净增 ≤4 行）。
@@ -114,7 +114,7 @@ status: active
 - **Goal**：深读补齐的测量口径供 leo 并行会话取用。
 - **Requirements**：R6（治理边界：不入仓、不触碰 leo 领地）
 - **Dependencies**：无
-- **Files**：`upstream-absorption-workspace/layout/handoff-line2.md`（git-ignore 工作区）
+- **Files**：线 2 移交文档（原存 git-ignore 工作区，已于 2026-09-11 清理；移交要点已收录下方 Approach）
 - **Approach**：从 deepread-line2.md 提炼移交清单——R2 页脚碰撞（worst overlap>6px FAIL）、R3 Swiss 粗大字（≥72px 且字重≥600 FAIL）、R6/R7（WARN advisory）、R1 精确口径（scrollH−clientH>4px）；raphael wechatCompat 六步整形管线参考（MIT，移植须补行为断言）；leo 剩余仓内缺口四项清单。附"判定式抽取、AGPL 零复制"纪律声明。
 - **Test scenarios**：不适用（工作区移交文档）。
 - **Verification**：文档存在且自包含（leo 会话无需回读漏斗全档）。

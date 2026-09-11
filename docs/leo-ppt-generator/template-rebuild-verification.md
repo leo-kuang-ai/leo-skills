@@ -73,7 +73,7 @@
 ### skill-upper 真实评测（34 例预算子集，两轮 + 定向复核 + 校准复跑）
 
 - `skill-up validate`：119 cases OK。预算子集 34 例（style 查询/推荐/版式调度/渲染 lane/构建器——本次重构直接触及的子系统）；全量 119 例（含 005 的 20 个生成型案例）登记为未执行。
-- run2（`leo-ppt-generator-workspace/iteration-126`，完整 34 例）：**23 passed / 11 failed / 0 errors**；run1 被宿主会话中断（~30/34，控制台口径 22 过 8 败）；run3（iteration-127）对判官修复后的 2 例定向复核：**2/2 PASS（100%）**。
+- run2（iteration-126，完整 34 例）：**23 passed / 11 failed / 0 errors**；run1 被宿主会话中断（~30/34，控制台口径 22 过 8 败）；run3（iteration-127）对判官修复后的 2 例定向复核：**2/2 PASS（100%）**。
 - 逐例结论（`evals/fixtures/template-quality/skill-up-registration.json`）：
   - **E-1 判官过期（已修复）**：style-index 两例判官白名单指向已退役索引路径，把新协议真值源（registry.json / `leo-ppt style list --filter`）判为越权——修复判官并加合成正负例验证后 run3 全过；
   - **E-2 稳定性/判官校准（本批已做校准 pass）**：9 个判官按两轮失败回复证据校准——同义词扩网（抑制/保真/闸门次序/只复位失败页/ERROR 成立/枚举真值）、否定感知粒度修复（缩字号建议锚定同从句建议动词）、引用剥离（引号/代码段/疑问式"管不管"归一化）、delta-preset forbid 收窄为接受性建议（不拦对 legacy 透传的如实警告，与检查 2"坏包"结论互为印证）。咬合验证：9+2 条合成坏回复全部仍被拒 + 矛盾回复构造仍命中 forbid；`tests/test_style_index_judge.py` 36 项全过。校准后复跑（iteration-128）2/9：新样本缺讲【其他】纪律点（图像路线不受影响/轮次上限/未核实声明等）——逐样本纪律覆盖不稳定是真实行为信号（引擎模型未被识别为主要嫌疑），不再扩词（继续扩即放宽阈值）；sweep"轮次上限"经查历史回复全文 0 次提及，属真实遗漏维判原判；
@@ -99,7 +99,7 @@
 
 
 
-### 全量 119 例评测（第五批续，`leo-ppt-generator-workspace/iteration-129`）
+### 全量 119 例评测（第五批续，iteration-129）
 
 - 结果：**84 passed / 29 failed / 6 errors**（70.6%）。要点：005 的 20 个 content-quality 生成型案例全部通过；style-index 系列 6 例全过（判官协议修复在全量规模成立）；判官校准集 10 例中 6 例转绿；6 个 ERROR 均为 ~300s 引擎超时（eval 超时配置问题，非技能行为）；29 个 FAIL 集中在措辞纪律判官与确认门/文档门工作流家族，与已登记的逐样本不稳定结论一致。逐例与分类见 `evals/fixtures/template-quality/skill-up-registration.json` full_suite_run 节。
 

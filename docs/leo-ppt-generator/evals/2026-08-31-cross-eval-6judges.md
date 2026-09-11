@@ -1,6 +1,6 @@
 # leo-ppt-generator 交叉测评报告（darwin-skill × skill-upper，6 judge × 2 轮，2026-08-31）
 
-- **方法**：三轴交叉——行为轴（skill-up：既有 13 轮行为数据 + M1 78-case 轮在跑）、结构轴（darwin 9 维，6 个相互独立的评审 agent）、paired 版本轴（同 judge 同上下文内比较，within-judge cancellation）。方案全文：`leo-ppt-workspace/cross-eval-0831/PLAN.md`
+- **方法**：三轴交叉——行为轴（skill-up：既有 13 轮行为数据 + M1 78-case 轮在跑）、结构轴（darwin 9 维，6 个相互独立的评审 agent）、paired 版本轴（同 judge 同上下文内比较，within-judge cancellation）。方案全文原存 git-ignored 工作区（已于 2026-09-11 清理）
 - **对象版本**：C = pre-fusion（31ef61b，271 行）/ A = M0.1（HEAD 1369db1，284 行）/ B = M1（工作树，302 行）
 - **runtime 中立性 gate**：红灯扫描 0 命中（darwin gate 通过）
 

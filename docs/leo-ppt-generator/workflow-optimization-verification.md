@@ -58,13 +58,13 @@ python scripts/check_content_baseline.py --commit <目标> --candidate <候选> 
 - 八项真实 Agent 回归结果为 7 PASS、0 FAIL、1 ERROR：页数用例按 15 页推进后继续进入风格与容量预检，在 300 秒超时。保留该轮原始结果，不将超时计为通过；页数用例补充止于回复大纲的交付边界，判据保持不变，单独复测另列。
 - 页数单独复测：1 PASS、0 FAIL、0 ERROR；明确成品 15 页包含封面、正文和收尾，并止于大纲。八个目标行为均已有通过证据，但没有单轮 8/8 通过结果，不将不同轮次合并为稳定性统计。
 
-包级命令（从技能目录运行）：
+包级命令（从技能目录运行；原使用任务隔离工作区的 Python，该工作区已随 2026-09-11 清理移除，`<python>` 为任一 Python 3.12 隔离环境）：
 
 ```sh
 env -u LEO_PPT_BUNDLE \
-  LEO_PPT_RUNTIME_PYTHON="$PWD/../leo-ppt-style-index-workspace/.venv/bin/python" \
+  LEO_PPT_RUNTIME_PYTHON="<python>" \
   PYTHONPATH="$PWD/runtime/src:$PWD" \
-  ../leo-ppt-style-index-workspace/.venv/bin/python -m unittest discover -s tests -t . -p 'test_*.py'
+  <python> -m unittest discover -s tests -t . -p 'test_*.py'
 ```
 
 真实 Agent 最终回归命令（从技能目录运行）：
@@ -80,7 +80,7 @@ skill-up run evals/eval.yaml \
   --include-case-name partial-hybrid-without-confirmation \
   --include-case-name delivery-acceptance-pending \
   --parallelism 1 \
-  --output-dir ../leo-ppt-workflow-optimization-workspace/evals-final
+  --output-dir <workspace>/evals-final
 ```
 
 页数用例明确交付边界后单独复测：
@@ -89,14 +89,14 @@ skill-up run evals/eval.yaml \
 skill-up run evals/eval.yaml \
   --include-case-name page-count-ambiguous-asks \
   --parallelism 1 \
-  --output-dir ../leo-ppt-workflow-optimization-workspace/evals-page-count-final
+  --output-dir <workspace>/evals-page-count-final
 ```
 
 真实 Agent 使用现有 `claude_code` 引擎及其已配置模型；日志显示 `glm-5.3[1m]` 的模型识别 warning，不将它称为 GPT-6 实测。评测用例验证交互决策与执行边界，不等于真实图片质量实验。
 
 ## 5. 证据与边界
 
-本地生成证据在 `leo-ppt-workflow-optimization-workspace/`（git-ignore）：`package-tests.log` 保留初始环境失败，`package-tests-final.log` 为通过结果，`focused-final.log` 为最后定向集；`evals-focused/`、`evals-regression/`、`evals-final/`、`evals-page-count-final/` 分别保留原始行为轮次与页数单独复测。最终以各轮 `result.json` 判断，不合并不同轮次凑通过率。
+本地生成证据原存 git-ignored 工作区（已于 2026-09-11 清理）：`package-tests.log` 保留初始环境失败，`package-tests-final.log` 为通过结果，`focused-final.log` 为最后定向集；`evals-focused/`、`evals-regression/`、`evals-final/`、`evals-page-count-final/` 分别保留原始行为轮次与页数单独复测。最终以各轮 `result.json` 判断，不合并不同轮次凑通过率。
 
 当前仍保守绑定整套 slides；内容改版使决策失效，已 prepare 的 run 内容仍不可变，应建立新 run。完整 brief 的非视觉文字变化也可能扩大失效，优先绑定实际视觉投影。运行账本的其他手动接线未被本次全部自动化。
 

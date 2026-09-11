@@ -32,7 +32,7 @@ cases:
     - evals/cases/mixed-advise-execute-advise-wins.yaml
     - evals/cases/execute-keeps-confirmation-gates.yaml
     - evals/cases/single-page-requires-cli-allowance.yaml
-    # 质量回路门禁（docs/leo-ppt-generator-quality-loop-optimization.md）：
+    # 质量回路门禁（docs/leo-ppt-generator/reviews/quality-loop-optimization.md）：
     # 逐页母版、修复波及复查、断言-来源三级、多轮审查协议、构建一致性、双评审官档。
     - evals/cases/master-before-render.yaml
     - evals/cases/master-revision-on-fix.yaml
@@ -50,7 +50,7 @@ cases:
     - evals/cases/style-from-reference-image.yaml
     - evals/cases/mismatch-warning-once.yaml
     - evals/cases/dual-sample-proposal.yaml
-    # 多行业批次 1（docs/leo-ppt-generator-multi-industry-optimization-tech-plan.md）：
+    # 多行业批次 1（docs/leo-ppt-generator/tech-plans/multi-industry-optimization-tech-plan.md）：
     # 行业 content_rules、数字登记表、data_classification/PHI/国家秘密门。
     - evals/cases/industry-content-rules-enforced.yaml
     - evals/cases/gov-ranking-compliance.yaml
@@ -65,7 +65,7 @@ cases:
     - evals/cases/master-contract-gate.yaml
     # 内容确认文档门（docs/plans/2026-08-29-002）：大纲/母版确认前必须落盘为
     # content/ 版本化文档并在聊天引用路径；修订回路、确认后修订、中断恢复与
-    # advise 边界（多轮测评 docs/leo-ppt-generator-eval-docgates-0829.md）。
+    # advise 边界（多轮测评 docs/leo-ppt-generator/evals/2026-08-29-docgates.md）。
     - evals/cases/outline-doc-before-confirm.yaml
     - evals/cases/master-doc-before-confirm.yaml
     - evals/cases/outline-revision-doc-gate.yaml

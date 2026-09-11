@@ -6,7 +6,7 @@ execution: code
 status: active
 created_at: 2026-08-29
 title: leo-ppt-generator 风格系统优化（评审落地）- Plan
-origin: docs/leo-ppt-generator-style-review.md
+origin: docs/leo-ppt-generator/reviews/style-review.md
 review: 2026-08-29 spec-doc-review（coherence/feasibility/adversarial 三 persona，round 1 findings 已合成修复）
 ---
 
@@ -14,11 +14,11 @@ review: 2026-08-29 spec-doc-review（coherence/feasibility/adversarial 三 perso
 
 ## Goal Capsule
 
-- **Objective**：把 `docs/leo-ppt-generator-style-review.md` 的十档优化点落成可执行改造：修复库内既成缺陷、补图表样式与设计护栏规范、落地风格 token 三层化与 brief schema 化、扩展版式库与趋势风格、接入评测。
+- **Objective**：把 `docs/leo-ppt-generator/reviews/style-review.md` 的十档优化点落成可执行改造：修复库内既成缺陷、补图表样式与设计护栏规范、落地风格 token 三层化与 brief schema 化、扩展版式库与趋势风格、接入评测。
 - **Recommended approach**：三波推进——W1 纯修正（引用完整性 + 图表规范文档）、W2 系统性短板（护栏成文 + 版式补缺 + token 化 + schema/lint）、W3 合同与内容增强（动效/断言标题/密度 + 趋势风格 + 评测）。文档单元与 runtime 单元分离，每个单元可独立原子落地；W1 开工前先留档评测基线。
 - **Decision focus**：HEX token 三层化的落地形态与存量迁移（KTD2）；护栏前移采用 `--guardrail` 旗标而非缺省追加（KTD6）；麦肯锡近重复的收敛方式与回退成本（KTD3）；px 口径的算术判据（KTD4）；与多行业技术方案的两处边界裁决（KTD8、Interface Contracts）。
 - **Verification focus**：引用完整性机检归零；lint 全库结构错误为 0；**unittest discover 真实发现并执行测试**（含 countTestCases>0 前置检查）；`style render` 缺省输出与改前逐字节一致；skill-up 对照改动前基线无回归。
-- **Largest risk / boundary**：本计划只动**风格系统**（references/styles、护栏文档、styles/templates runtime、lint、evals 扩展）；多行业技术方案（`docs/leo-ppt-generator-multi-industry-optimization-tech-plan.md`）拥有的 content_rules 轴、`--brand` 全链路注入、dark-deck 预设变体**不在本期**，三处交叉冲突（visual-qa 断言判据行、user-colors 覆盖通道、版式编号 P23–P29）已在 KTD8/Interface Contracts/Deferred 显式裁决（见 A5/A6，版式编号让渡见 U5 与 Deferred）。
+- **Largest risk / boundary**：本计划只动**风格系统**（references/styles、护栏文档、styles/templates runtime、lint、evals 扩展）；多行业技术方案（`docs/leo-ppt-generator/tech-plans/multi-industry-optimization-tech-plan.md`）拥有的 content_rules 轴、`--brand` 全链路注入、dark-deck 预设变体**不在本期**，三处交叉冲突（visual-qa 断言判据行、user-colors 覆盖通道、版式编号 P23–P29）已在 KTD8/Interface Contracts/Deferred 显式裁决（见 A5/A6，版式编号让渡见 U5 与 Deferred）。
 
 ---
 
@@ -247,7 +247,7 @@ Product Contract unchanged (bootstrap-authored this run; WHAT 全覆盖映射 or
 
 ## Sources & Research
 
-- **Origin**：`docs/leo-ppt-generator-style-review.md`（2026-08-29，本计划唯一需求来源；十档优化点 = 其 §0 矩阵，事实断言已 grep/diff 复核）。
-- **交叉**：`docs/leo-ppt-generator-multi-industry-expert-review.md` §四/§五/§六（交叉验证点与边界划分）、`docs/leo-ppt-generator-multi-industry-optimization-tech-plan.md` D1/E2/批次 3（跨方案冲突三处，已逐字核实并在 KTD8/Interface Contracts/Deferred/U5 裁决）、`docs/leo-ppt-generator-optimization-review.md`（评测克制与恒定 FAIL 教训）、`docs/plans/2026-08-28-001-feat-leo-ppt-style-recommendation-plan.md`（样张双生验收场，趋势风格联动）。
+- **Origin**：`docs/leo-ppt-generator/reviews/style-review.md`（2026-08-29，本计划唯一需求来源；十档优化点 = 其 §0 矩阵，事实断言已 grep/diff 复核）。
+- **交叉**：`docs/leo-ppt-generator/reviews/multi-industry-expert-review.md` §四/§五/§六（交叉验证点与边界划分）、`docs/leo-ppt-generator/tech-plans/multi-industry-optimization-tech-plan.md` D1/E2/批次 3（跨方案冲突三处，已逐字核实并在 KTD8/Interface Contracts/Deferred/U5 裁决）、`docs/leo-ppt-generator/reviews/optimization-review.md`（评测克制与恒定 FAIL 教训）、`docs/plans/2026-08-28-001-feat-leo-ppt-style-recommendation-plan.md`（样张双生验收场，趋势风格联动）。
 - **源码/实况核实**（本计划方案审查 round 1 实测）：`runtime/src/leo_ppt_generator/styles.py`（存取层、顶层遮蔽、`_is_style_md`）、`runtime/src/leo_ppt_generator/templates.py`（轴 loader 范围、`compose_style` 转发、`_pairs` 逐行解析）、`evals/eval.yaml`（21 用例结构）、`python3 -m unittest discover -s leo-ppt-generator/tests` 实测 0 测试（子目录无 `__init__.py`）、全库 palette 散文实况（0/136 纯 HEX、accent 含 HEX 49/136）。
 - **外部**：见 origin 文档调研来源节（WCAG 2.2、Slidesgo/SketchBubble/Envato 2026 趋势、assertion-evidence、Analyst Academy）；本计划未新增外部依赖。

@@ -15,7 +15,7 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 ## 成品样例
 
 以下页面来自 2026-08-29 六行业评测运行（主题「AI Agent 落地一年」，合成材料；
-运行记录见仓库根 `docs/leo-ppt-generator-eval-6industries-0829.md`），generate 路线
+运行记录见仓库根 `docs/leo-ppt-generator/evals/2026-08-29-6industries.md`），generate 路线
 2560×1440 交付档，此处降采样至 1280 展示：
 
 - 政务汇报 · 封面页

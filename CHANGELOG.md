@@ -49,6 +49,7 @@ adheres to a loose semantic-versioning convention.
 - **仓库级：清理全部评测 workspace 产物与 graphify-out（约 4.3G）**：均为 git-ignored 可再生产物（重跑 `skill-up run evals/eval.yaml` 或 spec-runtime-setup 刷新即可重建），仅保留当日活跃的 `ppt-flow-diagram-workspace/`。同步改写 `docs/` 与 `evidence-first-writing/` 中指向已删工作区的悬空证据路径为"原存 git-ignored 工作区（已于 2026-09-11 清理）"表述，含命令块中指向已删任务隔离 `.venv` 的路径（改 `<python>` 占位并注明等价形式）；保留 CHANGELOG 历史条目、机器证据 JSON（`docs/leo-ppt-generator/evidence/style-index-verification.json` 的轨迹/判官哈希记录）与 `docs/tasks/` 冻结任务清单 context_refs、评测 fixture 中的历史记录性引用。
 
 ### Fixed
+- **仓库级：修正 2026-09-04 文档目录重组遗留的旧扁平路径引用**：`leo-ppt-generator/` 的 README、`evals/eval.yaml` 注释、`evals/known-issues.md` 与 `docs/plans/` 三份 plan、`docs/ideation/` 一份 HTML 共 7 个文件 16 行中的 `docs/leo-ppt-generator-*.md` 悬空引用，更新为重组后子目录路径（目标文件已逐一核验存在）；CHANGELOG 历史条目按 append-only 纪律保留原文。
 - **leo-ppt-generator：渲染质量消费链与误报修复**：轻量版式推荐支持 backend 硬过滤及绑定披露；渠道探针无合法 16:9 尺寸时明确报告不支持，隔离继承参数并披露缺凭据；画廊将 canonical 有效主题同时传入页面与图表，九个种子方向替换占位说明；Mermaid 同时关闭顶层与 flowchart HTML 标签，保留原生 SVG 文本，兼容时序图静态属性并继续拒绝执行内容与外链；PNG 体积、稀疏内容和象限失衡作为复核提示，近乎纯色仍硬失败；模板加载经 catalog resolver 校验并拒绝目录绕行。问题核验、原结论修正与验证范围见 `docs/plans/2026-09-11-001-fix-leo-ppt-render-quality.md`。 (user-visible)
 - **leo-ppt-generator：Dashi 集成基础合同修正**：硬超容量候选直接排除，推荐器与几何预检共用容量边界；layout schema 接受既有 `agenda` 角色，交付收据按冻结设计采集 canonical 模板，缺少模板绑定时拒绝创建收据。完整依赖与正式生成链路尚未接通。 (user-visible)
 - **leo-ppt-generator：移除 render 模板旧兼容镜像**：删除 `assets/render-templates/`，渲染、lint、测试、基线与操作合同统一只使用 `template-library/canonical/templates/<id>/page.html`；运行时不再回退到旧平铺目录。历史迁移账本保留原路径作为 provenance 记录。

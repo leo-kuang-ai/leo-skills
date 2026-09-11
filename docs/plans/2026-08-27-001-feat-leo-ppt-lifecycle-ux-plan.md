@@ -2,7 +2,7 @@
 title: Leo PPT Generator 全生命周期用户体验落地 - Plan
 type: feat
 date: 2026-08-27
-origin: docs/leo-ppt-generator-lifecycle-ux-plan.md
+origin: docs/leo-ppt-generator/reviews/lifecycle-ux-plan.md
 artifact_contract: spec-unified-plan/v1
 artifact_readiness: implementation-ready
 product_contract_source: spec-plan-bootstrap
@@ -28,7 +28,7 @@ status: active
 
 ### Summary
 
-为技能包安装、配置、更新、卸载全链路补齐体验层：量化治本 4.3GB 级历史残留泄漏，把机器词表输出翻译成人话，并以统一宿主参数替代散落的安装入口。范围覆盖 origin 方案的 L1–L16b 全部条目（见 origin: `docs/leo-ppt-generator-lifecycle-ux-plan.md`）。
+为技能包安装、配置、更新、卸载全链路补齐体验层：量化治本 4.3GB 级历史残留泄漏，把机器词表输出翻译成人话，并以统一宿主参数替代散落的安装入口。范围覆盖 origin 方案的 L1–L16b 全部条目（见 origin: `docs/leo-ppt-generator/reviews/lifecycle-ux-plan.md`）。
 
 ### Problem Frame
 
@@ -263,7 +263,7 @@ flowchart TB
 
 - 所有 U-ID 的 Verification 通过；required proof intent 无遗漏地对齐到实际 result、not-applicable 或 deferred-with-owner（R1–R17 全部可追溯）。
 - 每个单元一个关注点的提交序列；最终不存在探索性死代码或注释掉的实现残留。
-- 顶层 `CHANGELOG.md` 有 (user-visible) 汇总条目；`docs/leo-ppt-generator-lifecycle-ux-plan.md` 不需要回改（origin 是方案不是实现台账）。
+- 顶层 `CHANGELOG.md` 有 (user-visible) 汇总条目；`docs/leo-ppt-generator/reviews/lifecycle-ux-plan.md` 不需要回改（origin 是方案不是实现台账）。
 - 相关包级文档（README/first-use/SKILL 最小植入）repo-relative 链接全部可达。
 
 每单元：
@@ -295,5 +295,5 @@ flowchart TB
 
 ## Sources & Research
 
-- origin 方案与评审链：`docs/leo-ppt-generator-lifecycle-ux-plan.md`、`docs/leo-ppt-generator-optimization-review.md`、`docs/leo-ppt-generator-ux-review.md`。
+- origin 方案与评审链：`docs/leo-ppt-generator/reviews/lifecycle-ux-plan.md`、`docs/leo-ppt-generator/reviews/optimization-review.md`、`docs/leo-ppt-generator/reviews/ux-review.md`。
 - 关键既有实现参照：`leo-ppt-generator/scripts/install.sh`（原子激活/onboarding 先例）、`scripts/runtime_manager.py:270`（受限清理先例）、`scripts/leo-bootstrap.sh`（receipt 协议）。

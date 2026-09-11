@@ -540,7 +540,7 @@ case yaml 同步删除重复的 `expect.must_contain`，判官为唯一断言源
   的坚守程度，与 control-plane 的表面合同缺口是两类不同失败。iter-14 聚焦复测
   同模式复现（2/2），确认为恒定失守而非抖动。
 
-## 质量回路门禁（2026-08-28，docs/leo-ppt-generator-quality-loop-optimization.md）
+## 质量回路门禁（2026-08-28，docs/leo-ppt-generator/reviews/quality-loop-optimization.md）
 
 新增 9 个 advise 层用例与 9 个自包含 judge 脚本（评测工程发现见本节末尾）：
 

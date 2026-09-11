@@ -40,6 +40,8 @@ Used by `spec-work` Residual Work Gate and similar caller flows when the user ch
 
 Used by autonomous callers like `lfg` that must not prompt. All blocking questions are skipped; the fallback chain is executed silently in order. Behavior:
 
+Non-interactive mode still requires explicit tracker deferral authorization. The caller must supply `tracker_deferral_authorization: authorized`; headless/autonomous execution, delivery authorization, tracker availability, or a residual finding does not grant it. When the fact is missing, do not probe or invoke any external sink. Return every finding in `no_sink` with `tracker_deferral_authorization_missing` so the caller can preserve it in an already-authorized PR body or local artifact.
+
 - No confirmation on the first generic-label Defer; proceed directly.
 - On execution failure, automatically fall to the next tier without prompting. Record the failure.
 - On total chain exhaustion (every tier failed or no sink available), return findings in the `no_sink` bucket so the caller can route them to another surface (e.g., inline them in a PR description).
@@ -143,7 +145,7 @@ Options:
 
 When a high-confidence named tracker fails at execution, the cached `named_sink_available` is set to `false` for the rest of the session. Subsequent Defer actions fall straight through to the next tier without retrying a confirmed-broken sink. `any_sink_available` is only downgraded to `false` when every tier has been confirmed broken — a failed Linear call that succeeds via `gh` keeps `any_sink_available = true`.
 
-Only when `ToolSearch` explicitly returns no match or the tool call errors — or on a platform with no blocking question tool — fall back to numbered options and waiting for the user's reply (Interactive mode only).
+Only when no blocking question tool is in the current tool list or a real question call errors, fall back to numbered options and waiting for the user's reply (Interactive mode only).
 
 ---
 
@@ -164,6 +166,6 @@ When uncertain, prefer "drop with explicit user-facing notice" over "pass throug
 
 ## Cross-platform notes
 
-The question-tool name varies by platform. In Interactive mode, use the platform's blocking question tool (`AskUserQuestion` in Claude Code, `request_user_input` in Codex). In Claude Code the tool should already be loaded from the Interactive-mode pre-load step — if it isn't, call `ToolSearch` with query `select:AskUserQuestion` now. Fall back to numbered options in chat only when the harness genuinely lacks a blocking tool — `ToolSearch` returns no match, the tool call explicitly fails, or the runtime mode does not expose it (e.g., Codex edit modes without `request_user_input`). A pending schema load is not a fallback trigger. Never silently skip the question.
+The question-tool name varies by platform. In Interactive mode, use the host's blocking question tool already in the current tool list, matched by capability; if a matching tool is listed but unloaded, load it through the host's tool-discovery primitive now. Fall back to numbered options in chat only when no such tool is in the list or a real question call errors — a pending schema load is not a fallback trigger. Never silently skip the question.
 
 Non-interactive mode is platform-agnostic: it never prompts, so the platform's question tool is not relevant.

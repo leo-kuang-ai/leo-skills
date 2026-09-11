@@ -1,13 +1,13 @@
 # Supported MCP Tools
 
-本文总结当前 `spec-runtime-setup` registry。Machine source of truth 是 `skills/spec-runtime-setup/setup-registry.json`，schema version 为 `setup-registry.v9`；generated host 从 loaded skill root 消费其共置 runtime projection。
+本文总结当前 `spec-runtime-setup` registry。Machine source of truth 是 `skills/spec-runtime-setup/setup-registry.json`，schema version 为 `setup-registry.v11`；generated host 从 loaded skill root 消费其共置 runtime projection。
 
 ## Current Required Tools
 
 | Tool | Required | Category | Host config | Command |
 | --- | --- | --- | --- | --- |
-| Sequential Thinking | Yes | `mcp` | Yes | `npx -y @modelcontextprotocol/server-sequential-thinking@latest` |
-| Context7 | Yes | `mcp` | Yes | `npx -y @upstash/context7-mcp@latest` |
+| Sequential Thinking | Yes | `mcp` | Yes | `npx -y @modelcontextprotocol/server-sequential-thinking@2026.8.31` |
+| Context7 | Yes | `mcp` | Yes | `npx -y @upstash/context7-mcp@4.0.7` |
 | CodeGraph | Yes, standard setup | `mcp` | Yes | `codegraph serve --mcp` |
 | Graphify | Yes, standard setup | `provider-cli` | Project skill/hook | `graphify` |
 

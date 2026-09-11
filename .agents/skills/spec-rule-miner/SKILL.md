@@ -7,6 +7,10 @@ metadata:
 
 # Spec Rule Miner
 
+## Project Intelligence Evidence Boundary
+
+`project-graph`/`code-graph` results are `provider_untrusted` advisory candidates for where to inspect. Each mined rule must return to current source evidence and its sampling limits; candidates, empty results, and provider success cannot become confirmed project policy. Fall back to bounded source reads when readiness is unknown or unavailable.
+
 ## Purpose
 
 `spec-rule-miner` 从目标仓库的真实代码中提炼项目级 AI 编码规则，把完整规则写入独立规则文件，并让 `AGENTS.md` / `CLAUDE.md` 这类 host 入口文件引用该文件。它是 standalone skill，不是 `spec-*` public workflow。
@@ -20,7 +24,7 @@ metadata:
 ## When Not To Use
 
 - 不使用本 skill：用户要审查当前 diff、修复代码、重构、调试、写 lint/format 配置、生成通用语言规范，或治理 confirmed team policy。
-- 近邻路由：confirmed team policy governance 已退役，不再提供专用入口；代码质量评审走 `spec-code-review`；实际实现或修复走 `spec-work`；创建或修改 spec-first source skill 走 `spec-write-skill`。
+- 近邻路由：confirmed team policy governance 已退役，不再提供专用入口；代码质量评审走 `spec-code-review`；实际实现或修复走 `spec-work`（bug 根因排查走 `spec-debug`）；创建或修改 spec-first source skill 走 `spec-write-skill`。命中近邻路由时必须在回复中点名目的地 skill（例如：「这是代码评审请求，属于 `spec-code-review`」）——只解释不匹配而不指路，owner 依然无路可走。点名之后不得在本会话内替目的地干活：直接修 bug、直接做代码评审、直接实现需求，都是把别的 workflow 的职责搬进 rule-miner 执行；用户的即时指令（「顺手修了」「直接审了」）不构成跨 workflow 代行授权——正确动作始终是点名目的地并交还路由。
 
 ## Inputs
 

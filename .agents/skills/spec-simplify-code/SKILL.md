@@ -1,6 +1,6 @@
 ---
 name: spec-simplify-code
-description: "Simplify recently changed code for clarity, reuse, quality, and efficiency while preserving behavior. Use for tidy/refactor passes; use spec-debug for bugs."
+description: "Simplify recently changed code for clarity, reuse, quality, and efficiency while preserving behavior. Use for tidy/refactor passes; use spec-debug for bugs. Not for new features or behavior changes."
 argument-hint: "[blank to simplify current branch changes, or describe what to simplify]"
 metadata:
   internal: true
@@ -10,13 +10,15 @@ Simplify recently changed code for clarity, reuse, quality, and efficiency while
 
 ## Step 1: Identify scope
 
+**Not-a-simplification input first.** A request that reports broken behavior — a crash, a failing test, wrong output — is a bug, not a simplification pass. Do not fix the bug here. Name `spec-debug` in the reply and route out; the caller can return for a behavior-preserving cleanup after the fix lands.
+
 Resolve the simplification scope in this order:
 
 1. **If the user explicitly named a scope** (a file, a directory, "the function I just wrote", "the changes from this morning"), use that scope. Treat user-named scope as authoritative — do not widen it.
 2. **Otherwise, in a git repository**, default to the diff between the current branch and its base branch (e.g., `git diff origin/main...` or against the configured upstream). This covers the common case of "simplify everything I've added on this feature branch before opening a PR." If the branch has no upstream or base ref, fall back to staged + unstaged changes (`git diff HEAD`).
 3. **Outside a git repository or when no diff is available**, review the most recently modified files mentioned by the user or edited earlier in this conversation.
 
-If none of the above produces a non-empty scope, stop and ask the user what to simplify rather than guessing. Use the platform's blocking question tool: `AskUserQuestion` in Claude Code (call `ToolSearch` with `select:AskUserQuestion` first if its schema isn't loaded), `request_user_input` in Codex. Fall back to numbered options in chat only when no blocking tool exists in the harness or the call errors (e.g., Codex edit modes) — not because a schema load is required. Never silently skip the question.
+If none of the above produces a non-empty scope, stop and ask the user what to simplify rather than guessing. Use the platform's blocking question tool: the host's blocking question tool already in the current tool list, matched by capability (if a matching tool is listed but unloaded, load it through the host's tool-discovery primitive). Fall back to numbered options in chat only when no such tool is in the list or a real question call errors. Never silently skip the question.
 
 **Preflight — skip a no-yield scope before loading review lenses.** If the
 resolved scope contains no substantive human-authored code and consists only

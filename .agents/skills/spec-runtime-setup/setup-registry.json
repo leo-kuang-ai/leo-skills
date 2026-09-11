@@ -1,5 +1,5 @@
 {
-  "schema_version": "setup-registry.v9",
+  "schema_version": "setup-registry.v11",
   "summary_columns": [
     "tool",
     "type",
@@ -29,14 +29,14 @@
       "id": "codegraph",
       "ecosystem": "npm",
       "package": "@colbymchenry/codegraph",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "command": "codegraph"
     },
     {
       "id": "graphify",
       "ecosystem": "pypi",
       "package": "graphifyy",
-      "version": "0.9.29",
+      "version": "0.9.57",
       "command": "graphify",
       "python": {
         "requires": ">=3.10",
@@ -50,8 +50,8 @@
         "plain_pip_allowed": false
       },
       "distribution": {
-        "wheel_url": "https://files.pythonhosted.org/packages/f1/b1/0cbe4738ca9784850d40aae0d71c34547230e0445e52067f98b8d0b6c070/graphifyy-0.9.29-py3-none-any.whl",
-        "sha256": "143f4002f40d5c302ae43bd58487ad604191f2d0ac8216429894c6a913ecf27b",
+        "wheel_url": "https://files.pythonhosted.org/packages/c8/c2/d1ce4a567a5bf4c36054cede2c70f745a239ed5080b70d7934c5c738b583/graphifyy-0.9.57-py3-none-any.whl",
+        "sha256": "f35c86410e7d92ace69a50ac8dbed568903c880482c656f43437ca657fee8c37",
         "index_url": "https://pypi.org/simple"
       },
       "hook_normalization_contract": "graphify-python-hook-normalization.v1"
@@ -288,6 +288,36 @@
         "helper": {},
         "provider": {}
       }
+    },
+    "zcode": {
+      "id": "zcode",
+      "defaults": {
+        "tool": {
+          "host_config": {
+            "scope": "workspace",
+            "json_container_path": [
+              "mcp",
+              "servers"
+            ],
+            "targets": {
+              "workspace": {
+                "config_path": ".zcode/config.json",
+                "config_format": "json",
+                "precedence": 50,
+                "writable_check": "parent-or-file"
+              }
+            },
+            "fallback_order": [
+              "workspace"
+            ],
+            "uninstall_targets": [
+              "workspace"
+            ]
+          }
+        },
+        "helper": {},
+        "provider": {}
+      }
     }
   },
   "tools": [
@@ -320,7 +350,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         },
@@ -329,7 +359,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         },
@@ -338,7 +368,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         },
@@ -347,7 +377,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         },
@@ -356,7 +386,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         },
@@ -366,7 +396,16 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest"
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
+            ]
+          }
+        },
+        "zcode": {
+          "host_config": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
             ]
           }
         }
@@ -377,7 +416,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest",
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31",
               "--help"
             ]
           }
@@ -387,7 +426,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest",
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31",
               "--help"
             ]
           }
@@ -397,7 +436,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest",
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31",
               "--help"
             ]
           }
@@ -407,11 +446,18 @@
             "command": "npx",
             "args": [
               "-y",
-              "@modelcontextprotocol/server-sequential-thinking@latest",
+              "@modelcontextprotocol/server-sequential-thinking@2026.8.31",
               "--help"
             ]
           }
         }
+      },
+      "readiness_policy": "always-required",
+      "resolved_dependency": {
+        "package": "@modelcontextprotocol/server-sequential-thinking",
+        "version": "2026.8.31",
+        "integrity": "sha512-/EMH++1j2e+VmHwpibw1IUPHxA0tcQY09Yo5/OIPwW/8irEKLAufJNGSZQhCK18n8TUvV6WwZyQOuaDKxe/CeQ==",
+        "source": "npmjs"
       }
     },
     {
@@ -443,7 +489,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         },
@@ -452,7 +498,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         },
@@ -461,7 +507,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         },
@@ -470,7 +516,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         },
@@ -479,7 +525,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         },
@@ -489,7 +535,16 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest"
+              "@upstash/context7-mcp@4.0.7"
+            ]
+          }
+        },
+        "zcode": {
+          "host_config": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@upstash/context7-mcp@4.0.7"
             ]
           }
         }
@@ -500,7 +555,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest",
+              "@upstash/context7-mcp@4.0.7",
               "--help"
             ]
           }
@@ -510,7 +565,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest",
+              "@upstash/context7-mcp@4.0.7",
               "--help"
             ]
           }
@@ -520,7 +575,7 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest",
+              "@upstash/context7-mcp@4.0.7",
               "--help"
             ]
           }
@@ -530,11 +585,18 @@
             "command": "npx",
             "args": [
               "-y",
-              "@upstash/context7-mcp@latest",
+              "@upstash/context7-mcp@4.0.7",
               "--help"
             ]
           }
         }
+      },
+      "readiness_policy": "always-required",
+      "resolved_dependency": {
+        "package": "@upstash/context7-mcp",
+        "version": "4.0.7",
+        "integrity": "sha512-56+UVpy1Mwe7IE5ehRuvuqAdyCBRHEAOHh/ztFnlH1ZYkVVrp7ptWMAVhbdSZplD0rKC7byYsBYXyrqbMJHWmA==",
+        "source": "npmjs"
       }
     },
     {
@@ -685,6 +747,15 @@
               "--mcp"
             ]
           }
+        },
+        "zcode": {
+          "host_config": {
+            "command": "codegraph",
+            "args": [
+              "serve",
+              "--mcp"
+            ]
+          }
         }
       },
       "platform_overrides": {
@@ -764,7 +835,8 @@
             ]
           }
         }
-      }
+      },
+      "readiness_policy": "advisory"
     }
   ],
   "helpers": [
@@ -781,7 +853,9 @@
       "required": true,
       "baseline_blocking": false,
       "required_for": [
-        "surface-ui"
+        "spec-test-browser",
+        "spec-dogfood",
+        "spec-polish"
       ],
       "recommended_for": [
         "browser automation",
@@ -857,7 +931,8 @@
             "npx"
           ]
         }
-      }
+      },
+      "readiness_policy": "workflow-required"
     },
     {
       "id": "gh",
@@ -869,9 +944,11 @@
       ],
       "surface_overlays": [],
       "required": true,
-      "baseline_blocking": true,
+      "baseline_blocking": false,
       "required_for": [
-        "github issue and pull request workflows"
+        "spec-commit-push-pr",
+        "spec-resolve-pr-feedback",
+        "spec-lfg"
       ],
       "recommended_for": [
         "spec-code-review",
@@ -946,7 +1023,8 @@
           },
           "platform_required_tools": []
         }
-      }
+      },
+      "readiness_policy": "workflow-required"
     },
     {
       "id": "vhs",
@@ -1010,7 +1088,8 @@
           },
           "platform_required_tools": []
         }
-      }
+      },
+      "readiness_policy": "advisory"
     },
     {
       "id": "silicon",
@@ -1074,7 +1153,8 @@
           },
           "platform_required_tools": []
         }
-      }
+      },
+      "readiness_policy": "advisory"
     },
     {
       "id": "ffmpeg",
@@ -1085,8 +1165,10 @@
       ],
       "surface_overlays": [],
       "required": true,
-      "baseline_blocking": true,
-      "required_for": [],
+      "baseline_blocking": false,
+      "required_for": [
+        "video"
+      ],
       "recommended_for": [
         "video composition"
       ],
@@ -1165,7 +1247,8 @@
           },
           "platform_required_tools": []
         }
-      }
+      },
+      "readiness_policy": "workflow-required"
     },
     {
       "id": "ast-grep",
@@ -1179,7 +1262,7 @@
       "required": true,
       "baseline_blocking": false,
       "required_for": [
-        "structural code search"
+        "structural-search"
       ],
       "recommended_for": [
         "spec-code-review",
@@ -1235,7 +1318,8 @@
           },
           "platform_required_tools": []
         }
-      }
+      },
+      "readiness_policy": "workflow-required"
     },
     {
       "id": "ast-grep-skill",
@@ -1247,9 +1331,9 @@
       ],
       "surface_overlays": [],
       "required": true,
-      "baseline_blocking": true,
+      "baseline_blocking": false,
       "required_for": [
-        "ast-grep usage guidance"
+        "structural-search"
       ],
       "recommended_for": [
         "structural search guidance"
@@ -1366,7 +1450,8 @@
             "npx"
           ]
         }
-      }
+      },
+      "readiness_policy": "workflow-required"
     }
   ],
   "providers": [
@@ -1671,6 +1756,34 @@
               "user"
             ]
           }
+        },
+        "zcode": {
+          "host_config": {
+            "command": "codegraph",
+            "args": [
+              "serve",
+              "--mcp"
+            ],
+            "scope": "workspace",
+            "json_container_path": [
+              "mcp",
+              "servers"
+            ],
+            "targets": {
+              "workspace": {
+                "config_path": ".zcode/config.json",
+                "config_format": "json",
+                "precedence": 50,
+                "writable_check": "parent-or-file"
+              }
+            },
+            "fallback_order": [
+              "workspace"
+            ],
+            "uninstall_targets": [
+              "workspace"
+            ]
+          }
         }
       },
       "platform_overrides": {
@@ -1776,7 +1889,7 @@
         "hook_default": true,
         "usage_owner": "downstream-skill"
       },
-      "usage_note": "标准 Runtime Setup（或高级子集 `spec-runtime-setup --only graphify`）优先使用已安装 uv、其次 pipx，将 pinned `graphifyy@0.9.29` direct wheel安装到隔离Python tool environment；缺少兼容Python或tool manager时返回action-required，不自动bootstrap、不使用plain pip。首次生成固定运行 Provider 原生 `graphify extract . --code-only`，唯一current artifact位于原生默认目录`graphify-out/`，不注入`GRAPHIFY_OUT`。仅有旧版spec-first适配目录`.graphify/`时，setup将其原子迁移到`graphify-out/`；两个目录同时存在则fail closed。已有`graphify-out/`时普通setup执行裸query；显式`--refresh`使用官方`graphify update <workspace>`原位更新代码索引，复用Provider lock、临时graph、shrink guard和未变节点保留能力，不创建spec-first顶层staging/backup。Claude/Codex/Cursor/Kiro使用Provider-native project integration，Qoder使用spec-first adapter；两个Git hook必须验证marker、interpreter和Provider原生默认输出，不依赖spec-first环境变量。Graphify mutation setup在Python package/artifact/query/host/hook全部verified后默认卸载已确认的全局npm incumbent，并只删除被证明归属该package的旧launcher symlink；诊断、plan、verify-only及未知PATH命令保持只读。Graphify MCP、watch与semantic extraction仍为opt-in。所有Graphify输出仅是provider_untrusted advisory candidate，结论必须回到source/test/log/contract或owner evidence。",
+      "usage_note": "标准 Runtime Setup（或高级子集 `spec-runtime-setup --only graphify`）优先使用已安装 uv、其次 pipx，将 pinned `graphifyy@0.9.57` direct wheel安装到隔离Python tool environment；缺少兼容Python或tool manager时返回action-required，不自动bootstrap、不使用plain pip。首次生成固定运行 Provider 原生 `graphify extract . --code-only`，唯一current artifact位于原生默认目录`graphify-out/`，不注入`GRAPHIFY_OUT`。仅有旧版spec-first适配目录`.graphify/`时，setup将其原子迁移到`graphify-out/`；两个目录同时存在则fail closed。已有`graphify-out/`时普通setup执行裸query；显式`--refresh`使用官方`graphify update <workspace>`原位更新代码索引，复用Provider lock、临时graph、shrink guard和未变节点保留能力，不创建spec-first顶层staging/backup。Claude/Codex/Cursor/Kiro使用Provider-native project integration，Qoder使用spec-first adapter；两个Git hook必须验证marker、interpreter和Provider原生默认输出，不依赖spec-first环境变量。Graphify mutation setup在Python package/artifact/query/host/hook全部verified后默认卸载已确认的全局npm incumbent，并只删除被证明归属该package的旧launcher symlink；诊断、plan、verify-only及未知PATH命令保持只读。Graphify MCP、watch与semantic extraction仍为opt-in。所有Graphify输出仅是provider_untrusted advisory candidate，结论必须回到source/test/log/contract或owner evidence。",
       "detection": {
         "kind": "command",
         "command": "graphify",
@@ -1802,12 +1915,12 @@
           "git-hook-write"
         ],
         "source": "pypi",
-        "source_repo": "https://pypi.org/project/graphifyy/0.9.29/",
+        "source_repo": "https://pypi.org/project/graphifyy/0.9.57/",
         "version_policy": {
           "pin_status": "pinned"
         },
         "review_required": true,
-        "install_effect": "Installs the release-reviewed `graphifyy@0.9.29` wheel with uv or pipx using compatible Python >=3.10, no managed Python download, official PyPI index and verified direct SHA-256. Resolves an absolute launcher and confirms importlib distribution identity plus CLI version. Project setup normalizes only recognized Provider-owned instruction/skill/rule/steering/hook surfaces to the Provider-native `graphify-out/` root and the selected launcher. First generation is local AST `extract --code-only` with no `GRAPHIFY_OUT` override; a legacy `.graphify/` tree is atomically migrated when it is the sole artifact root, while dual roots fail closed. Explicit refresh uses provider-native `graphify update` against the existing graph and does not create spec-first top-level staging or backup directories. Git hook readiness requires both Provider marker blocks, verified interpreter and allowed rebuild command without a spec-first output override. After Python package/artifact/query/host/hook readiness is fully verified, mutation setup removes a confirmed global `@sentropic/graphify` incumbent and only stale launcher symlinks proven to resolve into that package. Setup never installs MCP extras, never bootstraps Python/tool managers, never edits shell profiles, and never promotes Graphify output beyond advisory evidence."
+        "install_effect": "Installs the release-reviewed `graphifyy@0.9.57` wheel with uv or pipx using compatible Python >=3.10, no managed Python download, official PyPI index and verified direct SHA-256. Resolves an absolute launcher and confirms importlib distribution identity plus CLI version. Project setup normalizes only recognized Provider-owned instruction/skill/rule/steering/hook surfaces to the Provider-native `graphify-out/` root and the selected launcher. First generation is local AST `extract --code-only` with no `GRAPHIFY_OUT` override; a legacy `.graphify/` tree is atomically migrated when it is the sole artifact root, while dual roots fail closed. Explicit refresh uses provider-native `graphify update` against the existing graph and does not create spec-first top-level staging or backup directories. Git hook readiness requires both Provider marker blocks, verified interpreter and allowed rebuild command without a spec-first output override. After Python package/artifact/query/host/hook readiness is fully verified, mutation setup removes a confirmed global `@sentropic/graphify` incumbent and only stale launcher symlinks proven to resolve into that package. Setup never installs MCP extras, never bootstraps Python/tool managers, never edits shell profiles, and never promotes Graphify output beyond advisory evidence."
       },
       "readiness": {
         "producer": "spec-runtime-setup",

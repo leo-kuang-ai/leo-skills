@@ -53,6 +53,7 @@ function providerResult(metadata, options = {}) {
   const steadyState = metadata.steady_state || {};
   return {
     schema_version: 'provider-readiness.v2',
+    readiness_scope: options.readinessScope || 'artifact',
     provider: metadata.id,
     kind: metadata.kind || 'generic',
     profile: metadata.profile || 'optional',
@@ -83,14 +84,15 @@ function providerResult(metadata, options = {}) {
     first_generation: {
       owner: firstGeneration.owner || 'unknown',
       status: options.firstGenerationStatus || firstGeneration.status || 'unknown',
-      scope: firstGeneration.scope || 'unknown',
+      scope: options.firstGenerationScope || firstGeneration.scope || 'unknown',
       requires_explicit_gate: firstGeneration.requires_explicit_gate === true,
       requirement_workspace_path: options.requirementWorkspacePath === undefined
         ? (firstGeneration.requirement_workspace_path || null)
         : options.requirementWorkspacePath,
-      artifact_root: firstGeneration.artifact_root || null,
+      artifact_root: options.artifactRoot || firstGeneration.artifact_root || null,
       artifact_refs: options.artifactRefs || [],
       next_action: options.firstGenerationNextAction || null,
+      ...(options.scopeProvenance ? { scope_provenance: options.scopeProvenance } : {}),
     },
     steady_state: {
       refresh_owner: steadyState.refresh_owner || 'unknown',

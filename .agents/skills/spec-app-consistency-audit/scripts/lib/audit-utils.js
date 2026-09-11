@@ -14,6 +14,8 @@ const APP_AUDIT_METADATA_HOSTS = Object.freeze([
   'kiro',
   'qoder',
   'opencode',
+  'zcode',
+  'pi',
 ]);
 const GENERATED_OR_CONTROL_ROOTS = Object.freeze([
   '.agents',
@@ -25,6 +27,8 @@ const GENERATED_OR_CONTROL_ROOTS = Object.freeze([
   '.opencode',
   '.qoder',
   '.spec-first',
+  '.zcode',
+  '.pi',
 ]);
 const GENERATED_OR_CONTROL_ROOT_SET = new Set(GENERATED_OR_CONTROL_ROOTS);
 const SKIPPED_DIRS = new Set([

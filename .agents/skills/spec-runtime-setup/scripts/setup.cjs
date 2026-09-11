@@ -3,13 +3,14 @@
 
 const os = require('node:os');
 const path = require('node:path');
-const { parseEntrypointOptions } = require('./lib/args.cjs');
+const { parseEntrypointOptions, helpResult } = require('./lib/args.cjs');
 const { isAbsolutePath } = require('./lib/path-safety.cjs');
 const {
   buildActionPlan,
 } = require('./lib/mode-policy.cjs');
 const {
   isBaselineBlocking,
+  applyReadinessPolicy,
 } = require('./lib/baseline-policy.cjs');
 const {
   resolveHostAuthority,
@@ -51,19 +52,11 @@ const {
   runWorkspaceBatch,
 } = require('./lib/workspace-executor.cjs');
 const {
+  buildProviderPlanSelections,
   buildWorkspaceRuntimePreflight,
   requiresRuntimeProjectionPreflight,
   resolveRuntimeProjectionTargets,
 } = require('./lib/workspace-runtime-preflight.cjs');
-const {
-  runWorkspaceGraphBuild,
-} = require('./lib/workspace-graph-executor.cjs');
-const {
-  runWorkspaceGraphClean,
-} = require('./lib/workspace-graph-clean.cjs');
-const {
-  runWorkspaceGraphStatus,
-} = require('./lib/workspace-graph-status.cjs');
 const {
   INTERNAL_CODEGRAPH_COMMAND_ENV,
   INTERNAL_GRAPHIFY_COMMAND_ENV,
@@ -72,10 +65,6 @@ const {
 const {
   workspaceGraphLifecycleCredentialFromEnv,
 } = require('./lib/workspace-graph-lifecycle-lease.cjs');
-const {
-  buildParentWorkspaceDiagnostic,
-  renderParentWorkspaceDiagnosticHuman,
-} = require('./lib/workspace-parent-diagnostic.cjs');
 const {
   dependencyFor,
   interpolateArgs,
@@ -116,7 +105,7 @@ function runSetup(input = {}) {
   } catch (error) {
     return failedResult('registry-load-failed', error, 2);
   }
-  const knownIds = registry.providers.map((entry) => entry.id);
+  const knownIds = [...new Set([...registry.providers, ...registry.tools, ...registry.helpers].map((entry) => entry.id))];
   const defaultIds = registry.providers
     .filter((entry) => entry.setup_required === true)
     .map((entry) => entry.id);
@@ -138,7 +127,7 @@ function runSetup(input = {}) {
     folder: actionPlan.args.folder,
     allRepos: actionPlan.args.allRepos,
   });
-  if (!target.state_write_allowed && actionPlan.mutation) {
+  if (target.mode === 'invalid-target' || (!target.state_write_allowed && actionPlan.mutation)) {
     return {
       exit_code: 2,
       mode: actionPlan.mode,
@@ -155,10 +144,17 @@ function runSetup(input = {}) {
   const mutationNeedsHost = ['verify', 'only', 'graphify-refresh', 'host-config-repair', 'workspace-graph-build'].includes(actionPlan.mode);
   const runner = input.runner || runCommandSync;
   const candidates = advisoryHostCandidates({ env, runner });
+  const internalWorkspaceRefresh = isInternalWorkspaceGraphRefreshInvocation({ actionPlan, env });
   const authority = resolveHostAuthority({
     env,
     mutationRequested: mutationNeedsHost,
     candidates,
+    skillRoot,
+    targetIdentity: target.target_root || target.workspace_root || cwd,
+    // Detached workspace refresh is launched from canonical source, not a host
+    // Skill mirror. Its mutation authority is the validated lifecycle lease.
+    enforceSurfaceBinding: input.enforceSurfaceBinding === true && !internalWorkspaceRefresh,
+    now: input.now,
   });
   if (authority.status === 'blocked') {
     return {
@@ -172,9 +168,12 @@ function runSetup(input = {}) {
   }
 
   const host = authority.host || candidates[0] || null;
-  const effectiveRegistry = host
+  const effectiveRegistry = applyReadinessPolicy(host
     ? getEffectiveRegistry(registry, { host, platform })
-    : getDiagnosticRegistry(registry, { platform });
+    : getDiagnosticRegistry(registry, { platform }), {
+    selectedIds: actionPlan.args.only,
+    workflows: actionPlan.args.workflows,
+  });
   const needsBundledVersion = mutationNeedsHost || actionPlan.mode === 'workspace-graph-status';
   const context = {
     ...input,
@@ -238,6 +237,15 @@ function runSetup(input = {}) {
   }
 }
 
+function isInternalWorkspaceGraphRefreshInvocation({ actionPlan, env = {} } = {}) {
+  if (!actionPlan || actionPlan.mode !== 'workspace-graph-build') return false;
+  const credential = workspaceGraphLifecycleCredentialFromEnv(env);
+  return env[INTERNAL_REFRESH_ONLY_ENV] === '1'
+    && isAbsolutePath(env[INTERNAL_CODEGRAPH_COMMAND_ENV])
+    && isAbsolutePath(env[INTERNAL_GRAPHIFY_COMMAND_ENV])
+    && Boolean(credential && credential.token && credential.owner_pid);
+}
+
 function buildRuntimeProjectionPreflight(context, selection = null) {
   if (!requiresRuntimeProjectionPreflight(context.actionPlan)) return null;
   const resolvedSelection = selection || resolveRuntimeProjectionTargets(context);
@@ -263,6 +271,7 @@ function blockedRuntimeProjectionResult(context, payload) {
 }
 
 function runParentWorkspaceDiagnostic(context) {
+  const { buildParentWorkspaceDiagnostic, renderParentWorkspaceDiagnosticHuman } = require('./lib/workspace-parent-diagnostic.cjs');
   const { actionPlan, cwd, target, host } = context;
   const payload = buildParentWorkspaceDiagnostic({
     cwd,
@@ -281,6 +290,7 @@ function runParentWorkspaceDiagnostic(context) {
 }
 
 function runWorkspaceGraphSetup(context, runtimeProjectionSelection) {
+  const { runWorkspaceGraphBuild } = require('./lib/workspace-graph-executor.cjs');
   const { actionPlan, cwd, target } = context;
   const workspaceGraphTargets = runtimeProjectionSelection
     ? runtimeProjectionSelection.workspaceGraphTargets
@@ -432,6 +442,7 @@ function workspaceMutationExitCode(status) {
 }
 
 function runWorkspaceGraphCleanSetup(context) {
+  const { runWorkspaceGraphClean } = require('./lib/workspace-graph-clean.cjs');
   const { actionPlan, cwd, target } = context;
   const result = runWorkspaceGraphClean({
     cwd,
@@ -451,6 +462,7 @@ function runWorkspaceGraphCleanSetup(context) {
 }
 
 function runWorkspaceGraphStatusSetup(context) {
+  const { runWorkspaceGraphStatus } = require('./lib/workspace-graph-status.cjs');
   const { actionPlan, cwd, target, bundledVersion } = context;
   const result = runWorkspaceGraphStatus({
     cwd,
@@ -580,6 +592,7 @@ function runPlan(context, repoRoot) {
     reason_code: blockedEntry ? blockedEntry.reason_code || blockedEntry.blocked_reason : 'setup-install-plan-ready',
     target: context.target,
     host: context.host,
+    provider_selection: buildProviderPlanSelections({ context, repoRoot, providerPlans }),
     actions: previewActions,
     safety: previewSafety(context),
     next_action: providerBlock
@@ -816,21 +829,6 @@ function renderProjectConfig(result) {
   ].join('\n');
 }
 
-function helpResult() {
-  const human = [
-    '用法：node <loaded-skill-root>/scripts/setup.cjs [options]',
-    '',
-    '模式：--check | --verify-only | --refresh-facts | --plan | --project-config | --only <ids> | --repair-host-config',
-    'Graphify 刷新：--only graphify --refresh',
-    '目标：--repo <path> | --folder <path> | --all-repos',
-    'Workspace 双层图构建：--only codegraph,graphify --workspace-graph [--repos <a,b>]',
-    'Workspace 双层图状态：--workspace-graph-status [--repos <a,b>]',
-    'Workspace 双层图清理：--workspace-graph-clean [--repos <a,b>]',
-    '约束：workspace-graph action 互斥，且不可与 --all-repos 组合；contained child Git 事件异步刷新，hook 不可用、失败或需即时刷新时显式重跑。',
-    '',
-  ].join('\n');
-  return { exit_code: 0, mode: 'help', reason_code: 'help', payload: { help: human }, human, target: null };
-}
 
 function failedResult(reasonCode, error, exitCode = 1, extra = {}) {
   return {
@@ -849,7 +847,10 @@ function failedResult(reasonCode, error, exitCode = 1, extra = {}) {
 
 function main(argv = process.argv.slice(2)) {
   const parsed = parseEntrypointOptions(argv);
-  const result = runSetup({ argv });
+  const result = runSetup({
+    argv,
+    enforceSurfaceBinding: true,
+  });
   const scenarioFingerprintSetup = result.payload
     && result.payload.runtime_capabilities
     && result.payload.runtime_capabilities.scenario_fingerprint_setup;

@@ -27,6 +27,10 @@ const {
   commandSucceeded,
 } = require('./process-runner.cjs');
 const {
+  buildRuntimeInitRemediation,
+  clearRuntimeInitRemediation,
+} = require('./runtime-remediation.cjs');
+const {
   inspectProjectConfig,
 } = require('./project-config.cjs');
 const {
@@ -52,7 +56,7 @@ const {
 } = require('../providers/common.cjs');
 
 function runVerificationOrMutation(context, repoRoot) {
-  const selectedIds = context.actionPlan.selected_ids;
+  const selectedIds = context.actionPlan.selected_ids.filter((id) => providers[id]);
   const applyInstallMutation = ['only', 'graphify-refresh'].includes(context.actionPlan.mode);
   const applyHostConfigMutation = applyInstallMutation || context.actionPlan.mode === 'host-config-repair';
   let installResults = new Map();
@@ -127,6 +131,9 @@ function runVerificationOrMutation(context, repoRoot) {
   const factsNow = new Date();
   const baseFactInputs = {
     repoRoot,
+    skillRoot: context.skillRoot,
+    homeDir: context.homeDir,
+    env: context.env,
     host: context.host,
     platform: context.platform,
     registry: context.effectiveRegistry,
@@ -140,9 +147,13 @@ function runVerificationOrMutation(context, repoRoot) {
     generatedRuntimeManifest,
     directEvidence: {
       ripgrep: commandSucceeded(ripgrepProbe),
+      git_diff: context.target && context.target.repo_status === 'git-repo',
     },
     projectConfigStatus: projectStatus,
     target: context.target,
+    repoStatus: context.target && context.target.repo_status
+      ? context.target.repo_status
+      : 'not-git-repo',
     now: factsNow,
   };
   const preliminaryBundle = collectSetupFacts(baseFactInputs);
@@ -256,8 +267,9 @@ function buildExecutionSummary({ context, failedOutcome } = {}) {
     : [];
   const mode = context && context.actionPlan ? context.actionPlan.mode : 'unknown';
   const coversRequiredProviders = requiredProviderIds.every((id) => selectedIds.includes(id));
-  const partialScope = ['only', 'graphify-refresh', 'host-config-repair'].includes(mode)
-    && !coversRequiredProviders;
+  const installationOnly = context && context.actionPlan && context.actionPlan.args.installationOnly === true;
+  const partialScope = installationOnly || (['only', 'graphify-refresh', 'host-config-repair'].includes(mode)
+    && !coversRequiredProviders);
   const overallStatus = failedOutcome
     ? 'action-required'
     : (partialScope ? 'partial' : 'ready');
@@ -266,7 +278,7 @@ function buildExecutionSummary({ context, failedOutcome } = {}) {
     reason_code: failedOutcome && failedOutcome.reason_code
       ? failedOutcome.reason_code
       : (partialScope ? 'subset-setup-complete' : 'setup-ready'),
-    scope: partialScope ? 'subset' : 'full',
+    scope: installationOnly ? 'installation' : (partialScope ? 'subset' : 'full'),
     selected_ids: selectedIds,
     required_provider_ids: requiredProviderIds,
   };
@@ -283,7 +295,7 @@ function reduceExecutionOutcome({
 }) {
   const tools = new Map((probes.toolResults || []).map((entry) => [entry.id, entry]));
   const helpers = new Map((probes.helperResults || []).map((entry) => [entry.id, entry]));
-  const selectedIds = context.actionPlan.selected_ids || [];
+  const selectedIds = (context.actionPlan.selected_ids || []).filter((id) => providers[id]);
 
   for (const entry of context.effectiveRegistry.tools || []) {
     if (!isBaselineBlocking(entry)) continue;
@@ -321,6 +333,7 @@ function reduceExecutionOutcome({
   }
 
   const selectedProviderFailure = firstSelectedProviderFailure(providerResults, selectedIds, {
+    installationOnly: context.actionPlan.args.installationOnly === true,
     requireConfigured: false,
   });
   if (selectedProviderFailure) return selectedProviderFailure;
@@ -373,7 +386,7 @@ function firstSelectedProviderFailure(providerResults, selectedIds, options = {}
       && ['failed', 'blocked'].includes(readiness.first_generation.status)) {
       return failureOutcome(providerFailureReason(readiness, 'first-generation'));
     }
-    for (const field of ['installed', 'initialized', 'indexed', 'artifact_exists']) {
+    for (const field of (options.installationOnly ? ['installed'] : ['installed', 'initialized', 'indexed', 'artifact_exists'])) {
       if (lifecycle[field] !== true) {
         return failureOutcome(providerFailureReason(readiness, field));
       }
@@ -387,6 +400,14 @@ function firstSelectedProviderFailure(providerResults, selectedIds, options = {}
 
 function providerFailureReason(readiness, failedField = '') {
   if (readiness && readiness.reason_code) return readiness.reason_code;
+  const scopeProvenance = readiness
+    && readiness.first_generation
+    && readiness.first_generation.scope_provenance;
+  if (scopeProvenance
+    && ['mismatch', 'invalid'].includes(scopeProvenance.status)
+    && scopeProvenance.reason_code) {
+    return scopeProvenance.reason_code;
+  }
   const hook = readiness && readiness.steady_state ? readiness.steady_state : {};
   if (hook.hook_skipped_reason && ['failed', 'blocked'].includes(hook.hook_status)) {
     return hook.hook_skipped_reason;
@@ -793,7 +814,9 @@ function providerContext(context, repoRoot, id, extra = {}) {
     registryEntry: entry,
     dependency: dependencyFor(context, dependencyRef),
     probeDependency: true,
+    installationOnly: context.actionPlan.args.installationOnly === true,
     requirementWorkspace: context.actionPlan.args.requirementWorkspace || '',
+    targetKind: context.target && context.target.target_kind ? context.target.target_kind : '',
     ...extra,
   };
 }
@@ -806,16 +829,26 @@ function requireCapability(context, capability) {
 }
 
 function computeGeneratedRuntimeManifestHealth(context, repoRoot) {
-  const statePath = runtimeStatePath(context.host, repoRoot);
+  const executionRoot = path.resolve(repoRoot);
+  const target = context && context.target ? context.target : null;
+  const runtimeProjectionRoot = target
+    && target.mode !== 'workspace-all-repos'
+    && target.target_root
+    && path.resolve(target.target_root) === executionRoot
+    && target.runtime_projection_root
+    ? path.resolve(target.runtime_projection_root)
+    : executionRoot;
+  const statePath = runtimeStatePath(context.host, runtimeProjectionRoot);
   const result = {
     status: 'unknown',
     reason_code: 'unknown-runtime-manifest-health',
     host: context.host,
+    runtime_projection_root: runtimeProjectionRoot,
     state_path: statePath,
     recorded_manifest_version: null,
     bundled_manifest_version: context.bundledVersion || null,
     evidence_basis: '比较 state.manifestVersion 与 bundled manifest.version',
-    next_action: `spec-first init --${context.host} -y`,
+    ...buildRuntimeInitRemediation({ host: context.host, cwd: runtimeProjectionRoot }),
   };
   if (!context.host || !statePath) {
     result.reason_code = 'missing-host-or-target-root';
@@ -837,7 +870,7 @@ function computeGeneratedRuntimeManifestHealth(context, repoRoot) {
     } else if (result.recorded_manifest_version === result.bundled_manifest_version) {
       result.status = 'current';
       result.reason_code = null;
-      result.next_action = null;
+      clearRuntimeInitRemediation(result);
     } else {
       result.status = 'stale';
       result.reason_code = 'runtime-manifest-version-stale';
@@ -856,6 +889,7 @@ function runtimeStatePath(host, repoRoot) {
     kiro: '.kiro/spec-first/state.json',
     opencode: '.opencode/spec-first/state.json',
     qoder: '.qoder/spec-first/state.json',
+    zcode: '.zcode/spec-first/state.json',
   };
   return roots[host] ? path.join(repoRoot, roots[host]) : null;
 }

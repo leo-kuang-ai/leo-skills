@@ -80,10 +80,16 @@ git diff --check
 ```sh
 python3 leo-ppt-generator/scripts/lint_style_briefs.py        # brief 结构 lint（ERROR 非 0 退出）
 python3 leo-ppt-generator/scripts/lint_layout_grid.py         # 版式网格/双约束 lint（在技能目录内运行）
+python3 leo-ppt-generator/scripts/lint_page_type_regime.py    # 页型真值源 lint（ERROR 退出 1；纯 stdlib）
 ```
 
 新增风格 brief / 版式文件必须两条 lint 全过（warning 白名单仅限存量，见
 `leo-ppt-generator/scripts/style-lint-baseline.txt` 收敛纪律）。
+
+页型真值源 `template-library/governance/rules/page-type-regime-v1.json` 由第三条 lint 把关
+（键与枚举、非空声明、preferred∩fallback 互斥、layout 引用必须在 catalog 中可解析）。它是
+`page_intent` 与 `suggest_layout` 的输入，改动后须同时跑该 lint 与
+`python3 -m unittest discover -s tests -p 'test_page_intent_routing.py'`。
 
 提交前，请从对应技能目录运行包级格式化、测试与评测，并确认通过。
 
@@ -120,4 +126,6 @@ skill、agent、模板、历史上下文或示例文本的原文语言不得覆�
 ### Workflow 入口治理
 <!-- spec-first:workflow-entry:using-spec-first -->
 - 在执行实质性工作前，加载当前宿主已安装的 `using-spec-first` skill；完整入口路由与边界由该 skill 提供。
+- 入口硬规则：存在失败、回归、flake、报错或明确修复意图（"修一下"、bug 引用）时必须进入 `spec-debug`，此类信号存在时不得走 Direct Lane；用户显式点名 workflow、要求处理 GitHub PR review 反馈、要求一条龙到绿 PR、要求外部技术采用裁决、要求跨会话交接时，必须进入对应入口（`spec-resolve-pr-feedback` / `spec-lfg` / `spec-pov` / `spec-handoff`），不得降级 Direct Lane。
+- definition 组判别：从零发散新方向用 `spec-ideate`；已有想法但目标用户或成功标准未定用 `spec-brainstorm`。
 <!-- spec-first:lang:end -->

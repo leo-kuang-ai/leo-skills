@@ -85,7 +85,7 @@ function plan(context = {}) {
       args: ['install', '-g', `${context.dependency.package}@${context.dependency.version}`, '--no-audit', '--no-fund', '--loglevel=error'],
     });
   }
-  actions.push(
+  if (!context.installationOnly) actions.push(
     { kind: 'initialize-if-missing', command: 'codegraph', args: ['init'] },
     { kind: 'verify-status', command: 'codegraph', args: ['status'] },
     {
@@ -98,6 +98,7 @@ function plan(context = {}) {
     schema_version: 'provider-action-plan.v1',
     provider: 'codegraph',
     repo_root: repoRoot,
+    artifact_root_relative: '.codegraph',
     dependency_version: context.dependency && context.dependency.version ? context.dependency.version : null,
     dependency_ready: dependencyReady,
     mutation: true,
@@ -119,6 +120,12 @@ function verify(context = {}) {
   }
   const versionResult = run(context, 'codegraph', ['--version'], { cwd: repoRoot });
   const installed = versionReady(versionResult, context.dependency && context.dependency.version);
+  if (context.installationOnly) return providerResult(METADATA, {
+    installed, configured: context.configured === true,
+    readinessStatus: installed ? 'unknown' : 'not-run',
+    readinessScope: 'installation', firstGenerationStatus: 'not-run',
+    nextActions: installed ? [] : ['运行显式 installation-only setup 安装 CodeGraph。'],
+  });
   const artifactPath = path.join(repoRoot, '.codegraph', 'codegraph.db');
   const hasArtifact = fs.existsSync(artifactPath);
   const statusResult = installed && hasArtifact
@@ -191,6 +198,7 @@ function apply(context = {}, actionPlan = plan(context)) {
       }
     }
   }
+  if (context.installationOnly) return verify(context);
   const artifactPath = path.join(repoRoot, '.codegraph', 'codegraph.db');
   if (!fs.existsSync(artifactPath)) {
     try {
@@ -208,7 +216,12 @@ function apply(context = {}, actionPlan = plan(context)) {
   let statusText = text(statusResult);
   if (succeeded(statusResult) && statusNeedsSync(statusText)) {
     const syncResult = run(context, 'codegraph', ['sync'], { cwd: repoRoot, timeoutMs: 120000 });
-    if (!succeeded(syncResult)) return degraded(context, repoRoot, 'codegraph-sync-failed');
+    if (!succeeded(syncResult)) {
+      const reasonCode = /maximum call stack size exceeded/i.test(text(syncResult))
+        ? 'codegraph-sync-stack-overflow'
+        : 'codegraph-sync-failed';
+      return degraded(context, repoRoot, reasonCode);
+    }
     statusResult = run(context, 'codegraph', ['status'], { cwd: repoRoot });
     statusText = text(statusResult);
   }

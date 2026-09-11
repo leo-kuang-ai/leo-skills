@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """lint_render_templates.py — E5 渲染模板合同 lint（gamma M1）。
 
-对 ``assets/render-templates/*.html`` 执行 render:html 专属规则
+对 ``template-library/canonical/templates/*/page.html`` 执行 render:html 专属规则
 （规则-渲染器映射见 ``assets/render-lint-rules.json`` 的 ``template.*`` 键；
 skip 集/映射改动走 style-lint-baseline.txt 式白名单登记纪律）：
 
@@ -29,7 +29,7 @@ import sys
 from pathlib import Path
 
 RULES_FILE = Path(__file__).resolve().parents[1] / "assets/render-lint-rules.json"
-TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "assets/render-templates"
+TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "template-library/canonical/templates"
 
 TEMPLATE_RULES = (
     "template.ready_signal",
@@ -125,8 +125,8 @@ def lint_template(path: Path, renderer: str, rules: dict) -> dict:
             skipped.append(rule_id)
             continue
         for problem in CHECKERS[rule_id](text):
-            errors.append({"rule": rule_id, "file": path.name, "problem": problem})
-    return {"file": path.name, "errors": errors, "skipped_rules": skipped}
+            errors.append({"rule": rule_id, "file": f"{path.parent.name}/{path.name}", "problem": problem})
+    return {"file": f"{path.parent.name}/{path.name}", "errors": errors, "skipped_rules": skipped}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -139,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rules = load_rules()
     templates_dir = Path(args.templates_dir)
-    html_files = sorted(templates_dir.glob("*.html"))
+    html_files = sorted(templates_dir.glob("*/page.html"))
     if not html_files:
         print(f"ERROR: 未找到模板于 {templates_dir}", file=sys.stderr)
         return 1

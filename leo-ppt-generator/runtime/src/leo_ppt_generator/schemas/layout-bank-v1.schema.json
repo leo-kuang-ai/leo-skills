@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "layout-bank-v1.schema.json",
-  "title": "leo-ppt-generator 版式库 sidecar（layout-bank-v1）",
-  "description": "双层结构契约：版式层（entity=layout，references/styles/12_版式库/<stem>.layouts.json，36 份唯一真值）+ 风格层（entity=style-layout-bank，references/styles/<风格名>.layouts.json，11 份薄路由视图，只引用不复制）。语义描述字段五字段封顶 = visual_signature / content_capacity / best_for / avoid_for / reuse_friendly；schema_version / entity / layout_id / name / page_type / max_per_deck 为标识与治理字段，不计入封顶。显式不引入 variation_tags / json_schema / external_image_slots / reuse_reason / summary（上游字段合同只取五字段子集）。content_capacity 语义从 00_索引/版式内容Schema.md 提炼，数值由 scripts/generate_capacity_draft.py 按 00_索引/版心Canon.md token 公式生成并经人工审定；lint（scripts/lint_layout_grid.py 检查 C）守恒恒等式 max_chars == floor(chars_per_line * max_lines * 1.2)。",
+  "title": "leo-ppt-generator 版式库兼容 schema（layout-bank-v1）",
+  "description": "兼容查询契约：活动版式真值是 template-library/canonical/layouts/*/layout.json（当前 42 个 profile，其中 P1-P36 为迁移的页级骨架）；风格路由位于 canonical/styles/*/brief.json 的 bindings.layout_routes，只引用不复制。旧 layout-bank-v1 sidecar 仅供迁移审计和历史 fixture，不是活动执行源。语义描述字段五字段封顶 = visual_signature / content_capacity / best_for / avoid_for / reuse_friendly；schema_version / entity / layout_id / name / page_type / max_per_deck 为标识与治理字段，不计入封顶。显式不引入 variation_tags / json_schema / external_image_slots / reuse_reason / summary（上游字段合同只取五字段子集）。content_capacity 的活动数值来自 canonical profile slots；旧 sidecar 的公式校验由 scripts/generate_capacity_draft.py 保留为迁移对账，lint（scripts/lint_layout_grid.py 检查 canonical 与 legacy）守恒恒等式 max_chars == floor(chars_per_line * max_lines * 1.2)。",
   "oneOf": [
     { "$ref": "#/definitions/layout" },
     { "$ref": "#/definitions/styleLayoutBank" }

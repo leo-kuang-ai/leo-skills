@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:page-semantics-目标-学习目标",
+  "name": "页面语义：目标·学习目标",
+  "kind": "page-semantics",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

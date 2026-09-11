@@ -1,0 +1,2819 @@
+{
+  "kind": "template-recommendation-baseline",
+  "note": "两轮独立运行输出一致（确定性）。rounds[0] 与 rounds[1] 逐字节相同；环境信号（environment）当前推荐器不消费，按未命中如实记录。",
+  "plan": "docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md",
+  "recommender": "scripts/style_hard_rules.py evaluate() + current_family_members()（旧树退役前冻结）",
+  "rounds": [
+    {
+      "ac-den-undergrad-lecture": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "ac-mgmt-grant-closeout": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "高攻击"
+          ],
+          "lock_families": [
+            "学术答辩"
+          ],
+          "prefer_families": {
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "academic-defense",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "毕业答辩风",
+          "科研答辩风",
+          "课题申请风"
+        ],
+        "preferred_family_members": [
+          "便当格卡片风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "色谱图表风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "ac-pro-paper-prereview": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "学术答辩": 1,
+            "数据图表": 1,
+            "极简排版": 1
+          },
+          "triggered_rules": [
+            "academic-journal",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "便当格卡片风",
+          "和纸柔光风",
+          "商务几何风",
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "宣言备忘录风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "日式生活杂志风",
+          "暖调柔形风",
+          "极简风",
+          "毕业答辩风",
+          "瑞士网格风",
+          "电子墨水杂志风",
+          "科研答辩风",
+          "粗野报刊风",
+          "色谱图表风",
+          "课题申请风",
+          "象牙账本风",
+          "麦肯锡咨询风",
+          "黑白极简艺术展风"
+        ]
+      },
+      "br-env-popstore-loop": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "br-mgmt-strategy-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "br-pro-growth-data-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "数据图表": 1,
+            "消费营销": 1
+          },
+          "triggered_rules": [
+            "data-dense-report",
+            "ecommerce-promo"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "便当格卡片风",
+          "单色满版海报风",
+          "商务几何风",
+          "快消营销风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "电商大促风",
+          "美妆个护风",
+          "色谱图表风",
+          "达人营销风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-den-workshop": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "consulting-legal"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-mgmt-steering-close": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "高攻击"
+          ],
+          "lock_families": [
+            "学术答辩"
+          ],
+          "prefer_families": {
+            "商务专业": 2
+          },
+          "triggered_rules": [
+            "academic-defense",
+            "board-formal-report",
+            "consulting-legal"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "毕业答辩风",
+          "科研答辩风",
+          "课题申请风"
+        ],
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-pro-analysis-appendix": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "consulting-legal",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "便当格卡片风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "edu-kids-science-class": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "工程蓝图",
+            "高攻击"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "卡通儿童": 2,
+            "教学课件": 1,
+            "艺术手绘": 2
+          },
+          "triggered_rules": [
+            "kids-education",
+            "k12-courseware",
+            "casual-sharing"
+          ]
+        },
+        "excluded_styles": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "新粗野主义风",
+          "粗野报刊风",
+          "终端命令行风",
+          "荧光高对比科技风",
+          "蓝晒图纸风",
+          "行动主义海报风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "3D软体卡通风",
+          "中小学课堂风",
+          "互联网产品风",
+          "便利贴拼贴风",
+          "创意杂志风",
+          "别针手账风",
+          "吉卜力手绘风",
+          "在线教育风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "教学课件风",
+          "数学可视化教学风",
+          "水彩晕染风",
+          "温暖手工风",
+          "立体剪纸风",
+          "童趣暖橙风",
+          "粉笔黑板风",
+          "高桥流糖果舞台风",
+          "黏土定格风"
+        ]
+      },
+      "edu-mgmt-teaching-audit": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "board-formal-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "樱彩磁带包装风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "edu-pro-math-open-class": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "工程蓝图",
+            "高攻击"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "卡通儿童": 2,
+            "教学课件": 1,
+            "艺术手绘": 1
+          },
+          "triggered_rules": [
+            "kids-education",
+            "k12-courseware"
+          ]
+        },
+        "excluded_styles": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "新粗野主义风",
+          "粗野报刊风",
+          "终端命令行风",
+          "荧光高对比科技风",
+          "蓝晒图纸风",
+          "行动主义海报风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "3D软体卡通风",
+          "中小学课堂风",
+          "互联网产品风",
+          "便利贴拼贴风",
+          "创意杂志风",
+          "别针手账风",
+          "吉卜力手绘风",
+          "在线教育风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "教学课件风",
+          "数学可视化教学风",
+          "水彩晕染风",
+          "温暖手工风",
+          "立体剪纸风",
+          "童趣暖橙风",
+          "粉笔黑板风",
+          "高桥流糖果舞台风",
+          "黏土定格风"
+        ]
+      },
+      "fin-env-annual-meeting": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "finance-audit"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "fin-mgmt-board-report": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 2,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "board-formal-report",
+            "finance-audit"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "fin-pro-quant-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "数据图表": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "finance-audit",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "便当格卡片风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "gov-env-party-day-screen": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {},
+          "triggered_rules": [
+            "party-gov-lock",
+            "gov-publicity"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": []
+      },
+      "gov-mgmt-workreport": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "party-gov-lock",
+            "board-formal-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "gov-pro-open-data-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "party-gov-lock",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": [
+          "便当格卡片风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "色谱图表风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "med-mgmt-annual-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "board-formal-report",
+            "medical-serious"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "临床试验风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暖陶土医学风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "森林绿临床水彩风",
+          "橄榄奶白风",
+          "深海军蓝医学风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "秋叶麦田水彩医学风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风",
+          "黑白水墨临床风"
+        ]
+      },
+      "med-pro-trial-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "medical-serious",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "临床试验风",
+          "便当格卡片风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暖陶土医学风",
+          "森林绿临床水彩风",
+          "深海军蓝医学风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "秋叶麦田水彩医学风",
+          "色谱图表风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "麦肯锡咨询风",
+          "黑白水墨临床风"
+        ]
+      },
+      "med-pub-patient-education": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "工程蓝图",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "艺术手绘": 1
+          },
+          "triggered_rules": [
+            "medical-serious",
+            "casual-sharing"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "代码开发者风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "工程白图风",
+          "工程蓝图风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "终端命令行风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "蓝晒图纸风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "临床试验风",
+          "便利贴拼贴风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "创意杂志风",
+          "别针手账风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "吉卜力手绘风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "暖陶土医学风",
+          "森林绿临床水彩风",
+          "水彩晕染风",
+          "深海军蓝医学风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "温暖手工风",
+          "秋叶麦田水彩医学风",
+          "粉笔黑板风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "黑白水墨临床风"
+        ]
+      },
+      "tech-env-atrium-launch": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "科技暗色": 1,
+            "科技浅色": 1
+          },
+          "triggered_rules": [
+            "tech-launch"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "Catppuccin拿铁风",
+          "Catppuccin摩卡风",
+          "Dracula紫风",
+          "Gruvbox暗风",
+          "Stripe蓝白风",
+          "Web3加密风",
+          "东京夜风",
+          "产品发布会风",
+          "便当格卡片风",
+          "全息棱镜科技风",
+          "日光浅风",
+          "暗线终端风",
+          "暗黑科技风",
+          "未来科技编辑风",
+          "深色弥散风",
+          "深色科技杂志风",
+          "玻璃拟态风",
+          "科技未来感风",
+          "荧光高对比科技风",
+          "蓝焰作战室风",
+          "黑底数字剧场风"
+        ]
+      },
+      "tech-mgmt-investor-pitch": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "科技暗色": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "investor-pitch-tech",
+            "investor-pitch-general"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "Catppuccin摩卡风",
+          "Dracula紫风",
+          "Gruvbox暗风",
+          "Web3加密风",
+          "东京夜风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "暗线终端风",
+          "暗黑科技风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色弥散风",
+          "深色科技杂志风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "科技未来感风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光高对比科技风",
+          "荧光黄商务风",
+          "蓝焰作战室风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风",
+          "黑底数字剧场风"
+        ]
+      },
+      "tech-pro-arch-deepdive": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "工程蓝图": 1
+          },
+          "triggered_rules": [
+            "dev-community"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "终端命令行风",
+          "蓝晒图纸风"
+        ]
+      }
+    },
+    {
+      "ac-den-undergrad-lecture": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "ac-mgmt-grant-closeout": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "高攻击"
+          ],
+          "lock_families": [
+            "学术答辩"
+          ],
+          "prefer_families": {
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "academic-defense",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "毕业答辩风",
+          "科研答辩风",
+          "课题申请风"
+        ],
+        "preferred_family_members": [
+          "便当格卡片风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "色谱图表风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "ac-pro-paper-prereview": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "学术答辩": 1,
+            "数据图表": 1,
+            "极简排版": 1
+          },
+          "triggered_rules": [
+            "academic-journal",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "便当格卡片风",
+          "和纸柔光风",
+          "商务几何风",
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "宣言备忘录风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "日式生活杂志风",
+          "暖调柔形风",
+          "极简风",
+          "毕业答辩风",
+          "瑞士网格风",
+          "电子墨水杂志风",
+          "科研答辩风",
+          "粗野报刊风",
+          "色谱图表风",
+          "课题申请风",
+          "象牙账本风",
+          "麦肯锡咨询风",
+          "黑白极简艺术展风"
+        ]
+      },
+      "br-env-popstore-loop": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "br-mgmt-strategy-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {},
+          "triggered_rules": []
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": []
+      },
+      "br-pro-growth-data-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "数据图表": 1,
+            "消费营销": 1
+          },
+          "triggered_rules": [
+            "data-dense-report",
+            "ecommerce-promo"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "便当格卡片风",
+          "单色满版海报风",
+          "商务几何风",
+          "快消营销风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "电商大促风",
+          "美妆个护风",
+          "色谱图表风",
+          "达人营销风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-den-workshop": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "consulting-legal"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-mgmt-steering-close": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "高攻击"
+          ],
+          "lock_families": [
+            "学术答辩"
+          ],
+          "prefer_families": {
+            "商务专业": 2
+          },
+          "triggered_rules": [
+            "academic-defense",
+            "board-formal-report",
+            "consulting-legal"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "学术会议风",
+          "学术期刊风",
+          "学术论文答辩风",
+          "毕业答辩风",
+          "科研答辩风",
+          "课题申请风"
+        ],
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "con-pro-analysis-appendix": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "consulting-legal",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "便当格卡片风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "edu-kids-science-class": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "工程蓝图",
+            "高攻击"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "卡通儿童": 2,
+            "教学课件": 1,
+            "艺术手绘": 2
+          },
+          "triggered_rules": [
+            "kids-education",
+            "k12-courseware",
+            "casual-sharing"
+          ]
+        },
+        "excluded_styles": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "新粗野主义风",
+          "粗野报刊风",
+          "终端命令行风",
+          "荧光高对比科技风",
+          "蓝晒图纸风",
+          "行动主义海报风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "3D软体卡通风",
+          "中小学课堂风",
+          "互联网产品风",
+          "便利贴拼贴风",
+          "创意杂志风",
+          "别针手账风",
+          "吉卜力手绘风",
+          "在线教育风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "教学课件风",
+          "数学可视化教学风",
+          "水彩晕染风",
+          "温暖手工风",
+          "立体剪纸风",
+          "童趣暖橙风",
+          "粉笔黑板风",
+          "高桥流糖果舞台风",
+          "黏土定格风"
+        ]
+      },
+      "edu-mgmt-teaching-audit": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "board-formal-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "樱彩磁带包装风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "edu-pro-math-open-class": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "工程蓝图",
+            "高攻击"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "卡通儿童": 2,
+            "教学课件": 1,
+            "艺术手绘": 1
+          },
+          "triggered_rules": [
+            "kids-education",
+            "k12-courseware"
+          ]
+        },
+        "excluded_styles": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "新粗野主义风",
+          "粗野报刊风",
+          "终端命令行风",
+          "荧光高对比科技风",
+          "蓝晒图纸风",
+          "行动主义海报风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "3D软体卡通风",
+          "中小学课堂风",
+          "互联网产品风",
+          "便利贴拼贴风",
+          "创意杂志风",
+          "别针手账风",
+          "吉卜力手绘风",
+          "在线教育风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "教学课件风",
+          "数学可视化教学风",
+          "水彩晕染风",
+          "温暖手工风",
+          "立体剪纸风",
+          "童趣暖橙风",
+          "粉笔黑板风",
+          "高桥流糖果舞台风",
+          "黏土定格风"
+        ]
+      },
+      "fin-env-annual-meeting": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "finance-audit"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "fin-mgmt-board-report": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 2,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "board-formal-report",
+            "finance-audit"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "fin-pro-quant-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "数据图表": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "finance-audit",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "便当格卡片风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "gov-env-party-day-screen": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {},
+          "triggered_rules": [
+            "party-gov-lock",
+            "gov-publicity"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": []
+      },
+      "gov-mgmt-workreport": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "party-gov-lock",
+            "board-formal-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "gov-pro-open-data-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "游戏娱乐",
+            "高攻击"
+          ],
+          "lock_families": [
+            "党政红"
+          ],
+          "prefer_families": {
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "party-gov-lock",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "合成波风",
+          "声波霓虹风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "新粗野主义风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "粗野报刊风",
+          "胶囊卡波普风",
+          "荧光高对比科技风",
+          "蒸汽波风",
+          "行动主义海报风",
+          "装饰艺术风",
+          "里索印刷风",
+          "锐利黑白风"
+        ],
+        "locked_candidates": [
+          "党建活动风",
+          "党政红风格",
+          "政府工作报告风"
+        ],
+        "preferred_family_members": [
+          "便当格卡片风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "色谱图表风",
+          "麦肯锡咨询风"
+        ]
+      },
+      "med-mgmt-annual-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "商务专业": 1
+          },
+          "triggered_rules": [
+            "board-formal-report",
+            "medical-serious"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "临床试验风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "商业计划书风",
+          "商务几何风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "暖陶土医学风",
+          "暗夜奢华风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "森林绿临床水彩风",
+          "橄榄奶白风",
+          "深海军蓝医学风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "秋叶麦田水彩医学风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光黄商务风",
+          "融资路演风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风",
+          "黑白水墨临床风"
+        ]
+      },
+      "med-pro-trial-review": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "数据图表": 1
+          },
+          "triggered_rules": [
+            "medical-serious",
+            "data-dense-report"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "临床试验风",
+          "便当格卡片风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "商务几何风",
+          "数据仪表盘风",
+          "数据新闻编辑风",
+          "暖陶土医学风",
+          "森林绿临床水彩风",
+          "深海军蓝医学风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "秋叶麦田水彩医学风",
+          "色谱图表风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "麦肯锡咨询风",
+          "黑白水墨临床风"
+        ]
+      },
+      "med-pub-patient-education": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [
+            "复古潮流",
+            "工程蓝图",
+            "波普孟菲斯",
+            "消费营销"
+          ],
+          "lock_families": [],
+          "prefer_families": {
+            "医疗健康": 1,
+            "艺术手绘": 1
+          },
+          "triggered_rules": [
+            "medical-serious",
+            "casual-sharing"
+          ]
+        },
+        "excluded_styles": [
+          "Y2K铬金属风",
+          "中世纪现代风",
+          "代码开发者风",
+          "像素复古风",
+          "单色满版海报风",
+          "合成波风",
+          "复古晚宴餐牌风",
+          "复古电视风",
+          "复古视窗风",
+          "大字报巨型排版风",
+          "孟菲斯新潮风",
+          "孟菲斯风",
+          "工程白图风",
+          "工程蓝图风",
+          "快消营销风",
+          "新消费品牌风",
+          "时尚品牌风",
+          "樱彩磁带包装风",
+          "波普艺术风",
+          "电商大促风",
+          "终端命令行风",
+          "美妆个护风",
+          "胶囊卡波普风",
+          "蒸汽波风",
+          "蓝晒图纸风",
+          "装饰艺术风",
+          "达人营销风",
+          "里索印刷风"
+        ],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "临床试验风",
+          "便利贴拼贴风",
+          "健康科普插画风",
+          "冷蓝斜切医学风",
+          "创意杂志风",
+          "别针手账风",
+          "医养同源水墨风",
+          "医学书卷风",
+          "医学手稿答辩风",
+          "医疗学术风",
+          "医药发布会风",
+          "医院品牌风",
+          "吉卜力手绘风",
+          "复古扁平插画风",
+          "手绘技术解释风",
+          "手绘白板风",
+          "手绘秋日手账风",
+          "暖陶土医学风",
+          "森林绿临床水彩风",
+          "水彩晕染风",
+          "深海军蓝医学风",
+          "深蓝灰科研风",
+          "深蓝菱形答辩风",
+          "温暖手工风",
+          "秋叶麦田水彩医学风",
+          "粉笔黑板风",
+          "雾感鼠尾草风",
+          "青蓝水墨医学风",
+          "黑白水墨临床风"
+        ]
+      },
+      "tech-env-atrium-launch": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "科技暗色": 1,
+            "科技浅色": 1
+          },
+          "triggered_rules": [
+            "tech-launch"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "Catppuccin拿铁风",
+          "Catppuccin摩卡风",
+          "Dracula紫风",
+          "Gruvbox暗风",
+          "Stripe蓝白风",
+          "Web3加密风",
+          "东京夜风",
+          "产品发布会风",
+          "便当格卡片风",
+          "全息棱镜科技风",
+          "日光浅风",
+          "暗线终端风",
+          "暗黑科技风",
+          "未来科技编辑风",
+          "深色弥散风",
+          "深色科技杂志风",
+          "玻璃拟态风",
+          "科技未来感风",
+          "荧光高对比科技风",
+          "蓝焰作战室风",
+          "黑底数字剧场风"
+        ]
+      },
+      "tech-mgmt-investor-pitch": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "商务专业": 1,
+            "科技暗色": 1,
+            "金融审计": 1
+          },
+          "triggered_rules": [
+            "investor-pitch-tech",
+            "investor-pitch-general"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "CEO高级商务风",
+          "Catppuccin摩卡风",
+          "Dracula紫风",
+          "Gruvbox暗风",
+          "Web3加密风",
+          "东京夜风",
+          "保险品牌风",
+          "创业大赛路演风",
+          "勃艮第红风",
+          "北极冷风",
+          "商业计划书风",
+          "商务几何风",
+          "四大审计风",
+          "地产空间风",
+          "成果汇报风",
+          "战略咨询风",
+          "投资机构风",
+          "暗夜奢华风",
+          "暗线终端风",
+          "暗黑科技风",
+          "极简奢侈品牌风",
+          "林间三色季刊风",
+          "橄榄奶白风",
+          "深色弥散风",
+          "深色科技杂志风",
+          "深色编辑报告风",
+          "深蓝极简工作坊风",
+          "清爽专业风",
+          "现代周报风",
+          "祖母绿刊头风",
+          "科技未来感风",
+          "稳重商务风",
+          "简约商务风",
+          "色谱图表风",
+          "荧光高对比科技风",
+          "荧光黄商务风",
+          "蓝焰作战室风",
+          "融资路演风",
+          "财报季报风",
+          "金融奢华风",
+          "鎏金象牙风",
+          "银行年报风",
+          "静奢极简风",
+          "风投路演风",
+          "麦肯锡咨询风",
+          "黑底数字剧场风"
+        ]
+      },
+      "tech-pro-arch-deepdive": {
+        "evaluate": {
+          "bypass_reason": null,
+          "bypassed": false,
+          "exclude_families": [],
+          "lock_families": [],
+          "prefer_families": {
+            "工程蓝图": 1
+          },
+          "triggered_rules": [
+            "dev-community"
+          ]
+        },
+        "excluded_styles": [],
+        "locked_candidates": null,
+        "preferred_family_members": [
+          "代码开发者风",
+          "工程白图风",
+          "工程蓝图风",
+          "终端命令行风",
+          "蓝晒图纸风"
+        ]
+      }
+    }
+  ],
+  "schema_version": 1
+}

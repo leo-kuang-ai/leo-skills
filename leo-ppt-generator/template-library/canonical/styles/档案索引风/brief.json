@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:档案索引风",
+  "name": "档案索引风",
+  "aliases": [
+    "Archival Index Deck",
+    "archival index",
+    "档案卡片"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/档案索引风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "archival research catalog, paper-beige canvas with serif and monospace mix, every diagram indexed by mono numbers and rule lines like a library card catalogue"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Archival Index Deck",
+      "archival index",
+      "档案卡片"
+    ],
+    "best_for": "图书馆卡片式索引编号的研究档案美学;适合研究报告/文献综述/馆藏策展",
+    "visual_direction": "archival research catalog, paper-beige canvas with serif and monospace mix, every diagram indexed by mono numbers and rule lines like a library card catalogue",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#EFE9DD、#F6F2E8(变体锚)",
+      "composition": "纸米底上等宽索引号标引一切,细规则线建立秩序",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#EFE9DD(纸米底)",
+      "secondary": "#F6F2E8(卡面)",
+      "accent": "#33302A(墨棕即强调,hatch 影线)",
+      "neutral": "#7A7468(次级棕灰)"
+    },
+    "typography": {
+      "title": "Source Serif 4 600(Georgia 兜底)26pt",
+      "body": "Source Serif 400 正文",
+      "labels": "IBM Plex Mono 500 13pt 索引号,tracking 0.04em"
+    },
+    "layout_patterns": [
+      "所有元素以等宽索引号(01/02/A1/B2)标引",
+      "细规则线建立秩序,替代箭头连接",
+      "衬线标题 + 等宽编号混排",
+      "大号章节数字 120pt 级作背景"
+    ],
+    "layout_usage_rule": "所有元素以等宽索引号(01/02/A1/B2)标引",
+    "visual_elements": {
+      "allowed": "纸米底上等宽索引号标引一切,细规则线建立秩序",
+      "avoid": "不要彩色强调/CSS 渐变/发光——只有墨棕实色与影线 hatch; 不要圆角/阴影/立体——纸面平整见棱角"
+    },
+    "rendering_constraints": [
+      "不要彩色强调/CSS 渐变/发光——只有墨棕实色与影线 hatch",
+      "不要圆角/阴影/立体——纸面平整见棱角",
+      "不要箭头连接器——流程靠编号连续与规则线",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要彩色强调/CSS 渐变/发光——只有墨棕实色与影线 hatch",
+      "不要圆角/阴影/立体——纸面平整见棱角",
+      "不要箭头连接器——流程靠编号连续与规则线"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD39 Archival Index Deck"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要彩色强调/CSS 渐变/发光——只有墨棕实色与影线 hatch",
+      "不要圆角/阴影/立体——纸面平整见棱角",
+      "不要箭头连接器——流程靠编号连续与规则线",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

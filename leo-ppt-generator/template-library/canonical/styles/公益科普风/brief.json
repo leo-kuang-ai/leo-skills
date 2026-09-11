@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:公益科普风",
+  "name": "公益科普风",
+  "aliases": [
+    "公益风",
+    "公益传播风",
+    "nonprofit风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/对外宣传/公益科普风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "public-welfare style, warm advocacy, purposeful narrative, empathy-driven, action-oriented, hopeful social-change communication"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "公益风",
+      "公益传播风",
+      "nonprofit风"
+    ],
+    "best_for": "公益与科普,需要温暖、正念、行动导向,唤起同理与参与",
+    "visual_direction": "public-welfare style, warm advocacy, purposeful narrative, empathy-driven, action-oriented, hopeful social-change communication",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "light editorial / bold brand ground",
+      "composition": "message → engagement → action",
+      "density": "medium, shareable"
+    },
+    "color_palette": {
+      "primary": "warm teal/green #14B8A6 or coral #FB7185, white",
+      "secondary": "soft warm accents #FDE68A",
+      "accent": "one hopeful accent #34D399",
+      "neutral": "near-black #1F2937, warm gray #9C9484, white",
+      "rule": "warm, hopeful, purposeful; not preachy"
+    },
+    "typography": {
+      "title": "warm friendly sans (Nunito / 思源黑体), clear",
+      "body": "short compelling body",
+      "labels": "action/tag labels",
+      "text_quality": "accurate, empathetic"
+    },
+    "layout_patterns": [
+      "issue & empathy",
+      "purpose / change",
+      "action & participation",
+      "impact & hope"
+    ],
+    "layout_usage_rule": "Warm advocacy; empathy, purpose, action, and hopeful impact.",
+    "layout_blueprints": [
+      {
+        "name": "议题页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "议题 + 同理主视觉"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "行动页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "参与方式1",
+              "2",
+              "3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "warm imagery, purpose blocks, action callouts, hopeful palette",
+      "avoid": "preachy, clutter, depressing, misleading"
+    },
+    "rendering_constraints": [
+      "Warm, purposeful, action-oriented.",
+      "Empathy, purpose, action, hope.",
+      "Accurate, empathetic; no misleading stats."
+    ],
+    "reference": "GitHub: 公益科普 · 公益传播惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Warm, purposeful, action-oriented.",
+      "Empathy, purpose, action, hope.",
+      "Accurate, empathetic; no misleading stats."
+    ]
+  }
+}

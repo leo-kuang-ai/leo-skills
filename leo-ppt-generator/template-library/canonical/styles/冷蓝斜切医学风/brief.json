@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:冷蓝斜切医学风",
+  "name": "冷蓝斜切医学风",
+  "aliases": [
+    "冷蓝斜切医学风",
+    "冷蓝斜切",
+    "斜切生物医学",
+    "cold blue diagonal medical"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/冷蓝斜切医学风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "cold-blue biomedical deck, white academic layout with navy diagonal-cut geometry and coral accents, rigorous research infographic"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "冷蓝斜切医学风",
+      "冷蓝斜切",
+      "斜切生物医学",
+      "cold blue diagonal medical"
+    ],
+    "best_for": "白底冷蓝学术版式+珊瑚橙强调+斜切几何母版;适合生物医学汇报/医学博士答辩/医学科研课题/医学会议报告",
+    "visual_direction": "cold-blue biomedical deck, white academic layout with navy diagonal-cut geometry and coral accents, rigorous research infographic",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F4F8FB→#D9EAF3 (冷蓝斜切医学风底)",
+      "composition": "纯白/淡冷灰底 + 深蓝珊瑚橙斜切几何色带 + 白底圆角卡片栅格",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#243A52(深海军蓝主色/标题锚)",
+      "secondary": "#5F8FB4(医学蓝灰)",
+      "accent": "#F1644A(珊瑚橙强调)",
+      "neutral": "#637282(灰蓝正文)",
+      "rule": "锚点 #243A52, #5F8FB4, #F1644A, #637282;来源:源文件色板原文直迁;为 GPT Image 2 提供冷蓝白底、斜切几何、卡片化医学学术 PPT 生图的全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "思源黑体 Heavy 深蓝 #20364F,字号大且稳重",
+      "body": "思源黑体 Regular 灰蓝 #637282,行距宽松",
+      "labels": "Arial/Calibri 小号英文副题,ExtraBold 深蓝圆形编号"
+    },
+    "layout_patterns": [
+      "左上深蓝大标题 + 小号英文副题,珊瑚橙下划线统一识别",
+      "页面边缘/右下深蓝与珊瑚橙斜切几何色带作母版装饰",
+      "白底圆角卡片 + 浅灰描边 + 轻微投影 + 严格栅格大面积留白",
+      "低透明分子网络/DNA 双螺旋/点阵矩阵背景"
+    ],
+    "layout_usage_rule": "左上深蓝大标题 + 小号英文副题,珊瑚橙下划线统一识别",
+    "visual_elements": {
+      "allowed": "纯白/淡冷灰底 + 深蓝珊瑚橙斜切几何色带 + 白底圆角卡片栅格",
+      "avoid": "不要深色整页背景;不要斜切装饰压迫正文"
+    },
+    "rendering_constraints": [
+      "不要深色整页背景",
+      "不要斜切装饰压迫正文",
+      "不要卡片大小无规律或元素随机摆放",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要深色整页背景",
+      "不要斜切装饰压迫正文",
+      "不要卡片大小无规律或元素随机摆放",
+      "不要虚构医院/大学名称或伪参考文献"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/004_冷蓝斜切生物医学汇报PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要深色整页背景",
+      "不要斜切装饰压迫正文",
+      "不要卡片大小无规律或元素随机摆放",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

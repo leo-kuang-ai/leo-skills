@@ -1,0 +1,74 @@
+{
+  "kind": "vocabulary",
+  "schema_version": 1,
+  "id": "environment",
+  "description": "展示环境；未知优先已验证 light，明亮环境不能默认推只支持 dark 的组合（§8.3）",
+  "terms": [
+    {
+      "id": "desktop-review",
+      "label_zh": "桌面细读",
+      "contrast_need": "normal",
+      "default_mode_hint": null
+    },
+    {
+      "id": "meeting-room-projector",
+      "label_zh": "会议室投屏",
+      "contrast_need": "elevated",
+      "default_mode_hint": "light"
+    },
+    {
+      "id": "large-venue-screen",
+      "label_zh": "大会场大屏",
+      "contrast_need": "high",
+      "default_mode_hint": null
+    },
+    {
+      "id": "bright-large-venue",
+      "label_zh": "明亮大场地",
+      "contrast_need": "high",
+      "default_mode_hint": "light"
+    },
+    {
+      "id": "roadshow-stage",
+      "label_zh": "路演舞台",
+      "contrast_need": "elevated",
+      "default_mode_hint": null
+    },
+    {
+      "id": "conference-screen",
+      "label_zh": "会议大屏",
+      "contrast_need": "elevated",
+      "default_mode_hint": null
+    },
+    {
+      "id": "classroom-screen",
+      "label_zh": "教室屏幕",
+      "contrast_need": "elevated",
+      "default_mode_hint": "light"
+    },
+    {
+      "id": "community-hall",
+      "label_zh": "社区讲堂",
+      "contrast_need": "elevated",
+      "default_mode_hint": "light"
+    },
+    {
+      "id": "lecture-hall",
+      "label_zh": "阶梯教室",
+      "contrast_need": "elevated",
+      "default_mode_hint": "light"
+    },
+    {
+      "id": "store-loop-screen",
+      "label_zh": "门店循环屏",
+      "contrast_need": "high",
+      "default_mode_hint": null
+    },
+    {
+      "id": "print",
+      "label_zh": "打印分发",
+      "contrast_need": "normal",
+      "default_mode_hint": "light"
+    }
+  ]
+}

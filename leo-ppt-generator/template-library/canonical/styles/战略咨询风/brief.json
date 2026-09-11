@@ -1,0 +1,160 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:战略咨询风",
+  "name": "战略咨询风",
+  "aliases": [
+    "顾问报告风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/咨询法律/战略咨询风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "strategy consulting narrative, high-level management insight, methodology frameworks, executive resonance, clear path-to-impact, refined professional logic"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "顾问报告风"
+    ],
+    "variants": [
+      "顾问报告风: 同板场景变体，诊断建议与落地路线报告"
+    ],
+    "best_for": "管理咨询战略项目汇报,需要方法论框架、高管洞察与落地路径",
+    "visual_direction": "strategy consulting narrative, high-level management insight, methodology frameworks, executive resonance, clear path-to-impact, refined professional logic",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / pale cool gray, precise grid",
+      "composition": "advice-structure: title + framework + implication",
+      "density": "medium, structured, articulate"
+    },
+    "color_palette": {
+      "primary": "navy #1F3A5F / slate blue #334155, white",
+      "secondary": "steel blue #5B7A9D, hairline gray",
+      "accent": "one controlled accent (teal #0D9488 / amber #F59E0B)",
+      "neutral": "near-black, cool gray #6B7280, light border",
+      "rule": "professional, articulate; avoid candy color and heavy dark"
+    },
+    "typography": {
+      "title": "clear structured sans (Inter / 思源黑体), authoritative but approachable",
+      "body": "concise, layered",
+      "labels": "framework labels, clause tags",
+      "text_quality": "precise legal/business terms, no ambiguity"
+    },
+    "layout_patterns": [
+      "strategy framework hero",
+      "where-to-play/how-to-win modules",
+      "market & growth analysis",
+      "executive implication"
+    ],
+    "layout_usage_rule": "Executive insight and methodology; framework clarity with an actionable path.",
+    "layout_blueprints": [
+      {
+        "name": "战略总览",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "战略命题"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "框架图"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "一句话战略"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "市场页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "市场结构"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "增长机会",
+              "打法"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "framework diagrams, structured modules, thin rules, insight callouts",
+      "avoid": "playful, clutter, generic stock, unconnected decoration"
+    },
+    "rendering_constraints": [
+      "Executive-grade strategy narrative.",
+      "Framework and path-to-impact clarity.",
+      "Precise business terms; no invented client logos."
+    ],
+    "reference": "GitHub: Mck-ppt-design-skill · 战略咨询惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Executive-grade strategy narrative.",
+      "Framework and path-to-impact clarity.",
+      "Precise business terms; no invented client logos."
+    ]
+  }
+}

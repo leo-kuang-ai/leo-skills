@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""generate_capacity_draft.py — 36 版式文本 slot 容量数值的公式化标定器。
+"""generate_capacity_draft.py — 版式文本 slot 容量数值的公式化标定器。
 
 用途（一次性标定流程的可复现记录，B3-T2）：
-- 本脚本持有 36 版式每个文本 slot 的几何表（栏数 / 容器高 vh / 字号 px），
-  字号一律取自 ``00_索引/版心Canon.md`` 字阶刻度离散表；
+- 迁移对账模式持有 36 个 P 版式的历史几何表（栏数 / 容器高 vh / 字号 px），
+  字号取自已归档的版心 Canon 离散表；活动 profile 不再从该表或旧目录读取；
 - 容量三值（chars_per_line / max_lines / max_chars）由
   ``check_deck_geometry.py`` 的 leo 化 ``capacity_for()`` 从版心 token 推导，
   **不拍脑袋**；
-- ``--check`` 校验已落盘 sidecar（``12_版式库/<stem>.layouts.json``）的文本
-  slot 三值与公式输出一致（防手写漂移；lint 检查 C 只守恒恒等式，本脚本
-  连公式来源一起对账）。缺 slot / 多 slot / 数值漂移均报 ERROR。
+- ``--check`` 默认校验活动 canonical layout profile 的文本 slot 结构；
+  ``--legacy-sidecars --check`` 才校验退役 sidecar 与历史公式，供迁移审计使用。
 
 公式（leo 版心 token 语境，系数移植自 GordenPPTSkill，MIT）：
 
@@ -21,13 +20,15 @@
 用法：
     python3 scripts/generate_capacity_draft.py            # 打印全部 slot 容量草稿
     python3 scripts/generate_capacity_draft.py P6         # 只看单个版式
-    python3 scripts/generate_capacity_draft.py --check    # 校验 sidecar 落盘值
+    python3 scripts/generate_capacity_draft.py --check    # 校验 canonical profile
+    python3 scripts/generate_capacity_draft.py --legacy-sidecars --check  # 迁移对账
 
 退出码：0 通过；1 --check 发现漂移；2 表内部不一致（缺版式/缺 slot）。
 """
 from __future__ import annotations
 
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -37,7 +38,12 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from check_deck_geometry import leo_capacity_for  # noqa: E402  单真值公式来源
 
-LAYOUT_DIR = SKILL_DIR / "references" / "styles" / "12_版式库"
+CANONICAL_LAYOUTS_DIR = SKILL_DIR / Path("template-library/canonical/layouts")
+LEGACY_LAYOUT_DIR = SKILL_DIR / Path(
+    "template-library/reference/sources/retired-styles-tree/styles"
+) / "12_版式库"
+# Compatibility name for migration fixtures; active checks use canonical profiles.
+LAYOUT_DIR = LEGACY_LAYOUT_DIR
 
 # 几何表：layout_id -> {slot: (栏数, 容器高 vh, 字号 px)}。
 # 字号取值 ∈ 版心Canon 字阶刻度：meta=24 caption=28 body=48(44-56 中值)
@@ -213,7 +219,7 @@ def draft(layout_id: str) -> dict[str, tuple[int, int, int]]:
     }
 
 
-def check() -> int:
+def check_legacy_sidecars() -> int:
     errors: list[str] = []
     for layout_id in sorted(GEOMETRY):
         path = LAYOUT_DIR / f"{STEMS[layout_id]}.layouts.json"
@@ -256,10 +262,73 @@ def check() -> int:
     return 0
 
 
+def _canonical_profiles() -> dict[str, dict]:
+    """按 P 码读取 canonical profiles；不扫描 retired tree。"""
+    profiles: dict[str, dict] = {}
+    if not CANONICAL_LAYOUTS_DIR.is_dir():
+        return profiles
+    for path in sorted(CANONICAL_LAYOUTS_DIR.glob("*/layout.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        for alias in data.get("aliases") or []:
+            if isinstance(alias, str) and alias in GEOMETRY:
+                profiles[alias] = data
+    return profiles
+
+
+def check_canonical() -> int:
+    """校验活动 P1-P36 profile 的容量字段，不依赖历史 sidecar。"""
+    profiles = _canonical_profiles()
+    errors: list[str] = []
+    for layout_id in sorted(GEOMETRY, key=lambda value: int(value[1:])):
+        profile = profiles.get(layout_id)
+        if profile is None:
+            errors.append(f"{layout_id}: canonical layout profile 缺失")
+            continue
+        slots = profile.get("slots")
+        if not isinstance(slots, dict) or not slots:
+            errors.append(f"{layout_id}: canonical slots 缺失")
+            continue
+        for name, slot in slots.items():
+            if not isinstance(slot, dict):
+                errors.append(f"{layout_id}.{name}: slot 必须为对象")
+                continue
+            if "max_chars" in slot and (
+                not isinstance(slot["max_chars"], int)
+                or isinstance(slot["max_chars"], bool)
+                or slot["max_chars"] < 1
+            ):
+                errors.append(f"{layout_id}.{name}.max_chars: 必须为正整数")
+            formula_keys = ("chars_per_line", "max_lines", "max_chars")
+            if all(key in slot for key in formula_keys):
+                cpl, lines, max_chars = (slot[key] for key in formula_keys)
+                expected = math.floor(cpl * lines * 1.2)
+                if max_chars != expected:
+                    errors.append(
+                        f"{layout_id}.{name}.max_chars: {max_chars} ≠ formula {expected}"
+                    )
+    if errors:
+        print(f"canonical capacity check failed: {len(errors)} 处")
+        for error in errors:
+            print("  -", error)
+        return 1
+    text_slots = sum(
+        1 for profile in profiles.values()
+        for slot in (profile.get("slots") or {}).values()
+        if isinstance(slot, dict) and "max_chars" in slot
+    )
+    print(f"canonical capacity check OK: {len(profiles)} P profiles, {text_slots} text slots")
+    return 0
+
+
 def main(argv: list[str]) -> int:
     args = [a for a in argv[1:] if not a.startswith("--")]
     if "--check" in argv:
-        return check()
+        return check_legacy_sidecars() if "--legacy-sidecars" in argv else check_canonical()
     ids = args if args else sorted(GEOMETRY)
     for layout_id in ids:
         if layout_id not in GEOMETRY:

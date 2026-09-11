@@ -162,7 +162,7 @@ class RealLibraryTest(unittest.TestCase):
         report = audit.build_report(entries)
         self.assertEqual(report["total_briefs"], len(entries))
         self.assertEqual(sum(report["by_axis"].values()), len(entries))
-        self.assertEqual(report["by_axis"]["顶层内置"], 11)
+        self.assertEqual(report["by_axis"]["canonical"], len(entries))
 
     def test_json_output_shape_and_determinism(self):
         runs = []
@@ -240,8 +240,7 @@ class FamilyMergeTest(unittest.TestCase):
         for primary, names in MERGED_FAMILIES.items():
             entry = self.by_name[primary]
             path = Path(audit.STYLES_ROOT) / entry["path"]
-            brief = json.loads(
-                re.search(r"```json\n(.*?)\n```", path.read_text("utf-8"), re.S).group(1))
+            brief = json.loads(path.read_text("utf-8"))
             self.assertEqual(set(brief.get("aliases", [])), set(names),
                              f"{primary} aliases 须全数收录被合并原名")
 

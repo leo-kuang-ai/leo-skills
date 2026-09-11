@@ -11,12 +11,17 @@
     投影，自指纹 = sha256(canonical_json(去 contents_sha256 的全 manifest))，
     与 check_sources_manifest.py 自洽口径一致 → 可确定性重建（图行字段），
     流程字段（source_ref/source_sha256/tier/source_class/backend）从现有
-    manifest 同 figure_id 继承，不凭空编造。
+    manifest 同 figure_id 继承，不凭空编造；继承须过「来源输入摘要门」——
+    素材文件当前 sha256 与记录不一致（同 figure ID 更换素材）即不继承。
   - 术语表投影：母版 `## 术语表` 与 `## 数字登记表` pipe 表节 →
     content/glossary-projection.json 结构化投影（含页指针与母版 sha256 锚）。
   - slides.json：由 LLM 在样张确认等会话状态后从母版生成（含 style_lock /
     required_text / canonical_terms），无确定性生成链 → 不重建，仅做页集合
     漂移检测并列清单。
+
+母版页身份（dashi 集成 K1/U2）：公共解析来自 runtime `content_pack.py`；
+母版全 deck 携带 `page_id:` 行时 manifest 页身份用稳定 pg- id，legacy 母版
+退回 slide_NN 派生定位 id；部分页携带身份即解析失败（回母版修复）。
 
 用法：
   reproject_derivatives.py --project-root DIR [--dry-run] [--json]
@@ -38,13 +43,19 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from find_confirmed_baseline import find_confirmed_baseline  # noqa: E402
 
+# Common master parsing lives in the runtime content-pack module (K1/U2);
+# scripts import runtime, never the reverse.
+RUNTIME_SRC = Path(__file__).resolve().parents[1] / "runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
+from leo_ppt_generator.content_pack import (  # noqa: E402
+    FIGURE_MODE_RE,
+    FIGURE_STATUS_RE,
+    page_identity_map,
+    parse_master as parse_master_common,
+)
+
 SCHEMA_VERSION = 1
-PAGE_RE = re.compile(r"^##\s+(S(\d+)|附)[^\n]*$", re.M)
-ALL_SECTION_RE = re.compile(r"^##\s+.*$", re.M)
-LEDGER_SECTION_RE = re.compile(r"^##\s+数字登记表\s*$", re.M)
-GLOSSARY_SECTION_RE = re.compile(r"^##\s+术语表\s*$", re.M)
-# Visual figure line: 图[F1] 模式:preserve 状态:vision-reviewed 焦点:… | 承载:…
-FIG_LINE_RE = re.compile(r"图\[F(\d+)\]\s*模式:([^\s|]+)\s*状态:([^\s|]+)(?:\s*焦点:([^|]*))?")
 PAGE_ID_RE = re.compile(r"^slide_\d+$")
 
 EXIT_OK = 0
@@ -78,90 +89,41 @@ def find_confirmed_master(content_dir: Path) -> tuple[Path, list[str]] | None:
     return find_confirmed_baseline(content_dir)
 
 
-def split_pages(text: str) -> list[tuple[str, str]]:
-    """Ordered [(page_id, body)]; deck-level tables stop the last page body."""
-    matches = list(PAGE_RE.finditer(text))
-    if not matches:
-        return []
-    section_starts = [m.start() for m in ALL_SECTION_RE.finditer(text)]
-    pages = []
-    for idx, m in enumerate(matches):
-        end = len(text)
-        for pos in section_starts:
-            if pos > m.start():
-                end = pos
-                break
-        header = m.group(0)
-        pid = "附" if header.startswith("## 附") else f"S{m.group(2)}"
-        pages.append((pid, text[m.start():end]))
-    return pages
-
-
-def page_id_for(pid: str, order: list[str]) -> str:
-    """S<N> → slide_%02d; the appendix takes its sequence position."""
-    if pid == "附":
-        return f"slide_{order.index(pid) + 1:02d}"
-    return f"slide_{int(pid[1:]):02d}"
-
-
-def table_rows(text: str, section_re: re.Pattern) -> list[list[str]]:
-    m = section_re.search(text)
-    if not m:
-        return []
-    rows = []
-    seen_header = False
-    for ln in text[m.end():].splitlines():
-        s = ln.strip()
-        if s.startswith("## "):
-            break
-        if s.startswith("|"):
-            if not seen_header:
-                seen_header = True  # first pipe row is the header
-                continue
-            if re.fullmatch(r"[\s:-]+", s.replace("|", "")):
-                continue
-            rows.append([c.strip() for c in s.strip().strip("|").split("|")])
-    return rows
-
-
 def parse_master(master: Path) -> dict:
+    """Common parse via runtime content_pack (K1/U2)：稳定 page_id 优先，
+    legacy 母版退回 slide_NN 派生定位 id；输出形状保持既有消费者兼容。"""
     text = master.read_text(encoding="utf-8")
-    pages = split_pages(text)
-    if not pages:
-        raise ValueError("母版无任何页块（## S<N> 或 ## 附）")
-    order = [pid for pid, _ in pages]
+    parsed = parse_master_common(text)
+    identity = page_identity_map(parsed)  # 部分身份/重复/格式错误在此报错
+    bodies = {p["master_page"]: p for p in parsed["pages"]}
     page_visuals: dict[str, list[dict]] = {}
-    for pid, body in pages:
+    for pid, label, _start in identity:
+        page = bodies[label]
         visuals = []
-        for m in FIG_LINE_RE.finditer(body):
+        for figure in page["figures"]:
+            raw = figure["raw"]
+            mode = FIGURE_MODE_RE.search(raw)
+            status = FIGURE_STATUS_RE.search(raw)
             visual = {
-                "visual_id": f"f{m.group(1)}",
-                "figure_id": f"F{m.group(1)}",
+                "visual_id": f"f{figure['figure_id'][1:]}",
+                "figure_id": figure["figure_id"],
                 "kind": "figure",
-                "handling_mode": m.group(2) or None,
-                "review_status": m.group(3) or None,
+                "handling_mode": mode.group(1) if mode else None,
+                "review_status": status.group(1) if status else None,
             }
-            focus = (m.group(4) or "").strip()
+            focus_m = re.search(r"焦点[：:]([^|\n]*)", raw)
+            focus = focus_m.group(1).strip() if focus_m else ""
             if focus:
                 visual["focus"] = focus
             visuals.append(visual)
-        page_visuals[page_id_for(pid, order)] = visuals
+        page_visuals[pid] = visuals
 
-    ledger_rows = table_rows(text, LEDGER_SECTION_RE)
-    glossary_rows = table_rows(text, GLOSSARY_SECTION_RE)
     return {
-        "pages": [{"page_id": page_id_for(pid, order), "master_page": pid}
-                  for pid, _ in pages],
+        "pages": [{"page_id": pid, "master_page": label}
+                  for pid, label, _start in identity],
         "page_visuals": page_visuals,
-        "number_ledger": [
-            {"value": r[0] if len(r) > 0 else "", "pages": r[1] if len(r) > 1 else "",
-             "source": r[2] if len(r) > 2 else "", "caliber": r[3] if len(r) > 3 else "",
-             "period": r[4] if len(r) > 4 else "", "unit": r[5] if len(r) > 5 else "",
-             "evidence_tier": r[6] if len(r) > 6 else "",
-             "verified": r[7] if len(r) > 7 else "", "as_of": r[8] if len(r) > 8 else ""}
-            for r in ledger_rows],
-        "glossary": [
-            {"cells": r} for r in glossary_rows],
+        "number_ledger": parsed["number_ledger"],
+        "glossary": parsed["glossary"],
     }
 
 
@@ -169,8 +131,30 @@ def parse_master(master: Path) -> dict:
 FLOW_FIELDS = ("tier", "source_class", "source_ref", "source_sha256", "backend")
 
 
-def merge_manifest(existing: dict | None, parsed: dict, master: Path) -> tuple[dict, list[str]]:
-    """Rebuild sources-manifest from master figure lines, carrying flow fields."""
+def _flow_fields_still_valid(old: dict, project_root: Path | None) -> bool:
+    """来源输入摘要门（K1/E10）：figure_id 不变但素材文件已更换时，
+    旧 hash/审查结果不得继承；素材不在本地时无从证伪，按现状继承。"""
+    ref = old.get("source_ref")
+    recorded = old.get("source_sha256")
+    if not ref or not recorded or project_root is None:
+        return True
+    candidate = (project_root / str(ref).lstrip("/")).resolve()
+    try:
+        candidate.relative_to(project_root.resolve())
+    except ValueError:
+        return False  # 越界引用：不可信，不继承
+    if not candidate.is_file():
+        return True  # 素材不在本地（run 内快照场景）：无从证伪
+    return sha256_file(candidate) == recorded
+
+
+def merge_manifest(existing: dict | None, parsed: dict, master: Path,
+                   project_root: Path | None = None) -> tuple[dict, list[str]]:
+    """Rebuild sources-manifest from master figure lines, carrying flow fields.
+
+    继承条件（K1）：稳定页身份 + figure_id 匹配 + 来源输入摘要仍匹配；
+    任一不满足即重建该 visual 的流程字段为空并报告漂移。
+    """
     old_pages = {}
     if existing:
         for page in existing.get("pages") or []:
@@ -189,9 +173,14 @@ def merge_manifest(existing: dict | None, parsed: dict, master: Path) -> tuple[d
             merged = dict(fresh)
             old = old_visuals.pop(fresh["figure_id"], None)
             if old:
-                for field in FLOW_FIELDS:
-                    if old.get(field) is not None:
-                        merged[field] = old[field]
+                if _flow_fields_still_valid(old, project_root):
+                    for field in FLOW_FIELDS:
+                        if old.get(field) is not None:
+                            merged[field] = old[field]
+                else:
+                    changes.append(
+                        f"{pid}: 图[{fresh['figure_id']}] 来源素材已变化"
+                        f"（{old.get('source_ref')}），不继承旧 hash/审查流程字段")
             visuals.append(merged)
         removed = sorted(f for f in old_visuals if f)
         if removed:
@@ -304,7 +293,7 @@ def main(argv: list[str] | None = None) -> int:
         except (OSError, json.JSONDecodeError):
             existing = None
 
-    new_manifest, merge_notes = merge_manifest(existing, parsed, master)
+    new_manifest, merge_notes = merge_manifest(existing, parsed, master, root)
     manifest_changes = manifest_diff(existing, new_manifest)
     slides_drift = check_slides_drift(root, parsed)
 

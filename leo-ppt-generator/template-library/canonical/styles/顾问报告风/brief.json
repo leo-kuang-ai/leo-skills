@@ -1,0 +1,155 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:顾问报告风",
+  "name": "顾问报告风",
+  "aliases": [],
+  "variant_of": "战略咨询风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/咨询法律/顾问报告风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "advisory report style, readable structured diagnosis, insight-and-action structure, professional clarity, pragmatic consultant deliverable, credible and actionable"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "战略咨询风",
+    "best_for": "专业顾问诊断与建议报告,需要可读、结构化、有洞察与落地建议",
+    "visual_direction": "advisory report style, readable structured diagnosis, insight-and-action structure, professional clarity, pragmatic consultant deliverable, credible and actionable",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / pale cool gray, precise grid",
+      "composition": "advice-structure: title + framework + implication",
+      "density": "medium, structured, articulate"
+    },
+    "color_palette": {
+      "primary": "navy #1F3A5F / slate blue #334155, white",
+      "secondary": "steel blue #5B7A9D, hairline gray",
+      "accent": "one controlled accent (teal #0D9488 / amber #F59E0B)",
+      "neutral": "near-black, cool gray #6B7280, light border",
+      "rule": "professional, articulate; avoid candy color and heavy dark"
+    },
+    "typography": {
+      "title": "clear structured sans (Inter / 思源黑体), authoritative but approachable",
+      "body": "concise, layered",
+      "labels": "framework labels, clause tags",
+      "text_quality": "precise legal/business terms, no ambiguity"
+    },
+    "layout_patterns": [
+      "diagnosis / insight dashboard",
+      "gap & root-cause structure",
+      "recommendation roadmap",
+      "quick wins vs long-term"
+    ],
+    "layout_usage_rule": "Structured diagnosis with clear actions; readable and credible.",
+    "layout_blueprints": [
+      {
+        "name": "诊断页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "诊断结论"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "发现1",
+              "发现2",
+              "发现3"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "风险提示"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "建议页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "建议框架"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "路径",
+              "效益"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "diagnosis blocks, root-cause diagram, roadmap, insight callouts",
+      "avoid": "playful, clutter, generic, over-decorated"
+    },
+    "rendering_constraints": [
+      "Readable structured advisory deliverable.",
+      "Insight and actionable path over polish.",
+      "Precise terms; no invented client logos."
+    ],
+    "reference": "GitHub: Mck-ppt-design-skill · 顾问报告惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Readable structured advisory deliverable.",
+      "Insight and actionable path over polish.",
+      "Precise terms; no invented client logos."
+    ]
+  }
+}

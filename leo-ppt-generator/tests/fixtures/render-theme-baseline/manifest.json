@@ -1,0 +1,671 @@
+{
+  "freeze": {
+    "dirty_files": [
+      " M CHANGELOG.md",
+      " M docs/leo-ppt-generator/architecture/style-library-target-architecture.md",
+      " M leo-ppt-generator/SKILL.md",
+      " M leo-ppt-generator/evals/eval.yaml",
+      " M leo-ppt-generator/references/execution-contract.md",
+      " M leo-ppt-generator/references/image-deck-workflow.md",
+      " M leo-ppt-generator/references/style-recommendation.md",
+      "?? docs/plans/2026-09-07-005-leo-ppt-20-industries-content-quality-evaluation-plan.md",
+      "?? docs/plans/2026-09-07-006-leo-ppt-industry-aesthetics-skin-system-plan.md",
+      "?? docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md",
+      "?? leo-ppt-generator/evals/cases/content-quality-u01.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u02.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u03.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u04.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u05.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u06.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u07.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u08.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u09.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u10.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u11.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u12.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u13.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u14.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u15.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u16.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u17.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u18.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u19.yaml",
+      "?? leo-ppt-generator/evals/cases/content-quality-u20.yaml",
+      "?? leo-ppt-generator/evals/cases/sample-gate-default-present-before-dispatch.yaml",
+      "?? leo-ppt-generator/evals/fixtures/content-quality-20industries/",
+      "?? leo-ppt-generator/evals/fixtures/scripts/check_content_quality.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_a1.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_a2.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_a3.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_a4.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_a5.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_content_common.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/judge_sample_gate_policy.py",
+      "?? leo-ppt-generator/evals/fixtures/scripts/summarize_content_quality.py",
+      "?? leo-ppt-generator/evals/fixtures/template-quality/",
+      "?? leo-ppt-generator/scripts/freeze_render_theme_baseline.py",
+      "?? leo-ppt-generator/scripts/freeze_template_rebuild_baseline.py",
+      "?? leo-ppt-generator/template-library/",
+      "?? leo-ppt-generator/tests/fixtures/render-theme-baseline/",
+      "?? leo-ppt-generator/tests/test_content_quality_checks.py",
+      "?? leo-ppt-generator/tests/test_content_quality_results.py",
+      "?? leo-ppt-generator/tests/test_template_recommendation_fixture.py"
+    ],
+    "head": "a5a60e4bca82eeb239f24f926cb669260c78f83b"
+  },
+  "kind": "render-theme-baseline",
+  "pages": [
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "cover-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/cover-basic-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/cover-basic-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/cover-basic-minimal.json",
+      "input_sha256": "4889bf2ebc57324a2f59c69ac022d48fc01cbb30b6cb0dea9c33ab6c0b4363af",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/cover-basic-minimal.png",
+      "output_sha256": "f34b69a40a013a8a81294d9e20a07fd542d0b652832268f00dddc94541b0d7aa",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "cover-basic-minimal",
+      "template": "cover-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "cover-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/cover-basic-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/cover-basic-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/cover-basic-typical.json",
+      "input_sha256": "745706a5b89734711b2f94f99d272d9e507e627fccbf0d3d369732041e10ac39",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/cover-basic-typical.png",
+      "output_sha256": "ca944a4157ec5f69daacec8bcb60f5670258bac1a9b6ce9fad5b8d89f82cda72",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "cover-basic-typical",
+      "template": "cover-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "cover-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/cover-basic-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/cover-basic-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/cover-basic-near-capacity.json",
+      "input_sha256": "162b308c973f99d1757b22ab02198a696c3bdf140cd44748db80c4918071db40",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/cover-basic-near-capacity.png",
+      "output_sha256": "2238dbbc30bd152d8c518a0752948d085bf22cfb67d6520d685472b1b2cfd98e",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "cover-basic-near-capacity",
+      "template": "cover-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "body-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/body-basic-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/body-basic-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/body-basic-minimal.json",
+      "input_sha256": "45ddc11a1f6dd319115e031a843417a5580ea28145f25d803bbbe38d6f1efb3d",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/body-basic-minimal.png",
+      "output_sha256": "1c7db511b35746b123ca891a16fbc9add0fdb7fc60d5ef8b73fc63139293cb51",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "body-basic-minimal",
+      "template": "body-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "body-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/body-basic-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/body-basic-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/body-basic-typical.json",
+      "input_sha256": "7556f5de9824337d20b8d3007a4303855e121ecca654176e3c1007b77863781b",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/body-basic-typical.png",
+      "output_sha256": "bd5efd04bf97e114c1cc7144d9f3b69cc12de7f848d5310267a3ba291c533794",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "body-basic-typical",
+      "template": "body-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "body-basic",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/body-basic-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/body-basic-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/body-basic-near-capacity.json",
+      "input_sha256": "0024a26063ac6e91a5b4e54bb6ba970fc097635ccd5f11528019219580e57a1c",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/body-basic-near-capacity.png",
+      "output_sha256": "466c39c27f16113a91bb1a6526f6b3839a86b46f889bd5080f30e13000109a73",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "body-basic-near-capacity",
+      "template": "body-basic"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "compare",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/compare-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/compare-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/compare-minimal.json",
+      "input_sha256": "9fb232991cf4980edf7e4d48dc76395c54a5b548795ca87d0fb85d65ba70acf8",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/compare-minimal.png",
+      "output_sha256": "c0cb6bf58713b45d5b24f8d63536a6c38d605beec4b3557f719f418942f5b5e4",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "compare-minimal",
+      "template": "compare"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "compare",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/compare-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/compare-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/compare-typical.json",
+      "input_sha256": "93ecaa707fa123cfe288f62e59d8a284efa1805962e98e7b86908c62c9ba8fd4",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/compare-typical.png",
+      "output_sha256": "9ac61a22e316d2e0c920c013fe9ea2d09116a52ebfd2da360bea464a585578a9",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "compare-typical",
+      "template": "compare"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "compare",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/compare-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/compare-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/compare-near-capacity.json",
+      "input_sha256": "11bec513e8849be3d5b5dad3e561ef1ec09dfe803f736bdc64f667e8af6bca3c",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/compare-near-capacity.png",
+      "output_sha256": "c4585db72cddb86dbb132bf1288a301d965d41605f585ef6180cb195aef4d7a5",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "compare-near-capacity",
+      "template": "compare"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "timeline",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/timeline-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/timeline-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/timeline-minimal.json",
+      "input_sha256": "b41178b0edf621bbf1b7d2b993fce98d7a115b01c359d87e7e96c56e8043c0ed",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/timeline-minimal.png",
+      "output_sha256": "3177b8cad52f1e6a3ba85f8a33fa0ef0b074ecf32bb5a37b84fbacd5a97bf705",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "timeline-minimal",
+      "template": "timeline"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "timeline",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/timeline-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/timeline-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/timeline-typical.json",
+      "input_sha256": "4da14ba3a75e76abecd0d67ed1918d03d0e375c811fff55ef33b4f8ef24305b9",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/timeline-typical.png",
+      "output_sha256": "3a6f9c122f6e99f3c6dae3ea780efb5b9855e5d354e6c9cd056a1149f480b0ba",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "timeline-typical",
+      "template": "timeline"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "timeline",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/timeline-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/timeline-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/timeline-near-capacity.json",
+      "input_sha256": "7fbcc81be03b7a434061351bb2441ec26b37f8ae1438c84be31db990ded928fd",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/timeline-near-capacity.png",
+      "output_sha256": "5115453ae5fc8b47f112f7bfb378ac4db00a1f72ecc93d63ea8229353efde896",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "timeline-near-capacity",
+      "template": "timeline"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "spec-table",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/spec-table-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/spec-table-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/spec-table-minimal.json",
+      "input_sha256": "3b3d923cbbd31bcf079922be8eeeef220b68780b9e4028c320440e092999ec83",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/spec-table-minimal.png",
+      "output_sha256": "3a9c4595bcb754e1dc4c889bff4b5c5aac72f88a38aa177fd98cfbd013535607",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "spec-table-minimal",
+      "template": "spec-table"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "spec-table",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/spec-table-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/spec-table-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/spec-table-typical.json",
+      "input_sha256": "df2d72f1ddc6114ab500d0a34a26d67312671af04865ded814e31091c117ab51",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/spec-table-typical.png",
+      "output_sha256": "0f6f9faf10503bb36da97fabd21eae8852ed2af1172f3d1cda41836fb329cddb",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "spec-table-typical",
+      "template": "spec-table"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "spec-table",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/spec-table-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/spec-table-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/spec-table-near-capacity.json",
+      "input_sha256": "3023f9a4a30723f7dda3d1d202c987dd9b08001585f528eaa49644e10d0dd26a",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/spec-table-near-capacity.png",
+      "output_sha256": "9a61e584f3e94129bb8a377cb1655d3d7fdd597e318760ea6fa5e3a8f2da4142",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "spec-table-near-capacity",
+      "template": "spec-table"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "pull-quote",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/pull-quote-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/pull-quote-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/pull-quote-minimal.json",
+      "input_sha256": "d9e9d5ec0ecf7c6f7bd6a2b3c4c4b4bf897a09d7505e9c2da655391a5dbf4cbc",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/pull-quote-minimal.png",
+      "output_sha256": "a66f543420df319b409d322720c0b98c89e72419c76d86508b151ff8a4c9d461",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "pull-quote-minimal",
+      "template": "pull-quote"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "pull-quote",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/pull-quote-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/pull-quote-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/pull-quote-typical.json",
+      "input_sha256": "0afd0e4fb23032971695a88a260f9ce24858dad395934f4ed39cc1e70c4b6310",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/pull-quote-typical.png",
+      "output_sha256": "814d3ce2335de4e136570b974855bbd739ca173f4b85322db81b77408f8cae5b",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "pull-quote-typical",
+      "template": "pull-quote"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "pull-quote",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/pull-quote-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/pull-quote-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/pull-quote-near-capacity.json",
+      "input_sha256": "10e3fc40774138ce909b0fcfedcf83b6d255446aef871cb0950e6a094c710ba8",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/pull-quote-near-capacity.png",
+      "output_sha256": "a59db2c1735bab2625b02530f1c635c62d2932daedf5a171070577fc5466c0e7",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "pull-quote-near-capacity",
+      "template": "pull-quote"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "frame-shot",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/frame-shot-minimal.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/frame-shot-minimal.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/frame-shot-minimal.json",
+      "input_sha256": "1bd8ae0da092feb21337116ec60dc0d4abf3769f39180eff427db31162500f2e",
+      "level": "minimal",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/frame-shot-minimal.png",
+      "output_sha256": "66fe54a50691f375de621ef5d3a7a083d128905e412cc939ddeae0f83e2b32cf",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "frame-shot-minimal",
+      "template": "frame-shot"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "frame-shot",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/frame-shot-typical.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/frame-shot-typical.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/frame-shot-typical.json",
+      "input_sha256": "05c5e5b254ee016101c4dee289feb70ec5875e2f9232aefa2f7155fb83ba3618",
+      "level": "typical",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/frame-shot-typical.png",
+      "output_sha256": "ab8c1c81c121d3900a6e4c95c565f3300b66a2ffde2982b498f6d835b374fdd8",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "frame-shot-typical",
+      "template": "frame-shot"
+    },
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "leo_ppt_generator",
+        "render",
+        "page",
+        "--template",
+        "frame-shot",
+        "--data",
+        "tests/fixtures/render-theme-baseline/inputs/frame-shot-near-capacity.json",
+        "--out",
+        "tests/fixtures/render-theme-baseline/outputs/frame-shot-near-capacity.png",
+        "--size",
+        "2560x1440"
+      ],
+      "input_path": "tests/fixtures/render-theme-baseline/inputs/frame-shot-near-capacity.json",
+      "input_sha256": "4eeba41ae46987e056ceea5de81d6680020ba99748ea40837a437081ac1e3166",
+      "level": "near-capacity",
+      "output_path": "tests/fixtures/render-theme-baseline/outputs/frame-shot-near-capacity.png",
+      "output_sha256": "dc81edb9d5e8cff1e87fa603104b2dc0783aae23d8355dc4c2c857ac3024a241",
+      "output_size": [
+        2560,
+        1440
+      ],
+      "page_id": "frame-shot-near-capacity",
+      "template": "frame-shot"
+    }
+  ],
+  "plan": "docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md",
+  "purpose": "改前基线：解释重构差异；不作为新设计等价门（不沿用 diff ≤0.001）",
+  "render_facts": {
+    "chromium_version": "151.0.7922.34",
+    "playwright_version": "1.62.0",
+    "status": "render_backend_ready"
+  },
+  "schema_version": 1,
+  "size": "2560x1440",
+  "source_hashes": {
+    "assets/render-fonts/NotoSansSC-Bold.otf": "c6cb5a93abaa9edc8ee7463b7ebb7f42d618d40e6ed2f7a5371c97b0b64767c0",
+    "assets/render-fonts/NotoSansSC-Regular.otf": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9",
+    "template-library/canonical/templates/body-basic/page.html": "ebb64f9216648b3eff734966629fc2212d8536d1bc385ef46fea5031772beadf",
+    "template-library/canonical/templates/compare/page.html": "e77fe84b991a5de7b145da33d17988538c63f081d927535d7bfa0222ed8b1513",
+    "template-library/canonical/templates/cover-basic/page.html": "8f7a459ea4ac6b628c322f709914a349d882806efbc18ca99d54628a61558f2b",
+    "template-library/canonical/templates/frame-shot/page.html": "f398b4ef4e71116cf9608416666be92c685f6ad002b838dfa67345c9d1e5958a",
+    "template-library/canonical/templates/pull-quote/page.html": "759f5de944499f0553a6be3746cea6ad91928cde101fb7fe812992c73455bd2d",
+    "template-library/canonical/templates/spec-table/page.html": "d418c4396660a66178c17eef87fcfd06d5121cadcfba164f47290d37b97cccef",
+    "template-library/canonical/templates/timeline/page.html": "306fa02ef365c1d7d0f57d775cd9488a99c23c19598b203c03e15c0453f52f7f",
+    "runtime/src/leo_ppt_generator/render/assets.py": "94b308bce03063115f6f1ac2048c275e9c6d4815579e72762691cb56ca52e4b6",
+    "runtime/src/leo_ppt_generator/render/chart.py": "7a36ab9295011ce3834e203eaf1568360aad190e271a7412b2648b661e969399",
+    "runtime/src/leo_ppt_generator/render/fonts.py": "e0adfd0cbf348b5a4020e2b14527e3eb0bea3f337fdec00306d010b087f7c5bb",
+    "runtime/src/leo_ppt_generator/render/page.py": "ac38b876e937398fc0a8a31174c676e5bcfda865fb8ceabca89631e4243e4656"
+  }
+}

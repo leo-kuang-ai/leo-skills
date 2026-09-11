@@ -1,0 +1,85 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-brand-creative-r2",
+  "assets": {
+    "style": "builtin:style:brand-creative",
+    "theme": "builtin:theme:brand-creative-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[brand-creative]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 2"
+  },
+  "outputs": {
+    "cover.png": "0e2e96882ac6a62f428f6ecef7a93375aafba742f18aae29ac872d1817e3c0b9",
+    "content.png": "0ed23d5db2faf3d6ea50006743113002dd42945e92e548a626a5f100a03d6c7b",
+    "evidence.png": "b609fad05100b206d11857648edb8e237759fc7b0a3b8245a843cdec84d88d32",
+    "closing.png": "43743ab53e9349af1141d06f701b4c62bc3f08dc1b49d26b6d836da514a46f00"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": [
+    "deckstyle-brand-creative-r1"
+  ]
+}

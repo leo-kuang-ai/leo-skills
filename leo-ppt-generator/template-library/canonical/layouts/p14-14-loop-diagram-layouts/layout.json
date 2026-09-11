@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p14-14-loop-diagram-layouts",
+  "name": "Loop Diagram",
+  "aliases": [
+    "P14"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "steps": {
+      "region": "content",
+      "desc": "循环步骤（编号 + 描述）",
+      "count_min": 3,
+      "count_max": 5
+    },
+    "step_desc": {
+      "region": "content",
+      "desc": "每步描述",
+      "max_chars": 16,
+      "chars_per_line": 14,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左 4 行编号步骤（顶对齐）；右 SVG 同心圆环 + 中央巨字 LOOP；节点统一灰底直角方块"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/14_Loop_Diagram.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

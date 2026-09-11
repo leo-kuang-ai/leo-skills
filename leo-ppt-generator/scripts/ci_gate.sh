@@ -23,8 +23,9 @@ run_check() {  # run_check <名称> <命令...>
 run_check "L0 lint_style_briefs"      "$RUNTIME_PY" scripts/lint_style_briefs.py
 run_check "L0 lint_layout_grid"       "$RUNTIME_PY" scripts/lint_layout_grid.py
 run_check "L0 lint_render_templates"  "$RUNTIME_PY" scripts/lint_render_templates.py
+run_check "L0 lint_template_contract" "$RUNTIME_PY" scripts/lint_template_contract.py
 run_check "L0 lint_skill_structure"   "$RUNTIME_PY" scripts/lint_skill_structure.py
-run_check "L0 style-index freshness"  "$RUNTIME_PY" scripts/capability_manifest.py --style-index --check
+run_check "L0 template-library registry" "$RUNTIME_PY" scripts/capability_manifest.py --template-library --library-check
 run_check "L0 vendored lock"          "$RUNTIME_PY" scripts/sync_upstreams.py --check
 
 # ---- L1 单测 ----

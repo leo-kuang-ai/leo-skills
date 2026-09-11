@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:高级撞色风",
+  "name": "高级撞色风",
+  "aliases": [
+    "高级撞色",
+    "Premium Color Blocking",
+    "撞色",
+    "高级配色",
+    "色彩对峙",
+    "杂志风",
+    "editorial"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/高级撞色风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "premium color blocking, confident large color fields with editorial restraint, gallery-grade contrast pairing"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "高级撞色",
+      "Premium Color Blocking",
+      "撞色",
+      "高级配色",
+      "色彩对峙",
+      "杂志风",
+      "editorial"
+    ],
+    "best_for": "暖橙撞墨蓝的时尚编辑大片气质;适合时尚潮流/品牌营销/产品发布",
+    "visual_direction": "premium color blocking, confident large color fields with editorial restraint, gallery-grade contrast pairing",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F4EFE6→#EDE4D3",
+      "composition": "借鉴杂志版式：网格严谨但敢于破格",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#FF6B47(主色/标题锚)",
+      "secondary": "#F5A623(辅助色)",
+      "accent": "#1B2A4A(强调色)",
+      "neutral": "#F4EFE6(文字与中性锚)",
+      "rule": "锚点 #FF6B47, #F5A623, #1B2A4A, #0F3B4C;核心是\"暖橙 × 冷墨\"的强对峙：主暖色用珊瑚橙 `#FF6B47` 与琥珀橘 `#F5A623`，传递温度与自信"
+    },
+    "typography": {
+      "title": "标题用粗壮的几何无衬线（思源黑 Heavy / Inter Black 之类），字重 800–900，字距收紧到 -2%，传递\"我说了算\"的确定感",
+      "body": "正文用清爽无衬线 400 字重，行高 1.6",
+      "labels": "副标题同字族降到 500，留出呼吸"
+    },
+    "layout_patterns": [
+      "借鉴杂志版式：网格严谨但敢于破格",
+      "常见结构是左大色块右白底文字、上下撞色对半切、或中心图片被色块环绕",
+      "关键标题可以越出版心、与色块咬合",
+      "模块之间用粗实线或色带分隔，而不是细弱发丝线"
+    ],
+    "layout_usage_rule": "借鉴杂志版式：网格严谨但敢于破格",
+    "visual_elements": {
+      "allowed": "借鉴杂志版式：网格严谨但敢于破格",
+      "avoid": "不要超过三种主色，撞色不是彩虹;不要柔粉、马卡龙、莫兰迪这类低饱和温柔色——它们和\"高级撞色\"气质相反;不要渐变背景或毛玻璃模糊，平涂色块才是主角"
+    },
+    "rendering_constraints": [
+      "不要超过三种主色，撞色不是彩虹",
+      "不要柔粉、马卡龙、莫兰迪这类低饱和温柔色——它们和\"高级撞色\"气质相反",
+      "不要渐变背景或毛玻璃模糊，平涂色块才是主角",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要超过三种主色，撞色不是彩虹",
+      "不要柔粉、马卡龙、莫兰迪这类低饱和温柔色——它们和\"高级撞色\"气质相反",
+      "不要渐变背景或毛玻璃模糊，平涂色块才是主角",
+      "不要拟物阴影、不要 3D 立体效果，保持平面丝网印刷感",
+      "不要花体字或衬线字体做正文，会破坏现代利落感"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/premium-color-blocking"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要超过三种主色，撞色不是彩虹",
+      "不要柔粉、马卡龙、莫兰迪这类低饱和温柔色——它们和\"高级撞色\"气质相反",
+      "不要渐变背景或毛玻璃模糊，平涂色块才是主角",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

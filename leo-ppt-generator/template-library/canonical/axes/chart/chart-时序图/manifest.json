@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:chart-时序图",
+  "name": "图表语法：时序图（SequenceDiagram）",
+  "kind": "chart",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

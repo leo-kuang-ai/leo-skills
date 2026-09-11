@@ -1,0 +1,28 @@
+# 图片渲染：个性美妆报告（personalized-beauty-report）
+
+**分类:** canonical/axes/rendering · 现代商业
+
+**配对视觉风格:** 美妆个护风（诊断-推荐报告气质共享）;亦可无配对直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 主表
+
+**定位:** 诊断-推荐式美妆报告卡——干净报告层级 + 诊断摘要 + 证据/评分 + 推荐卡与对齐产品图,专业到可信、温暖到贴身
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> A polished diagnosis-and-recommendation beauty report layout. A clean clinical-warm hierarchy carries a diagnosis summary, evidence or rating blocks, recommendation cards, and aligned product imagery. Calm neutral ground with one blush accent; typography zones stay airy and legible. Clinical enough to trust, warm enough to feel personal. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Soft rounded report cards; hairline separators |
+| 纹理 | Matte paper-grade surfaces; gentle product shadows |
+| 深度 | Layered report cards; shallow lift, no drama |
+| 材质 | Neutral clinical-warm paper + blush accent chip |
+| 情绪 | Trustworthy, personal, refined |
+
+> 渲染画法不写死 HEX;deck `colors` 锚点缺省时建议暖米白底 + 玫瑰豆沙单强调（与美妆个护风锚点一致）。适用场景（源自卡 tags）：肤质诊断页 / 成分推荐页 / 个性化报告页 / 美妆电商详情证据页。
+
+## 3. 来源与许可
+
+- 源卡: `gi2-personalized-beauty-report` · group: Business & Report · awesome-gpt-image-2（MIT, © 2026 freestylefly）
+- 映射快照: codex-slides `src/lib/community.ts`（2026-09-01）;C4 吸收

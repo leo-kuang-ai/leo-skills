@@ -2,27 +2,29 @@
 
 > 本文档是 `image-deck-workflow.md` 步骤 4「模版推荐与选择」的执行合同：推荐是
 > 信号驱动的默认项，选择是低摩擦的 override。全部交互寄生在既有"视觉方向确认"
-> 点与样张里程碑内，不新增确认门。
+> 点与样张里程碑内，不新增确认门；样张里程碑按 SKILL.md 协作方式为 🔶 SAMPLE-GATE
+> 默认人工呈现点（显式豁免可免呈现，不免生成与质检），本文档不改变该默认。
 
 ## 一、信号映射（推荐由合同字段驱动，不靠即兴）
 
-执行期先按 [风格索引](styles/00_索引/_INDEX.md) 找名称范围与分面摘要，再用
+执行期先按 [风格索引](../template-library/governance/authoring/index/_INDEX.md) 找名称范围与分面摘要，再用
 `style list --summary --filter <名称或别名>` 和 `style load <load_name> --summary`
-核对实际文件。索引过期或缺失时，这两个源查询不依赖 generated；不修改安装目录。
+核对实际文件。索引过期或缺失时，按 resolver 的 canonical 只读降级查询，不读取退役的
+`generated/` 快照，也不修改安装目录。
 所有调用使用同一 home，user 同名优先；候选显示必须基于实际 scope，不能复制同名 builtin 的摘要。
 摘要字段 suitable_for/visual_character/density/layout_hint 是源字段的有界摘录，截断处必须披露，
 缺字段为未记录；不把摘要当渲染正文，也不臆造语义排名分数。
 
 进入视觉方向确认时，先从已冻结的内容合同提取推荐信号，再查
-[`styles/00_索引/风格路由.md`](styles/00_索引/风格路由.md)：
+[`../template-library/governance/authoring/index/风格路由.md`](../template-library/governance/authoring/index/风格路由.md)：
 
 | 信号 | 来源 | 用途 |
 |---|---|---|
 | 受众保守度 | 合同"受众" | 风险偏好轴（保守→稳重商务系；年轻→波普/蒸汽波系） |
 | 使用场景 | 合同"使用场景" | 路由表"内容/任务"行的主匹配键 |
 | 数据密度 | 母版图表页占比 | 高密度→克制配色+图表语法轴 |
-| 行业域 | 合同主题/素材 | `02_行业内容域` 身份轴（含 content_rules 挂接） |
-| 自定义风格 | `${LEO_PPT_HOME}/styles/` | 存在同场景保存风格时**优先列为候选**并标注"你保存过" |
+| 行业域 | 合同主题/素材 | `template-library/canonical/styles/` 的 taxonomy + `template-library/governance/rules/domains/`（含 content_rules 挂接） |
+| 自定义风格 | `${LEO_PPT_HOME}/template-library/canonical/styles/` | 存在同场景保存风格时**优先列为候选**并标注"你保存过" |
 
 **候补源矿落空词参考**（R-55 点名落空登记用，非自动路由；来源词整理自
 baoyu-skills，详见 [`style-candidates.md`](style-candidates.md) 登记行）：
@@ -56,7 +58,7 @@ bypass 全部规则，并在 style 合同记录用户选择依据（与 AE5 同�
 
 候选清单末行统一换法指路：
 
-> 回一个字母确认方向；或点名风格（数量见生成 counts，可按家族/场景浏览摘要）；
+> 回一个字母确认方向；或点名风格（数量以当前 catalog registry 为准，可按家族/场景浏览摘要）；
 > 或贴一张参考图“照图做”；或说“跟上次一样”。
 
 方向确认后完整 load 并以 `style render <load_name> --expected-selection <selection_fingerprint>`
@@ -97,7 +99,7 @@ bypass 全部规则，并在 style 合同记录用户选择依据（与 AE5 同�
    带选择守卫的 `style render` 注入；不再呈现无关推荐清单（AE2）。口语名先经真实 `aliases`
    字段命中（如"白板风"→手绘白板风、"dashboard"→数据仪表盘风）。多命中完整列出并在既有确认点消歧；风格不存在时列出相近候选
    （名称子串/别名/同轴邻近），不静默替换。
-2. **沿用**（"跟上次一样"）：`${LEO_PPT_HOME}/styles/` 同场景自定义风格优先；
+2. **沿用**（"跟上次一样"）：`${LEO_PPT_HOME}/template-library/canonical/styles/` 同场景自定义风格优先；
    无保存风格时如实说明并回落推荐，不假装沿用。
 3. **照图做**（参考图）：按 [`style-library.md`](style-library.md)「照图做」节执行
    ——只提取可复用视觉系统，走既有样张里程碑并排比对。

@@ -51,8 +51,11 @@ require_any(("P2", "Vertical Timeline", "竖向时间线", "纵向时间线", "P
              "Horizontal Timeline", "横向时间线", "undecided", "待定"),
             "真实替代候选")
 # ③ 禁编造纪律或枚举校验被提及
+# 校准扩词（it-126 replay）："canonical layouts"/"版式注册表"/"layout-dispatch"
+# 是新协议下的同一枚举真值引用。
 require_any(("编造", "枚举", "style layouts", "list-templates",
-             "12_版式库", "版式库"), "枚举真值引用")
+             "12_版式库", "版式库", "canonical layouts", "canonical 版式",
+             "版式注册表", "layout-dispatch", "layout-profile"), "枚举真值引用")
 
 # ④ 否定感知：不得把「时间瀑布」当真实版式落母版 / 编造 P37+ 等非枚举 id。
 bad = positive((

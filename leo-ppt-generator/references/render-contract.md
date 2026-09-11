@@ -27,6 +27,13 @@
 - `render chart --source` 抽取 ```` ```mermaid-example ```` fenced 块（多块取
   第一块并 WARN 计数）；无块/空块/语法失败 → `render_data_invalid`。
   **11_图表语法 中的示例数字仅为语法演示，渲染前必须替换为 approved 真实数据。**
+- XY 图表选项仅适用于 `xychart-beta`：宽度 320–2560、高度 180–1440、标签字号
+  12–96，参数分别为 `--chart-width`、`--chart-height`、`--label-size`；
+  `--data-labels` 从 Mermaid 解析后的各序列逐组取值。指定标签字号时，矮图表会稀疏 y 轴
+  刻度但保留零点和端点，不改变数据范围。直接渲染与内容投影共用模板输入合同，
+  未登记字段（历史兼容的 `page_no` 除外）及重复/非有限 JSON 均拒绝。
+  整数字段声明的页码接受 `"01"` 这类显示值；无几何输入时从模板绑定的 layout
+  编译区域与列宽，不支持的列数返回 `layout_profile_invalid`。
 
 ## 2. backend 枚举与 provenance sidecar（CI-1）
 
@@ -54,8 +61,8 @@ token 成本）；`backend report` 的 token 聚合把 render 行单独看待，
 
 ## 3. 模板合同（七条）
 
-模板目录 `assets/render-templates/`（每模板 `<id>.html`；合同与 lint 见该
-目录 `README.md` 与 `scripts/lint_render_templates.py`，缺 ready 信号 =
+模板目录 `template-library/canonical/templates/`（每模板 `<id>/page.html`；合同与 lint 见
+目录 `README.md`、`scripts/lint_template_contract.py` 与 `scripts/lint_render_templates.py`，缺 ready 信号 =
 ERROR）：deterministic 模式（`?leo_render=1` 禁动画）、`data-leo-ready`
 显式就绪信号（渲染主门；缺失 → `document.fonts.ready + 800ms` 回退并 WARN
 `ready_signal_missing_fallback_wait`）、数据只读 `window.__LEO_SLIDE_DATA__`
@@ -76,7 +83,8 @@ ERROR）：deterministic 模式（`?leo_render=1` 禁动画）、`data-leo-ready
 （MIT；upstreams.yaml 登记）；其"四段魔法等待"反面教训即 ready 信号合同的
 动机。
 
-R-28 扩面模板（槽位语义对齐 12_版式库 对应 P 码 sidecar）：
+R-28 扩面模板（槽位语义对齐 `template-library/canonical/layouts/*/layout.json`
+对应 P 码 profile；模板实现仍在 `template-library/canonical/templates/`）：
 
 - `spec-table.html` 规格参数表（P25）：`columns`/`column_align`/`rows`，
   表头角色底色 + 斑马纹行 + 数值列右对齐。
@@ -106,8 +114,10 @@ mermaid 以本地 pinned 单文件 vendored：
 锁进 `vendor-lock.json`），浏览器实例内 `mermaid.initialize({startOnLoad:
 false})` → `mermaid.render` → SVG，不走 CDN。
 
-deck colors 锚 → mermaid themeVariables 映射（初始 8 键 + xyChart 域补充；
-`--theme-file` 输入，锚侧接受常见命名，未命中用 mermaid 默认并 WARN）：
+旧扁平 deck colors 锚的兼容映射如下；未提供主题时用 Mermaid 默认并 WARN，
+提供主题但没有映射命中时拒绝。canonical effective theme（含 `colors`）由
+`governance/rules/chart-theme-mapping.json` 拥有映射：XY 标题/数据标签/图例使用
+`text`，轴线和刻度使用 `muted`，不取深色主题的 `on_primary`。
 
 | mermaid 键 | 锚（按序取首个命中） |
 | --- | --- |
@@ -162,9 +172,12 @@ mainBkg`，主色走 `themeVariables.xyChart.plotColorPalette`。验收口径：
 - chromium 缓存固定 `$LEO_PPT_HOME/render-browsers/`（`PLAYWRIGHT_BROWSERS_PATH`
   注入；用户已有 `PLAYWRIGHT_BROWSERS_PATH` 不覆盖）；`LEO_PPT_RENDER_CHROMIUM`
   显式覆盖 executable。
-- 离线字体：`assets/render-fonts/`（Noto Sans SC 子集，OFL-1.1，目录内
-  NOTICE/LICENSE 登记）；缺字 WARN 并回退 defaultFontFamily，**不静默换系统
-  字体**（跨机器非确定）。doctor 的 render 分面默认跳过真实启动
+- 离线字体：默认兼容目录为 `assets/render-fonts/`；主题字族从 canonical font
+  manifest 解析，包括 Noto Sans SC 与 Noto Serif SC（OFL，目录内有授权记录）。
+  主题字体目录优先于兼容目录。页面渲染对主题声明的每个字族/字重执行
+  `document.fonts.load` 与 `document.fonts.check`；任一失败返回 `render_font_missing`，
+  不静默回退。`fonts_checked` 记录加载过的字族/字重；这不是逐字形覆盖或整页视觉验收。
+  doctor 的 render 分面默认跳过真实启动
   （`LEO_PPT_RENDER_DOCTOR_LAUNCH=1` 打开），启动级真值以 `render ready` 为准。
 
 ## 8. worker 容错与清扫（E4）

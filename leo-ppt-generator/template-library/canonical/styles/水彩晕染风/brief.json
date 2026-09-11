@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:水彩晕染风",
+  "name": "水彩晕染风",
+  "aliases": [
+    "水彩风",
+    "晕染插画风",
+    "watercolor"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/水彩晕染风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "watercolor style, transparent washes, soft edge bleeding, paper texture, delicate layered color, airy organic warmth, hand-painted calm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "水彩风",
+      "晕染插画风",
+      "watercolor"
+    ],
+    "best_for": "透明水彩、柔和晕染、纸纹与留白营造文艺、治愈、有温度的视觉",
+    "visual_direction": "watercolor style, transparent washes, soft edge bleeding, paper texture, delicate layered color, airy organic warmth, hand-painted calm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white paper with faint texture #FBF8F3",
+      "composition": "watercolor illustration hero + soft wash zones",
+      "density": "low-medium, airy"
+    },
+    "color_palette": {
+      "primary": "soft pastel washes (rose #F6C6CE, sky #BFDCF2, mint #CBE6D8)",
+      "secondary": "light tints #EAF3F0, paper white #FBFAF6",
+      "accent": "one deeper accent (coral #E8836B or indigo #5A6B9E)",
+      "neutral": "ink gray #4A4A4A, soft paper",
+      "rule": "soft, transparent, layered; no hard edges, no neon, no heavy saturation"
+    },
+    "typography": {
+      "title": "hand-drawn-feel serif (Caveat / 霞鹜文楷) or soft sans",
+      "body": "readable, light",
+      "labels": "small script/label",
+      "text_quality": "exact, warm, no clutter"
+    },
+    "layout_patterns": [
+      "watercolor illustration hero",
+      "soft wash background",
+      "layered color blobs with text",
+      "organic diagram"
+    ],
+    "layout_usage_rule": "Let the transparent washes and paper do the atmosphere; keep text crisp over the softest zones.",
+    "layout_blueprints": [
+      {
+        "name": "主题页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "水彩插画主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "内容页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "淡彩插画"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "要点1",
+              "要点2",
+              "要点3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "watercolor strokes, soft bleeding edges, paper texture, transparent layering, airy whitespace",
+      "avoid": "hard outlines, neon, heavy saturation, photoreal, cluttered"
+    },
+    "rendering_constraints": [
+      "Soft, transparent, hand-painted warmth — colors bleed past masked/taped edges, with visible brush strokes.",
+      "Paper and white space are part of the mood; avoid hard edges.",
+      "Exact warm copy; no invented claims or logos.",
+      "Define composition, subject, palette, brush material, mood, and finish; lock character identity when using reference images. Avoid writing style without composition. (awesome-gpt-image-2 · illustration-art-style)"
+    ],
+    "reference": "GitHub: OhMyStyle (watercolor) · GPT Image 2 presets; GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/watercolor.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Soft, transparent, hand-painted warmth — colors bleed past masked/taped edges, with visible brush strokes.",
+      "Paper and white space are part of the mood; avoid hard edges.",
+      "Exact warm copy; no invented claims or logos.",
+      "Define composition, subject, palette, brush material, mood, and finish; lock character identity when using reference images. Avoid writing style without composition. (awesome-gpt-image-2 · illustration-art-style)"
+    ]
+  }
+}

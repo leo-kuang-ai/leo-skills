@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "4eeba41ae46987e056ceea5de81d6680020ba99748ea40837a437081ac1e3166",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/frame-shot-near-capacity.png",
+  "out_sha256": "dc81edb9d5e8cff1e87fa603104b2dc0783aae23d8355dc4c2c857ac3024a241",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1226,
+  "rendered_at": "2026-09-07T19:27:03.987Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "frame-shot",
+  "template_sha256": "f398b4ef4e71116cf9608416666be92c685f6ad002b838dfa67345c9d1e5958a",
+  "warnings": [],
+  "width": 2560
+}

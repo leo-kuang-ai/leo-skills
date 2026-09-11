@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-复古海报",
+  "name": "图片渲染：复古海报（vintage-poster）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

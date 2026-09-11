@@ -8,10 +8,10 @@ file for the four capability layers, plus a per-layer digest, producing a
 single capability-manifest.json that `leo-ppt doctor` can cite and diff
 after `npx skills add` updates ("did my 137 style briefs actually sync?").
 
-历史 v1 的分层计数规则如下；新 style-index 与 lint 采用独立的共享资产分类，
-不再要求新分类计数与以下兼容投影相等：
-  styles     every .md under references/styles/, per top-level axis dir;
-  briefs     the style-brief subset: top-level *.md under references/styles
+历史 v1 的分层计数规则如下（旧 --style-index 派生索引已随 U10 退役，
+template-library registry 由 --template-library 构建）：
+  styles     every .md under template-library/reference/sources/retired-styles-tree/styles/, per top-level axis dir;
+  briefs     the style-brief subset: top-level *.md under template-library/reference/sources/retired-styles-tree/styles
              + 01_通用母版 (all) + 02_行业内容域 (excluding per-industry
              _content_rules.md) + 03_场景用途结构 (all)
              + 05_来源_awesome-gpt-image-2/借鉴新增;
@@ -30,6 +30,12 @@ Identical trees compare clean. Diff information is informational: exit 0.
 Usage:
   capability_manifest.py [--root DIR] [--out FILE] [--compare OLD.json]
                          [--pretty]
+  capability_manifest.py --template-library [--library-root DIR]
+                         [--library-publish | --library-check]
+
+Canonical template-library checks must use the second form. The default
+four-layer manifest is a compatibility snapshot of the retired reference
+tree and is labelled ``source=retired-reference`` in its JSON output.
 
 Exit codes: 0 = ok (diff or not); 2 = usage error (missing root/manifest).
 """
@@ -42,20 +48,16 @@ import re
 import sys
 import os
 import shutil
-import tempfile
-from collections import Counter
 from pathlib import Path
-from urllib.parse import quote
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
-from leo_ppt_generator.styles import style_asset_inventory, style_reference_problems
 
 SCHEMA_VERSION = 1
 EXIT_OK = 0
 EXIT_USAGE = 2
 
-STYLES_DIR = Path("references") / "styles"
+STYLES_DIR = Path("template-library/reference/sources/retired-styles-tree/styles")
 REFERENCES_DIR = Path("references")
 SCRIPTS_DIR = Path("scripts")
 # 保留 v1 的历史 brief 投影，不用作新索引的候选资格数。
@@ -67,9 +69,6 @@ BRIEF_RULES = (
     (Path("05_来源_awesome-gpt-image-2") / "借鉴新增", "all"),
 )
 AXIS_NAME_RE = re.compile(r"^\d{2}_")
-STYLE_INDEX_VERSION = 1
-PAGE_LIMIT = 40
-PAGE_BYTES = 12 * 1024
 
 
 def _json_bytes(value) -> bytes:
@@ -80,223 +79,223 @@ def _hash_bytes(body: bytes) -> str:
     return hashlib.sha256(body).hexdigest()
 
 
-def _source_bytes(path: Path) -> bytes:
-    body = path.read_bytes()
-    if path.name == "_INDEX.md":
-        body = re.sub(rb"<!-- style-index:start -->.*?<!-- style-index:end -->", b"", body, flags=re.S)
-    return body
-
-
-def build_style_index(root: Path) -> dict:
-    """从源构建索引，与 capability-manifest v1 的历史计数完全分离。"""
-    import style_hard_rules
-
-    root = Path(root).resolve()
-    styles_root = root / STYLES_DIR
-    if not styles_root.is_dir():
-        raise ValueError("style_index_source_missing")
-    entries = style_asset_inventory(styles_root)
-    members = style_hard_rules.current_family_members(styles_root)
-    problems = style_reference_problems(entries, members=members if (root / "scripts/style_hard_rules.py").is_file() else None)
-    for entry in entries:
-        if entry["asset_role"] in {"style", "pool"} or entry["compatibility"]["legacy_callable"] or "asset_outside_root" in entry["diagnostics"]:
-            problems.extend({"code": code, "path": entry["path"]} for code in entry["diagnostics"])
-        entry["path"] = (STYLES_DIR / entry["path"]).as_posix()
-        if Path(entry["path"]).name == "_INDEX.md":
-            entry.pop("file_sha256", None)
-            entry.pop("style_content_digest", None)
-            entry["source_slice_sha256"] = _hash_bytes(_source_bytes(root / entry["path"]))
-            entry["digest_scope"] = "authored-regions"
-        entry["facet_families"] = sorted(label for label, names in members.items() if entry["name"] in names)
-        entry["family_basis"] = "authored" if isinstance(entry.get("taxonomy"), dict) and "families" in entry["taxonomy"] else "legacy-mapping" if entry["facet_families"] else "absent"
-    if problems:
-        raise ValueError("style_index_source_invalid: " + json.dumps(problems, ensure_ascii=False, sort_keys=True))
-    sources = {}
-    for entry in entries:
-        path = root / entry["path"]
-        sources[entry["path"]] = _hash_bytes(_source_bytes(path))
-    policy_paths = (
-        "scripts/capability_manifest.py", "scripts/style_hard_rules.py",
-        "runtime/src/leo_ppt_generator/styles.py",
-        "runtime/src/leo_ppt_generator/schemas/style-brief-v1.schema.json",
-        "runtime/src/leo_ppt_generator/schemas/style-index-v1.schema.json",
-    )
-    for rel in policy_paths:
-        path = root / rel
-        if not path.is_file():
-            path = SKILL_DIR / rel
-        sources["policy:" + rel] = sha256_file(path)
-    source_digest = _hash_bytes(_json_bytes(sources))
-    counts = dict(sorted(Counter(entry["asset_role"] for entry in entries).items()))
-    aliases = {}
-    for entry in entries:
-        if entry["asset_role"] not in {"style", "pool"}:
-            continue
-        for name in [entry["name"], *entry["aliases"]]:
-            aliases.setdefault(name.strip().casefold(), []).append(entry["path"])
-    navigation = styles_root / "00_索引/_INDEX.md"
-    return {"kind": "style-index", "schema_version": 1, "generator_version": STYLE_INDEX_VERSION,
-            "navigation_sha256": sha256_file(navigation) if navigation.is_file() else None,
-            "source_digest": source_digest, "generation": source_digest, "source_files": sources,
-            "counts": {"assets": len(entries), "by_role": counts,
-                       "independent_styles": sum(e["asset_role"] == "style" and not e.get("variant_of") for e in entries)},
-            "entries": entries, "name_alias_index": {k: sorted(set(v)) for k, v in sorted(aliases.items())}}
-
-
-def _markdown_text(value) -> str:
-    text = " ".join(str(value).split())
-    for raw, escaped in (("\\", "\\\\"), ("|", "\\|"), ("`", "\\`"), ("[", "\\["), ("]", "\\]"), ("<", "&lt;"), (">", "&gt;")):
-        text = text.replace(raw, escaped)
-    return text
-
-
-def _paged_markdown(prefix: str, title: str, rows: list[str], generation: str, *, page_rows: dict | None = None) -> dict[str, bytes]:
-    header = f"# {title}\n\ngeneration: {generation}\n\n"
-    pages = []
-    chunk = []
-    for row in rows:
-        if len((header + row + "\n").encode()) + 256 > PAGE_BYTES:
-            raise ValueError("style_index_entry_too_large")
-        if chunk and (len(chunk) >= PAGE_LIMIT or len((header + "\n".join([*chunk, row]) + "\n").encode()) + 256 > PAGE_BYTES):
-            pages.append(chunk)
-            chunk = []
-        chunk.append(row)
-    pages.append(chunk)
-    files = {}
-    for i, page in enumerate(pages, 1):
-        nav = []
-        if i > 1:
-            nav.append(f"[上一页]({Path(prefix).name}-{i - 1:03d}.md)")
-        if i < len(pages):
-            nav.append(f"[下一页]({Path(prefix).name}-{i + 1:03d}.md)")
-        files[f"{prefix}-{i:03d}.md"] = (header + " | ".join(nav) + "\n\n" + "\n".join(page) + "\n").encode()
-        if page_rows is not None:
-            page_rows[f"{prefix}-{i:03d}.md"] = page
-    return files
-
-
-def render_style_index(index: dict) -> dict[str, bytes]:
-    from jsonschema import Draft7Validator
-
-    schema = json.loads((SKILL_DIR / "runtime/src/leo_ppt_generator/schemas/style-index-v1.schema.json").read_text())
-    errors = sorted(Draft7Validator(schema).iter_errors(index), key=lambda error: str(error.path))
-    if errors:
-        raise ValueError("style_index_schema_invalid: " + errors[0].message)
-    generation = index["generation"]
-    files = {"catalog.json": _json_bytes(index)}
-    by_path = {e["path"]: e for e in index["entries"]}
-    name_rows = []
-    row_names = {}
-    for key, paths in index["name_alias_index"].items():
-        refs = []
-        for path in paths:
-            entry = by_path[path]
-            href = quote(os.path.relpath(path, str(STYLES_DIR / "generated")), safe="/.")
-            refs.append(f"[{_markdown_text(entry['name'])}]({href}) ({entry['asset_role']})")
-        row = f"- {_markdown_text(key)}: " + " / ".join(refs)
-        name_rows.append(row)
-        row_names[row] = key
-    name_pages = {}
-    files.update(_paged_markdown("names", "名称与别名", name_rows, generation, page_rows=name_pages))
-    facets = {}
-    for entry in index["entries"]:
-        if entry["asset_role"] != "style":
-            continue
-        labels = entry["facet_families"] or ["未分类"]
-        for label in labels:
-            facets.setdefault(label, []).append(entry)
-    facet_links = []
-    for label, entries in sorted(facets.items()):
-        prefix = "facets/family-" + _hash_bytes(label.encode())[:12]
-        rows = []
-        for entry in entries:
-            href = quote(os.path.relpath(entry["path"], str(STYLES_DIR / "generated/facets")), safe="/.")
-            display = entry["display"]
-            details = []
-            for key in ("suitable_for", "visual_character", "density"):
-                field = display[key]
-                value = field["value"] if field["present"] else "未记录"
-                details.append(f"{key}: {_markdown_text(value)}" + (" [摘录]" if field["truncated"] else ""))
-            hints = "; ".join(_markdown_text(v["value"]) for v in display["layout_hint"] if v["present"])
-            details.append("layout_hint: " + (hints or "未记录"))
-            rows.append(f"- [{_markdown_text(entry['name'])}]({href}) | {entry['asset_role']} | {entry['coverage']} | " + " | ".join(details))
-        pages = _paged_markdown(prefix, label, rows, generation)
-        files.update(pages)
-        for path in pages:
-            facet_links.append(f"- [{_markdown_text(label)}]({path})")
-    name_links = [f"- [{_markdown_text(row_names[rows[0]])} 至 {_markdown_text(row_names[rows[-1]])}]({name})"
-                  if rows else f"- [空名称页]({name})" for name, rows in sorted(name_pages.items())]
-    files.update(_paged_markdown("by-family", "家族浏览入口", facet_links, generation))
-    files.update(_paged_markdown("by-name-alias", "名称索引入口", name_links, generation))
-    # 稳定入口只是路由，不复制成员列表。
-    files["by-name-alias.md"] = (f"# 风格索引\n\ngeneration: {generation}\n\n"
-                                   "- [按名称与别名](by-name-alias-001.md)\n"
-                                   "- [按家族](by-family-001.md)\n").encode()
-    count_lines = [f"- {role}: {count}" for role, count in index["counts"]["by_role"].items()]
-    count_lines.extend([f"- 独立普通风格（排除变体）: {index['counts']['independent_styles']}",
-                        f"- 全部源资产: {index['counts']['assets']}",
-                        "", "style 包含变体，pool 单列；legacy capability-manifest 的 briefs 是历史兼容口径，不是推荐资格数。"])
-    files["counts.md"] = (f"# 资产口径\n\ngeneration: {generation}\n\n" + "\n".join(count_lines) + "\n").encode()
-    hashes = {path: _hash_bytes(body) for path, body in sorted(files.items())}
-    files["manifest.json"] = _json_bytes({"kind": "style-index-output", "schema_version": 1,
-                                         "generation": generation, "source_digest": index["source_digest"],
-                                         "files": hashes, "snapshot_digest": _hash_bytes(_json_bytes(hashes))})
-    return files
-
-
-def check_style_index(index: dict, files: dict[str, bytes], directory: Path) -> tuple[dict, int]:
-    reason = "none"
-    actual_digest = None
-    if not directory.is_dir():
-        reason = "style_index_missing"
-    else:
-        try:
-            actual = json.loads((directory / "catalog.json").read_text())
-            actual_digest = actual.get("source_digest")
-            if actual_digest != index["source_digest"]:
-                reason = "style_index_stale"
-            elif any(not (directory / name).is_file() or (directory / name).read_bytes() != body for name, body in files.items()):
-                reason = "style_index_corrupt"
-            elif {p.relative_to(directory).as_posix() for p in directory.rglob("*") if p.is_file()} != set(files):
-                reason = "style_index_corrupt"
-        except FileNotFoundError:
-            reason = "style_index_missing"
-        except (OSError, ValueError, AttributeError):
-            reason = "style_index_corrupt"
-    return {"kind": "style-index-check", "schema_version": 1, "reason_code": reason,
-            "expected_source_digest": index["source_digest"], "actual_source_digest": actual_digest,
-            "snapshot_digest": json.loads(files["manifest.json"])["snapshot_digest"],
-            "next_action": "none" if reason == "none" else "使用独立源摘要查询；由维护者刷新发布索引"}, 0 if reason == "none" else 1
-
-
-def publish_style_index(files: dict[str, bytes], directory: Path) -> None:
-    directory.parent.mkdir(parents=True, exist_ok=True)
-    if directory.is_symlink():
-        raise ValueError("style_index_output_symlink")
-    backup = directory.with_name(directory.name + ".previous")
-    if backup.exists():
-        raise ValueError("style_index_previous_generation_pending")
-    with tempfile.TemporaryDirectory(prefix=".style-index-", dir=directory.parent) as name:
-        staging = Path(name) / "generation"
-        staging.mkdir()
-        for path, body in files.items():
-            target = staging / path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(body)
-        if directory.exists():
-            directory.rename(backup)
-        try:
-            staging.rename(directory)
-        except OSError:
-            if backup.exists():
-                backup.rename(directory)
-            raise
-        if backup.exists():
-            shutil.rmtree(backup)
-
-
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+# --------------------------------------------------------------------------- #
+# template-library registry builder（唯一 builder，方案 §6）
+# --------------------------------------------------------------------------- #
+
+def derive_structure_admission(library_root: Path) -> dict:
+    """dashi K5/U5：结构准入派生——从 canonical 声明与既有验证记录得出，
+    不另存手写准入名单。HTML 绑定声明即验证（renderer 反向绑定经
+    lint_template_contract 核对）；image profile 需 structure 声明 +
+    renderer_support.image 构图说明；缺声明记 unknown 不准入自动池。
+    """
+    layouts_dir = library_root / "canonical" / "layouts"
+    sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+    from leo_ppt_generator.layout_selection import structure_fingerprint
+    total = html_declared = image_declared = unknown = 0
+    families: set[str] = set()
+    for path in sorted(layouts_dir.glob("*/layout.json")):
+        try:
+            profile = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        total += 1
+        renderer = profile.get("renderer_support") or {}
+        fingerprint = structure_fingerprint(profile)
+        declared = fingerprint != "unknown"
+        if declared:
+            families.add(fingerprint)
+        if isinstance(renderer.get("render:html"), str):
+            if declared:
+                html_declared += 1
+            else:
+                unknown += 1
+        elif declared and isinstance(renderer.get("image"), str):
+            image_declared += 1
+        elif not declared:
+            unknown += 1
+    return {
+        "total_layouts": total,
+        "html_declared": html_declared,
+        "image_declared": image_declared,
+        "structure_unknown": unknown,
+        "distinct_families": len(families),
+        "auto_pool": html_declared + image_declared,
+    }
+
+
+def build_template_registry(library_root: Path) -> dict:
+    """从 canonical + governance 输入确定性构建 registry（不写盘）。
+
+    generation = 输入摘要；无时间戳。evidence_set_digest 由 style_validation
+    提供（U2）；本 builder 只在 curation/evidence 输入存在时纳入 source_digest。
+    """
+    sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
+    from leo_ppt_generator.asset_resolver import (
+        KIND_CANONICAL_DIR, KIND_ENTITY_FILE, _declared_dependencies, _validate_library_declaration,
+        revision_of,
+    )
+
+    library_root = Path(library_root).resolve()
+    _validate_library_declaration(library_root)
+    entities: list[dict] = []
+    ids: set[str] = set()
+    canonical = library_root / "canonical"
+    for kind, dirname in sorted(KIND_CANONICAL_DIR.items()):
+        base = canonical / dirname
+        if not base.is_dir():
+            continue
+        # Axis entities are grouped as canonical/axes/<axis-kind>/<slug>/manifest.json;
+        # other canonical entities use canonical/<kind>/<slug>/<entity-file>.
+        pattern = (f"*/*/{KIND_ENTITY_FILE[kind]}" if kind == "axis"
+                   else f"*/{KIND_ENTITY_FILE[kind]}")
+        for manifest_path in sorted(base.glob(pattern)):
+            try:
+                data = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as exc:
+                raise ValueError(
+                    f"registry_entity_invalid: {manifest_path.name}: {exc}") from exc
+            asset_id = data.get("asset_id")
+            declared_scope = str(asset_id).split(":", 1)[0] if asset_id else ""
+            if declared_scope != "builtin" or asset_id in ids:
+                raise ValueError(f"registry_asset_id_invalid: {asset_id!r}")
+            ids.add(asset_id)
+            entities.append({
+                "asset_id": asset_id,
+                "kind": kind,
+                "path": manifest_path.relative_to(library_root).as_posix(),
+                "revision": revision_of(data),
+                "name": data.get("name") or asset_id.rsplit(":", 1)[-1],
+                "aliases": data.get("aliases", []) if isinstance(data.get("aliases"), list) else [],
+                "lifecycle": data.get("lifecycle", "draft"),
+                "dependencies": _declared_dependencies(data),
+            })
+    entities.sort(key=lambda entity: entity["asset_id"])
+    known = {entity["asset_id"] for entity in entities}
+    for entity in entities:
+        for dep in entity["dependencies"]:
+            if dep not in known:
+                raise ValueError(
+                    f"registry_dependency_missing: {entity['asset_id']} -> {dep}")
+
+    sources: dict[str, str] = {}
+    for path in sorted(library_root.glob("canonical/**/*")):
+        if path.is_file():
+            sources[path.relative_to(library_root).as_posix()] = sha256_file(path)
+    for rel in ("library.json", "governance/curation.json",
+                "governance/schemas/style-brief-v2.schema.json"):
+        path = library_root / rel
+        if path.is_file():
+            sources[rel] = sha256_file(path)
+    source_digest = _hash_bytes(_json_bytes(sources))
+    return {
+        "kind": "template-registry",
+        "schema_version": 1,
+        "generation": source_digest[:32],
+        "source_digest": source_digest,
+        "evidence_set_digest": None,
+        "entities": entities,
+    }
+
+
+def publish_template_registry(registry: dict, library_root: Path) -> dict:
+    """staging → catalog/generations/<gen>/ → 原子替换 current.json（构建锁内）。"""
+    library_root = Path(library_root).resolve()
+    catalog = library_root / "catalog"
+    generations = catalog / "generations"
+    generation = registry["generation"]
+    target = generations / generation
+    updated = False
+    if target.exists():
+        # 同输入重复发布：校验既有代内容一致即幂等成功。
+        existing = json.loads((target / "registry.json").read_text(encoding="utf-8"))
+        if existing.get("source_digest") != registry["source_digest"]:
+            raise ValueError("registry_generation_conflict")
+        # The generation is input-derived, so a builder algorithm change can
+        # produce different entities without changing the generation. Refresh
+        # the same generation instead of treating the old registry as fresh.
+        if existing != registry:
+            registry_tmp = target / ".registry.json.tmp"
+            registry_tmp.write_bytes(_json_bytes(registry))
+            os.replace(registry_tmp, target / "registry.json")
+            build_manifest = {
+                "kind": "template-registry-build",
+                "schema_version": 1,
+                "generation": generation,
+                "source_digest": registry["source_digest"],
+                "output_hashes": {
+                    "registry.json": _hash_bytes(_json_bytes(registry)),
+                },
+                "policy": "capability_manifest/template-registry/v1",
+            }
+            build_tmp = target / ".build-manifest.json.tmp"
+            build_tmp.write_bytes(_json_bytes(build_manifest))
+            os.replace(build_tmp, target / "build-manifest.json")
+            updated = True
+    else:
+        staging = catalog / "staging"
+        if staging.exists():
+            shutil.rmtree(staging)
+        staging.mkdir(parents=True)
+        try:
+            (staging / "registry.json").write_bytes(_json_bytes(registry))
+            build_manifest = {
+                "kind": "template-registry-build",
+                "schema_version": 1,
+                "generation": generation,
+                "source_digest": registry["source_digest"],
+                "output_hashes": {
+                    "registry.json": _hash_bytes(_json_bytes(registry)),
+                },
+                "policy": "capability_manifest/template-registry/v1",
+            }
+            (staging / "build-manifest.json").write_bytes(_json_bytes(build_manifest))
+            generations.mkdir(parents=True, exist_ok=True)
+            os.replace(staging, target)
+            updated = True
+        finally:
+            if staging.exists():
+                shutil.rmtree(staging, ignore_errors=True)
+    pointer = {"kind": "template-catalog-pointer", "schema_version": 1,
+               "generation": generation}
+    pointer_tmp = catalog / ".current.json.tmp"
+    pointer_tmp.write_bytes(_json_bytes(pointer))
+    os.replace(pointer_tmp, catalog / "current.json")
+    return {"generation": generation, "published": True, "updated": updated}
+
+
+def check_template_registry(library_root: Path) -> tuple[dict, int]:
+    """只读校验 current 指针的 generation 与源输入一致（漂移即非零）。"""
+    try:
+        fresh = build_template_registry(library_root)
+    except ValueError as exc:
+        return {"reason_code": "registry_rebuild_failed", "detail": str(exc)}, 2
+    try:
+        pointer = json.loads((library_root / "catalog" / "current.json").read_text())
+    except (OSError, ValueError):
+        return {"reason_code": "registry_pointer_missing",
+                "expected_generation": fresh["generation"]}, 1
+    if pointer.get("generation") != fresh["generation"]:
+        return {"reason_code": "registry_stale",
+                "expected_generation": fresh["generation"],
+                "actual_generation": pointer.get("generation")}, 1
+    registry_path = (library_root / "catalog" / "generations" /
+                     fresh["generation"] / "registry.json")
+    try:
+        published = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"reason_code": "registry_content_stale",
+                "generation": fresh["generation"]}, 1
+    if published != fresh:
+        return {"reason_code": "registry_content_stale",
+                "generation": fresh["generation"],
+                "entities": len(fresh["entities"])}, 1
+    return {"reason_code": "none", "generation": fresh["generation"],
+            "entities": len(fresh["entities"])}, 0
 
 
 def rel_sorted(root: Path, rel_dir: Path, pattern: str = "*.md") -> list[Path]:
@@ -324,7 +323,7 @@ def layer_files(root: Path, layer: str) -> list[Path]:
 
 
 def brief_files(root: Path) -> list[Path]:
-    """Style-brief subset with lint_style_index counting rules."""
+    """Style-brief subset（capability-manifest v1 历史 brief 口径）。"""
     files: list[Path] = []
     styles_root = root / STYLES_DIR
     for sub, rule in BRIEF_RULES:
@@ -387,6 +386,8 @@ def build_manifest(root: Path) -> dict:
     return {
         "schema_version": SCHEMA_VERSION,
         "kind": "capability-manifest",
+        "source": "retired-reference",
+        "canonical_entrypoint": "capability_manifest.py --template-library --library-check",
         "skill": root.name,
         "digest": top_digest,
         "layers": entries,
@@ -432,9 +433,12 @@ def main(argv: list[str] | None = None) -> int:
                         help="清单落盘路径（默认只打印 stdout JSON）")
     parser.add_argument("--compare", default=None, help="旧 capability-manifest.json")
     parser.add_argument("--pretty", action="store_true", help="stdout 用缩进格式")
-    parser.add_argument("--style-index", action="store_true", help="生成独立的风格索引（不改变旧清单口径）")
-    parser.add_argument("--index-out", help="风格索引发布目录")
-    parser.add_argument("--check", action="store_true", help="只读检查风格索引是否与源一致")
+    parser.add_argument("--template-library", "--canonical", dest="template_library",
+                        action="store_true",
+                        help="canonical 模板库 registry（catalog/generations + current 指针；正式入口）")
+    parser.add_argument("--library-root", help="template-library 根（默认 <root>/template-library）")
+    parser.add_argument("--library-publish", action="store_true", help="配合 --template-library 发布")
+    parser.add_argument("--library-check", action="store_true", help="配合 --template-library 只读校验")
     args = parser.parse_args(argv)
 
     root = (Path(args.root).expanduser().resolve() if args.root
@@ -443,32 +447,30 @@ def main(argv: list[str] | None = None) -> int:
         print(f"根目录不存在: {root}", file=sys.stderr)
         return EXIT_USAGE
 
-    if args.style_index:
+    if args.template_library:
         if args.compare or args.out:
-            parser.error("--style-index 不与旧 --out/--compare 混用")
-        directory = Path(args.index_out).expanduser().absolute() if args.index_out else root / STYLES_DIR / "generated"
-        try:
-            index = build_style_index(root)
-            files = render_style_index(index)
-            from lint_style_governance import check_document_links
-            link_errors = check_document_links({(STYLES_DIR / "generated" / p).as_posix(): body.decode("utf-8")
-                                               for p, body in files.items() if p.endswith(".md")}, root)
-            if link_errors:
-                raise ValueError("style_index_links_invalid: " + "; ".join(link_errors))
-            if args.check:
-                result, code = check_style_index(index, files, directory)
-            elif args.index_out:
-                publish_style_index(files, directory)
-                result, code = check_style_index(index, files, directory)
-            else:
-                result, code = index, 0
-        except (OSError, ValueError) as exc:
-            result, code = {"kind": "style-index-check", "schema_version": 1,
-                            "reason_code": "style_index_rebuild_failed", "detail": str(exc)}, 2
+            parser.error("--template-library 不与旧清单参数混用")
+        library_root = (Path(args.library_root).expanduser().resolve()
+                        if args.library_root else root / "template-library")
+        if not library_root.is_dir():
+            print(f"模板库根不存在: {library_root}", file=sys.stderr)
+            return EXIT_USAGE
+        if args.library_check:
+            result, code = check_template_registry(library_root)
+        elif args.library_publish:
+            registry = build_template_registry(library_root)
+            result = publish_template_registry(registry, library_root)
+            result = {**result, "entities": len(registry["entities"])}
+            code = 0
+        else:
+            registry = build_template_registry(library_root)
+            result = {"generation": registry["generation"],
+                      "entities": len(registry["entities"]),
+                      "source_digest": registry["source_digest"],
+                      "structure_admission": derive_structure_admission(library_root)}
+            code = 0
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return code
-    if args.index_out or args.check:
-        parser.error("--index-out/--check 需要 --style-index")
 
     manifest = build_manifest(root)
     if args.compare:

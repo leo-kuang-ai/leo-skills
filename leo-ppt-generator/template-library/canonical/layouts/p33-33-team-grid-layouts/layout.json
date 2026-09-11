@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p33-33-team-grid-layouts",
+  "name": "Team Grid",
+  "aliases": [
+    "P33"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "members": {
+      "region": "content",
+      "desc": "人物卡（头像 + 姓名 + 角色 + 背景）",
+      "count_min": 3,
+      "count_max": 8
+    },
+    "member_role": {
+      "region": "content",
+      "desc": "每卡角色（meta 1.2vw）",
+      "max_chars": 52,
+      "chars_per_line": 22,
+      "max_lines": 2
+    },
+    "member_bio": {
+      "region": "content",
+      "desc": "每卡一句话背景",
+      "max_chars": 68,
+      "chars_per_line": 19,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部页标题 8.4vw + 可选一行团队说明；下方 3-4 列网格：头像块 12vw（直角或全圆全页统一）+ 姓名 + 角色 + 一句话背景"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/33_Team_Grid.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

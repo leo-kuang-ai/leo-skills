@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p29-p29-quiz-layouts",
+  "name": "Quiz",
+  "aliases": [
+    "P29"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "options": {
+      "region": "content",
+      "desc": "选项卡",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "stem": {
+      "region": "content",
+      "desc": "题干",
+      "max_chars": 105,
+      "chars_per_line": 44,
+      "max_lines": 2
+    },
+    "option_text": {
+      "region": "content",
+      "desc": "每选项文本",
+      "max_chars": 16,
+      "chars_per_line": 14,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "题干区 + 三选项卡（A/B/C）+ 页脚「答案见讲者备注」"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P29_Quiz.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

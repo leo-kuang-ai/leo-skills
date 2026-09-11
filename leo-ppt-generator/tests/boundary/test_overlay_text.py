@@ -130,6 +130,30 @@ class OverlayTextTest(unittest.TestCase):
             self.assertEqual(code, 1)
             self.assertIn("缺少锚点", output)
 
+    def test_overlay_rejects_duplicate_anchor(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            base = make_base(root / "base.png")
+            whitelist = root / "wl.json"
+            whitelist.write_text(
+                json.dumps(
+                    {
+                        "required_text": ["标题甲"],
+                        "anchors": [
+                            {"text": "标题甲", "x": 100, "y": 200},
+                            {"text": "标题甲", "x": 100, "y": 400},
+                        ],
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            out = root / "out.png"
+            code, output = run([str(base), str(whitelist), str(out)])
+            self.assertEqual(code, 1)
+            self.assertIn("重复锚点", output)
+            self.assertFalse(out.exists())
+
     def test_overlay_deterministic_byte_identical(self):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)

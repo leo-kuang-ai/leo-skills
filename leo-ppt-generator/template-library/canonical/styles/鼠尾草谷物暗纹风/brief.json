@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:鼠尾草谷物暗纹风",
+  "name": "鼠尾草谷物暗纹风",
+  "aliases": [
+    "Sage Grain",
+    "谷物暗纹",
+    "暗调鼠尾草"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/15_来源_officecli/鼠尾草谷物暗纹风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "creative-agency organic dark, sage-grey green ground with grain noise texture and sparkle cross motifs, extreme bold titles with gradient fade, elevated white card panels"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Sage Grain",
+      "谷物暗纹",
+      "暗调鼠尾草"
+    ],
+    "best_for": "暗调鼠尾草 + 谷物噪点的创意机构质感;适合创意机构/精品咨询/有机品牌",
+    "visual_direction": "creative-agency organic dark, sage-grey green ground with grain noise texture and sparkle cross motifs, extreme bold titles with gradient fade, elevated white card panels",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#1E2720",
+      "composition": "暗绿灰底 + 噪点纹理 + 十字星母题 + 白色浮卡",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#1E2720(鼠尾草灰绿暗底)",
+      "secondary": "#FFFFFF(白卡面)",
+      "accent": "#D9B88F(暖米强调)",
+      "neutral": "#8A9088(灰绿次级字)"
+    },
+    "typography": {
+      "title": "Segoe UI 56-64pt 超粗(苹方兜底),白字带渐隐",
+      "body": "Segoe UI 14pt,置于白卡",
+      "labels": "Segoe UI 9-10pt 大写小节标签(苹方兜底),金 #C9A86A 点缀"
+    },
+    "layout_patterns": [
+      "暗绿灰底 + 低透明(0.02-0.03)散点椭圆噪点纹理",
+      "四线十字星(0.08cm 线径)作装饰母题",
+      "56-64pt 超粗标题带 textFill 渐隐",
+      "白色 roundRect 卡片承载内容;暗底整页 → 白卡 → 大数字页交替节奏"
+    ],
+    "layout_usage_rule": "暗绿灰底 + 低透明(0.02-0.03)散点椭圆噪点纹理",
+    "visual_elements": {
+      "allowed": "暗绿灰底 + 噪点纹理 + 十字星母题 + 白色浮卡",
+      "avoid": "不要高饱和撞色——保持有机克制; 不要纯平无纹理的底"
+    },
+    "rendering_constraints": [
+      "不要高饱和撞色——保持有机克制",
+      "不要纯平无纹理的底",
+      "不要细字重正文",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和撞色——保持有机克制",
+      "不要纯平无纹理的底",
+      "不要细字重正文"
+    ],
+    "paired_illustration": {
+      "family": "photographic",
+      "density": "core"
+    },
+    "reference": "GitHub: OfficeCLI · skills/morph-ppt/reference/styles/dark--sage-grain/style.md(MIT)· Organic, sophisticated, artisanal",
+    "token_sidecar": "variant-dimension: dark"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和撞色——保持有机克制",
+      "不要纯平无纹理的底",
+      "不要细字重正文",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

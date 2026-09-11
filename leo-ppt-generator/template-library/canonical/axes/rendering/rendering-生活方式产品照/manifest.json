@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-生活方式产品照",
+  "name": "图片渲染：生活方式产品照（lifestyle-product-shot）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

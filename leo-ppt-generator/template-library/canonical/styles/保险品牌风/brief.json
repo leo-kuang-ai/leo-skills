@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:保险品牌风",
+  "name": "保险品牌风",
+  "aliases": [
+    "保险风",
+    "险企风",
+    "insurance风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/金融审计/保险品牌风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "金融审计"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "trustworthy insurance brand aesthetic, warm reliable tone, secure and caring, clean human-centered visuals, steady institutional confidence, approachable professional trust"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "保险风",
+      "险企风",
+      "insurance风"
+    ],
+    "best_for": "保险品牌与产品保障,需要可信、稳健带温度的价值沟通",
+    "visual_direction": "trustworthy insurance brand aesthetic, warm reliable tone, secure and caring, clean human-centered visuals, steady institutional confidence, approachable professional trust",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / soft warm gray, reassuring",
+      "composition": "value narrative + coverage modules",
+      "density": "medium, warm, trustworthy"
+    },
+    "color_palette": {
+      "primary": "trust navy #1F3A5F / warm base",
+      "secondary": "soft blue #93C5FD, warm gray #9C9484, teal #14B8A6",
+      "accent": "one warm accent (teal #14B8A6 / orange #F97316)",
+      "neutral": "near-black #1F2937, gray #6B7280, white",
+      "rule": "trustworthy, warm, steady; avoid flashy and cold"
+    },
+    "typography": {
+      "title": "clear reassuring sans (Inter / 思源黑体)",
+      "body": "warm, readable body",
+      "labels": "coverage/plan tags",
+      "text_quality": "accurate, caring, no overpromise"
+    },
+    "layout_patterns": [
+      "brand trust hero",
+      "coverage plan modules",
+      "claim/story narrative",
+      "value & stability statement"
+    ],
+    "layout_usage_rule": "Warm trustworthy narrative; credibility and care balance, steady pace.",
+    "layout_blueprints": [
+      {
+        "name": "品牌页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "品牌理念 + 主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "承诺",
+              "数据"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "保障页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "产品名"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 4,
+            "labels": [
+              "保障项",
+              "条件",
+              "案例",
+              "价值"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "warm images, calm icons, coverage blocks, trust accents",
+      "avoid": "cartoon, cold clinical, stocky clutter, sensational claims"
+    },
+    "rendering_constraints": [
+      "Warm, stable, trustworthy insurance feel.",
+      "Credibility plus care; steady and human.",
+      "Accurate coverage terms; no invented guarantees or rankings."
+    ],
+    "reference": "GitHub: 保险品牌 · 可信稳健叙事"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Warm, stable, trustworthy insurance feel.",
+      "Credibility plus care; steady and human.",
+      "Accurate coverage terms; no invented guarantees or rankings."
+    ]
+  }
+}

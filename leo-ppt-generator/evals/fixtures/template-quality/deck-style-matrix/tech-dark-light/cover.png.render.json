@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "943f461a8dfa88abac9e39ff6bfc4e9be434724e441caecf464fb3e67eb2ebb6",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/tech-dark-light/cover.png",
+  "out_sha256": "8aa721c4075358fec92e3acbec23a92f6f702342a85a0291001f0eef06492cea",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1271,
+  "rendered_at": "2026-09-08T02:57:05.820Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "cover-basic",
+  "template_sha256": "bea9ecfcc2d2f5071d61680232f3c3189288a60a0ca6e4ec96f9484d5e01471c",
+  "warnings": [],
+  "width": 2560
+}

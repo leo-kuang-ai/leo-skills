@@ -1,0 +1,152 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:3D软体卡通风",
+  "name": "3D软体卡通风",
+  "aliases": [
+    "3D软体风",
+    "卡通渲染风",
+    "soft 3D"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/3D软体卡通风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "卡通儿童",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "soft 3D / C4D style, rounded glossy 3D shapes, soft studio lighting, gentle shadows, premium playful materials, approachable modern depth, tactile friendly finish"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "3D软体风",
+      "卡通渲染风",
+      "soft 3D"
+    ],
+    "best_for": "圆润 3D 渲染（C4D 风）、柔和工作室光、精致可爱质感的产品展示、品牌形象与概念说明",
+    "visual_direction": "soft 3D / C4D style, rounded glossy 3D shapes, soft studio lighting, gentle shadows, premium playful materials, approachable modern depth, tactile friendly finish",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "soft gradient or clean solid background, gentle light",
+      "composition": "one central 3D hero object, floating composition",
+      "density": "low-medium, hero-first, breathing room"
+    },
+    "color_palette": {
+      "primary": "soft coral #FF8A80 / sky blue #64B5F6, white",
+      "secondary": "mint #81C784, lavender #B39DDB pastel tints",
+      "accent": "one warm accent (soft amber #FFB74D)",
+      "neutral": "near-black #2B2B2B, soft shadow grays, white",
+      "rule": "soft, friendly, premium; no harsh shadows, no dark-heavy, no neon"
+    },
+    "typography": {
+      "title": "rounded modern sans-serif (Nunito / 站酷圆体), friendly and confident",
+      "body": "clean readable body",
+      "labels": "soft badge labels",
+      "text_quality": "exact product/brand terms"
+    },
+    "layout_patterns": [
+      "central 3D product hero",
+      "3D icon / feature array",
+      "3D scene narrative",
+      "3D layered architecture"
+    ],
+    "layout_usage_rule": "One hero 3D object per slide; let soft light and rounded material carry the warmth.",
+    "layout_blueprints": [
+      {
+        "name": "产品 hero",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "3D 主体"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "名称 + 一句话"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "特性阵列",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "3D 图标1",
+              "3D 图标2",
+              "3D 图标3",
+              "3D 图标4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "soft 3D renders, gentle shadows, rounded corners, soft studio light, premium materials",
+      "avoid": "harsh drop shadows, photoreal product shots, dark heavy backgrounds, clutter, sharp edges"
+    },
+    "rendering_constraints": [
+      "Feels premium, friendly, and approachable.",
+      "Rounded 3D + soft light; material and depth feel real, not cartoon-low.",
+      "Exact product/brand terms; no invented logos.",
+      "For collectible toys, preserve reference identity anchors; specify material, packaging, base, light, and collectible ratio. Avoid generic toys without identity. (awesome-gpt-image-2 · 3d-collectible-toy)"
+    ],
+    "reference": "GitHub: OhMyStyle (3D soft / C4D) · 3D 渲染风"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Feels premium, friendly, and approachable.",
+      "Rounded 3D + soft light; material and depth feel real, not cartoon-low.",
+      "Exact product/brand terms; no invented logos.",
+      "For collectible toys, preserve reference identity anchors; specify material, packaging, base, light, and collectible ratio. Avoid generic toys without identity. (awesome-gpt-image-2 · 3d-collectible-toy)"
+    ]
+  }
+}

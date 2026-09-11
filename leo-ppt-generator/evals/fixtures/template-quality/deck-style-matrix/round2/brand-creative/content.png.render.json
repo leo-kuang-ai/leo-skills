@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "2fb1c1fb4a3928f5ef14116659641581eb56bcbf51a5817c71656a62d93749e4",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/content.png",
+  "out_sha256": "0ed23d5db2faf3d6ea50006743113002dd42945e92e548a626a5f100a03d6c7b",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1272,
+  "rendered_at": "2026-09-08T02:01:04.451Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "f267cbdae12c9bc9d14c73c0c8cc579702dceee4f658a3486ba265304a35131a",
+  "warnings": [],
+  "width": 2560
+}

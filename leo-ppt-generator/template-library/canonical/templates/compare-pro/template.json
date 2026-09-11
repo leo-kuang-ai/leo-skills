@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:compare-pro",
+  "name": "compare-pro",
+  "lane": "render:html",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "title",
+      "required": true,
+      "type": "string",
+      "maxLength": 24
+    },
+    {
+      "name": "sides",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 18
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 48
+            },
+            "minItems": 1,
+            "maxItems": 4
+          }
+        },
+        "required": [
+          "label",
+          "title",
+          "points"
+        ]
+      },
+      "count_min": 2,
+      "count_max": 2
+    },
+    {
+      "name": "bottom",
+      "required": false,
+      "type": "string",
+      "maxLength": 56
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "kicker",
+      "selector": "[data-leo-block='kicker']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "sides",
+      "selector": "[data-leo-block='side_a']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "bottom",
+      "selector": "[data-leo-block='bottom']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "primary",
+    "accent",
+    "background",
+    "surface",
+    "text",
+    "muted",
+    "border",
+    "on_primary"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p8-08-duo-compare-layouts"
+  ],
+  "dependencies": [
+    "builtin:layout:p8-08-duo-compare-layouts"
+  ],
+  "notes": "输入对象形状、数量与 layout 槽位一致；字号来自 effective_theme，几何来自 layout profile。"
+}

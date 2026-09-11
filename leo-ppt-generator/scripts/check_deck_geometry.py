@@ -43,6 +43,13 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
+RUNTIME_SRC = Path(__file__).resolve().parents[1] / "runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
+
+from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
+from leo_ppt_generator.render.layout import CAPACITY_TOLERANCE, capacity_level
+
 NS_P = "http://schemas.openxmlformats.org/presentationml/2006/main"
 NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 NS_R = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -54,7 +61,7 @@ EMU_PER_INCH = 914400
 #
 # vw_of 字符宽度语义：CJK/全角 = 1.0、空格 = 0.35、ASCII = 0.5、其他 = 0.8。
 # leo_capacity_for 是 leo 版心 token 语境的换算（公式来源
-# references/styles/00_索引/版心Canon.md）。
+# template-library/reference/sources/retired-styles-tree/styles/00_索引/版心Canon.md）。
 # --------------------------------------------------------------------------- #
 
 CANVAS_W_PX = 2560  # 16:9 生图画布基准，1vw = 25.6px
@@ -64,14 +71,6 @@ GRID_GUTTER_VW = 2  # 版心 Canon: grid-gutter（桌面）
 GRID_COLS = 12
 FILL_MARGIN = 0.95  # 容器内边距让渡（近似上游 H_MARGIN 的 5%）
 CAPACITY_LINE_HEIGHT = 1.0  # 上游 LINE_HEIGHT：CJK 正文单倍行距
-CAPACITY_TOLERANCE = 1.2  # 上游 TOLERANCE：模型 slack，假阳校准 0-5%
-
-SIDEcar_LAYOUT_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "references" / "styles" / "12_版式库"
-)
-STYLES_DIR = Path(__file__).resolve().parents[1] / "references" / "styles"
-
 
 def vw_of(text: str) -> float:
     """文本的视觉宽度（CJK 等效单位）：CJK/全角=1.0，空格=0.35，ASCII=0.5，其他=0.8。"""
@@ -113,23 +112,34 @@ def leo_capacity_for(cols: int, height_vh: float, font_px: float) -> tuple[int, 
 
 
 def _load_layout_sidecars() -> dict[str, dict]:
-    """读全部版式 sidecar（layout_id -> sidecar dict）；不可解析即清晰失败。"""
+    """读 canonical layout profiles 的容量投影（layout_id -> dict）。"""
     bank: dict[str, dict] = {}
-    for path in sorted(SIDEcar_LAYOUT_DIR.glob("*.layouts.json")):
-        data = json.loads(path.read_text(encoding="utf-8"))
-        if isinstance(data, dict) and data.get("entity") == "layout":
-            bank[str(data.get("layout_id"))] = data
+    resolver = AssetResolver()
+    for entity in resolver.entities:
+        if entity.get("kind") != "layout":
+            continue
+        data = resolver.resolve(entity["asset_id"])["data"]
+        layout_id = next((str(a) for a in data.get("aliases", [])
+                          if re.fullmatch(r"P\d+", str(a))), None)
+        layout_id = layout_id or str((data.get("aliases") or [entity["asset_id"]])[0])
+        bank[layout_id] = {
+            **data,
+            "layout_id": layout_id,
+            "page_type": data.get("page_role", "content"),
+            "content_capacity": data.get("slots") or {},
+        }
     return bank
 
 
 def _style_capacity_factor(style_name: str | None) -> float:
     if not style_name:
         return 1.0
-    path = STYLES_DIR / f"{style_name}.layouts.json"
-    if not path.is_file():
+    try:
+        style = AssetResolver().require(style_name, kind="style")
+    except ResolverError:
         return 1.0
-    data = json.loads(path.read_text(encoding="utf-8"))
-    factor = data.get("capacity_factor", {}).get("text", 1.0)
+    data = style["data"]
+    factor = (data.get("bindings") or {}).get("capacity_factor", {}).get("text", 1.0)
     return float(factor) if isinstance(factor, (int, float)) else 1.0
 
 
@@ -178,11 +188,11 @@ def capacity_check(spec_path: Path) -> int:
         return 2
     try:
         bank = _load_layout_sidecars()
-    except (OSError, json.JSONDecodeError) as exc:
-        print(f"[ERROR] 版式 sidecar 不可读: {exc}")
+    except (OSError, json.JSONDecodeError, ResolverError) as exc:
+        print(f"[ERROR] canonical 版式库不可读: {exc}")
         return 2
     if not bank:
-        print("[ERROR] 版式 sidecar 库为空（12_版式库/*.layouts.json）")
+        print("[ERROR] canonical 版式库为空（canonical/layouts/*/layout.json）")
         return 2
     factor = _style_capacity_factor(spec.get("style"))
     rc = 0
@@ -223,8 +233,7 @@ def capacity_check(spec_path: Path) -> int:
                         f"{_capacity_alternatives(bank, layout_id, 0, n) or '无同型'}）"
                     )
                 elif n > hi:
-                    band = hi * CAPACITY_TOLERANCE
-                    if n <= band:
+                    if capacity_level(n, hi) != "overflow":
                         soft = True
                         problems.append(
                             f"over:count:{slot_name} 条数 {n} 超上限 {hi}"
@@ -264,7 +273,7 @@ def capacity_check(spec_path: Path) -> int:
                     total_used = sum(vw_of(str(text)) for text in points)
                     total_limit = sum(slot.get("max_chars", 0) for slot in capacity.values()) * factor
                     if total_used > total_limit:
-                        total_hard = total_used > total_limit * CAPACITY_TOLERANCE
+                        total_hard = capacity_level(total_used, total_limit) == "overflow"
                         hard = hard or total_hard
                         soft = soft or not total_hard
                         level = "overflow" if total_hard else "over"
@@ -281,8 +290,7 @@ def capacity_check(spec_path: Path) -> int:
             used = vw_of(str(text))
             if used <= limit:
                 continue
-            band = limit * CAPACITY_TOLERANCE
-            if used <= band:
+            if capacity_level(used, limit) != "overflow":
                 soft = True
                 problems.append(
                     f"over:{slot_name} {used:.1f}/{limit:.0f} vw（软超 ≤1.2×）→ "
@@ -526,7 +534,7 @@ def main(argv: list[str]) -> int:
     ap.add_argument(
         "--capacity", metavar="SPEC",
         help="互斥模式：生成前文本级容量预检（deck_spec/master JSON，"
-             "消费 12_版式库/*.layouts.json 容量表；与 positional pptx 同给报用法错误）",
+             "消费 canonical layout profile 容量表；与 positional pptx 同给报用法错误）",
     )
     args = ap.parse_args(argv)
 

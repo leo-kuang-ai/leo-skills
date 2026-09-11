@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:传统色叙事风",
+  "name": "传统色叙事风",
+  "aliases": [
+    "eastern traditional",
+    "传统色风",
+    "植物染叙事风",
+    "东方传统色",
+    "heritage palette"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/传统色叙事风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "水墨国风"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "traditional East-Asian artwork mood, warm aged-paper ground, earth pigments of ochre gold and sage green with a vermilion seal mark, botanical and landscape motifs, kaiti display type, vertical-text accents, colour-name swatches telling the story, ink-wash echoes, muted dignified, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "eastern traditional",
+      "传统色风",
+      "植物染叙事风",
+      "东方传统色",
+      "heritage palette"
+    ],
+    "best_for": "以暖纸底、赭金 / 竹青 / 朱砂传统色叙事、楷体大字与印章竖排表达东方传统色彩的器物感与文脉",
+    "visual_direction": "traditional East-Asian artwork mood, warm aged-paper ground, earth pigments of ochre gold and sage green with a vermilion seal mark, botanical and landscape motifs, kaiti display type, vertical-text accents, colour-name swatches telling the story, ink-wash echoes, muted dignified, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm aged paper #F7F2E8",
+      "composition": "colour-name swatches / seal stamps / vertical-text accents over generous margins",
+      "density": "low-medium, literary and calm"
+    },
+    "color_palette": {
+      "primary": "warm aged paper #F7F2E8, warm ink #3A3530",
+      "secondary": "ochre gold 赭 #C99E62, sage 竹青 #6F8F75",
+      "accent": "seal vermilion 朱 #A52A2A — chrome stays a small stamp, never a fill",
+      "neutral": "warm gray #7A7068 for captions",
+      "rule": "only the named 传统色 hues — no neon, no corporate blue; content colour-swatches exempt from the chrome rule"
+    },
+    "typography": {
+      "title": "large kaiti/serif display (楷体 / Songti SC 思源宋体), literary stature",
+      "body": "refined body (思源宋体 / Noto Serif CJK), calm leading",
+      "labels": "vertical-text accents and swatch names (楷体 / Kaiti SC), quiet",
+      "text_quality": "literary, unhurried, colour names read as part of the story"
+    },
+    "layout_patterns": [
+      "colour-swatch story: named traditional-colour swatches (赭 / 竹青 / 朱) carry the narrative",
+      "seal + vertical accent: small vermilion stamp beside vertical-text labels",
+      "ink-wash echo: one restrained ink motif per section (branch / landscape line)",
+      "cover = aged paper + kaiti display + seal + generous breathing margins"
+    ],
+    "layout_usage_rule": "The colours themselves carry the story; chrome stays quiet — seal red is a stamp, never a fill.",
+    "negative_prompt": [
+      "no neon or corporate blue hues",
+      "no large vermilion fills — the seal stays a small stamp",
+      "no dense grids or filled corners — preserve breathing room",
+      "no modern glass or gloss UI surfaces"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "supportive"
+    },
+    "visual_elements": {
+      "allowed": "colour-name swatches, seal stamps, vertical text, ink-wash motifs, hairline rules",
+      "avoid": "neon hues, corporate blue, large red fills, dense corner filling"
+    },
+    "rendering_constraints": [
+      "Traditional East-Asian earth pigments on aged paper.",
+      "Botanical / landscape motifs, muted and dignified.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: addsumtech/slides_maker · presets.py eastern_traditional"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Traditional East-Asian earth pigments on aged paper.",
+      "Botanical / landscape motifs, muted and dignified.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

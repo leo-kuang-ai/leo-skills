@@ -1,0 +1,160 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:黑白极简艺术展风",
+  "name": "黑白极简艺术展风",
+  "aliases": [
+    "黑白艺术展风",
+    "美术馆风",
+    "mono gallery"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/黑白极简艺术展风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "monochrome gallery art style, black-and-white, oversized abstract imagery juxtaposed with minimal text, exhibition-wall curation, dramatic negative space, installation-grade atmosphere"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "黑白艺术展风",
+      "美术馆风",
+      "mono gallery"
+    ],
+    "best_for": "以黑白为主、超大抽象画面与极简文字并置,营造陈列与策展气质",
+    "visual_direction": "monochrome gallery art style, black-and-white, oversized abstract imagery juxtaposed with minimal text, exhibition-wall curation, dramatic negative space, installation-grade atmosphere",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "black or white gallery field",
+      "composition": "abstract artwork + typographic caption, wall-sense",
+      "density": "very low, curatorial"
+    },
+    "color_palette": {
+      "primary": "black #0A0A0A / white #FFFFFF",
+      "secondary": "deep gray gradients #3F3F46 to #A1A1AA",
+      "accent": "a single restrained accent #52525B or none",
+      "neutral": "black #000000, white #FFFFFF, grays",
+      "rule": "monochrome, curatorial; avoid color splash and decoration"
+    },
+    "typography": {
+      "title": "minimal refined type (Helvetica / 思源黑体), wide tracked",
+      "body": "tiny wall-label",
+      "labels": "small, catalog-like",
+      "text_quality": "precise, artful, sparse"
+    },
+    "layout_patterns": [
+      "abstract artwork hero + caption",
+      "juxtaposition of image and type",
+      "diptych / series of two",
+      "curatorial index"
+    ],
+    "layout_usage_rule": "Curate every slide like a gallery wall; monochrome abstract art and minimal type.",
+    "layout_blueprints": [
+      {
+        "name": "作品陈列",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "超大抽象作品"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "作品名/年份"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "系列对照",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "作品A"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "labels": [
+              "作品B"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "并置说明"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "black-and-white art, abstract imagery, minimal wall labels, huge negative space",
+      "avoid": "colorful decoration, clutter, mixed fonts, busy imagery"
+    },
+    "rendering_constraints": [
+      "Feels like gallery/exhibition curation.",
+      "Monochrome abstract + minimal type; immerse in negative space.",
+      "No watermarks; accurate attribution only."
+    ],
+    "reference": "GitHub: 黑白极简艺术展风 · 艺术/建筑提案"
+  },
+  "recommendation_features": {
+    "density": "very-low",
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Feels like gallery/exhibition curation.",
+      "Monochrome abstract + minimal type; immerse in negative space.",
+      "No watermarks; accurate attribution only."
+    ]
+  }
+}

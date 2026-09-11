@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:spec-table",
+  "name": "规格表模板",
+  "input_fields": [
+    {
+      "name": "title",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "columns",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "column_align",
+      "required": false,
+      "type": "array"
+    },
+    {
+      "name": "rows",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "columns",
+      "selector": "[data-leo-block='table'] thead",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "rows",
+      "selector": "[data-leo-block='table'] tbody",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "table_header",
+    "table_body"
+  ],
+  "dependencies": [
+    "builtin:layout:p25-spec-table"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p25-spec-table"
+  ],
+  "lane": "render:html"
+}

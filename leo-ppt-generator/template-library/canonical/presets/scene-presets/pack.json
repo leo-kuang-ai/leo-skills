@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "schema_id": "preset-pack-v1",
+  "description": "R-67 场景预组合预设机读镜像；口径真值是本目录 README.md。可选档默认关：仅在用户明确要求按场景预设时命中；预设缺失按 fallback 链降级而非硬失败（AE-69）。",
+  "fields": {
+    "id": "预设稳定标识（kebab-case）",
+    "name_zh": "场景中文名",
+    "match_signals": "推荐合同信号的关键词匹配面（genre/domain 任一子串命中即候选）",
+    "composition.style": "主风格名（R-66 合并后口径，variant 经主风格 aliases 命中）",
+    "composition.layouts": "骨干页序 P 码（真值：template-library/canonical/layouts/*/layout.json）",
+    "composition.storyline": "叙事参考（template-library/canonical/axes/argument 六轴之一）",
+    "composition.density": "low | low-medium | balanced | high",
+    "fallbacks.style": "主风格缺失/被否定时的降级链（末位为内置 11 之一）"
+  },
+  "presets": [
+    {
+      "id": "board-review",
+      "name_zh": "董事会汇报",
+      "match_signals": {"genre": ["董事会", "经营汇报", "季度汇报", "决算"]},
+      "composition": {
+        "style": "CEO高级商务风",
+        "layouts": ["P1", "P32", "P20", "P35", "P8", "P9"],
+        "storyline": "结论先行金字塔",
+        "density": "balanced"
+      },
+      "fallbacks": {"style": ["成果汇报风", "清爽专业风"]}
+    },
+    {
+      "id": "thesis-defense",
+      "name_zh": "学术答辩",
+      "match_signals": {"genre": ["答辩", "开题", "结题", "中期检查"]},
+      "composition": {
+        "style": "学术论文答辩风",
+        "layouts": ["P1", "P32", "P25", "P7", "P26", "P9"],
+        "storyline": "学术五拍",
+        "density": "balanced"
+      },
+      "fallbacks": {"style": ["科研答辩风", "清爽专业风"]}
+    },
+    {
+      "id": "investor-pitch",
+      "name_zh": "融资路演",
+      "match_signals": {"genre": ["路演", "融资", "BP", "商业计划", "大赛"]},
+      "composition": {
+        "style": "商业计划书风",
+        "layouts": ["P1", "P18", "P17", "P6", "P8", "P9"],
+        "storyline": "故事弧",
+        "density": "low-medium"
+      },
+      "fallbacks": {"style": ["稳重商务风", "清爽专业风"]}
+    },
+    {
+      "id": "lab-briefing",
+      "name_zh": "组会简报",
+      "match_signals": {"genre": ["组会", "实验室", "课题进展"]},
+      "composition": {
+        "style": "科研答辩风",
+        "layouts": ["P1", "P2", "P21", "P25", "P3"],
+        "storyline": "学术五拍",
+        "density": "high"
+      },
+      "fallbacks": {"style": ["电子墨水杂志风", "清爽专业风"]}
+    },
+    {
+      "id": "courseware",
+      "name_zh": "课件",
+      "match_signals": {"genre": ["课件", "公开课", "讲义", "教案", "培训"]},
+      "composition": {
+        "style": "教学课件风",
+        "layouts": ["P1", "P32", "P27", "P5", "P28", "P29"],
+        "storyline": "教学分解",
+        "density": "balanced"
+      },
+      "fallbacks": {"style": ["手绘白板风", "清爽专业风"]}
+    },
+    {
+      "id": "project-retro",
+      "name_zh": "项目复盘",
+      "match_signals": {"genre": ["复盘", "经验沉淀", "改进项目"]},
+      "composition": {
+        "style": "培训课件风",
+        "layouts": ["P1", "P14", "P20", "P8", "P5", "P9"],
+        "storyline": "中性简报",
+        "density": "balanced"
+      },
+      "fallbacks": {"style": ["手绘白板风", "清爽专业风"]}
+    },
+    {
+      "id": "product-launch",
+      "name_zh": "产品发布",
+      "match_signals": {"genre": ["发布会", "新品", "上市", "品牌发布"]},
+      "composition": {
+        "style": "产品发布会风",
+        "layouts": ["P1", "P3", "P22", "P18", "P34", "P9"],
+        "storyline": "视觉展示",
+        "density": "low"
+      },
+      "fallbacks": {"style": ["暗黑科技风", "清爽专业风"]}
+    },
+    {
+      "id": "annual-review",
+      "name_zh": "年终述职",
+      "match_signals": {"genre": ["年终总结", "述职", "晋升"]},
+      "composition": {
+        "style": "成果汇报风",
+        "layouts": ["P1", "P32", "P6", "P11", "P35", "P9"],
+        "storyline": "结论先行金字塔",
+        "density": "balanced"
+      },
+      "fallbacks": {"style": ["商务几何风", "清爽专业风"]}
+    }
+  ]
+}

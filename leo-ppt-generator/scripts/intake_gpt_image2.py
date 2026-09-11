@@ -8,11 +8,11 @@ initial 10 + featured 22 + xiamulingzi 单页参考池 233）转换为 leo 风�
 - initial/featured 32 套完整套：md 提示词内 HEX 正则抽取 → color_palette、
   【禁止】清单 → negative_prompt、适用场景 → best_for、同名 .layouts.json
   版式摘要 → layout_patterns，经四重去重后净新增 12 个主风格 brief，写入
-  ``references/styles/`` 既有 01/02/03 子目录；
+  ``template-library/reference/sources/retired-styles-tree/styles/`` 既有 01/02/03 子目录；
 - xiamulingzi 233 套单页池：不逐条入库，按确定性调色板规则家族化归并为
   7 个参考池（莫兰迪×3 / 朋克×2 / 科技×2），每池产出 1 个池代表 brief +
   1 份池内清单（登记源 ID / 原名 / 主色板 / 回指），全部写入新目录
-  ``references/styles/14_参考池_gpt-image2/``（不计入 _INDEX 主风格口径，
+  ``template-library/reference/sources/retired-styles-tree/styles/14_参考池_gpt-image2/``（不计入 _INDEX 主风格口径，
   最小破坏计数结构；登记见池目录 00_README.md）。
 
 四重去重纪律（C1 批合同）：
@@ -51,7 +51,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SOURCE_ROOT = Path("/Users/kuang/knowledge/ppt-github/gpt-image2-ppt-skills/styles")
 POOL_DIR_REL = "14_参考池_gpt-image2"
 
@@ -68,7 +68,7 @@ FONT_IDENTITY_RE = re.compile(
 
 # ---------------------------------------------------------------------------
 # Intake decisions for initial + featured (32 = 12 keep + 20 skip).
-# keep fields: name (leo style name), subdir (under references/styles),
+# keep fields: name (leo style name), subdir (under template-library/reference/sources/retired-styles-tree/styles),
 # vd (English visual_direction phrase), pairing (08 图片渲染 mate),
 # font (optional typography identity fallback).
 # ---------------------------------------------------------------------------
@@ -991,7 +991,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--report", action="store_true", help="输出吸收决策报告")
     parser.add_argument("--source", default=str(SOURCE_ROOT), help="源 styles 目录覆盖")
     parser.add_argument("--styles-root", default=str(STYLES_ROOT),
-                        help="目标 references/styles 覆盖")
+                        help="目标 template-library/reference/sources/retired-styles-tree/styles 覆盖")
     args = parser.parse_args(argv)
 
     source = Path(args.source).resolve()

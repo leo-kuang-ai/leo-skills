@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "4da14ba3a75e76abecd0d67ed1918d03d0e375c811fff55ef33b4f8ef24305b9",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/timeline-typical.png",
+  "out_sha256": "3a6f9c122f6e99f3c6dae3ea780efb5b9855e5d354e6c9cd056a1149f480b0ba",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1228,
+  "rendered_at": "2026-09-07T19:26:49.876Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "timeline",
+  "template_sha256": "306fa02ef365c1d7d0f57d775cd9488a99c23c19598b203c03e15c0453f52f7f",
+  "warnings": [],
+  "width": 2560
+}

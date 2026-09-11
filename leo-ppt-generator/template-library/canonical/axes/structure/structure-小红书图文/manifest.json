@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:structure-小红书图文",
+  "name": "结构布局：小红书图文（xiaohongshu_post）",
+  "kind": "structure",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

@@ -211,13 +211,55 @@ def gate_receipt(run_dir: Path) -> tuple[dict, list[str]]:
              "target": str(receipt_path)}, warnings)
 
 
+def gate_projection(run_dir: Path) -> tuple[dict, list[str]]:
+    """dashi K7/U7：内容绑定门——页数/页覆盖/收据绑定一致性。"""
+    skill_root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(skill_root / "runtime" / "src"))
+    from leo_ppt_generator.render.receipt import content_binding_summary
+
+    row = {"gate": "projection", "status": "not_run", "detail": None}
+    warnings: list[str] = []
+    pack_path = run_dir / "input" / "page-content-pack.json"
+    if not pack_path.is_file():
+        row["detail"] = "run 无内容包（legacy/非母版流程），本门跳过"
+        return row, warnings
+    try:
+        summary = content_binding_summary(run_dir)
+    except Exception as exc:  # ReceiptError: 输入区绑定文件损坏
+        row["status"] = "failed"
+        row["detail"] = f"content_binding_unreadable: {exc}"
+        return row, warnings
+    page_count = summary.get("page_count")
+    selected = summary.get("selected_layouts") or {}
+    if summary.get("selection_status") not in (None, "complete"):
+        row["status"] = "failed"
+        row["detail"] = f"layout selection status = {summary.get('selection_status')}"
+        return row, warnings
+    page_ids = set(summary.get("page_ids") or [])
+    if selected and page_ids and set(selected) != page_ids:
+        row["status"] = "failed"
+        row["detail"] = (f"selection pages {sorted(set(selected) ^ page_ids)} "
+                         "not matching pack page ids")
+        return row, warnings
+    if selected and page_count is not None and len(selected) != page_count:
+        row["status"] = "failed"
+        row["detail"] = f"selection covers {len(selected)} pages, pack has {page_count}"
+        return row, warnings
+    row["status"] = "passed"
+    row["detail"] = {"page_count": page_count,
+                     "content_digest": summary.get("content_digest"),
+                     "design_digest": summary.get("design_digest"),
+                     "selection_policy": summary.get("selection_policy")}
+    return row, warnings
+
 def build_report(run_dir: Path, master: Path | None, pptx: Path | None) -> dict:
     rows: list[dict] = []
     warnings: list[str] = []
     for builder in (lambda: gate_geometry(pptx),
                     lambda: gate_sources(run_dir),
                     lambda: gate_sensitive(master),
-                    lambda: gate_receipt(run_dir)):
+                    lambda: gate_receipt(run_dir),
+                    lambda: gate_projection(run_dir)):
         row, gate_warnings = builder()
         rows.append(row)
         warnings.extend(gate_warnings)

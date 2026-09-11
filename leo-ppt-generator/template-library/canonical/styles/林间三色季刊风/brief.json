@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:林间三色季刊风",
+  "name": "林间三色季刊风",
+  "aliases": [
+    "Editorial Forest",
+    "editorial-forest",
+    "林间三色季刊",
+    "editorial",
+    "quiet"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/质感专业/林间三色季刊风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业",
+      "质感专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "literary quarterly editorial, deep forest green with dusty rose on oat-cream paper, Source Serif optical-size display up to 220px, mono chrome for kickers captions and axis ticks, Penguin-classics calm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Editorial Forest",
+      "editorial-forest",
+      "林间三色季刊",
+      "editorial",
+      "quiet"
+    ],
+    "best_for": "以深林绿×尘玫瑰×燕麦三色与 Source Serif 光学轴大题,做文学季刊式的季度回顾与内读汇报;适合quarterly review, internal readout, studio update, creative agency deck",
+    "visual_direction": "literary quarterly editorial, deep forest green with dusty rose on oat-cream paper, Source Serif optical-size display up to 220px, mono chrome for kickers captions and axis ticks, Penguin-classics calm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "deep forest green, dusty pink, and warm cream paper; quiet tri-tone that pairs a saturated(主锚 #2e4a2a,mixed 底)",
+      "composition": "文学季刊排版:衬线大题 + mono 铬件 + 三色场",
+      "density": "medium,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#2e4a2a(深林绿主导场)",
+      "secondary": "#e89cb1(尘玫瑰粉辅)",
+      "accent": "#1a1a17(墨黑编号与细线)",
+      "neutral": "#efe7d4(燕麦奶油纸)",
+      "rule": "deep forest green, dusty pink, and warm cream paper; quiet tri-tone that pairs a saturated dark with two soft accents;锚点 #2e4a2a/#e89cb1/#1a1a17/#efe7d4"
+    },
+    "typography": {
+      "title": "Source Serif 4 标题字族;humanist editorial serif with a technical mono for kickers and labels;",
+      "body": "同族常规字重",
+      "labels": "JetBrains Mono 标签/数据字族"
+    },
+    "layout_patterns": [
+      "深林绿 #2E4A2A × 尘玫瑰 #E89CB1 × 燕麦奶油 #EFE7D4 三色季刊锁定",
+      "Source Serif 4 光学尺寸轴大题(封面/数据页可至 220px)",
+      "JetBrains Mono 做编辑铬件:kicker/图注/轴刻度",
+      "文学季刊节奏:一页一散文段 + 单数据锚,安静不急"
+    ],
+    "layout_usage_rule": "深林绿 #2E4A2A × 尘玫瑰 #E89CB1 × 燕麦奶油 #EFE7D4 三色季刊锁定",
+    "negative_prompt": [
+      "Contexts that need to feel urgent, punchy, or sales-driven — the palette and rhythm are intentionally quiet.",
+      "no urgency cues or saturated neon; quiet tri-tone only",
+      "no sans-serif-dominant tech look; the serif leads",
+      "not for urgent, punchy or sales-driven decks"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "Source Serif 4 光学尺寸轴大题(封面/数据页可至 220px)",
+      "avoid": "no urgency cues or saturated neon; quiet tri-tone only; no sans-serif-dominant tech look; the serif leads"
+    },
+    "rendering_constraints": [
+      "林间三色季刊风 follows beautiful-html-templates editorial-forest system; palette anchors locked.",
+      "no urgency cues or saturated neon; quiet tri-tone only",
+      "no sans-serif-dominant tech look; the serif leads",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/editorial-forest/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "林间三色季刊风 follows beautiful-html-templates editorial-forest system; palette anchors locked.",
+      "no urgency cues or saturated neon; quiet tri-tone only",
+      "no sans-serif-dominant tech look; the serif leads",
+      "No invented logos or watermarks."
+    ]
+  }
+}

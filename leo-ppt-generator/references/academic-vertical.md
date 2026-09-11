@@ -4,7 +4,8 @@
 > 组会/文献汇报/学术海报）时读取；用户直接说「学术模式」即等价于声明该场景。
 > 本文档是**既有合同的整合入口**，不新增任何确认门——各环节判据仍归其原文：
 > 合同字段见 `image-deck-workflow.md` 步骤 1、图证据见 `academic-figure-evidence.md`、
-> 论证骨架见 `styles/06_论证模式/学术五拍.md`、风格见 `styles/科研答辩风.md`。
+> 论证骨架见 `template-library/canonical/axes/argument/argument-学术五拍/body.md`、
+> 风格 brief 见 `template-library/canonical/styles/research-defense/brief.json`。
 
 ## 入口判定
 
@@ -21,7 +22,7 @@
    取密集档。交付档案若存有偏好只作预填建议，档位仍须本轮明示。
 2. **大纲**：按 `rst-paging.md` 的 8 关系词表标注分页边界（same-unit 绝不拆页），
    论断式要点规则不变；答辩档建议「研究问题→方法→证据→限制→贡献」的
-   学术五拍骨架（`styles/06_论证模式/学术五拍.md`）。
+   学术五拍骨架（`template-library/canonical/axes/argument/argument-学术五拍/body.md`）。
 3. **母版**：每图绑定图证据行——六种处理模式封闭枚举（preserve/
    overview+detail/split/cross-slide/not-use/request-higher-resolution）+
    figure_id/focus；数字走 Numbers-not-adjectives 与三级标注；公式页用

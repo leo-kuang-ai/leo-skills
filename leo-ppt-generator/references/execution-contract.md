@@ -17,6 +17,15 @@
   pending 重新确认）。`content/` 区别于 backend contract 专用的 `contracts/`
   与用户素材的 `sources/`。正式状态只写 `runs/<run-id>/`，canonical PPTX 只写
   当前 run 的 `final/`。
+- **run 目录规范与全局登记**：run 的正式位置是项目 workspace 内的
+  `<project-root>/runs/<run-id>/`（与 `content/`、`sources/`、`deliveries/`
+  同根自包含，可整体归档）。`leo-ppt run create` 成功后向全局
+  `${LEO_PPT_HOME}/runs-registry.jsonl` 追加一行登记
+  （`run_id`/`route`/`project_root`/`run_dir`/`created_at`，按 run_id 幂等；
+  登记失败只打 WARN 不阻断生成）。控制台「生成任务」Tab 以 home 的
+  `projects/*/runs/*` 布局为主发现源、registry 登记目录为补充（run_dir 内
+  run.json 的 run_id 必须与登记行一致才收编）。run 记录在 backend 合同签署
+  时创建——此前的合同、大纲与风格确认属会话内工作，不落 run。
 - backend contract 由 registry 创建和验证，不手写 capability、credential 或领域状态
   JSON。凭据只允许 `env:`、`host:`、`keychain:` reference。
 - **render-lane deck 合同（加固 WS5）**：全册页产物均为 `render:*` 的 deck 用
@@ -113,6 +122,21 @@ leo-ppt image sample-verify <run> --slides <slides.json> --binding <binding.json
 leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.json> --sources <sources-manifest.json>
 ```
 
+**内容冻结绑定（dashi 集成 K4）**：带稳定身份母版的 generate run 在 prepare
+时追加 `--content-pack <page-content-pack.json>`（可选 `--design
+<resolved-design.json>`）——内容包/冻结设计 CAS 冻结进 `<run>/input/` 并登记
+RunIndex `supplemental_inputs`；prepare 校验内容包 `content_digest`（手改即拒
+`content_pack_invalid`）与 slides 页序对账（`content_pack_page_mismatch`）。
+已 prepare 后内容或设计改版必须**建立新 run**：同 run 再注入不同摘要以
+`*_fingerprint_conflict` 显式拒绝。内容包经 `leo-ppt content pack --master
+<母版> --out <包>` 编译，legacy 母版先 `leo-ppt content stamp-page-ids`
+一次性补齐页身份并重新确认。可编辑目标走 `generate → upgrade
+import-baseline` 两段关联 run：baseline 冻结源交付、页图、notes 与内容/设计
+快照副本（`source_binding`：源 run ID、交付 SHA、内容/设计摘要、目标路线），
+复制校验全部通过才发布；导入后移走源目录不影响目标恢复；同一目标输入漂移
+即 `upgrade_baseline_conflict`。父 generate 成功仅表示前一阶段完成，可编辑
+目标只认 upgrade run 的最终对象与视觉回读证据。
+
 `binding.json` 必须包含 `backend`、`width`、`height`、`generation_method`、
 `style_visual_path`、`layout_binding_path` 六个字段。backend 与冻结 run 合同核对，
 尺寸读实际样张图片；风格填写已投影的视觉规则文件，布局填写实际绑定文件路径，
@@ -121,6 +145,9 @@ leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.jso
 `reports/sample-decision.json` 保存具体图 hash、canonical slides hash、实际风格/布局
 文件 hash、backend 合同与决策来源。`user-confirmed` 表示记录人工选择声明，
 `user-delegated` 表示授权范围内的 Agent 决策；授权文件必须包含真实引用，不得补造。
+按 SKILL.md 协作方式，样张门（🔶 SAMPLE-GATE）默认经用户呈现认可后记
+`user-confirmed`；仅当用户显式豁免样张呈现时记 `user-delegated`，
+`authorization-quote` 须为豁免原话。
 这只是可追溯声明，不是发言人认证，也不能用于设置最终人工验收通过。
 
 新流程必须传 `--sample-binding`。已有收据时即使不传该参数也会在 prepare 与组装前核验；

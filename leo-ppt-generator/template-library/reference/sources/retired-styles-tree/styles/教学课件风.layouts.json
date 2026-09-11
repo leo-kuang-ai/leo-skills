@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "教学课件风",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：教学留白由版式选择承担"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    },
+    {
+      "page_type": "agenda",
+      "preferred": [
+        "P32"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P10",
+        "P23"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P27",
+        "P29",
+        "P11",
+        "P14"
+      ],
+      "discouraged": [
+        "P13"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

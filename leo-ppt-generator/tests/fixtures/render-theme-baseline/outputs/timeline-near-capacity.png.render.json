@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "7fbcc81be03b7a434061351bb2441ec26b37f8ae1438c84be31db990ded928fd",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/timeline-near-capacity.png",
+  "out_sha256": "5115453ae5fc8b47f112f7bfb378ac4db00a1f72ecc93d63ea8229353efde896",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1228,
+  "rendered_at": "2026-09-07T19:26:51.286Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "timeline",
+  "template_sha256": "306fa02ef365c1d7d0f57d775cd9488a99c23c19598b203c03e15c0453f52f7f",
+  "warnings": [],
+  "width": 2560
+}

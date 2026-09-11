@@ -26,14 +26,17 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import ipaddress
 import json
 import os
+import socket
 import sys
 import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 URL_TIMEOUT_SECONDS = 10
 SLOW_WARN_SECONDS = 5
@@ -140,23 +143,26 @@ def check_local(ref: str, expected_sha: str | None, roots: list[Path]) -> dict:
 
 
 def check_url(ref: str) -> dict:
+    target_issue = _unsafe_url_target(ref)
+    if target_issue:
+        return _url_fail(ref, target_issue)
     started = time.monotonic()
     request = urllib.request.Request(ref, method="HEAD")
     request.add_header("User-Agent", "leo-ppt-generator/validate-assets")
     try:
-        with urllib.request.urlopen(request, timeout=URL_TIMEOUT_SECONDS) as response:
-            status_code = response.status
-            final_url = response.geturl()
-            content_type = (response.headers.get("Content-Type") or "").split(";")[0]
+            with urllib.request.urlopen(request, timeout=URL_TIMEOUT_SECONDS) as response:
+                status_code = response.status
+                final_url = response.geturl()
+                content_type = (response.headers.get("Content-Type") or "").split(";")[0]
     except urllib.error.HTTPError as exc:
         if exc.code == 405:  # HEAD 不被支持 → 降级 GET + Range 0-1024
             ranged = urllib.request.Request(ref)
             ranged.add_header("Range", "bytes=0-1024")
             try:
-                with urllib.request.urlopen(ranged, timeout=URL_TIMEOUT_SECONDS) as response:
-                    status_code = response.status
-                    final_url = response.geturl()
-                    content_type = (response.headers.get("Content-Type") or "").split(";")[0]
+                    with urllib.request.urlopen(ranged, timeout=URL_TIMEOUT_SECONDS) as response:
+                        status_code = response.status
+                        final_url = response.geturl()
+                        content_type = (response.headers.get("Content-Type") or "").split(";")[0]
             except urllib.error.HTTPError as inner:
                 return _url_fail(ref, f"HTTP {inner.code}")
             except (urllib.error.URLError, OSError, TimeoutError) as inner:
@@ -166,6 +172,14 @@ def check_url(ref: str) -> dict:
     except (urllib.error.URLError, OSError, TimeoutError) as exc:
         return _url_fail(ref, f"网络错误：{exc}")
     elapsed = time.monotonic() - started
+    parsed_final = urlsplit(final_url)
+    if parsed_final.scheme.lower() != "https":
+        return _url_fail(ref, f"重定向后的 URL 非 HTTPS：{final_url}")
+    if not parsed_final.netloc:
+        return _url_fail(ref, f"重定向后的 URL 无效：{final_url}")
+    target_issue = _unsafe_url_target(final_url)
+    if target_issue:
+        return _url_fail(ref, f"重定向后的 URL 被拒绝：{target_issue}（{final_url}）")
     if not 200 <= status_code < 400:
         return _url_fail(ref, f"HTTP {status_code}")
     result = {
@@ -185,6 +199,54 @@ def check_url(ref: str) -> dict:
 
 def _url_fail(ref: str, detail: str) -> dict:
     return {"ref": ref, "kind": "url", "status": "unreachable", "detail": detail}
+
+
+def _unsafe_url_target(url: str) -> str | None:
+    """拒绝会把素材探测指向本机/内网的 HTTPS 目标。
+
+    既检查字面量 IP，也检查主机名解析出的地址。解析失败交给
+    ``urlopen`` 报告不可达，避免把 DNS 错误伪装成安全通过；请求库仍可能
+    在 DNS 重绑定场景重新解析，因此最终 URL 会再次执行同一检查。
+    """
+
+    try:
+        parsed = urlsplit(url)
+        host = parsed.hostname
+    except ValueError:
+        return "URL 主机名无效"
+    if parsed.scheme.lower() != "https":
+        return "仅允许 https://"
+    if not host:
+        return "URL 缺少主机名"
+    normalized = host.rstrip(".").lower()
+    if (normalized == "localhost" or normalized.endswith(".localhost")
+            or normalized.endswith(".local") or normalized.endswith(".internal")):
+        return "本机/局域网主机名被拒绝"
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None:
+        if not address.is_global:
+            return "私网/回环/本机 IP 被拒绝"
+        return None
+
+    # Hostnames can resolve to private addresses even when their text looks public.
+    # Resolve all stream addresses and fail closed only when a private target is
+    # confirmed; ordinary DNS failures remain the normal network error path.
+    try:
+        infos = socket.getaddrinfo(host, parsed.port or 443, type=socket.SOCK_STREAM)
+    except (OSError, socket.gaierror):
+        return None
+    for info in infos:
+        resolved_host = info[4][0]
+        try:
+            resolved = ipaddress.ip_address(resolved_host)
+        except ValueError:
+            continue
+        if not resolved.is_global:
+            return f"主机名解析到私网/回环/本机 IP（{resolved_host}）"
+    return None
 
 
 def exit_code(results: list[dict]) -> int:

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p4-04-six-cells-layouts",
+  "name": "Six Cells",
+  "aliases": [
+    "P4"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "cells": {
+      "region": "content",
+      "desc": "对等概念格（图标 + 编号 + 短标题 + 一行描述）",
+      "count_min": 6,
+      "count_max": 6
+    },
+    "cell_title": {
+      "region": "content",
+      "desc": "每格短标题",
+      "max_chars": 7,
+      "chars_per_line": 6,
+      "max_lines": 1
+    },
+    "cell_desc": {
+      "region": "content",
+      "desc": "每格一行描述",
+      "max_chars": 90,
+      "chars_per_line": 25,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "2×3 网格；每格上方 lucide 图标 + 编号 + 短标题 + 一行描述；单元间 hairline 分隔"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/04_Six_Cells.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

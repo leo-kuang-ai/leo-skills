@@ -4,6 +4,8 @@
 
 执行中的确认与等待统一遵守 SKILL.md 的协作方式。委托执行下 Agent 完成可逆工件的
 内部审查并记录 `decision_source: user-delegated` 与依据；共创时按约定里程碑等待。
+视觉方向与样张是 🔶 SAMPLE-GATE 默认人工呈现点：内部质检通过后、逐页派发前必须
+同轮呈用户认可，用户显式豁免呈现时记录豁免原话后按 user-delegated 继续（见步骤 6）。
 不得填写虚假的人工确认或跳过实际质量检查。最小目标和交付范围明确后，先核对低成本
 runtime/worker 能力、已有配置与费用范围，再投入完整母版；不自动增加付费探针，
 Provider 的真实可用性由首张业务样张验证。多页能力不足时保留已完成内容工件并说明阻塞。
@@ -108,7 +110,7 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    仅讲稿或工程备注变化核对 notes/证据投影，无需机械重生图片；可见内容变化更新
    `required_text` 和对应页图，不得凭空把纯文案改动视为零影响。
 3a. **数据密度路由**（母版确认后、视觉方向前）：全 deck 数据点计数并按
-   [`styles/00_索引/图表样式规范.md`](styles/00_索引/图表样式规范.md) 第五节判路——
+   [`../template-library/governance/authoring/index/图表样式规范.md`](../template-library/governance/authoring/index/图表样式规范.md) 第五节判路——
    任一页 ≥6 个数据点或含估算级数值序列,该页改走可编辑/混合路线原生图表;4–5 点可留
    图片式但强制置信度形状语法;≤4 个巨数推荐数字海报页。无论点数，依赖精确几何比较、
    多轴或微小差异、复杂标签，或明确需要编辑/持续更新的图表也走原生图表。
@@ -139,7 +141,9 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    的默认推荐 → 用户回字母锁定、点名风格直行、给参考图"照图做"、或要求浏览三视图
    摘要。指定优先序：显式点名 > 参考图 > 推荐；错配劝阻一次后尊重。
 5. 按 `backend-selection.md` 确认固定 backend。
-6. 默认生成一个代表性样张，按协作方式审查并记录决策。样张锚定**正文页角色**——在"最典型难页"
+6. 默认生成一个代表性样张，内部质检通过后进入 🔶 SAMPLE-GATE：同轮向用户呈现
+   视觉方向归因、样张图与反演三组判读，取得认可后锁定并进入逐页派发；用户显式
+   豁免呈现（原话记录）时按 user-delegated 继续。样张锚定**正文页角色**——在"最典型难页"
    中优先选信息承载最重的一页（正文页的信息密度与图文配比是风格是否成立的
    最强判据）；默认仍恰好 1 张，成本不变。结构页（目录 / 封面）加样为可选：
    agent 提议样张时**同一句内**告知"另出一张目录或封面页样张会多花一张图片
@@ -187,12 +191,13 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    通道获取，来源 URL+抓取时间戳入 manifest，抓不到如实标 unknown 求证（R-05）。
    按执行合同先 `image sample-record` 保存有依据的样张决策；以下 prepare 调用还必须
    带 `--sample-binding <binding.json>`（六字段定义见执行合同），再调用顶层
-   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json>`——
+   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json> [--content-pack <page-content-pack.json>] [--design <resolved-design.json>]`（dashi K4：内容包/冻结设计 CAS 冻结并校验摘要与页序，改版须建新 run，详见 execution-contract.md「内容冻结绑定」）——
    runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
    `contents_sha256` 并入 `prepare_fingerprint`（不带 `--sources` 时 fingerprint 保持
    旧算法，旧 run 恢复兼容）；这一步创建唯一 `image-deck/slide_jobs.json` canonical
    state。vendor prompt 工具只能作为无状态能力被 bridge 调用，不直接拥有 run 真值。
-8. 多页时按 `prompts/slide-worker.md` 派发 worker，并为每次执行使用顶层 run lease。
+8. 多页时按 `prompts/slide-worker.md` 派发 worker（前提：样张门已过——用户认可或
+   显式豁免记录在案），并为每次执行使用顶层 run lease。
    先派发已计划中与样张差异最大的页面，复核对应风险后再展开余页；这是生产顺序，
    不默认新增页、图片调用或用户确认。实际 provider 验证和成本估算随业务样张更新。
    派发前 `python3 scripts/check_worker_brief.py <deck 目录|slides.json>` 过 worker
@@ -203,7 +208,7 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
     图表数据/单位/标签/排序和样张风格继承；任一失败都阻止该页 accepted，其他检查
     通过不能补偿。视觉质检按 [`visual-qa.md`](visual-qa.md) 执行：worker 正向自查 →
     父 Agent 独立复核 → 对抗式审查 → 任一失败打回重做，而非正向打勾。数据页判据
-    按 [`styles/00_索引/图表样式规范.md`](styles/00_索引/图表样式规范.md)（形状授权、
+    按 [`../template-library/governance/authoring/index/图表样式规范.md`](../template-library/governance/authoring/index/图表样式规范.md)（形状授权、
     置信度形状语法、零基线/截断轴）。
 11. 用 `"$LEO_PPT" run status <run> --json` 和 `"$LEO_PPT" image assemble <run>`
     确认全部页 recorded 后组装。缺页不得进入组装。PPTX notes **只承载
@@ -301,7 +306,7 @@ backend 切换需要用户重新确认并使旧 job fingerprint 失效。
   `reuse_friendly=false` 一 deck 一次、P36 至多 2 页；见 `references/deck-master.md`
   强视觉版式合同行与 `references/layout-dispatch.md`）。
 - **数据页披露：** 图片式路线的数据图为 stylized 表现，不承载精确数值标注；真实数值
-  以逐页母版 / direct-editable 版为准（`styles/00_索引/图表样式规范.md` §五、3a 步数据密度
+  以逐页母版 / direct-editable 版为准（`../template-library/governance/authoring/index/图表样式规范.md` §五、3a 步数据密度
   路由）。交付话术含数据页时必须带此披露。
 - **现场验收：** 自动检查只证明确定性合同；真实 provider、PowerPoint 桌面打开、
   投屏可读性与人工审美必须分别实际执行和记录，未执行时写 `not-run`。

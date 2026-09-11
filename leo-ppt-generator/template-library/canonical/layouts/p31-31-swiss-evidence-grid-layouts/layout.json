@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+  "name": "Swiss Evidence Grid",
+  "aliases": [
+    "P31"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "images": {
+      "region": "content",
+      "desc": "证据图格（图 + caption 带）",
+      "count_min": 2,
+      "count_max": 3
+    },
+    "assertion_title": {
+      "region": "content",
+      "desc": "顶部断言标题（把图的关系说成结论）",
+      "max_chars": 10,
+      "chars_per_line": 9,
+      "max_lines": 1
+    },
+    "caption": {
+      "region": "content",
+      "desc": "每格 caption（kicker + 一行说明，字号 ≥16px 双口径）",
+      "max_chars": 90,
+      "chars_per_line": 25,
+      "max_lines": 3
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部断言标题（一行说清 2-3 张图的关系）；下方 2-3 列等宽网格（gap 与版心 gutter 一致）；每格 fit-contain 图 + 底部 caption 带（kicker + 一行说明）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/31_Swiss_Evidence_Grid.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:page-semantics-洞察-展望",
+  "name": "页面语义：洞察·展望（observation）",
+  "kind": "page-semantics",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

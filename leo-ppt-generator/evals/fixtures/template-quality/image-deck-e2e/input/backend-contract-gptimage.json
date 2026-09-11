@@ -1,0 +1,23 @@
+{
+  "backend_kind": "openai-compatible",
+  "capabilities": {
+    "edit": true,
+    "execution_owner": "runtime",
+    "generate": true,
+    "mask": true,
+    "max_reference_images": 16
+  },
+  "credential_ref": "keychain:leo-ppt-generator/openai-compatible",
+  "credential_source": "os-store-reference",
+  "endpoint_origin": "https://fast.qianxing.us.ci",
+  "mode": "generate",
+  "model": "gpt-image-2",
+  "provider": "openai-compatible",
+  "schema_version": 1,
+  "selection": {
+    "config_digest": null,
+    "priority": null,
+    "source": "user-confirmed"
+  },
+  "selection_source": "user-confirmed"
+}

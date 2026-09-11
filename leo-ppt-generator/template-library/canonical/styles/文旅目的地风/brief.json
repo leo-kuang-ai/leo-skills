@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:文旅目的地风",
+  "name": "文旅目的地风",
+  "aliases": [
+    "文旅风",
+    "目的地宣传风",
+    "tourism风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/文旅餐饮/文旅目的地风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "travel destination visual, vivid scenic photography, clean itinerary cards, inviting aspirational, wanderlust appeal, warm local flavor, shareable tour guide"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "文旅风",
+      "目的地宣传风",
+      "tourism风"
+    ],
+    "best_for": "旅游目的地宣传与行程攻略,需要目的地吸引力、清晰行程与文旅种草气质",
+    "visual_direction": "travel destination visual, vivid scenic photography, clean itinerary cards, inviting aspirational, wanderlust appeal, warm local flavor, shareable tour guide",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "bright scenic ground, airy",
+      "composition": "destination hero + itinerary cards",
+      "density": "medium, inviting"
+    },
+    "color_palette": {
+      "primary": "sky blue #38BDF8 / sunset orange #FB923C, white",
+      "secondary": "soft sand #FDE68A, natural green #4ADE80",
+      "accent": "one warm accent (coral #FB7185)",
+      "neutral": "near-black #1F2937, warm gray, white",
+      "rule": "inviting, bright, aspirational; no heavy dark, no clutter"
+    },
+    "typography": {
+      "title": "clear friendly sans (Nunito / 思源黑体), inviting",
+      "body": "readable, light",
+      "labels": "day/place/price tags",
+      "text_quality": "accurate travel info, no invented prices"
+    },
+    "layout_patterns": [
+      "destination hero photo",
+      "day-by-day itinerary",
+      "must-see highlight cards",
+      "practical tips"
+    ],
+    "layout_usage_rule": "Inviting and clear; allure, itinerary, highlights and practical guidance.",
+    "layout_blueprints": [
+      {
+        "name": "目的地页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "目的地主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "卖点",
+              "季节"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "行程页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "Day1",
+              "Day2",
+              "Day3"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "实用贴士"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "scenic photography, itinerary cards, map hints, weather/price tags",
+      "avoid": "clutter, small text, misleading info, heavy graphics"
+    },
+    "rendering_constraints": [
+      "Inviting, aspirational, clear.",
+      "Destination allure + itinerary; practical guidance.",
+      "Accurate travel info; no invented prices or attractions."
+    ],
+    "reference": "GitHub: guizang category-cookbook (旅行) · 文旅风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Inviting, aspirational, clear.",
+      "Destination allure + itinerary; practical guidance.",
+      "Accurate travel info; no invented prices or attractions."
+    ]
+  }
+}

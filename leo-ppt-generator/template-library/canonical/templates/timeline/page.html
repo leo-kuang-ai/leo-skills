@@ -1,0 +1,127 @@
+<!doctype html>
+<!-- leo render lane 模板：timeline（R-28 / P11 横向时间线）
+  槽位语义对齐 12_版式库 11_Horizontal_Timeline sidecar：顶部大标题 /
+  中段 1px hairline 横轴 + 4-7 个均布节点（8x8 直角方块 + 上方编号 +
+  下方步骤名）。steps 接受字符串数组（自动补 01..N 编号）或
+  {no,name} 对象数组。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>timeline</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; }
+  body {
+    font-family: var(--leo-f-family-body, "Noto Sans SC"), "Noto Sans SC", sans-serif;
+    background: var(--leo-c-background, #f7f5f0); color: var(--leo-c-text, #1f2430); position: relative;
+  }
+  .leo-slide { width: 1280px; height: 720px; padding: 76px 96px 64px; display: flex; flex-direction: column; }
+  .title {
+    font-size: var(--leo-f-size-title, 52px); font-weight: 700; color: var(--leo-c-primary, #14213d); line-height: 1.25;
+    padding-bottom: 24px; border-bottom: 3px solid var(--leo-c-border, #d8cfbd); margin-bottom: 60px;
+  }
+  .timeline { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .tl-row { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; }
+  .tl-cell { width: 150px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .tl-no {
+    font-size: var(--leo-f-size-page_no, 22px); color: var(--leo-c-accent, #b08d57); letter-spacing: 0.12em;
+    font-variant-numeric: tabular-nums; font-weight: 700; margin-bottom: 14px;
+  }
+  .tl-node { width: 8px; height: 8px; background: var(--leo-c-primary, #14213d); }
+  .tl-name { font-size: var(--leo-f-size-table_header, 26px); color: var(--leo-c-text, #2c3242); line-height: 1.4; margin-top: 16px; font-weight: 700; }
+  .tl-axis { height: 1px; background: var(--leo-c-primary, #14213d); margin: 4px 0 0; }
+  .page-no { position: absolute; right: 44px; bottom: 30px; font-size: var(--leo-f-size-page_no, 22px); color: var(--leo-c-muted, #8d8578); }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+    animation: none !important; transition: none !important;
+  }
+</style>
+</head>
+<body>
+  <main class="leo-slide" id="leo-slide">
+    <h1 class="title" data-leo-block="title"></h1>
+    <div class="timeline" data-leo-block="timeline">
+      <div class="tl-row" data-leo-block="tl-nos"></div>
+      <div class="tl-axis" data-leo-block="tl-axis"></div>
+      <div class="tl-row" data-leo-block="tl-names"></div>
+    </div>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function applyData(data) {
+    data = data || {};
+    document.querySelector('[data-leo-block="title"]').textContent = data.title || "";
+    var steps = Array.isArray(data.steps) ? data.steps : [];
+    var nosRow = document.querySelector('[data-leo-block="tl-nos"]');
+    var namesRow = document.querySelector('[data-leo-block="tl-names"]');
+    steps.forEach(function (step, i) {
+      var no = typeof step === "object" && step !== null ? String(step.no || pad2(i + 1)) : pad2(i + 1);
+      var name = typeof step === "object" && step !== null ? String(step.name || "") : String(step);
+      var noCell = document.createElement("div");
+      noCell.setAttribute("class", "tl-cell");
+      noCell.setAttribute("data-leo-block-item", "tl-step");
+      var noText = document.createElement("div");
+      noText.setAttribute("class", "tl-no");
+      noText.textContent = no;
+      var node = document.createElement("div");
+      node.setAttribute("class", "tl-node");
+      noCell.appendChild(noText);
+      noCell.appendChild(node);
+      nosRow.appendChild(noCell);
+      var nameCell = document.createElement("div");
+      nameCell.setAttribute("class", "tl-cell");
+      nameCell.setAttribute("data-leo-block-item", "tl-step-name");
+      var nameText = document.createElement("div");
+      nameText.setAttribute("class", "tl-name");
+      nameText.textContent = name;
+      nameCell.appendChild(nameText);
+      namesRow.appendChild(nameCell);
+    });
+    document.querySelector('[data-leo-block="page-no"]').textContent =
+      data.page_no != null ? String(data.page_no) : "";
+  }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    var colors = theme.colors || {};
+    Object.keys(colors).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(colors[role]));
+    });
+    var fonts = theme.fonts || {};
+    Object.keys(fonts).forEach(function (role) {
+      var def = fonts[role] || {};
+      if (def.family) root.style.setProperty("--leo-f-family-" + role, String(def.family));
+      if (def.weight != null) root.style.setProperty("--leo-f-weight-" + role, String(def.weight));
+      if (def.size != null) root.style.setProperty("--leo-f-size-" + role, def.size + "px");
+      if (def.line_height != null) root.style.setProperty("--leo-f-line-height-" + role, String(def.line_height));
+    });
+    var geometry = theme.geometry || {};
+    // 只消费数值几何（compile_geometry 输出）；column_weights 等数组值
+    // 不是 CSS 变量，由模板自身结构逻辑（colgroup）消费。
+    Object.keys(geometry).forEach(function (key) {
+      if (typeof geometry[key] === "number") {
+        root.style.setProperty("--leo-g-" + key, geometry[key] + "px");
+      }
+    });
+  }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:国风暖阳风",
+  "name": "国风暖阳风",
+  "aliases": [
+    "国风暖阳",
+    "Amber Aurora",
+    "扁豆紫",
+    "蜜陀僧",
+    "国风",
+    "暖紫橙",
+    "黄昏"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/东方意蕴/国风暖阳风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "东方意蕴",
+      "水墨国风"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "chinese-heritage sunset gradient, warm bean-purple fading to honey-ochre glow, poetic healing oriental atmosphere"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "国风暖阳",
+      "Amber Aurora",
+      "扁豆紫",
+      "蜜陀僧",
+      "国风",
+      "暖紫橙",
+      "黄昏"
+    ],
+    "best_for": "暖紫橙渐变的黄昏国风治愈;适合传统文化/疗愈冥想/年度庆典",
+    "visual_direction": "chinese-heritage sunset gradient, warm bean-purple fading to honey-ochre glow, poetic healing oriental atmosphere",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "垂直\"天—云—水\"三段式，紫在上、橙在下",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#9E7059(主色/标题锚)",
+      "secondary": "#EC954E(辅助色)",
+      "accent": "#F4D9B0(强调色)",
+      "neutral": "#FBF3E8(文字与中性锚)",
+      "rule": "锚点 #9E7059, #EC954E, #F4D9B0, #FBF3E8;主色扁豆紫 #9E7059（低饱和暖棕紫）作顶部天空，蜜陀僧 #EC954E（高饱和暖蜜橙）作底部水面与落日"
+    },
+    "typography": {
+      "title": "标题用传统书法变体（行书、楷书变体，如方正清刻本悦宋），笔画流畅带文化底蕴",
+      "body": "正文用现代无衬线平衡，避免过于厚重",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "垂直\"天—云—水\"三段式，紫在上、橙在下",
+      "标题压在紫橙交界处做视觉锚点，正文卡片用半透明米白底浮在画面上",
+      "整体强调意境而非信息密度"
+    ],
+    "layout_usage_rule": "垂直\"天—云—水\"三段式，紫在上、橙在下",
+    "visual_elements": {
+      "allowed": "垂直\"天—云—水\"三段式，紫在上、橙在下",
+      "avoid": "不要冷色（蓝绿紫的冷调紫除外）;不要硬朗几何、锐角;不要商业 KPI 卡片"
+    },
+    "rendering_constraints": [
+      "不要冷色（蓝绿紫的冷调紫除外）",
+      "不要硬朗几何、锐角",
+      "不要商业 KPI 卡片",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要冷色（蓝绿紫的冷调紫除外）",
+      "不要硬朗几何、锐角",
+      "不要商业 KPI 卡片",
+      "不要英文 Heavy Grotesk",
+      "不要塞满画面，保持留白"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/amber-aurora"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要冷色（蓝绿紫的冷调紫除外）",
+      "不要硬朗几何、锐角",
+      "不要商业 KPI 卡片",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

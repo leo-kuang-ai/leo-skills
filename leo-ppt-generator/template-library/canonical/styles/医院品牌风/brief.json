@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:医院品牌风",
+  "name": "医院品牌风",
+  "aliases": [
+    "医院风",
+    "医疗机构风",
+    "hospital brand"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/医院品牌风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "hospital brand aesthetic, trusted-care professional, human warmth with clinical credibility, calm premium identity, reassuring service narrative, community-care resonance"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "医院风",
+      "医疗机构风",
+      "hospital brand"
+    ],
+    "best_for": "医院品牌与科室推广,需要专业信任兼具人文温度",
+    "visual_direction": "hospital brand aesthetic, trusted-care professional, human warmth with clinical credibility, calm premium identity, reassuring service narrative, community-care resonance",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean white / soft teal, welcoming",
+      "composition": "brand + service narrative",
+      "density": "medium, warm-professional"
+    },
+    "color_palette": {
+      "primary": "clinical blue #1E5A8A / teal, white",
+      "secondary": "soft blue #93C5FD, warm gray #9C9484",
+      "accent": "one warm accent #F97316",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "trusted, warm, professional; not cold"
+    },
+    "typography": {
+      "title": "clear reassuring sans (Inter / 思源黑体)",
+      "body": "readable body",
+      "labels": "department/QR tags",
+      "text_quality": "accurate, caring"
+    },
+    "layout_patterns": [
+      "brand trust hero",
+      "specialty & service modules",
+      "patient journey",
+      "facility & quality"
+    ],
+    "layout_usage_rule": "Trust and warmth with clinical credibility; service narrative, reassuring.",
+    "layout_blueprints": [
+      {
+        "name": "医院品牌页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "院徽/主视觉 + 理念"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "定位句",
+              "资质"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "科室页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "科室1",
+              "科室2",
+              "科室3",
+              "科室4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "reassuring imagery, department modules, quality accents, warm-professional",
+      "avoid": "cold clinical, cartoon, stocky, excessive, sensational"
+    },
+    "rendering_constraints": [
+      "Trusted, warm, professional hospital brand.",
+      "Warmth with clinical credibility; reassuring narrative.",
+      "Accurate; no invented rankings or patient claims."
+    ],
+    "reference": "GitHub: 医院品牌 · 公共叙事惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Trusted, warm, professional hospital brand.",
+      "Warmth with clinical credibility; reassuring narrative.",
+      "Accurate; no invented rankings or patient claims."
+    ]
+  }
+}

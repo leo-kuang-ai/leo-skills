@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:investor-pitch",
+  "id": "investor-pitch",
+  "name_zh": "融资路演",
+  "match_signals": {
+    "genre": [
+      "路演",
+      "融资",
+      "BP",
+      "商业计划",
+      "大赛"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:商业计划书风",
+    "layouts": [],
+    "density": "low-medium"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:稳重商务风",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

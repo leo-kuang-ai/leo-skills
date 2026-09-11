@@ -16,7 +16,7 @@ Deck dir: <absolute deck dir>
 Run dir: <absolute run dir>
 Page number: <N>
 Backend (report verbatim): render:html | render:mermaid
-Render template id: <template id from assets/render-templates/, e.g. body-basic>
+Render template id: <template id from template-library/canonical/templates/, e.g. body-basic>
 Slide data JSON: <absolute path; produced by the parent from the confirmed deck
 master; required_text whitelist values must already be final and approved>
 Theme variables source: <deck colors anchor JSON path, or "none — mermaid
@@ -50,7 +50,7 @@ Execution steps (deterministic; no image model involved):
    header, not the CLI arguments). Mismatch → `blocker=render_size_mismatch`.
 
 Forbidden:
-- modifying template files under assets/render-templates/ (report a blocker
+- modifying template files outside template-library/canonical/templates/ (report a blocker
   naming the contract violation instead)
 - presenting the render output as an image-model product: backend_used must be
   reported verbatim as render:html / render:mermaid — never an image provider

@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "8541b3598dd1cc01dcbad0d809c83d6027ac6d0c1dfcf2303ff3e6347fd5267e",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/closing.png",
+  "out_sha256": "0df44ce3eb9a0786ee2d960723acec52ec3ab0a342e66be4aa97326265ca1409",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1240,
+  "rendered_at": "2026-09-08T02:00:41.589Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

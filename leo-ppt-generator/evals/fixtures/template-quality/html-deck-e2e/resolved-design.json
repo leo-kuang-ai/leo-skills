@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "entity": "resolved-design",
+  "selection": {
+    "style": {
+      "asset_id": "builtin:style:finance-navy",
+      "revision": "306c049635e7716d"
+    },
+    "theme": {
+      "asset_id": "builtin:theme:finance-navy-light",
+      "revision": "313cc7d9a5954a09"
+    },
+    "mode": "light",
+    "brand": null,
+    "preset": null,
+    "source_map": {
+      "background": "theme",
+      "surface": "theme",
+      "text": "theme",
+      "primary": "theme",
+      "on_primary": "theme",
+      "muted": "theme",
+      "border": "theme",
+      "accent": "theme",
+      "warn": "theme"
+    }
+  },
+  "effective_theme": {
+    "colors": {
+      "accent": "#0369A1",
+      "background": "#F8FAFC",
+      "border": "#64748B",
+      "muted": "#475569",
+      "on_primary": "#FFFFFF",
+      "primary": "#1E3A8A",
+      "surface": "#FFFFFF",
+      "text": "#1F2430",
+      "warn": "#92400E"
+    },
+    "fonts": {
+      "body": {
+        "family": "Noto Sans SC",
+        "weight": 400,
+        "size": 25,
+        "line_height": 1.5
+      },
+      "kicker": {
+        "family": "Noto Sans SC",
+        "weight": 400,
+        "size": 22,
+        "line_height": 1.4
+      },
+      "page_no": {
+        "family": "Noto Sans SC",
+        "weight": 400,
+        "size": 22,
+        "line_height": 1.2
+      },
+      "table_body": {
+        "family": "Noto Sans SC",
+        "weight": 400,
+        "size": 25,
+        "line_height": 1.5
+      },
+      "table_header": {
+        "family": "Noto Sans SC",
+        "weight": 700,
+        "size": 26,
+        "line_height": 1.3
+      },
+      "title": {
+        "family": "Noto Sans SC",
+        "weight": 700,
+        "size": 46,
+        "line_height": 1.25
+      }
+    },
+    "chart_palette": {
+      "series": [
+        "#1E3A8A",
+        "#0369A1",
+        "#64748B"
+      ],
+      "positive": "#15803D",
+      "negative": "#B4232A"
+    }
+  },
+  "effective_constraints": [
+    {
+      "id": "style:builtin:style:finance-navy:negative:0",
+      "source": "style",
+      "constraint": "禁止无来源数字进入表格"
+    },
+    {
+      "id": "style:builtin:style:finance-navy:negative:1",
+      "source": "style",
+      "constraint": "涨跌不得只用红绿区分（需符号+单位）"
+    },
+    {
+      "id": "style:builtin:style:finance-navy:negative:2",
+      "source": "style",
+      "constraint": "禁止霓虹强调色"
+    },
+    {
+      "id": "layout:builtin:layout:p25-spec-table:note",
+      "source": "layout",
+      "constraint": "几何真值唯一源：列宽/边距/区域在此文件；HTML 不再拥有列宽真值。行数 >8 → 强制 direct-editable 原生表格。"
+    }
+  ],
+  "pages": [
+    {
+      "page_no": 1,
+      "page_role": "cover",
+      "content_ref": "u19-cover",
+      "layout_id": "builtin:layout:cover-basic",
+      "profile_id": "builtin:layout:cover-basic",
+      "template_id": "builtin:template:cover-basic",
+      "slots": {}
+    },
+    {
+      "page_no": 2,
+      "page_role": "content",
+      "content_ref": "u19-content-1",
+      "layout_id": "builtin:layout:body-basic",
+      "profile_id": "builtin:layout:body-basic",
+      "template_id": "builtin:template:body-basic",
+      "slots": {}
+    },
+    {
+      "page_no": 3,
+      "page_role": "data",
+      "content_ref": "u19-data-1",
+      "layout_id": "builtin:layout:p25-spec-table",
+      "profile_id": "builtin:layout:p25-spec-table",
+      "template_id": "builtin:template:spec-table",
+      "slots": {
+        "rows": [
+          [
+            "敞口对照",
+            "行情 vs 敞口",
+            "结构/执行归因"
+          ],
+          [
+            "偏差还原",
+            "事实链",
+            "损失量化口径"
+          ],
+          [
+            "制度修订",
+            "权限与阈值",
+            "委员会批准"
+          ]
+        ],
+        "columns": [
+          "议题",
+          "口径",
+          "产出"
+        ]
+      }
+    },
+    {
+      "page_no": 4,
+      "page_role": "content",
+      "content_ref": "u19-content-2",
+      "layout_id": "builtin:layout:body-basic",
+      "profile_id": "builtin:layout:body-basic",
+      "template_id": "builtin:template:body-basic",
+      "slots": {}
+    },
+    {
+      "page_no": 5,
+      "page_role": "data",
+      "content_ref": "u19-data-2",
+      "layout_id": "builtin:layout:p25-spec-table",
+      "profile_id": "builtin:layout:p25-spec-table",
+      "template_id": "builtin:template:spec-table",
+      "slots": {
+        "rows": [
+          [
+            "触发",
+            "边界条件",
+            "事实链起点"
+          ],
+          [
+            "发现",
+            "监控口径",
+            "当日盘后"
+          ],
+          [
+            "处置",
+            "权限与阈值",
+            "委员会批准"
+          ]
+        ],
+        "columns": [
+          "环节",
+          "口径",
+          "结论"
+        ]
+      }
+    },
+    {
+      "page_no": 6,
+      "page_role": "closing",
+      "content_ref": "u19-closing",
+      "layout_id": "builtin:layout:pull-quote",
+      "profile_id": "builtin:layout:pull-quote",
+      "template_id": "builtin:template:pull-quote",
+      "slots": {}
+    }
+  ],
+  "dependencies": [
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "revision": "b2361b04f36c78b2",
+      "sha256": "1a77e0fdccd0010f860cecc0ed755bba62c4b0f28049b2c90af0d1293b63553e"
+    },
+    {
+      "asset_id": "builtin:layout:cover-basic",
+      "revision": "a06f3098a9be0f47",
+      "sha256": "351b67def0b6a95f32d7d8be92a6b114d942c632e9eafdc09f2fa09d511173f9"
+    },
+    {
+      "asset_id": "builtin:layout:p1-01-cover-layouts",
+      "revision": "76b84eae0bf980c4",
+      "sha256": "51e3eb04d778f21bfab31c7b8ce2e82bebe71fa591171036e9c3d8dbe65da655"
+    },
+    {
+      "asset_id": "builtin:layout:p19-19-four-cards-layouts",
+      "revision": "211dc46dd6a320a4",
+      "sha256": "eccbd5f1b7575e99b28886f2483c4411631bd7630038f7d699d2cc934e38eedb"
+    },
+    {
+      "asset_id": "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+      "revision": "602b7a80e78d5a99",
+      "sha256": "6c892fd8bd8af775910a379995bb4f54c4373e240facc739ad1874098307fc00"
+    },
+    {
+      "asset_id": "builtin:layout:p25-spec-table",
+      "revision": "2ef2330c2ac95b20",
+      "sha256": "9be16557bd28df9bcbefba574039027b85cc0ac2a262132d812d568ae676fa18"
+    },
+    {
+      "asset_id": "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+      "revision": "68ecd8328c451819",
+      "sha256": "f8013284a4fac7b7ef90f490918937989e632914559b318ff1d3d2d3aa9276ba"
+    },
+    {
+      "asset_id": "builtin:layout:p4-04-six-cells-layouts",
+      "revision": "5e79c29f5063d04a",
+      "sha256": "07a8bf4cec3fb1682515c538737881857b9f172955763f5510bc715c1a5122c9"
+    },
+    {
+      "asset_id": "builtin:layout:p6-06-kpi-tower-layouts",
+      "revision": "3a3dab40e7813138",
+      "sha256": "2240a977bb2ab62f49f5caf9da73c07706f0f3a4f1f77fe08048c62df646985a"
+    },
+    {
+      "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+      "revision": "2628dce61279bcdb",
+      "sha256": "24a8b3b28fc19a7f2f7c5e1fd19cf980aa53df95d3676c6eadcd944ba331000b"
+    },
+    {
+      "asset_id": "builtin:layout:pull-quote",
+      "revision": "75c95c99f57409b0",
+      "sha256": "eba8addd2ad544c03228e7172219ac8715a26171fca1a788298cf82cf1826f3d"
+    },
+    {
+      "asset_id": "builtin:template:body-basic",
+      "revision": "d317bfcc0e3676ea",
+      "sha256": "f206caa8e7c6682ae3d8147b36833e3ba11074f0468f475c208050768987cc68"
+    },
+    {
+      "asset_id": "builtin:template:cover-basic",
+      "revision": "50bc6ba9a0e1d873",
+      "sha256": "a0aa64a7f6fd5c445f8aa821e3a0592342a0e15477d0a4b5bc0a5a7990dbfbcf"
+    },
+    {
+      "asset_id": "builtin:template:pull-quote",
+      "revision": "5077b9ecb873b0b1",
+      "sha256": "d860d729882e1387c067aa6eb3930fca816c07a06f6e339a43e7f3ba92df1da4"
+    },
+    {
+      "asset_id": "builtin:template:spec-table",
+      "revision": "737d051d4d5a914a",
+      "sha256": "da9463b99ed00d8f37fe090036e6b2284dfbb30df0838c9a6f8bc5976d43a906"
+    },
+    {
+      "asset_id": "builtin:theme:finance-navy-light",
+      "revision": "313cc7d9a5954a09",
+      "sha256": "79772d87df98735b7e60fc02f673833a8d73ea5396ee06115aee3e3575169684"
+    }
+  ],
+  "compiler": {
+    "name": "leo-ppt-generator/templates.compose_design",
+    "version": "1"
+  },
+  "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+  "capacity_reports": [
+    {
+      "page_no": 3,
+      "slot": "rows",
+      "fits": true,
+      "needed_height": 269.3,
+      "available_height": 470,
+      "row_count": 3,
+      "max_rows_estimate": 5
+    },
+    {
+      "page_no": 5,
+      "slot": "rows",
+      "fits": true,
+      "needed_height": 269.3,
+      "available_height": 470,
+      "row_count": 3,
+      "max_rows_estimate": 5
+    }
+  ]
+}

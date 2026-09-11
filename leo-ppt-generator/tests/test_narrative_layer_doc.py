@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Narrative-methodology layer doc contract tests (S4n intake batch).
 
-Guards the new narrative sub-layer under ``references/styles/06_论证模式``:
+Guards the new narrative sub-layer under ``template-library/reference/sources/retired-styles-tree/styles/06_论证模式``:
 
 - existence: 12 narrative methodology entries + the beat library;
 - beat library structure: 20 whitelisted beats, 12 rhythm signatures,
@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-AXIS_DIR = SKILL_DIR / "references" / "styles" / "06_论证模式"
+AXIS_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "06_论证模式"
 NARRATIVE_DIR = AXIS_DIR / "叙事方法论"
 BEAT_LIB = AXIS_DIR / "叙事拍库.md"
 PRESETS = SKILL_DIR / "references" / "style-presets.md"
@@ -104,9 +104,9 @@ class NarrativeLayerDocTest(unittest.TestCase):
         # style-presets.md narrative field must keep acknowledging the
         # narrative-methodology subclass as a valid storyline value.
         text = PRESETS.read_text(encoding="utf-8")
-        self.assertIn("叙事方法论/", text)
+        self.assertIn("template-library/canonical/axes/argument/", text)
         self.assertIn("正交可叠加", text)
-        self.assertIn("叙事拍库.md", text)
+        self.assertIn("manifest/body 白名单", text)
 
     @staticmethod
     def _section(text: str, heading: str) -> str:

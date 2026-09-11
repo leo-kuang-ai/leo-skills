@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:chart-甘特图",
+  "name": "图表语法：甘特图（Gantt）",
+  "kind": "chart",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

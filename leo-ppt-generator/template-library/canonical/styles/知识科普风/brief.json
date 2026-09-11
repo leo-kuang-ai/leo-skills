@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:知识科普风",
+  "name": "知识科普风",
+  "aliases": [
+    "科普风",
+    "知识普及风",
+    "science风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/教学分享/知识科普风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "popular-science style, engaging simplification, playful diagrams, relatable analogy, accessible curiosity, understandable complex→simple"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "科普风",
+      "知识普及风",
+      "science风"
+    ],
+    "best_for": "知识科普,需要通俗、有趣、图解化,把复杂讲简单",
+    "visual_direction": "popular-science style, engaging simplification, playful diagrams, relatable analogy, accessible curiosity, understandable complex→simple",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "friendly bright ground",
+      "composition": "现象 → 类比 → 原理",
+      "density": "medium, approachable"
+    },
+    "color_palette": {
+      "primary": "bright blue #2563EB / energetic, white",
+      "secondary": "pastel blocks #BFDBFE / #FDE68A",
+      "accent": "one bright accent #34D399",
+      "neutral": "near-black #1F2937, warm gray #9C9484, white",
+      "rule": "friendly, curious, readable; not childish"
+    },
+    "typography": {
+      "title": "friendly rounded sans (Nunito / 站酷圆体)",
+      "body": "plain clear body",
+      "labels": "analogy/label tags",
+      "text_quality": "accurate, jargon-light"
+    },
+    "layout_patterns": [
+      "curiosity hook",
+      "analogy / visual explainer",
+      "principle clear",
+      "takeaway / fun fact"
+    ],
+    "layout_usage_rule": "Make it simple and memorable; analogy and visual explainer, accessible curiosity.",
+    "layout_blueprints": [
+      {
+        "name": "钩子页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "好奇问题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "原理页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "类比图解"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "原理",
+              "举例"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "analogy diagram, fun icon, explainer steps, bright friendly palette",
+      "avoid": "clutter, jargon-heavy, childish, inaccurate"
+    },
+    "rendering_constraints": [
+      "Accessible, engaging, accurate simplification.",
+      "Hook, analogy, principle, takeaway.",
+      "Accurate, jargon-light; no invented facts.",
+      "For nature-science topics, use a clear subject, sparse copy, soft shadow, and generous whitespace with short clean labels. Avoid advertising tone and dense encyclopedia body. (awesome-gpt-image-2 · nature-science-poster)"
+    ],
+    "reference": "GitHub: 知识科普 · 通俗科普惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Accessible, engaging, accurate simplification.",
+      "Hook, analogy, principle, takeaway.",
+      "Accurate, jargon-light; no invented facts.",
+      "For nature-science topics, use a clear subject, sparse copy, soft shadow, and generous whitespace with short clean labels. Avoid advertising tone and dense encyclopedia body. (awesome-gpt-image-2 · nature-science-poster)"
+    ]
+  }
+}

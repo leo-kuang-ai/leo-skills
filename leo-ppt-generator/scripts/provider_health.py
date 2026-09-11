@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import subprocess
 import sys
@@ -41,7 +42,7 @@ PROBE_PROMPT = (
     "Minimal clean 16:9 presentation cover, off-white background, one short "
     "Chinese title text \"渠道探活\", no other text, no watermark."
 )
-# 探活尺寸：渠道矩阵有 max_pixels 时取渠道最大 16:9 合法档，否则 2560x1440。
+# 未登记约束时仅使用默认请求尺寸，不代表远端支持已验证。
 FALLBACK_PROBE_SIZE = "2560x1440"
 
 
@@ -82,6 +83,7 @@ def _level1(channel_id: str) -> dict:
     if channel is None:
         return {"provider": channel_id, "registered": False, "status": "unregistered"}
     compat = channel.param_compat
+    credential = _credential_state(channel_id)
     return {
         "provider": channel_id,
         "registered": True,
@@ -90,31 +92,30 @@ def _level1(channel_id: str) -> dict:
             "rejects": list(compat.rejects),
             "size": dict(compat.size),
         },
-        "credential": _credential_state(channel_id),
-        "status": "ok",
+        "credential": credential,
+        "status": "ok" if (credential.get("in_process_env") or
+                           credential.get("keychain_resolved")) else "credentials_missing",
     }
 
 
-def _probe_size(channel_id: str) -> str:
+def _probe_size(channel_id: str) -> str | None:
     channel = channel_by_name(channel_id)
-    if channel is None or not channel.param_compat.size:
+    if channel is None:
+        return None
+    if not channel.param_compat.size:
         return FALLBACK_PROBE_SIZE
     constraints = dict(channel.param_compat.size)
-    max_pixels = constraints.get("max_pixels")
-    for width in (2560, 2048, 1792, 1536, 1280):
-        height = width * 9 // 16
-        if height % 2:
-            continue
-        edges_ok = (
-            constraints.get("min_edge", 0) <= min(width, height)
-            and max(width, height) <= constraints.get("max_edge", 1 << 30)
-            and width % constraints.get("multiples_of", 1) == 0
-            and height % constraints.get("multiples_of", 1) == 0
-        )
-        pixels_ok = max_pixels is None or width * height <= max_pixels
-        if edges_ok and pixels_ok:
-            return f"{width}x{height}"
-    return FALLBACK_PROBE_SIZE
+    # 精确 16:9 尺寸为 (16k, 9k)；两边均为 m 的倍数等价于 k 为 m 的倍数。
+    step = constraints.get("multiples_of", 1)
+    min_k = max(1, (constraints.get("min_edge", 1) + 8) // 9)
+    min_k = (min_k + step - 1) // step * step
+    max_k = max(160, min_k)
+    if "max_edge" in constraints:
+        max_k = min(max_k, constraints["max_edge"] // 16)
+    if "max_pixels" in constraints:
+        max_k = min(max_k, math.isqrt(constraints["max_pixels"] // 144))
+    k = max_k // step * step
+    return f"{16 * k}x{9 * k}" if k >= min_k else None
 
 
 def _level2(channel_id: str) -> dict:
@@ -125,10 +126,14 @@ def _level2(channel_id: str) -> dict:
         return {"provider": channel_id, "status": "unregistered"}
     compat = channel.param_compat
     env = dict(os.environ)
+    env.pop("LEO_PPT_PARAM_COMPAT", None)
     env["CODEX_PPT_IMAGE_MODEL"] = channel.default_model
     if compat.rejects or compat.size:
         env["LEO_PPT_PARAM_COMPAT"] = compat.as_env_json()
     size = _probe_size(channel_id)
+    if size is None:
+        return {"provider": channel_id, "status": "aspect_ratio_unsupported",
+                "size": None, "constraints": dict(compat.size)}
     result = subprocess.run(
         [_python(), str(VENDOR_IMAGE_GEN), "generate", "--dry-run",
          "--model", channel.default_model, "--size", size,
@@ -163,6 +168,9 @@ def _level3(channel_id: str) -> dict:
     """探活：经 backend contract 走一张最小图（真实费用）。"""
 
     started = time.time()
+    size = _probe_size(channel_id)
+    if size is None:
+        return {"provider": channel_id, "status": "aspect_ratio_unsupported", "size": None}
     with tempfile.TemporaryDirectory(prefix="leo-health-l3-") as tmp:
         contract = Path(tmp) / "backend.json"
         # 经 CLI 创建合同并生成（CLI 路径承载凭据解析与超时语义）。
@@ -190,16 +198,16 @@ def _level3(channel_id: str) -> dict:
         out = Path(tmp) / "probe.png"
         gen = subprocess.run(
             [cli, "upstream", "--backend-contract", str(contract), "--timeout", "300",
-             "codex-ppt", "--", "image", "generate", "--size", _probe_size(channel_id),
+             "codex-ppt", "--", "image", "generate", "--size", size,
              "--prompt-file", str(prompt), "--out", str(out)],
             capture_output=True, text=True, timeout=360,
         )
         elapsed = round(time.time() - started, 1)
         record = {
             "provider": channel_id,
-            "status": "live_ok" if out.is_file() else "live_failed",
+            "status": "live_ok" if gen.returncode == 0 and out.is_file() and out.stat().st_size else "live_failed",
             "reason": _reason_code(gen.stdout),
-            "probe_size": _probe_size(channel_id),
+            "probe_size": size,
             "elapsed_s": elapsed,
             "png_bytes": out.stat().st_size if out.is_file() else 0,
             "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -242,7 +250,10 @@ def main() -> int:
         if level >= 2 and report.get("registered"):
             report["level2"] = _level2(provider)
         if level >= 3 and report.get("registered"):
-            report["level3"] = _level3(provider)
+            if report.get("status") != "ok" or report.get("level2", {}).get("status") != "ok":
+                report["level3"] = {"provider": provider, "status": "prerequisite_failed"}
+            else:
+                report["level3"] = _level3(provider)
         reports.append(report)
 
     failed = any(

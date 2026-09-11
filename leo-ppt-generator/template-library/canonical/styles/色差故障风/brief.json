@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:色差故障风",
+  "name": "色差故障风",
+  "aliases": [
+    "Chromatic Aberration",
+    "CRT 色差",
+    "RGB 分离"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/15_来源_officecli/色差故障风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "CRT chromatic aberration, ultra-dark navy with triple-layer text offset in hot pink and cyan around a white core, ghostly RGB split morphing from tight to maximum spread"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Chromatic Aberration",
+      "CRT 色差",
+      "RGB 分离"
+    ],
+    "best_for": "CRT 色差 RGB 分离的故障美学;适合科技创业/AI 平台/开发者工具",
+    "visual_direction": "CRT chromatic aberration, ultra-dark navy with triple-layer text offset in hot pink and cyan around a white core, ghostly RGB split morphing from tight to maximum spread",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#050814、#0A1030(变体锚)",
+      "composition": "同一文字三层渲染:粉左偏/青右偏/白居中,鬼影式 RGB 分离",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#050814(超暗藏青底)",
+      "secondary": "#00F5E4(青色偏差层)",
+      "accent": "#FF0066(粉色偏差层)",
+      "neutral": "#FFFFFF(白色主文字层)"
+    },
+    "typography": {
+      "title": "Segoe UI Black 68pt 三层叠印(苹方兜底)",
+      "body": "Segoe UI 13-14pt(苹方兜底)",
+      "labels": "Segoe UI 10pt 大写节标签(苹方兜底);统计 18pt"
+    },
+    "layout_patterns": [
+      "同一文字三层渲染:粉 #FF0066 左偏 / 青 #00F5E4 右偏 / 白居中",
+      "偏差距离跨页 morph(0.3cm→1.5cm→4cm→0→纵移→归位)",
+      "鬼影层透明度 0.20-0.45 随扩散降低",
+      "0.10cm 细线青/粉双色极简装饰"
+    ],
+    "layout_usage_rule": "同一文字三层渲染:粉 #FF0066 左偏 / 青 #00F5E4 右偏 / 白居中",
+    "visual_elements": {
+      "allowed": "同一文字三层渲染:粉左偏/青右偏/白居中,鬼影式 RGB 分离",
+      "avoid": "不要亮底——超暗底是霓虹可感的前提; 不要四层以上文字叠印"
+    },
+    "rendering_constraints": [
+      "不要亮底——超暗底是霓虹可感的前提",
+      "不要四层以上文字叠印",
+      "不要装饰图形堆砌——文字即演员",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要亮底——超暗底是霓虹可感的前提",
+      "不要四层以上文字叠印",
+      "不要装饰图形堆砌——文字即演员"
+    ],
+    "paired_illustration": {
+      "family": "dashboard",
+      "density": "core"
+    },
+    "reference": "GitHub: OfficeCLI · skills/morph-ppt/reference/styles/mixed--chromatic-aberration/style.md(MIT)· Futuristic, glitch, cyber",
+    "token_sidecar": "variant-dimension: mixed"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要亮底——超暗底是霓虹可感的前提",
+      "不要四层以上文字叠印",
+      "不要装饰图形堆砌——文字即演员",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

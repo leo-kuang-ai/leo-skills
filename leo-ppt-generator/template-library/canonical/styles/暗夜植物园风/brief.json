@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:暗夜植物园风",
+  "name": "暗夜植物园风",
+  "aliases": [
+    "暗夜植物风",
+    "植物园风",
+    "暗夜植物学",
+    "Dark Botanical"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/暗夜植物园风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "dark botanical elegance, near-black ground with soft blurred gradient shapes in warm gold, blush and terracotta, thin vertical accent lines, italic serif signatures, premium and artistic without illustrations"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "暗夜植物风",
+      "植物园风",
+      "暗夜植物学",
+      "Dark Botanical"
+    ],
+    "best_for": "艺术与品牌故事内容,需要近黑底柔和植物色氛围、无插画纯抽象形的高级叙事",
+    "visual_direction": "dark botanical elegance, near-black ground with soft blurred gradient shapes in warm gold, blush and terracotta, thin vertical accent lines, italic serif signatures, premium and artistic without illustrations",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#0F0F0F 近黑底,角落柔化渐变圆(模糊叠压),中央内容居中",
+      "composition": "居中内容 + 角部抽象柔形 + 细竖线点缀",
+      "density": "low, 展览级留白"
+    },
+    "color_palette": {
+      "primary": "#0F0F0F(近黑底)配 #E8E4DF(暖白文字锚)",
+      "secondary": "#1C1A18(暖炭面板)",
+      "accent": "#D4A574(暖金)与 #C98D7E(陶粉),柔形渐变用",
+      "neutral": "#9A9590(暖灰注释)",
+      "rule": "近黑 + 暖金/陶粉柔形;禁插画与具象植物照片堆砌"
+    },
+    "typography": {
+      "title": "优雅衬线(Cormorant/思源宋体)标题,可带斜体签名式",
+      "body": "IBM Plex Sans/思源黑体细字重正文",
+      "labels": "细竖线旁小注与编号"
+    },
+    "layout_patterns": [
+      "章节页:居中章名 + 角部柔形 + 细竖线",
+      "金句页:一句斜体衬线 + 大留白",
+      "故事页:两栏文字 + 柔形衬底",
+      "收尾页:签名式落款 + 单柔形"
+    ],
+    "layout_usage_rule": "内容居中,柔形只在角部;每页一个氛围落点,不用插画",
+    "visual_elements": {
+      "allowed": "模糊渐变圆、细竖线、斜体衬线、暖色柔形、留白",
+      "avoid": "插画、具象植物摄影堆砌、高饱和撞色、复杂纹样"
+    },
+    "rendering_constraints": [
+      "柔形必须模糊柔化,不出现硬边",
+      "暖金/陶粉低饱和,不刺眼",
+      "衬线文字优雅清晰,不做特效字"
+    ],
+    "negative_prompt": [
+      "不要插画或具象植物照片堆砌",
+      "不要高饱和撞色或复杂纹样",
+      "不要硬边几何色块破坏柔化氛围"
+    ],
+    "reference": "GitHub: frontend-slides-editable · STYLE_PRESETS「Dark Botanical」（MIT,C4 吸收）"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "柔形必须模糊柔化,不出现硬边",
+      "暖金/陶粉低饱和,不刺眼",
+      "衬线文字优雅清晰,不做特效字"
+    ]
+  }
+}

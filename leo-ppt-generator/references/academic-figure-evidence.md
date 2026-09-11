@@ -4,7 +4,7 @@
 > （工作流第 3 步）且材料含图片证据或学术场景时按需读取（与
 > [`deck-master.md`](deck-master.md) 同批）；不得在入口或 Route 判断阶段读取。
 > 分工边界：图怎么「处理与审查」归本规则；图怎么「画」归
-> `styles/00_索引/图表样式规范.md` 与风格库。
+> `../template-library/governance/authoring/index/图表样式规范.md` 与风格库。
 
 ## 1. 选图先于版式
 
@@ -90,7 +90,7 @@ cross-slide → 已有独立面板 → 求高清源 → 弃用（`not-use`），
 
 - 图的**来源三级**（实拍 / 生成-氛围 / 生成-示意，deck-master 视觉行）继续管
   来源等级；本规则管**处理方式与审查状态**；两者同写一行、互不替代。
-- 数据页数值仍按 `styles/00_索引/图表样式规范.md` 的置信度形状语法标注。
+- 数据页数值仍按 `../template-library/governance/authoring/index/图表样式规范.md` 的置信度形状语法标注。
 - 数字类元数据（verified? / as-of）走母版数字登记表，不在图行重复。
 
 ---

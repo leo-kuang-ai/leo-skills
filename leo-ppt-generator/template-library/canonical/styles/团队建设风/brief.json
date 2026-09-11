@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:团队建设风",
+  "name": "团队建设风",
+  "aliases": [
+    "团建风",
+    "团队风",
+    "team building风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/活动典礼/团队建设风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "team-building style, vibrant group-energy, cohesive collaborative, fun-but-branded, activity-driven outlook, warm group spirit"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "团建风",
+      "团队风",
+      "team building风"
+    ],
+    "best_for": "团队建设,需要活泼、凝聚、共创,体现团队氛围",
+    "visual_direction": "team-building style, vibrant group-energy, cohesive collaborative, fun-but-branded, activity-driven outlook, warm group spirit",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "festive warm ground / deep stage",
+      "composition": "celebration: theme → moment → wrap",
+      "density": "low-to-medium, celebratory"
+    },
+    "color_palette": {
+      "primary": "cheerful vibrant tones #F97316, white",
+      "secondary": "warm accents #FBBF24",
+      "accent": "one celebratory accent #EC4899",
+      "neutral": "near-black #1F2937, warm gray #9C9484, white",
+      "rule": "vibrant, warm, energetic; cohesive with brand"
+    },
+    "typography": {
+      "title": "bold friendly sans (Nunito / 思源黑体 Heavy), warm",
+      "body": "short lively body",
+      "labels": "activity tags",
+      "text_quality": "clear, accurate"
+    },
+    "layout_patterns": [
+      "event theme & energy",
+      "activity itinerary",
+      "team moments",
+      "culture & values"
+    ],
+    "layout_usage_rule": "Vibrant group energy; theme, activity, moment, and shared culture.",
+    "layout_blueprints": [
+      {
+        "name": "主题页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "团建主题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "行程页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "安排1",
+              "安排2",
+              "安排3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "vibrant imagery, activity cards, warm icons, celebratory accents",
+      "avoid": "clutter, gloomy, over-serious, off-brand"
+    },
+    "rendering_constraints": [
+      "Vibrant, warm, cohesive group energy.",
+      "Theme, activity, moment, culture.",
+      "Accurate details; no invented claim."
+    ],
+    "reference": "GitHub: 团队建设 · 团建惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Vibrant, warm, cohesive group energy.",
+      "Theme, activity, moment, culture.",
+      "Accurate details; no invented claim."
+    ]
+  }
+}

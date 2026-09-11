@@ -1,0 +1,168 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:全息棱镜科技风",
+  "name": "全息棱镜科技风",
+  "aliases": [
+    "全息科技风",
+    "虹彩科技风",
+    "holo tech"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/全息棱镜科技风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技浅色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "prismatic holographic technology aesthetic, ultra-clean white ground, 3D iridescent crystal accents, fine technical UI lines, thin precision, premium minimal-tech finish, wide advanced typeface"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "全息科技风",
+      "虹彩科技风",
+      "holo tech"
+    ],
+    "best_for": "纯白极净 + 全息虹彩与细线,呈现精密、高端、轻量未来的技术美学",
+    "visual_direction": "prismatic holographic technology aesthetic, ultra-clean white ground, 3D iridescent crystal accents, fine technical UI lines, thin precision, premium minimal-tech finish, wide advanced typeface",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "pure white #FFFFFF, light technical grid",
+      "composition": "crystal-holographic hero + precise zone lines",
+      "density": "low-medium, feather-light precision"
+    },
+    "color_palette": {
+      "primary": "pure white, near-black #111827 type",
+      "secondary": "prismatic holographic pastels #FDE68A/#A7F3D0/#C4B5FD",
+      "accent": "iridescent spectrum glint #B14EED, sparing",
+      "neutral": "#111827, #6B7280, hairline #E5E7EB, white",
+      "rule": "light, premium, precise; avoid heavy dark, avoid muddy saturation"
+    },
+    "typography": {
+      "title": "wide, modern, confident sans-serif (Inter / 思源黑体, extended feel)",
+      "body": "light and airy, precise",
+      "labels": "thin technical microcopy",
+      "text_quality": "exact product/technical terms"
+    },
+    "layout_patterns": [
+      "clean white hero with holographic object",
+      "technical specs with thin callouts",
+      "split product / material detail",
+      "minimal data with one glint"
+    ],
+    "layout_usage_rule": "Feather-light and precise; the holographic crystal is the single hero, everything else is thin and clean.",
+    "layout_blueprints": [
+      {
+        "name": "产品首页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "产品名与定位"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "全息晶体主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "关键规格"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "材质细节页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "材质名"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "细节渲染"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "工艺",
+              "规格"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "iridescent accents, thin technical lines, crystal renders, precise grids, airy white",
+      "avoid": "heavy gradients, cartoon, dense decoration, warm gold-heavy, cluttered"
+    },
+    "rendering_constraints": [
+      "Feels like a top-tier industrial/premium tech visual.",
+      "White ground + a single holographic hero; keep everything light and thin.",
+      "Accurate specs; no invented logos or watermarks."
+    ],
+    "reference": "GitHub: 全息棱镜科技风 · 白底高级科技趋势"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Feels like a top-tier industrial/premium tech visual.",
+      "White ground + a single holographic hero; keep everything light and thin.",
+      "Accurate specs; no invented logos or watermarks."
+    ]
+  }
+}

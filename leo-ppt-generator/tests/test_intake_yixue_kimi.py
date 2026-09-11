@@ -28,7 +28,7 @@ intake = importlib.util.module_from_spec(spec)
 sys.modules["intake_yixue_kimi"] = intake
 spec.loader.exec_module(intake)
 
-MEDICAL_CATEGORY = SKILL_DIR / "references" / "styles" / "02_行业内容域" / "医疗健康"
+MEDICAL_CATEGORY = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "02_行业内容域" / "医疗健康"
 
 
 def _yixue_pack(name: str) -> dict:

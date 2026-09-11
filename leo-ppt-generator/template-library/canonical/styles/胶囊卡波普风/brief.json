@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:胶囊卡波普风",
+  "name": "胶囊卡波普风",
+  "aliases": [
+    "Capsule",
+    "capsule",
+    "胶囊卡波普",
+    "playful",
+    "modern"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/胶囊卡波普风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "波普孟菲斯"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "pill-shaped capsule cards on sun-bleached bone canvas, nine-color candy pastel palette as flat capsule fills, didone serif display paired with geometric sans, soft offset shadows, Memphis-meets-editorial pop"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Capsule",
+      "capsule",
+      "胶囊卡波普",
+      "playful",
+      "modern"
+    ],
+    "best_for": "以全圆角胶囊容器、九色糖果粉彩与硬偏移影,做生活方式与新品发布的 Y2K 轻快卡阵;适合lifestyle brand, creator portfolio, DTC product launch, wellness or beauty pitch",
+    "visual_direction": "pill-shaped capsule cards on sun-bleached bone canvas, nine-color candy pastel palette as flat capsule fills, didone serif display paired with geometric sans, soft offset shadows, Memphis-meets-editorial pop",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm bone background, ink-black structure, and a full pastel-pop palette (coral, lime, lav(主锚 #F5F5F0,light 底)",
+      "composition": "胶囊卡阵 + 糖果色平涂 + 硬偏移影",
+      "density": "medium,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#F5F5F0(暖骨白底)",
+      "secondary": "#E85D4E(珊瑚胶囊主卡)",
+      "accent": "#A06CE8(紫罗兰强调)",
+      "neutral": "#1A1A1A(墨黑描边文字)",
+      "rule": "warm bone background, ink-black structure, and a full pastel-pop palette (coral, lime, lavender, sky, violet, yellow, pe;锚点 #F5F5F0/#E85D4E/#A06CE8/#1A1A1A"
+    },
+    "typography": {
+      "title": "Inter / 思源黑体;Bodoni Moda 源字族",
+      "body": "Space Grotesk 正文字族,行距宽绰",
+      "labels": "小字号同族"
+    },
+    "layout_patterns": [
+      "所有容器 = 全圆角胶囊(9999px 圆角)2px 墨描边 + 6-12px 硬偏移影",
+      "九色糖果粉彩平涂胶囊(珊瑚 #E85D4E/青柠 #C4D94E/薰衣草 #C5B5E0/天蓝 #8BB4F7/紫 #A06CE8/黄 #F2D160/蜜桃 #F5B895/薄荷 #A8E6CF)",
+      "Bodoni Moda 高对比衬线大题 × Space Grotesk 几何无衬线正文",
+      "漂浮装饰胶囊作氛围壁纸,无直角容器"
+    ],
+    "layout_usage_rule": "所有容器 = 全圆角胶囊(9999px 圆角)2px 墨描边 + 6-12px 硬偏移影",
+    "negative_prompt": [
+      "Contexts that require traditional institutional weight — the capsule shapes and pastel pops actively soften authority.",
+      "no sharp-cornered rectangles — every container is a pill",
+      "no muted corporate palette; candy pastels stay saturated",
+      "not for traditional institutional weight"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "九色糖果粉彩平涂胶囊(珊瑚 #E85D4E/青柠 #C4D94E/薰衣草 #C5B5E0/天蓝 #8BB4F7/紫 #A06CE8)、拟声爆字(comic onomatopoeia burst lettering POW/BANG)、动作线(action lines)",
+      "avoid": "no sharp-cornered rectangles — every container is a pill; no muted corporate palette; candy pastels stay saturated"
+    },
+    "rendering_constraints": [
+      "胶囊卡波普风 follows beautiful-html-templates capsule system; palette anchors locked.",
+      "no sharp-cornered rectangles — every container is a pill",
+      "no muted corporate palette; candy pastels stay saturated",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/capsule/(design.md + template.html 快照 2026-09-01,MIT); GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-infographic/references/styles/bold-graphic.md"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "胶囊卡波普风 follows beautiful-html-templates capsule system; palette anchors locked.",
+      "no sharp-cornered rectangles — every container is a pill",
+      "no muted corporate palette; candy pastels stay saturated",
+      "No invented logos or watermarks."
+    ]
+  }
+}

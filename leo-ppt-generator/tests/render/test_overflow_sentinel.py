@@ -74,8 +74,8 @@ class OverflowSentinelTest(browser_test_case()):
             ("body-basic", {"title": "正常正文页",
                             "bullets": ["要点一：短句", "要点二：短句"], "page_no": "01"}),
             ("pull-quote", {"quote": "一句引语。", "source_name": "来源", "source_meta": "2026"}),
-            ("spec-table", {"title": "规格表", "columns": ["列A", "列B"],
-                            "column_align": ["left", "right"], "rows": [["a", "1"], ["b", "2"]],
+            ("spec-table", {"title": "规格表", "columns": ["列A", "列B", "列C"],
+                            "column_align": ["left", "right", "left"], "rows": [["a", "1", "x"], ["b", "2", "y"]],
                             "page_no": "04"}),
             ("timeline", {"title": "时间线", "steps": ["一", "二", "三", "四"], "page_no": "05"}),
             ("compare", {"sides": [{"label": "左", "title": "A", "points": ["x"]},
@@ -87,6 +87,14 @@ class OverflowSentinelTest(browser_test_case()):
                 result = render_page(template, data, out)
                 self.assertEqual(result["overflow_check"], "pass")
                 self.assertTrue(out.exists())
+
+    def test_spec_table_two_columns_are_rejected_by_geometry_contract(self):
+        data = _write_data(self.root, "bad-columns.json", {
+            "title": "规格表", "columns": ["列A", "列B"],
+            "column_align": ["left", "right"], "rows": [["a", "1"]], "page_no": "04"})
+        with self.assertRaises(RenderError) as ctx:
+            render_page("spec-table", data, self.root / "bad-columns.png")
+        self.assertEqual(ctx.exception.reason_code, "layout_profile_invalid")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:lab-briefing",
+  "id": "lab-briefing",
+  "name_zh": "组会简报",
+  "match_signals": {
+    "genre": [
+      "组会",
+      "实验室",
+      "课题进展"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:research-defense",
+    "layouts": [],
+    "density": "high"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:eink-magazine",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

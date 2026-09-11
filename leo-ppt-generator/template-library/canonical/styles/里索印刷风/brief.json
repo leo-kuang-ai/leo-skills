@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:里索印刷风",
+  "name": "里索印刷风",
+  "aliases": [
+    "risograph",
+    "Riso 印刷",
+    "孔版印刷风",
+    "zine 印刷风",
+    "双色油印风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/里索印刷风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "复古潮流"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "two-color risograph halftone print, navy and fluorescent pink on cream paper, grain and slight misregistration, offset-shadow sticker cards and numerals, bold flat illustration, mono chrome eyebrows and footers, indie print zine mood, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "risograph",
+      "Riso 印刷",
+      "孔版印刷风",
+      "zine 印刷风",
+      "双色油印风"
+    ],
+    "best_for": "以双色油墨加藏青中性的孔版印刷语言、半调网点与硬偏移阴影表达独立出版 zine 的个性与温度",
+    "visual_direction": "two-color risograph halftone print, navy and fluorescent pink on cream paper, grain and slight misregistration, offset-shadow sticker cards and numerals, bold flat illustration, mono chrome eyebrows and footers, indie print zine mood, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "cream paper #F3ECD9 with faint grain",
+      "composition": "offset-shadow sticker cards / numbers / headlines, mono chrome margins",
+      "density": "medium, print-tactile"
+    },
+    "color_palette": {
+      "primary": "navy ink #1B2A4A as the neutral text ink",
+      "secondary": "fluorescent pink #FF4D8D, process yellow #F5B301 (the 2 riso inks)",
+      "accent": "fluorescent pink #FF4D8D",
+      "neutral": "cream paper #F3ECD9, muted gray #6B7280",
+      "rule": "hold to the 2 inks + navy neutral — no extra hues; shadows are HARD offsets, never soft"
+    },
+    "typography": {
+      "title": "bold poster sans (Arial Black / 思源黑体 Black), sticker-cut feel",
+      "body": "clean sans (Arial / 思源黑体), navy ink",
+      "labels": "mono chrome for eyebrows / footers / page markers (Consolas / 等宽)",
+      "text_quality": "ink-on-paper crisp, high contrast on cream"
+    },
+    "layout_patterns": [
+      "sticker card: content card with a hard offset duplicate behind it in one ink",
+      "big numeral sticker: oversized riso numeral with offset shadow as section marker",
+      "full-bleed duotone halftone illustration plate + caption in mono chrome",
+      "cover = cream ground + duotone halftone hero + offset-shadow display title"
+    ],
+    "layout_usage_rule": "Two inks plus navy only; every shadow is a hard offset; halftone illustrations carry the personality.",
+    "negative_prompt": [
+      "no soft shadows or drop-shadow blur — offsets are hard duplicates",
+      "no gradients of any kind",
+      "no third accent hue beyond pink / yellow / navy",
+      "no glossy screen-style surfaces or glass panels"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "halftone duotone plates, offset-shadow stickers, mono chrome rules, grain and misregistration",
+      "avoid": "soft shadows, gradients, extra hues, photographic realism"
+    },
+    "rendering_constraints": [
+      "Two-ink riso print look with grain and slight misregistration.",
+      "Offset shadows are hard-edged duplicates, never blurred.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: addsumtech/slides_maker · presets.py risograph"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Two-ink riso print look with grain and slight misregistration.",
+      "Offset shadows are hard-edged duplicates, never blurred.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

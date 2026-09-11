@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:人文史哲风",
+  "name": "人文史哲风",
+  "aliases": [
+    "人文风",
+    "史哲风",
+    "人文古典风",
+    "历史文化风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/教育学术/人文史哲风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "classical humanities editorial, warm paper tones, elegant serif hierarchy, archival textures and timelines, quote slides with generous margins, thoughtful and calm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "人文风",
+      "史哲风",
+      "人文古典风",
+      "历史文化风"
+    ],
+    "best_for": "历史哲学与人文内容,需要古典编辑气质、文本为骨的沉静叙事",
+    "visual_direction": "classical humanities editorial, warm paper tones, elegant serif hierarchy, archival textures and timelines, quote slides with generous margins, thoughtful and calm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F3EBDD 暖纸白底,细版式线,古籍式留白",
+      "composition": "引文 + 论证结构 + 年表/谱系图的编辑排版",
+      "density": "medium, 文本层级分明,不堆砌"
+    },
+    "color_palette": {
+      "primary": "#F3EBDD(暖纸白底)配 #2E2418(墨褐文字锚)",
+      "secondary": "#E2D4BC(沙色面板)",
+      "accent": "#8C6D3F(古铜金主强调),#7A2E2E(朱砂红仅用于批注与重点)",
+      "neutral": "#97897A(灰褐注释)与 #E7DCC8(浅分隔)",
+      "rule": "暖纸底 + 古铜金;朱砂只作批注语义;禁现代荧光与科技渐变"
+    },
+    "typography": {
+      "title": "古典衬线(思源宋体/Garamond)标题,字距讲究",
+      "body": "思源宋体正文,引文用斜体或缩进块",
+      "labels": "年代/学派/人名索引小注(思源黑体)"
+    },
+    "layout_patterns": [
+      "主题封面页:大标题 + 古籍纹样角饰 + 导语",
+      "引文页:一句核心原文 + 出处 + 侧注",
+      "时间线页:朝代/学派年表 + 事件节点",
+      "论证结构页:问题-论据-结论的编辑排版"
+    ],
+    "layout_usage_rule": "文本层级与版式线组织信息;引文优先,装饰克制",
+    "visual_elements": {
+      "allowed": "纸纹底、细规则线、古籍纹样角饰、年表、谱系图、引文块",
+      "avoid": "现代荧光色、科技渐变、卡通插画、密集表格"
+    },
+    "rendering_constraints": [
+      "暖纸底古铜金,朱砂仅批注",
+      "引文出处必须真实可查",
+      "不虚构史料引文与人物画像细节"
+    ],
+    "negative_prompt": [
+      "不要现代荧光色或科技渐变",
+      "不要卡通化历史人物",
+      "不要虚构引文出处与史实"
+    ],
+    "reference": "GitHub: awesome-ppt-skills · theme-style-prompt-library（History/Philosophy,思想级改写）"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "暖纸底古铜金,朱砂仅批注",
+      "引文出处必须真实可查",
+      "不虚构史料引文与人物画像细节"
+    ]
+  }
+}

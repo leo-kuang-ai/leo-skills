@@ -1,0 +1,3198 @@
+{
+  "kind": "deck-style-matrix-report",
+  "schema_version": 1,
+  "rounds": 2,
+  "summary": {
+    "combinations": 18,
+    "hard_pass": 18,
+    "pages": 72
+  },
+  "results": [
+    {
+      "seed": "management-clear",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:management-clear-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/management-clear/cover.png",
+          "sha256": "98a1c5df646b4d2908b914075716f93885671ac267a96a8570def435c35fda0d",
+          "bytes": 74150,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74150 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/management-clear/content.png",
+          "sha256": "35ff7ef1e40171a429241e7003d805c28532a0cf4a5751bfd1e96c3eb769edeb",
+          "bytes": 96455,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "96455 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/management-clear/evidence.png",
+          "sha256": "d3cfad934ee5439f1ca54d92ff77e53945f087bda5e98a8a8ce195b737bb8992",
+          "bytes": 74713,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74713 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/management-clear/closing.png",
+          "sha256": "b70f7edc86f65c5071ea3d81c3aece2997253a7cac6092af0128a2334871de50",
+          "bytes": 89800,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "89800 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "finance-navy",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:finance-navy-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/finance-navy/cover.png",
+          "sha256": "1324a067eda774b33505b63d7cb84d991588858708c8f05e146f6c180494bd6c",
+          "bytes": 81953,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81953 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/finance-navy/content.png",
+          "sha256": "0ae4128f1a4f63849ad3143071a3a1890207f67e9425af58c2d967dca5f517c6",
+          "bytes": 88292,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "88292 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/finance-navy/evidence.png",
+          "sha256": "a197e38ee135253edb9f9baf91cde7a8ff924380cbbc424c9e3830a8fee0963b",
+          "bytes": 87856,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "87856 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/finance-navy/closing.png",
+          "sha256": "461b811bff4ea98039338acd7498238df7439b1360d1037d4faa907f342d5821",
+          "bytes": 80396,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "80396 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "consulting-pyramid",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:consulting-pyramid-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/consulting-pyramid/cover.png",
+          "sha256": "b735ee34a9cce4e7ea412df3f2da667eea8f082bd481af99f45425f8c41b8520",
+          "bytes": 74608,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74608 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/consulting-pyramid/content.png",
+          "sha256": "29c7cab0c40e3b7e3ceee2318708ef1f694d601cab6d87b582a08f3c78dc1f5e",
+          "bytes": 119833,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "119833 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/consulting-pyramid/evidence.png",
+          "sha256": "c4a75fdfa24c7a157a6a9256c00911258d78cfa75c6b992492c33fbad23699cb",
+          "bytes": 92346,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "92346 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/consulting-pyramid/closing.png",
+          "sha256": "0df44ce3eb9a0786ee2d960723acec52ec3ab0a342e66be4aa97326265ca1409",
+          "bytes": 86777,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "86777 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "tech-dark",
+      "round": 1,
+      "mode": "dark",
+      "theme": "builtin:theme:tech-dark-mode",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/tech-dark/cover.png",
+          "sha256": "2d285397b85fd074c3e4b9627473eacd0666de0eb7c112fb203821d6e79a560e",
+          "bytes": 63558,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "63558 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/tech-dark/content.png",
+          "sha256": "6b8ff13d3f1270d737fc65eadcb71a6ecdaad193d076a3a068f7bf60b422f233",
+          "bytes": 112657,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "112657 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/tech-dark/evidence.png",
+          "sha256": "7d4132ec1be57c66ac3acbe5a635bd2abf9c0ce1996ae80321aabf42643ec371",
+          "bytes": 78670,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "78670 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/tech-dark/closing.png",
+          "sha256": "0eac3129180882260208908bca5a84bd5b4dc51eba8d3f377f00a58a2e1b14f0",
+          "bytes": 67252,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "67252 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "gov-red",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:gov-red-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/gov-red/cover.png",
+          "sha256": "a4be11c14ea389890a0a1828b9134b6d4b3f0584559675805c2a1b539ec07734",
+          "bytes": 68575,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "68575 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/gov-red/content.png",
+          "sha256": "7f10989c7838e061691e890e8a6ce1917987fc353820f6427be43424d17fc883",
+          "bytes": 77219,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "77219 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/gov-red/evidence.png",
+          "sha256": "62463a87eb1f09f2fc621a35d83abc51c946ad01dd1d5375f905cf9f972b1661",
+          "bytes": 79769,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "79769 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/gov-red/closing.png",
+          "sha256": "ab3f7400b8e393a3e043aa33bc90b910f3fbc8a841636ae6bea4421cbc4cd4ec",
+          "bytes": 70755,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "70755 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "health-clean",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:health-clean-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/health-clean/cover.png",
+          "sha256": "00836b898d1ed5d05805da9b3b1d0dbd50ed919010da04e8cd2307db5c9765d0",
+          "bytes": 72032,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "72032 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/health-clean/content.png",
+          "sha256": "342f0bc8c0de9abcc5e904f805f1f41b03d60f165ba576a13516ddebf0dbf24d",
+          "bytes": 77172,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "77172 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/health-clean/evidence.png",
+          "sha256": "863816b5ad713efb58a1c1988cc4523b706fa33922cdff0f86ca51151639feec",
+          "bytes": 93032,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "93032 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/health-clean/closing.png",
+          "sha256": "37f3dff8c0b54c1ec64b9d5d8d2bab5b7449639fc659d4a74727571fa033911f",
+          "bytes": 76134,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "76134 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "edu-bright",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:edu-bright-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/edu-bright/cover.png",
+          "sha256": "fa9b351fc4f104bebf51516256bc9edf566a8b37fa9019f9144641c2dbfd1704",
+          "bytes": 66029,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "66029 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/edu-bright/content.png",
+          "sha256": "93bbe51cfec9601740443f0ebd53473483856462cbad4c4c03c960ee0461746a",
+          "bytes": 75331,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75331 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/edu-bright/evidence.png",
+          "sha256": "f90a5b766a0d3cbaf93e41f96b371152ded7647103767445e1265bbe96fe5ec8",
+          "bytes": 75543,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75543 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/edu-bright/closing.png",
+          "sha256": "648974d314135e43e9e4588d40e89c2b3ea71123e6bf05fca406f2d6194683e7",
+          "bytes": 65991,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "65991 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "brand-creative",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:brand-creative-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/brand-creative/cover.png",
+          "sha256": "0e2e96882ac6a62f428f6ecef7a93375aafba742f18aae29ac872d1817e3c0b9",
+          "bytes": 50949,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "50949 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/brand-creative/content.png",
+          "sha256": "0ed23d5db2faf3d6ea50006743113002dd42945e92e548a626a5f100a03d6c7b",
+          "bytes": 73494,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "73494 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/brand-creative/evidence.png",
+          "sha256": "b609fad05100b206d11857648edb8e237759fc7b0a3b8245a843cdec84d88d32",
+          "bytes": 81858,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81858 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/brand-creative/closing.png",
+          "sha256": "43743ab53e9349af1141d06f701b4c62bc3f08dc1b49d26b6d836da514a46f00",
+          "bytes": 61454,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "61454 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "academic-austere",
+      "round": 1,
+      "mode": "light",
+      "theme": "builtin:theme:academic-austere-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/academic-austere/cover.png",
+          "sha256": "3bc8ae36f071cb024ae4b56a2d04edcc668f39880d6bf9cfd3ce1f46f40eecb1",
+          "bytes": 76607,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "76607 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/academic-austere/content.png",
+          "sha256": "ecdea0b3a65ac99a9cf383c79ae55d8fb0fa684b2070be000dac5146229bb511",
+          "bytes": 81036,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81036 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/academic-austere/evidence.png",
+          "sha256": "c79afc22ecf47dcfd676deb745d738ec9be2b2cde6e0133f32db1c6b63605800",
+          "bytes": 75477,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75477 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round1/academic-austere/closing.png",
+          "sha256": "23c172431b4dde789bbf740e046cdf6baca3ed72f2cc874e08287a22e348e93a",
+          "bytes": 69355,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "69355 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "management-clear",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:management-clear-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/cover.png",
+          "sha256": "98a1c5df646b4d2908b914075716f93885671ac267a96a8570def435c35fda0d",
+          "bytes": 74150,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74150 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/content.png",
+          "sha256": "35ff7ef1e40171a429241e7003d805c28532a0cf4a5751bfd1e96c3eb769edeb",
+          "bytes": 96455,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "96455 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/evidence.png",
+          "sha256": "d3cfad934ee5439f1ca54d92ff77e53945f087bda5e98a8a8ce195b737bb8992",
+          "bytes": 74713,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74713 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/closing.png",
+          "sha256": "b70f7edc86f65c5071ea3d81c3aece2997253a7cac6092af0128a2334871de50",
+          "bytes": 89800,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "89800 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(247, 248, 250) expected_bg=(247, 248, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "finance-navy",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:finance-navy-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/finance-navy/cover.png",
+          "sha256": "1324a067eda774b33505b63d7cb84d991588858708c8f05e146f6c180494bd6c",
+          "bytes": 81953,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81953 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/finance-navy/content.png",
+          "sha256": "0ae4128f1a4f63849ad3143071a3a1890207f67e9425af58c2d967dca5f517c6",
+          "bytes": 88292,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "88292 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/finance-navy/evidence.png",
+          "sha256": "a197e38ee135253edb9f9baf91cde7a8ff924380cbbc424c9e3830a8fee0963b",
+          "bytes": 87856,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "87856 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/finance-navy/closing.png",
+          "sha256": "461b811bff4ea98039338acd7498238df7439b1360d1037d4faa907f342d5821",
+          "bytes": 80396,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "80396 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(248, 250, 252) expected_bg=(248, 250, 252) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "consulting-pyramid",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:consulting-pyramid-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/cover.png",
+          "sha256": "b735ee34a9cce4e7ea412df3f2da667eea8f082bd481af99f45425f8c41b8520",
+          "bytes": 74608,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "74608 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/content.png",
+          "sha256": "29c7cab0c40e3b7e3ceee2318708ef1f694d601cab6d87b582a08f3c78dc1f5e",
+          "bytes": 119833,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "119833 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/evidence.png",
+          "sha256": "c4a75fdfa24c7a157a6a9256c00911258d78cfa75c6b992492c33fbad23699cb",
+          "bytes": 92346,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "92346 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/consulting-pyramid/closing.png",
+          "sha256": "0df44ce3eb9a0786ee2d960723acec52ec3ab0a342e66be4aa97326265ca1409",
+          "bytes": 86777,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "86777 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(250, 250, 247) expected_bg=(250, 250, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "tech-dark",
+      "round": 2,
+      "mode": "dark",
+      "theme": "builtin:theme:tech-dark-mode",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/cover.png",
+          "sha256": "2d285397b85fd074c3e4b9627473eacd0666de0eb7c112fb203821d6e79a560e",
+          "bytes": 63558,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "63558 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/content.png",
+          "sha256": "6b8ff13d3f1270d737fc65eadcb71a6ecdaad193d076a3a068f7bf60b422f233",
+          "bytes": 112657,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "112657 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/evidence.png",
+          "sha256": "7d4132ec1be57c66ac3acbe5a635bd2abf9c0ce1996ae80321aabf42643ec371",
+          "bytes": 78670,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "78670 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/tech-dark/closing.png",
+          "sha256": "0eac3129180882260208908bca5a84bd5b4dc51eba8d3f377f00a58a2e1b14f0",
+          "bytes": 67252,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "67252 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(11, 18, 32) expected_bg=(11, 18, 32) mode=dark"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "gov-red",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:gov-red-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/cover.png",
+          "sha256": "a4be11c14ea389890a0a1828b9134b6d4b3f0584559675805c2a1b539ec07734",
+          "bytes": 68575,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "68575 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/content.png",
+          "sha256": "7f10989c7838e061691e890e8a6ce1917987fc353820f6427be43424d17fc883",
+          "bytes": 77219,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "77219 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/evidence.png",
+          "sha256": "62463a87eb1f09f2fc621a35d83abc51c946ad01dd1d5375f905cf9f972b1661",
+          "bytes": 79769,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "79769 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/gov-red/closing.png",
+          "sha256": "ab3f7400b8e393a3e043aa33bc90b910f3fbc8a841636ae6bea4421cbc4cd4ec",
+          "bytes": 70755,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "70755 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(253, 249, 247) expected_bg=(253, 249, 247) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "health-clean",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:health-clean-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/health-clean/cover.png",
+          "sha256": "00836b898d1ed5d05805da9b3b1d0dbd50ed919010da04e8cd2307db5c9765d0",
+          "bytes": 72032,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "72032 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/health-clean/content.png",
+          "sha256": "342f0bc8c0de9abcc5e904f805f1f41b03d60f165ba576a13516ddebf0dbf24d",
+          "bytes": 77172,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "77172 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/health-clean/evidence.png",
+          "sha256": "863816b5ad713efb58a1c1988cc4523b706fa33922cdff0f86ca51151639feec",
+          "bytes": 93032,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "93032 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/health-clean/closing.png",
+          "sha256": "37f3dff8c0b54c1ec64b9d5d8d2bab5b7449639fc659d4a74727571fa033911f",
+          "bytes": 76134,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "76134 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 251, 250) expected_bg=(246, 251, 250) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "edu-bright",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:edu-bright-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/edu-bright/cover.png",
+          "sha256": "fa9b351fc4f104bebf51516256bc9edf566a8b37fa9019f9144641c2dbfd1704",
+          "bytes": 66029,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "66029 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/edu-bright/content.png",
+          "sha256": "93bbe51cfec9601740443f0ebd53473483856462cbad4c4c03c960ee0461746a",
+          "bytes": 75331,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75331 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/edu-bright/evidence.png",
+          "sha256": "f90a5b766a0d3cbaf93e41f96b371152ded7647103767445e1265bbe96fe5ec8",
+          "bytes": 75543,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75543 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/edu-bright/closing.png",
+          "sha256": "648974d314135e43e9e4588d40e89c2b3ea71123e6bf05fca406f2d6194683e7",
+          "bytes": 65991,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "65991 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 251, 242) expected_bg=(255, 251, 242) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "brand-creative",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:brand-creative-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/cover.png",
+          "sha256": "0e2e96882ac6a62f428f6ecef7a93375aafba742f18aae29ac872d1817e3c0b9",
+          "bytes": 50949,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "50949 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/content.png",
+          "sha256": "0ed23d5db2faf3d6ea50006743113002dd42945e92e548a626a5f100a03d6c7b",
+          "bytes": 73494,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "73494 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/evidence.png",
+          "sha256": "b609fad05100b206d11857648edb8e237759fc7b0a3b8245a843cdec84d88d32",
+          "bytes": 81858,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81858 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/brand-creative/closing.png",
+          "sha256": "43743ab53e9349af1141d06f701b4c62bc3f08dc1b49d26b6d836da514a46f00",
+          "bytes": 61454,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "61454 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(246, 243, 238) expected_bg=(246, 243, 238) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    },
+    {
+      "seed": "academic-austere",
+      "round": 2,
+      "mode": "light",
+      "theme": "builtin:theme:academic-austere-light",
+      "pages": [
+        {
+          "role": "cover",
+          "template": "cover-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/cover.png",
+          "sha256": "3bc8ae36f071cb024ae4b56a2d04edcc668f39880d6bf9cfd3ce1f46f40eecb1",
+          "bytes": 76607,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "76607 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "content",
+          "template": "body-basic",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/content.png",
+          "sha256": "ecdea0b3a65ac99a9cf383c79ae55d8fb0fa684b2070be000dac5146229bb511",
+          "bytes": 81036,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "81036 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "evidence",
+          "template": "spec-table",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/evidence.png",
+          "sha256": "c79afc22ecf47dcfd676deb745d738ec9be2b2cde6e0133f32db1c6b63605800",
+          "bytes": 75477,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "75477 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        },
+        {
+          "role": "closing",
+          "template": "pull-quote",
+          "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/closing.png",
+          "sha256": "23c172431b4dde789bbf740e046cdf6baca3ed72f2cc874e08287a22e348e93a",
+          "bytes": 69355,
+          "checks": [
+            {
+              "id": "overflow",
+              "version": "render_page-sentinel",
+              "result": "pass"
+            },
+            {
+              "id": "dimensions",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "blank",
+              "version": "1",
+              "result": "pass",
+              "detail": "69355 bytes"
+            },
+            {
+              "id": "theme_applied",
+              "version": "1",
+              "result": "pass",
+              "detail": "corner=(255, 255, 255) expected_bg=(255, 255, 255) mode=light"
+            },
+            {
+              "id": "ready_signal",
+              "version": "1",
+              "result": "pass"
+            },
+            {
+              "id": "title_nonempty",
+              "version": "1",
+              "result": "pass"
+            }
+          ],
+          "hard_pass": true
+        }
+      ],
+      "hard_pass": true
+    }
+  ]
+}

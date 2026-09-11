@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "手绘白板风",
+  "capacity_factor": {
+    "text": 0.85,
+    "note": "留白/笔迹占位：白板笔迹与手绘装饰让渡约 15% 文本区"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P22"
+      ]
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P10",
+        "P3"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P14",
+        "P17",
+        "P11",
+        "P5"
+      ],
+      "discouraged": [
+        "P21"
+      ]
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

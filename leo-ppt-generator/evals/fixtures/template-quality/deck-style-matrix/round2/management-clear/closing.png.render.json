@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "d56272e21bfe8600c58354cfd4fcd1f5b42af9d7ce4bba373494be04950ce37f",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/management-clear/closing.png",
+  "out_sha256": "b70f7edc86f65c5071ea3d81c3aece2997253a7cac6092af0128a2334871de50",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1250,
+  "rendered_at": "2026-09-08T02:00:31.422Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

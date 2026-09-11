@@ -1,0 +1,419 @@
+{
+  "kind": "template-recommendation-tasks",
+  "schema_version": 1,
+  "plan": "docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md",
+  "frozen_by": "U1 (F6)",
+  "label_source": "maintainer-authored-2026-09-08",
+  "note": "24 题 = 原八方向 × 3 条件。条件覆盖：同行业管理层/专业受众对照（*-a 对）、相同受众低/高密度对照（con-b）、展示环境变化（fin-b / tech-b / gov-b / br-b）。标签见 recommendation-labels.json，不由推荐结果反推。",
+  "directions": ["finance", "consulting", "tech", "gov", "health", "edu", "brand", "academic"],
+  "tasks": [
+    {
+      "task_id": "fin-mgmt-board-report",
+      "direction": "finance",
+      "condition": "audience-management",
+      "pair_id": "fin-a",
+      "description": "银行年度业绩董事会汇报：向董事与非执行董事汇报全年经营成果、风险状况与来年计划，正式会议投屏。",
+      "signals": {
+        "genre": "董事会年报汇报",
+        "domain": ["金融", "银行"],
+        "audience": "董事与非执行董事",
+        "formality": 0.95,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.3},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "fin-pro-quant-review",
+      "direction": "finance",
+      "condition": "audience-professional",
+      "pair_id": "fin-a",
+      "description": "金融市场部风险量化月度评审：量化分析师与风控团队评审 VaR、压力测试与限额执行，高密度数据页为主。",
+      "signals": {
+        "genre": "数据评审月报",
+        "domain": ["金融", "风控", "量化"],
+        "audience": "量化分析师与风控专业团队",
+        "formality": 0.7,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.8},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "fin-env-annual-meeting",
+      "direction": "finance",
+      "condition": "environment-bright-venue",
+      "pair_id": "fin-b",
+      "description": "同一份年度业绩材料改在明亮酒店宴会厅年会大屏向全体股东展示：强环境光、远距离阅读。",
+      "signals": {
+        "genre": "股东年会展示",
+        "domain": ["金融", "银行"],
+        "audience": "全体股东与来宾",
+        "formality": 0.85,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.2},
+        "environment": "bright-large-venue",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "con-mgmt-steering-close",
+      "direction": "consulting",
+      "condition": "audience-management",
+      "pair_id": "con-a",
+      "description": "战略咨询项目结题汇报：向客户 CEO/CFO 汇报战略建议，结论先行金字塔叙事，正式会议室。",
+      "signals": {
+        "genre": "战略结题汇报",
+        "domain": ["咨询", "战略"],
+        "audience": "客户高管层",
+        "formality": 0.9,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.3},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "con-pro-analysis-appendix",
+      "direction": "consulting",
+      "condition": "audience-professional",
+      "pair_id": "con-a",
+      "description": "同一咨询项目的数据分析附录评审：客户分析团队逐项核对矩阵、瀑布与敏感性测算，高密度证据页。",
+      "signals": {
+        "genre": "数据分析评审",
+        "domain": ["咨询", "数据分析"],
+        "audience": "客户分析团队",
+        "formality": 0.7,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.8},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "con-den-workshop",
+      "direction": "consulting",
+      "condition": "density-low-workshop",
+      "pair_id": "con-b",
+      "description": "高管工作坊共识引导版：每页少量大字要点支撑现场讨论，低密度、大字号、留白充分。",
+      "signals": {
+        "genre": "工作坊引导",
+        "domain": ["咨询", "战略"],
+        "audience": "客户高管层",
+        "formality": 0.6,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.1},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "tech-mgmt-investor-pitch",
+      "direction": "tech",
+      "condition": "audience-management",
+      "pair_id": "tech-a",
+      "description": "AI 基础设施公司 C 轮融资路演：面向投资人讲述愿景、进展与壁垒，正式路演厅。",
+      "signals": {
+        "genre": "融资路演",
+        "domain": ["科技", "AI", "大模型"],
+        "audience": "投资机构合伙人",
+        "formality": 0.8,
+        "culture": null,
+        "content_shape": {"density": "low-medium", "data_pages": 0.3},
+        "environment": "roadshow-stage",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "tech-pro-arch-deepdive",
+      "direction": "tech",
+      "condition": "audience-professional",
+      "pair_id": "tech-a",
+      "description": "开发者大会架构深潜：面向工程师讲清系统拓扑、调用链与失败模式，等宽字体与终端美学耐受度高。",
+      "signals": {
+        "genre": "技术大会演讲",
+        "domain": ["开发者", "开源", "AI"],
+        "audience": "专业工程师",
+        "formality": 0.5,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.4},
+        "environment": "conference-screen",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "tech-env-atrium-launch",
+      "direction": "tech",
+      "condition": "environment-bright-venue",
+      "pair_id": "tech-b",
+      "description": "同一产品发布改在明亮的商场中庭公开大屏循环展示：强环境光、路过观众、无人讲解。",
+      "signals": {
+        "genre": "新品发布",
+        "domain": ["科技", "互联网"],
+        "audience": "路过公众与媒体",
+        "formality": 0.6,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.1},
+        "environment": "bright-large-venue",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "gov-mgmt-workreport",
+      "direction": "gov",
+      "condition": "audience-management",
+      "pair_id": "gov-a",
+      "description": "市政府年度工作报告起草汇报：向机关领导汇报报告框架、数据口径与审议安排，庄重正式。",
+      "signals": {
+        "genre": "工作汇报",
+        "domain": ["政务"],
+        "audience": "机关领导",
+        "formality": 0.95,
+        "culture": "政府机关",
+        "content_shape": {"density": "balanced", "data_pages": 0.3},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "gov-pro-open-data-review",
+      "direction": "gov",
+      "condition": "audience-professional",
+      "pair_id": "gov-a",
+      "description": "政务数据开放平台技术评审：信息中心工程师评审目录 schema、接口质量与数据时效，专业受众。",
+      "signals": {
+        "genre": "技术评审",
+        "domain": ["政务", "数据开放"],
+        "audience": "信息中心工程师",
+        "formality": 0.7,
+        "culture": "政府机关",
+        "content_shape": {"density": "high", "data_pages": 0.6},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "gov-env-party-day-screen",
+      "direction": "gov",
+      "condition": "environment-large-screen",
+      "pair_id": "gov-b",
+      "description": "主题党日活动现场大屏：红底庄重、大字号远读，会场后排也能看清标题与誓词。",
+      "signals": {
+        "genre": "主题党日",
+        "domain": ["党建"],
+        "audience": "全体党员",
+        "formality": 0.9,
+        "culture": "党建",
+        "content_shape": {"density": "low", "data_pages": 0.1},
+        "environment": "large-venue-screen",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "med-mgmt-annual-review",
+      "direction": "health",
+      "condition": "audience-management",
+      "pair_id": "med-a",
+      "description": "三甲医院年度运营复盘：向院领导与科室主任汇报医疗质量、运营效率与学科建设。",
+      "signals": {
+        "genre": "年度运营汇报",
+        "domain": ["医疗", "医院"],
+        "audience": "院领导与科室主任",
+        "formality": 0.85,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.4},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "med-pro-trial-review",
+      "direction": "health",
+      "condition": "audience-professional",
+      "pair_id": "med-a",
+      "description": "临床试验方案评审：临床研究团队核对入组标准、终点定义与统计功效，医学统计术语密集。",
+      "signals": {
+        "genre": "方案评审",
+        "domain": ["医疗", "临床"],
+        "audience": "临床研究专业团队",
+        "formality": 0.8,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.7},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "med-pub-patient-education",
+      "direction": "health",
+      "condition": "audience-public",
+      "pair_id": "med-b",
+      "description": "患者健康教育科普讲座：向普通患者与家属讲解慢病管理，低密度、大字号、亲和插画。",
+      "signals": {
+        "genre": "科普讲座",
+        "domain": ["医疗", "健康科普"],
+        "audience": "普通患者与家属",
+        "formality": 0.3,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.1},
+        "environment": "community-hall",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "edu-mgmt-teaching-audit",
+      "direction": "edu",
+      "condition": "audience-management",
+      "pair_id": "edu-a",
+      "description": "高校教务处本科教学评估汇报：向校领导汇报评估指标、整改成效与下一步安排。",
+      "signals": {
+        "genre": "评估汇报",
+        "domain": ["教育", "高校"],
+        "audience": "校领导与评估组",
+        "formality": 0.85,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.4},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "edu-pro-math-open-class",
+      "direction": "edu",
+      "condition": "audience-professional",
+      "pair_id": "edu-a",
+      "description": "中学数学教研组公开课课件：面向数学教师展示推导过程与变式训练，公式与图示密度高。",
+      "signals": {
+        "genre": "公开课课件",
+        "domain": ["教育", "数学"],
+        "audience": "中学数学教师",
+        "formality": 0.6,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.3},
+        "environment": "classroom-screen",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "edu-kids-science-class",
+      "direction": "edu",
+      "condition": "audience-children",
+      "pair_id": "edu-b",
+      "description": "小学三年级科学课课件：面向儿童讲解植物生长，大图、少字、高亲和。",
+      "signals": {
+        "genre": "课堂课件",
+        "domain": ["教育", "小学科学"],
+        "audience": "小学三年级学生",
+        "formality": 0.2,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.05},
+        "environment": "classroom-screen",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "br-mgmt-strategy-review",
+      "direction": "brand",
+      "condition": "audience-management",
+      "pair_id": "br-a",
+      "description": "新消费品牌年度战略复盘：向品牌管理层汇报品牌资产、渠道表现与来年定位，需要品牌质感但不失专业。",
+      "signals": {
+        "genre": "战略复盘",
+        "domain": ["消费品牌", "营销"],
+        "audience": "品牌管理层",
+        "formality": 0.7,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.3},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "br-pro-growth-data-review",
+      "direction": "brand",
+      "condition": "audience-professional",
+      "pair_id": "br-a",
+      "description": "电商大促投放数据复盘：增长团队核对渠道 ROI、转化漏斗与人群资产，高密度投放数据。",
+      "signals": {
+        "genre": "大促复盘",
+        "domain": ["电商", "营销", "数据分析"],
+        "audience": "增长团队专业受众",
+        "formality": 0.6,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.8},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "br-env-popstore-loop",
+      "direction": "brand",
+      "condition": "environment-store-screen",
+      "pair_id": "br-b",
+      "description": "品牌快闪店现场循环大屏：无人讲解、远距离路过观看，需要强视觉冲击与远读大字。",
+      "signals": {
+        "genre": "品牌展示",
+        "domain": ["消费品牌"],
+        "audience": "路过顾客",
+        "formality": 0.4,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.05},
+        "environment": "store-loop-screen",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "ac-mgmt-grant-closeout",
+      "direction": "academic",
+      "condition": "audience-management",
+      "pair_id": "ac-a",
+      "description": "国家自然科学基金结题验收汇报：向基金委评审专家汇报研究内容、成果与经费执行，学术规范严格。",
+      "signals": {
+        "genre": "结题验收",
+        "domain": ["科研", "基金"],
+        "audience": "基金委评审专家",
+        "formality": 0.9,
+        "culture": null,
+        "content_shape": {"density": "balanced", "data_pages": 0.5},
+        "environment": "meeting-room-projector",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "ac-pro-paper-prereview",
+      "direction": "academic",
+      "condition": "audience-professional",
+      "pair_id": "ac-a",
+      "description": "组内论文投稿预审：同门研究者逐图核对数据图、公式与引用格式，图表公式密集。",
+      "signals": {
+        "genre": "论文投稿预审",
+        "domain": ["科研", "学术出版"],
+        "audience": "同方向研究者",
+        "formality": 0.7,
+        "culture": null,
+        "content_shape": {"density": "high", "data_pages": 0.7},
+        "environment": "desktop-review",
+        "named_style": null
+      }
+    },
+    {
+      "task_id": "ac-den-undergrad-lecture",
+      "direction": "academic",
+      "condition": "density-low-lecture",
+      "pair_id": "ac-b",
+      "description": "本科通识课讲座版：面向本科生讲清一个大概念，低密度、每页一个想法、少量公式。",
+      "signals": {
+        "genre": "通识课讲座",
+        "domain": ["高校", "教学"],
+        "audience": "本科新生",
+        "formality": 0.4,
+        "culture": null,
+        "content_shape": {"density": "low", "data_pages": 0.1},
+        "environment": "lecture-hall",
+        "named_style": null
+      }
+    }
+  ]
+}

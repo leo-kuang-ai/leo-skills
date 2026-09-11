@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:个人品牌宣言风",
+  "name": "个人品牌宣言风",
+  "aliases": [
+    "个人品牌风",
+    "宣言风",
+    "品牌宣言风",
+    "个人IP风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/个人品牌宣言风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "personal brand manifesto, black-white-grey ground with one signature accent, declaration-scale headline like a manifesto, sub-info arranged like a business card, abstract avatar or personal mark"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "个人品牌风",
+      "宣言风",
+      "品牌宣言风",
+      "个人IP风"
+    ],
+    "best_for": "个人品牌与观点输出内容,需要有态度、有识别度、克制锋利的宣言式叙事",
+    "visual_direction": "personal brand manifesto, black-white-grey ground with one signature accent, declaration-scale headline like a manifesto, sub-info arranged like a business card, abstract avatar or personal mark",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#121212 宣言黑底(或反白),大量留白,细线框",
+      "composition": "一句宣言大字 + 抽象头像/个人符号 + 名片式标签区",
+      "density": "low, 宣言式克制"
+    },
+    "color_palette": {
+      "primary": "#121212(宣言黑底)配 #F7F7F5(米白文字锚)",
+      "secondary": "#2E2E2E(炭灰面板)",
+      "accent": "#D93A2B(签名红单强调,可被个人品牌色替换)",
+      "neutral": "#6E6E6E(中灰注释)与 #E2E2DE(浅分隔)",
+      "rule": "黑白灰 + 唯一签名色;签名色可依个人品牌替换,不multi-accent"
+    },
+    "typography": {
+      "title": "宣言式大标题(思源黑体 Heavy/Archivo),像口号一样短",
+      "body": "副信息像名片:姓名/身份/一句话(思源黑体)",
+      "labels": "个人标签/域名/签名小注(Inter/等宽)"
+    },
+    "layout_patterns": [
+      "宣言页:一句大宣言 + 底部名片式标签行",
+      "关于我页:抽象头像位 + 三行身份说明",
+      "观点页:编号观点 + 细线框",
+      "作品导航页:签名 + 入口列表"
+    ],
+    "layout_usage_rule": "宣言只有一句;名片式副信息贴边,主体留白",
+    "visual_elements": {
+      "allowed": "签名、抽象头像/符号、细线框、标签胶囊、编号",
+      "avoid": "鸡汤海报、明星写真感、过度自拍、装饰花纹"
+    },
+    "rendering_constraints": [
+      "黑白灰 + 唯一签名色",
+      "宣言句短而有立场",
+      "不虚构头衔与合作背书"
+    ],
+    "negative_prompt": [
+      "不要鸡汤海报或写真感",
+      "不要多强调色与装饰花纹",
+      "不要虚构头衔与背书"
+    ],
+    "reference": "file-github: xhs-visual-director-skill · style_system「个人品牌宣言风」（改画幅吸收,C4）"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "黑白灰 + 唯一签名色",
+      "宣言句短而有立场",
+      "不虚构头衔与合作背书"
+    ]
+  }
+}

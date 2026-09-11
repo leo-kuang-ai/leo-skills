@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- cover-pro：咨询级封面（绑 P1）。七条合同：?leo_render=1 禁动画 /
+     data-leo-ready / 数据只读注入 / /leo-fonts/ HTTP / 1280x720 overflow
+     hidden / data-leo-block 锚点 / 块完整落画幅。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>cover-pro</title>
+<style>
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype"); font-weight:400; }
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype"); font-weight:700; }
+  * { margin:0; padding:0; box-sizing:border-box; letter-spacing:0; }
+  html, body, .slide { width:1280px; height:720px; overflow:hidden; }
+  body { position:relative; font-family:var(--leo-f-family-body,"Noto Sans SC"),sans-serif; font-size:var(--leo-f-size-body,25px); line-height:var(--leo-f-line-height-body,1.5); font-weight:var(--leo-f-weight-body,400); color:var(--leo-c-text,#26282B); background:var(--leo-c-background,#FAFAF7); }
+  .slide { position:relative; }
+  [data-leo-region] { position:absolute; min-width:0; min-height:0; }
+  [data-leo-block], [data-leo-block-item] { min-width:0; overflow-wrap:anywhere; }
+  .head { border-bottom:2px solid var(--leo-c-accent,#8A6D3B); }
+  .kicker { color:var(--leo-c-accent,#8A6D3B); font:var(--leo-f-weight-kicker,400) var(--leo-f-size-kicker,22px)/var(--leo-f-line-height-kicker,1.4) var(--leo-f-family-kicker,"Noto Sans SC"),sans-serif; margin-bottom:8px; }
+  .title, .quote { color:var(--leo-c-primary,#31435C); font:var(--leo-f-weight-title,700) var(--leo-f-size-title,46px)/var(--leo-f-line-height-title,1.25) var(--leo-f-family-title,"Noto Sans SC"),sans-serif; }
+  .page-no, .page-no2 { position:absolute; right:24px; bottom:8px; color:var(--leo-c-muted,#5D6672); font:var(--leo-f-weight-page_no,400) var(--leo-f-size-page_no,22px)/var(--leo-f-line-height-page_no,1.2) var(--leo-f-family-page_no,"Noto Sans SC"),sans-serif; }
+  .footnote, .bound, .meta { font-size:var(--leo-f-size-page_no,22px); line-height:1.3; color:var(--leo-c-muted,#5D6672); }
+  .foot, .footer, .bound { border-top:1px solid var(--leo-c-border,#D8DAD3); padding-top:10px; }
+  .bottom { display:flex; align-items:center; gap:var(--leo-g-padding-gap,16px); }
+  .bottom:empty, .kicker:empty, .source:empty { display:none; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after { animation: none !important; transition: none !important; }
+
+  .title-group { display:flex; flex-direction:column; justify-content:center; }
+  .title { max-width:100%; }
+  .rule { width:132px; height:4px; flex:none; background:var(--leo-c-accent,#8A6D3B); margin:26px 0; }
+  .subtitle { color:var(--leo-c-muted,#5D6672); }
+  .arch { display:flex; align-items:center; color:var(--leo-c-primary,#31435C); border-left:4px solid var(--leo-c-accent,#8A6D3B); padding-left:20px; }
+  .footer { display:flex; justify-content:space-between; align-items:flex-start; gap:32px; }
+  .badge { font-size:var(--leo-f-size-page_no,22px); padding:8px 16px; background:var(--leo-c-primary,#31435C); color:var(--leo-c-on_primary,#FFFFFF); }
+  .badge:empty { display:none; }
+  .deco { position:absolute; top:36px; right:96px; display:grid; grid-template-columns:repeat(12,12px); gap:8px; height:12px; }
+  .deco span { border:1px solid var(--leo-c-border,#D8DAD3); }
+  .deco .f { background:var(--leo-c-primary,#31435C); }
+  .deco .a { background:var(--leo-c-accent,#8A6D3B); }
+
+  .title-group { left:var(--leo-g-title_block-x,96px); top:var(--leo-g-title_block-y,100px); width:var(--leo-g-title_block-width,1088px); height:var(--leo-g-title_block-height,310px); }
+  .arch { left:var(--leo-g-arch_band-x,96px); top:var(--leo-g-arch_band-y,460px); width:var(--leo-g-arch_band-width,1088px); height:var(--leo-g-arch_band-height,88px); }
+  .footer { left:var(--leo-g-footer_band-x,96px); top:var(--leo-g-footer_band-y,604px); width:var(--leo-g-footer_band-width,1088px); height:var(--leo-g-footer_band-height,76px); }
+</style>
+</head>
+<body>
+  <main class="slide">
+    <div class="deco" data-leo-block="deco"></div>
+    <section class="title-group" data-leo-region="title_block">
+    <div class="kicker" data-leo-block="kicker"></div>
+    <h1 class="title" data-leo-block="title"></h1>
+    <div class="rule"></div>
+    <div class="subtitle" data-leo-block="subtitle"></div>
+    </section>
+    <div class="arch" data-leo-region="arch_band" data-leo-block="arch"></div>
+    <footer class="footer" data-leo-region="footer_band">
+      <div class="meta" data-leo-block="footer_left"></div>
+      <div class="badge" data-leo-block="footer_right"></div>
+    </footer>
+  </main>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") { document.documentElement.dataset.leoRender = "1"; }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    Object.keys(theme.colors || {}).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(theme.colors[role]));
+    });
+    Object.keys(theme.fonts || {}).forEach(function (role) {
+      var font = theme.fonts[role];
+      ["family", "size", "weight", "line_height"].forEach(function (key) {
+        if (font[key] != null) root.style.setProperty("--leo-f-" + key.replace("_", "-") + "-" + role,
+          String(font[key]) + (key === "size" ? "px" : ""));
+      });
+    });
+    Object.keys(theme.geometry || {}).forEach(function (key) {
+      if (typeof theme.geometry[key] === "number")
+        root.style.setProperty("--leo-g-" + key, theme.geometry[key] + "px");
+    });
+  }
+  function applyData(data) {
+    data = data || {};
+    var set = function (block, text) {
+      var el = document.querySelector('[data-leo-block="' + block + '"]');
+      if (el) el.textContent = text == null ? "" : String(text);
+    };
+    set("kicker", data.kicker); set("title", data.title); set("subtitle", data.subtitle);
+    var arch = document.querySelector('[data-leo-block="arch"]');
+    arch.textContent = data.arch_hint || "";
+    if (!data.arch_hint) arch.style.display = "none";
+    set("footer_left", data.footer_left); set("footer_right", data.footer_right);
+    var deco = document.querySelector('[data-leo-block="deco"]');
+    var filled = typeof data.deco_filled === "number" ? data.deco_filled : 5;
+    for (var i = 0; i < 12; i++) {
+      var s = document.createElement("span");
+      if (i < filled - 2) s.className = "f";
+      else if (i < filled) s.className = "a";
+      deco.appendChild(s);
+    }
+  }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () { document.documentElement.dataset.leoReady = "1"; });
+</script>
+</body>
+</html>

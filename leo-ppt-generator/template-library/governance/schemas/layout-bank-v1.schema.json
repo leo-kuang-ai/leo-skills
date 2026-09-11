@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "layout-bank-v1.schema.json",
+  "title": "leo-ppt-generator 版式库 sidecar（layout-bank-v1）",
+  "description": "兼容查询契约：活动版式真值是 template-library/canonical/layouts/*/layout.json（当前 42 个 profile，其中 P1-P36 为迁移的页级骨架）；风格路由位于 canonical/styles/*/brief.json 的 bindings.layout_routes，只引用不复制。旧 layout-bank-v1 sidecar 仅供迁移审计和历史 fixture，不是活动执行源。语义描述字段五字段封顶 = visual_signature / content_capacity / best_for / avoid_for / reuse_friendly；schema_version / entity / layout_id / name / page_type / max_per_deck 为标识与治理字段，不计入封顶。显式不引入 variation_tags / json_schema / external_image_slots / reuse_reason / summary（上游字段合同只取五字段子集）。content_capacity 的活动数值来自 canonical profile slots；旧 sidecar 的公式校验由 scripts/generate_capacity_draft.py 保留为迁移对账，lint（scripts/lint_layout_grid.py 检查 canonical 与 legacy）守恒恒等式 max_chars == floor(chars_per_line * max_lines * 1.2)。",
+  "oneOf": [
+    { "$ref": "#/definitions/layout" },
+    { "$ref": "#/definitions/styleLayoutBank" }
+  ],
+  "definitions": {
+    "pageType": {
+      "type": "string",
+      "enum": ["cover", "agenda", "section", "content", "data", "closing"]
+    },
+    "countSlot": {
+      "type": "object",
+      "description": "数量型 slot：对齐版式内容Schema 的硬数量约束（如 P4 数量必须=6）",
+      "required": ["desc", "count_min", "count_max"],
+      "properties": {
+        "desc": { "type": "string", "minLength": 1 },
+        "count_min": { "type": "integer", "minimum": 1 },
+        "count_max": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "textSlot": {
+      "type": "object",
+      "description": "文本型 slot：vw 视觉宽度三值（chars_per_line/max_lines/max_chars，单位为 CJK 等效视觉宽度 vw unit），消费方 scripts/check_deck_geometry.py --capacity 与 scripts/suggest_layout.py",
+      "required": ["desc", "chars_per_line", "max_lines", "max_chars"],
+      "properties": {
+        "desc": { "type": "string", "minLength": 1 },
+        "chars_per_line": { "type": "integer", "minimum": 1 },
+        "max_lines": { "type": "integer", "minimum": 1 },
+        "max_chars": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "entity",
+        "layout_id",
+        "name",
+        "page_type",
+        "visual_signature",
+        "content_capacity",
+        "best_for",
+        "avoid_for",
+        "reuse_friendly"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": 1 },
+        "entity": { "const": "layout" },
+        "layout_id": {
+          "type": "string",
+          "pattern": "^P([1-9]|1[0-9]|2[0-9]|3[0-6])$",
+          "description": "与同名 .md 标题 P 码一一对应（lint 检查 A）"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "page_type": { "$ref": "#/definitions/pageType" },
+        "max_per_deck": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "全 deck 出现次数上限（如 P36 = 2）；缺省为 1（仅对 reuse_friendly=false 有意义）"
+        },
+        "visual_signature": {
+          "type": "string",
+          "minLength": 1,
+          "description": "从 .md 骨架行提炼的视觉签名（提示词层语义仍以 .md 为准）"
+        },
+        "content_capacity": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              { "$ref": "#/definitions/countSlot" },
+              { "$ref": "#/definitions/textSlot" }
+            ]
+          }
+        },
+        "best_for": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "avoid_for": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "reuse_friendly": {
+          "type": "boolean",
+          "description": "false = 强视觉锚点版式（P1/P9/P23/P24/P34/P36），一 deck 不超 max_per_deck 次"
+        }
+      }
+    },
+    "styleLayoutBank": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "entity",
+        "style_id",
+        "capacity_factor",
+        "routing"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": 1 },
+        "entity": { "const": "style-layout-bank" },
+        "style_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "与同名风格 brief .md 的 style_name 一致"
+        },
+        "capacity_factor": {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 1.5,
+              "description": "该风格对版式默认文本容量的折减系数（手绘白板/手绘技术解释 0.85 留白笔迹占位；数据仪表盘 1.1 网格更密；其余 1.0）"
+            },
+            "note": {
+              "type": "string",
+              "description": "折减系数归因（三档初值 0.85/1.0/1.1 必须给归因注释）"
+            }
+          }
+        },
+        "routing": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["page_type", "preferred", "discouraged"],
+            "additionalProperties": false,
+            "properties": {
+              "page_type": { "$ref": "#/definitions/pageType" },
+              "preferred": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^P([1-9]|1[0-9]|2[0-9]|3[0-6])$" }
+              },
+              "discouraged": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^P([1-9]|1[0-9]|2[0-9]|3[0-6])$" }
+              }
+            }
+          },
+          "description": "只存版式 id 引用；悬空引用（解析不到 36 版式之一）= lint 检查 B ERROR"
+        }
+      }
+    }
+  }
+}

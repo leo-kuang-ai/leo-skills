@@ -46,21 +46,44 @@
 3. **视觉行**：该页容器清单（卡片/表格/图例条/结论条等），并声明**每个要点落入哪个
    容器**；存在无落位要点或无内容容器即失败。页面用图在此标注**来源三级**
    （实拍 / 生成-氛围 / 生成-示意，规则见通用设计规范图像铁律）。数据页数值按
-   `styles/00_索引/图表样式规范.md` 置信度形状语法标注来源级。
+   `../template-library/governance/authoring/index/图表样式规范.md` 置信度形状语法标注来源级。
    **风格约束摘抄**：`rendering_constraints` / `negative_prompt` /
    `visual_elements` 不在 `style render` 的机器注入键内（注入通道对照见
    [style-library.md](style-library.md)）；组页时须把所选 brief 的
    rendering_constraints 要点与 negative_prompt 词条**摘入该页视觉行**
    （约束一行 + 负面词条随图行或生成提示词携带），否则这些词表不进生图链路。
-   **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
+   **对照结构标记（dashi 集成 K3）**：双栏对照页必须在视觉行区显式声明
+`对照侧: 标签｜标题｜要点；要点`（每侧一行，要点用全角分号分隔）；compare
+类模板按声明数量硬校验（恰 2 侧合法，1/3 侧拒绝），无标记不猜结构——回
+母版补齐标记后重编译。对照侧要点文本须与页面要点行文一致（去「要点 N：」
+标签后逐字匹配），保证必需内容映射可对账。
+
+**表格结构标记（dashi 集成 K6）**：台账/矩阵页在视觉行区显式声明
+`表列: 列1,列2,列3`（一行，逗号分隔）与 `表行: 单元格｜单元格｜单元格`
+（每行一条，全角竖线分隔，单元格数须与列数对齐）；spec-table 类模板按声明
+物化 columns/rows，列数不对齐或只有单侧标记即校验失败，回母版补齐。四类
+高价值任务（指标及基准差异/趋势及事件注释/决策矩阵/流程及责任分工）的承载
+约定与 fixture 见 `tests/fixtures/dashi-integration/`。
+
+**结构数据单行标记（render lane）**：需要 KPI、卡片、时间线或嵌套对照对象时，
+在对应页只写一行 `结构数据: {"字段": ...}` JSON。对象字段必须能在所选模板
+`template.json` 的 `input_fields` 中找到，并与页面标题、表格、对照侧等标记保持
+唯一来源；重复键、非有限数值、未知字段和形状/数量超出声明会阻断编译与直接渲染。
+
+```text
+结构数据: {"kpis":[{"label":"应用","value":"75","unit":"个"},{"label":"CPU","value":"554.5","unit":"核"}],"footnote":"示例数据，须核对来源与期间"}
+```
+
+**版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
    [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
-   `12_版式库/*.layouts.json` sidecar，`"$LEO_PPT" style layouts` 可查）。
+   `template-library/canonical/layouts/*/layout.json`（`layout-profile-v1`）可查，
+   `"$LEO_PPT" style layouts` 返回同一份容量与复用字段）。
    **undecided 页固定呈现格式**：置信度 <0.5 的页在母版中标注
    `第 <页号> 页版式待定：候选 <P码A> 或 <P码B>，理由 <一行>`，在既有母版
    审查节点裁决；委托执行可给出有依据的选择，仍须容量预检和样张验证，不能把低置信度
    推荐当作已经验证。共创时等待用户选择，不新增确认门（CI-5）。
    **强视觉版式一 deck 一次**：P1/P9/P23/P24/P34/P36（`reuse_friendly=false`）
-   全 deck 合计不超 sidecar 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
+   全 deck 合计不超 canonical profile 声明的 `max_per_deck` 上限（P36 为 2，其余 1），
    定稿前跑 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。
    页面用图另按 [academic-figure-evidence.md](academic-figure-evidence.md) 逐图登记
    **图行**：`图[F<N>] 模式:<处理模式> 状态:<审查状态> 焦点:<该图回答的演示问题> |
@@ -79,6 +102,16 @@
 
 页面级元信息置于页首，在既有字段（角色分类、事实来源、衔接、预计用时）之上新增：
 
+- **`page_id`（稳定页身份，dashi 集成 K1）**：页首 `page_id: pg-<8-16 位十六进制>`
+  行是跨 revision 保留的稳定身份，deck 内唯一；插入、删除或换序不得给未变化页
+  重新编号，展示顺序仍由页块顺序（`S<N>`/`附` 标签）表达。身份**一次性写入**
+  （legacy 母版先经 `runtime` `content_pack.propose_page_id_stamping` 提案补齐
+  形成新的合法母版并确认），编译器不在每次运行时重发 ID；部分页携带身份即
+  损坏母版（`check_master_contract` ⑬ FAIL）。`page-content-pack`（
+  `<run>/input/page-content-pack.json`）是母版的单向派生物：绑定母版 revision、
+  SHA256、编译器版本与内容摘要，同输入重编译摘要一致，手改内容包在校验时被拒；
+  修改内容必须回母版。投影、来源 manifest、影响计算与升级 baseline 均使用
+  同一 page_id 映射，文件名中的 slide/page 序号只是产物定位信息。
 - **`argument_role`**：本页在论证模式中的角色（词表按所选模式取,如金字塔的
   结论/论据/数据;与页面角色「开场/问题/证据…」分列,前者管论证,后者管叙事位）。
 - **`beat`**：叙事节拍（情境 / 张力 / 转折 / 回报 / 新常态,兼记「密 / 呼吸」）——
@@ -112,7 +145,7 @@ deck-contract:
 节压缩或并入,各节 Σ建议页数须与内容页数对账（不等即 WARN）。学术场景缺任一
 字段即校验失败;通用 deck 可省略本块（不阻断）。学术场景按请求确定
 交付档位：组会简报（minimal）还是答辩证据密集（dense-defense,见
-`references/styles/科研答辩风.md` 双档）——档位决定要点禅档位上限与版式密度,
+`template-library/canonical/styles/research-defense/brief.json` 双档）——档位决定要点禅档位上限与版式密度,
 无法可靠推断时再问，不得无依据默认取密集档。
 
 ## 数字登记表（数字元数据单源）

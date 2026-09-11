@@ -2,11 +2,12 @@
 
 > **本文件是只读导航图，不是加载合同。** 各 reference 的权威加载时机与顺序以
 > `SKILL.md`「按需读取规则」表为唯一真值；本索引只按功能分组、给一句定位，方便
-> 维护者与 Agent 快速定位，**不重复也不覆盖** SKILL.md 的读取纪律。风格 brief 与
-> 六轴词表在 `styles/` 子目录，入口见 [`style-library.md`](style-library.md) 与
-> [`styles/00_索引/_INDEX.md`](styles/00_索引/_INDEX.md)。
+> 维护者与 Agent 快速定位，**不重复也不覆盖** SKILL.md 的读取纪律。风格实体的
+> 执行期身份索引是 [`template-library/catalog/current.json`](../template-library/catalog/current.json)
+> 指向的 generation `registry.json`；风格轴与治理规则见
+> [`template-library/governance/authoring/index/_INDEX.md`](../template-library/governance/authoring/index/_INDEX.md)。
 >
-> 顶层共 31 份 reference（`.md`）+ `styles/` 子目录。「加载阶段」为概述，精确条件见
+> 顶层共 31 份 reference（`.md`）。「加载阶段」为概述，精确条件见
 > 各文件头部与 SKILL.md。
 
 ## ① 路由与恢复（入口）
@@ -22,7 +23,7 @@
 |---|---|---|
 | [first-use.md](first-use.md) | launcher / setup / Provider 首次准备 | execute + Route 冻结后 |
 | [backend-selection.md](backend-selection.md) | 图片 backend（generate/edit/mask/参考图）声明与选择 | 首次准备与 Provider 状态 / generate 执行 |
-| [provider-catalog.md](provider-catalog.md) | OpenAI 兼容图片渠道目录（官网/取 key/环境变量/模型/新增渠道指引） | 渠道 provider 配置或新增渠道时 |
+| [provider-catalog.md](provider-catalog.md) | 图片渠道目录（15 家：OpenAI 兼容 + Gemini/MiniMax/Ideogram 原生协议；官网/取 key/环境变量/模型/新增渠道指引） | 渠道 provider 配置或新增渠道时 |
 | [execution-contract.md](execution-contract.md) | 跨 Route 的 runtime / 状态 / 恢复 / 交付合同 | 进入对应 Route 后 |
 | [cli-helper.md](cli-helper.md) | 对象级可编辑能力的 CLI 命令手册 | 跨 Route CLI 用法（进入 Route 后） |
 
@@ -49,13 +50,13 @@
 
 > `upgrade-full` / `upgrade-selected` 复用以上 editable references，另加当前 baseline/selection 证据。
 
-## ⑤ 风格资产（styles/ 桥接）
+## ⑤ 风格资产（template-library 桥接）
 
 | 文件 | 定位 | 加载阶段（概述） |
 |---|---|---|
-| [style-library.md](style-library.md) | 风格库入口（按需索引；选定后只读对应单个风格文件） | 确认视觉方向前 |
-| [名称/别名索引](styles/generated/by-name-alias.md) | 可重建的分片入口，共享别名保留全部命中 | 按 SKILL.md 白名单按需读取 |
-| [分类计数](styles/generated/counts.md) | 源资产角色与独立风格的统一口径，不代表视觉已验证 | 库规模查询 |
+| [style-library.md](style-library.md) | 风格库入口（current 指针 → generation registry；选定后才加载实体） | 确认视觉方向前 |
+| [模板目录指针](../template-library/catalog/current.json) | 当前 generation 的唯一指针；由 registry builder 发布 | 执行期索引检查 |
+| [模板库治理入口](../template-library/governance/authoring/index/_INDEX.md) | 六轴词表、设计体系与扩展治理规则 | 维护/治理查询 |
 | [style-continuity.md](style-continuity.md) | 跨页风格继承与原图嵌入合同 | 样张确认后、批量派发前 |
 | [style-presets.md](style-presets.md) | 场景预组合预设（R-67，可选档，默认关） | 启用预设时 |
 | [style-candidates.md](style-candidates.md) | 进货批「不入库」候补登记表（**治理台账，非生成路径 reference**） | 进货复盘 / 治理 |
@@ -84,9 +85,10 @@
 | [marketing-deck-narrative.md](marketing-deck-narrative.md) | 营销 / 销售 / 融资路演内容层叙事参考 | generate 营销/销售/路演类内容 |
 | [social-card-specs.md](social-card-specs.md) | 社交卡片输出规格（小红书 3:4 / 方图 1:1 / 公众号宽图） | 社交卡片输出形态时 |
 
-## styles/（子目录）
+## template-library/（子目录）
 
-风格库本体：六轴正交（视觉风格 / 论证模式 / 图片渲染 / 结构布局 / 品牌身份 / 图表语法）
-+ 页级版式 + 页面语义 + 来源池。规模口径、选风格路由与治理入口见
-[`styles/00_索引/_INDEX.md`](styles/00_索引/_INDEX.md)、[`styles/00_索引/风格路由.md`](styles/00_索引/风格路由.md)、
-[`styles/00_索引/设计体系.md`](styles/00_索引/设计体系.md)。
+模板库本体按 canonical、catalog、governance、reference、library 五区组织；风格
+实体与版式实体的身份、别名、依赖和 revision 由 current 指针指向的 registry 提供。
+六轴词表、页级语义和治理入口见
+[`../template-library/governance/authoring/index/_INDEX.md`](../template-library/governance/authoring/index/_INDEX.md)、[`../template-library/governance/authoring/index/风格路由.md`](../template-library/governance/authoring/index/风格路由.md)、
+[`../template-library/governance/authoring/index/设计体系.md`](../template-library/governance/authoring/index/设计体系.md)。

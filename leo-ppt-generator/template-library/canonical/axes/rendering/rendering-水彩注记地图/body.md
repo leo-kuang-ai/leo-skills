@@ -1,0 +1,29 @@
+# 图片渲染：水彩注记地图（watercolor-map）
+
+**分类:** canonical/axes/rendering · 手绘教育
+
+**配对视觉风格:** —（本批新增渲染,无固定 01 配对;可直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 末节）
+
+**定位:** 米白纸面上的软水彩分区地图——每区以细圆珠笔手写标注,以温度换精密的制图法
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> Soft watercolor washes on off-white paper, regions bleeding into gentle pastel fields, every zone hand-labeled in fine ballpoint-pen script. An artful, tactile take on cartography and territory diagrams that trades cold precision for warmth. Educational and charming — ideal for geographies, segmentations, or any 'map of a space'. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Fine ballpoint-pen annotation script over bleeding wash edges |
+| 纹理 | Off-white paper grain under pastel watercolor fields |
+| 深度 | Flat cartography — zone color density carries hierarchy |
+| 材质 | Watercolor on paper + pen annotation |
+| 情绪 | Artful, tactile, educational, charming |
+
+> 渲染画法不写死 HEX;源卡参考色板 `#7FB2C9 / #F3EDE0 / #4A4A4A / #C98B6B（首色为 accent）` 与信息密度 `medium` 仅作 deck `colors` 锚点缺省时的默认建议。适用场景（源自卡 tags）：地理 / 市场分区 / 领域地图 / 「一张图看空间」页。
+
+## 3. 来源与许可
+
+- 源卡: `nb-watercolor-map` · author: Florian Gallwitz · YouMind Awesome Nano Banana Pro Prompts
+- 案例页: https://x.com/FlorianGallwitz/status/1991796624646091091
+- 许可: CC BY 4.0 — https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts/blob/main/LICENSE（经 codex-slides `src/lib/community.ts` 快照 2026-08-31 映射;S2b 吸收）

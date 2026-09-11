@@ -1,0 +1,235 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:creative-magazine",
+  "name": "创意杂志风",
+  "aliases": [
+    "杂志编辑风",
+    "时尚杂志风",
+    "杂志风",
+    "editorial"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/创意杂志风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "high-end editorial magazine spread, bold asymmetry, art-directed composition, graphic tension, premium creative layout"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p10-10-dot-matrix-statement-layouts",
+          "builtin:layout:p12-12-manifesto-ink-banner-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p23-p23-section-divider-layouts"
+        ]
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p30-30-swiss-image-split-layouts",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+          "builtin:layout:p13-13-three-forces-cards-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p16-16-multi-card-brief-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts",
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ],
+        "discouraged": []
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.0,
+      "note": "中性折减：杂志排版密度由版式承担"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 10）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:art-handdrawn"
+      ]
+    },
+    "aliases": [
+      "杂志编辑风",
+      "时尚杂志风",
+      "杂志风",
+      "editorial"
+    ],
+    "best_for": "需要强视觉记忆点、品牌个性或传播感的分享型演示",
+    "visual_direction": "high-end editorial magazine spread, bold asymmetry, art-directed composition, graphic tension, premium creative layout",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white, black, or deep charcoal with intentional negative space",
+      "composition": "asymmetric editorial layout with a large headline, image/collage zone, and 2-3 supporting text blocks",
+      "density": "strong contrast between dense editorial blocks and open whitespace"
+    },
+    "color_palette": {
+      "base": "black, white, and gray",
+      "accent": "one vivid accent such as neon pink #FF006E, lemon yellow #FFED00, or electric cyan #00F5FF",
+      "support": "optional lavender, coral, or muted fashion tones",
+      "rule": "use one dominant accent color consistently; do not make the palette chaotic",
+      "primary": "editorial ink #1A1A1A headlines on warm paper #F7F4EE",
+      "secondary": "muted editorial tones: dusty rose #C6808A, slate #5B6770",
+      "neutral": "warm gray #8A857C, hairline #DDD8CE, paper #F7F4EE"
+    },
+    "typography": {
+      "title": "oversized bold display type, editorial serif (Noto Serif SC / Playfair Display) or chunky sans (思源黑体 Black), can occupy 25-45% of the slide",
+      "body": "small clean sans-serif blocks with strong alignment",
+      "emphasis": "keywords may use accent color, rotated labels, vertical text, or extreme scale contrast",
+      "text_quality": "Chinese headline and key points must be exact and readable",
+      "labels": "kicker/meta in small caps or mono (IBM Plex Mono / 思源黑体), uppercase, tracking +.08em"
+    },
+    "layout_patterns": [
+      "oversized headline on one side with collage or abstract image block on the other",
+      "diagonal color block cutting across the slide",
+      "magazine cover style with title, subtitle, and three feature teasers",
+      "editorial grid with one large image crop and small annotation labels"
+    ],
+    "layout_usage_rule": "Use layout_blueprints as candidate starting points only. Choose and adapt the composition according to each slide's semantic role; avoid repeating the same blueprint on adjacent slides unless it is a deliberate repeated sequence.",
+    "layout_blueprints": [
+      {
+        "name": "editorial hero spread",
+        "sections": [
+          {
+            "position": "left 45%",
+            "count": 1,
+            "labels": [
+              "oversized headline"
+            ]
+          },
+          {
+            "position": "right 55%",
+            "count": 1,
+            "labels": [
+              "collage or abstract image zone"
+            ]
+          },
+          {
+            "position": "bottom-left",
+            "count": 3,
+            "labels": [
+              "feature teaser 1",
+              "feature teaser 2",
+              "feature teaser 3"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cover story grid",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "large cover title"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 2,
+            "labels": [
+              "main visual block",
+              "accent typography block"
+            ]
+          },
+          {
+            "position": "right edge",
+            "count": 3,
+            "labels": [
+              "short editorial callouts"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "bold geometric blocks, cropped photography zones, halftone texture, thin rules, torn-paper collage edges, accent stickers, abstract shapes",
+      "avoid": "generic corporate icons, overly symmetrical layout, low-contrast text, too many accent colors"
+    },
+    "negative_prompt": [
+      "generic corporate icons",
+      "overly symmetrical templated layout",
+      "low-contrast text on photo zones",
+      "too many competing accent colors",
+      "templated look instead of art-directed composition"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "core"
+    },
+    "rendering_constraints": [
+      "The slide should feel designed, not templated.",
+      "Maintain legibility despite bold composition.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "The slide should feel designed, not templated.",
+      "Maintain legibility despite bold composition.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

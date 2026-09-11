@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:象牙账本风",
+  "name": "象牙账本风",
+  "aliases": [
+    "Monochrome",
+    "monochrome",
+    "象牙账本",
+    "restrained",
+    "literary"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/象牙账本风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "hand-typeset ledger on ivory paper, all black ink with zero color, ultra-light geometric sans headlines, italic serif quotes, mono chrome, typography-line-whitespace as the only system"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Monochrome",
+      "monochrome",
+      "象牙账本",
+      "restrained",
+      "literary"
+    ],
+    "best_for": "以象牙账本纸上的全墨黑排印——超细几何无衬线×斜体衬线×等宽——做零彩色的文学化研究报告;适合user research synthesis, white paper, longform report, academic deck",
+    "visual_direction": "hand-typeset ledger on ivory paper, all black ink with zero color, ultra-light geometric sans headlines, italic serif quotes, mono chrome, typography-line-whitespace as the only system",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "ivory and pale-cream paper with deep ink-black type only; no color at all; the system runs(主锚 #fafadf,light 底)",
+      "composition": "账本式排印系统:表格线 + 细字标题 + 大留白",
+      "density": "high,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#fafadf(象牙纸底)",
+      "secondary": "#1a1a16(深墨黑主字)",
+      "accent": "#5e5e54(石墨灰「更深即强调」)",
+      "neutral": "#1a1a16(墨黑文字与表线)",
+      "rule": "ivory and pale-cream paper with deep ink-black type only; no color at all; the system runs on typography, line, and whit;锚点 #fafadf/#1a1a16/#5e5e54/#1a1a16"
+    },
+    "typography": {
+      "title": "Lora 标题字族;literary serif headlines + clean geometric sans body + technical mono;",
+      "body": "Jost 正文字族,行距宽绰",
+      "labels": "JetBrains Mono 标签/数据字族"
+    },
+    "layout_patterns": [
+      "象牙纸 #FAFADF + 纯墨黑 #1A1A16,全套零彩色",
+      "Jost 超细几何无衬线(200-300 字重)标题 × Lora 斜体衬线引文卡 × JetBrains Mono 结构铬件",
+      "账本式表格线 + 行间隔 + 页眉页脚登记位",
+      "「强调」= 更深的墨与更大字级,不是彩色"
+    ],
+    "layout_usage_rule": "象牙纸 #FAFADF + 纯墨黑 #1A1A16,全套零彩色",
+    "negative_prompt": [
+      "Decks that need visual personality or color-led storytelling — the all-ink palette is intentionally austere.",
+      "no color of any kind — ink on ivory, accent means darker ink",
+      "no decorative shapes; typography, line and whitespace carry it",
+      "not for color-led storytelling"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "Jost 超细几何无衬线(200-300 字重)标题 × Lora 斜体衬线引文卡 × JetBrains Mono 结构铬件",
+      "avoid": "no color of any kind — ink on ivory, accent means darker ink; no decorative shapes; typography, line and whitespace carry it"
+    },
+    "rendering_constraints": [
+      "象牙账本风 follows beautiful-html-templates monochrome system; palette anchors locked.",
+      "no color of any kind — ink on ivory, accent means darker ink",
+      "no decorative shapes; typography, line and whitespace carry it",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/monochrome/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "high",
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "象牙账本风 follows beautiful-html-templates monochrome system; palette anchors locked.",
+      "no color of any kind — ink on ivory, accent means darker ink",
+      "no decorative shapes; typography, line and whitespace carry it",
+      "No invented logos or watermarks."
+    ]
+  }
+}

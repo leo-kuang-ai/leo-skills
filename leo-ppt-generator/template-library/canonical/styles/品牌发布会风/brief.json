@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:品牌发布会风",
+  "name": "品牌发布会风",
+  "aliases": [],
+  "variant_of": "产品发布会风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/发布营销/品牌发布会风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "brand-manifest style, values-led identity, brand-asset reveal, emotional resonance, modern brand gravitas, shareable mission"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "产品发布会风",
+    "best_for": "品牌发布会,需要价值观、宣言、品牌资产与情绪共鸣",
+    "visual_direction": "brand-manifest style, values-led identity, brand-asset reveal, emotional resonance, modern brand gravitas, shareable mission",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "editorial / brand ground, big type",
+      "composition": "values → brand → asset",
+      "density": "low, resonant"
+    },
+    "color_palette": {
+      "primary": "bold brand color (fallback #2563EB) / deep tech #0F172A, white",
+      "secondary": "supporting accents #3B82F6 / #22D3EE",
+      "accent": "one signature accent #F59E0B",
+      "neutral": "near-black/white #111827, gray #6B7280",
+      "rule": "stage-ready, punchy, brand-consistent"
+    },
+    "typography": {
+      "title": "bold showy sans (Arial Black / 思源黑体 Heavy), dramatic scale",
+      "body": "short punchy body",
+      "labels": "feature tags",
+      "text_quality": "clear brand claims, no overclaim"
+    },
+    "layout_patterns": [
+      "manifest hero",
+      "brand story / values",
+      "visual identity reveal",
+      "brand promise"
+    ],
+    "layout_usage_rule": "Values-led, resonant; reveal identity and promise with emotional shareable energy.",
+    "layout_blueprints": [
+      {
+        "name": "宣言页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "品牌宣言大字"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "品牌页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "视觉识别"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "big type, brand asset, editorial imagery, signature accent",
+      "avoid": "clutter, generic, off-brand, misleading"
+    },
+    "rendering_constraints": [
+      "Values-led, resonant, on-brand.",
+      "Manifest + identity + promise; emotional shareable energy.",
+      "On-brand truthful; no invented logos or claims."
+    ],
+    "reference": "GitHub: 品牌发布会 · 品牌宣言惯例"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Values-led, resonant, on-brand.",
+      "Manifest + identity + promise; emotional shareable energy.",
+      "On-brand truthful; no invented logos or claims."
+    ]
+  }
+}

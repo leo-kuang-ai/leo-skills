@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "entity": "render-theme",
+  "asset_id": "builtin:theme:minimal-light",
+  "name": "最小浅色主题",
+  "default_mode": "light",
+  "modes": {
+    "light": {
+      "background": "#F7F5F0",
+      "surface": "#FFFFFF",
+      "text": "#1F2430",
+      "primary": "#14213D",
+      "on_primary": "#FFFFFF",
+      "muted": "#6B6357",
+      "border": "#D8CFBD",
+      "accent": "#B08D57",
+      "warn": "#92400E"
+    }
+  },
+  "font_roles": {
+    "title": {
+      "family": "Noto Sans SC",
+      "weight": 700,
+      "size": 46,
+      "line_height": 1.25
+    },
+    "body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    },
+    "table_header": {
+      "family": "Noto Sans SC",
+      "weight": 700,
+      "size": 26,
+      "line_height": 1.3
+    },
+    "table_body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    }
+  },
+  "chart_palette": {
+    "series": [
+      "#14213D",
+      "#B08D57",
+      "#6B6357"
+    ],
+    "positive": "#1B7F4D",
+    "negative": "#B4232A"
+  },
+  "ornaments": [],
+  "qa_profile": null,
+  "static_support": {
+    "lanes": [
+      "html"
+    ]
+  },
+  "overrideable_roles": [
+    "accent",
+    "muted"
+  ]
+}

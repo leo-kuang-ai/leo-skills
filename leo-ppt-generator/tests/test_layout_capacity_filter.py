@@ -98,9 +98,9 @@ class RealLibraryFiltering(unittest.TestCase):
         self.assertEqual(both, only_title & only_items)
 
     def test_default_listing_unchanged_by_filter_addition(self):
-        """缺省枚举（不带过滤）保持 36 份确定性输出。"""
+        """缺省枚举（不带过滤）保持 42 份确定性输出（36 P 码 + 6 html-lane）。"""
         items = list_layout_bank()
-        self.assertEqual(len(items), 36)
+        self.assertEqual(len(items), 42)
         self.assertEqual(
             [item["layout_id"] for item in items],
             sorted(item["layout_id"] for item in items),
@@ -110,14 +110,25 @@ class RealLibraryFiltering(unittest.TestCase):
         """前序槽不存在时，后续缺键槽仍如实进 missing（break→continue 回归锁）。"""
         with tempfile.TemporaryDirectory() as td:
             bundle = Path(td)
-            layout_dir = bundle / "references" / "styles" / "12_版式库"
+            library = bundle / "template-library"
+            layout_dir = library / "canonical" / "layouts" / "px-x"
             layout_dir.mkdir(parents=True)
-            (layout_dir / "01_X.layouts.json").write_text(json.dumps({
-                "schema_version": 1, "entity": "layout", "layout_id": "PX",
-                "name": "X", "page_type": "content",
-                "content_capacity": {
-                    "stub": {"desc": "槽存在但无 count_max/max_chars"},
-                },
+            (layout_dir / "layout.json").write_text(json.dumps({
+                "schema_version": 1, "entity": "layout-profile",
+                "asset_id": "builtin:layout:px-x", "name": "X",
+                "aliases": ["PX"],
+                "canvas": {"width": 1280, "height": 720, "units": "logical-px"},
+                "page_role": "content", "layout_type": "fixed-regions",
+                "slots": {"stub": {"region": "content",
+                                   "desc": "槽存在但无 count_max/max_chars"}},
+                "renderer_support": {"render:html": None, "image": None},
+            }), encoding="utf-8")
+            (library / "library.json").write_text(json.dumps({
+                "schema_version": 1, "kind": "template-library",
+                "library_id": "builtin",
+                "zones": {"canonical": "c", "reference": "r", "governance": "g",
+                          "catalog": "k", "evidence": "e"},
+                "reserved_directory_names": [],
             }), encoding="utf-8")
             from leo_ppt_generator import layout_bank
             with mock.patch.dict("os.environ", {"LEO_PPT_BUNDLE": str(bundle)}):
@@ -181,7 +192,7 @@ class CliDispatchContract(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
         payload = json.loads(proc.stdout)
         self.assertEqual(payload["reason_code"], "layout_bank_listed")
-        self.assertEqual(len(payload["layouts"]), 36)
+        self.assertEqual(len(payload["layouts"]), 42)
         self.assertNotIn("matched", payload)
         self.assertNotIn("capacity_filter", payload)
 

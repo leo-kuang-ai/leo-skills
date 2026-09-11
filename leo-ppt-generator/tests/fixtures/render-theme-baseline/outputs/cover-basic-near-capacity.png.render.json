@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "162b308c973f99d1757b22ab02198a696c3bdf140cd44748db80c4918071db40",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/cover-basic-near-capacity.png",
+  "out_sha256": "2238dbbc30bd152d8c518a0752948d085bf22cfb67d6520d685472b1b2cfd98e",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1229,
+  "rendered_at": "2026-09-07T19:26:38.579Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "cover-basic",
+  "template_sha256": "8f7a459ea4ac6b628c322f709914a349d882806efbc18ca99d54628a61558f2b",
+  "warnings": [],
+  "width": 2560
+}

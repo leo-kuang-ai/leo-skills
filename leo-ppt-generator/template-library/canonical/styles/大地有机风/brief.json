@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:大地有机风",
+  "name": "大地有机风",
+  "aliases": [
+    "Earth & Sage",
+    "大地鼠尾草",
+    "生态有机"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/15_来源_officecli/大地有机风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "earth and sage sustainability, warm cream ground with clay brown and sage green accents, eco sincere natural mood, organic rounded shapes"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 4）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Earth & Sage",
+      "大地鼠尾草",
+      "生态有机"
+    ],
+    "best_for": "大地色有机可持续的诚恳气质;适合环保叙事/有机品牌/ESG 报告",
+    "visual_direction": "earth and sage sustainability, warm cream ground with clay brown and sage green accents, eco sincere natural mood, organic rounded shapes",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F5F0E8",
+      "composition": "暖米底 + 黏土棕主墨 + 鼠尾草绿点缀三色纪律",
+      "density": "medium-low, 呼吸留白"
+    },
+    "color_palette": {
+      "primary": "#F5F0E8(暖米底)",
+      "secondary": "#8B6F47(黏土棕主墨)",
+      "accent": "#A8C686(鼠尾草绿点缀)",
+      "neutral": "#8B6F47(深字锚,同主墨)"
+    },
+    "typography": {
+      "title": "Segoe UI(苹方 PingFang 兜底)标题,黏土棕 #8B6F47",
+      "body": "Segoe UI 正文(苹方兜底),暖调深字",
+      "labels": "Segoe UI 小标签(苹方兜底),鼠尾草绿 #A8C686"
+    },
+    "layout_patterns": [
+      "暖米底 + 黏土棕主墨 + 鼠尾草绿点缀三色纪律",
+      "有机圆角形状与手绘感图形",
+      "自然摄影/插画承载生态主题",
+      "低对比柔和分区"
+    ],
+    "layout_usage_rule": "暖米底 + 黏土棕主墨 + 鼠尾草绿点缀三色纪律",
+    "visual_elements": {
+      "allowed": "暖米底 + 黏土棕主墨 + 鼠尾草绿点缀三色纪律",
+      "avoid": "不要霓虹/高饱和工业色; 不要锐利几何与硬阴影"
+    },
+    "rendering_constraints": [
+      "不要霓虹/高饱和工业色",
+      "不要锐利几何与硬阴影",
+      "不要冷调蓝紫主导",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要霓虹/高饱和工业色",
+      "不要锐利几何与硬阴影",
+      "不要冷调蓝紫主导"
+    ],
+    "paired_illustration": {
+      "family": "hand-drawn",
+      "density": "supportive"
+    },
+    "reference": "GitHub: OfficeCLI · skills/morph-ppt/reference/styles/warm--earth-organic/style.md(MIT)· Warm, sincere, natural;金样板 samples/reference-golden/officecli/warm__earth_organic.pptx(只登记路径不转换)",
+    "token_sidecar": "variant-dimension: warm"
+  },
+  "constraints": {
+    "negative": [
+      "不要霓虹/高饱和工业色",
+      "不要锐利几何与硬阴影",
+      "不要冷调蓝紫主导",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

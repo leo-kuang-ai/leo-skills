@@ -1,0 +1,251 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:data-dashboard",
+  "name": "数据仪表盘风",
+  "aliases": [
+    "仪表盘风",
+    "数据大屏风",
+    "BI风",
+    "dashboard"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/数据仪表盘风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "数据图表"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "bright modern SaaS analytics dashboard, clean BI interface, lightweight data cards, precise charts, professional and non-oppressive"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p4-04-six-cells-layouts",
+          "builtin:layout:p16-16-multi-card-brief-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p34-34-quote-hero-layouts"
+        ]
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+          "builtin:layout:p21-21-tech-spec-sheet-layouts",
+          "builtin:layout:p35-35-data-wall-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.1,
+      "note": "网格更密：仪表盘网格可承载更多数据文本"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 14）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 14,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:data-chart"
+      ]
+    },
+    "aliases": [
+      "仪表盘风",
+      "数据大屏风",
+      "BI风",
+      "dashboard"
+    ],
+    "best_for": "数据密集型汇报、运营分析、KPI 复盘和业务洞察展示",
+    "visual_direction": "bright modern SaaS analytics dashboard, clean BI interface, lightweight data cards, precise charts, professional and non-oppressive",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white #FFFFFF, very light blue-gray #F5F8FC, or mist gray #F8FAFC",
+      "composition": "dashboard grid with title area, KPI cards, chart panels, and status list",
+      "density": "medium-high information density with enough card spacing and clear grouping"
+    },
+    "color_palette": {
+      "primary": "data blue #2563EB or #1976D2",
+      "secondary": "cyan #06B6D4 and soft purple #8B5CF6",
+      "status": "green #10B981, orange #F59E0B, red #EF4444 used sparingly",
+      "text": "deep navy #0F172A and neutral gray #64748B",
+      "rule": "avoid dark control-room backgrounds, heavy neon, and oppressive black panels",
+      "accent": "alert amber #F59E0B for threshold highlights; success green #10B981 only for positive deltas",
+      "neutral": "slate #475569, grid line #E2E8F0, panel bg #F8FAFC"
+    },
+    "typography": {
+      "title": "bold clean sans (Inter / 思源黑体 Bold), dashboard header style",
+      "numbers": "large tabular numerals for KPI values",
+      "labels": "small but readable sans-serif chart labels",
+      "text_quality": "Chinese labels and KPI names must be exact and legible",
+      "body": "compact data sans (Inter / 思源黑体), tabular numerals, left-aligned"
+    },
+    "layout_patterns": [
+      "top KPI strip with 3-4 cards and trend arrows",
+      "main area split into workflow cards and a line chart",
+      "lower area with donut chart, bar chart, and recent activity table",
+      "large central insight card surrounded by supporting metrics"
+    ],
+    "layout_usage_rule": "Use layout_blueprints as candidate starting points only. Choose and adapt the composition according to each slide's semantic role; avoid repeating the same blueprint on adjacent slides unless it is a deliberate repeated sequence.",
+    "layout_blueprints": [
+      {
+        "name": "SaaS BI overview",
+        "sections": [
+          {
+            "position": "top-left",
+            "count": 1,
+            "labels": [
+              "dashboard title and subtitle"
+            ]
+          },
+          {
+            "position": "top-right",
+            "count": 4,
+            "labels": [
+              "KPI card 1",
+              "KPI card 2",
+              "KPI card 3",
+              "KPI card 4"
+            ]
+          },
+          {
+            "position": "middle-left",
+            "count": 3,
+            "labels": [
+              "process card 1",
+              "process card 2",
+              "process card 3"
+            ]
+          },
+          {
+            "position": "middle-right",
+            "count": 1,
+            "labels": [
+              "line chart panel"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 3,
+            "labels": [
+              "donut chart",
+              "bar chart",
+              "recent records table"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "single insight dashboard",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "large insight card"
+            ]
+          },
+          {
+            "position": "surrounding",
+            "count": 4,
+            "labels": [
+              "supporting metric",
+              "trend sparkline",
+              "status list",
+              "risk indicator"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "white cards, soft shadows, pale borders, line charts, bar charts, progress rings, KPI cards, status dots, trend arrows, mini sparklines",
+      "avoid": "dark monitoring wall, dense cyberpunk glow, unreadable tiny table text, random numbers without structure"
+    },
+    "negative_prompt": [
+      "dark control-room or monitoring wall backgrounds",
+      "dense cyberpunk glow and heavy neon",
+      "unreadable tiny table text",
+      "random numbers without structure",
+      "oppressive black panels"
+    ],
+    "paired_illustration": {
+      "family": "dashboard",
+      "density": "core"
+    },
+    "rendering_constraints": [
+      "The slide should look like a polished SaaS analytics product screenshot adapted for presentation.",
+      "Charts should be visually plausible and organized, even when illustrative.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "The slide should look like a polished SaaS analytics product screenshot adapted for presentation.",
+      "Charts should be visually plausible and organized, even when illustrative.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "density": "medium-high",
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

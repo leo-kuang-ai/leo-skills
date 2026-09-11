@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-丝网印刷",
+  "name": "图片渲染：丝网印刷（screen-print）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

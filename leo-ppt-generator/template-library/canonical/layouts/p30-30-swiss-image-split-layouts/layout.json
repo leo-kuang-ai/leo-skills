@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p30-30-swiss-image-split-layouts",
+  "name": "Swiss Image Split",
+  "aliases": [
+    "P30"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "assertion_title": {
+      "region": "content",
+      "desc": "右列断言标题",
+      "max_chars": 9,
+      "chars_per_line": 8,
+      "max_lines": 1
+    },
+    "body_copy": {
+      "region": "content",
+      "desc": "右列 ≤2 段正文",
+      "max_chars": 194,
+      "chars_per_line": 18,
+      "max_lines": 9
+    },
+    "kpi_number": {
+      "region": "content",
+      "desc": "可选单 KPI 巨数（min(9.2vw,15vh) 限高）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左右 7/5 分屏；左图容器 fit-contain 占页高 60-72%（直角无阴影）；右列断言标题 + ≤2 段正文 + 可选单 KPI 巨数；图与文案共用顶部基线、底缘对齐"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/30_Swiss_Image_Split.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

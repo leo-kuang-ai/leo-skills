@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:management-clear",
+  "name": "管理清晰风",
+  "aliases": [
+    "管理",
+    "management-clear"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "管理方向"
+    ],
+    "industries": [
+      "管理"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "density": "balanced",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review"
+    ],
+    "components": [
+      "决策摘要",
+      "KPI 横栏",
+      "进展/风险对照"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "中性冷灰底 + 石板蓝主色的克制层级；决策摘要置顶 + KPI 横栏 + 风险对照的固定节奏",
+    "features": [
+      "中性冷灰底 + 石板蓝主色的克制层级",
+      "决策摘要置顶 + KPI 横栏 + 风险对照的固定节奏",
+      "状态色仅用于风险/异常标记"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止装饰性插画抢夺决策信息层级",
+      "禁止无数据支撑的进度百分比",
+      "风险项不得只用颜色区分（需文字标注）"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:management-clear-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "agenda",
+        "preferred": [
+          "builtin:layout:p32-32-agenda-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p5-05-three-sub-cards-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts",
+          "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "结论与证据对应、数字带单位、决策事项明确",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

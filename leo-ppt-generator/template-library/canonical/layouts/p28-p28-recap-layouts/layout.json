@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p28-p28-recap-layouts",
+  "name": "Recap",
+  "aliases": [
+    "P28"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "recap_rows": {
+      "region": "content",
+      "desc": "回收条",
+      "count_min": 3,
+      "count_max": 5
+    },
+    "recap_text": {
+      "region": "content",
+      "desc": "每条回收句",
+      "max_chars": 34,
+      "chars_per_line": 29,
+      "max_lines": 1
+    },
+    "hook": {
+      "region": "content",
+      "desc": "底部下一章钩子句",
+      "max_chars": 120,
+      "chars_per_line": 50,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "回收条纵列 + 底部「下一章」钩子句"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P28_Recap.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

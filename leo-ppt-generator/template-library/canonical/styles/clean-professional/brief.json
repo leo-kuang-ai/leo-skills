@@ -1,0 +1,141 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:clean-professional",
+  "name": "清爽专业风",
+  "aliases": [
+    "简约专业风",
+    "清新商务风",
+    "clean-corporate"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/清爽专业风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": [
+      "毕业答辩",
+      "工作总结",
+      "技术分享",
+      "项目复盘",
+      "晋升述职"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "density": "balanced",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review",
+      "conference-screen"
+    ],
+    "counter_indications": [
+      "娱乐晚会",
+      "快闪店冲击展示"
+    ]
+  },
+  "visual_language": {
+    "direction": "clean modern professional deck, calm technical presentation, structured evidence-driven layout, readable pragmatic visual system, light background with crisp hierarchy",
+    "features": [
+      "浅底 + 专业蓝主色的克制层级",
+      "左对齐强层级排印",
+      "留白充足的技术证据区"
+    ],
+    "composition_discipline": [
+      "标题区 + 结构化内容区 + 证据/图示区 + 简洁结论区"
+    ],
+    "continuity": {
+      "cover": "大标题 + 场景副题",
+      "content": "单一层级主线",
+      "data": "规格表/时间线为主",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止霓虹撞色、奢侈金或重底深色背景",
+      "禁止装饰性渐变盖过正文层级",
+      "中文正文不得使用装饰性字体"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:clean-professional-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      },
+      {
+        "page_type": "agenda",
+        "preferred": [
+          "builtin:layout:p32-32-agenda-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p23-p23-section-divider-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p4-04-six-cells-layouts",
+          "builtin:layout:p5-05-three-sub-cards-layouts",
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p8-08-duo-compare-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p13-13-three-forces-cards-layouts"
+        ]
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts",
+          "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+          "builtin:layout:p21-21-tech-spec-sheet-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": [
+          "builtin:layout:p24-p24-number-hero-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.0,
+      "note": "中性折减：清爽网格正文按版式默认容量承载"
+    }
+  },
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 首个垂直切片转换；语义字段自原 MD brief 提取，色值归 theme"
+  }
+}

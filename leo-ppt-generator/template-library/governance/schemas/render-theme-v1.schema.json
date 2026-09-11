@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/render-theme/v1",
+  "title": "渲染主题（精确颜色与字体的唯一源；不拥有正文、行业义务、slot 几何/容量）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "default_mode",
+    "modes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "render-theme"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "default_mode": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/mode"
+    },
+    "modes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/mode_variant"
+      }
+    },
+    "font_roles": {
+      "type": "object",
+      "description": "跨 mode 字体角色；size/line_height 逻辑 px",
+      "additionalProperties": {
+        "$ref": "#/definitions/font_role"
+      }
+    },
+    "chart_palette": {
+      "type": "object",
+      "properties": {
+        "series": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+          }
+        },
+        "negative": {
+          "type": "string"
+        },
+        "positive": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ornaments": {
+      "type": "array",
+      "items": {
+        "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+      }
+    },
+    "qa_profile": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "governance/rules/render-qa-profiles 档位引用；theme 只能引用可用档，不得自带阈值"
+    },
+    "static_support": {
+      "type": "object",
+      "description": "静态支持与已验证组合分开：验证状态由 evidence 派生",
+      "properties": {
+        "lanes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "image",
+              "html"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "overrideable_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "任务视觉覆盖仅限这些角色"
+    }
+  },
+  "definitions": {
+    "hex": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "mode_variant": {
+      "type": "object",
+      "required": [
+        "background",
+        "surface",
+        "text",
+        "primary",
+        "on_primary",
+        "muted",
+        "border",
+        "accent"
+      ],
+      "additionalProperties": {
+        "$ref": "#/definitions/hex"
+      },
+      "properties": {
+        "background": {
+          "$ref": "#/definitions/hex"
+        },
+        "surface": {
+          "$ref": "#/definitions/hex"
+        },
+        "text": {
+          "$ref": "#/definitions/hex"
+        },
+        "primary": {
+          "$ref": "#/definitions/hex"
+        },
+        "on_primary": {
+          "$ref": "#/definitions/hex"
+        },
+        "muted": {
+          "$ref": "#/definitions/hex"
+        },
+        "border": {
+          "$ref": "#/definitions/hex"
+        },
+        "accent": {
+          "$ref": "#/definitions/hex"
+        },
+        "warn": {
+          "$ref": "#/definitions/hex"
+        },
+        "on_surface": {
+          "$ref": "#/definitions/hex"
+        },
+        "on_accent": {
+          "$ref": "#/definitions/hex"
+        }
+      }
+    },
+    "font_role": {
+      "type": "object",
+      "required": [
+        "family",
+        "weight"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1000
+        },
+        "fallback": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "size": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "逻辑 px；空间尺寸归 layout"
+        },
+        "line_height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "letter_spacing": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

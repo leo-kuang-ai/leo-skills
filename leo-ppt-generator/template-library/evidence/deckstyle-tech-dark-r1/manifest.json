@@ -1,0 +1,83 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-tech-dark-r1",
+  "assets": {
+    "style": "builtin:style:tech-dark",
+    "theme": "builtin:theme:tech-dark-mode",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "dark",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[tech-dark]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 1"
+  },
+  "outputs": {
+    "cover.png": "2d285397b85fd074c3e4b9627473eacd0666de0eb7c112fb203821d6e79a560e",
+    "content.png": "6b8ff13d3f1270d737fc65eadcb71a6ecdaad193d076a3a068f7bf60b422f233",
+    "evidence.png": "7d4132ec1be57c66ac3acbe5a635bd2abf9c0ce1996ae80321aabf42643ec371",
+    "closing.png": "0eac3129180882260208908bca5a84bd5b4dc51eba8d3f377f00a58a2e1b14f0"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": []
+}

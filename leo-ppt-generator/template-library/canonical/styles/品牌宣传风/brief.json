@@ -1,0 +1,145 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:品牌宣传风",
+  "name": "品牌宣传风",
+  "aliases": [
+    "品牌风",
+    "宣传风",
+    "brand campaign风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/对外宣传/品牌宣传风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "brand-promotion style, values resonance, audience-centric storytelling, shareable impact, consistent brand identity, warm persuasive outreach"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "品牌风",
+      "宣传风",
+      "brand campaign风"
+    ],
+    "best_for": "品牌宣传,需要品牌价值、受众共鸣、传播与影响力表达",
+    "visual_direction": "brand-promotion style, values resonance, audience-centric storytelling, shareable impact, consistent brand identity, warm persuasive outreach",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "light editorial / bold brand ground",
+      "composition": "message → engagement → action",
+      "density": "medium, shareable"
+    },
+    "color_palette": {
+      "primary": "brand/editorial color (fallback #EC4899), white",
+      "secondary": "supporting neutral #F1F5F9",
+      "accent": "one signature accent #EC4899",
+      "neutral": "near-black #1F2937, gray #6B7280, white",
+      "rule": "clear, shareable, brand-consistent"
+    },
+    "typography": {
+      "title": "bold clear sans (Futura / 思源黑体)",
+      "body": "short compelling copy",
+      "labels": "tag/CTA labels",
+      "text_quality": "clear, accurate, no overclaim"
+    },
+    "layout_patterns": [
+      "brand value manifesto",
+      "audience empathy",
+      "key impact / proof",
+      "call to engage"
+    ],
+    "layout_usage_rule": "Values and audience resonance; shareable, brand-consistent outreach.",
+    "layout_blueprints": [
+      {
+        "name": "价值页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "品牌主张"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "传播页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "影响1",
+              "影响2",
+              "影响3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "brand imagery, editorial type, impact blocks, engagement CTA",
+      "avoid": "clutter, off-brand, misleading, over-decoration"
+    },
+    "rendering_constraints": [
+      "Shareable, values-led, brand-consistent.",
+      "Value, audience, impact, engagement.",
+      "Accurate; no invented rankings or claims.",
+      "For brand systems, define name, positioning, palette, typography, logo usage, and touchpoints; keep applications uniformly aligned. Avoid unrelated logo variants. (awesome-gpt-image-2 · brand-identity-package)",
+      "For touchpoint boards, specify the touchpoint list, unified visual rules, and mockup arrangement; share palette/typography logic. Reduce touchpoint count when readability drops. (awesome-gpt-image-2 · brand-touchpoint-board)"
+    ],
+    "reference": "GitHub: 品牌宣传 · 品牌传播惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Shareable, values-led, brand-consistent.",
+      "Value, audience, impact, engagement.",
+      "Accurate; no invented rankings or claims.",
+      "For brand systems, define name, positioning, palette, typography, logo usage, and touchpoints; keep applications uniformly aligned. Avoid unrelated logo variants. (awesome-gpt-image-2 · brand-identity-package)",
+      "For touchpoint boards, specify the touchpoint list, unified visual rules, and mockup arrangement; share palette/typography logic. Reduce touchpoint count when readability drops. (awesome-gpt-image-2 · brand-touchpoint-board)"
+    ]
+  }
+}

@@ -34,7 +34,10 @@ from leo_ppt_generator.templates import (  # noqa: E402
     compose_style,
 )
 
-STYLE_WITH_ACCENT_HEX = "清爽专业风"
+# U10 后选「工作坊风」作 HEX 锚点载体：legacy_payload 带 #2563EB primary 与
+# #F59E0B accent 且不带 token_sidecar（清爽专业风已完整转换为 v2，色板在
+# theme 侧，不再承载 prose HEX 锚点断言）。
+STYLE_WITH_ACCENT_HEX = "工作坊风"
 STYLE_WITH_PROSE_ACCENT = "麦肯锡咨询风"
 
 # R-27 fixture sidecar: keys aligned with the H-line theme.json render
@@ -54,19 +57,15 @@ SIDECAR = {
 
 
 def _synthetic_style_with_sidecar():
-    """Real 清爽专业风 brief with a token_sidecar injected (mock pattern
-    from the guardrail prose-accent test above; library files untouched —
-    styles/ is owned by the R-66 family-merge batch)."""
+    """Real 工作坊风 document with a token_sidecar injected into the brief's
+    legacy_payload (new-protocol mock pattern; library files untouched)."""
     real = templates.load_style(STYLE_WITH_ACCENT_HEX)
-    block = re.search(r"```json\n(.*?)\n```", real["content"], re.S)
-    brief = json.loads(block.group(1))
-    brief["token_sidecar"] = SIDECAR
+    brief = dict(real["brief"])
+    legacy = dict(brief.get("legacy_payload") or {})
+    legacy["token_sidecar"] = SIDECAR
+    brief["legacy_payload"] = legacy
     synthetic = dict(real)
-    synthetic["content"] = real["content"].replace(
-        block.group(0),
-        "```json\n" + json.dumps(brief, ensure_ascii=False, indent=2) + "\n```",
-        1,
-    )
+    synthetic["brief"] = brief
     return synthetic
 
 
@@ -147,18 +146,16 @@ class ComposeStyleOptionsTest(unittest.TestCase):
 
     def test_guardrail_omits_anchor_line_when_accent_has_no_hex(self):
         # prose accent（无 HEX 锚点）时锚点行整行省略：用合成 brief 断言降级
-        # 行为本身，不依赖库中恰好存在 prose accent 的真实风格（lint 基线
-        # 收敛后所有 brief 都可能带 HEX 锚点）。
+        # 行为本身（新协议下 legacy_payload.color_palette 是 prose 色板面）。
         real = templates.load_style(STYLE_WITH_ACCENT_HEX)
-        block = re.search(r"```json\n(.*?)\n```", real["content"], re.S)
-        brief = json.loads(block.group(1))
-        brief["color_palette"]["accent"] = "one restrained accent, sparingly"
+        brief = dict(real["brief"])
+        legacy = dict(brief.get("legacy_payload") or {})
+        palette = dict(legacy.get("color_palette") or {})
+        palette["accent"] = "one restrained accent, sparingly"
+        legacy["color_palette"] = palette
+        brief["legacy_payload"] = legacy
         synthetic = dict(real)
-        synthetic["content"] = real["content"].replace(
-            block.group(0),
-            "```json\n" + json.dumps(brief, ensure_ascii=False, indent=2) + "\n```",
-            1,
-        )
+        synthetic["brief"] = brief
         with mock.patch.object(templates, "load_style", return_value=synthetic):
             result = compose_style(STYLE_WITH_ACCENT_HEX, guardrail=True)
         self.assertFalse(any("accent 锚点" in line for line in result["guardrail"]))
@@ -363,19 +360,16 @@ LAYOUT_LOCK = {
 
 
 def _synthetic_style_brief(brief_mutator):
-    """Real 清爽专业风 brief with a JSON-block mutation applied (mock
-    pattern shared with ``_synthetic_style_with_sidecar``; library files
-    untouched)."""
+    """Real 工作坊风 document with a brief mutation applied (new-protocol
+    mock pattern shared with ``_synthetic_style_with_sidecar``; library
+    files untouched)."""
+    import copy
+
     real = templates.load_style(STYLE_WITH_ACCENT_HEX)
-    block = re.search(r"```json\n(.*?)\n```", real["content"], re.S)
-    brief = json.loads(block.group(1))
+    brief = copy.deepcopy(real["brief"])
     brief_mutator(brief)
     synthetic = dict(real)
-    synthetic["content"] = real["content"].replace(
-        block.group(0),
-        "```json\n" + json.dumps(brief, ensure_ascii=False, indent=2) + "\n```",
-        1,
-    )
+    synthetic["brief"] = brief
     return synthetic
 
 

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:compare",
+  "name": "compare",
+  "input_fields": [
+    {
+      "name": "sides",
+      "required": true,
+      "type": "array",
+      "count_min": 2,
+      "count_max": 2,
+      "items": {
+        "type": "object",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "points",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "compare",
+      "selector": "[data-leo-block='compare']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page-no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "side-left",
+      "selector": "[data-leo-block='side-left']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "side-right",
+      "selector": "[data-leo-block='side-right']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "vrule",
+      "selector": "[data-leo-block='vrule']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "accent"
+  ],
+  "dependencies": [
+    "builtin:layout:compare"
+  ],
+  "layout_profiles": [
+    "builtin:layout:compare"
+  ],
+  "lane": "render:html",
+  "notes": "对照模板：sides 恰 2 项（超出/不足由投影层硬拒绝，不静默不渲染）"
+}

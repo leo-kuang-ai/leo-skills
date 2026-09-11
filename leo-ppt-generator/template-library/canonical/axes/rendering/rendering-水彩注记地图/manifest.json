@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-水彩注记地图",
+  "name": "图片渲染：水彩注记地图（watercolor-map）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

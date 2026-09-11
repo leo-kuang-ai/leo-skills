@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -70,6 +71,7 @@ from .observability import (
 )
 from .setup import SetupContractError, build_setup_report, render_setup_report
 from .storage import (
+    atomic_write_bytes,
     atomic_write_json,
     canonical_json,
     durable_copy_file,
@@ -78,7 +80,7 @@ from .storage import (
     secure_user_tree,
     sha256_bytes,
 )
-from .styles import StyleStoreError, list_styles, load_style, save_style, style_summary, list_style_summaries
+from .styles import StyleStoreError, list_styles_with_source, load_style, save_style, style_summary, list_style_summaries
 from .layout_bank import (
     CapacityFilterError,
     filter_layout_bank_by_capacity,
@@ -539,6 +541,137 @@ def _require_prepare_input(run_path: str | Path) -> None:
         raise ContractError("input_file_missing")
 
 
+def _freeze_input_snapshot(run_path: str | Path, name: str, source_path: str | Path,
+                           *, max_bytes: int) -> tuple[Path, dict]:
+    """CAS 冻结一份 run 输入快照；已冻结内容与来源不一致即冲突。"""
+    root = Path(run_path).resolve()
+    if not (root / "run.json").is_file():
+        return Path(source_path), {"path": str(source_path)}
+    try:
+        source_identity = inspect_regular_file(Path(source_path), max_bytes=max_bytes)
+    except ValueError as exc:
+        raise ContractError(f"{name}_invalid") from exc
+    target = root / "input" / f"{name}.json"
+    try:
+        if target.is_file() or target.is_symlink():
+            frozen_identity = inspect_regular_file(target, max_bytes=max_bytes)
+            if frozen_identity["sha256"] != source_identity["sha256"]:
+                raise ContractError(f"{name}_fingerprint_conflict")
+        else:
+            durable_copy_file(source_identity["path"], target, max_bytes=max_bytes)
+    except ContractError:
+        raise
+    except ValueError as exc:
+        raise ContractError(f"{name}_invalid") from exc
+    return target, {
+        "path": f"input/{name}.json",
+        "size": source_identity["size"],
+        "sha256": source_identity["sha256"],
+    }
+
+
+def _record_supplemental_input(run_path: str | Path, key: str, metadata: dict) -> None:
+    """把一份输入快照登记进 RunIndex supplemental_inputs（CAS 复核）。"""
+    index = RunIndex(Path(run_path))
+    snapshot = index.snapshot()
+    supplemental = snapshot.get("supplemental_inputs", {})
+    if not isinstance(supplemental, dict):
+        raise ContractError("run_index_invalid")
+    existing = supplemental.get(key)
+    if existing is not None and existing != metadata:
+        raise ContractError(f"{key}_fingerprint_conflict")
+    if existing is None:
+        supplemental = dict(supplemental)
+        supplemental[key] = metadata
+        index.update(
+            expected_revision=snapshot["revision"],
+            changes={"supplemental_inputs": supplemental},
+        )
+
+
+def _freeze_content_binding(run_path: str | Path, slides_path: str | Path,
+                            *, content_pack: str | None, design: str | None,
+                            layout_selection: str | None = None) -> dict | None:
+    """dashi K4：generate 消费冻结绑定——内容包 + 冻结设计 + 整册选择入 run input。
+
+    内容包经 content_digest 自校验（手改拒绝）；slides 页集合与包页序核对；
+    设计快照摘要与包/页数一致后才放行 prepare；整册选择（K3/K5）核对内容
+    摘要与页覆盖。已 prepare 后内容或设计改版必须建立新 run：此处任何 sha
+    不一致都以 fingerprint 冲突显式拒绝。
+    """
+    from .content_pack import ContentPackError, verify_content_pack
+
+    root = Path(run_path).resolve()
+    pack_source = content_pack or (
+        str(root / "input/page-content-pack.json")
+        if (root / "input/page-content-pack.json").is_file() else None)
+    design_source = design or (
+        str(root / "input/resolved-design.json")
+        if (root / "input/resolved-design.json").is_file() else None)
+    selection_source = layout_selection or (
+        str(root / "input/layout-selection.json")
+        if (root / "input/layout-selection.json").is_file() else None)
+    if pack_source is None and design_source is None and selection_source is None:
+        return None
+    binding: dict = {}
+    slides = _json_file(slides_path)
+    if pack_source is not None:
+        pack_path, metadata = _freeze_input_snapshot(
+            run_path, "page-content-pack", pack_source, max_bytes=MAX_SLIDES_CONTRACT_BYTES)
+        try:
+            pack = json.loads(pack_path.read_text(encoding="utf-8"))
+            verify_content_pack(pack)
+        except (OSError, ValueError, ContentPackError) as exc:
+            raise ContractError("content_pack_invalid") from exc
+        _record_supplemental_input(run_path, "content_pack", metadata)
+        page_numbers = [page.get("number") for page in pack.get("pages", [])]
+        slide_numbers = [
+            slide.get("number") if isinstance(slide, dict) else None
+            for slide in (slides if isinstance(slides, list) else [])]
+        if page_numbers != slide_numbers:
+            raise ContractError("content_pack_page_mismatch")
+        binding["content_digest"] = pack.get("content_digest")
+        binding["page_ids"] = [page.get("page_id") for page in pack.get("pages", [])]
+    if design_source is not None:
+        design_path, metadata = _freeze_input_snapshot(
+            run_path, "resolved-design", design_source, max_bytes=MAX_SLIDES_CONTRACT_BYTES)
+        try:
+            resolved = json.loads(design_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise ContractError("resolved_design_invalid") from exc
+        if not isinstance(resolved, dict) or resolved.get("entity") != "resolved-design":
+            raise ContractError("resolved_design_invalid")
+        design_pages = [page.get("page_no") for page in resolved.get("pages", [])]
+        if pack_source is not None and design_pages != [
+                page.get("number") for page in pack.get("pages", [])]:
+            raise ContractError("design_page_mismatch")
+        _record_supplemental_input(run_path, "resolved_design", metadata)
+        binding["design_digest"] = resolved.get("design_digest")
+        binding["design_context_digest"] = resolved.get("design_context_digest")
+    if selection_source is not None:
+        selection_path, metadata = _freeze_input_snapshot(
+            run_path, "layout-selection", selection_source,
+            max_bytes=MAX_SLIDES_CONTRACT_BYTES)
+        try:
+            selection = json.loads(selection_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise ContractError("layout_selection_invalid") from exc
+        if (not isinstance(selection, dict)
+                or selection.get("kind") != "deck-layout-selection"):
+            raise ContractError("layout_selection_invalid")
+        if pack_source is not None:
+            if selection.get("content_digest") != pack.get("content_digest"):
+                raise ContractError("layout_selection_content_mismatch")
+            selected_pages = set(selection.get("selection") or {})
+            pack_pages = {page.get("page_id") for page in pack.get("pages", [])}
+            if selected_pages != pack_pages:
+                raise ContractError("layout_selection_page_mismatch")
+        _record_supplemental_input(run_path, "layout_selection", metadata)
+        binding["selection_policy"] = selection.get("policy_version")
+        binding["selection_status"] = selection.get("status")
+    return binding or None
+
+
 def _run_input_sources(run_path: str | Path, *, pages: set[int] | None = None) -> list[str]:
     root = Path(run_path).resolve()
     source_root = root / "editable" / "sources"
@@ -705,6 +838,58 @@ def _operation_payload(
         "safe_to_retry": safe_to_retry,
         "state_hash": state_hash,
     }
+
+
+_REGISTRY_RUN_ID_RE = re.compile(r"^[0-9a-f]{8,64}$")
+
+
+def _register_run_in_home_registry(
+    run_dir: str | Path,
+    snapshot: dict[str, Any],
+    *,
+    project_root: str | None,
+    home: Path | None = None,
+) -> bool:
+    """run create 成功后向 ``${LEO_PPT_HOME}/runs-registry.jsonl`` 追加登记。
+
+    控制台 RunScanner 以 home 的 ``projects/*/runs/*`` 布局为主发现源；
+    workspace 自包含 run（``<project-root>/runs/<run-id>``，执行合同的正式
+    位置）经该 registry 变为全局可见。幂等（同 run_id 不重复追加）、容错
+    （任何 OSError 打 WARN 后跳过，绝不阻断生成）。
+    """
+
+    run_id = snapshot.get("run_id")
+    if not isinstance(run_id, str) or not _REGISTRY_RUN_ID_RE.match(run_id):
+        return False
+    root = (home if home is not None else default_home()) / "runs-registry.jsonl"
+    entry = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "route": snapshot.get("route"),
+        "project_root": project_root,
+        "run_dir": str(Path(run_dir).resolve()),
+        "created_at": snapshot.get("created_at"),
+    }
+    line = json.dumps(entry, ensure_ascii=False, sort_keys=True) + "\n"
+    try:
+        root.parent.mkdir(parents=True, exist_ok=True)
+        if root.is_file():
+            for existing in root.read_text(encoding="utf-8", errors="replace").splitlines():
+                stripped = existing.strip()
+                if not stripped:
+                    continue
+                try:
+                    payload = json.loads(stripped)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(payload, dict) and payload.get("run_id") == run_id:
+                    return False
+        with root.open("a", encoding="utf-8") as handle:
+            handle.write(line)
+    except OSError as exc:
+        print(f"runs-registry append skipped: {exc.__class__.__name__}", file=sys.stderr)
+        return False
+    return True
 
 
 def _record_event(run_path: str | Path, kind: str, **data: Any) -> None:
@@ -1266,6 +1451,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--sources",
         help="视觉来源清单（content/sources-manifest.json）；冻结进 run input 并入 prepare_fingerprint",
     )
+    prepare.add_argument(
+        "--content-pack",
+        help="母版内容包（page-content-pack.json）；dashi K4 冻结绑定，prepare 校验摘要与页序",
+    )
+    prepare.add_argument(
+        "--design",
+        help="冻结设计（resolved-design.json）；与内容包同批冻结并交叉核对页序",
+    )
+    prepare.add_argument(
+        "--layout-selection",
+        help="整册版式选择（layout-selection.json，K3/K5）；随绑定冻结并核对覆盖",
+    )
     for sample_command in ("sample-record", "sample-verify"):
         sample_parser = image_commands.add_parser(sample_command)
         sample_parser.add_argument("run_path", nargs="?")
@@ -1328,6 +1525,19 @@ def build_parser() -> argparse.ArgumentParser:
     image_assemble.add_argument("--output")
     image_assemble.add_argument("--rebuild", action="store_true")
 
+    content = subcommands.add_parser(
+        "content", help="母版内容层投影（dashi K1/K4：内容包编译与身份补齐）")
+    content_commands = content.add_subparsers(dest="content_command", required=True)
+    content_pack_cmd = content_commands.add_parser(
+        "pack", help="confirmed 母版 → page-content-pack.json（确定性单向投影）")
+    content_pack_cmd.add_argument("--master", required=True, help="母版文档路径")
+    content_pack_cmd.add_argument("--out", required=True, help="内容包输出路径")
+    content_pack_cmd.add_argument("--master-revision", help="母版 revision 标签（缺省从文件名解析）")
+    content_stamp_cmd = content_commands.add_parser(
+        "stamp-page-ids", help="legacy 母版一次性补齐稳定页身份（输出新母版文本）")
+    content_stamp_cmd.add_argument("--master", required=True, help="母版文档路径")
+    content_stamp_cmd.add_argument("--out", required=True, help="补齐身份后的新母版输出路径")
+
     render = subcommands.add_parser(
         "render", help="确定性渲染 lane（gamma M1：D 柱，与图像 backend 并列）")
     render_commands = render.add_subparsers(dest="render_command", required=True)
@@ -1336,7 +1546,7 @@ def build_parser() -> argparse.ArgumentParser:
     render_ready_cmd.add_argument("--json", action="store_true")
     render_page_cmd = render_commands.add_parser("page", help="HTML 模板 → PNG 页产物")
     render_page_cmd.add_argument("--template", required=True,
-                                 help="assets/render-templates/<id>.html 的模板 id")
+                                 help="template-library/canonical/templates/<id>/page.html 的模板 id")
     render_page_cmd.add_argument("--data", required=True, help="slide data JSON 路径")
     render_page_cmd.add_argument("--out", required=True, help="PNG 输出路径")
     render_page_cmd.add_argument("--size", default="2560x1440",
@@ -1357,6 +1567,10 @@ def build_parser() -> argparse.ArgumentParser:
                                   help="themeVariables JSON（缺省 mermaid 默认并 WARN）")
     render_chart_cmd.add_argument("--scale-width", type=int, default=2560,
                                   help="栅格化 fitTo 宽度")
+    render_chart_cmd.add_argument("--chart-width", type=int, help="XY 图表逻辑宽度（320–2560）")
+    render_chart_cmd.add_argument("--chart-height", type=int, help="XY 图表逻辑高度（180–1440）")
+    render_chart_cmd.add_argument("--label-size", type=int, help="XY 轴标签与图例字号（12–96）")
+    render_chart_cmd.add_argument("--data-labels", action="store_true", help="显示 XY 柱体数值标签")
 
     editable = subcommands.add_parser("editable")
     editable_commands = editable.add_subparsers(dest="editable_command", required=True)
@@ -1474,7 +1688,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--anchor", action="store_true",
         help="附加风格锚附录（HEX/字族/渲染逐字节注入每页，防漂移；--brand 隐含开启）",
     )
-    style_render.add_argument("--layout", help="版式名（12_版式库，如 P6 / KPI Tower）")
+    style_render.add_argument("--layout", help="版式名（canonical layout profile，如 P6 / KPI Tower）")
     style_render.add_argument("--image-type", help="信息图类型名（07_信息图类型）")
     style_render.add_argument(
         "--materialize",
@@ -2213,6 +2427,9 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 index = creation.index
                 run_snapshot = index.snapshot()
                 operation_id = args.idempotency_key or f"create-{run_snapshot['run_id']}"
+                _register_run_in_home_registry(
+                    output, run_snapshot, project_root=args.project_root
+                )
                 return _run_result(
                     "ready",
                     "run_created" if creation.idempotency_status == "created" else "run_replayed",
@@ -2225,6 +2442,9 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             existed = (Path(output) / "run.json").is_file()
             index = RunIndex.create(output, route=args.route, runtime_identity=runtime_identity)
             run_snapshot = index.snapshot()
+            _register_run_in_home_registry(
+                output, run_snapshot, project_root=args.project_root
+            )
             return _run_result(
                 "ready",
                 "run_created" if not existed else "run_replayed",
@@ -2389,6 +2609,58 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             worker_outcome=worker_outcome,
             next_action={"kind": "none"},
         )
+    if args.command == "content":
+        from .content_pack import (
+            ContentPackError,
+            compile_content_pack,
+            propose_page_id_stamping,
+            verify_content_pack,
+        )
+        master_path = Path(args.master).expanduser().resolve()
+        if not master_path.is_file():
+            raise ContractError("content_master_missing")
+        master_text = master_path.read_text(encoding="utf-8")
+        if args.content_command == "stamp-page-ids":
+            stamped = propose_page_id_stamping(master_text)
+            out_path = Path(args.out).expanduser().resolve()
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            atomic_write_bytes(out_path, stamped.encode("utf-8"))
+            return envelope(
+                "ready",
+                "content_page_ids_stamped",
+                master=str(master_path),
+                out=str(out_path),
+                message="一次性身份写入完成；新母版须经确认后才能编译内容包",
+            )
+        revision = args.master_revision
+        if revision is None:
+            match = re.search(r"-v(\d+)\.md$", master_path.name)
+            revision = f"v{match.group(1)}" if match else None
+        try:
+            pack = compile_content_pack(
+                master_text,
+                master_path=f"content/{master_path.name}",
+                master_revision=revision,
+            )
+            verify_content_pack(pack)
+        except ContentPackError as exc:
+            raise ContractError(f"content_pack_invalid: {exc}") from exc
+        out_path = Path(args.out).expanduser().resolve()
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        atomic_write_json(out_path, pack)
+        return envelope(
+            "ready",
+            "content_pack_compiled",
+            master=str(master_path),
+            out=str(out_path),
+            content_pack={
+                "content_digest": pack["content_digest"],
+                "pages": len(pack["pages"]),
+                "master_sha256": pack["source"]["master_sha256"],
+                "master_revision": revision,
+            },
+        )
+
     if args.command == "render":
         if args.render_command == "ready":
             report = _render_readiness_report()
@@ -2436,6 +2708,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             code_file=args.code_file,
             out=args.out,
             theme_file=args.theme_file,
+            chart_options={key: value for key, value in {
+                "width": args.chart_width, "height": args.chart_height,
+                "label_size": args.label_size,
+                "data_labels": True if args.data_labels else None,
+            }.items() if value is not None},
         )
         raster = None
         if args.png:
@@ -2480,6 +2757,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 raise ContractError("slides_required")
             verify_sample_decision(run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True)
             slides_path = str(_freeze_slides_contract(run_path, slides_path))
+            content_binding = _freeze_content_binding(
+                run_path, slides_path,
+                content_pack=getattr(args, "content_pack", None),
+                design=getattr(args, "design", None),
+                layout_selection=getattr(args, "layout_selection", None))
             sample_decision = verify_sample_decision(
                 run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True,
             )
@@ -2531,6 +2813,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 "image_deck_prepared",
                 result=result,
                 sample_decision=sample_decision,
+                content_binding=content_binding,
                 **_operation_payload(
                     operation_id=f"image-prepare-{state_hash[:16]}",
                     idempotency_status="replayed" if existed else "created",
@@ -3088,7 +3371,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 return envelope("ready", "style_summaries_listed", **result, safe_to_retry=True)
             if args.limit is not None or args.offset is not None:
                 raise StyleStoreError("style_summary_required_for_pagination")
-            styles = list_styles(home=home)
+            listing = list_styles_with_source(home=home)
+            styles = listing["styles"]
             needle = getattr(args, "filter", None)
             if needle:
                 needle = str(needle).strip().lower()
@@ -3097,7 +3381,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     if needle in str(item.get("name", "")).lower()
                     or any(needle in str(a).lower() for a in item.get("aliases", []) or [])
                 ]
-            return envelope("ready", "style_listed", styles=styles, safe_to_retry=True)
+            return envelope("ready", "style_listed", styles=styles,
+                            registry_source=listing["registry_source"], safe_to_retry=True)
         if args.style_command == "load":
             if args.summary:
                 return envelope("ready", "style_summary_loaded", style=style_summary(args.name, home=home), safe_to_retry=True)
@@ -3159,6 +3444,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     args.layout,
                     image_type=args.image_type,
                     materialize=bool(getattr(args, "materialize", False)),
+                    home=home,
                 )
             return envelope(
                 "ready", "style_rendered", template=result, safe_to_retry=True,

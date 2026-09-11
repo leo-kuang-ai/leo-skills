@@ -64,7 +64,7 @@ Writing Agent 提供最完整的节点和机器门禁：选题、brief、立场�
 
 ## 范围冻结
 
-语料根为本地 file-github 语料镜像（路径未入库；沿用第一轮惯例记本地绝对路径于工作区清单），快照 2026-08-31，152 个 git 仓库（commit 清单冻结于 `upstream-absorption-workspace/00-corpus-manifest.md`，本地 git-ignore 工作区）。方法：漏斗式全景——12 批并行浅筛全量出卡（A 可吸收度≥2 共 54 / B 29 / C 69，卡片见 screening/batch-01..12）→ 6 轨道定向深读 20 个 A 级项目（deepread/T1-T6）→ 44 条候选合并裁决（05-phase3-candidates.md）→ 用户裁决三批全做、合同口径 3+6（06-adjudication.md）。与 2026-08-26 审计重叠的两个项目（writing-agent、humanizer 同 commit）已按增量重评。
+语料根为本地 file-github 语料镜像（路径未入库；沿用第一轮惯例记本地绝对路径于工作区清单），快照 2026-08-31，152 个 git 仓库（commit 清单当时冻结于 git-ignore 工作区语料 manifest，该工作区已于 2026-09-11 清理）。方法：漏斗式全景——12 批并行浅筛全量出卡（A 可吸收度≥2 共 54 / B 29 / C 69，卡片见 screening/batch-01..12）→ 6 轨道定向深读 20 个 A 级项目（deepread/T1-T6）→ 44 条候选合并裁决（05-phase3-candidates.md）→ 用户裁决三批全做、合同口径 3+6（06-adjudication.md）。与 2026-08-26 审计重叠的两个项目（writing-agent、humanizer 同 commit）已按增量重评。
 
 ## 五簇能力结论
 

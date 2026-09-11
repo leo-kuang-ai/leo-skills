@@ -1,0 +1,162 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:工业产品风",
+  "name": "工业产品风",
+  "aliases": [
+    "工业风",
+    "硬件产品风",
+    "industrial"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/制造能源/工业产品风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "industrial-product aesthetic, rugged precise, spec-driven contrast, material/engineering credibility, high-trust industrial branding, serious execution polish"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "工业风",
+      "硬件产品风",
+      "industrial"
+    ],
+    "best_for": "工业与重型装备产品,需要硬核、质感、参数化的表达",
+    "visual_direction": "industrial-product aesthetic, rugged precise, spec-driven contrast, material/engineering credibility, high-trust industrial branding, serious execution polish",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark metal / cool gradient, product-forward",
+      "composition": "spec + material + application",
+      "density": "medium, bold-precise"
+    },
+    "color_palette": {
+      "primary": "charcoal #1F2937 / metal gray #6B7280, white",
+      "secondary": "steel #6B7280, dark gradient #1F2937",
+      "accent": "one safety-orange accent #F97316",
+      "neutral": "near-black #1F2937, gray #6B7280, white",
+      "rule": "rugged, industrial, precise; high contrast"
+    },
+    "typography": {
+      "title": "bold industrial sans (DIN / 思源黑体), technical",
+      "body": "clean spec body",
+      "labels": "param/model tags",
+      "text_quality": "exact specs, model numbers"
+    },
+    "layout_patterns": [
+      "hero product render",
+      "spec & load table",
+      "material/engineering detail",
+      "application scenarios"
+    ],
+    "layout_usage_rule": "Hard, precise, spec-driven; product render and accurate specs carry it.",
+    "layout_blueprints": [
+      {
+        "name": "产品封面",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "产品/型号"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "产品渲染"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "关键规格"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "参数页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "规格表"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "材质",
+              "工况",
+              "应用"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "product render, spec tables, dark-metal palette, safety accent, technical callouts",
+      "avoid": "cartoon, glossy stock, clutter, misleading specs"
+    },
+    "rendering_constraints": [
+      "Hard, precise, industrial cred.",
+      "Spec-driven; product render + accurate parameters.",
+      "Exact specs/model numbers; no invented logos."
+    ],
+    "reference": "GitHub: 工业产品 · 参数化表达惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Hard, precise, industrial cred.",
+      "Spec-driven; product render + accurate parameters.",
+      "Exact specs/model numbers; no invented logos."
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 # Leo PPT Generator 高洞察、高说服力内容测评方案 · 第二轮（优化验证与覆盖扩展）
 
 - 上游方案：`docs/plans/2026-09-06-003-leo-ppt-insight-persuasion-evaluation-plan.md`（第一轮，30 轮）
-- 第一轮基线：`leo-ppt-insight-eval-workspace/insight-persuasion-baseline.md`（git-ignore 工作区）
+- 第一轮基线：insight-persuasion-baseline.md（原存 git-ignore 工作区，已于 2026-09-11 清理；基线结论摘录见上游第一轮方案）
 - 触发条件：第一轮的五项优化已落地（P0 反方与边界合同必填、P0 金额测算纪律、
   P1 给定结论冲突处置协议、P1 跨工件引用规则、P2 `check_deck_prose.py` 三处
   互操作修复）——本方案验证其生效并补齐第一轮的方法学缺口。

@@ -1,0 +1,83 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-edu-bright-r1",
+  "assets": {
+    "style": "builtin:style:edu-bright",
+    "theme": "builtin:theme:edu-bright-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[edu-bright]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 1"
+  },
+  "outputs": {
+    "cover.png": "fa9b351fc4f104bebf51516256bc9edf566a8b37fa9019f9144641c2dbfd1704",
+    "content.png": "93bbe51cfec9601740443f0ebd53473483856462cbad4c4c03c960ee0461746a",
+    "evidence.png": "f90a5b766a0d3cbaf93e41f96b371152ded7647103767445e1265bbe96fe5ec8",
+    "closing.png": "648974d314135e43e9e4588d40e89c2b3ea71123e6bf05fca406f2d6194683e7"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": []
+}

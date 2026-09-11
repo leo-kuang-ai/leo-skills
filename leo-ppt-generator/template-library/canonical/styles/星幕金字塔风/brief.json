@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:星幕金字塔风",
+  "name": "星幕金字塔风",
+  "aliases": [
+    "SKT 인터랙티브 AI 피라미드",
+    "SKT interactive AI pyramid",
+    "单色蓝金字塔"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/星幕金字塔风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "韩式咨询"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "monochrome-blue annual report like SKT, starlight cover with big english slogan and a dimensional pyramid diagram as signature, interactive tab-menu chrome, single-blue vision tone"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "SKT 인터랙티브 AI 피라미드",
+      "SKT interactive AI pyramid",
+      "单色蓝金字塔"
+    ],
+    "best_for": "单色蓝星空金字塔的科技企业年报审美;适合 AI 战略/愿景发布/技术路线图",
+    "visual_direction": "monochrome-blue annual report like SKT, starlight cover with big english slogan and a dimensional pyramid diagram as signature, interactive tab-menu chrome, single-blue vision tone",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF、#E4EEFB(变体锚)",
+      "composition": "星空封面 + 立体金字塔图为签名,单色蓝统一,PDF 标签页 chrome",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)",
+      "secondary": "#E4EEFB(浅蓝面)",
+      "accent": "#0010A7(深蓝主强调)",
+      "neutral": "#000000(墨字)"
+    },
+    "typography": {
+      "title": "Pretendard 500(Noto Sans KR/Inter 兜底)130pt 封面字",
+      "body": "Pretendard 400 正文",
+      "labels": "Pretendard 600 章节 slate 字 150pt 级"
+    },
+    "layout_patterns": [
+      "星空/深蓝封面 + 大号英文标语",
+      "立体金字塔图承载 AI 战略层级",
+      "页面顶部悬浮标签页菜单(交互报告审美)",
+      "单色蓝 #0010A7 统一,红色 #EA002C 仅 logo 位"
+    ],
+    "layout_usage_rule": "星空/深蓝封面 + 大号英文标语",
+    "visual_elements": {
+      "allowed": "星空封面 + 立体金字塔图为签名,单色蓝统一,PDF 标签页 chrome",
+      "avoid": "不要把红 #EA002C 用于正文/图形(仅 logo wordmark); 不要多色系——单色蓝家族是身份"
+    },
+    "rendering_constraints": [
+      "不要把红 #EA002C 用于正文/图形(仅 logo wordmark)",
+      "不要多色系——单色蓝家族是身份",
+      "不要手绘/插画装饰",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要把红 #EA002C 用于正文/图形(仅 logo wordmark)",
+      "不要多色系——单色蓝家族是身份",
+      "不要手绘/插画装饰"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD52 SKT 인터랙티브 AI 피라미드"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要把红 #EA002C 用于正文/图形(仅 logo wordmark)",
+      "不要多色系——单色蓝家族是身份",
+      "不要手绘/插画装饰",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

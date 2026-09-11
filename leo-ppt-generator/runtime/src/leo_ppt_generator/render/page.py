@@ -34,8 +34,10 @@ from typing import Any
 from ..storage import sha256_file
 from .assets import template_path
 from .errors import RenderError
-from .fonts import RenderAssetServer
+from .fonts import RenderAssetServer, theme_font_assets
 from .readiness import _apply_browsers_path
+from .svg_policy import sanitize_svg
+from ..template_inputs import load_template_json, validate_template_data
 
 LOGICAL_WIDTH = 1280
 LOGICAL_HEIGHT = 720
@@ -54,17 +56,21 @@ _OVERFLOW_CHECK_JS = """
   const tol = 1.0;
   const vw = window.innerWidth, vh = window.innerHeight;
   const violations = [];
-  document.querySelectorAll('[data-leo-block]').forEach((el) => {
-    const v = { block: el.getAttribute('data-leo-block') || el.tagName.toLowerCase() };
+  document.querySelectorAll('[data-leo-block], [data-leo-block-item], [data-leo-region]').forEach((el) => {
+    if (!el.getClientRects().length) return;
+    const v = { block: el.getAttribute('data-leo-block') || el.getAttribute('data-leo-block-item') || el.getAttribute('data-leo-region') };
     const r = el.getBoundingClientRect();
+    const style = getComputedStyle(el);
+    // 自动行盒可露出字体上升部；固定区域与裁剪盒才有内部容量边界。
+    const constrained = el.hasAttribute('data-leo-region') || el.hasAttribute('data-leo-block-item');
     if (r.bottom > vh + tol) v.bottom_px = +(r.bottom - vh).toFixed(1);
     if (r.right > vw + tol) v.right_px = +(r.right - vw).toFixed(1);
     if (r.top < -tol) v.top_px = +(-r.top).toFixed(1);
     if (r.left < -tol) v.left_px = +(-r.left).toFixed(1);
-    if (el.clientWidth > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowX)
+    if (el.clientWidth > 0 && (constrained || ['hidden', 'clip'].includes(style.overflowX))
         && el.scrollWidth > el.clientWidth + tol)
       v.inner_width_px = +(el.scrollWidth - el.clientWidth).toFixed(1);
-    if (el.clientHeight > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowY)
+    if (el.clientHeight > 0 && ((constrained && (el.hasAttribute('data-leo-region') || el.childElementCount > 0)) || ['hidden', 'clip'].includes(style.overflowY))
         && el.scrollHeight > el.clientHeight + tol)
       v.inner_height_px = +(el.scrollHeight - el.clientHeight).toFixed(1);
     if (Object.keys(v).length > 1) violations.push(v);
@@ -124,6 +130,23 @@ def _playwright_version() -> str:
         return "unknown"
 
 
+def _prepare_slide_data(data_text: str) -> Any:
+    """Parse slide data and sanitize an optional chart SVG before browser injection."""
+
+    payload = load_template_json(data_text)
+    if isinstance(payload, dict):
+        chart_svg = payload.get("chart_svg")
+        if isinstance(chart_svg, str) and "<svg" in chart_svg:
+            try:
+                payload = dict(payload)
+                payload["chart_svg"] = sanitize_svg(chart_svg)
+            except Exception as exc:
+                raise RenderError(
+                    "render_data_invalid", f"chart SVG policy rejected output: {exc}"
+                ) from exc
+    return payload
+
+
 def _utc_now() -> str:
     return (
         datetime.now(timezone.utc)
@@ -146,22 +169,39 @@ def render_page(
     scale = _device_scale_factor(size)
     try:
         template_file = template_path(template_id)
-    except ValueError as exc:
+    except (ValueError, FileNotFoundError) as exc:
         raise RenderError("render_template_not_found", str(exc)) from exc
     if not template_file.is_file():
         raise RenderError(
             "render_template_not_found",
-            f"template '{template_id}' not found under assets/render-templates/",
+            f"template '{template_id}' not found under template-library/canonical/templates/",
         )
 
     data_file = Path(data_path)
     try:
         data_text = data_file.read_text(encoding="utf-8")
-        json.loads(data_text)
+        data_payload = _prepare_slide_data(data_text)
+        manifest = json.loads(template_file.with_name("template.json").read_text(encoding="utf-8"))
+        errors = validate_template_data(manifest, data_payload)
+        if errors:
+            raise RenderError("render_data_invalid", "; ".join(errors)[:1000])
     except OSError as exc:
         raise RenderError("render_data_invalid", f"slide data unreadable: {exc}") from exc
     except ValueError as exc:
         raise RenderError("render_data_invalid", f"slide data is not JSON: {exc}") from exc
+
+    if not (theme_variables or {}).get("geometry") and manifest.get("layout_profiles"):
+        from ..asset_resolver import AssetResolver
+        from .layout import LayoutProfileError, compile_geometry
+
+        try:
+            profile = AssetResolver().resolve(manifest["layout_profiles"][0])["data"]
+            theme_variables = dict(theme_variables or {})
+            theme_variables["geometry"] = compile_geometry(
+                profile, theme_variables,
+                column_count=len(data_payload["columns"]) if "columns" in data_payload else None)
+        except LayoutProfileError as exc:
+            raise RenderError("layout_profile_invalid", str(exc)) from exc
 
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -179,7 +219,8 @@ def render_page(
     warnings: list[str] = []
     started = time.monotonic()
 
-    with RenderAssetServer() as server:
+    font_dirs, font_css = theme_font_assets(theme_variables or {})
+    with RenderAssetServer(extra_font_dirs=font_dirs) as server:
         with sync_playwright() as playwright:
             launch_kwargs: dict[str, Any] = {"headless": True, "timeout": timeout_ms}
             if executable:
@@ -201,13 +242,15 @@ def render_page(
                 # 注入必须在页面脚本执行前完成（add_init_script），否则模板
                 # 内联脚本读到空数据——竞态产物是"干净空页"，只有像素闸门
                 # 能抓住。数据以 JSON 字面量内嵌，"</" 转义防提前闭合。
-                data_literal = json.dumps(json.loads(data_text), ensure_ascii=False).replace("</", "<\\/")
+                data_literal = json.dumps(data_payload, ensure_ascii=False).replace("</", "<\\/")
                 theme_literal = json.dumps(theme_variables or {}, ensure_ascii=False).replace("</", "<\\/")
                 context.add_init_script(
                     f"window.__LEO_SLIDE_DATA__ = {data_literal};"
                     f"window.__LEO_THEME_VARIABLES__ = {theme_literal};"
                 )
                 page = context.new_page()
+                script_errors = []
+                page.on("pageerror", lambda error: script_errors.append(str(error)))
                 page.set_default_timeout(timeout_ms)
                 url = server.url(f"{template_id}.html?leo_render=1")
                 try:
@@ -216,6 +259,38 @@ def render_page(
                     raise RenderError("render_timeout", f"goto/networkidle: {exc}") from exc
 
                 page.evaluate("() => window.__LEO_SLIDE_DATA__")
+                if script_errors:
+                    raise RenderError("render_script_error", "; ".join(script_errors)[:1000])
+                requested_fonts = []
+                if font_css:
+                    page.add_style_tag(content=font_css)
+                    requested_fonts = sorted({
+                        (str(defn.get("family")), int(defn.get("weight", 400)))
+                        for defn in (theme_variables or {}).get("fonts", {}).values()
+                        if isinstance(defn, dict) and defn.get("family")
+                    })
+                    if requested_fonts:
+                        font_probe = page.evaluate(
+                            """async (requests) => {
+                              const result = [];
+                              for (const [family, weight] of requests) {
+                                try {
+                                  const loaded = await document.fonts.load(`${weight} 16px ${JSON.stringify(family)}`);
+                                  result.push({family, weight, loaded: loaded.length > 0,
+                                               check: document.fonts.check(`${weight} 16px ${JSON.stringify(family)}`)});
+                                } catch (error) {
+                                  result.push({family, weight, loaded: false, check: false, error: String(error)});
+                                }
+                              }
+                              return result;
+                            }""",
+                            requested_fonts,
+                        )
+                        if any(not item.get("loaded") or not item.get("check") for item in font_probe):
+                            raise RenderError(
+                                "render_font_missing",
+                                "主题字体未成功加载: " + json.dumps(font_probe, ensure_ascii=False),
+                            )
 
                 ready_signal = "data-leo-ready"
                 try:
@@ -236,6 +311,8 @@ def render_page(
                     raise RenderError("render_timeout", f"fonts.ready: {exc}") from exc
 
                 # 溢出哨兵：截图前确定性断言（warn 模式降级为 sidecar 警告）。
+                if script_errors:
+                    raise RenderError("render_script_error", "; ".join(script_errors)[:1000])
                 overflow_mode = os.environ.get("LEO_PPT_RENDER_OVERFLOW", "enforce").strip().lower()
                 try:
                     overflow_violations = page.evaluate(_OVERFLOW_CHECK_JS) or []
@@ -297,6 +374,7 @@ def render_page(
         "render_ms": render_ms,
         "rendered_at": _utc_now(),
         "warnings": warnings,
+        "fonts_checked": requested_fonts,
     }
     sidecar = out.with_name(out.name + ".render.json")
     sidecar.write_text(

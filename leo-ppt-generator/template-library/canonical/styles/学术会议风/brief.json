@@ -1,0 +1,132 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:学术会议风",
+  "name": "学术会议风",
+  "aliases": [],
+  "variant_of": "学术论文答辩风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/学术求职/学术会议风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "学术答辩"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "academic-congress style, concise conference presentation, time-boxed clarity, credible scholarly delivery, professional academic forum tone"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "学术论文答辩风",
+    "best_for": "学术会议报告,需精简、专业、在限定时长内讲清要点",
+    "visual_direction": "academic-congress style, concise conference presentation, time-boxed clarity, credible scholarly delivery, professional academic forum tone",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / pale, scholarly",
+      "composition": "research/体例: question → method → evidence → contribution",
+      "density": "medium, scholarly"
+    },
+    "color_palette": {
+      "primary": "steel blue #334155 / navy, white",
+      "secondary": "slate #64748B, warm gray #9C9484",
+      "accent": "one restrained accent #64748B",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "restrained, disciplined, scholarly"
+    },
+    "typography": {
+      "title": "clear authoritative serif (Georgia / 思源宋体) or sans (Inter / 思源黑体)",
+      "body": "precise academic body",
+      "labels": "figure/ref labels",
+      "text_quality": "exact academic terms, citations"
+    },
+    "layout_patterns": [
+      "key question & claim",
+      "central evidence",
+      "implication/discussion",
+      "future direction"
+    ],
+    "layout_usage_rule": "Time-boxed, concise, professional; claim, evidence, implication.",
+    "layout_blueprints": [
+      {
+        "name": "引言页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "议题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "结论页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 2,
+            "labels": [
+              "发现",
+              "启示"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "study diagram, evidence table, figure, reference note, structured argument",
+      "avoid": "playful, clutter, shallow marketing, unsupported claims"
+    },
+    "rendering_constraints": [
+      "Scholarly, evidence-forward structure.",
+      "Question-method-evidence-contribution; disciplined tone.",
+      "Exact terms and citations; no invented data."
+    ],
+    "reference": "GitHub: 学术会议 · 会议报告惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.85,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Scholarly, evidence-forward structure.",
+      "Question-method-evidence-contribution; disciplined tone.",
+      "Exact terms and citations; no invented data."
+    ]
+  }
+}

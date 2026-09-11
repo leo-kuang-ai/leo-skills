@@ -4,7 +4,7 @@ import re
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2] / "references/styles"
+ROOT = Path(__file__).resolve().parents[2] / "template-library/reference/sources/retired-styles-tree/styles"
 SCHEMA = ROOT / "00_索引/版式内容Schema.md"
 LAYOUT_DIR = ROOT / "12_版式库"
 

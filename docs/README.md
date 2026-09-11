@@ -43,9 +43,6 @@ PPT 生成技能相关文档
 - **tech-plans/** - 技术规划
   - `multi-industry-optimization-tech-plan.md` - 多行业优化技术规划
 
-#### `evidence-first-writing/`
-证据优先写作技能相关文档（待补充）
-
 ### 静态资源
 
 #### `assets/`

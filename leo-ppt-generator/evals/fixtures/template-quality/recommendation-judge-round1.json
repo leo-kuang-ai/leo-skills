@@ -1,0 +1,80 @@
+{
+  "kind": "recommendation-judge-verdict",
+  "schema_version": 1,
+  "tasks_judged": 24,
+  "total_errors": 0,
+  "verdicts": {
+    "ac-den-undergrad-lecture": {
+      "errors": []
+    },
+    "ac-mgmt-grant-closeout": {
+      "errors": []
+    },
+    "ac-pro-paper-prereview": {
+      "errors": []
+    },
+    "br-env-popstore-loop": {
+      "errors": []
+    },
+    "br-mgmt-strategy-review": {
+      "errors": []
+    },
+    "br-pro-growth-data-review": {
+      "errors": []
+    },
+    "con-den-workshop": {
+      "errors": []
+    },
+    "con-mgmt-steering-close": {
+      "errors": []
+    },
+    "con-pro-analysis-appendix": {
+      "errors": []
+    },
+    "edu-kids-science-class": {
+      "errors": []
+    },
+    "edu-mgmt-teaching-audit": {
+      "errors": []
+    },
+    "edu-pro-math-open-class": {
+      "errors": []
+    },
+    "fin-env-annual-meeting": {
+      "errors": []
+    },
+    "fin-mgmt-board-report": {
+      "errors": []
+    },
+    "fin-pro-quant-review": {
+      "errors": []
+    },
+    "gov-env-party-day-screen": {
+      "errors": []
+    },
+    "gov-mgmt-workreport": {
+      "errors": []
+    },
+    "gov-pro-open-data-review": {
+      "errors": []
+    },
+    "med-mgmt-annual-review": {
+      "errors": []
+    },
+    "med-pro-trial-review": {
+      "errors": []
+    },
+    "med-pub-patient-education": {
+      "errors": []
+    },
+    "tech-env-atrium-launch": {
+      "errors": []
+    },
+    "tech-mgmt-investor-pitch": {
+      "errors": []
+    },
+    "tech-pro-arch-deepdive": {
+      "errors": []
+    }
+  }
+}

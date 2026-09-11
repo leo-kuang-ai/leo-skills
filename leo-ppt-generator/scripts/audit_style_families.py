@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """137 brief 家族分布实测（R-66 前置盘点 / 合并后复测，只读不改 brief）。
 
-扫描 ``references/styles/`` 全部含 JSON 风格块的 brief（11 顶层内置 +
-126 子目录参考），输出：
+扫描当前执行真源 ``template-library/canonical/styles/*/brief.json``，输出：
 
 - 轴 / 子家族分布（目录即家族的现有划分）；
 - 调性标签分布（dark/light/flat/hand-drawn/serif/… 关键词映射，确定性）；
@@ -36,7 +35,8 @@ SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 from leo_ppt_generator.styles import iter_brief_documents
 
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/canonical/styles")
+LEGACY_STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 
 JSON_BLOCK_RE = re.compile(r"```json\n(.*?)\n```", re.S)
 HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}")
@@ -90,6 +90,38 @@ def normalize_name(name: str) -> str:
 
 def brief_entries(styles_root: Path = STYLES_ROOT) -> list[dict]:
     entries: list[dict] = []
+    canonical = any(styles_root.glob("*/brief.json"))
+    if canonical:
+        for path in sorted(styles_root.glob("*/brief.json")):
+            try:
+                brief = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                continue
+            legacy = brief.get("legacy_payload") or {}
+            palette_src = json.dumps(legacy.get("color_palette", {}), ensure_ascii=False) + str(
+                legacy.get("canvas", {}).get("background", ""))
+            hexes = sorted({h.upper() for h in HEX_RE.findall(palette_src)})
+            scenario_text = " ".join(str(item) for item in (brief.get("taxonomy", {}).get("scenarios") or []))
+            scenario_text += " " + str(legacy.get("best_for", ""))
+            tone_text = " ".join(str(value) for value in (
+                brief.get("visual_language", {}).get("direction", ""),
+                legacy.get("canvas", {}).get("background", ""),
+                legacy.get("color_palette", {}).get("primary", ""),
+            )).lower()
+            entries.append({
+                "name": brief.get("name", path.parent.name),
+                "base": normalize_name(str(brief.get("name", path.parent.name))),
+                "path": str(path.relative_to(styles_root)),
+                "axis": "canonical",
+                "subfamily": ((brief.get("taxonomy") or {}).get("families") or ["未分类"])[0],
+                "hexes": hexes,
+                "tones": sorted(tag for tag, keys in TONE_KEYWORDS.items()
+                                if any(k in tone_text for k in keys)),
+                "scenarios": sorted(tag for tag, keys in SCENARIO_KEYWORDS.items()
+                                    if any(k in scenario_text.lower() or k in scenario_text for k in keys)),
+                "variant_of": brief.get("variant_of"),
+            })
+        return entries
     for path, text, brief in iter_brief_documents(styles_root):
         rel = path.relative_to(styles_root)
         axis = "顶层内置" if rel.parent == Path(".") else rel.parts[0]
@@ -225,6 +257,7 @@ def build_report(entries: list[dict]) -> dict:
     cluster_list = clusters(entries)
     clustered = sum(len(c["members"]) for c in cluster_list)
     return {
+        "source": "canonical" if any(e.get("axis") == "canonical" for e in entries) else "retired-reference",
         "total_briefs": len(entries),
         "top_level_styles": len(entries) - variant_styles,
         "variant_styles": variant_styles,
@@ -242,7 +275,7 @@ def build_report(entries: list[dict]) -> dict:
 
 def render_text(report: dict) -> str:
     lines = [f"# {report['total_briefs']} brief 家族分布实测"
-             f"（生成物，R-66 合并后口径）", "",
+             f"（source={report.get('source', 'unknown')}，R-66 合并后口径）", "",
              f"brief 总数 {report['total_briefs']}（文件口径）；顶层主风格 "
              f"{report['top_level_styles']} + 家族变体 {report['variant_styles']}"
              f"（variant_of 归属 {len(report['family_merges'])} 个主风格家族）；"
@@ -290,10 +323,13 @@ def render_text(report: dict) -> str:
 def main(argv: "list[str] | None" = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--json", action="store_true", help="输出机读 JSON 全量数据")
-    parser.add_argument("--root", help="styles 目录覆盖（默认仓库 references/styles；供单测用）")
+    parser.add_argument("--root", help="styles 目录覆盖（默认 canonical styles；供单测用）")
+    parser.add_argument("--legacy-fixtures", action="store_true", help="显式检查 retired Markdown 迁移输入")
     args = parser.parse_args(argv)
 
     styles_root = Path(args.root).resolve() if args.root else STYLES_ROOT
+    if args.legacy_fixtures:
+        styles_root = Path(args.root).resolve() if args.root else LEGACY_STYLES_ROOT
     if not styles_root.is_dir():
         print(f"ERROR: styles directory not found: {styles_root}", file=sys.stderr)
         return 2

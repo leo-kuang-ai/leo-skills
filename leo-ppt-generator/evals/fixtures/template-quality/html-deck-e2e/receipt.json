@@ -1,0 +1,136 @@
+{
+  "kind": "html-deck-e2e-receipt",
+  "schema_version": 1,
+  "input": "005 u19 铜贸复盘（6 页：cover/content×2/data×2/closing）",
+  "style": "builtin:style:finance-navy",
+  "theme": "builtin:theme:finance-navy-light",
+  "mode": "light",
+  "design_digest": "34022cfc36e038dae2debf121589ea6d45c94123375e689505ebc863e636c3b3",
+  "design_digest_stable_across_compositions": true,
+  "image_lane": {
+    "projection_deterministic": true,
+    "generation_executed": false,
+    "note": "图像生成未获付费授权，仅登记冻结设计投影；实际 image deck 端到端未执行"
+  },
+  "html_lane": {
+    "pages": [
+      {
+        "page_no": 1,
+        "role": "cover",
+        "template": "builtin:template:cover-basic",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p1.png",
+        "sha256": "413ad54a3a82f460ee353001b3b85d5722854c52c620fcd7e1455ff36f404de8",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      },
+      {
+        "page_no": 2,
+        "role": "content",
+        "template": "builtin:template:body-basic",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p2.png",
+        "sha256": "2dbe6d3a3c30de1f835c31176ef5659b1050363c0131c1e51b39c2a4f9da5704",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      },
+      {
+        "page_no": 3,
+        "role": "data",
+        "template": "builtin:template:spec-table",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p3.png",
+        "sha256": "f854feee1512b624682110a7dbd3e47f21d4f438c63f9654154d827c1e4b570b",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      },
+      {
+        "page_no": 4,
+        "role": "content",
+        "template": "builtin:template:body-basic",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p4.png",
+        "sha256": "0b0572b36a84053094b561ebb49b6bf273b986afa2a63030581da93527718217",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      },
+      {
+        "page_no": 5,
+        "role": "data",
+        "template": "builtin:template:spec-table",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p5.png",
+        "sha256": "05941436a5e59a871b53403d8bccd445949a664c34577435530d00f937e27d6a",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      },
+      {
+        "page_no": 6,
+        "role": "closing",
+        "template": "builtin:template:pull-quote",
+        "png": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/p6.png",
+        "sha256": "2edf538f94b1cde14a797538bcee5f76460ab8dde4c485a6fb0227312445621f",
+        "checks": {
+          "dimensions": true,
+          "blank": true,
+          "theme_applied": true,
+          "ready_signal": true,
+          "title_nonempty": true
+        },
+        "hard_pass": true
+      }
+    ],
+    "hard_pass": true
+  },
+  "pptx": {
+    "path": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/html-deck-e2e/u19-copper-risk-review.pptx",
+    "sha256": "ca3e0fe93acd413a184f3e8a8e2dcd895ef057def6ad5b2f6405ece60e817961",
+    "slides": 6,
+    "readback_ok": true
+  },
+  "capacity_reports": [
+    {
+      "page_no": 3,
+      "slot": "rows",
+      "fits": true,
+      "needed_height": 269.3,
+      "available_height": 470,
+      "row_count": 3,
+      "max_rows_estimate": 5
+    },
+    {
+      "page_no": 5,
+      "slot": "rows",
+      "fits": true,
+      "needed_height": 269.3,
+      "available_height": 470,
+      "row_count": 3,
+      "max_rows_estimate": 5
+    }
+  ]
+}

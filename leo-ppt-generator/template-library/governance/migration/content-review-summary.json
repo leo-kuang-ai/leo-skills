@@ -1,0 +1,20 @@
+{
+  "kind": "content-review-summary",
+  "schema_version": 1,
+  "scope": "U3 全库逐项审阅（311 迁移 brief + 种子）",
+  "criteria": {
+    "merged-variant": "variant_of 声明变体，并入主风格",
+    "reference-gap": "无方向摘要或色板 HEX 锚 <3：参考价值为主，不猜值晋升",
+    "revise-candidate": "负面约束+密度映射在案：候选晋升（需补主题绑定/特征）",
+    "draft": "字段部分完整：保持 draft，缺口在 adaptation_gaps"
+  },
+  "counts": {
+    "keep": 0,
+    "revise-candidate": 260,
+    "merged-variant": 0,
+    "draft": 33,
+    "reference-gap": 0,
+    "merged": 17
+  },
+  "note": "全部保持 lifecycle=draft；active 仅限已绑定主题并具备完整特征的种子（九方向 + clean-professional）。视觉判定归 U7。"
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:软件发布风",
+  "name": "软件发布风",
+  "aliases": [
+    "release notes风",
+    "版本发布风",
+    "产品更新风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/互联网科技/软件发布风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "software-release story, clear release-note clarity, version narrative, migration/path clarity, engineering credibility, clean technical polish"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "release notes风",
+      "版本发布风",
+      "产品更新风"
+    ],
+    "best_for": "软件与平台版本发布,需要清晰展示变更、价值与迁移路径",
+    "visual_direction": "software-release story, clear release-note clarity, version narrative, migration/path clarity, engineering credibility, clean technical polish",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / dark editor hybrid, tech-clean",
+      "composition": "what's new + migration path",
+      "density": "medium, technical"
+    },
+    "color_palette": {
+      "primary": "editor dark #0D1117 / blue accent, white",
+      "secondary": "slate #64748B, gray #9CA3AF",
+      "accent": "one accent (green #10B981 / blue #3B82F6)",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "technical, clean, credible"
+    },
+    "typography": {
+      "title": "monospace-adjacent bold title",
+      "body": "clean technical body",
+      "labels": "version/change tags",
+      "text_quality": "accurate version and technical terms"
+    },
+    "layout_patterns": [
+      "release hero + version",
+      "new/changed/removed summary",
+      "migration & upgrade path",
+      "engineering highlights"
+    ],
+    "layout_usage_rule": "Release clarity; what's new, what changed, how to migrate.",
+    "layout_blueprints": [
+      {
+        "name": "发布封面",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "产品/版本号"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "变更页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "新增",
+              "变更",
+              "修复",
+              "升级"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "version badges, changelog blocks, migration arrows, technical chips",
+      "avoid": "cartoon, clutter, vague marketing, misleading claims"
+    },
+    "rendering_constraints": [
+      "Clear, credible engineering release story.",
+      "Changelog and migration clarity.",
+      "Accurate version/technical terms; no invented features."
+    ],
+    "reference": "GitHub: GPT Image 2 presets (code) · 发布惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Clear, credible engineering release story.",
+      "Changelog and migration clarity.",
+      "Accurate version/technical terms; no invented features."
+    ]
+  }
+}

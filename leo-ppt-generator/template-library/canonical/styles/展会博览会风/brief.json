@@ -1,0 +1,133 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:展会博览会风",
+  "name": "展会博览会风",
+  "aliases": [],
+  "variant_of": "产品发布会风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/发布营销/展会博览会风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "trade-show display style, eye-catching on-the-floor, clear wayfinding, product-centered display, large-screen legibility, booth-magnet clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "产品发布会风",
+    "best_for": "展会与博览会,需要现场吸引、导览清晰、展品突出的展陈表达",
+    "visual_direction": "trade-show display style, eye-catching on-the-floor, clear wayfinding, product-centered display, large-screen legibility, booth-magnet clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "bold display ground, large-screen",
+      "composition": "attract → guide → exhibit",
+      "density": "low-medium, legible"
+    },
+    "color_palette": {
+      "primary": "bold brand color (fallback #2563EB) / deep tech #0F172A, white",
+      "secondary": "supporting accents #3B82F6 / #22D3EE",
+      "accent": "one signature accent #F59E0B",
+      "neutral": "near-black/white #111827, gray #6B7280",
+      "rule": "stage-ready, punchy, brand-consistent"
+    },
+    "typography": {
+      "title": "bold showy sans (Arial Black / 思源黑体 Heavy), dramatic scale",
+      "body": "short punchy body",
+      "labels": "feature tags",
+      "text_quality": "clear brand claims, no overclaim"
+    },
+    "layout_patterns": [
+      "attention hook / banner",
+      "exhibit zones / wayfinding",
+      "hero product display",
+      "CTA / contact"
+    ],
+    "layout_usage_rule": "On-the-floor magnetism; attract, guide, exhibit, and invite engagement.",
+    "layout_blueprints": [
+      {
+        "name": "大屏揭幕",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "展台主题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "展品页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "展品1",
+              "展品2",
+              "展品3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "bold display, large type, product hero, wayfinding arrows",
+      "avoid": "clutter, small illegible text, off-brand, misleading"
+    },
+    "rendering_constraints": [
+      "Eye-catching, legible on the floor.",
+      "Attract, guide, exhibit; large-screen clarity.",
+      "Accurate product info; no invented claims."
+    ],
+    "reference": "GitHub: 展会博览 · 展陈惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Eye-catching, legible on the floor.",
+      "Attract, guide, exhibit; large-screen clarity.",
+      "Accurate product info; no invented claims."
+    ]
+  }
+}

@@ -51,7 +51,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SAMPLES_GOLDEN = SKILL_DIR / "samples" / "reference-golden" / "officecli"
 SLIDESGRAB_SRC = Path(
     "/Users/kuang/knowledge/ppt-github/slides-grab/src"

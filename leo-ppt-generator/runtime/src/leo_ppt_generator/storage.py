@@ -15,6 +15,13 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def canonical_json_bytes(value: Any) -> bytes:
+    """canonical_json 的字节形态 + NaN 拒绝（摘要计算专用；行为与文本版
+    的一致，仅 allow_nan=False 更严格——摘要输入不应含 NaN）。"""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True,
+                      separators=(",", ":"), allow_nan=False).encode("utf-8")
+
+
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 

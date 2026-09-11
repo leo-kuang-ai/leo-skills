@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:minimal-clean",
+  "name": "最小清爽风",
+  "aliases": [
+    "minimal-clean",
+    "清爽最小"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "density": "balanced",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review"
+    ]
+  },
+  "visual_language": {
+    "direction": "中性底、清晰字阶、克制状态色的最小演示风格",
+    "features": [
+      "单一强调色的标题分隔线",
+      "正文 32px 行高 1.55 的可扫读节奏"
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "禁止装饰性渐变背景",
+      "禁止在正文中使用对比不足的浅灰字"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:minimal-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:minimal-table"
+        ],
+        "discouraged": []
+      }
+    ]
+  }
+}

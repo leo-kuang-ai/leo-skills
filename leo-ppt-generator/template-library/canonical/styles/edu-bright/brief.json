@@ -1,0 +1,111 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:edu-bright",
+  "name": "教育明快风",
+  "aliases": [
+    "教育",
+    "edu-bright"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "教育方向"
+    ],
+    "industries": [
+      "教育"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.4,
+    "density": "low",
+    "environments": [
+      "classroom-screen",
+      "lecture-hall"
+    ],
+    "components": [
+      "教学顺序",
+      "问答",
+      "少量信息组"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "清晰明度节奏 + 图文共讲的认知负荷控制；教学顺序（目标→讲解→练习）结构化",
+    "features": [
+      "清晰明度节奏 + 图文共讲的认知负荷控制",
+      "教学顺序（目标→讲解→练习）结构化",
+      "问答/少量信息组的亲和排印"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止单页超过一个核心概念",
+      "禁止文字密度压过图示",
+      "禁止成人金融风排印"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:edu-bright-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p19-19-four-cards-layouts",
+          "builtin:layout:p5-05-three-sub-cards-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p28-p28-recap-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "概念顺序清晰、认知负荷受控、图文共同解释",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

@@ -1,36 +1,55 @@
 # 版式调度合同（layout dispatch）
 
+> **整册分配（dashi 集成 K5/U5）**：canonical layout 携带受 schema 约束的
+> `structure` 声明（阅读顺序/分组关系/图表编码，不含主题、文案、评分或第二
+> 套几何）；结构指纹经版本化规范化——资产重命名不变，顺序/分组/编码改变即
+> 变，缺声明记 `unknown` 不获得多样性加分。母版内容包驱动的整册分配由
+> runtime `layout_selection.allocate_deck` 完成：内部保留**完整合格候选池**
+> （硬资格：角色/容量/媒体/backend/必需覆盖），确定性有界搜索满足禁复用与
+> `max_per_deck`（仅对 `reuse_friendly=false` 生效，普通版式可复用），预算
+> 耗尽与无候选分别报告；Top-2 仅是面向人的推荐摘要。准入集合由
+> `scripts/capability_manifest.py --template-library` 的 `structure_admission`
+> 从 canonical 声明派生；缺少结构声明记 unknown。数量随 catalog 更新，
+> 以当次派生输出为准，不另存手写名单，HTML 绑定数量不等于自动准入数量。
+
 > 逐页版式匹配从「Agent 自由裁量」升级为「确定性打分 + 人工裁决 undecided」。
 > 本文档是调度规则合同：四步链、打分口径、undecided 呈现格式、禁编造纪律、
 > 与容量预检（B3）的衔接。打分器为无状态只读脚本
 > `scripts/suggest_layout.py`；版式真值为
-> `references/styles/12_版式库/*.layouts.json`（layout-bank-v1 sidecar，
-> `"$LEO_PPT" style layouts` 可查，输出含 sha256 指纹）。
+> `template-library/canonical/layouts/*/layout.json`（layout-profile-v1，
+> `"$LEO_PPT" style layouts` 可查，输出含 sha256 指纹）；风格路由来自同一
+> style brief 的 `bindings.layout_routes`。
 
 ## 四步链
+
+轻量推荐已知执行路线时传 `--backend render:html` / `--backend image`，
+或在输入顶层声明 `backend`。未声明对应 `renderer_support` 的版式在评分前
+排除，无合格候选返回 `undecided`，不自动换成通用模板。输出携带实际绑定。
+未传 backend 保留跨路线探索，明确标记 `capability_check: not_requested`，
+不能视作渲染可实现性预检。正式生成仍须经过 content_projection 的内容资格校验。
 
 ```
 角色对齐 → 结构匹配 → 节奏感 → 置信度裁决
 ```
 
 1. **角色对齐**：`deck_spec.slides[].page_role`（13_页面语义 25 角色）映射
-   到版式 `page_type` 六值枚举（cover / agenda / section / content / data /
-   closing），角色不符的候选直接出局（不参与打分）。未识别角色按中性
+   到版式 `page_role` 七值枚举（cover / agenda / section / content / data /
+   quote / evidence / closing），角色不符的候选直接出局（不参与打分）。未识别角色按中性
    0.5 评分（不硬排除）。数据点 ≥3 的页对非 data 版式减半。
 2. **结构匹配**：页面侧 `{要点条数, 每要点预估字数, 数据点数, 图源数}`
-   （母版内容行已有）对 sidecar `content_capacity`：
+   （母版内容行已有）对 canonical profile 的 `slots`：
    - **区间包含度**：条数落在 `count_min/count_max` 区间内 = 1.0；不足
-     按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 容量分乘 0。
+     按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 候选直接排除（dashi U1）。
    容量预检的人工/agent 选页通道：`leo-ppt style layouts --capacity "槽名<=N"`
    只读过滤（计数槽按 `count_max`、文本槽按 `max_chars`），档位速查见
-   `styles/12_版式库/00_容量档位参考.md`。
+   `template-library/governance/rules/layouts/00_容量档位参考.md`。
    - **字数覆盖度**：每要点预估字数（vw 视觉宽度）对最宽文本 slot 的
      `max_chars`（× 风格 `capacity_factor.text`）；装得下 = 1.0；
-     ≤1.2 倍 = 0.5；硬超 = 容量分乘 0。
+     ≤1.2 倍 = 0.5；硬超 = 候选直接排除（返回 undecided 与原因）。
 3. **节奏感**：`reuse_friendly=false` 且已用 → **硬排除**（与
    `scripts/check_layout_reuse.py` 同口径）；已用版式 -0.4；与上一页同
    版式再 -0.4；同 `page_type` 连续 ≥3 页应提示换型（人工判断项）。
-   风格路由视图（`references/styles/<风格名>.layouts.json`）的
+   风格 brief 的 `bindings.layout_routes` 中的
    `preferred` 命中 +0.1、`discouraged` 命中 -0.2——**风格层参与但不越权**
    （软权重，不构成硬排除）。
 4. **置信度裁决**：top1 综合分 < 0.5 → 该页 `decision: "undecided"`。
@@ -64,8 +83,8 @@ python3 scripts/suggest_layout.py --json-schema   # 输入 schema 自校验
 
 ## 禁编造版式 id（纪律）
 
-候选 id 只能来自 sidecar 枚举集（`P1`–`P36`，`"$LEO_PPT" style layouts`
-或 `style render --list-templates` 可枚举）。用户要求不存在的版式（如
+候选 id 只能来自 resolver 枚举集（当前含 P1–P36 与 HTML lane 的命名别名，
+`"$LEO_PPT" style layouts` 或 `style render --list-templates` 可枚举）。用户要求不存在的版式（如
 「时间瀑布版式」）时：引用真实枚举 id 给近似候选，或输出 undecided 交人工；
 **绝不编造**非枚举 id。打分器对输出 id 做枚举集防御断言（触发即脚本 bug，
 exit 2）；评测对 agent 回复中的非枚举版式名做否定感知拦截。
@@ -97,7 +116,7 @@ exit 2）；评测对 agent 回复中的非枚举版式名做否定感知拦截�
 
 `suggest_layout.py` 的 `decision=auto` 只表示综合候选分达到阈值，不代表容量已通过。
 两次检查必须保持同一页的文本与要点粒度；一个长要点不能改成大量单字要点。固定文本槽版式还检查 points 总量，避免无限复用最宽槽；定稿应显式映射 slots。
-角色和节奏分可能使 `capacity_fit=0` 的候选仍得到 auto；必须执行下面的独立容量预检。
+硬超候选在推荐层即被排除（无合格候选返回 undecided 与具体原因）；独立容量预检仍须执行——显式指定同样不能绕过几何闸。
 独立检查的 overflow 无条件阻断该页定稿，不能因 auto、用户催促或之前样张通过而忽略。
 未知 P 码、空版式库或缺少容量字段时报告缺口，不伪造风格专属支持。
 
@@ -127,7 +146,7 @@ source_digest 只判断目录同步；style_content_digest 判断实际读取内
 
 ## page_type 映射表（36 版式治理字段汇总）
 
-| page_type | 版式 |
+| page_role | 版式 |
 |---|---|
 | cover | P1 |
 | agenda | P32 |
@@ -136,6 +155,6 @@ source_digest 只判断目录同步；style_content_digest 判断实际读取内
 | data | P2, P6, P7, P18, P20, P21, P24, P25, P35 |
 | closing | P9, P36 |
 
-`reuse_friendly=false`（强视觉锚点，一 deck 受 `max_per_deck` 限制）：
+`reuse_friendly=false`（canonical profile 中的强视觉锚点，一 deck 受 `max_per_deck` 限制）：
 P1、P9、P23、P24、P34（上限 1）与 P36（上限 2）。定稿前跑
 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。

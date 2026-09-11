@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/font-manifest/v1",
+  "title": "字体清单（文件/字重/覆盖/许可；缺字/缺重显式处理）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "files",
+    "license"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "font-manifest"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "type": "string"
+    },
+    "family": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "weight",
+          "coverage"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 1000
+          },
+          "coverage": {
+            "enum": [
+              "cjk-full",
+              "cjk-partial",
+              "latin-only"
+            ],
+            "description": "cjk-partial 须列缺字"
+          },
+          "missing_glyphs_note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "verified-distributable",
+            "unknown"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "如 OFL-1.1；允许经核验可分发的许可证，不机械限于 OFL/APACHE"
+        },
+        "file": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

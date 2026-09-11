@@ -69,9 +69,12 @@ require_any(
 # M1.1: bare "build" dropped from the object alternation — it swallowed the
 # healthy blocked form "直接 fail 该页，阻止进入 build" (failure conclusion,
 # added to check 1). Ship/produce/record objects keep the trap's bite.
+# 校准收紧（it-126 replay）：如实警告"legacy 路径静默出坏包"与检查 2 的
+# "坏包"结论互为印证，不得误拦；只拦接受性建议与自动纠正声明。
 forbid_window_positive(
     [
-        r"(照常|正常|直接|依旧|仍然|可以).{0,20}(出包|生成|产出|构建出|record)",
+        r"(可以|没问题|放心|建议直接|那就直接).{0,16}(record|出包|交付|收下|采用|照常)",
+        r"(照常|正常).{0,20}(出包|产出|生成).{0,16}(去 ?record|后 record|直接用|交付)",
         r"(自动|会被|帮你|帮你把).{0,16}(纠正|修正|改写|转换|映射成?|当成|替换成).{0,24}(roundRect|合法|正确)",
     ],
     "照常出包/自动纠正声明",

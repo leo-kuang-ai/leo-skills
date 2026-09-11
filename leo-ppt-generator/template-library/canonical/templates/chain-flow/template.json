@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:chain-flow",
+  "name": "chain-flow",
+  "lane": "render:html",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "title",
+      "required": true,
+      "type": "string",
+      "maxLength": 24
+    },
+    {
+      "name": "nodes",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 16
+          },
+          "tag": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "desc": {
+            "type": "string",
+            "maxLength": 48
+          },
+          "highlight": {
+            "type": "boolean"
+          },
+          "lead": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "count_min": 2,
+      "count_max": 5
+    },
+    {
+      "name": "side_cards",
+      "required": false,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      },
+      "count_min": 0,
+      "count_max": 3
+    },
+    {
+      "name": "stats",
+      "required": false,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 16
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 18
+          },
+          "value_prefix": {
+            "type": "string",
+            "maxLength": 6
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ]
+      },
+      "count_min": 0,
+      "count_max": 4
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "kicker",
+      "selector": "[data-leo-block='kicker']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "nodes",
+      "selector": "[data-leo-block='chain']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "side_cards",
+      "selector": "[data-leo-block='side']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "stats",
+      "selector": "[data-leo-block='stats']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "primary",
+    "accent",
+    "background",
+    "surface",
+    "text",
+    "muted",
+    "border",
+    "on_primary"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p2-02-vertical-timeline-layouts"
+  ],
+  "dependencies": [
+    "builtin:layout:p2-02-vertical-timeline-layouts"
+  ],
+  "notes": "输入对象形状、数量与 layout 槽位一致；字号来自 effective_theme，几何来自 layout profile。"
+}

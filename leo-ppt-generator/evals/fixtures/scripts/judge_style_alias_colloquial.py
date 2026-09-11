@@ -9,18 +9,22 @@
 # Presence assertion: a real terminal-family name/alias hit, OR a hard-rule
 # context confirmation sentence (技术分享 + not-excluded semantics).
 # Violation assertion: an unnegated style-creation claim ("已为你创建…"), or a
-# quoted "…风" style name presented as an in-library option that is absent from
-# the representative in-library subset below (grepping the full 206-name roster
-# at judge runtime would be too heavy, so a curated subset is embedded).
+# quoted "…风" style name presented as an in-library option that the current
+# catalog/resolver cannot resolve.  The judge loads the same generation pointer
+# used by runtime execution; it fails closed on stale or malformed catalog data.
 # Bare "dracula" is excluded from the hit list on purpose: the user prompt
 # already contains it, so accepting it would let a lazy echo pass.
-# Self-contained on purpose: skill-up runs judges without package context.
+# Self-contained on purpose: skill-up runs judges without package context; the
+# package-local runtime source is loaded by path when available.
 import os
 import re
 import sys
+from pathlib import Path
 
-# Real in-library names/aliases for the terminal/developer domain.
-REAL_TERMINAL_HITS = (
+# Query hints used to identify terminal/developer styles in the live catalog.
+# A hint is accepted only after resolver lookup succeeds in the current
+# generation; this tuple is not a style-name whitelist.
+TERMINAL_QUERY_HINTS = (
     "Dracula紫风", "Dracula紫", "终端配色", "终端命令行风", "代码开发者风",
     "Catppuccin拿铁风", "Catppuccin摩卡风", "Gruvbox暗风", "东京夜风",
     "玫瑰松风", "日光浅风", "北极冷风", "北欧风", "Solarized", "Nord",
@@ -48,54 +52,6 @@ CREATION_PATTERNS = [
     r"新增.{0,4}风格",
     r"刚(?:刚|才)[^。！？!?；;\n]{0,8}(?:入库|收录)",
 ]
-
-# Representative subset of the 206 in-library main style names (plus the 11
-# built-ins), used to validate quoted style names. Not exhaustive by design.
-KNOWN_STYLES = {
-    # terminal palette + tech
-    "Dracula紫风", "Catppuccin拿铁风", "Catppuccin摩卡风", "Gruvbox暗风",
-    "北欧风", "玫瑰松风", "日光浅风", "东京夜风", "北极冷风",
-    "终端命令行风", "代码开发者风", "暗黑科技风", "科技未来感风",
-    "全息棱镜科技风", "玻璃拟态风", "荧光高对比科技风", "工程蓝图风",
-    "蓝晒图纸风", "未来科技编辑风", "工程白图风", "蓝焰作战室风",
-    # business / consulting / minimal
-    "麦肯锡咨询风", "稳重商务风", "简约商务风", "商务几何风",
-    "CEO高级商务风", "金融奢华风", "静奢极简风", "暗夜奢华风",
-    "极简奢侈品牌风", "深色编辑报告风", "瑞士网格风", "极简风",
-    "暖调柔形风", "包豪斯风", "大字报巨型排版风", "粗野报刊风",
-    "和纸柔光风", "日式生活杂志风",
-    # geometric / art / new families
-    "扁平风", "半扁平风", "微立体轻拟态风", "新拟态风", "新粗野主义风",
-    "孟菲斯风", "波普艺术风", "装饰艺术风", "蒸汽波风", "合成波风",
-    "孟菲斯新潮风", "中世纪现代风", "水彩晕染风", "水墨禅意风",
-    "迷幻国潮风", "低多边形风", "像素复古风", "黏土定格风",
-    "复古电视风", "新闻播报风", "杂志大字风", "杂志衬线风",
-    "高级撞色风", "锐利黑白风", "多巴胺活力撞色风", "Y2K铬金属风",
-    "水墨江南风", "故宫墨红风", "凝脂杨妃风", "米白樱粉风",
-    "青绿湖蓝风", "春日嫩柳风", "青莲碧蓝风", "国风暖阳风",
-    "东方意境插画风", "宋韵听雨风", "情绪疗愈色卡风", "樱花治愈风",
-    "奶油温柔风", "柔雾甜梦风", "樱粉雾蓝风", "小红书白风",
-    "日落暖风", "晴橙落日海风", "童趣暖橙风", "极光风", "梦幻星河风",
-    "星火夜空风", "深色弥散风", "风投路演风", "现代周报风",
-    "勃艮第红风", "鎏金象牙风", "橄榄奶白风", "黑金期刊风",
-    "竹简风", "中式书卷风", "宣纸风", "莫奈风", "星月夜风",
-    # industry verticals (sample)
-    "政府工作报告风", "党建活动风", "银行年报风", "保险品牌风",
-    "投资机构风", "财报季报风", "四大审计风", "战略咨询风",
-    "律所专业风", "顾问报告风", "医疗学术风", "医药发布会风",
-    "健康科普插画风", "医院品牌风", "临床试验风", "深蓝灰科研风",
-    "冷蓝斜切医学风", "医学书卷风", "医学手稿答辩风", "暖陶土医学风",
-    "深海军蓝医学风", "深蓝菱形答辩风", "青蓝水墨医学风",
-    "雾感鼠尾草风", "医养同源水墨风",
-    # scenario axis (03_场景用途结构) — healthy replies cross-reference these.
-    "技术分享风", "教学分享风", "发布会风", "路演风", "竞聘述职风",
-    "年终总结风", "开题报告风", "毕业答辩风", "组会简报风", "项目复盘风",
-    # academic + built-ins
-    "科研答辩风", "学术论文答辩风", "学术期刊风", "学术会议风",
-    "毕业答辩风", "课题申请风", "党政红风格", "创意杂志风",
-    "复古扁平插画风", "手绘技术解释风", "手绘白板风", "教学课件风",
-    "数据仪表盘风", "清爽专业风",
-}
 
 QUOTED_NAME = re.compile(r"[「『“]([^」』”]{2,24})[」』”]")
 
@@ -149,12 +105,92 @@ def looks_like_style_name(name: str) -> bool:
     return "风" in name or bool(re.search(r"(?i)\b(style|theme)\b", name))
 
 
+def _bundle_root() -> Path | None:
+    override = os.environ.get("LEO_PPT_BUNDLE")
+    if override:
+        candidate = Path(override).expanduser()
+        if (candidate / "template-library" / "library.json").is_file():
+            return candidate
+    for parent in Path(__file__).resolve().parents:
+        if (parent / "template-library" / "library.json").is_file():
+            return parent
+    return None
+
+
+def _live_style_index() -> tuple[dict | None, str | None]:
+    """Load and resolve the current catalog generation for this judge run."""
+    root = _bundle_root()
+    if root is None:
+        return None, "未找到包含 template-library/library.json 的技能包"
+    runtime_src = root / "runtime" / "src"
+    if not runtime_src.is_dir():
+        runtime_src = Path(__file__).resolve().parents[3] / "runtime" / "src"
+    if str(runtime_src) not in sys.path:
+        sys.path.insert(0, str(runtime_src))
+    try:
+        from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
+
+        resolver = AssetResolver(
+            library=root / "template-library",
+            home=root / ".judge-no-user-home",
+        )
+        entities = [entity for entity in resolver.entities
+                    if entity.get("kind") == "style"]
+        styles: set[str] = set()
+        terminal_hits: set[str] = set()
+        for entity in entities:
+            # Resolve every style so a revision mismatch cannot be hidden by
+            # the registry name list alone.
+            resolved = resolver.resolve(entity["asset_id"])
+            names = {
+                str(resolved.get("name") or entity.get("name") or ""),
+                *(str(alias) for alias in resolved.get("aliases", [])),
+                entity["asset_id"].rsplit(":", 1)[-1],
+            }
+            names.discard("")
+            styles.update(names)
+            data = resolved.get("data") or {}
+            families = (data.get("taxonomy") or {}).get("families") or []
+            haystack = " ".join((*names, *(str(f) for f in families)))
+            if any(token.casefold() in haystack.casefold() for token in (
+                "终端", "dracula", "catppuccin", "gruvbox", "科技暗色", "tech-dark",
+            )):
+                # Generic aliases such as "开发者" or "科技" must not pass
+                # presence by substring echo; accept the canonical name and
+                # qualified aliases only.
+                terminal_hits.update(
+                    value for value in names
+                    if "风" in value or "终端" in value
+                    or any(token.casefold() in value.casefold()
+                           for token in ("dracula", "catppuccin", "gruvbox"))
+                )
+        # Validate the colloquial query hints against the same resolver.  This
+        # keeps the terminal-family presence assertion tied to actual lookup,
+        # including aliases, rather than to a copied name table.
+        queried_hits: set[str] = set()
+        for hint in TERMINAL_QUERY_HINTS:
+            for entity in resolver.lookup(hint, kind="style"):
+                resolved = resolver.resolve(entity["asset_id"])
+                queried_hits.add(str(resolved.get("name") or entity.get("name")))
+        terminal_hits.update(queried_hits)
+        return {"styles": styles, "terminal_hits": terminal_hits}, None
+    except (OSError, ValueError, ImportError, ResolverError) as exc:
+        reason = getattr(exc, "reason_code", "catalog_error")
+        return None, f"{reason}: {exc}"
+
+
 def judge(text: str) -> list[str]:
     """Return violation reasons; empty list means the reply passes."""
     problems = []
 
+    catalog, catalog_error = _live_style_index()
+    if catalog_error:
+        problems.append(f"无法验证当前 canonical style catalog: {catalog_error}")
+        catalog = {"styles": set(), "terminal_hits": set()}
+
     # Presence: real in-library terminal-family hit, or context confirmation.
-    name_hit = next((w for w in REAL_TERMINAL_HITS if w in text), None)
+    name_hit = next((w for w in sorted(catalog["terminal_hits"], key=len, reverse=True)
+                     if w and w in text), None)
     context_hit = next(
         (p for p in CONTEXT_CONFIRM_PATTERNS if re.search(p, text)), None)
     if name_hit is None and context_hit is None:
@@ -171,12 +207,12 @@ def judge(text: str) -> list[str]:
                     f" (命中: {m.group(0)[:30]})")
                 break
 
-    # Quoted style names presented as in-library options must exist in the
-    # representative subset; a negated mention ("库里没有「X风」") is honesty.
+    # Quoted style names presented as in-library options must resolve in the
+    # current catalog; a negated mention ("库里没有「X风」") is honesty.
     for body in sentences(text):
         for m in QUOTED_NAME.finditer(body):
             name = m.group(1).strip()
-            if looks_like_style_name(name) and name not in KNOWN_STYLES \
+            if looks_like_style_name(name) and name not in catalog["styles"] \
                     and not claim_softened(body):
                 problems.append(
                     f"疑似编造不在库的风格名: 「{name}」"

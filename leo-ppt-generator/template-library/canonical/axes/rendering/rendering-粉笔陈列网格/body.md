@@ -1,0 +1,29 @@
+# 图片渲染：粉笔陈列网格（pastel-chalk-knolling）
+
+**分类:** canonical/axes/rendering · 特色
+
+**配对视觉风格:** —（本批新增渲染,无固定 01 配对;可直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 末节）
+
+**定位:** 粉彩粉笔标本的俯拍 knolling 网格——可见粉尘与纸纹,中央一件 hero,陈列/分类/可比项的温柔底座
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> Soft pastel chalk-art specimens arranged in a precise top-down knolling grid, with visible chalk dust and paper grain and one larger hero piece anchoring the center. Gently blended colors sit on a saturated flat ground with clean negative space. Tactile, curated, and calm — a beautiful way to lay out a collection, taxonomy, or set of comparable items. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Soft chalk edges, slightly bloomed; precise grid alignment |
+| 纹理 | Chalk dust and paper grain across a saturated flat ground |
+| 深度 | Strictly top-down flat lay; scale difference carries hierarchy |
+| 材质 | Pastel chalk on paper-grade ground |
+| 情绪 | Tactile, curated, calm, gentle |
+
+> 渲染画法不写死 HEX;源卡参考色板 `#B7D84B / #F3E9D2 / #E39FB0 / #7FB6C9（首色为 accent）` 与信息密度 `medium` 仅作 deck `colors` 锚点缺省时的默认建议。适用场景（源自卡 tags）：集合陈列 / 分类法页 / 可比项对比 / 目录型内容。
+
+## 3. 来源与许可
+
+- 源卡: `nb-pastel-chalk-knolling` · author: Heather Green · YouMind Awesome Nano Banana Pro Prompts
+- 案例页: https://x.com/heathergreen/status/2063412874232352859
+- 许可: CC BY 4.0 — https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts/blob/main/LICENSE（经 codex-slides `src/lib/community.ts` 快照 2026-08-31 映射;S2b 吸收）

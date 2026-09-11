@@ -19,3 +19,21 @@
 
 - 查看本地机制健康：`leo-ppt doctor`
 - 回滚到上一个可用 runtime：`leo-ppt rollback`
+
+## 本期速览（2026-09 渠道与控制台批次）
+
+- **渠道目录扩至 18 项**：新增 8 家目录渠道——硅基流动、阶跃星辰、xAI Grok、
+  DeepInfra、Together AI（OpenAI 兼容），以及 Google Gemini（Nano Banana）、MiniMax、
+  Ideogram 三家原生协议渠道（适配器自动转换，配置方式与其他渠道一致）。渠道全表
+  见 `references/provider-catalog.md`。
+- **控制台「添加渠道」区重排**：按获取门槛分组（国内直连/国际服务/自定义中转）
+  的紧凑行式列表；已配置渠道显示「已配置 ✓」，"重新配置"可沿用现有密钥直接换 Key。
+- **「生成任务」Tab 时间线增强**：连续同类事件折叠为组、行间耗时与跨度徽章、
+  事件详情中文化、失败事件自动展开。
+- **生成任务视图升级**（详见 [README](README.md) 控制台段，含界面截图）：卡片/
+  后台表格双视图可切换（偏好自动记忆）；状态色彩语义（进行中蓝呼吸/完成绿/失败
+  红）；停滞任务橙色警示（含"可能停在确认门"指引）；页网格 lane 徽标区分本地渲染
+  （HTML/Mermaid）与 AI 渠道页；任务自 backend 合同签署起自动全局登记，workspace
+  生成无需手动操作。
+- 提示：更新技能后先执行 `python3 scripts/runtime_manager.py ensure` 刷新受管
+  runtime，再启动控制台（`leo-ppt ui`），否则可能仍是旧版页面。

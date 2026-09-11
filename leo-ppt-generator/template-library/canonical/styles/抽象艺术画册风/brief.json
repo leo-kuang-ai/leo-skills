@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:抽象艺术画册风",
+  "name": "抽象艺术画册风",
+  "aliases": [
+    "抽象艺术画册",
+    "抽象艺术展示",
+    "abstract-art-showcase"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/抽象艺术画册风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "minimalist art-showcase editorial, brutalist sans mixed with delicate script, stark near-black text on off-white with a single olive accent, gallery portfolio restraint"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "抽象艺术画册",
+      "抽象艺术展示",
+      "abstract-art-showcase"
+    ],
+    "best_for": "A minimalist, editorial presentation style featuring high-co…;适合Art and design portfolios/High-end fashion lookbooks/Architecture and interior d",
+    "visual_direction": "minimalist art-showcase editorial, brutalist sans mixed with delicate script, stark near-black text on off-white with a single olive accent, gallery portfolio restraint",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "Split layout with massive typography on the left and a large vertical image placeholder on the r…",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1A1A1A(主色/标题锚)",
+      "secondary": "#F7F7F5(辅助色)",
+      "accent": "#88B04B(强调色)",
+      "neutral": "#F7F7F5(文字与中性锚)",
+      "rule": "锚点 #F7F7F5, #1A1A1A, #88B04B;A minimalist, editorial presentation style featuring hig…"
+    },
+    "typography": {
+      "title": "Heading: Ultra-bold brutalist sans-serif",
+      "body": "Body: Clean geometric sans-serif",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "Gigantic slash-number (e.g., /003) dominating the space Vast amounts of empty off-white background",
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏"
+    ],
+    "layout_usage_rule": "版式骨架 cover/agenda/section/content/data/quote/closing;按版式骨架排布,同 deck 内封面/收尾构图呼应",
+    "visual_elements": {
+      "allowed": "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "avoid": "No cluttered layouts or edge-to-edge text;No drop shadows, gradients, or 3D text effects;No bright, neon, or overly saturated background colors"
+    },
+    "rendering_constraints": [
+      "No cluttered layouts or edge-to-edge text",
+      "No drop shadows, gradients, or 3D text effects",
+      "No bright, neon, or overly saturated background colors",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "No cluttered layouts or edge-to-edge text",
+      "No drop shadows, gradients, or 3D text effects",
+      "No bright, neon, or overly saturated background colors",
+      "No standard bullet points (use slash-numbers instead)",
+      "No mixing of multiple script fonts"
+    ],
+    "reference": "gpt-image2-ppt-skills · styles/featured/abstract-art-showcase.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "No cluttered layouts or edge-to-edge text",
+      "No drop shadows, gradients, or 3D text effects",
+      "No bright, neon, or overly saturated background colors",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

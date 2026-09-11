@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:pull-quote",
+  "name": "pull-quote",
+  "input_fields": [
+    {
+      "name": "quote",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source_name",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "source_meta",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "page-no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "quote",
+      "selector": "[data-leo-block='quote']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "quote-mark",
+      "selector": "[data-leo-block='quote-mark']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "quote-rule",
+      "selector": "[data-leo-block='quote-rule']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "quote-source",
+      "selector": "[data-leo-block='quote-source']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "source-meta",
+      "selector": "[data-leo-block='source-meta']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "source-name",
+      "selector": "[data-leo-block='source-name']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "accent"
+  ],
+  "dependencies": [
+    "builtin:layout:pull-quote"
+  ],
+  "layout_profiles": [
+    "builtin:layout:pull-quote"
+  ],
+  "lane": "render:html",
+  "notes": "机械迁移：HTML 仍含硬编码色/字体，待 U5 切换主题变量"
+}

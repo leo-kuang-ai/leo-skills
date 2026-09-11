@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "3b3d923cbbd31bcf079922be8eeeef220b68780b9e4028c320440e092999ec83",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/spec-table-minimal.png",
+  "out_sha256": "3a9c4595bcb754e1dc4c889bff4b5c5aac72f88a38aa177fd98cfbd013535607",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1230,
+  "rendered_at": "2026-09-07T19:26:52.697Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "spec-table",
+  "template_sha256": "d418c4396660a66178c17eef87fcfd06d5121cadcfba164f47290d37b97cccef",
+  "warnings": [],
+  "width": 2560
+}

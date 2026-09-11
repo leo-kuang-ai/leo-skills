@@ -7,8 +7,8 @@
     "name_zh": "场景中文名",
     "match_signals": "推荐合同信号的关键词匹配面（genre/domain 任一子串命中即候选）",
     "composition.style": "主风格名（R-66 合并后口径，variant 经主风格 aliases 命中）",
-    "composition.layouts": "骨干页序 P 码（真值：references/styles/12_版式库）",
-    "composition.storyline": "叙事参考（references/styles/06_论证模式 六轴之一）",
+    "composition.layouts": "骨干页序 P 码（真值：template-library/canonical/layouts/*/layout.json）",
+    "composition.storyline": "叙事参考（真值：template-library/canonical/axes/argument/）",
     "composition.density": "low | low-medium | balanced | high",
     "fallbacks.style": "主风格缺失/被否定时的降级链（末位为内置 11 之一）"
   },

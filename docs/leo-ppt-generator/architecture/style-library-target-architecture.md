@@ -2,7 +2,7 @@
 title: leo-ppt-generator 风格库理想态目标架构（北极星）
 type: architecture
 date: 2026-09-02
-status: draft
+status: historical-reference
 version: v4.6
 status_note: >
   draft — v4.6 据 spec-doc-review 评审修订：advisory 许可门补覆盖率激活护栏（评审 P1）、修「L1
@@ -10,7 +10,9 @@ status_note: >
   §0.5 退出条件按分级口径全绿，其中含必须由代码/CI 侧提供的载体。
 scope: 目标架构参考，独立于迁移方案；定义目标合同，不含迁移排期与实现任务
 supersedes: v4.5
-authority: 与 related 中任何实现计划冲突时，以本文为准（见 §0.4）
+authority: 本文保留历史设计；2026-09-08 上线前模板重构以新的全量重构技术方案当前版本为准，本文不构成独立实施入口或冻结门禁
+superseded_for: prelaunch-template-system-rebuild
+current_plan: docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md
 related:
   - docs/plans/2026-09-02-001-refactor-leo-ppt-style-library-restructure-plan.md   # needs-rewrite：目标目录与字段形状冲突，见 §0.4
   - docs/plans/2026-09-01-001-feat-leo-ppt-style-recommendation-coordinate-plan.md # partial-conflict：tier 与首推门口径相反（requirements-only，非执行入口），见 §0.4
@@ -82,6 +84,8 @@ revision_note: >
 ---
 
 # leo-ppt-generator 风格库理想态目标架构（北极星）
+
+> **历史参考，2026-09-08 更新权威关系。** 当前上线前重构以 [PPT 模板系统全量重构与生成质量优化技术方案](../../plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md)（当前 v4，行业方案逐节处置见主方案附录）为唯一实施入口。下文及 `status_note` 保留 v4.6 的历史设计与评审记录；其中优先级、冻结、兼容、目录和分期要求不再覆盖新方案。本文不代表已实现的系统。
 
 > **一句话北极星**：以 `style-brief-v2` 为内置/用户风格的 authored 真值，以稳定 ID 和
 > `AssetResolver` 隔离物理路径，以 builtin catalog、user overlay、behavioral state 三平面

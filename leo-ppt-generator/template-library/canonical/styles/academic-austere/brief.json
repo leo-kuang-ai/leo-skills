@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:academic-austere",
+  "name": "学术克制风",
+  "aliases": [
+    "学术",
+    "academic-austere"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "学术方向"
+    ],
+    "industries": [
+      "学术"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "density": "medium-high",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review",
+      "print"
+    ],
+    "components": [
+      "图表",
+      "公式",
+      "引用",
+      "论证链"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "黑白或近单色 + 规范中西文排印的学术版面；图表/公式/引用的编号纪律",
+    "features": [
+      "黑白或近单色 + 规范中西文排印的学术版面",
+      "图表/公式/引用的编号纪律",
+      "论证链（问题-方法-证据-结论）结构优先"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止装饰性配色与插画",
+      "禁止图例/引用缺编号",
+      "数据比较不得无基线"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:academic-austere-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "agenda",
+        "preferred": [
+          "builtin:layout:p32-32-agenda-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p4-04-six-cells-layouts",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p7-07-h-bar-chart-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "图例/引用/公式可读、数据比较有来源与基线",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

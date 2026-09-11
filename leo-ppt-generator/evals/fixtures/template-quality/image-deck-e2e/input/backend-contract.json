@@ -1,0 +1,23 @@
+{
+  "backend_kind": "openai-compatible",
+  "capabilities": {
+    "edit": false,
+    "execution_owner": "runtime",
+    "generate": true,
+    "mask": false,
+    "max_reference_images": 0
+  },
+  "credential_ref": "keychain:leo-ppt-generator/ark",
+  "credential_source": "os-store-reference",
+  "endpoint_origin": "https://ark.cn-beijing.volces.com",
+  "mode": "generate",
+  "model": "doubao-seedream-4-0-250828",
+  "provider": "ark",
+  "schema_version": 1,
+  "selection": {
+    "config_digest": null,
+    "priority": null,
+    "source": "user-confirmed"
+  },
+  "selection_source": "user-confirmed"
+}

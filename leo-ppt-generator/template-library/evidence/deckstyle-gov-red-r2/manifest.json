@@ -1,0 +1,85 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-gov-red-r2",
+  "assets": {
+    "style": "builtin:style:gov-red",
+    "theme": "builtin:theme:gov-red-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[gov-red]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 2"
+  },
+  "outputs": {
+    "cover.png": "a4be11c14ea389890a0a1828b9134b6d4b3f0584559675805c2a1b539ec07734",
+    "content.png": "7f10989c7838e061691e890e8a6ce1917987fc353820f6427be43424d17fc883",
+    "evidence.png": "62463a87eb1f09f2fc621a35d83abc51c946ad01dd1d5375f905cf9f972b1661",
+    "closing.png": "ab3f7400b8e393a3e043aa33bc90b910f3fbc8a841636ae6bea4421cbc4cd4ec"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": [
+    "deckstyle-gov-red-r1"
+  ]
+}

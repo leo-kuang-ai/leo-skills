@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p35-35-data-wall-layouts",
+  "name": "Data Wall",
+  "aliases": [
+    "P35"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "kpis": {
+      "region": "content",
+      "desc": "巨数 KPI 格（数值 + 标签 + 单位 + 口径）",
+      "count_min": 4,
+      "count_max": 8
+    },
+    "wall_number": {
+      "region": "content",
+      "desc": "每格巨数（来自 approved 序列）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    },
+    "wall_label": {
+      "region": "content",
+      "desc": "每格标签",
+      "max_chars": 7,
+      "chars_per_line": 6,
+      "max_lines": 1
+    },
+    "wall_meta": {
+      "region": "content",
+      "desc": "每格单位与口径（含统计期间）",
+      "max_chars": 60,
+      "chars_per_line": 25,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部断言标题 8.4vw + 2-4 列 × 2 行网格：巨数（min(8.4vw,14vh) 限高 weight 200）+ 标签 + 单位与口径；单一 accent 只给最重要的一个数，格子间 hairline 分隔不画完整卡片框"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/35_Data_Wall.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

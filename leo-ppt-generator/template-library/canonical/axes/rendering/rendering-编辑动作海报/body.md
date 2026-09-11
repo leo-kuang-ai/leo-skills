@@ -1,0 +1,29 @@
+# 图片渲染：编辑动作海报（editorial-action-poster）
+
+**分类:** canonical/axes/rendering · 叙事氛围
+
+**配对视觉风格:** —（本批新增渲染,无固定 01 配对;可直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 末节）
+
+**定位:** 全出血编辑动作海报——暖米色超窄块字被画面裁切,hero 主体斜切破字而出,正午硬光+天蓝中性场+单点艳色
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> A full-bleed editorial action poster: enormous warm-cream extra-condensed block letters cropped by the frame and sitting behind a hero subject that cuts diagonally across and breaks through the type layer. Hard midday sun, crisp shadows, a sky-blue neutral environment, one vivid accent on the hero, and tight clusters of white microcopy pinned to a strong grid. Kinetic, loud, and magazine-grade — action first, type second, detail third. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Cropped condensed block type edges; diagonal hero cut |
+| 纹理 | Hard midday sun, crisp shadows, clean environmental surfaces |
+| 深度 | Type layer behind subject breaking through — stacked planes |
+| 材质 | Photographic action + poster print type |
+| 情绪 | Kinetic, loud, magazine-grade, confident |
+
+> 渲染画法不写死 HEX;源卡参考色板 `#FF4D2E / #3FA9E0 / #F3E8CE / #FFFFFF（首色为 accent）` 与信息密度 `medium` 仅作 deck `colors` 锚点缺省时的默认建议。适用场景（源自卡 tags）：活动主张页 / 运动品牌 / 大声量章节 / 杂志级封面。
+
+## 3. 来源与许可
+
+- 源卡: `nb-editorial-action-poster` · author: H A J R A · YouMind Awesome Nano Banana Pro Prompts
+- 案例页: https://x.com/codewithhajra/status/2073422730171478176
+- 许可: CC BY 4.0 — https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts/blob/main/LICENSE（经 codex-slides `src/lib/community.ts` 快照 2026-08-31 映射;S2b 吸收）

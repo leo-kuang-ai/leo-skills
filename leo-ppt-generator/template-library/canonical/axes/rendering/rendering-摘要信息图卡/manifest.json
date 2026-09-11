@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-摘要信息图卡",
+  "name": "图片渲染：摘要信息图卡（summary-infographic）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

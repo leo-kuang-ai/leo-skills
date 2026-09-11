@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "10e3fc40774138ce909b0fcfedcf83b6d255446aef871cb0950e6a094c710ba8",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/pull-quote-near-capacity.png",
+  "out_sha256": "a59db2c1735bab2625b02530f1c635c62d2932daedf5a171070577fc5466c0e7",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1230,
+  "rendered_at": "2026-09-07T19:26:59.761Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "759f5de944499f0553a6be3746cea6ad91928cde101fb7fe812992c73455bd2d",
+  "warnings": [],
+  "width": 2560
+}

@@ -93,6 +93,14 @@ class MasterContractTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("交叉引用", err)
 
+    def test_same_unit_relation_is_a_hard_failure(self):
+        split = GOOD.replace(
+            "argument_role: 支柱1\n- 标题：营收",
+            "argument_role: 支柱1\nrst_relation: same-unit\n- 标题：营收")
+        code, err, _ = run(split)
+        self.assertEqual(code, 1)
+        self.assertIn("same-unit", err)
+
 
 # --- deck-promises 承诺表判据（R-34） ---
 
@@ -308,6 +316,48 @@ class MasterContractTierTest(unittest.TestCase):
     def test_tier_check_is_deterministic(self):
         runs = [run(TIERS) for _ in range(2)]
         self.assertEqual(runs[0], runs[1])
+
+
+# --- 页稳定身份判据（dashi 集成 K1/U2，⑬） ---
+
+class PageIdentityCriterionTest(unittest.TestCase):
+    IDENT = GOOD.replace(
+        "## S1 封面\nargument_role: 开场",
+        "## S1 封面\npage_id: pg-11111111\nargument_role: 开场"
+    ).replace(
+        "## S2 财务\nargument_role: 支柱1",
+        "## S2 财务\npage_id: pg-22222222\nargument_role: 支柱1"
+    ).replace(
+        "## S3 边界\nargument_role: 反方",
+        "## S3 边界\npage_id: pg-33333333\nargument_role: 反方"
+    )
+
+    def test_all_pages_identified_passes(self):
+        code, err, _ = run(self.IDENT)
+        self.assertEqual(code, 0, err)
+
+    def test_legacy_master_without_identity_silently_skips(self):
+        code, err, _ = run(GOOD)
+        self.assertEqual(code, 0, err)
+        self.assertNotIn("page_id", err)
+
+    def test_partial_identity_fails(self):
+        partial = self.IDENT.replace("page_id: pg-22222222\n", "")
+        code, err, _ = run(partial)
+        self.assertEqual(code, 1)
+        self.assertIn("缺 page_id 声明", err)
+
+    def test_duplicate_identity_fails(self):
+        dup = self.IDENT.replace("pg-33333333", "pg-11111111")
+        code, err, _ = run(dup)
+        self.assertEqual(code, 1)
+        self.assertIn("重复", err)
+
+    def test_invalid_identity_format_fails(self):
+        bad = self.IDENT.replace("pg-22222222", "pg-XYZ")
+        code, err, _ = run(bad)
+        self.assertEqual(code, 1)
+        self.assertIn("格式非法", err)
 
 
 if __name__ == "__main__":

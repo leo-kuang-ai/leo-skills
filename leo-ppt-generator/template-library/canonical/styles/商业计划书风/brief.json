@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:商业计划书风",
+  "name": "商业计划书风",
+  "aliases": [
+    "融资路演风",
+    "创业大赛路演风",
+    "财报季报风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/路演提案/商业计划书风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业",
+      "金融审计"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "business-plan style, investor-logic closed loop, credible growth narrative, complete-but-persuasive, seed-to-series structure"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "融资路演风",
+      "创业大赛路演风",
+      "财报季报风"
+    ],
+    "variants": [
+      "融资路演风: 同板场景变体，轮次融资的增长与回报叙事",
+      "创业大赛路演风: 同板场景变体，评审导向的紧凑高节奏路演",
+      "财报季报风: 近板场景变体（palette Jaccard 0.71），季度业绩高密度解读"
+    ],
+    "best_for": "商业计划书,需要投资人视角、完整闭环、可信的增长故事",
+    "visual_direction": "business-plan style, investor-logic closed loop, credible growth narrative, complete-but-persuasive, seed-to-series structure",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean white / light, persuasive",
+      "composition": "problem → solution → traction → ask",
+      "density": "medium, persuasive"
+    },
+    "color_palette": {
+      "primary": "ink navy #1F2937 / accent blue, white",
+      "secondary": "slate #64748B, light gray #E5E7EB",
+      "accent": "one bold accent #F59E0B for the ask",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "credible, confident, not flashy"
+    },
+    "typography": {
+      "title": "bold confident sans (Arial Black / 思源黑体 Heavy), big headline",
+      "body": "concise persuasive body",
+      "labels": "market/traction tags",
+      "text_quality": "accurate, no overclaim"
+    },
+    "layout_patterns": [
+      "problem & pain",
+      "solution & moat",
+      "market & business model",
+      "traction, team, ask"
+    ],
+    "layout_usage_rule": "Investor-logic closed loop; hook, problem-solution, market, model, traction, team, ask.",
+    "layout_blueprints": [
+      {
+        "name": "项目概览",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "项目一句话"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "问题",
+              "方案",
+              "市场"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "融资页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "traction"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "模型",
+              "团队",
+              "募资用途"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "problem/solution, market size, business model, traction, team, ask",
+      "avoid": "clutter, exaggeration, caricature, unsupported traction"
+    },
+    "rendering_constraints": [
+      "Credible, confident, persuasive arc.",
+      "Lead with problem-traction-ask; one accent for the ask.",
+      "Accurate numbers; no invented traction or logos."
+    ],
+    "reference": "GitHub: joelparkerhenderson/pitch-deck · BP 惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Credible, confident, persuasive arc.",
+      "Lead with problem-traction-ask; one accent for the ask.",
+      "Accurate numbers; no invented traction or logos."
+    ]
+  }
+}

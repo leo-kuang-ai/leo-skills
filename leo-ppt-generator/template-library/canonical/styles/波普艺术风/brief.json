@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:波普艺术风",
+  "name": "波普艺术风",
+  "aliases": [
+    "pop art",
+    "波普风",
+    "沃霍尔风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/波普艺术风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "波普孟菲斯"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "pop art style, ben-day dots, high-saturation primary colors, halftone, collage and repetition, bold comic/consumer-culture imagery, graphic punch and cultural satire energy"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "pop art",
+      "波普风",
+      "沃霍尔风"
+    ],
+    "best_for": "以网点、高饱和原色、照片拼贴与重复构成,借用大众与波普文化的视觉能量",
+    "visual_direction": "pop art style, ben-day dots, high-saturation primary colors, halftone, collage and repetition, bold comic/consumer-culture imagery, graphic punch and cultural satire energy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "bright saturated ground or halftone",
+      "composition": "bold hero, repeating graphic, comic framing",
+      "density": "medium, graphic punch"
+    },
+    "color_palette": {
+      "primary": "saturated red #E63946 / cyan #29B6F6 / yellow #FFD400",
+      "secondary": "halftone dot textures #B0BEC5",
+      "accent": "one punch accent #FF6B00",
+      "neutral": "near-black #111111, white, comic ink #000000",
+      "rule": "high-saturation, graphic, comic; avoid muted minimal"
+    },
+    "typography": {
+      "title": "bold comic sans / wide (Arial Black / 思源黑体 Heavy)",
+      "body": "graphic and direct",
+      "labels": "comic-styled captions",
+      "text_quality": "direct, punchy, brand-toned"
+    },
+    "layout_patterns": [
+      "halftone hero",
+      "repeating graphic motif",
+      "comic-frame storyboard",
+      "collage of bold image + color blocks"
+    ],
+    "layout_usage_rule": "High saturation, halftone and repetition; make it read like a bold print/poster.",
+    "layout_blueprints": [
+      {
+        "name": "主题封面",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "波普主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "故事页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "镜头1",
+              "镜头2",
+              "镜头3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "ben-day dots, halftone, saturated primaries, collage, comic framing, bold inks, comic onomatopoeia burst lettering (POW/BANG), action lines",
+      "avoid": "muted minimal, corporate restraint, subtle gradient, fine-detail realism"
+    },
+    "rendering_constraints": [
+      "Graphic, bold, zeitgeisty.",
+      "Saturated primaries and halftone; make it read as a bold print.",
+      "No invented brand marks or misleading imagery."
+    ],
+    "reference": "GitHub: OhMyStyle / Pop Art · AI-Visual-Prompt-Cookbook; GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-infographic/references/styles/bold-graphic.md"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Graphic, bold, zeitgeisty.",
+      "Saturated primaries and halftone; make it read as a bold print.",
+      "No invented brand marks or misleading imagery."
+    ]
+  }
+}

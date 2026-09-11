@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:餐饮美食风",
+  "name": "餐饮美食风",
+  "aliases": [
+    "美食风",
+    "餐饮风",
+    "food风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/文旅餐饮/餐饮美食风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "food & dining aesthetic, appetite appeal, warm culinary photography, menu storytelling, vibrant food styling, inviting taste mood, shareable delicious"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "美食风",
+      "餐饮风",
+      "food风"
+    ],
+    "best_for": "餐饮与美食,需要食欲感、菜品呈现与品牌温度",
+    "visual_direction": "food & dining aesthetic, appetite appeal, warm culinary photography, menu storytelling, vibrant food styling, inviting taste mood, shareable delicious",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm appetite ground, vibrant",
+      "composition": "dish hero + menu/steps",
+      "density": "medium, appetizing"
+    },
+    "color_palette": {
+      "primary": "appetite orange #F97316 / warm red #EF4444, cream",
+      "secondary": "soft butter #FDE68A, leaf green #4ADE80",
+      "accent": "one rich accent (tomato #DC2626)",
+      "neutral": "near-black #1F2937, warm brown, cream",
+      "rule": "appetizing, warm, vibrant; no cold blue-heavy, no grey-washed"
+    },
+    "typography": {
+      "title": "bold friendly sans (Nunito / 思源黑体), big appetite",
+      "body": "short readable",
+      "labels": "price/ingredient tags",
+      "text_quality": "clear, appetizing, no false claims"
+    },
+    "layout_patterns": [
+      "dish hero photo",
+      "menu / price list",
+      "recipe steps",
+      "ingredient / origin story"
+    ],
+    "layout_usage_rule": "Appetite-first; the dish leads, menu and steps support.",
+    "layout_blueprints": [
+      {
+        "name": "菜品页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "菜品主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "卖点",
+              "价格"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "菜谱页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 4,
+            "labels": [
+              "步骤1",
+              "步骤2",
+              "步骤3",
+              "步骤4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "food photography, menu cards, step icons, warm palette, appetite styling",
+      "avoid": "clutter, cold tones, misleading, over-saturation"
+    },
+    "rendering_constraints": [
+      "Appetizing, warm, shareable.",
+      "The dish leads; menu and steps are clear.",
+      "Accurate; no invented prices or claims."
+    ],
+    "reference": "GitHub: guizang category-cookbook (美食) · 餐饮风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Appetizing, warm, shareable.",
+      "The dish leads; menu and steps are clear.",
+      "Accurate; no invented prices or claims."
+    ]
+  }
+}

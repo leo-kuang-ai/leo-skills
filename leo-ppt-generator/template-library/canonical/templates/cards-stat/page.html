@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- cards-stat：咨询级渲染模板（version: pro-family）。七条合同：?leo_render=1 禁
+     动画 / data-leo-ready / 数据只读注入 / /leo-fonts/ HTTP / 1280x720
+     overflow hidden / data-leo-block 锚点 / 块完整落画幅。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>cards-stat</title>
+<style>
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype"); font-weight:400; }
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype"); font-weight:700; }
+  * { margin:0; padding:0; box-sizing:border-box; letter-spacing:0; }
+  html, body, .slide { width:1280px; height:720px; overflow:hidden; }
+  body { position:relative; font-family:var(--leo-f-family-body,"Noto Sans SC"),sans-serif; font-size:var(--leo-f-size-body,25px); line-height:var(--leo-f-line-height-body,1.5); font-weight:var(--leo-f-weight-body,400); color:var(--leo-c-text,#26282B); background:var(--leo-c-background,#FAFAF7); }
+  .slide { position:relative; }
+  [data-leo-region] { position:absolute; min-width:0; min-height:0; }
+  [data-leo-block], [data-leo-block-item] { min-width:0; overflow-wrap:anywhere; }
+  .head { border-bottom:2px solid var(--leo-c-accent,#8A6D3B); }
+  .kicker { color:var(--leo-c-accent,#8A6D3B); font:var(--leo-f-weight-kicker,400) var(--leo-f-size-kicker,22px)/var(--leo-f-line-height-kicker,1.4) var(--leo-f-family-kicker,"Noto Sans SC"),sans-serif; margin-bottom:8px; }
+  .title, .quote { color:var(--leo-c-primary,#31435C); font:var(--leo-f-weight-title,700) var(--leo-f-size-title,46px)/var(--leo-f-line-height-title,1.25) var(--leo-f-family-title,"Noto Sans SC"),sans-serif; }
+  .page-no, .page-no2 { position:absolute; right:24px; bottom:8px; color:var(--leo-c-muted,#5D6672); font:var(--leo-f-weight-page_no,400) var(--leo-f-size-page_no,22px)/var(--leo-f-line-height-page_no,1.2) var(--leo-f-family-page_no,"Noto Sans SC"),sans-serif; }
+  .footnote, .bound, .meta { font-size:var(--leo-f-size-page_no,22px); line-height:1.3; color:var(--leo-c-muted,#5D6672); }
+  .foot, .footer, .bound { border-top:1px solid var(--leo-c-border,#D8DAD3); padding-top:10px; }
+  .bottom { display:flex; align-items:center; gap:var(--leo-g-padding-gap,16px); }
+  .bottom:empty, .kicker:empty, .source:empty { display:none; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after { animation: none !important; transition: none !important; }
+
+  .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-auto-rows:minmax(0,1fr); gap:var(--leo-g-padding-gap,16px); }
+  .card { display:flex; flex-direction:column; background:var(--leo-c-surface,#FFFFFF); border:1px solid var(--leo-c-border,#D8DAD3); border-top:3px solid var(--leo-c-primary,#31435C); padding:var(--leo-g-padding-block,14px) var(--leo-g-padding-inline,18px); }
+  .card.alt { border-top-color:var(--leo-c-accent,#8A6D3B); }
+  .c-label { font-size:var(--leo-f-size-kicker,22px); line-height:1.2; color:var(--leo-c-accent,#8A6D3B); margin-bottom:4px; }
+  .c-claim { font-weight:700; line-height:1.25; color:var(--leo-c-primary,#31435C); }
+  .c-stat { margin-top:auto; padding-top:8px; }
+  .cs-value { font-size:var(--leo-f-size-title,46px); font-weight:700; line-height:1.15; color:var(--leo-c-primary,#31435C); }
+  .cs-value small { font-size:var(--leo-f-size-page_no,22px); font-weight:400; margin-left:6px; color:var(--leo-c-muted,#5D6672); }
+  .cs-note { font-size:var(--leo-f-size-page_no,22px); line-height:1.2; color:var(--leo-c-muted,#5D6672); }
+  .bottom-bar { width:4px; height:34px; background:var(--leo-c-accent,#8A6D3B); flex:none; }
+  .bottom-text { color:var(--leo-c-primary,#31435C); font-weight:700; }
+
+  .head { left:var(--leo-g-header-x,64px); top:var(--leo-g-header-y,40px); width:var(--leo-g-header-width,1152px); height:var(--leo-g-header-height,124px); }
+  .cards { left:var(--leo-g-cards_row-x,64px); top:var(--leo-g-cards_row-y,180px); width:var(--leo-g-cards_row-width,1152px); height:var(--leo-g-cards_row-height,418px); }
+  .bottom { left:var(--leo-g-bottom_band-x,64px); top:var(--leo-g-bottom_band-y,628px); width:var(--leo-g-bottom_band-width,1152px); height:var(--leo-g-bottom_band-height,60px); }
+</style>
+</head>
+<body>
+  <main class="slide">
+    <header class="head" data-leo-region="header">
+      <div class="kicker" data-leo-block="kicker"></div>
+      <h1 class="title" data-leo-block="title"></h1>
+    </header>
+    <section class="cards" data-leo-region="cards_row" data-leo-block="cards"></section>
+    <footer class="bottom" data-leo-region="bottom_band"><div class="bottom-bar"></div><div class="bottom-text" data-leo-block="bottom"></div></footer>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") { document.documentElement.dataset.leoRender="1"; }
+  function el(tag,cls,text){ var e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=String(text); return e; }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    Object.keys(theme.colors || {}).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(theme.colors[role]));
+    });
+    Object.keys(theme.fonts || {}).forEach(function (role) {
+      var font = theme.fonts[role];
+      ["family", "size", "weight", "line_height"].forEach(function (key) {
+        if (font[key] != null) root.style.setProperty("--leo-f-" + key.replace("_", "-") + "-" + role,
+          String(font[key]) + (key === "size" ? "px" : ""));
+      });
+    });
+    Object.keys(theme.geometry || {}).forEach(function (key) {
+      if (typeof theme.geometry[key] === "number")
+        root.style.setProperty("--leo-g-" + key, theme.geometry[key] + "px");
+    });
+  }
+  function setPageNo(data){ var p=document.querySelector('[data-leo-block="page-no"]'); if(p) p.textContent=data.page_no!=null?String(data.page_no):""; }
+  document.fonts.ready.then(function(){ document.documentElement.dataset.leoReady="1"; });
+
+  function applyData(data){ data=data||{};
+    document.querySelector('[data-leo-block="kicker"]').textContent=data.kicker||"";
+    document.querySelector('[data-leo-block="title"]').textContent=data.title||"";
+    document.querySelector('[data-leo-block="bottom"]').textContent=data.bottom||"";
+    var cards=document.querySelector('[data-leo-block="cards"]');
+    (data.cards||[]).forEach(function(c){
+      var card=el("div","card"+(c.alt?" alt":"")); card.setAttribute("data-leo-block-item","card");
+      card.appendChild(el("div","c-label",c.label));
+      card.appendChild(el("div","c-claim",c.claim));
+      if(c.stat){ var st=el("div","c-stat"); var v=el("div","cs-value");
+        if(c.stat.unit){ v.appendChild(document.createTextNode(c.stat.value)); v.appendChild(el("small",null,c.stat.unit)); }
+        else { v.textContent=c.stat.value; }
+        st.appendChild(v);
+        if(c.stat.note) st.appendChild(el("div","cs-note",c.stat.note));
+        card.appendChild(st); }
+      cards.appendChild(card); });
+    setPageNo(data); }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  applyData(window.__LEO_SLIDE_DATA__);
+</script>
+</body>
+</html>

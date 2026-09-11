@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/axis-manifest/v1",
+  "title": "轴清单（论证/渲染语言/图表语法/页面语义：ID/kind、正文引用、适用限制；不拥有另一份风格身份）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "kind",
+    "body_ref"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "axis-manifest"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "kind": {
+      "enum": [
+        "argument",
+        "infographic",
+        "rendering",
+        "structure",
+        "chart",
+        "page-semantics"
+      ]
+    },
+    "body_ref": {
+      "type": "string",
+      "description": "正文文件相对引用（显式，去掉标题嗅探）"
+    },
+    "applicability_limits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extract": {
+      "type": "object",
+      "description": "结构化摘录（如 paste_ready 段落）"
+    }
+  }
+}

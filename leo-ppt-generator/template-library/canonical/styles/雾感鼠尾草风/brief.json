@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:雾感鼠尾草风",
+  "name": "雾感鼠尾草风",
+  "aliases": [
+    "雾感鼠尾草风",
+    "雾感鼠尾草",
+    "鼠尾草医疗",
+    "misty sage healthcare"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/雾感鼠尾草风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "misty sage healthcare, fog-gray green palette on warm white, translucent sage cards and soft medical photography, calm trusted service air"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "雾感鼠尾草风",
+      "雾感鼠尾草",
+      "鼠尾草医疗",
+      "misty sage healthcare"
+    ],
+    "best_for": "雾感鼠尾草绿低饱和医疗服务气质;适合医院介绍/临床护理/体检中心/健康管理/医疗服务展示",
+    "visual_direction": "misty sage healthcare, fog-gray green palette on warm white, translucent sage cards and soft medical photography, calm trusted service air",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FAFAF7→#F1F3F0→#EEF0ED (雾感鼠尾草风底)",
+      "composition": "雾感低饱和医疗绿体系:大面积留白 + 矩形色块 + 细线分割 + 半透明鼠尾草绿信息卡",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#9BA890(雾感鼠尾草绿/标题锚)",
+      "secondary": "#A8B19F(灰橄榄绿)",
+      "accent": "#7FAE9A(医疗薄荷绿)",
+      "neutral": "#3F4140(深炭灰文字)",
+      "rule": "锚点 #9BA890, #A8B19F, #7FAE9A, #3F4140;来源:源文件色板原文直迁;为 GPT Image 2 提供雾感鼠尾草绿医疗服务与医学健康 PPT 的全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "思源黑体/Noto Sans SC Regular-Medium,不用粗重黑体",
+      "body": "Noto Sans SC Light 无衬线正文,行高宽松",
+      "labels": "全大写无衬线 Light 字距加宽,医用深绿灰"
+    },
+    "layout_patterns": [
+      "大面积留白 + 矩形色块 + 细线分割",
+      "竖排英文分类/超大浅灰绿页码贴近边缘",
+      "半透明鼠尾草绿信息卡 + 低饱和柔雾绿滤镜医学摄影",
+      "阴影柔和对比度低,秩序化信息呈现"
+    ],
+    "layout_usage_rule": "大面积留白 + 矩形色块 + 细线分割",
+    "visual_elements": {
+      "allowed": "雾感低饱和医疗绿体系:大面积留白 + 矩形色块 + 细线分割 + 半透明鼠尾草绿信息卡",
+      "avoid": "不要深色背景或高饱和撞色;不要粗重黑体压迫版面或厚边框"
+    },
+    "rendering_constraints": [
+      "不要深色背景或高饱和撞色",
+      "不要粗重黑体压迫版面或厚边框",
+      "不要彩虹图表或复杂 3D 图表",
+      "不要装饰图标和植物纹样抢占医学证据位置",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要深色背景或高饱和撞色",
+      "不要粗重黑体压迫版面或厚边框",
+      "不要彩虹图表或复杂 3D 图表",
+      "不要装饰图标和植物纹样抢占医学证据位置"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/014_雾感鼠尾草医疗服务PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要深色背景或高饱和撞色",
+      "不要粗重黑体压迫版面或厚边框",
+      "不要彩虹图表或复杂 3D 图表",
+      "不要装饰图标和植物纹样抢占医学证据位置",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

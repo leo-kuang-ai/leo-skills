@@ -1,0 +1,164 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:代码开发者风",
+  "name": "代码开发者风",
+  "aliases": [
+    "developer风",
+    "代码风",
+    "程序员风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/代码开发者风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "工程蓝图"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "developer code aesthetic, terminal / editor panels, monospace type, GitHub-style interface, diff and syntax-highlight hints, dark tooling vibe, geek-culture friendly precision"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "developer风",
+      "代码风",
+      "程序员风"
+    ],
+    "best_for": "以代码终端、仓库面板与极客术语的视觉语言面向开发者人群",
+    "visual_direction": "developer code aesthetic, terminal / editor panels, monospace type, GitHub-style interface, diff and syntax-highlight hints, dark tooling vibe, geek-culture friendly precision",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark editor #0D1117 / #1E1E1E",
+      "composition": "code panels, terminal windows, repo stats",
+      "density": "medium, tool-like modules"
+    },
+    "color_palette": {
+      "primary": "editor dark #0D1117, mono #E6EDF3 text",
+      "secondary": "panel #161B22, muted #8B949E",
+      "accent": "syntax green #3FB950 / blue #58A6FF",
+      "neutral": "#E6EDF3, #8B949E, border #30363D",
+      "rule": "tool-like, geek; dark + syntax accent, avoid pastel and warm decorative"
+    },
+    "typography": {
+      "title": "monospace bold, code-y",
+      "body": "monospace / clean code text",
+      "labels": "syntax-highlighted fragments, line numbers",
+      "text_quality": "exact code/symbol/technical names; don't garble"
+    },
+    "layout_patterns": [
+      "terminal window hero",
+      "repo / architecture as code panel",
+      "diff and changelog narrative",
+      "API / SDK snippet showcase"
+    ],
+    "layout_usage_rule": "Speak the developer's language; panels, monospace, syntax accents and repo-style stats.",
+    "layout_blueprints": [
+      {
+        "name": "SDK 介绍页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "SDK 名与仓链接"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "代码片段窗口"
+            ]
+          },
+          {
+            "position": "side",
+            "count": 3,
+            "labels": [
+              "特性",
+              "用法",
+              "安装"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "工程文化页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "终端/仓库主视觉"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "贡献",
+              "star",
+              "变更"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "code panels, terminal, monospace, syntax colors, diff/line numbers, repo-styled badges",
+      "avoid": "business-clip-art, cartoon, warm gradients, glossy stock, decorative flourish"
+    },
+    "rendering_constraints": [
+      "Feels at home in a developer conference or docs site.",
+      "Monospace + one syntax accent on dark; panels read like a real editor.",
+      "Exact code and package names; no invented brand or license claims."
+    ],
+    "reference": "GitHub: GPT Image 2 presets (code) · 开发者文化风格"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Feels at home in a developer conference or docs site.",
+      "Monospace + one syntax accent on dark; panels read like a real editor.",
+      "Exact code and package names; no invented brand or license claims."
+    ]
+  }
+}

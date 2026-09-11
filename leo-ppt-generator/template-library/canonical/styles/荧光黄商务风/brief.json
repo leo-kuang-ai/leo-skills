@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:荧光黄商务风",
+  "name": "荧光黄商务风",
+  "aliases": [
+    "荧光黄商务",
+    "投资公司商业计划书",
+    "investment-company-business-plan"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/荧光黄商务风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业",
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "neon yellow on dark charcoal corporate statement, geometric color blocking with white breathing room, high-contrast investment-plan boldness"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "荧光黄商务",
+      "投资公司商业计划书",
+      "investment-company-business-plan"
+    ],
+    "best_for": "A striking, modern corporate presentation style featuring a …;适合Corporate business plans/Investment pitches/Modern agency portfolios/Tech startu",
+    "visual_direction": "neon yellow on dark charcoal corporate statement, geometric color blocking with white breathing room, high-contrast investment-plan boldness",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "Top half features a full-width black-and-white photograph. Bottom half is a dark charcoal backgr…",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#333333(主色/标题锚)",
+      "secondary": "#E5FF00(辅助色)",
+      "accent": "#FFFFFF(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #333333, #E5FF00, #FFFFFF, #999999;A striking, modern corporate presentation style featurin…"
+    },
+    "typography": {
+      "title": "Bold condensed sans-serif for headings, clean sans-serif for body",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏"
+    ],
+    "layout_usage_rule": "版式骨架 cover/agenda/section/content/data/quote/closing;按版式骨架排布,同 deck 内封面/收尾构图呼应",
+    "visual_elements": {
+      "allowed": "复用稳定页面骨架：封面、目录、章节、内容、对比、数据、引用、收尾都应共享相同网格和视觉节奏",
+      "avoid": "Color photography (all photos must be black and white);Rounded corners on shapes or images;Gradients or drop shadows"
+    },
+    "rendering_constraints": [
+      "Color photography (all photos must be black and white)",
+      "Rounded corners on shapes or images",
+      "Gradients or drop shadows",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "Color photography (all photos must be black and white)",
+      "Rounded corners on shapes or images",
+      "Gradients or drop shadows",
+      "Pastel or muted colors (other than the specific grey)",
+      "Complex organic shapes or illustrations"
+    ],
+    "reference": "gpt-image2-ppt-skills · styles/featured/investment-company-business-plan.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Color photography (all photos must be black and white)",
+      "Rounded corners on shapes or images",
+      "Gradients or drop shadows",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

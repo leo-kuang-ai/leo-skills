@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/preset/v1",
+  "title": "场景预设（只提供未指定的默认 ID；不让 preset 改正文）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "id",
+    "name_zh",
+    "match_signals",
+    "composition"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "scene-preset"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name_zh": {
+      "type": "string"
+    },
+    "match_signals": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "required": [
+        "style"
+      ],
+      "properties": {
+        "style": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+        },
+        "theme": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+        },
+        "mode": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/mode"
+        },
+        "layouts": {
+          "type": "array",
+          "items": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+          }
+        },
+        "density": {
+          "enum": [
+            "very-low",
+            "low",
+            "low-medium",
+            "balanced",
+            "medium-high",
+            "high"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "fallbacks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+        }
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 ## 成品样例
 
 以下页面来自 2026-08-29 六行业评测运行（主题「AI Agent 落地一年」，合成材料；
-运行记录见仓库根 `docs/leo-ppt-generator-eval-6industries-0829.md`），generate 路线
+运行记录见仓库根 `docs/leo-ppt-generator/evals/2026-08-29-6industries.md`），generate 路线
 2560×1440 交付档，此处降采样至 1280 展示：
 
 - 政务汇报 · 封面页
@@ -33,12 +33,14 @@ Leo PPT Generator 用于生成图片式 PPTX、把图片/PDF/可信 Office 输�
 风格可发现性见[风格画廊](samples/style-gallery.md)（由
 `scripts/generate_style_gallery.py` 从风格库确定性生成，11 套内置风格与适用场景
 一览，另含 8 个新家族代表金样板）；完整索引与选风格路由见
-`references/styles/00_索引/_INDEX.md`。
+`template-library/governance/authoring/index/_INDEX.md`。
 
 ## 风格库
 
-风格资产按名称、别名和家族提供[紧凑索引](references/styles/generated/by-name-alias.md)，
-数量统一见[生成计数](references/styles/generated/counts.md)，不再手工维护多个总数。
+风格资产按名称、别名和家族统一登记在
+`template-library/catalog/generations/<gen>/registry.json`，`<gen>` 由
+`template-library/catalog/current.json` 确定；执行期可用
+`leo-ppt style list --summary --filter <名称或别名>` 查询，不手工维护静态计数。
 普通风格、变体、参考池、版式与规范分别记账；参考池代表不冒充普通风格，未做 golden
 验证也不等于不可点名。执行期摘要核对用户同名覆盖，选择后通过指纹守卫保证实际渲染
 使用同一文件；相同别名多命中时必须消歧。
@@ -93,12 +95,40 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 顺带完成真实验证；`not_configured / invalid` = 尚未配置或无效，需运行 `leo-ppt config`。
 渠道与凭据也可用本地控制台管理：`leo-ppt ui`（或 `leo-ppt config ui`）打开 127.0.0.1 控制台，支持渠道
 新增/修改/删除/切换/排序与三种密钥录入（网页一次性录入直写系统钥匙串且页面零回显、
-终端安全录入、环境变量引用），目录渠道卡片直达各平台取 key 页面；自动模式下可按
-**权重**（1-1000，小值优先）直接配置各渠道的选用顺序。控制台的「生成任务」Tab 提供
-生成过程可视化：任务列表与详情（流程步骤与耗时、逐页状态网格、页图预览、事件时间线、
-渠道链路统计、交付与质量闸），生成期间实时轮询、纯只读。更新技能后请先让
+终端安全录入、环境变量引用）。渠道目录共 18 项（15 家目录渠道 + 3 项内置），涵盖国内
+直连（智谱/阿里云百炼/火山方舟/百度千帆/腾讯混元/魔搭/硅基流动/阶跃星辰/MiniMax/
+乾行AI）、国际服务（Google Gemini「Nano Banana」/Ideogram/xAI Grok/DeepInfra/
+Together AI/OpenAI 官方/AtlasCloud）与自定义中转站；其中 Gemini/MiniMax/Ideogram 为
+原生协议渠道（由原生适配器自动转换协议，使用方式与其他渠道一致）。添加区按上述门槛
+分组为紧凑行式列表，每行直达各平台取 key 页面；
+已配置的行显示「已配置 ✓」，"重新配置"可沿用现有密钥直接换 Key；自动模式下可按
+**权重**（1-1000，小值优先）配置各渠道选用顺序，渠道全表见
+[references/provider-catalog.md](references/provider-catalog.md)。更新技能后请先让
 受管 runtime 重新安装（`runtime_manager.py ensure`）再启动控制台，否则可能报
 `config_ui_asset_missing`（旧运行时缺页面资产）。
+
+![渠道管理视图](samples/console/channels-view.png)
+
+控制台的「生成任务」Tab 提供生成过程可视化（生成期间实时轮询、纯只读，不会代为
+推进任务）：在宿主会话（如 ZCode / Claude）里让助手生成 PPT，流程签署 backend
+合同后任务自动登记出现——此前的合同、大纲与风格确认属会话内工作，不落任务记录。
+
+![生成任务卡片视图](samples/console/runs-cards-view.png)
+
+- **任务列表双视图**：默认**卡片**（状态色条 + 进度 + 相对时间 + 停滞警示），可切
+  **列表**（后台表格：任务/项目/路线/状态/进度/阶段/更新七列严格对齐）；右上角
+  「卡片 | 列表」切换，偏好自动记忆，也支持 `?view=cards|list` 链接参数；
+- **状态色彩语义**：进行中（蓝，活跃任务呼吸动效）/已完成（绿）/失败（红）/已创建
+  （灰）；**停滞警示**（≥5 分钟无更新）在列表行与详情页以橙色呈现，并提示可能停在
+  确认门——回发起生成的宿主会话查看是否在等你确认；
+- **任务详情**：流程 stepper（准备→逐页生成→交付，各步耗时）、逐页状态网格（可点开
+  页图放大预览、键盘 ←/→ 翻页）、事件时间线（连续页事件折叠、间隔耗时警示）、链路
+  与渠道统计、交付与质量闸；页网格右下角徽标区分产出 lane——紫色 HTML/Mermaid 为
+  本地渲染页，深色为 AI 渠道页。
+
+![生成任务表格视图](samples/console/runs-table-view.png)
+
+![生成任务详情](samples/console/run-detail.png)
 
 #### 方式三：宿主对话框粘贴安装指引
 
@@ -171,7 +201,7 @@ claude plugin marketplace add leo-kuang-ai/leo-skills && claude plugin install l
 
 详细规则见：
 
-- [reference 全量导航索引](references/_INDEX.md)（按功能八组一览 30 份 reference 的定位与加载阶段）
+- [reference 全量导航索引](references/_INDEX.md)（按功能八组一览 31 份 reference 的定位与加载阶段）
 - [输入路由](references/input-routing.md)
 - [首次使用](references/first-use.md)
 - [执行合同](references/execution-contract.md)
@@ -190,8 +220,10 @@ worker 能力取决于当前宿主现场；安装成功不代表这些外部能�
 # 风格库治理 lint（在技能目录内执行）
 python3 scripts/lint_style_briefs.py
 python3 scripts/lint_layout_grid.py
-python3 scripts/lint_style_index.py
 python3 scripts/lint_style_governance.py
+
+# 仅迁移/旧 fixture 输入（不代表当前执行库）
+python3 scripts/lint_style_briefs.py --legacy-fixtures
 
 # chart_series 调色板弹药池查询（echarts 36 + ppt-mcp 17，快照随包；
 # --aggregate 重建需外部源，见脚本 docstring 环境变量）

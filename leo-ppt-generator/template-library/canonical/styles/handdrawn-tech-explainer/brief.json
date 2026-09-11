@@ -1,0 +1,310 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:handdrawn-tech-explainer",
+  "name": "手绘技术解释风",
+  "aliases": [
+    "技术手绘风",
+    "手绘讲解风",
+    "手绘图解风",
+    "hand-drawn-explainer"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/手绘技术解释风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "clean Chinese handdrawn technical explainer, near-white paper background, thin sketch lines, light pencil hatching, small precise central diagram, restrained pastel markers, lots of whitespace, calm educational tone"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p22-22-image-hero-layouts"
+        ]
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p3-03-statement-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p17-17-system-diagram-layouts",
+          "builtin:layout:p14-14-loop-diagram-layouts",
+          "builtin:layout:p11-11-horizontal-timeline-layouts",
+          "builtin:layout:p30-30-swiss-image-split-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts"
+        ]
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p6-06-kpi-tower-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      }
+    ],
+    "capacity_factor": {
+      "text": 0.85,
+      "note": "留白/笔迹占位：手绘讲解线条让渡约 15% 文本区"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 12）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:art-handdrawn"
+      ]
+    },
+    "aliases": [
+      "技术手绘风",
+      "手绘讲解风",
+      "手绘图解风",
+      "hand-drawn-explainer"
+    ],
+    "best_for": "中文技术文章、课程课件、复杂概念解释、知识卡片和软件工程/AI 主题的低压力说明图",
+    "visual_direction": "clean Chinese handdrawn technical explainer, near-white paper background, thin sketch lines, light pencil hatching, small precise central diagram, restrained pastel markers, lots of whitespace, calm educational tone",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "near-white paper #FCFBF7, not yellow, no full-page border",
+      "composition": "small central explanatory diagram with sparse labels, surrounding whitespace, short title and minimal visible text",
+      "density": "low to moderate; one core idea per slide; avoid dense whiteboard clutter"
+    },
+    "color_palette": {
+      "line": "soft graphite #2F3437 or dark gray ink, thin and slightly irregular",
+      "accent": "pale blue #BFD7F1, sage green #CFE2D1, light peach #F4C7B8, pale lavender #D8C7EF",
+      "background": "near-white, clean, not kraft, not cream-heavy",
+      "rule": "pastel marks are used for emphasis only; keep the page calm and airy",
+      "primary": "technical sketch ink #2F3A45 on paper white #FCFBF7",
+      "secondary": "soft annotation gray #7A8691, panel fill #F1F3F5",
+      "neutral": "paper #FCFBF7, hairline #D9DEE3, caption gray #8B949E"
+    },
+    "typography": {
+      "title": "restrained handwritten Chinese title, medium-large but not poster-sized",
+      "body": "short handwritten Chinese labels, few words per label, easy to inspect",
+      "emphasis": "light underline, small bracket, soft marker highlight, or tiny note tag",
+      "text_quality": "Chinese text must be exact, sparse, and readable; avoid long paragraphs",
+      "labels": "handwritten callout labels (马克笔手写体 / Caveat), arrows and underlines instead of boxes"
+    },
+    "layout_patterns": [
+      "central concept diagram with 3-4 short surrounding labels",
+      "before-after explanation with two small sketch panels",
+      "flow diagram with 3 steps and minimal arrows",
+      "mental model page with one metaphor object and short annotations",
+      "matrix or decision guide with sparse handwritten notes",
+      "summary page with one small character or object and three takeaway labels"
+    ],
+    "layout_usage_rule": "Use layout_blueprints as candidate starting points only. Choose and adapt the composition according to each slide's semantic role; keep visual DNA stable while varying archetypes such as metaphor, process, comparison, matrix, and summary. Avoid repeating the same blueprint on adjacent slides unless it is a deliberate repeated sequence.",
+    "layout_blueprints": [
+      {
+        "name": "small central concept map",
+        "sections": [
+          {
+            "position": "top-left",
+            "count": 1,
+            "labels": [
+              "short handwritten title"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "small precise concept diagram"
+            ]
+          },
+          {
+            "position": "around center",
+            "count": 4,
+            "labels": [
+              "label 1",
+              "label 2",
+              "label 3",
+              "label 4"
+            ]
+          },
+          {
+            "position": "bottom-right",
+            "count": 1,
+            "labels": [
+              "one-sentence takeaway"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "technical before-after",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "short page title"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "before sketch panel"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "labels": [
+              "after sketch panel"
+            ]
+          },
+          {
+            "position": "between panels",
+            "count": 1,
+            "labels": [
+              "thin handdrawn arrow"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 3,
+            "labels": [
+              "why it matters",
+              "tradeoff",
+              "next step"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "one idea teaching card",
+        "sections": [
+          {
+            "position": "center-left",
+            "count": 1,
+            "labels": [
+              "metaphor object or tiny engineer/reader character"
+            ]
+          },
+          {
+            "position": "center-right",
+            "count": 3,
+            "labels": [
+              "core idea",
+              "common mistake",
+              "useful rule"
+            ]
+          },
+          {
+            "position": "background",
+            "count": 1,
+            "labels": [
+              "very light pencil hatching and pastel highlight"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "thin handdrawn arrows, small diagrams, pencil hatching, pastel marker blocks, bracket notes, simple software/AI icons, tiny engineer or reader character at most once, sketch callout bubbles tethered by elbow arrows, margin annotations in pencil-red underline",
+      "avoid": "messy whiteboard frame, marker tray, large cartoon characters, dense handwriting, yellowed paper, decorative stickers, poster-scale title, full-page border, digital UI cards"
+    },
+    "negative_prompt": [
+      "messy whiteboard frame or marker tray",
+      "large cartoon characters or dense handwriting",
+      "yellowed paper and decorative stickers",
+      "poster-scale title or full-page border",
+      "digital UI cards, photorealistic scenes, or crisp vector-clean outlines and ruler-straight lines"
+    ],
+    "paired_illustration": {
+      "family": "hand-drawn",
+      "density": "sparse"
+    },
+    "rendering_constraints": [
+      "The slide should feel like a calm handdrawn technical article illustration, not a brainstorming whiteboard.",
+      "Keep the central drawing small and precise with generous empty space.",
+      "Pastel fills do not completely fill their outlines — keep the loose hand-painted look that preserves hand-drawn looseness.",
+      "All sketch lines keep a slight hand-drawn wobble; connectors wave gently instead of running ruler-straight.",
+      "Icons stay conceptual and abstract (metaphor objects, simple glyphs) rather than realistic scenes.",
+      "Pastel marker accents stay within 4 hues on screen per page, used for emphasis only.",
+      "A single bold centered takeaway line may sit at the page bottom when it aids recall.",
+      "Use minimal Chinese text and make every visible word correct.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "The slide should feel like a calm handdrawn technical article illustration, not a brainstorming whiteboard.",
+      "Keep the central drawing small and precise with generous empty space.",
+      "Pastel fills do not completely fill their outlines — keep the loose hand-painted look that preserves hand-drawn looseness.",
+      "All sketch lines keep a slight hand-drawn wobble; connectors wave gently instead of running ruler-straight.",
+      "Icons stay conceptual and abstract (metaphor objects, simple glyphs) rather than realistic scenes.",
+      "Pastel marker accents stay within 4 hues on screen per page, used for emphasis only.",
+      "A single bold centered takeaway line may sit at the page bottom when it aids recall.",
+      "Use minimal Chinese text and make every visible word correct.",
+      "No watermark, no unrelated logo, no slide number unless explicitly requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

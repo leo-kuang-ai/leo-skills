@@ -27,7 +27,7 @@ from ..storage import sha256_file
 from .assets import font_dirs
 from .errors import RenderError
 
-RASTERIZE_SCRIPT = Path(__file__).resolve().parents[3] / "scripts/render/rasterize_svg.mjs"
+RASTERIZE_SCRIPT = Path(__file__).resolve().parents[4] / "scripts/render/rasterize_svg.mjs"
 DEFAULT_FONT_FAMILY = "Noto Sans SC"
 NODE_TIMEOUT_SECONDS = 60
 

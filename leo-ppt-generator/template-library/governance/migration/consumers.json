@@ -1,0 +1,367 @@
+{
+  "consumers": [
+    {
+      "consumer": "runtime/src/leo_ppt_generator/cli.py",
+      "old_api_refs": [
+        "compose_layout(",
+        "compose_style(",
+        "from .layout_bank import",
+        "from .styles import",
+        "from .templates import",
+        "layout_bank",
+        "load_style("
+      ],
+      "old_path_refs": [
+        "06_论证模式",
+        "07_信息图类型",
+        "10_品牌身份",
+        "11_图表语法",
+        "12_版式库",
+        "render-templates"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/layout_bank.py",
+      "old_api_refs": [
+        "builtin_style_path",
+        "from .styles import",
+        "layout_bank"
+      ],
+      "old_path_refs": [
+        "12_版式库",
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/assets.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-fonts",
+        "render-templates"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/chart.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "11_图表语法",
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/fonts.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-fonts",
+        "render-templates"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/page.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-templates"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/readiness.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-fonts"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/render/receipt.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-templates"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/styles.py",
+      "old_api_refs": [
+        "builtin_style_path",
+        "load_style(",
+        "style_asset_inventory"
+      ],
+      "old_path_refs": [
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "runtime/src/leo_ppt_generator/templates.py",
+      "old_api_refs": [
+        "builtin_style_path",
+        "compose_layout(",
+        "compose_style(",
+        "from .styles import",
+        "load_brand(",
+        "load_image_type(",
+        "load_layout(",
+        "load_mode(",
+        "load_rendering(",
+        "load_style(",
+        "paired_rendering("
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "06_论证模式",
+        "07_信息图类型",
+        "08_图片渲染",
+        "10_品牌身份",
+        "12_版式库"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/audit_style_families.py",
+      "old_api_refs": [
+        "from leo_ppt_generator.styles import"
+      ],
+      "old_path_refs": [
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/capability_manifest.py",
+      "old_api_refs": [
+        "capability_manifest",
+        "from leo_ppt_generator.styles import",
+        "style_asset_inventory"
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/check_deck_geometry.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引",
+        "12_版式库",
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/check_layout_reuse.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "12_版式库",
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/draft_negative_prompts.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引",
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/extract_pptx_theme.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/freeze_template_rebuild_baseline.py",
+      "old_api_refs": [
+        "builtin_style_path",
+        "capability_manifest",
+        "compose_layout(",
+        "compose_style(",
+        "from .layout_bank import",
+        "from .styles import",
+        "from .templates import",
+        "from leo_ppt_generator.layout_bank import",
+        "from leo_ppt_generator.styles import",
+        "from leo_ppt_generator.templates import",
+        "layout_bank",
+        "load_brand(",
+        "load_image_type(",
+        "load_layout(",
+        "load_mode(",
+        "load_rendering(",
+        "load_style(",
+        "paired_rendering(",
+        "style_asset_inventory"
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "06_论证模式",
+        "07_信息图类型",
+        "08_图片渲染",
+        "10_品牌身份",
+        "11_图表语法",
+        "12_版式库",
+        "references/styles",
+        "render-fonts",
+        "render-templates",
+        "style-gallery",
+        "style-presets"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/generate_capacity_draft.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引",
+        "12_版式库"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/generate_style_gallery.py",
+      "old_api_refs": [
+        "from leo_ppt_generator.styles import"
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "references/styles",
+        "style-gallery"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/intake_codex_xiaobei.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引",
+        "08_图片渲染",
+        "10_品牌身份"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/intake_gpt_image2.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/intake_ohmy.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/lint_layout_grid.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "12_版式库",
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/lint_render_templates.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "render-templates"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/lint_skill_structure.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "references/styles"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/lint_style_briefs.py",
+      "old_api_refs": [
+        "from leo_ppt_generator.styles import"
+      ],
+      "old_path_refs": [],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/lint_style_governance.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引",
+        "08_图片渲染",
+        "10_品牌身份",
+        "11_图表语法",
+        "12_版式库"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/lint_style_index.py",
+      "old_api_refs": [
+        "capability_manifest"
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/migrate_style_aliases.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "00_索引"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/style_hard_rules.py",
+      "old_api_refs": [
+        "from leo_ppt_generator.styles import",
+        "style_asset_inventory"
+      ],
+      "old_path_refs": [
+        "00_索引",
+        "references/styles"
+      ],
+      "switch_owner": "U9"
+    },
+    {
+      "consumer": "scripts/style_pack.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "references/styles",
+        "style-gallery"
+      ],
+      "switch_owner": "U10"
+    },
+    {
+      "consumer": "scripts/suggest_layout.py",
+      "old_api_refs": [],
+      "old_path_refs": [
+        "12_版式库"
+      ],
+      "switch_owner": "U10"
+    }
+  ],
+  "kind": "template-rebuild-consumers",
+  "note": "grep 只作发现；切换验收按方案 §11 以 API/CLI、打包、干净安装、导入导出为准。",
+  "schema_version": 1
+}

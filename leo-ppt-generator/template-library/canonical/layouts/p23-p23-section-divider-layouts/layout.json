@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p23-p23-section-divider-layouts",
+  "name": "Section Divider",
+  "aliases": [
+    "P23"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "section",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "chapter_number": {
+      "region": "content",
+      "desc": "左侧超大章号（01/05 式）",
+      "max_chars": 2,
+      "chars_per_line": 2,
+      "max_lines": 1
+    },
+    "chapter_title": {
+      "region": "content",
+      "desc": "右侧章题一行",
+      "max_chars": 15,
+      "chars_per_line": 13,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左侧超大轻字重章号（≥20vw）+ 右侧章题一行 + 底部进度点（当前章高亮，其余中性）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/P23_Section_Divider.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": false,
+  "max_per_deck": 1
+}

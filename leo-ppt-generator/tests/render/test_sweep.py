@@ -103,6 +103,14 @@ class ImageSweepResetsOnlyUnrenderedPages(unittest.TestCase):
             self.assertEqual(result["sweep"]["plan"], [])
             self.assertEqual(result["sweep"]["rendered_pages_skipped"], 2)
 
+    def test_empty_apply_does_not_consume_round(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = _make_run(Path(tmp) / "run", {1: "recorded"})
+            result = _sweep(root)
+            self.assertEqual(result["reason_code"], "render_sweep_noop")
+            self.assertEqual(result["sweep"]["round"], 0)
+            self.assertFalse((root / "observability" / "render-sweep.jsonl").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

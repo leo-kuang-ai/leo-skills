@@ -239,10 +239,15 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
 
 最终 slide 图片必须来自确认的图片 backend。不得使用 Pillow、SVG、HTML、
 canvas 或本地绘图生成“近似替代页”。required asset 无法正确进入页面时应
-blocked，而不是省略后继续。**唯一封闭例外**：经样张确认的 text-fidelity-fallback
-模式（TF-2，见下节）——底图仍须来自确认 backend，叠加文字由
-`scripts/overlay_text.py` 确定性产生并逐字来自该页 `required_text[]` 白名单；
-此例外不延伸到任何其他本地合成场景。
+blocked，而不是省略后继续。**封闭例外共两条**：① 经样张确认的
+text-fidelity-fallback 模式（TF-2，见下节）——底图仍须来自确认 backend，
+叠加文字由 `scripts/overlay_text.py` 确定性产生并逐字来自该页
+`required_text[]` 白名单；② R-70a/b 阶段的组合页合成路径——背景层带
+确认 backend 的 render provenance，文字层由同一白名单机制主题化确定性
+产生并经手改拒绝校验（合同与阶段门见
+[`render-contract.md`](render-contract.md) 组合页合成节）。②仍是阶段实现：
+`page_type_regime` 不因它扩展 composite lane 准入，默认路由、worker brief
+与交付披露的转正属 R-70c，未过阶段门前合成命令只用于门禁证据与显式调用。
 
 样张批准后，所有 slide job 继承同一 `sample_generation_method` 和 backend。
 继承前必须核验该方法的像素尺寸档为交付画布比例（16:9）：比例不符（如历史 run

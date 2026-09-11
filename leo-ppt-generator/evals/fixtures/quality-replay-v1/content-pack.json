@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "page-content-pack",
+  "compiler_version": "2",
+  "source": {
+    "master_path": "master.md",
+    "master_sha256": "f2509a67122564901e6744c620d6841ee659f7ae953fc49dc88405f546c77e80",
+    "master_revision": null,
+    "decision_source": "user-delegated",
+    "post_confirm_chain": []
+  },
+  "deck": {
+    "goal": "验证真实离线渲染的观测链",
+    "audience": "开发者",
+    "argumentation_mode": null,
+    "delivery_tier": "standard"
+  },
+  "pages": [
+    {
+      "page_id": "pg-11111111",
+      "number": 1,
+      "master_page": "S1",
+      "narrative_role": "流程·路径",
+      "argument_role": null,
+      "beat": null,
+      "audience_takeaway": null,
+      "rst_relation": null,
+      "claim": "先固定观测窗口，再比较结果",
+      "items": [
+        {
+          "item_id": "it-aba541364b",
+          "kind": "point",
+          "required": true,
+          "text": "目标页集在生成前冻结",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        },
+        {
+          "item_id": "it-2006edbf95",
+          "kind": "point",
+          "required": true,
+          "text": "缺失事件不计为零",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        },
+        {
+          "item_id": "it-e19bcb8db0",
+          "kind": "point",
+          "required": true,
+          "text": "开发费用与生产费用分列",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        }
+      ],
+      "structures": {},
+      "notes": {
+        "speaker_script": null,
+        "engineering": null
+      }
+    },
+    {
+      "page_id": "pg-22222222",
+      "number": 2,
+      "master_page": "S2",
+      "narrative_role": "流程·路径",
+      "argument_role": null,
+      "beat": null,
+      "audience_takeaway": null,
+      "rst_relation": null,
+      "claim": "实际调用身份是成本对账的前提",
+      "items": [
+        {
+          "item_id": "it-5930a9a3b8",
+          "kind": "point",
+          "required": true,
+          "text": "重复调用记录按真实身份去重",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        },
+        {
+          "item_id": "it-b112712810",
+          "kind": "point",
+          "required": true,
+          "text": "收费失败和重试仍计入成本",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        },
+        {
+          "item_id": "it-7fd4a319c4",
+          "kind": "point",
+          "required": true,
+          "text": "账单缺失时保留 blocked",
+          "evidence_tier": null,
+          "source_ref": null,
+          "session_round": null
+        }
+      ],
+      "structures": {},
+      "notes": {
+        "speaker_script": null,
+        "engineering": null
+      }
+    }
+  ],
+  "numbers": [],
+  "glossary": [],
+  "content_digest": "46efa9cf9da5ec84c311461e86302edc6bd66a38a8e072089e7b2c8dd8e9ea71"
+}

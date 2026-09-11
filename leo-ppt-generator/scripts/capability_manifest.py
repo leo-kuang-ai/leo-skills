@@ -202,6 +202,87 @@ def build_template_registry(library_root: Path) -> dict:
     }
 
 
+def inventory_template_library(library_root: Path) -> dict:
+    """保留坏文件与冲突分母；盘点不授予执行资格，也不发布 catalog。"""
+    from collections import Counter, defaultdict
+    from leo_ppt_generator.asset_resolver import KIND_CANONICAL_DIR, KIND_ENTITY_FILE
+
+    library_root = Path(library_root).resolve()
+    rows, file_hashes = [], {}
+    identities, aliases = defaultdict(list), defaultdict(set)
+    for kind, dirname in sorted(KIND_CANONICAL_DIR.items()):
+        base = library_root / "canonical" / dirname
+        pattern = f"*/*/{KIND_ENTITY_FILE[kind]}" if kind == "axis" else f"*/{KIND_ENTITY_FILE[kind]}"
+        for path in sorted(base.glob(pattern)):
+            relative = path.relative_to(library_root).as_posix()
+            row = {"path": relative, "kind": kind, "asset_id": None,
+                   "state": "unknown", "gaps": [], "sha256": None}
+            rows.append(row)
+            if path.is_symlink() or not path.resolve().is_relative_to(library_root):
+                row["gaps"].append("unsafe_path")
+                continue
+            try:
+                raw = path.read_bytes()
+                row["sha256"] = _hash_bytes(raw)
+                file_hashes[relative] = row["sha256"]
+                data = json.loads(raw)
+                if not isinstance(data, dict):
+                    raise ValueError("entity must be an object")
+            except (OSError, ValueError) as exc:
+                row["gaps"].append("unreadable_manifest")
+                continue
+            identity = data.get("asset_id")
+            row["asset_id"] = identity if isinstance(identity, str) else None
+            if not isinstance(identity, str) or not identity.startswith(f"builtin:{kind}:"):
+                row["gaps"].append("invalid_identity")
+                continue
+            identities[identity].append(relative)
+            alias_values = data.get("aliases") or []
+            if not isinstance(alias_values, list):
+                row["gaps"].append("invalid_aliases")
+                alias_values = []
+            for alias in [data.get("name"), *alias_values]:
+                if isinstance(alias, str) and alias.strip():
+                    aliases[(kind, alias.strip().casefold())].add(identity)
+            row["state"] = "retired" if data.get("lifecycle") == "retired" else "legacy"
+            if kind == "style":
+                if not data.get("source"):
+                    row["gaps"].append("source_unknown")
+                bindings = data.get("bindings")
+                if not isinstance(bindings, dict) or not bindings.get("theme_default"):
+                    row["gaps"].append("theme_missing")
+            renderer = data.get("renderer_support")
+            if kind == "layout" and (not isinstance(renderer, dict) or not any(renderer.values())):
+                row["gaps"].append("renderer_missing")
+            if kind == "template" and data.get("lane") == "render:html":
+                html = path.with_name("page.html")
+                if html.is_symlink() or not html.is_file():
+                    row["gaps"].append("template_missing")
+            # active 只表示旧生命周期；必须另有组合级运行证据才能晋升 executable。
+            if row["state"] != "retired":
+                row["gaps"].append("combination_admission_not_verified")
+    unsafe_files = []
+    for path in sorted((library_root / "canonical").rglob("*")):
+        if path.is_symlink() or not path.resolve().is_relative_to(library_root):
+            unsafe_files.append(path.relative_to(library_root).as_posix())
+        elif path.is_file():
+            file_hashes[path.relative_to(library_root).as_posix()] = sha256_file(path)
+    states = Counter(row["state"] for row in rows)
+    gaps = Counter(gap for row in rows for gap in row["gaps"])
+    duplicates = {identity: paths for identity, paths in sorted(identities.items()) if len(paths) > 1}
+    conflicts = [{"kind": kind, "alias": alias, "asset_ids": sorted(ids)}
+                 for (kind, alias), ids in sorted(aliases.items()) if len(ids) > 1]
+    return {"schema_version": 1, "kind": "template-library-inventory",
+            "denominator": {"raw_manifests": len(rows), "unique_identities": len(identities)},
+            "counts_by_kind": dict(sorted(Counter(row["kind"] for row in rows).items())),
+            "states": {state: states[state] for state in ("unknown", "legacy", "executable", "retired")},
+            "gap_counts": dict(sorted(gaps.items())), "duplicate_identities": duplicates,
+            "alias_conflicts": conflicts, "assets": rows,
+            "files": file_hashes, "unsafe_files": unsafe_files,
+            "source_digest": _hash_bytes(_json_bytes(file_hashes)),
+            "claim_ceiling": "inventory-only", "migration_complete": False}
+
+
 def publish_template_registry(registry: dict, library_root: Path) -> dict:
     """staging → catalog/generations/<gen>/ → 原子替换 current.json（构建锁内）。"""
     library_root = Path(library_root).resolve()
@@ -439,6 +520,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--library-root", help="template-library 根（默认 <root>/template-library）")
     parser.add_argument("--library-publish", action="store_true", help="配合 --template-library 发布")
     parser.add_argument("--library-check", action="store_true", help="配合 --template-library 只读校验")
+    parser.add_argument("--library-inventory", action="store_true", help="只读盘点 canonical，保留缺失及冲突分母")
     args = parser.parse_args(argv)
 
     root = (Path(args.root).expanduser().resolve() if args.root
@@ -446,6 +528,21 @@ def main(argv: list[str] | None = None) -> int:
     if not root.is_dir():
         print(f"根目录不存在: {root}", file=sys.stderr)
         return EXIT_USAGE
+
+    if args.library_inventory:
+        if args.library_publish or args.library_check or args.compare:
+            parser.error("--library-inventory 不与发布、校验或旧清单比较混用")
+        library = Path(args.library_root).expanduser().resolve() if args.library_root else root / "template-library"
+        if not (library / "library.json").is_file():
+            parser.error("模板库声明缺失")
+        payload = json.dumps(inventory_template_library(library), ensure_ascii=False, indent=2, sort_keys=True)
+        if args.out:
+            output = Path(args.out)
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(payload + "\n", encoding="utf-8")
+        else:
+            print(payload)
+        return 0
 
     if args.template_library:
         if args.compare or args.out:

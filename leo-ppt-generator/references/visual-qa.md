@@ -52,7 +52,13 @@
 
 **文字**
 - 中文是否乱码、错字、漏字？
-- 标题 / 数字 / 单位 / 标签 / 引用是否与 `slide_jobs.json` **逐字一致**？
+- 标题 / 数字 / 单位 / 标签 / 引用与 `slide_jobs.json` 白名单的**逐字机械对齐**由
+  R-73 OCR 对齐门承担（`image record` 前消费 `image-deck/ocr/page_<N>.txt`；
+  WARN 期披露、校准通过后 enforce 硬门，见
+  [`render-contract.md`](render-contract.md) 组合页合成节与 `ocr_alignment.py`）：
+  审查者**不再重复目视逐字比对**，但须复核门的 `not_run` 披露——门未运行的页
+  仍按本条人工判读，且错字拦截不因此视为已覆盖。语义级文字判读（术语口径、
+  编造百分比、上下文错位）保留人工/多模态职责。
 - 有没有把「智能补全/实时协作」这类概念硬塞进数据图表并编造百分比？
 
 **数据**(判据全文见 [`../template-library/governance/authoring/index/图表样式规范.md`](../template-library/governance/authoring/index/图表样式规范.md))

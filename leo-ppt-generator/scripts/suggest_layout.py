@@ -54,7 +54,9 @@ if str(RUNTIME_SRC) not in sys.path:
 
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
 from leo_ppt_generator.content_projection import ROLE_PAGE_TYPES
+from leo_ppt_generator.page_intent import analyze_page_intent, semantic_layout_adjustment
 from leo_ppt_generator.render.layout import capacity_level
+from leo_ppt_generator.layout_selection import rank_page, load_style_routing, _role_fit, _capacity_fit, _rhythm
 
 W_ROLE, W_CAPACITY, W_RHYTHM = 0.45, 0.40, 0.15
 CONFIDENCE_FLOOR = 0.5
@@ -124,173 +126,10 @@ def load_bank(*, home: Path | None = None) -> dict[str, dict]:
     return bank
 
 
-def load_style_routing(
-    style_name: str | None, *, home: Path | None = None,
-    resolver: AssetResolver | None = None,
-) -> tuple[float, dict[str, float]]:
-    """Return ``(capacity_factor.text, {compact layout id: adjustment})``.
-
-    Missing user routing is deliberately neutral: a user overlay must not
-    inherit a same-name builtin route by accident.
-    """
-    if not style_name:
-        return 1.0, {}
-    resolver = resolver or AssetResolver(home=home)
-    try:
-        style = resolver.require(style_name, kind="style")
-    except ResolverError:
-        return 1.0, {}
-    bindings = style["data"].get("bindings") or {}
-    factor = float(bindings.get("capacity_factor", {}).get("text", 1.0))
-    adjust: dict[str, float] = {}
-    for rule in bindings.get("layout_routes", []):
-        for key, delta in (("preferred", 0.1), ("discouraged", -0.2)):
-            for ref in rule.get(key, []) or []:
-                try:
-                    resolved = resolver.resolve(ref)
-                    layout_id = _compact_id(resolved)
-                except ResolverError:
-                    continue
-                adjust[layout_id] = adjust.get(layout_id, 0.0) + delta
-    return factor, adjust
-
-
-def _role_fit(page: dict, layout: dict) -> tuple[float | None, str]:
-    """角色对齐分；None = 出局。"""
-    role = str(page.get("page_role", ""))
-    allowed = ROLE_PAGE_TYPES.get(role)
-    ptype = layout.get("page_type", "content")
-    if allowed is None:
-        return 0.5, f"角色未识别:{role}（中性评分）"
-    if ptype in allowed:
-        fit = 1.0
-        if int(page.get("data_points", 0) or 0) >= 3 and ptype != "data":
-            fit = 0.5
-            return fit, f"角色对齐:{role}（数据点≥3，非 data 版式减半）"
-        return fit, f"角色对齐:{role}"
-    return None, f"角色不符:{role}≠{ptype}"
-
-
-def _capacity_fit(
-    page: dict, layout: dict, factor: float
-) -> tuple[float | None, list[str]]:
-    """区间包含度 × 字数覆盖度；None 表示硬超排除。"""
-    reasons: list[str] = []
-    capacity = layout.get("content_capacity", {})
-    points = page.get("points")
-    containment = 0.5
-    if points is not None and any("count_min" in s for s in capacity.values()):
-        count_slots = [s for s in capacity.values() if "count_min" in s]
-        inside = any(
-            s["count_min"] <= points <= s["count_max"] for s in count_slots
-        )
-        if inside:
-            containment = 1.0
-            reasons.append(f"条数 {points} 在区间内")
-        else:
-            best = max(count_slots, key=lambda s: s["count_max"])
-            if points < best["count_min"]:
-                containment = max(0.0, points / best["count_min"])
-                reasons.append(f"条数不足:{points}<{best['count_min']}")
-            elif capacity_level(points, best["count_max"]) != "overflow":
-                containment = 0.5
-                reasons.append(f"条数偏多:{points}>{best['count_max']}")
-            else:
-                reasons.append(f"条数硬超:{points}≫{best['count_max']}")
-                return None, reasons
-    est_chars = page.get("est_chars")
-    coverage = 1.0
-    if est_chars is not None:
-        widest = max(
-            (s.get("max_chars", 0) for s in capacity.values()
-             if "max_chars" in s),
-            default=None,
-        )
-        if widest is not None:
-            limit = widest * factor
-            if est_chars <= limit:
-                reasons.append(f"容量 {est_chars:.0f}/{limit:.0f} chars")
-            elif capacity_level(est_chars, limit) != "overflow":
-                coverage = 0.5
-                reasons.append(f"容量偏紧 {est_chars:.0f}/{limit:.0f} chars")
-            else:
-                reasons.append(
-                    f"容量硬超 {est_chars:.0f}/{limit:.0f} chars"
-                )
-                return None, reasons
-    return containment * coverage, reasons
-
-
-def _rhythm(page: dict, layout_id: str, layout: dict) -> tuple[float, list[str]]:
-    """节奏分（∈ [0, 1]）：已用 -0.4，与上一页同版式再 -0.4。"""
-    score = 1.0
-    reasons: list[str] = []
-    used = page.get("already_used") or []
-    if layout_id in used:
-        score -= 0.4
-        reasons.append("已用版式 -0.4")
-    previous = page.get("previous_layout")
-    if previous and previous == layout_id:
-        score -= 0.4
-        reasons.append("与上一页同版式 -0.4")
-    return max(0.0, min(1.0, score)), reasons
-
-
-def score_page(page: dict, bank: dict[str, dict], factor: float,
-               adjust: dict[str, float], backend: str | None = None) -> dict:
-    known_ids = set(bank)
-    candidates: list[dict] = []
-    used = set(page.get("already_used") or [])
-    for layout_id in sorted(bank):
-        layout = bank[layout_id]
-        if backend and not layout.get("renderer_support", {}).get(backend):
-            continue
-        # 节奏硬排除：强视觉版式已用即出局（与 check_layout_reuse 同口径）。
-        if layout.get("reuse_friendly") is False and layout_id in used:
-            continue
-        role_fit, role_reason = _role_fit(page, layout)
-        if role_fit is None:
-            continue
-        capacity_fit, cap_reasons = _capacity_fit(page, layout, factor)
-        if capacity_fit is None:
-            continue
-        rhythm, rhythm_reasons = _rhythm(page, layout_id, layout)
-        routing = adjust.get(layout_id, 0.0)
-        score = (
-            W_ROLE * role_fit + W_CAPACITY * capacity_fit + W_RHYTHM * rhythm
-            + routing
-        )
-        score = max(0.0, min(1.0, score))
-        reasons = [role_reason, *cap_reasons, *rhythm_reasons]
-        if routing:
-            reasons.append(
-                f"风格路由 {'+' if routing > 0 else ''}{routing:.1f}"
-            )
-        candidates.append(
-            {
-                "layout": layout_id,
-                "score": round(score, 2),
-                "reasons": reasons,
-                "renderer_support": layout.get("renderer_support", {}),
-            }
-        )
-    candidates.sort(key=lambda c: (-c["score"], c["layout"]))
-    top = candidates[:TOP_CANDIDATES]
-    confidence = top[0]["score"] if top else 0.0
-    # 禁编造 id：防御断言——输出 id 必须全部来自枚举集。
-    for cand in top:
-        if cand["layout"] not in known_ids:
-            print(
-                f"fabricated_layout_id: {cand['layout']} 不在枚举集（脚本 bug）",
-                file=sys.stderr,
-            )
-            raise SystemExit(2)
-    return {
-        "page": page.get("page"),
-        "candidates": top,
-        "confidence": round(confidence, 2),
-        "decision": "auto" if confidence >= CONFIDENCE_FLOOR else "undecided",
-    }
+def score_page(page, bank, factor, adjust, backend=None):
+    """轻量输入适配；完整排名归 runtime，摘要最多显示两项。"""
+    result = rank_page(page, bank, factor, adjust, backend)
+    return {**result, "candidates": result["candidates"][:TOP_CANDIDATES]}
 
 
 def main(argv: list[str]) -> int:
@@ -368,7 +207,14 @@ def main(argv: list[str]) -> int:
     factor, adjust = load_style_routing(
         effective_style, home=home, resolver=resolver
     )
-    results = [score_page(page, bank, factor, adjust, backend) for page in pages]
+    results = []
+    for page in pages:
+        page_types = set(ROLE_PAGE_TYPES.get(str(page.get("page_role", "")), []))
+        _, page_adjust = load_style_routing(
+            effective_style, home=home, resolver=resolver,
+            page_types=page_types or None,
+        )
+        results.append(score_page(page, bank, factor, page_adjust, backend))
     output = {"pages": results, "backend": backend,
               "capability_check": "backend_filtered" if backend else "not_requested"}
     print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))

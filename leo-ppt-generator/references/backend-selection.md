@@ -118,7 +118,7 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
 ```
 
 - **有历史**：`--stats` 指向含 token 记录的 `backend_stats.jsonl`（或 run 目录）时，
-  按"均值 tokens/attempt × 均值 attempts/页"估每页型成本，band 上界 ×1.5 重试余量。
+  按记录的累计 tokens 均值估每页型用量，不再乘 attempts；band 上界 ×1.5 作为估算不确定性余量，费用估算不代表实测账单。
 - **无历史或 `not-recorded`**：退保守假设区间（chart 9000 / text-heavy 7000 /
   image 5000 / 未分型 6000 tokens 每页，上界 ×2），输出 `basis` 字段如实标注
   `assumed-default`；混合时标 `mixed`。假设区间不得说成测量值。
@@ -151,3 +151,13 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
   render 页派发走 `prompts/render-worker.md`（与 slide-worker 平行）。
 - **质检**：render 页与图像页同走 `references/visual-qa.md` 2.5 步像素闸门
   （render-worker 单页自查 + 父 Agent 批量复跑）。
+
+### 成本读数与口径分离（R-74 追加）
+
+- `image record --backend` **无缺省值**（R-74：backend 生产记录去
+  `"fixture"` 缺省）——未显式声明 backend 的生产记录直接被拒，防 fixture
+  静默污染 lane 成本聚合。
+- `backend report` 的 `tokens_total` 仅在该桶完全没有 token 记录时标
+  `not-recorded`；`0` 是合法观测值（确定性渲染/免单调用），如实显示。
+- lane 成本对比读数见 [`layout-dispatch.md`](layout-dispatch.md)
+  「lane 成本读数」节：真实账单、氛围保护、冻结不切换三口径。

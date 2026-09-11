@@ -478,8 +478,11 @@ class RunScanner:
                 unit_id = entry.get("slide_id") or entry.get("page_id")
                 status = entry.get("status")
                 failure = timing_pages.get(str(unit_id) if unit_id else "")
+                # 债8 三口径统一：blocked 是独立页态，不并入 pending。
                 state = "recorded" if status == "recorded" else (
-                    "active" if status == "active" else "pending"
+                    "active" if status == "active" else (
+                        "blocked" if status == "blocked" else "pending"
+                    )
                 )
                 if failure and str(failure.get("status")) in _FAILURE_STATUSES:
                     state = "timeout" if failure.get("status") == "timeout" else "failed"

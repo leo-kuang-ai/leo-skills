@@ -37,7 +37,7 @@ POINT_LINE_RE = re.compile(r"^\s*(?:[-•]|\d+\.|\d+、)\s*(.+)$", re.M)
 _NON_POINT = ("标题", "备注", "视觉行", "argument_role", "数字登记表")
 _PAGE_META_KEYS = ("page_id", "argument_role", "beat", "audience_takeaway",
                    "rst_relation", "角色", "页面角色", "role",
-                   "结构数据", "对照侧", "表列", "表行")
+                   "结构数据", "对照侧", "表列", "表行", "page_expression", "content_model")
 VISUAL_RE = re.compile(r"(?:视觉行|视觉)[：:]\s*(.+)")
 ROLE_RE = re.compile(r"(?:页面角色|角色|role)[：:]\s*([^\s,，;；。]+)", re.I)
 META_LINE_RES = {
@@ -512,12 +512,143 @@ def compile_content_pack(master_text: str, *, master_path: str,
         "numbers": numbers,
         "glossary": parsed["glossary"],
     }
+    _extend_content_model(pack, master_text)
     pack["content_digest"] = content_digest(pack)
+    verify_content_pack(pack)
     return pack
+
+
+def _json_metadata(text, key):
+    matches = list(re.finditer(r"^" + re.escape(key) + r"[：:][ \t]*(.*)$", text, re.M))
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ContentPackError(f"{key} 必须只有一处声明")
+    from .template_inputs import load_template_json
+    try:
+        value = load_template_json(matches[0].group(1))
+    except ValueError as exc:
+        raise ContentPackError(f"{key} 必须是合法单行 JSON") from exc
+    if not isinstance(value, dict):
+        raise ContentPackError(f"{key} 必须是 JSON object")
+    return value
+
+
+def _page_sources(page, numbers):
+    sources = {item["source_ref"] for item in page["items"] if item.get("source_ref")}
+    sources.update(number["source"] for number in numbers if page["page_id"] in number["page_ids"])
+    return sources
+
+
+def _required_page_text(page, numbers):
+    text = [page["claim"]] + [item["text"] for item in page["items"] if item["kind"] == "point"]
+    def strings(value):
+        if isinstance(value, str):
+            return [value] if value else []
+        if isinstance(value, list):
+            return [s for item in value for s in strings(item)]
+        if isinstance(value, dict):
+            return [s for item in value.values() for s in strings(item)]
+        return []
+    text.extend(strings(page.get("structures", {})))
+    text.extend(n["value"] for n in numbers if page["page_id"] in n["page_ids"])
+    return list(dict.fromkeys(text))
+
+
+def _extend_content_model(pack, master_text):
+    model = _json_metadata(master_text, "content_model")
+    blocks = split_page_blocks(master_text)
+    expressions = [_json_metadata(block["body"], "page_expression") for block in blocks]
+    if model is None:
+        if any(expression is not None for expression in expressions):
+            raise ContentPackError("page_expression 必须伴随 content_model v2")
+        return
+    allowed = {"schema_version", "main_claim", "main_style", "brand_constraints", "narrative_order",
+               "chapters", "duration_seconds"}
+    if model.get("schema_version") != 2 or set(model) - allowed:
+        raise ContentPackError("content_model 版本或字段非法")
+    pack["schema_version"] = 2
+    pack["compiler_version"] += "+content-v2"
+    pack["chapters"] = model.get("chapters")
+    for key in ("main_claim", "main_style", "brand_constraints", "narrative_order"):
+        pack["deck"][key] = model.get(key)
+    pack["deck"]["duration_seconds"] = model.get("duration_seconds")
+    allowed_expression = {"chapter_id", "semantic_structure", "media_role", "evidence_refs", "basis",
+                          "budget_seconds", "style_exception"}
+    for page, expression in zip(pack["pages"], expressions):
+        if expression is None or set(expression) - allowed_expression:
+            raise ContentPackError(f"{page['page_id']}: 缺 page_expression 或存在未知字段")
+        page.update({key: expression.get(key) for key in
+                     ("chapter_id", "semantic_structure", "media_role", "evidence_refs", "basis")})
+        page["budget_seconds"] = expression.get("budget_seconds")
+        page["style_exception"] = expression.get("style_exception")
+        page["required_text"] = _required_page_text(page, pack["numbers"])
+        page["data_refs"] = [n["item_id"] for n in pack["numbers"] if page["page_id"] in n["page_ids"]]
+        page["capacity_requirements"] = {"text_chars": sum(map(len, page["required_text"])),
+                                         "point_count": sum(i["kind"] == "point" for i in page["items"]),
+                                         "number_count": len(page["data_refs"])}
+        if not isinstance(page["basis"], list) or not isinstance(page["evidence_refs"], list):
+            raise ContentPackError(f"{page['page_id']}: basis/evidence_refs 必须是数组")
+        page["confidence"] = "medium" if (page["evidence_refs"] and page["basis"]
+                                                  and page["semantic_structure"] != "undecided") else "undecided"
+        if page["confidence"] == "undecided":
+            page["basis"] = [*page["basis"], "证据或结构不足，保留 undecided"]
+
+
+def _verify_content_model(pack):
+    ids = [page["page_id"] for page in pack["pages"]]
+    if len(ids) != len(set(ids)):
+        raise ContentPackError("page_id 重复")
+    chapter_ids = [chapter["chapter_id"] for chapter in pack["chapters"]]
+    order = pack["deck"]["narrative_order"]
+    if len(chapter_ids) != len(set(chapter_ids)) or set(order) != set(chapter_ids) or len(order) != len(chapter_ids):
+        raise ContentPackError("章节身份与叙事顺序不一致")
+    page_chapters = []
+    for page in pack["pages"]:
+        if not page_chapters or page_chapters[-1] != page["chapter_id"]:
+            page_chapters.append(page["chapter_id"])
+    if page_chapters != order:
+        raise ContentPackError("实际页序与章节叙事顺序不一致")
+    number_ids = [n["item_id"] for n in pack["numbers"]]
+    if len(number_ids) != len(set(number_ids)):
+        raise ContentPackError("数字账本身份重复；不得合并不同来源或单位")
+    for number in pack["numbers"]:
+        if not set(number["page_ids"]).issubset(ids):
+            raise ContentPackError("数字账本引用未知页面")
+    for page in pack["pages"]:
+        if page["chapter_id"] not in chapter_ids:
+            raise ContentPackError("页面引用未知章节")
+        actual = {n["item_id"] for n in pack["numbers"] if page["page_id"] in n["page_ids"]}
+        declared = {i["number_item_id"] for i in page["items"] if i["kind"] == "number-ref"}
+        if set(page["data_refs"]) != actual or declared != actual:
+            raise ContentPackError("页面数据引用与账本不一致")
+        if page["required_text"] != _required_page_text(page, pack["numbers"]):
+            raise ContentPackError("required_text 丢失或新增内容")
+        capacity = {"text_chars": sum(map(len, page["required_text"])),
+                    "point_count": sum(i["kind"] == "point" for i in page["items"]),
+                    "number_count": len(page["data_refs"])}
+        if page["capacity_requirements"] != capacity:
+            raise ContentPackError("容量声明与实际内容不一致")
+        if not set(page["evidence_refs"]).issubset(_page_sources(page, pack["numbers"])):
+            raise ContentPackError("页面证据来源不可回溯")
+        if page["confidence"] != "undecided" and not page["evidence_refs"]:
+            raise ContentPackError("缺证据的页面必须保持 undecided")
+    for chapter in pack["chapters"]:
+        pos = order.index(chapter["chapter_id"])
+        previous = order[pos - 1] if pos else None
+        following = order[pos + 1] if pos + 1 < len(order) else None
+        if (chapter["previous"], chapter["next"]) != (previous, following):
+            raise ContentPackError("章节承接与叙事顺序不一致")
+        sources = set().union(*[_page_sources(page, pack["numbers"]) for page in pack["pages"]
+                               if page["chapter_id"] == chapter["chapter_id"]])
+        if not set(chapter["evidence_refs"]).issubset(sources):
+            raise ContentPackError("章节证据无法回溯到所属页面")
 
 
 def verify_content_pack(pack: dict) -> None:
     """校验内容包自洽摘要；手改任何内容字段即拒绝。"""
+    if not isinstance(pack, dict) or type(pack.get("schema_version")) is not int or pack["schema_version"] not in (1, 2):
+        raise ContentPackError("内容包版本必须为 1 或 2")
     if pack.get("artifact_kind") != "page-content-pack":
         raise ContentPackError("artifact_kind 不是 page-content-pack")
     recorded = pack.get("content_digest")
@@ -527,6 +658,13 @@ def verify_content_pack(pack: dict) -> None:
         raise ContentPackError(
             "content_digest 不一致：内容包在生成后被手改。内容包是母版的单向"
             "派生物——修改内容须回母版并重新编译，不得直接编辑包")
+    from jsonschema import Draft202012Validator
+    schema_path = Path(__file__).parent / "schemas" / f"page-content-pack-v{pack['schema_version']}.schema.json"
+    errors = list(Draft202012Validator(json.loads(schema_path.read_text(encoding="utf-8"))).iter_errors(pack))
+    if errors:
+        raise ContentPackError("内容包 schema 校验失败: " + errors[0].message)
+    if pack["schema_version"] == 2:
+        _verify_content_model(pack)
 
 
 def load_content_pack(path: Path) -> dict:

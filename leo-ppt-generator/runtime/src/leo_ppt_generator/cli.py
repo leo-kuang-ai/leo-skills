@@ -53,7 +53,9 @@ from .evidence import EvidenceError, record_acceptance, record_provenance, recor
 from .hybrid.assembler import HybridAssembler
 from .image_deck.adapter import ImageDeckAdapter
 from .lifecycle import CleanupConflict, Lifecycle
+from .quality_metrics import MetricEventError
 from .render.chart import render_chart
+from .render.composite import compose_page, verify_composite, verify_binding_theme
 from .render.errors import RenderError
 from .render.page import parse_size, render_page
 from .render.provenance import attach_provenance_to_slide, load_render_receipt
@@ -666,6 +668,34 @@ def _freeze_content_binding(run_path: str | Path, slides_path: str | Path,
             pack_pages = {page.get("page_id") for page in pack.get("pages", [])}
             if selected_pages != pack_pages:
                 raise ContractError("layout_selection_page_mismatch")
+        if str(selection.get("policy_version", "1")) == "2":
+            from .asset_resolver import AssetResolver, ResolverError
+            from .content_projection import ProjectionError, verify_effective_binding
+            if pack_source is None or selection.get("status") != "complete":
+                raise ContractError("effective_binding_required")
+            selected = selection.get("selection") or {}
+            pins = []
+            for page in pack["pages"]:
+                entry = selected[page["page_id"]]
+                effective = entry.get("binding") or {}
+                if (effective.get("schema_version") != 2
+                        or effective.get("binding_digest") != entry.get("binding_digest")
+                        or effective.get("layout_id") != entry.get("layout_id")
+                        or effective.get("content_digest") != pack["content_digest"]
+                        or not effective.get("effective", {}).get("assets")):
+                    raise ContractError("effective_binding_required")
+                pins.extend(effective["effective"]["assets"])
+            try:
+                snapshot = root / "input/asset-snapshot"
+                source_resolver = (AssetResolver.from_snapshot(snapshot)
+                                   if snapshot.exists() else AssetResolver())
+                resolver = source_resolver.freeze_assets(snapshot, pins)
+                for page in pack["pages"]:
+                    verify_effective_binding(selected[page["page_id"]]["binding"], page,
+                                             resolver=resolver,
+                                             frozen_design=resolved if design_source is not None else None)
+            except (ResolverError, ProjectionError, OSError) as exc:
+                raise ContractError("effective_binding_invalid") from exc
         _record_supplemental_input(run_path, "layout_selection", metadata)
         binding["selection_policy"] = selection.get("policy_version")
         binding["selection_status"] = selection.get("status")
@@ -1379,6 +1409,19 @@ def build_parser() -> argparse.ArgumentParser:
     backend_validate = backend_commands.add_parser("validate")
     backend_validate.add_argument("contract")
 
+    quality = subcommands.add_parser("quality", help="固定质量窗口与显式事件采集")
+    quality_commands = quality.add_subparsers(dest="quality_command", required=True)
+    for command in ("start", "record", "close", "report"):
+        action = quality_commands.add_parser(command)
+        action.add_argument("run_path")
+        if command == "start":
+            action.add_argument("--window", required=True)
+            action.add_argument("--target-pages", required=True, help="冻结目标页 ID 的 JSON 数组")
+            action.add_argument("--phase", required=True,
+                                choices=("before-authorization", "after-authorization", "development"))
+        elif command == "record":
+            action.add_argument("--event", required=True, help="quality-event-v1 JSON")
+
     provider = subcommands.add_parser("provider")
     provider_commands = provider.add_subparsers(dest="provider_command", required=True)
     provider_configure = provider_commands.add_parser("configure")
@@ -1482,7 +1525,9 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--slide")
     record.add_argument("--image")
     record.add_argument("--result")
-    record.add_argument("--backend", default="fixture")
+    # R-74：backend 生产记录不再有 "fixture" 缺省——缺省值会把未显式声明的
+    # 生产记录静默计入 fixture 聚合，污染 lane 成本对账。
+    record.add_argument("--backend", required=True)
     record.add_argument(
         "--page-type", choices=("chart", "text-heavy", "image"),
         help="页型标签（backend×页型路由统计用）",
@@ -1495,6 +1540,10 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--tokens", type=int, default=None,
                         help="该页图片 backend 的 token 用量（worker 回报透传，"
                              "缺省 not-recorded）")
+    record.add_argument("--fallback-event", action="append", choices=("TF-1", "TF-2"),
+                        help="实际触发的文字纠错事件；须已启动质量窗口")
+    record.add_argument("--generation-method", choices=("image", "render", "composite"),
+                        help="与 fallback-event 独立的实际生产方式")
     record.add_argument("--lease")
     record.add_argument("--generation", type=int)
     record.add_argument("--agent-id")
@@ -1514,6 +1563,17 @@ def build_parser() -> argparse.ArgumentParser:
                              help="清扫轮次上限（协议 ≤2 轮；超限拒绝执行）")
     image_sweep.add_argument("--dry-run", action="store_true",
                              help="只输出复位计划，不改状态")
+    image_ocr_cmd = image_commands.add_parser(
+        "ocr", help="R-73 OCR 一条龙：页图 → paddle text blocks → page_<N>.txt")
+    image_ocr_cmd.add_argument("run_path", nargs="?")
+    image_ocr_cmd.add_argument("--run-dir")
+    image_ocr_cmd.add_argument("--number", type=int,
+                               help="单页页号；与 --all 二选一")
+    image_ocr_cmd.add_argument("--all", action="store_true",
+                               help="对全部已 recorded 且判域命中的图像生成页执行")
+    image_ocr_cmd.add_argument("--timeout", type=int, default=300,
+                               help="OCR 任务轮询超时（秒）")
+    image_ocr_cmd.add_argument("--model", help="PaddleOCR-VL 模型名（缺省 vendor 默认）")
     finalize = image_commands.add_parser("finalize")
     finalize.add_argument("run_path", nargs="?")
     finalize.add_argument("--run-dir")
@@ -1528,6 +1588,9 @@ def build_parser() -> argparse.ArgumentParser:
     content = subcommands.add_parser(
         "content", help="母版内容层投影（dashi K1/K4：内容包编译与身份补齐）")
     content_commands = content.add_subparsers(dest="content_command", required=True)
+    preview_cmd = content_commands.add_parser("preview", help="冻结绑定 → 零外部调用全册骨架预览")
+    preview_cmd.add_argument("run_path")
+    preview_cmd.add_argument("--page", action="append", help="仅重渲指定稳定页 ID；可重复，仍保留完整总览")
     content_pack_cmd = content_commands.add_parser(
         "pack", help="confirmed 母版 → page-content-pack.json（确定性单向投影）")
     content_pack_cmd.add_argument("--master", required=True, help="母版文档路径")
@@ -1555,6 +1618,9 @@ def build_parser() -> argparse.ArgumentParser:
                                  help="单页渲染超时（秒）")
     render_page_cmd.add_argument("--theme-file",
                                  help="themeVariables JSON（deck colors 锚，见 render-contract.md）")
+    render_page_cmd.add_argument("--run-dir", help="将实际渲染写入已冻结的质量窗口")
+    render_page_cmd.add_argument("--page-id", help="质量窗口中的目标页 ID")
+    render_page_cmd.add_argument("--operation-id", help="本次渲染的稳定操作身份")
     render_chart_cmd = render_commands.add_parser(
         "chart", help="图表语法 → SVG（浏览器实例内 mermaid）")
     render_chart_cmd.add_argument("--dialect", choices=("mermaid",), default="mermaid")
@@ -1571,6 +1637,30 @@ def build_parser() -> argparse.ArgumentParser:
     render_chart_cmd.add_argument("--chart-height", type=int, help="XY 图表逻辑高度（180–1440）")
     render_chart_cmd.add_argument("--label-size", type=int, help="XY 轴标签与图例字号（12–96）")
     render_chart_cmd.add_argument("--data-labels", action="store_true", help="显示 XY 柱体数值标签")
+    render_composite_cmd = render_commands.add_parser(
+        "composite", help="背景层 + 主题化文字层 → 双 provenance 合成页（R-70b）")
+    render_composite_cmd.add_argument("--background", required=True,
+                                      help="背景层 PNG（须带 render provenance sidecar）")
+    render_composite_cmd.add_argument("--spec", required=True,
+                                      help="required_text+anchors(+theme/font_size) JSON 路径")
+    render_composite_cmd.add_argument("--out", required=True, help="合成页 PNG 输出路径")
+    render_composite_cmd.add_argument("--render-receipt", required=True,
+                                      help="背景层 render provenance sidecar（<png>.render.json）")
+    render_composite_cmd.add_argument("--text-layer-out",
+                                      help="透明文字层 PNG 输出路径（缺省 <out>.text-layer.png）")
+    render_composite_cmd.add_argument("--design",
+                                      help="resolved-design.json；旧 run 恢复时校验依赖 freshness")
+    render_composite_cmd.add_argument("--run-dir", help="消费 run 绑定并写入质量窗口观察")
+    render_composite_cmd.add_argument("--page-id", help="质量窗口中的目标页 ID")
+    render_composite_cmd.add_argument("--operation-id", help="本次合成的稳定操作身份")
+    render_composite_verify_cmd = render_commands.add_parser(
+        "composite-verify", help="手改拒绝：重推导文字层与整页比对（R-70b）")
+    render_composite_verify_cmd.add_argument("--background", required=True, help="背景层 PNG")
+    render_composite_verify_cmd.add_argument("--spec", required=True, help="合成时使用的 spec JSON")
+    render_composite_verify_cmd.add_argument("--text-layer", required=True, help="文字层 PNG")
+    render_composite_verify_cmd.add_argument("--page", required=True, help="合成页 PNG")
+    render_composite_verify_cmd.add_argument("--render-receipt",
+                                            help="可选：同时复核背景层 provenance")
 
     editable = subcommands.add_parser("editable")
     editable_commands = editable.add_subparsers(dest="editable_command", required=True)
@@ -2289,12 +2379,34 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             model=profile["model"],
             next_action={"kind": "configure_credential_reference"},
         )
+    if args.command == "quality":
+        from .quality_metrics import (MetricEventError, start_observation, record_quality_event,
+                                      close_observation, scorecard_for_run)
+        try:
+            if args.quality_command == "start":
+                result = start_observation(args.run_path, window=args.window,
+                                           target_pages=_json_file(args.target_pages), phase=args.phase)
+            elif args.quality_command == "record":
+                result = record_quality_event(args.run_path, _json_file(args.event))
+            elif args.quality_command == "close":
+                result = close_observation(args.run_path)
+            else:
+                result = scorecard_for_run(args.run_path)
+        except (MetricEventError, OSError, ValueError) as exc:
+            return envelope("blocked", "quality_observation_invalid", detail=str(exc))
+        return envelope("ready", "quality_" + args.quality_command, quality=result)
     if args.command == "backend":
         if getattr(args, "backend_command", "") == "report":
             run_path = _run_path(args)
+            from .quality_metrics import scorecard_for_run, MetricEventError
+            try:
+                quality = scorecard_for_run(run_path)
+            except (MetricEventError, OSError, ValueError) as exc:
+                quality = {"status": "blocked", "reason_code": "quality_scorecard_invalid",
+                           "detail": str(exc)}
             return envelope(
                 "ready", "backend_report_ready",
-                table=_backend_report(run_path), safe_to_retry=True,
+                table=_backend_report(run_path), quality=quality, safe_to_retry=True,
             )
         registry = BackendRegistry.default()
         if args.backend_command == "create":
@@ -2610,6 +2722,13 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             next_action={"kind": "none"},
         )
     if args.command == "content":
+        if args.content_command == "preview":
+            from .content_preview import render_run_preview
+            result = render_run_preview(args.run_path, pages=args.page)
+            return envelope("ready" if result["status"] == "ready" else "blocked",
+                            "content_preview_ready" if result["status"] == "ready" else "content_preview_partial",
+                            preview=result, artifact_refs=[str(Path(result["output_dir"]) / "index.html")],
+                            safe_to_retry=True)
         from .content_pack import (
             ContentPackError,
             compile_content_pack,
@@ -2680,7 +2799,18 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 ],
             )
         if args.render_command == "page":
+            if args.run_dir or args.page_id or args.operation_id:
+                if not all((args.run_dir, args.page_id, args.operation_id)):
+                    raise ContractError("quality_render_identity_required")
+                from .quality_metrics import scorecard_for_run
+                observation = scorecard_for_run(args.run_dir)
+                if args.page_id not in (observation.get("target_pages") or []) or observation.get("observation_closed"):
+                    raise ContractError("quality_render_window_invalid")
             theme = _json_file(args.theme_file) if args.theme_file else None
+            bound_render = {}
+            if args.run_dir:
+                from .content_projection import load_run_binding
+                bound_render = load_run_binding(args.run_dir, args.page_id) or {}
             result = render_page(
                 args.template,
                 args.data,
@@ -2688,15 +2818,86 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 size=parse_size(args.size),
                 timeout_ms=int(args.timeout * 1000),
                 theme_variables=theme,
+                **bound_render,
             )
+            quality_event = None
+            if args.run_dir:
+                from .quality_metrics import record_runtime_tf
+                quality_event = record_runtime_tf(
+                    args.run_dir, page=args.page_id, operation_id=args.operation_id,
+                    triggers=[], generation_method="render", complete=True)
             return envelope(
                 "ready",
                 "render_page_completed",
                 render=result,
+                quality_event=quality_event,
                 artifact_refs=[result["out"]],
                 evidence_refs=[result["sidecar"]],
                 warnings=result["warnings"],
                 message="render page 完成；record 时用 --render-receipt 并入 provenance",
+                safe_to_retry=True,
+            )
+        if args.render_command == "composite":
+            if args.run_dir or args.page_id or args.operation_id:
+                if not all((args.run_dir, args.page_id, args.operation_id)):
+                    raise ContractError("quality_render_identity_required")
+            resolved_design = None
+            if args.design:
+                resolved_design = _json_file(args.design)
+            elif args.run_dir:
+                design_path = Path(args.run_dir) / "input/resolved-design.json"
+                if design_path.is_file():
+                    resolved_design = _json_file(str(design_path))
+            resolver = None
+            if args.run_dir:
+                from .content_projection import load_run_binding
+                binding = load_run_binding(args.run_dir, args.page_id) or {}
+                resolver = binding.get("resolver")
+                if binding:
+                    _verify_composite_binding(binding, args.spec, args.render_receipt)
+            result = compose_page(
+                args.background,
+                args.spec,
+                args.out,
+                render_receipt_path=args.render_receipt,
+                resolved_design=resolved_design,
+                text_layer_out=args.text_layer_out,
+                resolver=resolver,
+            )
+            quality_event = None
+            if args.run_dir:
+                from .quality_metrics import record_runtime_tf
+                quality_event = record_runtime_tf(
+                    args.run_dir, page=args.page_id, operation_id=args.operation_id,
+                    triggers=[], generation_method="composite", complete=True)
+            return envelope(
+                "ready",
+                "render_composite_completed",
+                render=result,
+                quality_event=quality_event,
+                artifact_refs=[result["out"], result["text_layer"]["path"]],
+                evidence_refs=[result["sidecar"]],
+                warnings=[],
+                message="render composite 完成；合成产物与双 provenance 已落盘"
+                        "（阶段门未过，不晋升 page_type_regime 路由）",
+                safe_to_retry=True,
+            )
+        if args.render_command == "composite-verify":
+            result = verify_composite(
+                args.background,
+                args.spec,
+                args.text_layer,
+                args.page,
+                render_receipt_path=args.render_receipt,
+            )
+            return envelope(
+                "ready",
+                "render_composite_verified",
+                render=result,
+                artifact_refs=[args.page],
+                evidence_refs=[],
+                warnings=[],
+                message="文字层与整页均与 spec 重推导一致，未被手改",
                 safe_to_retry=True,
             )
         # render chart（dialect mermaid）
@@ -2842,6 +3043,15 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             idempotency_status = (
                 "replayed" if operation_id in jobs.get("operations", {}) else "created"
             )
+            if getattr(args, "fallback_event", None):
+                from .quality_metrics import MetricEventError, record_runtime_tf
+                if not args.generation_method:
+                    raise ContractError("quality_generation_method_required")
+                try:
+                    record_runtime_tf(run_path, page=number, operation_id=operation_id,
+                                      triggers=args.fallback_event, generation_method=args.generation_method)
+                except (MetricEventError, OSError, ValueError) as exc:
+                    raise ContractError("quality_observation_invalid") from exc
             _append_backend_stats(
                 run_path, number=number, backend=args.backend,
                 page_type=getattr(args, "page_type", None),
@@ -2856,6 +3066,70 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 requested_lease=args.lease,
                 requested_generation=args.generation,
             )
+            from .content_projection import load_run_binding
+            bound_page = load_run_binding(run_path, number)
+            if bound_page is not None:
+                expected = bound_page["binding"]
+                if args.backend != expected["backend"]:
+                    raise ContractError("effective_binding_backend_mismatch")
+                if args.backend == "render:html":
+                    if not getattr(args, "render_receipt", None):
+                        raise ContractError("effective_binding_render_receipt_required")
+                    receipt = load_render_receipt(args.render_receipt)
+                    from .render.provenance import verify_receipt_matches_artifact
+                    verify_receipt_matches_artifact(receipt, image_path)
+                    if (receipt.get("binding_digest") != expected["binding_digest"]
+                            or receipt.get("content_digest") != expected["content_digest"]):
+                        raise ContractError("effective_binding_render_receipt_mismatch")
+            # R-73 对齐门：图像 lane 整页生成页在 record 前机械拦截。
+            # 判域只看冻结 provenance 事实（composite/render 豁免）；无 OCR
+            # 文本 = not_run 披露，不冒充通过；WARN 期失败只披露不阻断。
+            alignment_verdict = None
+            alignment_warnings: list[str] = []
+            slides_contract_path = Path(run_path) / "input/slides.json"
+            if slides_contract_path.is_file():
+                from .ocr_alignment import (
+                    gate_for_page,
+                    load_alignment_config,
+                    page_gate_applies,
+                    required_text_for_page,
+                    resolve_gate_mode,
+                )
+                slides_contract = _json_file(str(slides_contract_path))
+                page_required = required_text_for_page(slides_contract, number)
+                if page_required:
+                    sources_manifest = None
+                    sources_path = Path(run_path) / "input/sources-manifest.json"
+                    if sources_path.is_file():
+                        sources_manifest = _json_file(str(sources_path))
+                    slide_entry = next(
+                        (item for item in jobs["slides"] if item["number"] == number), None)
+                    gate_applies, gate_scope = page_gate_applies(
+                        sources_manifest,
+                        number,
+                        generation_method=getattr(args, "generation_method", None),
+                        slide_provenance=(slide_entry or {}).get("provenance"),
+                    )
+                    if gate_applies:
+                        alignment_config = load_alignment_config(run_path)
+                        gate_mode = resolve_gate_mode(alignment_config, run_path)
+                        alignment_verdict = gate_for_page(
+                            run_path, number, page_required,
+                            config={**alignment_config, "mode": gate_mode})
+                        if alignment_verdict["status"] == "fail":
+                            if gate_mode == "enforce":
+                                from .ocr_alignment import OcrAlignmentError
+                                raise OcrAlignmentError(
+                                    "ocr_alignment_failed",
+                                    f"页 {number} OCR 对齐失败："
+                                    f"{alignment_verdict.get('missing')}")
+                            alignment_warnings.append(
+                                f"ocr_alignment_warned: 页 {number} 缺失 "
+                                f"{alignment_verdict.get('missing')}（WARN 期，校准通过前不阻断）")
+                        elif alignment_verdict["status"] == "not_run":
+                            alignment_warnings.append(
+                                f"ocr_alignment_not_run: {alignment_verdict.get('reason_code')}"
+                                "；门未执行，不构成通过")
             artifact = adapter.record(
                 number,
                 image_path,
@@ -2892,6 +3166,8 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 "image_recorded",
                 artifact=artifact.to_dict(),
                 provenance=provenance_summary,
+                alignment=alignment_verdict,
+                warnings=[*alignment_warnings],
                 **_operation_payload(
                     operation_id=operation_id,
                     idempotency_status=idempotency_status,
@@ -2900,6 +3176,86 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 ),
                 lease=lease,
                 generation=generation,
+            )
+        if args.image_command == "ocr":
+            # R-73 先决一条龙：paddle text blocks → lines[].text → page_<N>.txt。
+            # 缺 token / 依赖 / 超时按页返回 not_run 并披露，不发起半次调用。
+            from .ocr_alignment import (
+                CHANNEL_OCR_DIR,
+                page_gate_applies,
+                required_text_for_page,
+                run_page_ocr,
+            )
+            if (args.number is None) == (not args.all):
+                raise ContractError("ocr_page_selection_required")
+            deck_dir = _domain_path(run_path, "image-deck")
+            jobs_path = deck_dir / "slide_jobs.json"
+            if not jobs_path.is_file():
+                raise ContractError("image_deck_not_prepared")
+            deck_jobs = json.loads(jobs_path.read_text(encoding="utf-8"))
+            slides_contract = None
+            slides_contract_path = Path(run_path) / "input/slides.json"
+            if slides_contract_path.is_file():
+                slides_contract = _json_file(str(slides_contract_path))
+            sources_manifest = None
+            sources_path = Path(run_path) / "input/sources-manifest.json"
+            if sources_path.is_file():
+                sources_manifest = _json_file(str(sources_path))
+            recorded = {
+                item["number"]: item
+                for item in deck_jobs.get("slides", [])
+                if item.get("status") == "recorded" and item.get("artifact")
+            }
+            if args.number is not None:
+                if args.number not in recorded:
+                    raise ContractError("unknown_page")
+                targets = [args.number]
+            else:
+                targets = []
+                for number, entry in sorted(recorded.items()):
+                    required = (
+                        required_text_for_page(slides_contract, number)
+                        if slides_contract
+                        else []
+                    )
+                    if not required:
+                        continue
+                    applies, _scope = page_gate_applies(
+                        sources_manifest,
+                        number,
+                        slide_provenance=entry.get("provenance"),
+                    )
+                    if applies:
+                        targets.append(number)
+            results = []
+            for number in targets:
+                artifact_path = deck_dir / recorded[number]["artifact"]
+                results.append({
+                    "number": number,
+                    **run_page_ocr(
+                        artifact_path,
+                        deck_dir / CHANNEL_OCR_DIR,
+                        number,
+                        timeout=args.timeout,
+                        model=args.model,
+                    ),
+                })
+            any_ok = any(row["status"] == "ok" for row in results)
+            if any_ok:
+                return envelope(
+                    "ready",
+                    "image_ocr_completed",
+                    rows=results,
+                    warnings=[row.get("cost_disclosure") for row in results if row.get("cost_disclosure")],
+                    message="OCR 通道完成；对齐门在 record 时消费 page_<N>.txt",
+                )
+            first = results[0] if results else {"reason_code": "ocr_page_selection_required"}
+            return envelope(
+                "blocked",
+                first.get("reason_code", "ocr_job_failed"),
+                rows=results,
+                message="OCR 通道未运行（按页披露 reason）；提供凭据/依赖后重试，不视为通过",
+                next_action={"kind": "provide_ocr_capability"},
             )
         if args.image_command == "sweep":
             deck_dir = _domain_path(run_path, "image-deck")
@@ -2965,7 +3321,32 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     message="清扫轮次已达协议上限（≤2 轮）；剩余失败页走缺页拒绝组装/"
                     "partial-hybrid 确认或向用户披露，不得无限复位",
                 )
-            recovery = Lifecycle(run_path).reset_failed_pages()
+            # R-81 残留②：image sweep 只作用 image 域，不越界复位 editable；
+            # 域内有 active worker 时拒绝复位（in-flight 保护）。
+            recovery = Lifecycle(run_path).reset_failed_pages(domain="image")
+            if recovery.get("blocked_by_inflight"):
+                return envelope(
+                    "blocked",
+                    recovery.get("reason_code", "reset_blocked_by_inflight_workers"),
+                    sweep={"mode": "apply", "round": applied_rounds,
+                           "blocked_by_inflight": recovery["blocked_by_inflight"]},
+                    message="目标域存在 active worker，拒绝复位（in-flight 保护）；"
+                            "等待完成或显式取消后重试",
+                )
+            if not recovery.get("reset_units"):
+                return envelope(
+                    "ready",
+                    "render_sweep_noop",
+                    sweep={
+                        "mode": "apply",
+                        "round": applied_rounds,
+                        "max_rounds": args.max_rounds,
+                        "plan": plan,
+                        "recovery": recovery,
+                        "rendered_pages_skipped": len(jobs.get("slides", [])) - len(plan),
+                    },
+                    safe_to_retry=True,
+                )
             entry = {
                 "round": applied_rounds + 1,
                 "reset_units": recovery.get("reset_units", []),
@@ -3600,6 +3981,7 @@ def dispatch(args: argparse.Namespace) -> dict[str, Any]:
 
 
 ERRORS = (
+    MetricEventError,
     BackendExecutionError,
     EvidenceError,
     BackendContractError,
@@ -3656,7 +4038,8 @@ def _backend_report(run_path):
     from collections import defaultdict
 
     path = Path(run_path) / "observability" / "backend_stats.jsonl"
-    agg = defaultdict(lambda: {"pages": 0, "attempts": 0, "tokens": 0})
+    # tokens 初始 None＝该桶无任何 token 记录；0 是合法观测值，不得混写。
+    agg = defaultdict(lambda: {"pages": 0, "attempts": 0, "tokens": None})
     if path.is_file():
         for line in path.read_text(encoding="utf-8").splitlines():
             try:
@@ -3668,14 +4051,15 @@ def _backend_report(run_path):
             agg[key]["attempts"] += max(1, int(e.get("attempts", 1)))
             tk = e.get("tokens")
             if isinstance(tk, int):
-                agg[key]["tokens"] += tk
+                agg[key]["tokens"] = (agg[key]["tokens"] or 0) + tk
     table = {}
     for (backend, page_type), v in sorted(agg.items()):
         first_pass = v["pages"] / v["attempts"] if v["attempts"] else 1.0
+        # 0 是合法观测值（确定性渲染/免单调用）；仅缺记录才标 not-recorded。
         table[f"{backend}/{page_type}"] = {
             "pages": v["pages"],
             "first_pass_rate": round(first_pass, 3),
-            "tokens_total": v["tokens"] or "not-recorded",
+            "tokens_total": "not-recorded" if v["tokens"] is None else v["tokens"],
         }
     return table
 

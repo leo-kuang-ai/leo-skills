@@ -277,3 +277,29 @@ xhs-visual-director 母版锁定前缀的 prompt 侧前置，与静态属性锚
 - 字节红线：**不带旗标输出逐字节不变**（回归断言在
   tests/test_style_render_options.py）；与 `--var`（palette 面）、
   `--anchor`（静态属性面）正交可组合，互不改写。
+
+## 全册骨架预览（R-71，实施中）
+
+`leo-ppt content preview <run>` 从 `input/page-content-pack.json`、`layout-selection.json` 和资产快照读取已冻结绑定，不重新推荐或调用外部 API。输出固定为 `<run>/previews/index.html`（内嵌图片的响应式单文件）、`manifest.json` 及页图。页面是低精度骨架，不能据此宣称成品视觉或用户收益验收。
+
+`--page <page_id>` 可重复，仅限制本次重渲页；总览仍保留全册页集。有效缓存逐个核对图像与 sidecar 摘要，损坏或失败页必须重新生成。缓存使用页内容、主题/资产/槽位与 renderer 版本；当前完整绑定每次仍校验。预览不写 `input/`，也不写 `reports/render-preview/` 或 `final/render-preview/`，不改变交付收据的五类指纹。
+
+`RenderSession` 复用 browser 与字体/资产服务，每页独立 context，成功和异常均释放。浏览器只允许本次本地资产服务的精确 origin，拦截外部请求。缺绑定、缺媒体、失效资产、未支持的 image 骨架分别保留失败/unsupported；部分成功不能报告全册 ready。
+
+当前工程性能证据为 40 页、单个 body-basic 模板/主题的实际本地冷启动渲染：总耗时 27.944 秒，初始总览低于 1 毫秒，40/40 ready，前后收据 fresh。该测试不证明首批 30 格或复杂图像页覆盖；移动端人工协议及 image 骨架仍待验收。
+
+## 组合页合成（R-70b，阶段实现；c 门未过不晋升路由）
+
+`render composite --background <png> --spec <json> --out <png> --render-receipt <png>.render.json` 把确认 backend 的背景层与主题化文字层合成为页产物，一次落盘三件：终页 PNG、透明文字层 PNG（`<out>.text-layer.png`）与双 provenance sidecar（`<out>.composite.json`，`kind=composite_provenance`：`background` 子记录引自 render receipt、`text_layer` 子记录含 `spec_sha256`/`theme_sha256`/`sha256` 与逐字 `rendered` 清单）。
+
+硬合同（owner：`runtime render/text_layer.py`，TF-2 脚本与 composite 共用同一机制）：
+
+- 白名单逐字：只渲染 `required_text[]` 内文字，不改写不截断；锚点形态要求逐条恰好一个锚点；密集文本锚点可声明 `max_width` 做确定性换行（`"".join(lines)==原文`）。
+- 主题化：spec 可内嵌 `theme`（effective theme 的 `colors`/`fonts`）；颜色取锚点显式 `color` > `color_role` 角色映射 > `body` 角色；主题字体经资产 resolver 离线解析，不落回系统字体。
+- 对比度门：合成路径恒开（visual-qa 下限：正文 4.5:1、大字 ≥96px 画布字号 3:1），对底图采样不足即 `text_contrast_insufficient` 拒绝。
+- 画布：背景非 16:9 拒绝（`overlay_canvas_mismatch`）；同比例不同尺寸确定性缩放；产物恒 2560×1440。
+- 手改拒绝：`render composite-verify --background --spec --text-layer --page` 从 spec 重推导文字层字节并重合成整页比对，任一层被改即 `composite_text_layer_modified` / `composite_page_modified`（前提：同一 Pillow 工具链，版本在 sidecar `tool` 留痕）。
+- 旧 run 恢复：`--design`（或 `--run-dir` 下 `input/resolved-design.json`）先经 `verify_design_freshness` 校验依赖摘要，漂移即 `composite_design_stale` 拒绝续跑；`--run-dir` 同时核对 spec 主题与冻结绑定 `effective.theme` 一致（`composite_binding_theme_mismatch`）。
+- 质量观察：带 run 身份（`--run-dir/--page-id/--operation-id`）时写 `generation_method="composite"`、`triggers=[]` 的观察事件；常规 composite 与 TF-2 降级事件分开记录，不互相冒充。
+
+阶段边界：本命令是 R-70a/b 的门禁证据与显式调用通道；`page_type_regime` 的 composite lane 准入、默认路由与 worker brief 扩展属 R-70c，须待统计协议预登记、真实 TF/成本基线与配对视觉协议的阶段门通过后才可实施。真实配对视觉协议、真实成本范围一致性与相对收益声明当前 **not_run/blocked**（缺真实账单与视觉判官授权），离线 fixture 与机制测试不构成这些验收。

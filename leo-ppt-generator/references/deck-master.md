@@ -394,3 +394,14 @@ backend_stats/缺陷账本数据（证据驱动减门）。
   `revision_kind: post-confirm`；页数或结构变化退回 pending 重新确认。
 - 重做后再检必须覆盖「目标判据 + 波及面」（见
   [`visual-qa.md`](visual-qa.md) 流程第 4 步）。
+## 内容包 v2：章节与单页表达（能力提升 R-85 / R-82）
+
+现有母版不含 `content_model` 时继续编译为 v1，读取器按版本分别校验；不得把缺失章节解释为已经分析。需要章节合同的新母版在页块之前添加一行 `content_model: <JSON object>`，每个页块增加一行 `page_expression: <JSON object>`。编译仍使用 `leo-ppt content pack --master ... --out ...`，不修改母版，也不重发 `page_id`。
+
+`content_model` 的字段为 `schema_version: 2`、`main_claim`、`main_style`、`brand_constraints`、`narrative_order` 和 `chapters`；可选 `duration_seconds` 为正数。每个章节必须有稳定 `chapter_id`、论证任务 `task`、关键结论 `conclusion`、`evidence_refs`、`previous` 与 `next`。首尾承接使用 null。章节必须覆盖实际页块，实际页序、章节连续性、叙事顺序及前后承接必须一致。换序时保留原 page_id/chapter_id。
+
+`page_expression` 必需字段为 `chapter_id`、`semantic_structure`、`media_role`、`evidence_refs` 与 `basis`；页面主论点继续来自唯一标题。`semantic_structure` 可取 comparison/trend/causal/process/evidence/table/kpi/statement/text_list/system/undecided；`media_role` 可取 none/support/evidence/explain/atmosphere。证据引用必须能回溯到本页要点来源或数字账本来源，章节证据须来自本章页面。引用存在只证明可追溯，不证明引用内容正确；缺证据或依据保留 undecided。
+
+编译器从原始标题、要点、显式结构和数字登记表生成 `required_text`、`data_refs`、`capacity_requirements`，禁止手工删掉字段后重算摘要来绕过交叉校验。数字、单位、期间与来源继续按原账本保留，不把同数不同口径合并。`budget_seconds` 可选，为正数；与 deck `duration_seconds` 一样仅进入隔离元信息，不进入页正文或 speaker_script。未来时长提示优先页级预算，再用显式整册预算均分，双缺失报 unknown。
+
+整册默认一个 `main_style`。页面只有携带 `style_exception: {"style_id":"...","decision_source":"user-confirmed|user-delegated","authorization_ref":"..."}` 才能登记风格例外；该字段只是追踪用户决定，不能替用户发明授权。未知字段、重复章节、无效版本、丢失数据引用或不可回溯的来源均拒绝编译。

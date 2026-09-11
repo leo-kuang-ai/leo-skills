@@ -355,6 +355,8 @@ class DispatchDisciplineWarningTest(unittest.TestCase):
         self.assertEqual(len(warnings), 1)
         self.assertEqual(warnings[0]["agent_id"], "serial-agent")
         self.assertEqual(warnings[0]["recorded_by_agent"], 3)
+        self.assertEqual(warnings[0]["schema_version"], 1)
+        self.assertEqual(warnings[0]["page"], "3")
 
     def test_distinct_agents_do_not_warn(self):
         for n, agent in ((1, "w1"), (2, "w2"), (3, "w3")):

@@ -16,7 +16,7 @@ from pathlib import Path
 from leo_ppt_generator.render.errors import RenderError  # noqa: E402
 from leo_ppt_generator.render.page import render_page  # noqa: E402
 
-from .helpers import browser_test_case  # noqa: E402
+from tests.render.helpers import browser_test_case  # noqa: E402
 
 
 def _write_data(root: Path, name: str, payload: dict) -> Path:

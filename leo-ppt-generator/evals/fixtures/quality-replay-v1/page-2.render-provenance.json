@@ -1,0 +1,19 @@
+{
+  "backend": "render:html",
+  "data_sha256": "29713bf77b63bbfcdb984fffe8e6d4447e9fe13493a4b23a1068f2e08e0134ba",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out_sha256": "d39136c913d65deb4cce07fd7fd03a296e4613b8530b2f74f6508c50c035e1e5",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1719,
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852",
+  "warnings": [],
+  "width": 2560
+}

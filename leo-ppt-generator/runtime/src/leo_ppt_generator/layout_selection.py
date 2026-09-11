@@ -18,7 +18,16 @@ from __future__ import annotations
 import hashlib
 import json
 
-SELECTION_POLICY_VERSION = "1"
+from pathlib import Path
+from .asset_resolver import AssetResolver, ResolverError
+from .content_projection import ROLE_PAGE_TYPES
+from .page_intent import analyze_page_intent, semantic_layout_adjustment
+from .render.layout import capacity_level
+
+W_ROLE, W_CAPACITY, W_RHYTHM = 0.45, 0.40, 0.15
+CONFIDENCE_FLOOR = 0.5
+
+SELECTION_POLICY_VERSION = "2"
 DEFAULT_SEARCH_BUDGET = 20_000
 UNKNOWN_FINGERPRINT = "unknown"
 
@@ -92,7 +101,24 @@ def qualified_pool(
         else:
             excluded.append({**entry,
                              "hard_failures": binding["eligibility"]["hard_failures"]})
-    return {"qualified": pool, "excluded": excluded}
+    signals = page_rank_signals(pack_page)
+    bank = {}
+    for entry in pool:
+        profile = resolver.resolve(entry["layout_id"])["data"]
+        bank[entry["layout_id"]] = {
+            "asset_id": entry["layout_id"], "aliases": profile.get("aliases", []),
+            "page_type": profile.get("page_role", "content"),
+            "content_capacity": profile.get("slots") or {},
+            "reuse_friendly": profile.get("reuse_friendly", True),
+            "renderer_support": profile.get("renderer_support") or {}}
+    factor, adjust = load_style_routing(
+        design_context.get("style", {}).get("asset_id"), resolver=resolver,
+        page_types=set(ROLE_PAGE_TYPES.get(signals["page_role"], [])))
+    ranked = rank_page(signals, bank, factor, adjust, backend, hard_qualified=True)
+    by_id = {entry["layout_id"]: entry for entry in pool}
+    pool = [{**by_id[candidate["layout"]], "ranking": candidate}
+            for candidate in ranked["candidates"]]
+    return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"]}
 
 
 def _canonical_layouts() -> dict[str, dict]:
@@ -100,20 +126,15 @@ def _canonical_layouts() -> dict[str, dict]:
     return {entry["asset_id"]: entry for entry in list_layout_bank()}
 
 
-def _soft_rank(pack_page: dict, binding: dict, profile: dict) -> tuple:
-    """整册匹配排序键（确定性）：结构声明优先于 unknown，容量余量大的优先，
-    平分按资产 ID。"""
-    fingerprint = structure_fingerprint(profile)
-    points = sum(1 for i in pack_page.get("items", []) if i.get("kind") == "point")
-    checks = binding["eligibility"]["checks"]
-    slot = (checks.get("points") or {}) if isinstance(checks, dict) else {}
-    count_max = slot.get("count_max")
-    headroom = (count_max - points) if isinstance(count_max, (int, float)) else 0
-    return (
-        0 if fingerprint != UNKNOWN_FINGERPRINT else 1,  # unknown 无加分
-        -headroom,  # 余量大者优先（稳定降序 → 负号升序）
-        binding["layout_id"],  # 稳定平分裁决
-    )
+def page_rank_signals(page: dict) -> dict:
+    """把完整页表达转为与轻量入口可比较的统计分量，不授予生产资格。"""
+    points = [item["text"] for item in page.get("items", []) if item.get("kind") == "point"]
+    return {"page": page.get("number"), "page_role": page.get("narrative_role") or "",
+            "claim": page.get("claim"), "points": len(points), "est_chars": sum(map(len, points)),
+            "data_points": sum(i.get("kind") == "number-ref" for i in page.get("items", [])),
+            "image_sources": sum(i.get("kind") == "figure" for i in page.get("items", [])),
+            "structures": page.get("structures", {}), "semantic_structure": page.get("semantic_structure"),
+            "confidence": page.get("confidence"), "argument_role": page.get("argument_role")}
 
 
 def _no_reuse_limit(profile: dict) -> tuple[bool, int]:
@@ -146,6 +167,8 @@ def allocate_deck(
         resolver = AssetResolver()
     explicit = explicit or {}
     pages = pack.get("pages", [])
+    if not pages or type(search_budget) is not int or search_budget < 0:
+        raise LayoutSelectionError("non-empty pages and non-negative integer search_budget required")
     pools: dict[str, dict] = {}
     page_status: dict[str, dict] = {}
     for page in pages:
@@ -194,23 +217,19 @@ def allocate_deck(
     exhausted = [False]
 
     def page_candidates(pid: str) -> list[dict]:
-        ranked = sorted(
-            pools[pid]["qualified"],
-            key=lambda e: _soft_rank(
-                next(p for p in pages if p["page_id"] == pid),
-                e["binding"], profiles[e["layout_id"]]))
+        ranked = pools[pid]["qualified"]
         # 相邻重复与结构族频率惩罚：重排（稳定键保持确定性）。
         prev = selection.get(_prev_pid(order, pid))
         prev_layout = prev["layout_id"] if prev else None
-        prev_family = (structure_family(profiles[prev_layout])
-                       if prev_layout in profiles else None)
 
         def penalty(entry: dict) -> tuple:
             layout_id = entry["layout_id"]
             family = structure_family(profiles[layout_id])
             adjacent = 1 if layout_id == prev_layout else 0
-            family_freq = family_counts.get(family, 0)
-            return (adjacent, family_freq)
+            family_freq = family_counts.get(family, 0) if family != UNKNOWN_FINGERPRINT else 0
+            rank = entry["ranking"]
+            return (-rank["raw_score"] + adjacent * 0.06 + family_freq * 0.015,
+                    -rank["semantic_score"])
 
         return sorted(ranked, key=lambda e: (*penalty(e), e["layout_id"]))
 
@@ -256,9 +275,15 @@ def allocate_deck(
         has_explicit_failure = any(
             s["status"] == "explicit_unqualified" for s in page_status.values())
         status = ("explicit_unqualified" if has_explicit_failure
-                  else "budget_exhausted")
+                  else "budget_exhausted" if exhausted[0] else "constraints_unsatisfied")
         return _selection_result(pack, pools, selection, page_status, status)
 
+    for pid, entry in selection.items():
+        local_top = pools[pid]["qualified"][0]["layout_id"]
+        if entry["layout_id"] != local_top:
+            page_status.setdefault(pid, {}).update(
+                local_top=local_top, selected=entry["layout_id"],
+                adjustment_reason="explicit-choice" if pid in explicit else "global-reuse-or-rhythm")
     return _selection_result(pack, pools, selection, page_status, "complete")
 
 
@@ -273,6 +298,7 @@ def _selection_result(pack: dict, pools: dict, selection: dict,
         pid: {
             "layout_id": entry["layout_id"],
             "binding_digest": entry["binding"]["binding_digest"],
+            "binding": entry["binding"],
         }
         for pid, entry in selection.items()}
     top2 = {
@@ -287,4 +313,303 @@ def _selection_result(pack: dict, pools: dict, selection: dict,
         "top2": top2,
         "page_status": page_status,
         "content_digest": pack.get("content_digest"),
+    }
+
+
+def _compact_id(entity: dict) -> str:
+    """Return the stable public alias while retaining the canonical asset ID."""
+    aliases = entity.get("aliases") or []
+    return str(aliases[0] if aliases else entity["asset_id"])
+
+
+def load_style_routing(
+    style_name: str | None, *, home: Path | None = None,
+    resolver: AssetResolver | None = None,
+    page_types: set[str] | None = None,
+) -> tuple[float, dict[str, float]]:
+    """Return ``(capacity_factor.text, {compact layout id: adjustment})``.
+
+    Missing user routing is deliberately neutral: a user overlay must not
+    inherit a same-name builtin route by accident.
+    """
+    if not style_name:
+        return 1.0, {}
+    resolver = resolver or AssetResolver(home=home)
+    try:
+        style = resolver.require(style_name, kind="style")
+    except (ResolverError, KeyError):
+        return 1.0, {}
+    bindings = style["data"].get("bindings") or {}
+    factor = float(bindings.get("capacity_factor", {}).get("text", 1.0))
+    adjust: dict[str, float] = {}
+    for rule in bindings.get("layout_routes", []):
+        route_page_type = rule.get("page_type")
+        # layout_routes 是页型级合同。未知页面不应套用某个页型的风格偏好；
+        # 未声明 page_type 的旧路由才视为全局规则。
+        if route_page_type and (page_types is None or route_page_type not in page_types):
+            continue
+        for key, delta in (("preferred", 0.1), ("discouraged", -0.2)):
+            for ref in rule.get(key, []) or []:
+                try:
+                    resolved = resolver.resolve(ref)
+                    layout_id = _compact_id(resolved)
+                except (ResolverError, KeyError):
+                    continue
+                adjust[layout_id] = adjust.get(layout_id, 0.0) + delta
+    return factor, adjust
+
+
+def _role_fit(page: dict, layout: dict) -> tuple[float | None, str]:
+    """角色对齐分；None = 出局。"""
+    role = str(page.get("page_role", ""))
+    allowed = ROLE_PAGE_TYPES.get(role)
+    ptype = layout.get("page_type", "content")
+    if allowed is None:
+        return 0.5, f"角色未识别:{role}（中性评分）"
+    if ptype in allowed:
+        fit = 1.0
+        if int(page.get("data_points", 0) or 0) >= 3 and ptype != "data":
+            fit = 0.5
+            return fit, f"角色对齐:{role}（数据点≥3，非 data 版式减半）"
+        return fit, f"角色对齐:{role}"
+    return None, f"角色不符:{role}≠{ptype}"
+
+
+def _capacity_fit(
+    page: dict, layout: dict, factor: float
+) -> tuple[float | None, list[str]]:
+    """区间包含度 × 字数覆盖度；None 表示硬超排除。"""
+    reasons: list[str] = []
+    capacity = layout.get("content_capacity", {})
+    table = (page.get("structures") or {}).get("table")
+    if isinstance(table, dict):
+        if not {"rows", "columns"}.issubset(capacity):
+            return None, ["显式表格结构缺少行列槽"]
+        for key in ("rows", "columns"):
+            limit = capacity[key].get("count_max")
+            if limit is not None and len(table.get(key, [])) > limit:
+                return None, [f"表格 {key} 超出容量"]
+        cell_limit = capacity.get("cell", {}).get("max_chars")
+        if cell_limit is not None and any(len(str(cell)) > cell_limit * factor
+                                         for row in table.get("rows", []) for cell in row):
+            return None, ["表格单元格超出容量"]
+        return 1.0, ["按显式表格行列及单元格容量核对"]
+    points = page.get("points")
+    containment = 0.5
+    if points is not None and any("count_min" in s for s in capacity.values()):
+        count_slots = [s for s in capacity.values() if "count_min" in s]
+        inside = any(
+            s["count_min"] <= points <= s["count_max"] for s in count_slots
+        )
+        if inside:
+            containment = 1.0
+            reasons.append(f"条数 {points} 在区间内")
+        else:
+            best = max(count_slots, key=lambda s: s["count_max"])
+            if points < best["count_min"]:
+                containment = max(0.0, points / best["count_min"])
+                reasons.append(f"条数不足:{points}<{best['count_min']}")
+            elif capacity_level(points, best["count_max"]) != "overflow":
+                containment = 0.5
+                reasons.append(f"条数偏多:{points}>{best['count_max']}")
+            else:
+                reasons.append(f"条数硬超:{points}≫{best['count_max']}")
+                return None, reasons
+    est_chars = page.get("est_chars")
+    coverage = 1.0
+    if est_chars is not None:
+        widest = max(
+            (s.get("max_chars", 0) for s in capacity.values()
+             if "max_chars" in s),
+            default=None,
+        )
+        if widest is not None:
+            limit = widest * factor
+            if est_chars <= limit:
+                reasons.append(f"容量 {est_chars:.0f}/{limit:.0f} chars")
+            elif capacity_level(est_chars, limit) != "overflow":
+                coverage = 0.5
+                reasons.append(f"容量偏紧 {est_chars:.0f}/{limit:.0f} chars")
+            else:
+                reasons.append(
+                    f"容量硬超 {est_chars:.0f}/{limit:.0f} chars"
+                )
+                return None, reasons
+    return containment * coverage, reasons
+
+
+def _rhythm(page: dict, layout_id: str, layout: dict) -> tuple[float, list[str]]:
+    """节奏分（∈ [0, 1]）：已用 -0.4，与上一页同版式再 -0.4。"""
+    score = 1.0
+    reasons: list[str] = []
+    used = page.get("already_used") or []
+    if layout_id in used:
+        score -= 0.4
+        reasons.append("已用版式 -0.4")
+    previous = page.get("previous_layout")
+    if previous and previous == layout_id:
+        score -= 0.4
+        reasons.append("与上一页同版式 -0.4")
+    return max(0.0, min(1.0, score)), reasons
+
+
+def rank_page(page: dict, bank: dict[str, dict], factor: float,
+               adjust: dict[str, float], backend: str | None = None, *, hard_qualified=False) -> dict:
+    known_ids = set(bank)
+    intent = analyze_page_intent(page)
+    candidates: list[dict] = []
+    used = set(page.get("already_used") or [])
+    for layout_id in sorted(bank):
+        layout = bank[layout_id]
+        if backend and not layout.get("renderer_support", {}).get(backend):
+            continue
+        # 节奏硬排除：强视觉版式已用即出局（与 check_layout_reuse 同口径）。
+        if layout.get("reuse_friendly") is False and layout_id in used:
+            continue
+        role_fit, role_reason = _role_fit(page, layout)
+        if role_fit is None:
+            if not hard_qualified:
+                continue
+            role_fit = 0.0
+        capacity_fit, cap_reasons = _capacity_fit(page, layout, factor)
+        if capacity_fit is None:
+            if not hard_qualified:
+                continue
+            capacity_fit = 0.0
+        rhythm, rhythm_reasons = _rhythm(page, layout_id, layout)
+        semantic_id = _compact_id({"aliases": layout.get("aliases", []), "asset_id": layout_id})
+        routing = adjust.get(layout_id, adjust.get(semantic_id, 0.0))
+        semantic, semantic_reason = semantic_layout_adjustment(semantic_id, intent)
+        score = (
+            W_ROLE * role_fit + W_CAPACITY * capacity_fit + W_RHYTHM * rhythm
+            + routing + semantic
+        )
+        raw_score = score
+        score = max(0.0, min(1.0, score))
+        reasons = [role_reason, *cap_reasons, *rhythm_reasons]
+        if routing:
+            reasons.append(
+                f"风格路由 {'+' if routing > 0 else ''}{routing:.1f}"
+            )
+        if semantic_reason:
+            reasons.append(semantic_reason)
+        candidates.append(
+            {
+                "layout": layout_id,
+                "score": round(score, 2),
+                "semantic_score": round(semantic, 2),
+                "raw_score": round(raw_score, 6),
+                "reasons": reasons,
+                "renderer_support": layout.get("renderer_support", {}),
+            }
+        )
+    # score 在历史合同中封顶 1.0；同分时用语义层级稳定打破并列，避免
+    # 一个“容量刚好”的通用模板遮住内容形态的首选/回退版式。
+    candidates.sort(key=lambda c: (-c["raw_score"], -c["semantic_score"], c["layout"]))
+    top = candidates
+    confidence = top[0]["score"] if top else 0.0
+    # 禁编造 id：防御断言——输出 id 必须全部来自枚举集。
+    for cand in top:
+        if cand["layout"] not in known_ids:
+            raise LayoutSelectionError("fabricated_layout_id")
+    return {
+        "page": page.get("page"),
+        "candidates": top,
+        "confidence": round(confidence, 2),
+        "intent": intent,
+        # 语义层低置信时即使容量分数较高也保留人工裁决出口。
+        "decision": "auto" if confidence >= CONFIDENCE_FLOOR and intent["decision"] == "auto" else "undecided",
+    }
+
+
+# --------------------------------------------------------------------------- #
+# U10/R-74 lane 成本读数（KTD3：附加读出面，不改语义排序主键）
+# --------------------------------------------------------------------------- #
+
+DEFAULT_LANES = ("image", "render:html")
+ATMOSPHERE_VISUAL_WEIGHT = "high"
+
+
+def lane_cost_comparison(
+    *,
+    backend_stats_path,
+    visual_weight: str | None = None,
+    allowed_lanes=None,
+    frozen_backend: str | None = None,
+) -> dict:
+    """资格集合内的 lane 成本对比读数；纯附加，供呈现与人工裁决。
+
+    口径（R-74/AE-74）：
+    - 成本只读 ``backend_stats.jsonl`` 的真实生产记录（tokens 为记录累计，
+      不乘 attempts）；无记录的 lane 报 ``unknown``，不回退假设带。
+    - ``visual_weight=high``（氛围页）受保护：不输出任何成本改道建议。
+    - ``frozen_backend`` 冻结后不自动切换：建议恒为保持，且仅在非冻结、
+      非保护、双方都有观测时给出 advisory。
+    - 与 ``page_intent`` 的内容分类正交：本函数不读版式、不参与
+      ``rank_page`` 排序，语义主键不受影响。
+    """
+
+    from .storage import canonical_json_bytes  # 统一复用，不引入第二套序列化
+
+    del canonical_json_bytes  # 显式声明：本函数只读不写，序列化不在此发生
+    lanes = tuple(allowed_lanes) if allowed_lanes else DEFAULT_LANES
+    rows: list[dict] = []
+    if backend_stats_path is not None:
+        path = Path(backend_stats_path)
+        if path.is_file():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if isinstance(entry, dict):
+                    rows.append(entry)
+    lanes_out = []
+    for lane in lanes:
+        lane_rows = [row for row in rows if row.get("backend") == lane]
+        token_rows = [row["tokens"] for row in lane_rows
+                      if isinstance(row.get("tokens"), int)]
+        attempts = sum(max(1, int(row.get("attempts", 1) or 1)) for row in lane_rows)
+        if token_rows and attempts:
+            tokens_total = sum(token_rows)
+            lanes_out.append({
+                "lane": lane,
+                "basis": "observed",
+                "pages": attempts,
+                "tokens_total": tokens_total,
+                "tokens_per_page": round(tokens_total / attempts, 1),
+            })
+        else:
+            lanes_out.append({
+                "lane": lane,
+                "basis": "unknown",
+                "pages": attempts,
+                "tokens_total": None,
+                "tokens_per_page": None,
+            })
+    protected = visual_weight == ATMOSPHERE_VISUAL_WEIGHT
+    recommendation = None
+    if protected:
+        reason = "atmosphere-protection"
+    elif frozen_backend is not None:
+        reason = "frozen-backend-no-auto-switch"
+    elif all(lane["basis"] == "observed" for lane in lanes_out) and len(lanes_out) > 1:
+        cheapest = min(lanes_out, key=lambda lane: lane["tokens_per_page"])
+        recommendation = cheapest["lane"]
+        reason = "observed-cost-advisory"
+    else:
+        reason = "insufficient-cost-evidence"
+    return {
+        "schema_version": 1,
+        "kind": "lane-cost-comparison",
+        "lanes": lanes_out,
+        "visual_weight": visual_weight,
+        "protected": protected,
+        "frozen_backend": frozen_backend,
+        "recommendation": recommendation,
+        "reason": reason,
+        "advisory_only": True,
+        "note": "读数不改写语义排序；真实改道须走 runtime 修订通道并更新页级 provenance",
     }

@@ -37,6 +37,46 @@ def canonical_json(value):
 
 
 class OverlayTextTest(unittest.TestCase):
+    def test_overlay_preserves_whitespace_and_honors_color(self):
+        from PIL import Image
+
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            base = make_base(root / "base.png", color=(255, 255, 255))
+            whitelist = root / "wl.json"
+            whitelist.write_text(json.dumps(["  Title  "]), encoding="utf-8")
+            target = root / "out.png"
+            code, output = run([str(base), str(whitelist), str(target), "--color", "#ff0000"])
+            self.assertEqual(code, 0, output)
+            self.assertEqual(summary_of(output)["rendered"], ["  Title  "])
+            with Image.open(target) as image:
+                self.assertIn((255, 0, 0), {color for _, color in image.getcolors(image.width * image.height)})
+
+    def test_overlay_rejects_invalid_whitelist_items(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            base = make_base(root / "base.png")
+            whitelist = root / "wl.json"
+            for invalid in (123, None, "", "   "):
+                with self.subTest(invalid=invalid):
+                    whitelist.write_text(json.dumps(["Title", invalid]), encoding="utf-8")
+                    target = root / "out.png"
+                    code, output = run([str(base), str(whitelist), str(target)])
+                    self.assertEqual(code, 1, output)
+                    self.assertFalse(target.exists())
+
+    def test_overlay_anchor_match_is_verbatim(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            base = make_base(root / "base.png")
+            whitelist = root / "wl.json"
+            whitelist.write_text(json.dumps({"required_text": ["Title"],
+                "anchors": [{"text": " Title ", "x": 100, "y": 200}]}), encoding="utf-8")
+            target = root / "out.png"
+            code, output = run([str(base), str(whitelist), str(target)])
+            self.assertEqual(code, 1, output)
+            self.assertFalse(target.exists())
+
     def test_overlay_renders_whitelist_verbatim(self):
         """逐字保证：白名单文字逐项出现在渲染计划里，改字即改产物（可 diff）。"""
         with tempfile.TemporaryDirectory() as name:

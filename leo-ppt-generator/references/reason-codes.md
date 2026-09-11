@@ -284,6 +284,59 @@
 | `render_sweep_applied` | `image sweep` 已复位非 rendered 页（复用 reset_failed_pages） | 见协议 | 已 rendered 页无条件跳过；按 ≤2 轮上限继续 |
 | `render_sweep_rounds_exhausted` | 清扫轮次已达 `--max-rounds` 上限，拒绝再次复位 | 条件式 | 剩余失败页走缺页拒绝组装 / partial-hybrid 确认（upgrade）或向用户披露（generate） |
 
+## 组合页合成（R-70a/b 追加）
+
+以下 code 属 `render composite` / `render composite-verify` 控制面。合同与阶段门
+见 `references/render-contract.md` 组合页合成节；R-70c 路由转正前这些命令
+只用于门禁证据与显式调用。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `render_composite_completed` | `render composite` 成功（envelope 完成码） | 不适用 | 终页/透明文字层/双 provenance sidecar 已落盘；不晋升默认路由 |
+| `render_composite_verified` | `render composite-verify` 重推导一致（完成码） | 不适用 | 文字层与整页均未被手改 |
+| `composite_background_missing` | 背景层文件不存在 | 是 | 核对 `--background` 路径 |
+| `composite_background_invalid` | 背景层无法按图片读取 | 是 | 确认背景层为合法 PNG 且来自确认 backend |
+| `composite_spec_invalid` | spec 白名单/锚点/max_width/颜色/字号合同失败（含缺锚点、白名单外锚点、越界） | 是 | 按 detail 修 spec 后重试；白名单逐字合同见 render-contract |
+| `overlay_out_of_canvas` | 文字落位或换行后超出 2560×1440 画布 | 是 | 调整锚点/`max_width`/字号；不静默截断 |
+| `overlay_canvas_mismatch` | 背景画幅非 16:9 | 是 | 提供确认 backend 的 16:9 背景 |
+| `overlay_theme_invalid` | spec.theme 缺 colors / 角色非 #RRGGBB / color_role 未声明 | 是 | 修正 effective theme 结构后重试 |
+| `overlay_font_missing` | 主题字族未登记离线资产或缺 weight 400 文件 | 是 | 补齐字体 manifest 后重试；不落回系统字体 |
+| `text_contrast_insufficient` | 文字色对底图采样低于 visual-qa 下限（正文 4.5:1 / 大字 3:1） | 是 | 换主题角色/颜色或换背景；低对比不产出 |
+| `composite_design_stale` | 冻结设计依赖 sha256 漂移，拒绝旧 run 续跑 | 是 | 按 mismatches 重建设计或新建 run；不得静默重组 |
+| `composite_design_invalid` | `--design` 输入非 resolved-design 结构 | 是 | 提供冻结 resolved-design.json |
+| `composite_binding_theme_mismatch` | spec theme 与冻结绑定 effective.theme 不一致 | 是 | 用绑定主题重出 spec，或走绑定修订通道后重建 run |
+| `composite_binding_backend_mismatch` | 背景 receipt backend 与冻结绑定 backend 不一致 | 是 | 使用与绑定一致的背景产物 |
+| `composite_verify_missing` | composite-verify 待校验产物缺失 | 是 | 核对三件套路径 |
+| `composite_text_layer_modified` | 文字层与 spec 重推导字节不一致，疑似手改 | 是 | 用 `render composite` 重新生成文字层；不得手改后冒充 |
+| `composite_page_modified` | 整页与背景+文字层重合成不一致，疑似手改或替换 | 是 | 重新合成；同一 Pillow 工具链内校验（版本见 sidecar `tool`） |
+
+## OCR 对齐通道与对齐门（R-73 追加）
+
+以下 code 属 `image ocr` 一条龙与 `image record` 前置对齐门控制面。通道缺
+token/依赖/超时按页 `not_run` 披露——未运行不是通过；composite 与 render
+产物按 provenance 判域豁免，不做 OCR 重复校验。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `image_ocr_completed` | `image ocr` 至少一页完成（完成码） | 不适用 | `page_<N>.txt` 已落盘；record 时对齐门自动消费 |
+| `ocr_page_selection_required` | `image ocr` 未指定 `--number`/`--all` 或同时指定 | 是 | 二选一后重试 |
+| `ocr_page_image_missing` | 目标页图（recorded artifact）不存在 | 是 | 先 `image record` 产物再跑 OCR |
+| `ocr_token_missing` | 缺 `PADDLE_OCR_TOKEN`，通道未运行 | 是 | 配置凭据后重试；门按 not_run 披露，不冒充通过 |
+| `ocr_dependency_missing` | OCR 通道依赖（requests/numpy/PIL/vendor 模块）缺失 | 是 | 安装声明依赖后重试 |
+| `ocr_job_timeout` | PaddleOCR 任务轮询超时 | 是 | 增大 `--timeout` 或重试；按 not_run 披露 |
+| `ocr_job_failed` | PaddleOCR 任务失败或返回空页 | 是 | 按页重试；持续失败登记缩围 |
+| `ocr_alignment_failed` | enforce 模式下 OCR 对齐失败，record 被拦截 | 是 | 回母版修文字或重新生成页图；WARN 期同判定只披露不阻断 |
+| `ocr_alignment_config_invalid` | `input/ocr-alignment.json` 结构非法（mode/threshold/exemptions） | 是 | 修正配置；阈值 ∈ (0,1]，exemptions 须含 text+reason |
+| `ocr_calibration_required_for_enforce` | `mode=enforce` 但校准报告缺失或未 passed | 是 | 先跑离线/真实校准集，`reports/ocr-calibration.json` status=passed 后方可硬门 |
+| `ocr_calibration_report_invalid` | 校准 manifest kind 不符或结构非法 | 是 | 用 `build_offline_calibration_manifest` 重新生成或修正真实采集清单 |
+
+## 调度恢复与 lane 成本（U13/U10 追加）
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `operation_state_lost` | 旧 operation 重放时页结果字段已被 reset 清除（债2） | 是 | 按 pending 页重新派发新操作，不得重放旧操作 |
+| `reset_blocked_by_inflight_workers` | 目标域存在 active worker，清扫拒绝复位 | 是 | 等待 worker 完成或显式取消后重试 sweep |
+
 ## 内容冻结绑定与关联升级（dashi 集成 K4/K7）
 
 | reason code | 含义 | 恢复动作 |

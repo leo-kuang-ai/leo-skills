@@ -38,6 +38,17 @@ class RecordRunStepTests(unittest.TestCase):
         return [json.loads(l) for l in
                 self.ledger.read_text(encoding="utf-8").splitlines() if l.strip()]
 
+    def test_mixed_numeric_and_string_page_rows_resume_without_mutation(self):
+        rows = [{"page": 1, "step": "prompt", "status": "completed"},
+                {"page": "1", "step": "backend", "status": "completed"},
+                {"page": "2", "step": "prompt", "status": "completed"}]
+        self.ledger.write_text("\n".join(map(json.dumps, rows)) + "\n")
+        before = self.ledger.read_bytes()
+        result = self.rec("--resume-suggestion")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("resume_from: 1/qa", result.stdout)
+        self.assertEqual(self.ledger.read_bytes(), before)
+
     def test_append_step_records_fields_and_artifact_sha256(self):
         proc = self.rec("--step", "backend", "--page", "1", "--attempt", "2",
                         "--status", "completed",

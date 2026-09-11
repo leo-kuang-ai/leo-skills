@@ -263,6 +263,7 @@ class AssetResolver:
         self._entities: list[dict] | None = None
         self._by_id: dict[str, dict] | None = None
         self._registry_source: str | None = None
+        self._generation: str | None = None
 
     # -- 实体索引 ---------------------------------------------------------- #
 
@@ -274,6 +275,7 @@ class AssetResolver:
 
     def _load(self) -> None:
         builtin_registry = _load_registry_from_catalog(self.builtin_root)
+        self._generation = (builtin_registry or {}).get("generation")
         combined: list[dict] = []
         seen_ids: dict[str, dict] = {}
         for scope_root, scope in ((self.builtin_root, "builtin"), (self.user_root, "user")):
@@ -314,6 +316,120 @@ class AssetResolver:
         self._entities = None
         self._by_id = None
         self._registry_source = None
+        self._generation = None
+
+    @property
+    def generation(self) -> str | None:
+        if self._entities is None:
+            self._load()
+        return self._generation
+
+    def fingerprint(self, asset_id: str) -> dict:
+        """固定实际消费字节；模板除 manifest 外还覆盖整个同目录资源。"""
+        entity = self.resolve(asset_id)
+        root = Path(entity["trusted_root"]).resolve()
+        manifest = Path(entity["path"])
+        files = [manifest]
+        if entity["kind"] in {"template", "font"}:
+            files = sorted(manifest.parent.rglob("*"))
+            if entity["data"].get("lane") == "render:html" and not manifest.with_name("page.html").is_file():
+                raise AssetNotFoundError(f"asset_not_found: {asset_id} 缺 page.html")
+        hashes = {}
+        for path in files:
+            if path.is_symlink() or not path.resolve().is_relative_to(root):
+                raise ScopeViolationError(f"scope_violation: {asset_id} 资源路径非法")
+            if path.is_dir():
+                continue
+            if not path.is_file():
+                raise AssetNotFoundError(f"asset_not_found: {asset_id} 资源不可读")
+            hashes[path.relative_to(Path(entity["trusted_root"])).as_posix()] = sha256_file(path)
+        return {"asset_id": asset_id, "origin_scope": entity["origin_scope"],
+                "revision": entity["revision"], "files": hashes}
+
+    @classmethod
+    def from_snapshot(cls, snapshot: Path) -> "AssetResolver":
+        """仅使用 run 的固定资产；缺失快照绝不回退安装库或用户活动库。"""
+        return cls(library=Path(snapshot) / "builtin", home=Path(snapshot) / "user")
+
+    def freeze_assets(self, snapshot: Path, pins: list[dict]) -> "AssetResolver":
+        """原子写入选中资产字节。已有快照只校验，不能静默覆盖。"""
+        import shutil
+        import tempfile
+
+        snapshot = Path(snapshot)
+        by_id = {}
+        for pin in pins:
+            identity = pin["asset_id"]
+            if identity in by_id and by_id[identity] != pin:
+                raise StaleCatalogError(f"stale_catalog: 绑定资产冲突 {identity}")
+            by_id[identity] = pin
+        if not by_id:
+            raise StaleCatalogError("stale_catalog: 不能冻结空资产集")
+
+        def checked(root):
+            frozen = self.from_snapshot(root)
+            for identity, pin in by_id.items():
+                if frozen.fingerprint(identity) != pin:
+                    raise StaleCatalogError(f"stale_catalog: 快照不匹配 {identity}")
+            return frozen
+
+        if snapshot.is_symlink():
+            raise ScopeViolationError("scope_violation: 快照不能是符号链接")
+        if snapshot.exists():
+            return checked(snapshot)
+        snapshot.parent.mkdir(parents=True, exist_ok=True)
+        stage = Path(tempfile.mkdtemp(prefix=".asset-snapshot-", dir=snapshot.parent))
+        try:
+            scope_entities = {"builtin": [], "user": []}
+            for identity, pin in sorted(by_id.items()):
+                if self.fingerprint(identity) != pin:
+                    raise StaleCatalogError(f"stale_catalog: 冻结前资产漂移 {identity}")
+                entity = self.resolve(identity)
+                scope = entity["origin_scope"]
+                destination = stage / ("builtin" if scope == "builtin" else "user/template-library")
+                source_root = Path(entity["trusted_root"])
+                for relative, expected in pin["files"].items():
+                    source = source_root / relative
+                    if source.is_symlink() or not source.resolve().is_relative_to(source_root.resolve()):
+                        raise ScopeViolationError("scope_violation: 冻结源路径非法")
+                    raw = source.read_bytes()
+                    if hashlib.sha256(raw).hexdigest() != expected:
+                        raise StaleCatalogError(f"stale_catalog: 复制时资产漂移 {identity}")
+                    target = destination / relative
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(raw)
+                scope_entities[scope].append({
+                    **self._by_id[identity], "path": entity["relative_path"],
+                    "revision": entity["revision"],
+                })
+            for scope, entities in scope_entities.items():
+                if not entities and scope == "user":
+                    continue
+                directory = stage / ("builtin" if scope == "builtin" else "user/template-library")
+                directory.mkdir(parents=True, exist_ok=True)
+                (directory / "library.json").write_text(json.dumps({"kind": "template-library", "schema_version": 1}))
+                # builtin registry 保留原 generation；user 仍由其 canonical 文件解析。
+                if scope == "builtin":
+                    generation = self.generation or "frozen-canonical"
+                    catalog = directory / "catalog"
+                    registry_dir = catalog / "generations" / generation
+                    registry_dir.mkdir(parents=True)
+                    for entity in entities:
+                        entity.pop("trusted_root", None)
+                        entity.pop("origin_scope", None)
+                    (registry_dir / "registry.json").write_text(json.dumps({"generation": generation, "entities": entities}))
+                    (catalog / "current.json").write_text(json.dumps({"generation": generation}))
+            checked(stage)
+            try:
+                stage.rename(snapshot)
+            except OSError:
+                if not snapshot.exists():
+                    raise
+                return checked(snapshot)
+            return checked(snapshot)
+        finally:
+            if stage.exists():
+                shutil.rmtree(stage)
 
     @property
     def registry_source(self) -> str:

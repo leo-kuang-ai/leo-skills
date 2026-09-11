@@ -81,6 +81,13 @@
   失败的稳定 reason code 经 `blocker=<reason>`（slide）或 `validation.json`
   （page）登记。
 - worker 不修改其他页面、顶层 run、最终 PPTX 或 Git；父 Agent 负责 record 和最终验证。
+- 派发指引（R-81 残留①）：并发上限读 runtime 配置 `max_concurrent_workers`
+  （缺省 5），不擅自超发；同 run 多 worker 共享 canonical 状态时，record 遇
+  `vendor_revision_conflict` 必须以**完整原命令**重跑（读取最新 revision 后
+  重新提交），不得本地重试部分参数或改写 operation 身份。
+- image sweep 与在途 worker 互斥：目标域存在 active 页时清扫拒绝复位
+  （`reset_blocked_by_inflight_workers`），且 image sweep 只作用 image 域，
+  不越界复位 editable（R-81 残留②）。
 
 ### Worker 逐页三层容错协议
 

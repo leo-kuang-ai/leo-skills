@@ -29,14 +29,31 @@
 不能视作渲染可实现性预检。正式生成仍须经过 content_projection 的内容资格校验。
 
 ```
-角色对齐 → 结构匹配 → 节奏感 → 置信度裁决
+内容意图（page_type_regime） → 角色对齐 → 结构匹配 → 渲染能力 → 节奏感 → 置信度裁决
 ```
 
-1. **角色对齐**：`deck_spec.slides[].page_role`（13_页面语义 25 角色）映射
+### 内容意图中间层（page-intent）
+
+`runtime/src/leo_ppt_generator/page_intent.py` 是整稿风格推荐与逐页版式调度之间的
+确定性中间层。它优先消费母版显式的 `content_shape`、`structures`、`page_role`，
+再使用有限关键词作保守推断；输出 `page_type`、`evidence_type`、
+`visual_weight`、`text_density`、`preferred_layouts`、`fallback_layouts` 和
+`regime_version`。真值源为
+`template-library/governance/rules/page-type-regime-v1.json`。
+
+语义层只提供可解释的软排序加分，不绕过角色、容量、媒体或 renderer 硬资格。
+显式结构优先于标题关键词；无法可靠判断时输出 `decision: undecided`，保留既有
+母版人工裁决。该层不生成文案、不把风格名当作页面语义，也不把 `render:html`
+不可用的版式静默降级成 `body-basic`。
+
+1. **内容意图**：先把页面归一到 regime 的封闭页型（如 `comparison`、`trend`、
+   `process`、`kpi`、`evidence`、`table`、`text_list`）。显式结构优先；关键词
+   只能提供低置信候选。页型定义首选/回退版式、必需槽位、允许 lane 与禁止形态。
+2. **角色对齐**：`deck_spec.slides[].page_role`（13_页面语义 25 角色）映射
    到版式 `page_role` 七值枚举（cover / agenda / section / content / data /
    quote / evidence / closing），角色不符的候选直接出局（不参与打分）。未识别角色按中性
    0.5 评分（不硬排除）。数据点 ≥3 的页对非 data 版式减半。
-2. **结构匹配**：页面侧 `{要点条数, 每要点预估字数, 数据点数, 图源数}`
+3. **结构匹配**：页面侧 `{要点条数, 每要点预估字数, 数据点数, 图源数}`
    （母版内容行已有）对 canonical profile 的 `slots`：
    - **区间包含度**：条数落在 `count_min/count_max` 区间内 = 1.0；不足
      按比例折减；超出但 ≤1.2 倍上限 = 0.5；硬超 = 候选直接排除（dashi U1）。
@@ -46,13 +63,15 @@
    - **字数覆盖度**：每要点预估字数（vw 视觉宽度）对最宽文本 slot 的
      `max_chars`（× 风格 `capacity_factor.text`）；装得下 = 1.0；
      ≤1.2 倍 = 0.5；硬超 = 候选直接排除（返回 undecided 与原因）。
-3. **节奏感**：`reuse_friendly=false` 且已用 → **硬排除**（与
+4. **渲染能力与节奏感**：明确 backend 时先排除没有对应 `renderer_support` 的
+   版式；随后执行 `reuse_friendly=false` 且已用 → **硬排除**（与
    `scripts/check_layout_reuse.py` 同口径）；已用版式 -0.4；与上一页同
    版式再 -0.4；同 `page_type` 连续 ≥3 页应提示换型（人工判断项）。
    风格 brief 的 `bindings.layout_routes` 中的
    `preferred` 命中 +0.1、`discouraged` 命中 -0.2——**风格层参与但不越权**
    （软权重，不构成硬排除）。
-4. **置信度裁决**：top1 综合分 < 0.5 → 该页 `decision: "undecided"`。
+5. **置信度裁决**：top1 综合分 < 0.5，或内容意图本身低于自动阈值 → 该页
+   `decision: "undecided"`。
    undecided 是合法结果不是失败。
 
 ## 打分公式（固定、可解释）
@@ -158,3 +177,22 @@ source_digest 只判断目录同步；style_content_digest 判断实际读取内
 `reuse_friendly=false`（canonical profile 中的强视觉锚点，一 deck 受 `max_per_deck` 限制）：
 P1、P9、P23、P24、P34（上限 1）与 P36（上限 2）。定稿前跑
 `python3 scripts/check_layout_reuse.py <deck_spec.json>` 机器复核。
+
+## lane 成本读数（R-74，附加读出面）
+
+`runtime layout_selection.lane_cost_comparison` 在资格集合内对允许 lane
+（缺省 `image` / `render:html`）给出成本对比读数。三条硬口径：
+
+- **真实账单**：只读 `observability/backend_stats.jsonl` 的生产记录
+  （tokens 为记录累计，不乘 attempts）；无记录的 lane 报 `unknown`，
+  不回退假设带——估算带由 `scripts/estimate_run_cost.py` 单独输出并带
+  `caliber: cost-caliber-v2/estimate-band` 标签，两者不得混写。
+- **氛围保护**：`visual_weight=high`（氛围页）恒受保护，不产生任何成本
+  改道建议；成本对比不得以该类页改道。
+- **冻结不切换**：`frozen_backend` 存在时建议恒为保持；真实改道必须走
+  runtime 修订通道（`image record --rework` 等）并更新页级 provenance 与
+  绑定，本读数只是 advisory。
+
+读数不参与 `rank_page` 语义排序主键（正交性由结构保证：成本读数是独立
+函数，不进入候选评分）。独立标注 lane 一致率 ≥70% 属真实数据验收，当前
+未运行（`not_run`：无标注集）。

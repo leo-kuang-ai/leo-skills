@@ -230,13 +230,17 @@ class EditableAdapter:
 
     def status(self) -> dict[str, Any]:
         jobs = self._jobs()
-        counts = {name: 0 for name in ("completed", "failed", "active", "pending")}
+        # 债8 三口径统一：blocked 是独立终态，不计 pending、不建议派发；
+        # 恢复口径与 lifecycle.reset_failed_pages 一致（复位后重新入列）。
+        counts = {name: 0 for name in ("completed", "failed", "blocked", "active", "pending")}
         for page in jobs["pages"]:
             state = page["status"]
             if state == "recorded":
                 counts["completed"] += 1
             elif state in {"failed", "timeout"}:
                 counts["failed"] += 1
+            elif state == "blocked":
+                counts["blocked"] += 1
             elif state == "active":
                 counts["active"] += 1
             else:
@@ -263,8 +267,11 @@ class EditableAdapter:
         elif counts["active"]:
             action = {"kind": "wait_completion", "payload": {"page_count": counts["active"]}}
             reason = "worker_completion_pending"
-        elif counts["failed"]:
-            action = {"kind": "reset_failed_pages", "payload": {"page_count": counts["failed"]}}
+        elif counts["failed"] or counts["blocked"]:
+            action = {
+                "kind": "reset_failed_pages",
+                "payload": {"page_count": counts["failed"] + counts["blocked"]},
+            }
             reason = "page_recovery_required"
         else:
             action = {"kind": "finalize", "payload": {}}
@@ -364,6 +371,20 @@ class EditableAdapter:
 
         with FileLock(str(self.run_dir / ".page_jobs.json.lock")):
             jobs = self._jobs()
+            # 债2 快速守卫：operation 已存在而页结果字段已被 reset 清除时，
+            # 重放在消费任何结果文件之前就返回可解释失败（正常重放不受影响
+            # ——页字段完整时走原 fingerprint 校验路径）。
+            page_probe = next(
+                (item for item in jobs["pages"] if item.get("page_id") == page_id), None)
+            stale_operation = (
+                operation_id in jobs["operations"]
+                and page_probe is not None
+                and any(key not in page_probe for key in ("artifact", "validation", "manifest"))
+            )
+            if stale_operation:
+                raise ContractError(
+                    f"operation_state_lost: operation {operation_id} 的页产物"
+                    "已随复位清除；按 pending 页重新派发，而非重放旧操作")
             validation_path = Path(validation).resolve()
             report = json.loads(validation_path.read_text(encoding="utf-8"))
             if report.get("passed") is not True:
@@ -400,6 +421,15 @@ class EditableAdapter:
                 if operation["fingerprint"] != fingerprint:
                     raise ContractError("idempotency_conflict")
                 page = next(item for item in jobs["pages"] if item["page_id"] == page_id)
+                # 债2：reset --confirm-lost 清掉结果字段后，旧 operation 重放
+                # 必须返回可解释失败，不得裸 KeyError。
+                missing = [key for key in ("artifact", "validation", "manifest")
+                           if key not in page]
+                if missing:
+                    raise ContractError(
+                        f"operation_state_lost: operation {operation_id} 的页产物"
+                        f"已随复位清除（缺 {missing}）；按 pending 页重新派发，"
+                        "而非重放旧操作")
                 return PageArtifact.from_source(
                     page_id,
                     "editable",

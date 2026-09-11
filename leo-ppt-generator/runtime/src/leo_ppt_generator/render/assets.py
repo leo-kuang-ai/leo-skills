@@ -57,7 +57,7 @@ def templates_dir() -> Path:
     return builtin_library_root() / "canonical" / "templates"
 
 
-def template_path(template_id: str) -> Path:
+def template_path(template_id: str, *, resolver=None) -> Path:
     """模板 id → page.html 路径；拒绝路径分隔符注入。
 
     唯一真源：template-library/canonical/templates/<slug>/page.html。
@@ -69,18 +69,18 @@ def template_path(template_id: str) -> Path:
     # never treat an arbitrary colon-containing string as a path.
     if ":" in template_id:
         parts = template_id.split(":")
-        if len(parts) != 3 or parts[0] != "builtin" or parts[1] != "template":
+        if len(parts) != 3 or parts[0] not in ("builtin", "user") or parts[1] != "template":
             raise ValueError("invalid_template_id")
         slug = parts[2]
     else:
         slug = template_id
     from ..asset_resolver import ASSET_ID_RE, AssetResolver, ResolverError
 
-    asset_id = f"builtin:template:{slug}"
+    asset_id = template_id if ":" in template_id else f"builtin:template:{slug}"
     if not ASSET_ID_RE.fullmatch(asset_id):
         raise ValueError("invalid_template_id")
     try:
-        resolved = AssetResolver().resolve(asset_id)
+        resolved = (resolver or AssetResolver()).resolve(asset_id)
     except ResolverError as exc:
         raise FileNotFoundError(f"render_template_not_found: {template_id}: {exc.reason_code}") from exc
     if resolved["data"].get("lane") != "render:html":
@@ -102,7 +102,7 @@ def _canonical_template_dirs() -> list[Path]:
     return dirs
 
 
-def template_http_entry(name: str) -> Path | None:
+def template_http_entry(name: str, *, resolver=None) -> Path | None:
     """HTTP 供给的模板入口文件（``<slug>.html`` → 实际 page.html）。
 
     与 ``template_path`` 使用同一 canonical 解析策略。
@@ -111,7 +111,7 @@ def template_http_entry(name: str) -> Path | None:
     if not name.endswith(".html"):
         return None
     try:
-        path = template_path(name[:-5])
+        path = template_path(name[:-5], resolver=resolver)
     except (ValueError, FileNotFoundError):
         return None
     return path if path.is_file() else None

@@ -214,6 +214,8 @@ class Lifecycle:
             action = {"kind": "none", "reason_code": "terminal_run"}
         else:
             action = {"kind": "resume", "reason_code": "checkpoint_available"}
+        from .quality_metrics import dispatch_discipline_warnings
+
         return {
             "schema_version": 1,
             "status": state.get("status"),
@@ -229,17 +231,40 @@ class Lifecycle:
             "operations": operations,
             "temporary_files": [path.relative_to(self.run_dir).as_posix() for path in temporary],
             "event_log": event_log,
-            "observability": {"timing": timing},
+            "observability": {"timing": timing,
+                              "dispatch_warnings": dispatch_discipline_warnings(self.run_dir)},
             "next_action": action,
         }
 
-    def reset_failed_pages(self) -> dict:
-        reset: list[str] = []
+    def reset_failed_pages(self, *, domain: str | None = None) -> dict:
+        """复位 failed/blocked/timeout 页（blocked 同样复位，与债8 口径一致）。
+
+        U13 in-flight/跨域保护（R-81 残留②）：
+        - ``domain`` 限定作用域（"image"|"editable"）；缺省 None 保持历史
+          双域行为（旧调用方兼容）。
+        - 目标域内存在 active 单位时拒绝复位（可解释返回，不改状态），
+          避免清扫与在途 worker 竞争同一页。
+        """
+
         specifications = (
-            (self.run_dir / "image-deck/slide_jobs.json", "slides", ".slide_jobs.json.lock"),
-            (self.run_dir / "editable/page_jobs.json", "pages", ".page_jobs.json.lock"),
+            (self.run_dir / "image-deck/slide_jobs.json", "slides", ".slide_jobs.json.lock", "image"),
+            (self.run_dir / "editable/page_jobs.json", "pages", ".page_jobs.json.lock", "editable"),
         )
-        for path, collection, lock_name in specifications:
+        selected = [spec for spec in specifications if domain is None or spec[3] == domain]
+        if domain is not None and not selected:
+            raise ValueError(f"unknown reset domain: {domain}")
+        active = [
+            str(item.get("page_id") or item.get("slide_id"))
+            for path, collection, _lock, _scope in selected
+            if path.is_file()
+            for item in json.loads(path.read_text(encoding="utf-8")).get(collection, [])
+            if item.get("status") in {"active", "dispatched", "running"}
+        ]
+        if active:
+            return {"reset_units": [], "blocked_by_inflight": active,
+                    "reason_code": "reset_blocked_by_inflight_workers"}
+        reset: list[str] = []
+        for path, collection, lock_name, _scope in selected:
             if not path.is_file():
                 continue
             with FileLock(str(path.parent / lock_name)):

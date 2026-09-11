@@ -394,6 +394,7 @@ argument_role: 数据
         # 回归目标仅物化路径：媒体槽为伪造注入，资格按已覆盖论通过。
         binding["eligibility"] = {**binding["eligibility"],
                                   "qualified": True, "hard_failures": []}
+        binding["binding_digest"] = compute_binding_digest(binding)
         data = materialize_html(binding, page,
                                 media={"F1": "data:image/png;base64,QQ==",
                                        "F2": "data:image/png;base64,Qg=="})

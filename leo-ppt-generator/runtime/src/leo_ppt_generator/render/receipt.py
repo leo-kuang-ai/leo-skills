@@ -116,6 +116,9 @@ def _fingerprint_map(
 
 def _template_library_root(root: Path) -> Path:
     """模板库根：run 本地优先，退回技能库 canonical（与渲染搜索同源）。"""
+    snapshot = root / "input/asset-snapshot"
+    if snapshot.exists():
+        return snapshot / "builtin/canonical/templates"
     run_local = root / "template-library/canonical/templates"
     if run_local.is_dir():
         return run_local
@@ -269,6 +272,9 @@ def content_binding_summary(run_root: str | Path) -> dict | None:
         summary["selection_status"] = selection.get("status")
         summary["selected_layouts"] = {
             pid: entry.get("layout_id")
+            for pid, entry in (selection.get("selection") or {}).items()}
+        summary["binding_digests"] = {
+            pid: entry.get("binding_digest")
             for pid, entry in (selection.get("selection") or {}).items()}
     design_path = root / "input" / "resolved-design.json"
     if design_path.is_file():

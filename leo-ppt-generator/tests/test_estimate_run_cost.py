@@ -50,18 +50,18 @@ class NoHistoryTest(unittest.TestCase):
 
 
 class HistoryTest(unittest.TestCase):
-    def test_history_band_multiplies_retry_factor(self):
+    def test_history_cumulative_tokens_do_not_multiply_retry_factor(self):
         _, stats = _stats_file(HISTORY)
         out = json.loads(_run(["--pages", 5, "--chart", 2, "--image", 3,
                                "--stats", stats, "--json"]).stdout)
         chart = next(l for l in out["lines"] if l["page_type"] == "chart")
         image = next(l for l in out["lines"] if l["page_type"] == "image")
-        # chart: mean(5200,5900)=5550 × mean_attempts(3/2)=1.5 → 8325/页
-        self.assertEqual(chart["tokens_low"], 16650)
-        self.assertEqual(chart["tokens_high"], 24975)
+        # 调用累计 tokens 已含重试消耗。
+        self.assertEqual(chart["tokens_low"], 11100)
+        self.assertEqual(chart["tokens_high"], 16650)
         self.assertEqual(image["tokens_low"], 9000)
-        self.assertEqual(out["tokens_low"], 25650)
-        self.assertEqual(out["tokens_high"], 38475)
+        self.assertEqual(out["tokens_low"], 20100)
+        self.assertEqual(out["tokens_high"], 30150)
         self.assertEqual(out["basis"], "history")
 
     def test_run_dir_resolves_observability_stats(self):

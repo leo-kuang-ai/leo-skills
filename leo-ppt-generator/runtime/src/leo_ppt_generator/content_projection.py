@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 from copy import deepcopy
+from pathlib import Path
 
 from .template_inputs import display_texts, field_errors, validate_template_data
 
@@ -45,7 +46,7 @@ ROLE_PAGE_TYPES: dict[str, list[str]] = {
     "图片主导": ["content", "closing"],
     "案例·分镜": ["content"],
     "小结·回顾": ["content", "closing"],
-    "参考·文献": ["content"],
+    "参考·文献": ["content", "data"],
     "目标·学习目标": ["content"],
     "练习·检测": ["content"],
     "风险·问答": ["content"],
@@ -98,7 +99,82 @@ def compute_binding_digest(binding: dict) -> str:
         "content_digest": binding["content_digest"],
         "compiler": binding["compiler"],
     }
+    if binding.get("schema_version") == 2:
+        digest_input["effective"] = binding["effective"]
+        digest_input["eligibility"] = binding["eligibility"]
     return _sha(digest_input)
+
+
+def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
+                             frozen_design: dict | None = None) -> None:
+    """校验同一绑定、页面及资产；旧 v1 保留读取但不获得 v2 完整性声明。"""
+    if binding.get("binding_digest") != compute_binding_digest(binding):
+        raise ProjectionError("effective_binding_digest_mismatch")
+    if binding.get("page_id") != pack_page.get("page_id"):
+        raise ProjectionError("effective_binding_page_mismatch")
+    if binding.get("schema_version") != 2:
+        return
+    effective = binding["effective"]
+    if effective.get("page_digest") != _sha(pack_page):
+        raise ProjectionError("effective_binding_content_changed")
+    if frozen_design is not None:
+        from .templates import _design_digest
+        if (frozen_design.get("design_digest") != _design_digest(frozen_design)
+                or frozen_design.get("effective_theme") != effective.get("theme")):
+            raise ProjectionError("effective_binding_design_mismatch")
+        if frozen_design.get("design_context_digest") != binding["context_digest"]:
+            raise ProjectionError("effective_binding_design_mismatch")
+        selected = next((p for p in frozen_design.get("pages", [])
+                         if p.get("page_no") == pack_page.get("number")), None)
+        if selected is None or selected.get("layout_id") != binding["layout_id"]:
+            raise ProjectionError("effective_binding_layout_mismatch")
+    if resolver is None:
+        from .asset_resolver import AssetResolver
+        resolver = AssetResolver()
+    from .asset_resolver import ResolverError
+    for pin in effective.get("assets", []):
+        try:
+            current = resolver.fingerprint(pin["asset_id"])
+        except (ResolverError, OSError) as exc:
+            raise ProjectionError(f"effective_binding_asset_unavailable: {pin['asset_id']}") from exc
+        if current != pin:
+            raise ProjectionError(f"effective_binding_asset_changed: {pin['asset_id']}")
+
+
+def load_run_binding(run_path: str | Path, page_identity: str | int) -> dict | None:
+    """生成/record 从同一冻结输入读取绑定；旧 policy 1 保持兼容。"""
+    from .asset_resolver import AssetResolver
+    from .content_pack import verify_content_pack
+
+    root = Path(run_path) / "input"
+    selection_path = root / "layout-selection.json"
+    if not selection_path.exists():
+        return None
+    selection = json.loads(selection_path.read_text(encoding="utf-8"))
+    if str(selection.get("policy_version", "1")) == "1":
+        return None
+    if str(selection.get("policy_version")) != "2" or selection.get("status") != "complete":
+        raise ProjectionError("effective_binding_selection_invalid")
+    pack = json.loads((root / "page-content-pack.json").read_text(encoding="utf-8"))
+    verify_content_pack(pack)
+    page = next((p for p in pack["pages"] if p["page_id"] == page_identity
+                 or (isinstance(page_identity, int) and p["number"] == page_identity)), None)
+    if page is None:
+        raise ProjectionError("effective_binding_page_mismatch")
+    entry = (selection.get("selection") or {}).get(page["page_id"]) or {}
+    binding = entry.get("binding") or {}
+    if (binding.get("schema_version") != 2
+            or binding.get("binding_digest") != entry.get("binding_digest")
+            or binding.get("layout_id") != entry.get("layout_id")
+            or binding.get("content_digest") != pack["content_digest"]
+            or selection.get("content_digest") != pack["content_digest"]
+            or not binding.get("effective", {}).get("assets")):
+        raise ProjectionError("effective_binding_required")
+    resolver = AssetResolver.from_snapshot(root / "asset-snapshot")
+    design_path = root / "resolved-design.json"
+    design = json.loads(design_path.read_text(encoding="utf-8")) if design_path.exists() else None
+    verify_effective_binding(binding, page, resolver=resolver, frozen_design=design)
+    return {"binding": binding, "pack_page": page, "resolver": resolver}
 
 
 def _field_count_bounds(field: dict) -> tuple[int | None, int | None]:
@@ -447,21 +523,47 @@ def precompile_binding(
             "checks": checks,
         },
     }
+    if hasattr(resolver, "fingerprint"):
+        asset_ids = {layout_entity["asset_id"]}
+        if template_manifest is not None:
+            asset_ids.add(template_id)
+        for key in ("style", "theme_entity"):
+            entity = design_context.get(key)
+            if entity:
+                asset_ids.add(entity["asset_id"])
+        for font in design_context.get("effective", {}).get("fonts", {}).values():
+            if isinstance(font, dict) and font.get("family"):
+                asset_ids.add(resolver.require(font["family"], kind="font")["asset_id"])
+        # 依赖闭包固定在同一 resolver generation，不重新做名称选择。
+        dependencies = set(asset_ids)
+        for asset_id in sorted(asset_ids - {design_context.get("style", {}).get("asset_id")}):
+            dependencies.update(e["asset_id"] for e in resolver.resolve_dependencies(asset_id))
+        binding["schema_version"] = 2
+        binding["effective"] = {
+            "generation": resolver.generation,
+            "page_digest": _sha(pack_page),
+            "theme": {key: deepcopy(design_context.get("effective", {}).get(key, {}))
+                      for key in ("colors", "fonts", "chart_palette")},
+            "assets": [resolver.fingerprint(a) for a in sorted(dependencies)],
+        }
     binding["binding_digest"] = compute_binding_digest(binding)
     if template_manifest is not None and not hard_failures and not figures:
-        errors = validate_template_data(template_manifest, materialize_html(binding, pack_page))
+        errors = validate_template_data(template_manifest, materialize_html(binding, pack_page, resolver=resolver))
         if errors:
             hard_failures.extend(f"template_input_invalid: {e}" for e in errors)
             binding["eligibility"]["qualified"] = False
+            binding["binding_digest"] = compute_binding_digest(binding)
     return binding
 
 
-def materialize_html(binding: dict, pack_page: dict, *, media: dict | None = None) -> dict:
+def materialize_html(binding: dict, pack_page: dict, *, media: dict | None = None,
+                     resolver=None) -> dict:
     """选定后物化（render:html）：绑定 → 模板 data dict。
 
     复用同一绑定：值直接来自内容包显示值；媒体字段值由执行期素材提供
     （``media``：figure item_id → data-uri）。缺媒体值即拒绝，不留空图。
     """
+    verify_effective_binding(binding, pack_page, resolver=resolver)
     if not binding.get("eligibility", {}).get("qualified"):
         raise ProjectionError(
             "content_projection_invalid: 绑定不合格，不得物化 "
@@ -525,7 +627,7 @@ def materialize_html(binding: dict, pack_page: dict, *, media: dict | None = Non
 
 
 def materialize_image_prompt(binding: dict, pack_page: dict,
-                             frozen_design: dict | None = None) -> dict:
+                             frozen_design: dict | None = None, *, resolver=None) -> dict:
     """选定后物化（image）：绑定 → prompt 输入与必需文本清单。
 
     image 预检不冒充成品保真：``required_text`` 是生成合同输入，真实图片
@@ -533,12 +635,13 @@ def materialize_image_prompt(binding: dict, pack_page: dict,
     """
     from .templates import project_design_to_prompt
 
+    verify_effective_binding(binding, pack_page, resolver=resolver, frozen_design=frozen_design)
     if not binding.get("eligibility", {}).get("qualified"):
         raise ProjectionError(
             "content_projection_invalid: 绑定不合格，不得物化 "
             f"({binding['eligibility']['hard_failures'][:3]})")
     points = [i for i in pack_page.get("items", []) if i.get("kind") == "point"]
-    required_text = [pack_page.get("claim")] + [p.get("text") for p in points]
+    required_text = pack_page.get("required_text", [pack_page.get("claim")] + [p.get("text") for p in points])
     prompt_inputs: dict = {
         "page_id": pack_page.get("page_id"),
         "layout_id": binding["layout_id"],
@@ -562,13 +665,13 @@ def materialize_image_prompt(binding: dict, pack_page: dict,
 
 def materialize_page(binding: dict, pack_page: dict,
                      frozen_design: dict | None = None,
-                     *, media: dict | None = None) -> dict:
+                     *, media: dict | None = None, resolver=None) -> dict:
     """按绑定的 backend 物化；同绑定同输入结果确定。"""
     if binding["backend"] == "render:html":
         return {"backend": "render:html",
-                "data": materialize_html(binding, pack_page, media=media)}
+                "data": materialize_html(binding, pack_page, media=media, resolver=resolver)}
     if binding["backend"] == "image":
         return {"backend": "image",
-                **materialize_image_prompt(binding, pack_page, frozen_design)}
+                **materialize_image_prompt(binding, pack_page, frozen_design, resolver=resolver)}
     raise ProjectionError(
         f"content_projection_invalid: 未知 backend {binding['backend']}")

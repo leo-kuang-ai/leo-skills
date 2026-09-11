@@ -118,6 +118,7 @@ def read_entries(run_dir: Path) -> list[dict]:
 
 
 def _page_sort_key(page: str) -> tuple:
+    page = str(page)
     m = re.search(r"(\d+)", page)
     return (int(m.group(1)) if m else 1 << 30, page)
 
@@ -138,6 +139,10 @@ def build_resume_suggestion(entries: list[dict]) -> tuple[str, bool]:
     """
     if not entries:
         return "账本为空：无已记录阶段，从首个页的 prompt 阶段开始。", False
+
+    # 只规范化读取视图，保留历史账本字节；整数与同值字符串属于同一页。
+    entries = [{**entry, "page": str(entry["page"]) if entry.get("page") is not None else None}
+               for entry in entries]
 
     pages = sorted({e["page"] for e in entries if e.get("page")}, key=_page_sort_key)
     conflicts: list[str] = []

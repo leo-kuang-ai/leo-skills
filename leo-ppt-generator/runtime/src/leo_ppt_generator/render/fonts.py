@@ -23,7 +23,7 @@ from pathlib import Path
 from .assets import fonts_dir, template_http_entry, templates_dir, vendor_dir
 
 
-def theme_font_assets(theme: dict) -> tuple[list[Path], str]:
+def theme_font_assets(theme: dict, *, resolver=None) -> tuple[list[Path], str]:
     """按主题字族解析离线资产；不存在的字体明确失败，避免系统字体回退。"""
     import json
     from urllib.parse import quote
@@ -33,7 +33,7 @@ def theme_font_assets(theme: dict) -> tuple[list[Path], str]:
     families = {font.get("family") for font in (theme.get("fonts") or {}).values() if font.get("family")}
     if not families:
         return [], ""
-    resolver = AssetResolver()
+    resolver = resolver or AssetResolver()
     directories, rules = [], []
     for family in sorted(families):
         try:
@@ -52,7 +52,7 @@ def theme_font_assets(theme: dict) -> tuple[list[Path], str]:
     return directories, "\n".join(rules)
 
 
-def _handler(root_map: dict[str, Path], allowed: set[str] | None = None):
+def _handler(root_map: dict[str, Path], allowed: set[str] | None = None, *, resolver=None):
     """``allowed`` 为按次冻结依赖白名单（F2）：非空时只放行名单内相对路径。"""
 
     class _AssetHandler(SimpleHTTPRequestHandler):
@@ -65,7 +65,7 @@ def _handler(root_map: dict[str, Path], allowed: set[str] | None = None):
             relative = unquote(urlsplit(path).path).lstrip("/")
             # 模板入口统一走 canonical template_path；不允许旧平铺目录回退。
             if relative.endswith(".html"):
-                entry = template_http_entry(relative)
+                entry = template_http_entry(relative, resolver=resolver)
                 if entry is not None and self._allowed(relative):
                     return str(entry)
                 # 未登记 HTML 与目录入口不能绕过 catalog 回落到静态文件服务。
@@ -106,10 +106,11 @@ class RenderAssetServer:
     """渲染期临时 HTTP 服务；上下文管理器形态保证结束即关。"""
 
     def __init__(self, *, extra_font_dirs: list[Path] | None = None,
-                 allowed: set[str] | None = None) -> None:
+                 allowed: set[str] | None = None, resolver=None) -> None:
         font_roots = [*(extra_font_dirs or []), fonts_dir()]
         existing = [root for root in font_roots if root.is_dir()] or [fonts_dir()]
-        handler = _handler({"/": templates_dir(), "fonts": existing}, allowed=allowed)
+        template_root = (resolver.builtin_root / "canonical/templates" if resolver else templates_dir())
+        handler = _handler({"/": template_root, "fonts": existing}, allowed=allowed, resolver=resolver)
         self._httpd = HTTPServer(("127.0.0.1", 0), handler)
         self._httpd.daemon_threads = True
         self._thread = threading.Thread(target=self._httpd.serve_forever, daemon=True)

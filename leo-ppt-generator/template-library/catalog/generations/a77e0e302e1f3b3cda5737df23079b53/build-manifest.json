@@ -1,0 +1,10 @@
+{
+  "generation": "a77e0e302e1f3b3cda5737df23079b53",
+  "kind": "template-registry-build",
+  "output_hashes": {
+    "registry.json": "5738a28fcbfbbd062ed40c4d6c9f3e328cc3c5d42e05143779d2f67986dbb3ed"
+  },
+  "policy": "capability_manifest/template-registry/v1",
+  "schema_version": 1,
+  "source_digest": "a77e0e302e1f3b3cda5737df23079b532ffaa06162e25d1ff56d4507e1a9b69d"
+}

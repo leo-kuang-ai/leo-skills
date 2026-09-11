@@ -458,6 +458,31 @@ def build_config_ui_handler(
         def _serve_run(self, path, parsed):
             remainder = path[len("/api/runs/"):]
             parts = remainder.split("/")
+            if len(parts) == 3 and parts[1] == "diffs" and parts[2].endswith(".png"):
+                # R-78：`<run>/diffs/` 视觉回归拼图按 §7 路径规则进控制台
+                # serve（仅消费文件，严格包含检查在 RunScanner.diff_puzzle）。
+                run_id = parts[0]
+                try:
+                    payload, content_type = runs.diff_puzzle(run_id, parts[2])
+                except (RunLookupError, PreviewLookupError):
+                    return self._json({"reason_code": "preview_not_found"}, 404)
+                import hashlib as _hashlib
+
+                etag = '"' + _hashlib.sha256(payload).digest()[:8].hex() + '"'
+                if self.headers.get("If-None-Match") == etag:
+                    self.send_response(304)
+                    self.send_header("ETag", etag)
+                    self.send_header("Cache-Control", "private, max-age=86400")
+                    self.end_headers()
+                    return None
+                return self._binary(
+                    payload,
+                    content_type,
+                    extra_headers={
+                        "ETag": etag,
+                        "Cache-Control": "private, max-age=86400",
+                    },
+                )
             if len(parts) == 3 and parts[1] == "pages" and parts[2].endswith(".png"):
                 run_id = parts[0]
                 page_part = parts[2][: -len(".png")]

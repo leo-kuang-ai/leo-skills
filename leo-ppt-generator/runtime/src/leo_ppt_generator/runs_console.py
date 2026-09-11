@@ -626,6 +626,29 @@ class RunScanner:
         return entry
 
     # ------------------------------------------------------------- 页图沙箱
+    def diff_puzzle(self, run_id: str, page_id: str) -> "tuple[bytes, str]":
+        """R-78：serve `<run>/diffs/<page_id>.png`（严格包含检查，仅消费文件）。"""
+
+        info = self._find(run_id)
+        run_dir: Path = info["dir"]
+        diffs_root = (run_dir / "diffs").resolve()
+        if not str(page_id).endswith(".png"):
+            page_id += ".png"
+        candidate = diffs_root / Path(page_id).name  # 只取文件名，防目录穿越
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError:
+            raise PreviewLookupError(page_id)
+        if not resolved.is_relative_to(diffs_root) or not resolved.is_file():
+            raise PreviewLookupError(page_id)
+        content_type = _PREVIEW_TYPES.get(resolved.suffix.lower())
+        if content_type is None:
+            raise PreviewLookupError(page_id)
+        try:
+            return resolved.read_bytes(), content_type
+        except OSError:
+            raise PreviewLookupError(page_id)
+
     def page_image(self, run_id: str, number: int) -> tuple[bytes, str]:
         info = self._find(run_id)
         run_dir: Path = info["dir"]

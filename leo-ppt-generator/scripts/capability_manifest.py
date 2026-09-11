@@ -349,6 +349,42 @@ def publish_template_registry(registry: dict, library_root: Path) -> dict:
     return {"generation": generation, "published": True, "updated": updated}
 
 
+def rollback_template_catalog(library_root: Path, target_generation: str) -> dict:
+    """批次回滚（U12/R-85b）：current.json 指针原子切回既有 generation。
+
+    消费方经 current.json 解析代——指针回切即整库回滚，generation 目录
+    不移动不删除。目标代必须已存在、registry 可读且自洽；目标即当前代
+    时空操作返回。回滚动作写 `reports/` 之外只动指针文件本身。
+    """
+
+    import os
+    import shutil
+    from filelock import FileLock
+
+    library_root = Path(library_root).resolve()
+    catalog = library_root / "catalog"
+    target_dir = catalog / "generations" / target_generation
+    registry_path = target_dir / "registry.json"
+    if not registry_path.is_file():
+        raise ValueError(f"rollback_generation_missing: {target_dir}")
+    published = json.loads(registry_path.read_text(encoding="utf-8"))
+    if published.get("generation") != target_generation:
+        raise ValueError("rollback_generation_identity_mismatch")
+    with FileLock(str(catalog / ".publish.lock")):
+        pointer_path = catalog / "current.json"
+        current = json.loads(pointer_path.read_text(encoding="utf-8"))
+        current_generation = current.get("generation")
+        if current_generation == target_generation:
+            return {"rolled_back": False, "generation": current_generation,
+                    "reason": "already-current"}
+        pointer = {"kind": "template-catalog-pointer", "schema_version": 1,
+                   "generation": target_generation}
+        pointer_tmp = catalog / ".current.json.tmp"
+        pointer_tmp.write_bytes(_json_bytes(pointer))
+        os.replace(pointer_tmp, pointer_path)
+    return {"rolled_back": True, "from": current_generation, "to": target_generation}
+
+
 def check_template_registry(library_root: Path) -> tuple[dict, int]:
     """只读校验 current 指针的 generation 与源输入一致（漂移即非零）。"""
     try:
@@ -521,6 +557,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--library-publish", action="store_true", help="配合 --template-library 发布")
     parser.add_argument("--library-check", action="store_true", help="配合 --template-library 只读校验")
     parser.add_argument("--library-inventory", action="store_true", help="只读盘点 canonical，保留缺失及冲突分母")
+    parser.add_argument("--library-rollback", metavar="GENERATION",
+                        help="配合 --template-library：current.json 指针原子切回既有 generation（批次回滚）")
     args = parser.parse_args(argv)
 
     root = (Path(args.root).expanduser().resolve() if args.root
@@ -552,7 +590,16 @@ def main(argv: list[str] | None = None) -> int:
         if not library_root.is_dir():
             print(f"模板库根不存在: {library_root}", file=sys.stderr)
             return EXIT_USAGE
-        if args.library_check:
+        if args.library_rollback:
+            if args.library_publish or args.library_check:
+                parser.error("--library-rollback 不与发布或校验混用")
+            try:
+                result = rollback_template_catalog(library_root, args.library_rollback)
+            except ValueError as exc:
+                print(str(exc), file=sys.stderr)
+                return EXIT_USAGE
+            code = 0
+        elif args.library_check:
             result, code = check_template_registry(library_root)
         elif args.library_publish:
             registry = build_template_registry(library_root)

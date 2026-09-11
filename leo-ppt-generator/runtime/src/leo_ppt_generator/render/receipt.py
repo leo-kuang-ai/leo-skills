@@ -287,6 +287,17 @@ def content_binding_summary(run_root: str | Path) -> dict | None:
     return summary or None
 
 
+def _disclosure_summary(root: Path) -> dict[str, Any] | None:
+    """U14 披露工件摘要（延迟导入，避免收据基础面依赖披露模块）。"""
+
+    try:
+        from ..delivery_disclosure import disclosure_summary
+
+        return disclosure_summary(root)
+    except Exception:  # 披露面任何异常不得阻断收据采集
+        return None
+
+
 def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
     """采集五类指纹并原子写入收据；返回路径、sha256 与收据本体。"""
 
@@ -306,6 +317,9 @@ def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         "builder_id": None,
         "fingerprints": fingerprints,
         "content_binding": content_binding_summary(root),
+        # R-79/U14：交付披露摘要为**加性块**，不属于五类指纹——verify 不比对
+        # 本块（披露工件按 not_run 口径缺失即 null），旧收据验证不受影响。
+        "disclosure": _disclosure_summary(root),
         "linked_assets": {
             "sources_manifest": None,
             "beta_sidecars": None,

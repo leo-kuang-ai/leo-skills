@@ -165,5 +165,80 @@ class CapabilityManifestTests(unittest.TestCase):
         self.assertNotIn("template-library/reference/sources/retired-styles-tree/styles/00_索引/_INDEX.md", briefs["files"])
 
 
+class TemplateCatalogRollbackTests(unittest.TestCase):
+    """U12/R-85b 批次回滚：current 指针原子切回既有 generation。"""
+
+    def _library_with_two_generations(self, root: Path) -> Path:
+        import json
+        import shutil
+
+        from leo_ppt_generator.storage import canonical_json_bytes
+
+        library = root / "template-library"
+        library.mkdir(parents=True)
+        (library / "library.json").write_text("{}", encoding="utf-8")
+        gens = {}
+        for generation in ("gen-old", "gen-new"):
+            target = library / "catalog" / "generations" / generation
+            target.mkdir(parents=True)
+            registry = {"generation": generation, "entities": [], "source_digest": generation}
+            (target / "registry.json").write_bytes(canonical_json_bytes(registry))
+            gens[generation] = registry
+        pointer = {"kind": "template-catalog-pointer", "schema_version": 1,
+                   "generation": "gen-new"}
+        (library / "catalog" / "current.json").write_text(json.dumps(pointer), encoding="utf-8")
+        return library
+
+    def test_rollback_flips_pointer_atomically_and_round_trips(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            result = rollback_template_catalog(library, "gen-old")
+            self.assertTrue(result["rolled_back"])
+            self.assertEqual(result["to"], "gen-old")
+            pointer = json.loads(
+                (library / "catalog" / "current.json").read_text(encoding="utf-8"))
+            self.assertEqual(pointer["generation"], "gen-old")
+            # 再切回 gen-new（双向）。
+            result = rollback_template_catalog(library, "gen-new")
+            self.assertEqual(result["to"], "gen-new")
+
+    def test_rollback_to_current_generation_is_noop(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            result = rollback_template_catalog(library, "gen-new")
+            self.assertFalse(result["rolled_back"])
+            self.assertEqual(result["reason"], "already-current")
+
+    def test_rollback_rejects_missing_or_mismatched_generation(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            with self.assertRaises(ValueError) as ctx:
+                rollback_template_catalog(library, "gen-missing")
+            self.assertIn("rollback_generation_missing", str(ctx.exception))
+            # registry 内容与目录名不符即拒绝。
+            bad = library / "catalog" / "generations" / "gen-bad"
+            bad.mkdir(parents=True)
+            (bad / "registry.json").write_text(
+                json.dumps({"generation": "something-else"}), encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                rollback_template_catalog(library, "gen-bad")
+            self.assertIn("rollback_generation_identity_mismatch", str(ctx.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

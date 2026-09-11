@@ -48,7 +48,7 @@ if str(RUNTIME_SRC) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SRC))
 
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
-from leo_ppt_generator.render.layout import CAPACITY_TOLERANCE, capacity_level
+from leo_ppt_generator.render.layout import CAPACITY_TOLERANCE, capacity_level, visual_width
 
 NS_P = "http://schemas.openxmlformats.org/presentationml/2006/main"
 NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main"
@@ -73,19 +73,8 @@ FILL_MARGIN = 0.95  # 容器内边距让渡（近似上游 H_MARGIN 的 5%）
 CAPACITY_LINE_HEIGHT = 1.0  # 上游 LINE_HEIGHT：CJK 正文单倍行距
 
 def vw_of(text: str) -> float:
-    """文本的视觉宽度（CJK 等效单位）：CJK/全角=1.0，空格=0.35，ASCII=0.5，其他=0.8。"""
-    width = 0.0
-    for ch in text:
-        if ("\u4e00" <= ch <= "\u9fff" or "\u3000" <= ch <= "\u303f"
-                or "\uff00" <= ch <= "\uffef"):
-            width += 1.0
-        elif ch == " ":
-            width += 0.35
-        elif ch.isascii():
-            width += 0.5
-        else:
-            width += 0.8
-    return width
+    """文本视觉宽度；实现收编 runtime render.layout.visual_width（唯一真源）。"""
+    return visual_width(text)
 
 
 def container_px(cols: int) -> float:

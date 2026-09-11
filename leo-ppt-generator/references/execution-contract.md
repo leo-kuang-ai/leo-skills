@@ -157,6 +157,13 @@ import-baseline` 两段关联 run：baseline 冻结源交付、页图、notes �
 `authorization-quote` 须为豁免原话。
 这只是可追溯声明，不是发言人认证，也不能用于设置最终人工验收通过。
 
+**六节点决策简报（R-76）**：合同/大纲/母版/视觉方向＋样张/PARTIAL-GATE/
+DELIVERY-GATE 六个推进节点向人呈现三行固定摘要（变了什么/影响什么/
+需要决定什么），模板与用户语言强制项见
+[`decision-brief.md`](decision-brief.md)；确定性构建走 runtime
+`layout_proposals.decision_brief`，呈现缺席降级 CLI 报告（cli-fallback），
+委托模式简报仍生成、仅呈现豁免（exempt-user-delegated 留痕）。
+
 新流程必须传 `--sample-binding`。已有收据时即使不传该参数也会在 prepare 与组装前核验；
 从未启用的历史任务显式返回 `legacy/not_run`，可兼容准备但不能声称恢复了样张批准。
 `reports/sample-decision-required.json` 记录启用状态；已启用后丢失收据仍阻断，不能退回 legacy。

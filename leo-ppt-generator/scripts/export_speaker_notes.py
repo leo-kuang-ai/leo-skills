@@ -15,11 +15,19 @@ text. Exit codes: 0 = exported; 2 = usage or IO error.
 ``check_deck_prose.scan_speaker_scripts``: clichés / >40-char sentences /
 notice-tone 「大家」) before export and prints a ``PROSE-WARN`` summary to
 stderr — advisory only, never blocks the export or changes the exit code.
+
+``--duration-check <page-content-pack.json>`` (R-82) prints a
+``DURATION-WARN`` summary to stderr: per-page budgeted seconds (page-level
+``budget_seconds`` first, then explicit deck ``duration_seconds`` split
+evenly, else unknown) versus the speaking-time estimate of the exported
+script text (chars / SPEAKING_CHARS_PER_MINUTE). Advisory only — never
+blocks export or changes the exit code.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -115,6 +123,52 @@ def _print_prose_warnings(pages: "list[tuple[str, str]]") -> None:
         print(f"PROSE-WARN: {finding['page']} — {finding['message']}", file=sys.stderr)
 
 
+def _print_duration_warnings(
+    pages: "list[tuple[str, str]]",
+    pack_path: Path,
+) -> None:
+    """Advisory R-82 check; same non-blocking pattern as --prose-check."""
+
+    scripts_dir = Path(__file__).resolve().parent
+    runtime_src = scripts_dir.parent / "runtime" / "src"
+    for candidate in (runtime_src, scripts_dir):
+        if str(candidate) not in sys.path:
+            sys.path.insert(0, str(candidate))
+    try:
+        from leo_ppt_generator.delivery_disclosure import speaker_duration_report
+    except ImportError as exc:
+        print(f"DURATION-CHECK: 无法加载 delivery_disclosure（{exc}），跳过时长校准",
+              file=sys.stderr)
+        return
+    try:
+        pack = json.loads(pack_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        print(f"DURATION-CHECK: 内容包不可读（{exc}），跳过时长校准", file=sys.stderr)
+        return
+    deck_seconds = (pack.get("deck") or {}).get("duration_seconds")
+    budgets = {str(page.get("page_id")): page.get("budget_seconds")
+               for page in pack.get("pages", [])}
+    # PPTX/master 页序与内容包页序一致（同一母版派生），按序取 page_id。
+    page_ids = [str(page.get("page_id")) for page in pack.get("pages", [])]
+    rows = []
+    for index, (_label, text) in enumerate(pages):
+        page_id = page_ids[index] if index < len(page_ids) else f"page_{index + 1:03d}"
+        rows.append({"page_id": page_id, "chars": len(text.replace("\n", "").replace(" ", "")),
+                     "budget_seconds": budgets.get(page_id)})
+    report = speaker_duration_report(pages=rows, deck_duration_seconds=deck_seconds)
+    if report["pages_over"]:
+        print(f"DURATION-WARN: {report['pages_over']}/{report['pages_total']} 页讲稿估算超预算"
+              "（advisory 不阻断；语速模型 "
+              f"{report['chars_per_minute']} 字/分）", file=sys.stderr)
+        for row in report["pages"]:
+            if row["status"] == "over":
+                print(f"DURATION-WARN: {row['page_id']} 估算 {row['estimated_seconds']}s "
+                      f"> 预算 {row['budget_seconds']}s", file=sys.stderr)
+    if report["pages_unknown_budget"]:
+        print(f"DURATION-CHECK: {report['pages_unknown_budget']} 页无预算（页级与整册双缺失，"
+              "unknown 如实披露）", file=sys.stderr)
+
+
 def main(argv: "list[str] | None" = None) -> int:
     parser = argparse.ArgumentParser(description="Export a speaker script from PPTX notes or a deck master.")
     source = parser.add_mutually_exclusive_group(required=True)
@@ -124,6 +178,9 @@ def main(argv: "list[str] | None" = None) -> int:
     parser.add_argument("--prose-check", action="store_true",
                         help="run the R-16 speaker-script discipline scan before "
                              "export; print a WARN summary to stderr (advisory)")
+    parser.add_argument("--duration-check", metavar="PACK",
+                        help="page-content-pack.json：R-82 讲稿时长校准（页级预算优先，"
+                             "整册均分兜底，双缺失 unknown；advisory）")
     args = parser.parse_args(argv)
 
     if args.pptx:
@@ -135,6 +192,9 @@ def main(argv: "list[str] | None" = None) -> int:
 
     if args.prose_check:
         _print_prose_warnings(pages)
+
+    if args.duration_check:
+        _print_duration_warnings(pages, Path(args.duration_check))
 
     output = render(label, pages)
     if args.out:

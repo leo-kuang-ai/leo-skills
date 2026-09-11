@@ -25,6 +25,27 @@ def capacity_level(used: float, limit: float) -> str:
     return "over" if used <= limit * CAPACITY_TOLERANCE else "overflow"
 
 
+def visual_width(text: str) -> float:
+    """文本视觉宽度（CJK 等效单位）：CJK/全角=1.0，空格=0.35，ASCII=0.5，其他=0.8。
+
+    容量门（check_deck_geometry）与版式重排提案（layout_proposals）共用的
+    唯一宽度真源，保证"提案 → 应用 → 复检"闭环与门判定同口径。
+    """
+
+    width = 0.0
+    for ch in text:
+        if ("\u4e00" <= ch <= "\u9fff" or "\u3000" <= ch <= "\u303f"
+                or "\uff00" <= ch <= "\uffef"):
+            width += 1.0
+        elif ch == " ":
+            width += 0.35
+        elif ch.isascii():
+            width += 0.5
+        else:
+            width += 0.8
+    return width
+
+
 class LayoutProfileError(ResolverError):
     reason_code = "layout_profile_invalid"
 

@@ -70,6 +70,17 @@ class RenderPageOfflineContract(unittest.TestCase):
                 render_page("body-basic", data, Path(tmp) / "out.png")
             self.assertEqual(ctx.exception.reason_code, "render_data_invalid")
 
+    def test_duplicate_or_nonfinite_json_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp) / "slide.json"
+            for payload in ('{"title":"x","title":"y"}', '{"title":"x","page_no":1e999}',
+                            '{"title":"x","page_no":NaN}', '{"title":"x","hidden":42}'):
+                with self.subTest(payload=payload):
+                    data.write_text(payload, encoding="utf-8")
+                    with self.assertRaises(RenderError) as ctx:
+                        render_page("body-basic", data, Path(tmp) / "out.png")
+                    self.assertEqual(ctx.exception.reason_code, "render_data_invalid")
+
 
 class RenderPageBrowser(browser_test_case()):
     """真浏览器用例：环境缺 chromium 时 skip 并披露（skip ≠ pass）。"""

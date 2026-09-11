@@ -1,15 +1,30 @@
-# 版式：P20 · Stacked KPI Ledger · 纵向账单 KPI
+# P20 · kpi-stat
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** 4-6 行核心数据账单式展示(每行=数字+标签+图标)。
+绑定模板：`builtin:template:kpi-stat`。页面角色：`data`。
 
-**适用内容类型:** **4-6 项核心数据账单**(每行必须有真实数值 + 标签 + 图标)。垂直 ledger 形式适合财务数据、KPI 仪表板、关键指标列表。比 P6 KPI Tower 容纳数据更多但视觉化弱(无 bar 高度对比)。
+阅读顺序：`kicker` → `title` → `kpis` → `chart_title` → `chart_svg` → `dual` → `footnote`。
 
-**骨架:** 每行一道 hairline 分隔 / 左侧巨数(限高 `min(13vw,21vh)` 防溢出,21≥13×1.6 满足双约束) / 中部标签 / 右侧 lucide 图标。
+## 区域
 
-**关键类:** `.stacked-ledger` `.ledger-row`(border-bottom:1px solid var(--border-subtle))`.ledger-num`
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| header | 64 | 40 | 1152 | 124 |
+| kpi_row | 64 | 180 | 1152 | 150 |
+| mid_zone | 64 | 352 | 1152 | 260 |
+| footnote_band | 64 | 638 | 1152 | 60 |
 
-**动效 recipe:** `stacked-ledger` — 每行数字升起 → 标签左滑 → 图标 pop(每行 180ms 错开)
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `governance/rules/layouts/00_template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。数值呈现遵守 [`../../../governance/authoring/index/图表样式规范.md`](../../../governance/authoring/index/图表样式规范.md)（形状授权/置信度语法/直接标注）。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `header`，最多 60 字符。
+- `title`：区域 `header`，最多 24 字符。
+- `kpis`：区域 `kpi_row`，2–4 项。
+- `chart_title`：区域 `mid_zone`，最多 40 字符。
+- `chart_svg`：区域 `mid_zone`。
+- `dual`：区域 `mid_zone`，0–2 项。
+- `footnote`：区域 `footnote_band`，最多 90 字符。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

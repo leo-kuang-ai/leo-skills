@@ -22,37 +22,44 @@
     {
       "name": "ratio",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["16x10", "16x9", "4x3", "3x2", "1x1", "3x4", "21x9"]
     },
     {
       "name": "corners",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["sq", "sm", "md"]
     },
     {
       "name": "shadow",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["none", "soft", "ed"]
     },
     {
       "name": "bg",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["paper", "paper-2", "grey-1", "grid", "dot", "ink"]
     },
     {
       "name": "inset",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["none", "sub", "bal"]
     },
     {
       "name": "fit",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["contain", "cover"]
     },
     {
       "name": "device",
       "required": false,
-      "type": "enum"
+      "type": "enum",
+      "enum": ["none", "browser", "phone"]
     },
     {
       "name": "image_src",

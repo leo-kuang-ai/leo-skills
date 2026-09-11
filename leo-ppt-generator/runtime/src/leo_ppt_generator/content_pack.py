@@ -26,7 +26,7 @@ from pathlib import Path
 from .storage import canonical_json
 
 PACK_SCHEMA_VERSION = 1
-COMPILER_VERSION = "1"
+COMPILER_VERSION = "2"
 
 PAGE_HEADER_RE = re.compile(r"^##\s+(S(\d+)|附)[^\n]*$", re.M)
 ANY_SECTION_RE = re.compile(r"^##\s+.*$", re.M)
@@ -36,7 +36,8 @@ TITLE_RE = re.compile(r"[-•]\s*标题[：:]\s*(.+)")
 POINT_LINE_RE = re.compile(r"^\s*(?:[-•]|\d+\.|\d+、)\s*(.+)$", re.M)
 _NON_POINT = ("标题", "备注", "视觉行", "argument_role", "数字登记表")
 _PAGE_META_KEYS = ("page_id", "argument_role", "beat", "audience_takeaway",
-                   "rst_relation", "角色", "页面角色", "role")
+                   "rst_relation", "角色", "页面角色", "role",
+                   "结构数据", "对照侧", "表列", "表行")
 VISUAL_RE = re.compile(r"(?:视觉行|视觉)[：:]\s*(.+)")
 ROLE_RE = re.compile(r"(?:页面角色|角色|role)[：:]\s*([^\s,，;；。]+)", re.I)
 META_LINE_RES = {
@@ -55,6 +56,7 @@ SIDE_MARKER_RE = re.compile(r"^[-•]?\s*对照侧[：:]\s*([^\n]+)$", re.M)
 # 台账/矩阵结构显式声明；列数与每行单元格数由投影层交叉校验。
 TABLE_COLUMNS_RE = re.compile(r"^[-•]?\s*表列[：:]\s*([^\n]+)$", re.M)
 TABLE_ROW_RE = re.compile(r"^[-•]?\s*表行[：:]\s*([^\n]+)$", re.M)
+STRUCTURED_FIELDS_RE = re.compile(r"^[-•]?\s*结构数据[：:][ \t]*(.*)$", re.M)
 DECK_META_RES = {
     "goal": re.compile(r"^(?:goal|目标)[：:]\s*([^\n]+)$", re.M),
     "audience": re.compile(r"^(?:audience|受众)[：:]\s*([^\n]+)$", re.M),
@@ -213,6 +215,18 @@ def parse_structures(body: str) -> dict:
     用全角「｜」分隔。结构必须来自母版显式标记——确定性编译器不猜测结构。
     """
     structures: dict = {}
+    field_markers = list(STRUCTURED_FIELDS_RE.finditer(body))
+    if len(field_markers) > 1:
+        raise ContentPackError("每页只允许一行结构数据 JSON，不能静默覆盖")
+    if field_markers:
+        from .template_inputs import load_template_json
+        try:
+            fields = load_template_json(field_markers[0].group(1))
+        except ValueError as exc:
+            raise ContentPackError(f"结构数据必须是单行合法 JSON: {exc}") from exc
+        if not isinstance(fields, dict):
+            raise ContentPackError("结构数据必须为 JSON object")
+        structures["fields"] = fields
     sides = []
     for m in SIDE_MARKER_RE.finditer(body):
         parts = [p.strip() for p in m.group(1).split("｜")]
@@ -240,6 +254,10 @@ def parse_structures(body: str) -> dict:
         structures["table"] = {"columns": columns, "rows": rows}
     elif TABLE_ROW_RE.search(body):
         raise ContentPackError("表行标记存在但缺表列标记，回母版补齐表列声明")
+    fields = structures.get("fields", {})
+    if ("sides" in fields and sides) or (
+            {"columns", "rows"}.intersection(fields) and "table" in structures):
+        raise ContentPackError("结构数据与对照侧/表列/表行重复声明，须保留唯一来源")
     return structures
 
 

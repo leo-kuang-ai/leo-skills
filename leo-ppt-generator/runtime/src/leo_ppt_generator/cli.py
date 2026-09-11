@@ -1567,6 +1567,10 @@ def build_parser() -> argparse.ArgumentParser:
                                   help="themeVariables JSON（缺省 mermaid 默认并 WARN）")
     render_chart_cmd.add_argument("--scale-width", type=int, default=2560,
                                   help="栅格化 fitTo 宽度")
+    render_chart_cmd.add_argument("--chart-width", type=int, help="XY 图表逻辑宽度（320–2560）")
+    render_chart_cmd.add_argument("--chart-height", type=int, help="XY 图表逻辑高度（180–1440）")
+    render_chart_cmd.add_argument("--label-size", type=int, help="XY 轴标签与图例字号（12–96）")
+    render_chart_cmd.add_argument("--data-labels", action="store_true", help="显示 XY 柱体数值标签")
 
     editable = subcommands.add_parser("editable")
     editable_commands = editable.add_subparsers(dest="editable_command", required=True)
@@ -2704,6 +2708,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
             code_file=args.code_file,
             out=args.out,
             theme_file=args.theme_file,
+            chart_options={key: value for key, value in {
+                "width": args.chart_width, "height": args.chart_height,
+                "label_size": args.label_size,
+                "data_labels": True if args.data_labels else None,
+            }.items() if value is not None},
         )
         raster = None
         if args.png:

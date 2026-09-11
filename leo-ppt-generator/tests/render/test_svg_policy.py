@@ -53,10 +53,9 @@ class SvgPolicyTest(unittest.TestCase):
                 dialect="mermaid",
             )
 
-    def test_mermaid_html_labels_marker_is_rejected(self):
+    def test_literal_config_name_is_allowed_as_label(self):
         source = '<svg xmlns="http://www.w3.org/2000/svg"><text>htmlLabels</text></svg>'
-        with self.assertRaises(SvgPolicyError):
-            sanitize_chart_output(source, dialect="mermaid")
+        self.assertIn('>htmlLabels</text>', sanitize_chart_output(source, dialect="mermaid"))
 
 
 if __name__ == "__main__":

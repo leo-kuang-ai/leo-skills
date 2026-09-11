@@ -1,15 +1,27 @@
-# 版式：P8 · Duo Compare · 双轨对照
+# P8 · compare-pro
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** Before/After、A vs B、旧/新对比。
+绑定模板：`builtin:template:compare-pro`。页面角色：`content`。
 
-**适用内容类型:** **二元对照**(必须正好 2 项)。两侧结构同质(t-cat 标签 + 大字标题 + 段落 / 列表说明)。典型如:旧/新工作流、传统/AI、客户视角/团队视角。
+阅读顺序：`kicker` → `title` → `sides` → `bottom`。
 
-**骨架:** 左右两半屏中间一根纵向 1px 长线分隔 / 各自顶部 t-cat + 大字标题 + 下方说明。
+## 区域
 
-**关键类:** `.duo-compare` `.duo-half` `.vrule`(scaleY 拉开)
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| header | 64 | 40 | 1152 | 124 |
+| side_a | 64 | 180 | 548 | 420 |
+| side_b | 668 | 180 | 548 | 420 |
+| bottom_band | 64 | 626 | 1152 | 60 |
 
-**动效 recipe:** `duo-mirror` — 中线 vrule 先 scaleY 0→1 → 左右各自标题、文字镜像入场
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `header`，最多 60 字符。
+- `title`：区域 `header`，最多 24 字符。
+- `sides`：区域 `side_a`，2–2 项。
+- `bottom`：区域 `bottom_band`，最多 56 字符。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

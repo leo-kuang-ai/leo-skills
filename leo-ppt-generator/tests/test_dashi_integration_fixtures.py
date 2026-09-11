@@ -144,15 +144,36 @@ class ThemeIndependenceTests(unittest.TestCase):
         self.assertTrue(structure_fingerprint(profile).startswith("fp-"))
 
 
-class SevenTemplateNoRegressionTests(unittest.TestCase):
-    def test_seven_templates_still_lint_and_bind(self):
+class TemplateContractNoRegressionTests(unittest.TestCase):
+    def test_all_templates_lint_clean(self):
+        """模板合同 lint 全绿守恒（2026-09 扩容 8 个 pro-family 模板后
+        由固定数量断言改为全量 ERROR=0 守恒；新模板走 README 八步流程接入）。"""
         import subprocess
         script = PKG_ROOT / "scripts" / "lint_template_contract.py"
         proc = subprocess.run(
             [sys.executable, str(script)], capture_output=True, text=True,
             encoding="utf-8", cwd=str(PKG_ROOT))
         self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertIn("TOTAL: 7 templates, ERROR=0", proc.stdout)
+        self.assertIn("ERROR=0", proc.stdout)
+
+    def test_pro_family_pcode_bindings(self):
+        """pro-family 模板与 P 码版式双向绑定守恒。"""
+        import json
+        bindings = {
+            "cover-pro": "p1-01-cover-layouts",
+            "chain-flow": "p2-02-vertical-timeline-layouts",
+            "compare-pro": "p8-08-duo-compare-layouts",
+            "quote-pro": "p9-09-closing-manifesto-layouts",
+            "timeline-pro": "p11-11-horizontal-timeline-layouts",
+            "cards-stat": "p16-16-multi-card-brief-layouts",
+            "kpi-stat": "p20-20-stacked-kpi-ledger-layouts",
+            "table-pro": "p21-21-tech-spec-sheet-layouts",
+        }
+        for tpl, layout_slug in bindings.items():
+            tj = json.loads((PKG_ROOT / "template-library/canonical/templates" / tpl / "template.json").read_text(encoding="utf-8"))
+            self.assertIn(f"builtin:layout:{layout_slug}", tj.get("layout_profiles", []), tpl)
+            lj = json.loads((PKG_ROOT / "template-library/canonical/layouts" / layout_slug / "layout.json").read_text(encoding="utf-8"))
+            self.assertEqual(lj["renderer_support"]["render:html"], f"builtin:template:{tpl}", layout_slug)
 
 
 if __name__ == "__main__":

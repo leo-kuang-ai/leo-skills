@@ -57,6 +57,22 @@ def _family_fixture_root(tmp: Path) -> Path:
 
 
 class GalleryTest(unittest.TestCase):
+    def test_canonical_theme_reaches_both_chart_and_page(self):
+        from leo_ppt_generator.render.theme import compute_effective_theme
+        resolver = gallery._canonical_resolver()
+        expected = compute_effective_theme(resolver.resolve(
+            "builtin:theme:consulting-pyramid-light")["data"])
+        inputs = gallery.golden_inputs("咨询金字塔风")
+        self.assertEqual(inputs["theme.json"], expected)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+            gallery, "_run_render", return_value=({}, False)
+        ) as render:
+            root = Path(tmp)
+            gallery.render_page("body-basic", root / "slide.json", root / "out.png",
+                                theme=root / "theme.json")
+            args = render.call_args.args[0]
+            self.assertEqual(args[args.index("--theme-file") + 1], str(root / "theme.json"))
+
     def test_backend_missing_on_stderr_uses_documented_degradation(self):
         result = subprocess.CompletedProcess([], 2, "", json.dumps({"status": "blocked", "reason_code": "render_backend_missing"}))
         with mock.patch.object(gallery, "runtime_python", return_value=Path(sys.executable)), mock.patch.object(gallery.subprocess, "run", return_value=result):
@@ -128,25 +144,21 @@ class FamilyRepresentativeTest(unittest.TestCase):
             self.assertEqual(path, expected)
             self.assertTrue(path.is_file(), f"missing {path}")
 
-    def test_dark_family_palette_falls_back_to_paper(self):
+    def test_family_uses_canonical_theme(self):
         # terminal (dark canvas + light foreground) and cream families (dark
         # neutral ink, hex-free canvas note) must not land dark backgrounds
         # or washed-out plot anchors on the light templates
-        for name, kept_anchor in (("Dracula紫风", "#FF79C6"),
-                                  ("奶油温柔风", "#A3B18A")):
+        for name in ("Dracula紫风", "奶油温柔风"):
             inputs = gallery.golden_inputs(name)
-            self.assertNotIn("background_color", inputs["slide-cover.json"])
             theme = inputs["theme.json"]
-            self.assertNotIn("background", theme)
-            self.assertEqual(sorted(theme), ["accent"])
-            self.assertEqual(theme["accent"], kept_anchor)
+            self.assertIn("colors", theme)
+            self.assertIn("fonts", theme)
 
-    def test_light_family_keeps_palette_background(self):
+    def test_light_family_uses_canonical_theme(self):
         inputs = gallery.golden_inputs("故宫墨红风")
-        self.assertEqual(inputs["slide-cover.json"]["background_color"], "#E6E1D3")
         theme = inputs["theme.json"]
-        self.assertEqual(theme["primary"], "#8C3232")
-        self.assertEqual(theme["background"], "#E6E1D3")
+        self.assertEqual(theme["colors"]["primary"], "#8C3232")
+        self.assertEqual(theme["colors"]["background"], "#F4F1E9")
 
 
 class GoldenSampleTest(unittest.TestCase):

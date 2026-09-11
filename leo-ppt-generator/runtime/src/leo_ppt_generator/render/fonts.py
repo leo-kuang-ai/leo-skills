@@ -23,6 +23,35 @@ from pathlib import Path
 from .assets import fonts_dir, template_http_entry, templates_dir, vendor_dir
 
 
+def theme_font_assets(theme: dict) -> tuple[list[Path], str]:
+    """按主题字族解析离线资产；不存在的字体明确失败，避免系统字体回退。"""
+    import json
+    from urllib.parse import quote
+    from ..asset_resolver import AssetResolver, ResolverError
+    from .errors import RenderError
+
+    families = {font.get("family") for font in (theme.get("fonts") or {}).values() if font.get("family")}
+    if not families:
+        return [], ""
+    resolver = AssetResolver()
+    directories, rules = [], []
+    for family in sorted(families):
+        try:
+            resolved = resolver.require(family, kind="font")
+        except ResolverError as exc:
+            raise RenderError("render_font_missing", f"主题字族未登记: {family}") from exc
+        root = Path(resolved["path"]).parent.resolve()
+        directories.append(root)
+        for entry in resolved["data"]["files"]:
+            path = (root / entry["path"]).resolve()
+            if path.parent != root or not path.is_file():
+                raise RenderError("render_font_missing", f"字体文件缺失或越界: {family}")
+            rules.append("@font-face { font-family:" + json.dumps(family) +
+                         ";src:url(" + json.dumps("/leo-fonts/" + quote(path.name)) +
+                         ");font-weight:" + str(entry["weight"]) + ";font-style:normal; }")
+    return directories, "\n".join(rules)
+
+
 def _handler(root_map: dict[str, Path], allowed: set[str] | None = None):
     """``allowed`` 为按次冻结依赖白名单（F2）：非空时只放行名单内相对路径。"""
 
@@ -39,6 +68,8 @@ def _handler(root_map: dict[str, Path], allowed: set[str] | None = None):
                 entry = template_http_entry(relative)
                 if entry is not None and self._allowed(relative):
                     return str(entry)
+                # 未登记 HTML 与目录入口不能绕过 catalog 回落到静态文件服务。
+                return str(root_map["/"] / "__missing__")
             if relative.startswith("leo-fonts/"):
                 name = relative[len("leo-fonts/"):]
                 if ".." in name or name.startswith("/"):
@@ -76,7 +107,7 @@ class RenderAssetServer:
 
     def __init__(self, *, extra_font_dirs: list[Path] | None = None,
                  allowed: set[str] | None = None) -> None:
-        font_roots = [fonts_dir(), *(extra_font_dirs or [])]
+        font_roots = [*(extra_font_dirs or []), fonts_dir()]
         existing = [root for root in font_roots if root.is_dir()] or [fonts_dir()]
         handler = _handler({"/": templates_dir(), "fonts": existing}, allowed=allowed)
         self._httpd = HTTPServer(("127.0.0.1", 0), handler)

@@ -5,6 +5,12 @@
   "name": "cover-basic",
   "input_fields": [
     {
+      "name": "background_color",
+      "required": false,
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    {
       "name": "kicker",
       "required": false,
       "type": "string"

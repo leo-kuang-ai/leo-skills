@@ -7,7 +7,8 @@ resolver.  The resolver fixes the catalog generation for the whole run, so the
 gallery cannot silently drift to a retired markdown tree.  Tests may pass an
 explicit temporary legacy root to exercise migration fixtures.
 
-Golden samples (金样板, 一物三用: 预览图 / 编译回归基准 / 审美对照):
+金样板用于预览与编译回归，不代表审美验收。已绑定风格从 canonical theme
+计算有效主题，同时传给图表和页面；无主题绑定的历史家族样本仅展示兼容预览。
 for each golden style three pages are rendered through the M1 render lane
 CLI (``render page`` / ``render chart``) with fixed sample data derived
 deterministically from the brief itself (style name, best_for excerpt,
@@ -61,6 +62,7 @@ SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
 from leo_ppt_generator.styles import parse_style_document
+from leo_ppt_generator.render.theme import compute_effective_theme
 
 LIBRARY_DIR = SKILL_DIR / "template-library"
 STYLES_DIR = LIBRARY_DIR / "canonical" / "styles"
@@ -327,7 +329,7 @@ def golden_inputs(name: str, styles_root: Path = STYLES_DIR) -> dict:
     if background:
         cover_data["background_color"] = background
     content_data = {
-        "title": f"{name} · 代表版式",
+        "title": f"{name} · 主题预览",
         "bullets": patterns,
         "page_no": "02",
     }
@@ -357,6 +359,14 @@ def golden_inputs(name: str, styles_root: Path = STYLES_DIR) -> dict:
         # dark ink; fixed white would vanish on the lightest-anchor pick).
         theme["on_primary"] = "#1F2430" if _luminance(background) >= 128 else "#FFFFFF"
         theme["grid_line"] = "#E2E8F0"
+    theme_id = (brief.get("bindings") or {}).get("theme_default")
+    if not _is_legacy_fixture(styles_root):
+        if not theme_id:
+            raise ValueError(f"画廊风格 {name} 缺少 canonical theme 绑定，不能回落空主题")
+        resolved = _canonical_resolver().require(theme_id, kind="theme")
+        theme = compute_effective_theme(resolved["data"])
+        # 页面颜色和字号只来自主题；避免旧 data.background_color 覆盖模式。
+        cover_data.pop("background_color", None)
     return {
         "slide-cover.json": cover_data,
         "slide-content.json": content_data,
@@ -424,14 +434,18 @@ def render_chart_svg(mmd: Path, theme: Path, out: Path) -> "tuple[str | None, bo
         fail(f"cannot read rendered chart SVG: {exc}")
 
 
-def render_page(template_id: str, data: Path, out: Path) -> "tuple[dict | None, bool]":
-    envelope, degraded = _run_render([
+def render_page(template_id: str, data: Path, out: Path,
+                *, theme: Path | None = None) -> "tuple[dict | None, bool]":
+    args = [
         "render", "page",
         "--template", template_id,
         "--data", str(data),
         "--out", str(out),
         "--size", "1280x720",
-    ])
+    ]
+    if theme is not None:
+        args += ["--theme-file", str(theme)]
+    envelope, degraded = _run_render(args)
     if not degraded:
         sidecar = out.with_name(out.name + ".render.json")
         if sidecar.is_file():
@@ -483,7 +497,7 @@ def render_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = 
                     encoding="utf-8",
                 )
             template = "cover-basic" if page == "cover" else "body-basic"
-            _, page_degraded = render_page(template, data, out)
+            _, page_degraded = render_page(template, data, out, theme=style_dir / "theme.json")
             degraded = degraded or page_degraded
         print(f"golden: {name} rendered" + (" (chart png skipped: backend missing)" if chart_svg is None else ""))
     if degraded:
@@ -564,7 +578,7 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
                     continue
                 fresh = workdir / f"thumb-{page}.png"
                 template = "cover-basic" if page == "cover" else "body-basic"
-                _, page_degraded = render_page(template, data, fresh)
+                _, page_degraded = render_page(template, data, fresh, theme=workdir / "theme.json")
                 degraded = degraded or page_degraded
                 if page_degraded:
                     continue
@@ -614,6 +628,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
             "> 每风格三页（封面 / 内容 / 图表），M1 渲染 lane 固定示例数据确定性生成：",
             "> `python3 scripts/generate_style_gallery.py --render-golden` 重建，",
             "> `--check` 以 sha256 对比金样板防漂移（编译回归判据）。",
+            "> 页面与图表共同消费 canonical theme；哈希一致仅证明可重复，不代表设计质量通过。",
         ]
         for name, present in golden:
             if not present:
@@ -643,6 +658,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
             "> （色板最完整 / 最具家族气质），与内置风格同一渲染 lane 与",
             "> `--check` 回归；暗底家族经可见性守护回退纸色底，",
             "> 色板锚点仍逐字进图表 SVG。",
+            "> 这些历史家族尚无 canonical theme 绑定，兼容预览不能作为完整换肤或审美验收证据。",
         ]
         for family, name, blurb, present in family_golden:
             if not present:

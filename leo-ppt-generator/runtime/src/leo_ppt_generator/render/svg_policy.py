@@ -28,16 +28,19 @@ ALLOWED_ELEMENTS = {
 }
 # 属性允许集：呈现属性 + 常用动画静止形态；style 只允许静态声明子串。
 ALLOWED_ATTR_PATTERN = re.compile(
-    r"^(id|class|d|x|y|x1|y1|x2|y2|cx|cy|r|rx|ry|width|height|transform|"
-    r"fill|fill-opacity|fill-rule|stroke|stroke-width|stroke-opacity|stroke-dasharray|"
+    r"^(id|name|class|d|x|y|x1|y1|x2|y2|cx|cy|r|rx|ry|width|height|transform|"
+    r"fill|fill-opacity|fill-rule|clip-rule|stroke|stroke-width|stroke-opacity|stroke-dasharray|"
     r"stroke-linecap|stroke-linejoin|stroke-miterlimit|opacity|color|"
     r"font-family|font-size|font-weight|font-style|text-anchor|"
-    r"dominant-baseline|alignment-baseline|letter-spacing|word-spacing|"
+    r"dominant-baseline|alignment-baseline|letter-spacing|word-spacing|dx|dy|"
     r"gradientUnits|gradientTransform|spreadMethod|offset|stop-color|stop-opacity|"
     r"clip-path|clipPathUnits|mask|maskUnits|markerWidth|markerHeight|refX|refY|"
-    r"orient|markerUnits|viewBox|preserveAspectRatio|version|xmlns|xmlns:xlink|style|"
+    r"orient|markerUnits|marker-start|marker-mid|marker-end|viewBox|"
+    r"preserveAspectRatio|version|xmlns|xmlns:xlink|style|"
     r"patternUnits|patternContentUnits|points|tabindex|role|aria-label|aria-hidden|"
-    r"aria-roledescription)$"
+    r"aria-roledescription|data-[a-z0-9-]+)$"
+    # data-* 是 mermaid 11 的纯元数据属性（data-edge/data-id/data-points），
+    # 无执行语义；此前的白名单缺该前缀导致 flowchart 系全灭。
 )
 FORBIDDEN_ATTR_SUBSTRINGS = ("onerror", "onload", "onclick", "javascript:",
                              "expression(", "@import", "url(http", "url(https",
@@ -101,8 +104,5 @@ def _check_element(element: ET.Element) -> None:
 
 def sanitize_chart_output(svg_text: str, *, dialect: str = "mermaid") -> str:
     """图表（Mermaid 严格模式等）输出按静态子集校验。"""
-    if "mermaid" == dialect and re.search(r"<foreignObject|<script|htmlLabels", svg_text, re.I):
-        raise SvgPolicyError(
-            "svg_policy_violation: 图表输出含 HTML labels/脚本/foreignObject，"
-            "不符合静态 SVG 子集（需禁用 htmlLabels）")
+    # 使用元素/属性结构校验，普通标签里的配置名不具有执行语义。
     return sanitize_svg(svg_text)

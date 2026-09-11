@@ -13,31 +13,109 @@
   },
   "page_role": "data",
   "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "table_zone": {
+      "x": 64,
+      "y": 180,
+      "width": 1152,
+      "height": 438
+    },
+    "footnote_band": {
+      "x": 64,
+      "y": 638,
+      "width": 1152,
+      "height": 60
+    }
+  },
   "slots": {
-    "kpis": {
-      "region": "content",
-      "desc": "KPI 组（hairline + 数字 + 单位）",
-      "count_min": 3,
-      "count_max": 3
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
     },
-    "bars": {
-      "region": "content",
-      "desc": "数据竖线（高度 ∝ 9 项 approved 真实数值序列）",
-      "count_min": 9,
-      "count_max": 9
+    "title": {
+      "region": "header",
+      "max_chars": 24
     },
-    "spec_number": {
-      "region": "content",
-      "desc": "KPI 数值",
-      "max_chars": 6,
-      "chars_per_line": 5,
-      "max_lines": 1
+    "columns": {
+      "region": "table_zone",
+      "count_min": 2,
+      "count_max": 5
+    },
+    "rows": {
+      "region": "table_zone",
+      "count_min": 1,
+      "count_max": 6
+    },
+    "footnote": {
+      "region": "footnote_band",
+      "max_chars": 90
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "左 4 行大标题；中部 3 KPI（顶部 hairline + 数字 + 单位）；右下 9 根竖线（高度绑定 9 项 approved 数值序列并直接标注）；底部巨数 + Yearly goal + 三 tag + 页码"
+    "render:html": "builtin:template:table-pro",
+    "image": "表头与数据行对齐，指标单位与期间明确，底部来源说明"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/21_Tech_Spec_Sheet.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
-  "reuse_friendly": true
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "columns",
+      "rows",
+      "footnote"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "table_zone",
+        "members": [
+          "columns",
+          "rows"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "footnote_band",
+        "members": [
+          "footnote"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "columns",
+        "kind": "table"
+      },
+      {
+        "slot": "rows",
+        "kind": "table"
+      }
+    ]
+  }
 }

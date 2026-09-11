@@ -40,7 +40,7 @@
     "counter_indications": []
   },
   "visual_language": {
-    "direction": "seed direction per plan section 8.1",
+    "direction": "暗底受控强调色 + 等宽字体点缀的系统图示；系统拓扑/回路/时间线结构优先",
     "features": [
       "暗底受控强调色 + 等宽字体点缀的系统图示",
       "系统拓扑/回路/时间线结构优先",

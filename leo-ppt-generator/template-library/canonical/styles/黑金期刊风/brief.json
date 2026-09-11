@@ -28,10 +28,10 @@
   "bindings": {
     "modes_supported": [
       "light"
-    ]
+    ],
+    "theme_default": "builtin:theme:black-gold-light"
   },
   "adaptation_gaps": [
-    "theme_not_extracted",
     "recommendation_features_not_extracted",
     "formality_from_family_prior"
   ],
@@ -44,7 +44,6 @@
       "has_negative_constraints": true,
       "density_mapped": true,
       "gaps": [
-        "theme_not_extracted",
         "recommendation_features_not_extracted",
         "recommendation_features_defaults_pending_u3"
       ]

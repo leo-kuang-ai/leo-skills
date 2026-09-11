@@ -44,7 +44,7 @@ SAMPLE_DATA = {
     "pull-quote": {"quote": "把不确定性变成风险。", "source_name": "陈明远",
                    "source_meta": "风控委员会主席", "page_no": 10},
     "frame-shot": {"kicker": "运行证据", "title": "控制台运行列表", "caption": "季度评审留档",
-                   "ratio": "16x10", "corners": "sq", "shadow": "flat", "bg": "paper",
+                   "ratio": "16x10", "corners": "sq", "shadow": "none", "bg": "paper",
                    "inset": "sub", "fit": "contain", "device": "none", "page_no": 11,
                    "image_src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="},
 }

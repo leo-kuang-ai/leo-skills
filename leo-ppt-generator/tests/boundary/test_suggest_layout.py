@@ -25,6 +25,25 @@ def run(payload: dict, *extra: str) -> subprocess.CompletedProcess:
 
 
 class SuggestLayoutTests(unittest.TestCase):
+    def test_requested_backend_filters_candidates_and_exposes_binding(self):
+        payload = {"backend": "render:html", "pages": [
+            {"page": 1, "page_role": "指标·计分榜", "points": 3, "est_chars": 30},
+        ]}
+        proc = run(payload)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        output = json.loads(proc.stdout)
+        self.assertEqual(output["backend"], "render:html")
+        self.assertTrue(output["pages"][0]["candidates"])
+        for candidate in output["pages"][0]["candidates"]:
+            self.assertTrue(candidate["renderer_support"]["render:html"])
+
+    def test_unsupported_backend_never_silently_uses_generic_layout(self):
+        proc = run({"backend": "render:unknown", "pages": [
+            {"page": 1, "page_role": "封面"},
+        ]})
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("backend", proc.stderr)
+
     def test_same_input_byte_identical_output(self):
         payload = {"pages": [
             {"page": 3, "page_role": "对比·多维", "points": 2, "est_chars": 60},

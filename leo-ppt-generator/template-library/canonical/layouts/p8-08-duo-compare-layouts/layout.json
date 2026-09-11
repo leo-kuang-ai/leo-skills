@@ -13,32 +13,104 @@
   },
   "page_role": "content",
   "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "side_a": {
+      "x": 64,
+      "y": 180,
+      "width": 548,
+      "height": 420
+    },
+    "side_b": {
+      "x": 668,
+      "y": 180,
+      "width": 548,
+      "height": 420
+    },
+    "bottom_band": {
+      "x": 64,
+      "y": 626,
+      "width": 1152,
+      "height": 60
+    }
+  },
   "slots": {
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
+    },
+    "title": {
+      "region": "header",
+      "max_chars": 24
+    },
     "sides": {
-      "region": "content",
-      "desc": "对照侧（t-cat 标签 + 大字标题 + 说明）",
+      "region": "side_a",
       "count_min": 2,
       "count_max": 2
     },
-    "side_title": {
-      "region": "content",
-      "desc": "每侧大字标题",
-      "max_chars": 12,
-      "chars_per_line": 10,
-      "max_lines": 1
-    },
-    "side_desc": {
-      "region": "content",
-      "desc": "每侧段落/列表说明",
-      "max_chars": 79,
-      "chars_per_line": 22,
-      "max_lines": 3
+    "bottom": {
+      "region": "bottom_band",
+      "max_chars": 56
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "左右两半屏中间一根纵向 1px 长线分隔（scaleY 拉开）；各自 t-cat 标签 + 大字标题 + 段落/列表说明"
+    "render:html": "builtin:template:compare-pro",
+    "image": "两侧同维度比较，结论放底部"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/08_Duo_Compare.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
-  "reuse_friendly": true
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "sides",
+      "bottom"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "side_a",
+        "members": [
+          "sides"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bottom"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "sides",
+        "kind": "comparison"
+      }
+    ]
+  }
 }

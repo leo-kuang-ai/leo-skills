@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "entity": "render-theme",
+  "asset_id": "builtin:theme:chinese-scroll-light",
+  "name": "中式书卷风渲染主题",
+  "default_mode": "light",
+  "modes": {
+    "light": {
+      "background": "#F7F3E9",
+      "surface": "#FFFFFF",
+      "text": "#383028",
+      "primary": "#4A3C2B",
+      "on_primary": "#FFFFFF",
+      "muted": "#74695D",
+      "border": "#ABA194",
+      "accent": "#B53D39",
+      "warn": "#92400E"
+    }
+  },
+  "font_roles": {
+    "title": {
+      "family": "Noto Serif SC",
+      "weight": 700,
+      "size": 46,
+      "line_height": 1.25
+    },
+    "body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    },
+    "kicker": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 22,
+      "line_height": 1.4
+    },
+    "table_header": {
+      "family": "Noto Sans SC",
+      "weight": 700,
+      "size": 26,
+      "line_height": 1.3
+    },
+    "table_body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    },
+    "page_no": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 22,
+      "line_height": 1.2
+    }
+  },
+  "chart_palette": {
+    "series": [
+      "#4A3C2B",
+      "#B53D39",
+      "#74695D"
+    ],
+    "positive": "#15803D",
+    "negative": "#B4232A"
+  },
+  "ornaments": [],
+  "qa_profile": null,
+  "static_support": {
+    "lanes": [
+      "html",
+      "image"
+    ]
+  },
+  "overrideable_roles": [
+    "accent",
+    "muted",
+    "surface"
+  ]
+}

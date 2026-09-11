@@ -268,6 +268,9 @@
 | `render_template_not_found` | 模板 id 不在 template-library/canonical/templates/ | 是 | 核对模板 id 后重试；运行 `lint_render_templates.py` 查看模板清单 |
 | `render_template_contract_violation` | 模板缺 ready 信号/禁动画条款等合同失败（lint 级 FAIL） | 是 | 修模板或换模板；lint 见 `scripts/lint_render_templates.py` |
 | `render_data_invalid` | slide data / mermaid 块不可解析、`--source` 无 ```mermaid-example 块或语法渲染失败 | 是 | 修数据后重试；示例数字必须替换为 approved 真实数据 |
+| `render_script_error` | 模板页面脚本抛出未处理异常 | 是 | 修复模板脚本或输入数据后重试 |
+| `render_font_missing` | 主题字族未登记、字体文件缺失或 Chromium 实际加载失败 | 是 | 补齐 canonical font manifest/文件，或改用已登记字体后重试 |
+| `layout_profile_invalid` | 模板绑定版式的区域、列数或几何合同不满足 | 是 | 使用已声明列数/版式，不能静默套用其他比例 |
 | `render_timeout` | 渲染超过时限（goto/fonts.ready/screenshot） | 是 | 增大 `--timeout` 或简化页内容 |
 | `render_size_mismatch` | 产物 PNG 头实际像素 ≠ 请求档（或 --size 非 16:9/非 1x/2x 档） | 是 | 检查模板根容器 1280×720 与 device_scale_factor；不符时不产出 |
 | `render_output_invalid` | 截图不是合法 PNG | 是 | 重试；持续出现则排查渲染环境 |

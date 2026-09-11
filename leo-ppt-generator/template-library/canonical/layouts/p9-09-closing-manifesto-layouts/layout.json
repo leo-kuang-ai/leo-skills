@@ -13,33 +13,122 @@
   },
   "page_role": "closing",
   "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 96,
+      "y": 56,
+      "width": 1088,
+      "height": 62
+    },
+    "quote_block": {
+      "x": 96,
+      "y": 152,
+      "width": 1088,
+      "height": 288
+    },
+    "route_row": {
+      "x": 96,
+      "y": 470,
+      "width": 1088,
+      "height": 144
+    },
+    "bottom_band": {
+      "x": 96,
+      "y": 638,
+      "width": 1088,
+      "height": 60
+    }
+  },
   "slots": {
-    "manifesto": {
-      "region": "content",
-      "desc": "左侧宣言短句（断言句 ≤12 字）",
-      "max_chars": 6,
-      "chars_per_line": 5,
-      "max_lines": 1
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
     },
-    "takeaways": {
-      "region": "content",
-      "desc": "右侧 takeaway 条（编号 + 标题 + 一行说明）",
-      "count_min": 3,
-      "count_max": 3
+    "quote": {
+      "region": "quote_block",
+      "max_chars": 90
     },
-    "takeaway_note": {
-      "region": "content",
-      "desc": "每条 takeaway 的一行说明",
-      "max_chars": 105,
-      "chars_per_line": 44,
-      "max_lines": 2
+    "quote_em": {
+      "region": "quote_block",
+      "max_chars": 90
+    },
+    "source": {
+      "region": "quote_block",
+      "max_chars": 60
+    },
+    "route": {
+      "region": "route_row",
+      "count_min": 0,
+      "count_max": 4
+    },
+    "bound": {
+      "region": "bottom_band",
+      "max_chars": 70
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "左右 5/7 分屏；左 ink/IKB 底色大字宣言（min(9.2vw,15vh) 限高 + ASCII 点纹理）；右白底 3 条 takeaway（编号 mono + 标题 + 一行说明，行间距 ≥9vh）+ 底部 hairline"
+    "render:html": "builtin:template:quote-pro",
+    "image": "主结论与出处，底部下一步路径与适用边界"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/09_Closing_Manifesto.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
   "reuse_friendly": false,
-  "max_per_deck": 1
+  "max_per_deck": 1,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "quote",
+      "source",
+      "route",
+      "bound"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "quote_block",
+        "members": [
+          "quote",
+          "quote_em",
+          "source"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "route_row",
+        "members": [
+          "route"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bound"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "route",
+        "kind": "comparison"
+      }
+    ]
+  }
 }

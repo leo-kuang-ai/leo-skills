@@ -9,8 +9,8 @@
 > `max_per_deck`（仅对 `reuse_friendly=false` 生效，普通版式可复用），预算
 > 耗尽与无候选分别报告；Top-2 仅是面向人的推荐摘要。准入集合由
 > `scripts/capability_manifest.py --template-library` 的 `structure_admission`
-> 从 canonical 声明派生（当前 7 个 HTML 绑定版式入自动池，35 个 image 版式
-> 未声明记 unknown），不另存手写名单。
+> 从 canonical 声明派生；缺少结构声明记 unknown。数量随 catalog 更新，
+> 以当次派生输出为准，不另存手写名单，HTML 绑定数量不等于自动准入数量。
 
 > 逐页版式匹配从「Agent 自由裁量」升级为「确定性打分 + 人工裁决 undecided」。
 > 本文档是调度规则合同：四步链、打分口径、undecided 呈现格式、禁编造纪律、
@@ -21,6 +21,12 @@
 > style brief 的 `bindings.layout_routes`。
 
 ## 四步链
+
+轻量推荐已知执行路线时传 `--backend render:html` / `--backend image`，
+或在输入顶层声明 `backend`。未声明对应 `renderer_support` 的版式在评分前
+排除，无合格候选返回 `undecided`，不自动换成通用模板。输出携带实际绑定。
+未传 backend 保留跨路线探索，明确标记 `capability_check: not_requested`，
+不能视作渲染可实现性预检。正式生成仍须经过 content_projection 的内容资格校验。
 
 ```
 角色对齐 → 结构匹配 → 节奏感 → 置信度裁决

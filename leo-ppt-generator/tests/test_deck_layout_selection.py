@@ -307,7 +307,7 @@ class CanonicalAdmissionTests(unittest.TestCase):
             if profile.get("structure"):
                 declared += 1
                 self.assertNotEqual(structure_fingerprint(profile), UNKNOWN_FINGERPRINT)
-        self.assertEqual(declared, 7)
+        self.assertEqual(declared, 15)
 
     def test_capability_manifest_derives_admission(self):
         script = PKG_ROOT / "scripts" / "capability_manifest.py"
@@ -316,8 +316,8 @@ class CanonicalAdmissionTests(unittest.TestCase):
             capture_output=True, text=True, encoding="utf-8", cwd=str(PKG_ROOT))
         self.assertEqual(proc.returncode, 0, proc.stderr)
         admission = json.loads(proc.stdout)["structure_admission"]
-        self.assertEqual(admission["html_declared"], 7)
-        self.assertEqual(admission["structure_unknown"], 35)
+        self.assertEqual(admission["html_declared"], 15)
+        self.assertEqual(admission["structure_unknown"], 27)
         self.assertEqual(admission["auto_pool"], admission["html_declared"]
                          + admission["image_declared"])
 

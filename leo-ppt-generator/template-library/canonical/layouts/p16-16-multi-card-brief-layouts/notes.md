@@ -1,15 +1,26 @@
-# 版式：P16 · Multi-card Brief · 微卡小报
+# P16 · cards-stat
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** 6 项小卡并列(快讯、tip 集合、特性概览)。
+绑定模板：`builtin:template:cards-stat`。页面角色：`content`。
 
-**适用内容类型:** **6 项轻量短讯 / tip / 注脚**(数量 = 6,每项主文短 + 小字注脚)。比 P4 内容更碎,适合快讯类。**只允许一张 accent 蓝突出**(单焦点法则)。
+阅读顺序：`kicker` → `title` → `cards` → `bottom`。
 
-**骨架:** 顶部大标题(留 9vh)/ 下方 3×2 微卡(每卡:左上主文 + 右下小字 + 中间留空)。
+## 区域
 
-**关键类:** `.brief-grid` `.brief-card`(`.card-fill` 灰底)`.brief-card.is-accent`(单一蓝底强调)
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| header | 64 | 40 | 1152 | 124 |
+| cards_row | 64 | 180 | 1152 | 418 |
+| bottom_band | 64 | 628 | 1152 | 60 |
 
-**动效 recipe:** `field-notes` — 6 卡按 z 形顺序点亮(L→R, T→B,90ms 错开)
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `header`，最多 60 字符。
+- `title`：区域 `header`，最多 24 字符。
+- `cards`：区域 `cards_row`，3–6 项。
+- `bottom`：区域 `bottom_band`，最多 56 字符。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

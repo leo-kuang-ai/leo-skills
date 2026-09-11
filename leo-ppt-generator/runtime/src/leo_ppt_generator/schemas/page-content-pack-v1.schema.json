@@ -64,6 +64,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "fields": {"type": "object"},
               "sides": {
                 "type": "array",
                 "items": {

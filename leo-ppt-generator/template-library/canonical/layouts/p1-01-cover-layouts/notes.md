@@ -1,15 +1,28 @@
-# 版式：P1 · Cover · 封面页
+# P1 · cover-pro
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** 整套 deck 起手 / 主题宣言。
+绑定模板：`builtin:template:cover-pro`。页面角色：`cover`。
 
-**适用内容类型:** 封面 / 章节首页 / 主题宣言。**纯文字结构**(主标题 + 副标 + 元信息),不承载数据。
+阅读顺序：`kicker` → `title` → `subtitle` → `footer_left` → `footer_right` → `arch_hint`。
 
-**骨架:** IKB 满屏 + ASCII 呼吸场 / 主标题反白 weight 200，强调字用斜体（非 accent 色）/ 底部副标 + 元信息带。
+## 区域
 
-**关键类:** `.slide.accent` `.ascii-bg` + `min(11.6vw,19vh)` 双约束大字
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| title_block | 96 | 100 | 1088 | 310 |
+| arch_band | 96 | 460 | 1088 | 88 |
+| footer_band | 96 | 604 | 1088 | 76 |
 
-**动效 recipe:** `hero` — ASCII 字符场持续呼吸,文字 fade-up 序列入场
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `title_block`，最多 60 字符。
+- `title`：区域 `title_block`，最多 40 字符。
+- `subtitle`：区域 `title_block`，最多 60 字符。
+- `footer_left`：区域 `footer_band`，最多 60 字符。
+- `footer_right`：区域 `footer_band`，最多 60 字符。
+- `arch_hint`：区域 `arch_band`，最多 70 字符。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

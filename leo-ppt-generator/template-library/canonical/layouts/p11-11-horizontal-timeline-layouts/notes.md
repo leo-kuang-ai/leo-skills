@@ -1,15 +1,26 @@
-# 版式：P11 · Horizontal Timeline · 横向时间线
+# P11 · timeline-pro
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** 多步骤流程(4-7 步)、时间演进。
+绑定模板：`builtin:template:timeline-pro`。页面角色：`content`。
 
-**适用内容类型:** **4-7 步线性流程**(每步只有一个名称,不需要展开数据 / 描述)。如果每步要展开,改用 P5;如果有量化数据,改用 P2。**禁止**用于循环结构(那是 P14)。
+阅读顺序：`kicker` → `title` → `steps` → `bottom`。
 
-**骨架:** 顶部大标题 / 中段一根 1px hairline 横线 + N 个均布节点(8×8 直角方块 + 上方 mono 编号 + 下方步骤名)。
+## 区域
 
-**关键类:** `.timeline-h` `.tl-h-node` `.tl-h-axis`
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| header | 64 | 40 | 1152 | 124 |
+| step_cards | 64 | 180 | 1152 | 402 |
+| bottom_band | 64 | 610 | 1152 | 76 |
 
-**动效 recipe:** `timeline-walk` — 节点沿轴左→右依次点亮(每节点 220ms)
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `header`，最多 60 字符。
+- `title`：区域 `header`，最多 24 字符。
+- `steps`：区域 `step_cards`，3–5 项。
+- `bottom`：区域 `bottom_band`，0–2 项。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

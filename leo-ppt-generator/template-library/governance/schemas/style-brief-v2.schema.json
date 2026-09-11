@@ -296,10 +296,22 @@
         "evidence": {
           "type": "object",
           "properties": {
-            "hex_anchors": {"type": "integer", "minimum": 0},
-            "has_negative_constraints": {"type": "boolean"},
-            "density_mapped": {"type": "boolean"},
-            "gaps": {"type": "array", "items": {"type": "string"}}
+            "hex_anchors": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "has_negative_constraints": {
+              "type": "boolean"
+            },
+            "density_mapped": {
+              "type": "boolean"
+            },
+            "gaps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           },
           "additionalProperties": false,
           "description": "迁移时静态审阅依据；不构成渲染或视觉验收证据"
@@ -315,7 +327,129 @@
       "type": "string",
       "minLength": 1,
       "description": "行业样张需要执行的检查项，不表示检查已通过"
+    },
+    "token_sidecar": {
+      "type": "object",
+      "description": "机器可读风格 token sidecar（R-27，可选纯增量，同 aliases 先例；不带 --var 时 style render 输出不变）。palette 核心键 primary/accent/background/surface/text 对齐 H 线 theme.json 渲染锚，可按 social-card 8 token 先例扩展键名（paper/ink/muted/line/accent_soft 等）；palette 值一律纯 #RRGGBB。style render --var key=value 在本面覆盖：primary/text 按 4.5:1、accent 按 3:1 相对生效 background 硬校验，覆盖 background 时三者全量重查（形态见 references/render-contract.md 渲染 lane 合同）。layout 子键为版式系统锚源（R-31，被 --layout-lock 优先读取，降级源为 brief 顶层 layout 键）",
+      "properties": {
+        "palette": {
+          "type": "object",
+          "description": "HEX token 面；核心五键显式声明，扩展键（social-card 8 token 先例：paper/paper_2/ink/muted/line/accent_soft/accent_on 等）经 additionalProperties 放行，值同须纯 #RRGGBB；chart_smart 为图解专用填充槽（源 presentation-ai smartLayout）",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+          },
+          "properties": {
+            "primary": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "accent": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "background": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "text": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "chart_smart": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "description": "图解专用填充色槽（chart_series 数据系列色序列之外的语义槽，源 presentation-ai smartLayout 七语义槽）：金字塔/饼图/阶梯/循环/时间线等 smart 图解结构填色，通常取 primary 近邻或其刻意变体；区别于中性卡面 surface，不承担文字底色可读性"
+            }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "density": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layout": {
+          "type": "object",
+          "description": "版式系统锚源（R-31）：style render --layout-lock 优先读本键（brief 顶层 layout 键为降级源）；五字段齐备才注入 layout_lock 锁定块，缺一报 layout_lock_unavailable（exit 2 不静默）；不带旗标输出逐字节不变",
+          "required": [
+            "grid",
+            "safe_margin",
+            "page_no",
+            "corner_radius",
+            "line_weight"
+          ],
+          "properties": {
+            "grid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "safe_margin": {
+              "type": "string",
+              "minLength": 1
+            },
+            "page_no": {
+              "type": "string",
+              "minLength": 1
+            },
+            "corner_radius": {
+              "type": "string",
+              "minLength": 1
+            },
+            "line_weight": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "description": "版式系统锚降级源（R-31，可选纯增量；--layout-lock 在无 token_sidecar.layout 时读本键）：grid 网格 token / safe_margin 安全边距 / page_no 页码位 / corner_radius 圆角 / line_weight 线重，五字段缺一报 layout_lock_unavailable（见 references/render-contract.md §13）",
+      "required": [
+        "grid",
+        "safe_margin",
+        "page_no",
+        "corner_radius",
+        "line_weight"
+      ],
+      "properties": {
+        "grid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "safe_margin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page_no": {
+          "type": "string",
+          "minLength": 1
+        },
+        "corner_radius": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line_weight": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
     }
   },
-  "description": "风格 brief v2。draft 允许缺 theme_default/features/推荐特征（机械迁移不凑字段）；lifecycle=active 的语义完整性由治理 lint/U2 强制。"
+  "description": "风格 brief v2。draft 允许缺 theme_default/features/推荐特征（机械迁移不凑字段）；lifecycle=active 的语义完整性由治理 lint/U2 强制。 R-27/R-31 可选增量键：此前仅登记于 v1 schema，v2 的 additionalProperties=False 在结构上禁止了全部 canonical 风格使用 token_sidecar/layout（320 个风格零 token 的直接原因）。"
 }

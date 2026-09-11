@@ -13,6 +13,12 @@ canonical/templates/<template-slug>/
 `builtin:template:body-basic`）也可作为模板 id 传入，运行时会归一化到同一个
 canonical 目录；不会读取 `assets/render-templates/` 或其他旧目录。
 
+模板入口先经 `AssetResolver` 校验 catalog 中的 manifest，再读取同目录的
+`page.html`；HTML 路径必须留在可信库根内。`LEO_PPT_BUNDLE` 可以指定含
+`template-library/library.json` 与有效 catalog 的完整 bundle；仅放置裸 HTML
+不构成模板注册，也不能遮蔽已有模板。HTTP 只接受登记的 `<slug>.html` 入口，
+不通过 `<slug>/page.html` 绕行。catalog 校验不替代下述模板代码审阅与视觉验收。
+
 ## 新增模板流程
 
 1. **先确定页面职责**：明确 page role、内容容量、输入数据形状，以及复用的 layout profile。模板负责 HTML/CSS/数据投影；几何和容量真值放在 `canonical/layouts/<layout-slug>/layout.json`。

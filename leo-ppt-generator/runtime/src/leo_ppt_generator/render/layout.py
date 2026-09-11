@@ -69,6 +69,11 @@ def validate_profile(profile: dict, *, require_regions: bool | None = None) -> N
         if region["x"] + region["width"] > CANVAS[0] or region["y"] + region["height"] > CANVAS[1]:
             raise LayoutProfileError(
                 f"layout_profile_invalid: region {name} 越出画布")
+    if html_bound:
+        for name, slot in (profile.get("slots") or {}).items():
+            if slot.get("region") not in regions:
+                raise LayoutProfileError(
+                    f"layout_profile_invalid: slot {name} 引用了不存在的 region {slot.get('region')}")
     columns = profile.get("columns")
     if isinstance(columns, dict):
         weights = columns.get("weights")

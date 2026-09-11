@@ -13,25 +13,103 @@
   },
   "page_role": "content",
   "layout_type": "fixed-regions",
-  "slots": {
-    "steps": {
-      "region": "content",
-      "desc": "流程节点（mono 编号 + 步骤名）",
-      "count_min": 4,
-      "count_max": 7
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
     },
-    "step_name": {
-      "region": "content",
-      "desc": "每步名称",
-      "max_chars": 45,
-      "chars_per_line": 19,
-      "max_lines": 2
+    "step_cards": {
+      "x": 64,
+      "y": 180,
+      "width": 1152,
+      "height": 402
+    },
+    "bottom_band": {
+      "x": 64,
+      "y": 610,
+      "width": 1152,
+      "height": 76
+    }
+  },
+  "slots": {
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
+    },
+    "title": {
+      "region": "header",
+      "max_chars": 24
+    },
+    "steps": {
+      "region": "step_cards",
+      "count_min": 3,
+      "count_max": 5
+    },
+    "bottom": {
+      "region": "bottom_band",
+      "count_min": 0,
+      "count_max": 2
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "顶部大标题；中段 1px hairline 横轴 + N 个均布节点（8×8 直角方块 + 上方 mono 编号 + 下方步骤名）"
+    "render:html": "builtin:template:timeline-pro",
+    "image": "横向阶段顺序，逐阶段名称、说明与验收备注"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/11_Horizontal_Timeline.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
-  "reuse_friendly": true
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "steps",
+      "bottom"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "step_cards",
+        "members": [
+          "steps"
+        ],
+        "relation": "sequence"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bottom"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "steps",
+        "kind": "sequence"
+      },
+      {
+        "slot": "bottom",
+        "kind": "sequence"
+      }
+    ]
+  }
 }

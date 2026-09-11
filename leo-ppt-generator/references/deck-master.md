@@ -65,6 +65,15 @@
 高价值任务（指标及基准差异/趋势及事件注释/决策矩阵/流程及责任分工）的承载
 约定与 fixture 见 `tests/fixtures/dashi-integration/`。
 
+**结构数据单行标记（render lane）**：需要 KPI、卡片、时间线或嵌套对照对象时，
+在对应页只写一行 `结构数据: {"字段": ...}` JSON。对象字段必须能在所选模板
+`template.json` 的 `input_fields` 中找到，并与页面标题、表格、对照侧等标记保持
+唯一来源；重复键、非有限数值、未知字段和形状/数量超出声明会阻断编译与直接渲染。
+
+```text
+结构数据: {"kpis":[{"label":"应用","value":"75","unit":"个"},{"label":"CPU","value":"554.5","unit":"核"}],"footnote":"示例数据，须核对来源与期间"}
+```
+
 **版式选择可由 `scripts/suggest_layout.py` 预打分**（四步链与打分口径见
    [layout-dispatch.md](layout-dispatch.md)；版式容量真值为
    `template-library/canonical/layouts/*/layout.json`（`layout-profile-v1`）可查，

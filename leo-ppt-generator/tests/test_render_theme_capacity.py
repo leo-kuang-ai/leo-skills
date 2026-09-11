@@ -95,6 +95,8 @@ class ComposeDesignPipelineTest(unittest.TestCase):
         self.assertTrue(design["capacity_reports"][0]["fits"])
 
     def test_image_only_canonical_layout_composes_without_regions(self) -> None:
+        # P1 已绑定 cover-pro（2026-09 pro-family 扩容）；image-only 的
+        # template_id=None 行为改由未绑定 render:html 的版式（P4 six-cells）验证。
         design = compose_design("清爽专业风", pages=[{
             "page_no": 1,
             "page_role": "cover",
@@ -103,7 +105,15 @@ class ComposeDesignPipelineTest(unittest.TestCase):
         }])
         self.assertEqual(design["pages"][0]["layout_id"],
                          "builtin:layout:p1-01-cover-layouts")
-        self.assertIsNone(design["pages"][0]["template_id"])
+        self.assertEqual(design["pages"][0]["template_id"],
+                         "builtin:template:cover-pro")
+        image_only = compose_design("清爽专业风", pages=[{
+            "page_no": 2,
+            "page_role": "content",
+            "layout": "builtin:layout:p4-04-six-cells-layouts",
+            "slots": {},
+        }])
+        self.assertIsNone(image_only["pages"][0]["template_id"])
 
     def test_design_digest_deterministic_and_input_sensitive(self) -> None:
         pages = [{"page_no": 9, "page_role": "data", "slots": DATA_3COL}]

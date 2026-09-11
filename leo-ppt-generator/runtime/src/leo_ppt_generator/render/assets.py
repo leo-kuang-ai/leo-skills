@@ -52,10 +52,9 @@ def vendor_dir(*parts: str) -> Path:
 
 def templates_dir() -> Path:
     """Canonical template root used as the HTTP server document root."""
-    for candidate in _canonical_template_dirs():
-        if candidate.is_dir():
-            return candidate
-    return _canonical_template_dirs()[0]
+    from ..asset_resolver import builtin_library_root
+
+    return builtin_library_root() / "canonical" / "templates"
 
 
 def template_path(template_id: str) -> Path:
@@ -75,11 +74,23 @@ def template_path(template_id: str) -> Path:
         slug = parts[2]
     else:
         slug = template_id
-    for candidate in _canonical_template_dirs():
-        page = candidate / slug / "page.html"
-        if page.is_file():
-            return page
-    raise FileNotFoundError(f"render_template_not_found: {template_id}")
+    from ..asset_resolver import ASSET_ID_RE, AssetResolver, ResolverError
+
+    asset_id = f"builtin:template:{slug}"
+    if not ASSET_ID_RE.fullmatch(asset_id):
+        raise ValueError("invalid_template_id")
+    try:
+        resolved = AssetResolver().resolve(asset_id)
+    except ResolverError as exc:
+        raise FileNotFoundError(f"render_template_not_found: {template_id}: {exc.reason_code}") from exc
+    if resolved["data"].get("lane") != "render:html":
+        raise ValueError("render_template_lane_unsupported")
+    page = Path(resolved["path"]).with_name("page.html")
+    if not page.resolve().is_relative_to(Path(resolved["trusted_root"]).resolve()):
+        raise ValueError("render_template_scope_violation")
+    if not page.is_file():
+        raise FileNotFoundError(f"render_template_not_found: {template_id}")
+    return page
 
 
 def _canonical_template_dirs() -> list[Path]:
@@ -101,7 +112,7 @@ def template_http_entry(name: str) -> Path | None:
         return None
     try:
         path = template_path(name[:-5])
-    except ValueError:
+    except (ValueError, FileNotFoundError):
         return None
     return path if path.is_file() else None
 

@@ -1,15 +1,28 @@
-# 版式：P2 · Vertical Timeline · 纵向时间轴
+# P2 · chain-flow
 
-**分类:** canonical/layouts（guizang-ppt-skill Swiss 版式）
+本页是 `layout.json` 的说明投影；几何与数量上限以 JSON 为准，字体与颜色由 canonical theme 提供。
 
-**用途:** 演化对比、年代变迁、版本迭代(2-5 个时间节点)。
+绑定模板：`builtin:template:chain-flow`。页面角色：`content`。
 
-**适用内容类型:** **带量化数据的时间演化**。每节点必须有「年份 + 量化数值(如 1× / 4× 倍数 / 单位数字)+ 描述」三件套。如果只有节点名没有数据,改用 P11 横向时间线。
+阅读顺序：`kicker` → `title` → `nodes` → `side_cards` → `stats`。
 
-**骨架:** 左侧 axis 列 12px 圆点 + 1px 虚线轴 / 右侧节点信息(年份 + 大字数据 + 小标 + 描述)。
+## 区域
 
-**关键类:** `.timeline-v` `.tl-node` `.tl-axis`(12px 固定列宽,绝对定位 dot 防错位) `.kpi-row-4`
+| 区域 | x | y | 宽 | 高 |
+| --- | --- | --- | --- | --- |
+| header | 64 | 40 | 1152 | 124 |
+| chain | 64 | 180 | 560 | 386 |
+| side_cards | 660 | 180 | 556 | 386 |
+| stats_band | 64 | 594 | 1152 | 88 |
 
-**动效 recipe:** `timeline-vertical` — 节点按时间顺序由上到下点亮(dot 先 pop 再扩 → 文字横向滑入)
+## 内容合同
 
-> 版式是「页级可粘贴结构」，约束内容类型匹配（见 `template-library/governance/rules/layouts/00_选版式P0原则.md`）。动效 recipe 与图形语义耦合，不是统一 fade-up。
+结构化数组通过母版的 `结构数据: {...}` 提供，按模板 `input_fields` 校验元素类型、必填字段与容量。对照页也接受 `对照侧:`，表格页也接受 `表列:` / `表行:`；同一字段只能有一个来源。
+
+- `kicker`：区域 `header`，最多 60 字符。
+- `title`：区域 `header`，最多 24 字符。
+- `nodes`：区域 `chain`，2–5 项。
+- `side_cards`：区域 `side_cards`，0–3 项。
+- `stats`：区域 `stats_band`，0–4 项。
+
+数组数量与字符数是预检；真实换行后的区域越界、容器溢出由浏览器检查。不能缩字号、截断或隐藏必需内容以通过验收。图表应按槽位尺寸生成，异单位指标使用分面或明确分母的比例比较。

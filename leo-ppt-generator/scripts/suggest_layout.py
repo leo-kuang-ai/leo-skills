@@ -68,6 +68,7 @@ INPUT_SCHEMA = {
     "type": "object",
     "required": ["pages"],
     "properties": {
+        "backend": {"type": "string", "enum": ["image", "render:html"]},
         "pages": {
             "type": "array",
             "minItems": 1,
@@ -118,6 +119,7 @@ def load_bank(*, home: Path | None = None) -> dict[str, dict]:
             "content_capacity": data.get("slots") or {},
             "reuse_friendly": data.get("reuse_friendly", True),
             "max_per_deck": data.get("max_per_deck", 1),
+            "renderer_support": data.get("renderer_support") or {},
         }
     return bank
 
@@ -235,12 +237,14 @@ def _rhythm(page: dict, layout_id: str, layout: dict) -> tuple[float, list[str]]
 
 
 def score_page(page: dict, bank: dict[str, dict], factor: float,
-               adjust: dict[str, float]) -> dict:
+               adjust: dict[str, float], backend: str | None = None) -> dict:
     known_ids = set(bank)
     candidates: list[dict] = []
     used = set(page.get("already_used") or [])
     for layout_id in sorted(bank):
         layout = bank[layout_id]
+        if backend and not layout.get("renderer_support", {}).get(backend):
+            continue
         # 节奏硬排除：强视觉版式已用即出局（与 check_layout_reuse 同口径）。
         if layout.get("reuse_friendly") is False and layout_id in used:
             continue
@@ -267,6 +271,7 @@ def score_page(page: dict, bank: dict[str, dict], factor: float,
                 "layout": layout_id,
                 "score": round(score, 2),
                 "reasons": reasons,
+                "renderer_support": layout.get("renderer_support", {}),
             }
         )
     candidates.sort(key=lambda c: (-c["score"], c["layout"]))
@@ -291,6 +296,14 @@ def score_page(page: dict, bank: dict[str, dict], factor: float,
 def main(argv: list[str]) -> int:
     args = [a for a in argv[1:]]
     style_name = None
+    backend = None
+    if "--backend" in args:
+        idx = args.index("--backend")
+        if idx + 1 >= len(args):
+            print("用法错误: --backend 需要 image 或 render:html", file=sys.stderr)
+            return 2
+        backend = args[idx + 1]
+        args = args[:idx] + args[idx + 2:]
     if "--json-schema" in args:
         print(json.dumps(INPUT_SCHEMA, ensure_ascii=False, indent=2))
         return 0
@@ -328,6 +341,10 @@ def main(argv: list[str]) -> int:
               file=sys.stderr)
         return 2
     pages = payload["pages"]
+    backend = backend if backend is not None else payload.get("backend")
+    if backend is not None and backend not in ("image", "render:html"):
+        print("[ERROR] backend 必须为 image 或 render:html", file=sys.stderr)
+        return 2
     if not pages or not all(
         isinstance(p, dict) and "page" in p and "page_role" in p for p in pages
     ):
@@ -351,8 +368,9 @@ def main(argv: list[str]) -> int:
     factor, adjust = load_style_routing(
         effective_style, home=home, resolver=resolver
     )
-    results = [score_page(page, bank, factor, adjust) for page in pages]
-    output = {"pages": results}
+    results = [score_page(page, bank, factor, adjust, backend) for page in pages]
+    output = {"pages": results, "backend": backend,
+              "capability_check": "backend_filtered" if backend else "not_requested"}
     print(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

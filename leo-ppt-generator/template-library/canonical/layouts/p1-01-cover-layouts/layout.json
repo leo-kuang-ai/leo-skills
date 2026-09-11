@@ -13,34 +13,105 @@
   },
   "page_role": "cover",
   "layout_type": "fixed-regions",
+  "regions": {
+    "title_block": {
+      "x": 96,
+      "y": 100,
+      "width": 1088,
+      "height": 310
+    },
+    "arch_band": {
+      "x": 96,
+      "y": 460,
+      "width": 1088,
+      "height": 88
+    },
+    "footer_band": {
+      "x": 96,
+      "y": 604,
+      "width": 1088,
+      "height": 76
+    }
+  },
   "slots": {
+    "kicker": {
+      "region": "title_block",
+      "max_chars": 60
+    },
     "title": {
-      "region": "content",
-      "desc": "主标题（反白 weight 200，min(11.6vw,19vh) 双约束）",
-      "max_chars": 8,
-      "chars_per_line": 7,
-      "max_lines": 1
+      "region": "title_block",
+      "max_chars": 40
     },
     "subtitle": {
-      "region": "content",
-      "desc": "底部副标",
-      "max_chars": 34,
-      "chars_per_line": 29,
-      "max_lines": 1
+      "region": "title_block",
+      "max_chars": 60
     },
-    "meta": {
-      "region": "content",
-      "desc": "底部元信息带",
-      "max_chars": 105,
-      "chars_per_line": 44,
-      "max_lines": 2
+    "footer_left": {
+      "region": "footer_band",
+      "max_chars": 60
+    },
+    "footer_right": {
+      "region": "footer_band",
+      "max_chars": 60
+    },
+    "arch_hint": {
+      "region": "arch_band",
+      "max_chars": 70
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "IKB 满屏 + ASCII 呼吸场；主标题反白 weight 200（min(11.6vw,19vh) 双约束大字），强调字用斜体；底部副标 + 元信息带"
+    "render:html": "builtin:template:cover-pro",
+    "image": "标题、副标题、背景说明与页脚元信息，明确主次与留白"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/01_Cover.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
   "reuse_friendly": false,
-  "max_per_deck": 1
+  "max_per_deck": 1,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "subtitle",
+      "footer_left",
+      "footer_right",
+      "arch_hint"
+    ],
+    "groups": [
+      {
+        "name": "title_block",
+        "members": [
+          "kicker",
+          "title",
+          "subtitle"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "arch_band",
+        "members": [
+          "arch_hint"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "footer_band",
+        "members": [
+          "footer_left",
+          "footer_right"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": []
+  }
 }

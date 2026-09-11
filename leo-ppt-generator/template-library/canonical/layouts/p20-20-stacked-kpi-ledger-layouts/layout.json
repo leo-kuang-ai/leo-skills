@@ -13,32 +13,132 @@
   },
   "page_role": "data",
   "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "kpi_row": {
+      "x": 64,
+      "y": 180,
+      "width": 1152,
+      "height": 150
+    },
+    "mid_zone": {
+      "x": 64,
+      "y": 352,
+      "width": 1152,
+      "height": 260
+    },
+    "footnote_band": {
+      "x": 64,
+      "y": 638,
+      "width": 1152,
+      "height": 60
+    }
+  },
   "slots": {
-    "rows": {
-      "region": "content",
-      "desc": "账单行（数值 + 标签 + 图标）",
-      "count_min": 4,
-      "count_max": 6
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
     },
-    "row_label": {
-      "region": "content",
-      "desc": "每行标签",
-      "max_chars": 26,
-      "chars_per_line": 22,
-      "max_lines": 1
+    "title": {
+      "region": "header",
+      "max_chars": 24
     },
-    "row_number": {
-      "region": "content",
-      "desc": "每行左侧巨数（真实数值）",
-      "max_chars": 3,
-      "chars_per_line": 3,
-      "max_lines": 1
+    "kpis": {
+      "region": "kpi_row",
+      "count_min": 2,
+      "count_max": 4
+    },
+    "chart_title": {
+      "region": "mid_zone",
+      "max_chars": 40
+    },
+    "chart_svg": {
+      "region": "mid_zone"
+    },
+    "dual": {
+      "region": "mid_zone",
+      "count_min": 0,
+      "count_max": 2
+    },
+    "footnote": {
+      "region": "footnote_band",
+      "max_chars": 90
     }
   },
   "renderer_support": {
-    "render:html": null,
-    "image": "每行一道 hairline 分隔：左侧巨数（min(13vw,21vh) 限高）+ 中部标签 + 右侧 lucide 图标"
+    "render:html": "builtin:template:kpi-stat",
+    "image": "上方关键指标，中部相对变化图与两种口径，底部来源说明"
   },
-  "notes": "机械迁移自 references/styles/12_版式库/20_Stacked_KPI_Ledger.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
-  "reuse_friendly": true
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "kpis",
+      "chart_title",
+      "chart_svg",
+      "dual",
+      "footnote"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "kpi_row",
+        "members": [
+          "kpis"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "mid_zone",
+        "members": [
+          "chart_title",
+          "chart_svg",
+          "dual"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "footnote_band",
+        "members": [
+          "footnote"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "kpis",
+        "kind": "comparison"
+      },
+      {
+        "slot": "dual",
+        "kind": "comparison"
+      }
+    ]
+  }
 }

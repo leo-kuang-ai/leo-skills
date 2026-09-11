@@ -17,8 +17,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+from copy import deepcopy
 
-PROJECTION_COMPILER = {"name": "leo-ppt-generator/content_projection", "version": "1"}
+from .template_inputs import display_texts, field_errors, validate_template_data
+
+PROJECTION_COMPILER = {"name": "leo-ppt-generator/content_projection", "version": "2"}
 
 CANONICAL_PAGE_ROLES = ("cover", "agenda", "section", "content", "data", "closing")
 
@@ -189,9 +192,13 @@ def precompile_binding(
     claim = pack_page.get("claim")
     sides = (pack_page.get("structures") or {}).get("sides")
     table = (pack_page.get("structures") or {}).get("table")
+    explicit_fields = (pack_page.get("structures") or {}).get("fields") or {}
 
     slot_map: dict[str, dict] = {}
     mapped_item_ids: set[str] = set()
+    bound_structured_texts: list[str] = []
+    if explicit_fields and backend != "render:html":
+        hard_failures.append("structured_backend_unsupported: 结构数据需要声明输入合同的 HTML 模板")
 
     if template_manifest is None and template_id and backend != "render:html":
         # image 等 lane：无模板 manifest，容量预检直接用 layout slots 声明
@@ -247,6 +254,23 @@ def precompile_binding(
         claim_field = "title" if has_title_field else next(
             (f.get("name") for f in fields
              if f.get("name") in TITLE_FIELD_NAMES and f.get("required")), None)
+        by_name = {f["name"]: f for f in fields}
+        for name, value in explicit_fields.items():
+            if name not in by_name or name in PAGE_NO_FIELD_NAMES:
+                hard_failures.append(f"structured_field_unknown: {name} 无可绑定显示字段")
+                continue
+            if name == claim_field and value != claim:
+                hard_failures.append(f"claim_conflict: {name} 与母版标题不一致")
+                continue
+            errors = field_errors(by_name[name], value)
+            if errors:
+                hard_failures.extend(f"structured_field_invalid: {e}" for e in errors)
+                continue
+            slot_map[name] = {"source": "structures.fields", "field": name}
+            bound_structured_texts.extend(display_texts({name: value}))
+        for point in points:
+            if point.get("text") in bound_structured_texts:
+                mapped_item_ids.add(point["item_id"])
         for field in fields:
             name = field.get("name")
             ftype = (field.get("type") or "").lower()
@@ -265,6 +289,8 @@ def precompile_binding(
                         "content_projection_invalid: 字段 count_max 冲突 "
                         f"({name}: template={count_max}, layout={s_max})")
                 count_min, count_max = s_min, s_max
+            if name in explicit_fields:
+                continue
             if name in PAGE_NO_FIELD_NAMES:
                 slot_map[name] = {"source": "page_number"}
                 continue
@@ -280,6 +306,15 @@ def precompile_binding(
                         slot_map[name if len(figures) == 1 else f"{name}[{idx}]"] = {
                             "source": "figure", "item_id": figure["item_id"]}
                         mapped_item_ids.add(figure["item_id"])
+                continue
+            if ftype == "array" and name in ("columns", "rows") and table is not None:
+                value = table.get(name)
+                errors = field_errors(field, value)
+                if errors:
+                    hard_failures.extend(f"structured_field_invalid: {e}" for e in errors)
+                else:
+                    slot_map[name] = {"source": f"structures.table.{name}"}
+                    bound_structured_texts.extend(display_texts(value))
                 continue
             if ftype == "array" and isinstance(field.get("items"), dict):
                 # 嵌套结构输入（如 compare sides）：结构必须来自母版标记。
@@ -299,6 +334,9 @@ def precompile_binding(
                             f"sides_count_over_max: 对照侧 {len(sides)} > 声明上限 {count_max}")
                     slot_map["sides"] = {"source": "structures.sides",
                                          "count": len(sides)}
+                    hard_failures.extend(f"structured_field_invalid: {e}"
+                                         for e in field_errors(field, sides))
+                    bound_structured_texts.extend(display_texts(sides))
                     for side in sides:
                         for point_text in side.get("points", []):
                             match = next((p for p in points
@@ -307,10 +345,6 @@ def precompile_binding(
                                 mapped_item_ids.add(match["item_id"])
                 continue
             if ftype == "array":
-                if name in ("columns", "rows") and table is not None:
-                    # K6 台账/矩阵结构：columns/rows 来自母版 表列/表行 标记。
-                    slot_map[name] = {"source": f"structures.table.{name}"}
-                    continue
                 # 字符串数组（bullets/steps）：承载要点项，计数容量来自 slot。
                 bound_points = [p for p in points
                                 if p["item_id"] not in mapped_item_ids]
@@ -382,13 +416,7 @@ def precompile_binding(
                 item = next((p for p in points if p["item_id"] == ref["item_id"]), None)
                 if item:
                     bound_texts.append(item.get("text") or "")
-        for side in sides or []:
-            bound_texts.append(side.get("title") or "")
-            bound_texts.extend(side.get("points") or [])
-        if table is not None:
-            bound_texts.extend(table.get("columns") or [])
-            for row in table.get("rows") or []:
-                bound_texts.extend(cell for cell in row if isinstance(cell, str))
+        bound_texts.extend(bound_structured_texts)
         missing_numbers = []
         for ref in number_refs:
             entry = next((n for n in numbers if n["item_id"] == ref["number_item_id"]), None)
@@ -420,6 +448,11 @@ def precompile_binding(
         },
     }
     binding["binding_digest"] = compute_binding_digest(binding)
+    if template_manifest is not None and not hard_failures and not figures:
+        errors = validate_template_data(template_manifest, materialize_html(binding, pack_page))
+        if errors:
+            hard_failures.extend(f"template_input_invalid: {e}" for e in errors)
+            binding["eligibility"]["qualified"] = False
     return binding
 
 
@@ -444,13 +477,18 @@ def materialize_html(binding: dict, pack_page: dict, *, media: dict | None = Non
             data[field] = pack_page.get("number")
         elif ref.get("source") == "claim":
             data.setdefault(field, pack_page.get("claim"))
+        elif ref.get("source") == "structures.fields":
+            fields = (pack_page.get("structures") or {}).get("fields") or {}
+            if ref["field"] not in fields:
+                raise ProjectionError(f"content_projection_invalid: 结构字段缺失 {ref['field']}")
+            data[field] = deepcopy(fields[ref["field"]])
         elif (ref.get("source") or "").startswith("structures.table."):
             column = ref["source"].rsplit(".", 1)[-1]
             value = (table or {}).get(column)
             if value is None:
                 raise ProjectionError(
                     f"content_projection_invalid: 绑定引用的表格结构缺失 {column}")
-            data[field] = value
+            data[field] = deepcopy(value)
         elif ref.get("source") == "point":
             item = points.get(ref["item_id"])
             if item is None:

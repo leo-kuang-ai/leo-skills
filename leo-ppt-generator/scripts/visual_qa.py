@@ -4,8 +4,7 @@
 leo 侧适配（自研增量）：
 
 - 尺寸判据对齐 2560×1440 交付档（DIM-01 FAIL/WARN 分层按 leo 比例合同）；
-- SIZE-01 阈值按 2560 档上调（<200K FAIL：空页在大画幅下也该被拦；
-  <600K WARN：WARN 档≈FAIL 档 3 倍，随上游 5 倍关系近似收敛）；
+- SIZE-01 仅提示压缩体积，不能替代像素空白检查或审美验收；
 - 输入为 leo 的页图命名（``slide_*.png``），单页/目录两种模式；
 - 输出机器可读 JSON 报告（--report），退出码 0/1/2 语义与
   check_deck_geometry.py 的职责分界见文件尾注。
@@ -41,7 +40,6 @@ except ImportError:
 DELIVERY_WIDTH = 2560
 DELIVERY_HEIGHT = 1440
 WEB_WIDTH = 1280
-SIZE_FAIL_BYTES = 200_000
 SIZE_WARN_BYTES = 600_000
 
 
@@ -72,13 +70,7 @@ def _dominant_color(pixels: list[tuple], total: int) -> tuple[tuple, float]:
 
 
 def check_blank_ratio(img: Image.Image, threshold: float = 0.40) -> dict:
-    """BLANK-01：主色占比 > 0.40 **且** 内容比 < 0.15 → FAIL。
-
-    leo 适配（自研增量）：上游只对深色背景做内容比兜底、亮底直接 FAIL，
-    这在 leo 的浅纸底 deck 上会把正常封面误判为空白。按设计表语义改为
-    背景相对判定：内容像素 = 亮度偏离主色 > 60 的像素（深色背景分支
-    语义与上游 brightness>80 等价保留）。
-    """
+    """BLANK-01：近乎纯色才硬失败，稀疏页面提示复核；墨迹比例不是占用面积。"""
     small = img.resize((128, 72), Image.LANCZOS)
     pixels = list(small.getdata())
     total = len(pixels)
@@ -86,16 +78,18 @@ def check_blank_ratio(img: Image.Image, threshold: float = 0.40) -> dict:
     dominant_color, dominant_ratio = _dominant_color(pixels, total)
 
     if dominant_ratio > threshold:
-        dominant_brightness = sum(dominant_color) / 3
         content_pixels = sum(
-            1 for p in pixels if abs(sum(p) / 3 - dominant_brightness) > 60
+            1 for p in pixels if max(abs(a - b) for a, b in zip(p, dominant_color)) > 60
         )
         content_ratio = content_pixels / total
-        if content_ratio < 0.15:
+        if dominant_ratio > 0.995 and content_ratio < 0.001:
             return {"id": "BLANK-01", "status": "FAIL",
-                    "msg": f"内容区域仅占 {content_ratio:.0%}，主色 RGB{dominant_color} 占 {dominant_ratio:.0%}（大面积空白）"}
+                    "msg": f"页面近乎纯色，差异像素 {content_ratio:.2%}，请检查截图或渲染内容"}
+        if content_ratio < 0.15:
+            return {"id": "BLANK-01", "status": "WARN",
+                    "msg": f"差异像素 {content_ratio:.1%}，请复核稀疏页面；此比例不是留白面积或设计评分"}
         return {"id": "BLANK-01", "status": "PASS",
-                "msg": f"主色占 {dominant_ratio:.0%}（背景），内容区 {content_ratio:.0%}"}
+                "msg": f"主色占 {dominant_ratio:.0%}，差异像素 {content_ratio:.0%}"}
 
     return {"id": "BLANK-01", "status": "PASS",
             "msg": f"画面色彩分布正常，主色占比 {dominant_ratio:.0%}"}
@@ -224,14 +218,11 @@ def check_contrast_zones(img: Image.Image) -> dict:
 
 
 def check_file_size(png_path: Path) -> dict:
-    """SIZE-01（leo 2560 档）：<200K FAIL（空页拦截）；<600K WARN。"""
+    """SIZE-01：压缩体积仅作提示；空白与损坏分别由 BLANK/OPEN 判定。"""
     size = png_path.stat().st_size
-    if size < SIZE_FAIL_BYTES:
-        return {"id": "SIZE-01", "status": "FAIL",
-                "msg": f"PNG 仅 {size:,} bytes，疑似空白页或截图失败（2560 档 FAIL 线 {SIZE_FAIL_BYTES:,}）"}
     if size < SIZE_WARN_BYTES:
         return {"id": "SIZE-01", "status": "WARN",
-                "msg": f"PNG {size:,} bytes，内容可能过少（2560 档 WARN 线 {SIZE_WARN_BYTES:,}）"}
+                "msg": f"PNG {size:,} bytes；低体积可能来自平色压缩，不能据此判定内容过少"}
     return {"id": "SIZE-01", "status": "PASS", "msg": f"PNG {size:,} bytes"}
 
 
@@ -250,6 +241,7 @@ def run_checks(png_path: Path) -> list[dict]:
     results.append(check_vertical_text(img))
     results.append(check_overflow_cutoff(img))
     results.append(check_contrast_zones(img))
+    results.append(check_design_density(img))
     return results
 
 
@@ -273,6 +265,40 @@ def collect_pngs(target: Path) -> list[Path]:
     if target.is_dir():
         return sorted([*target.glob("slide_*.png"), *target.glob("slide-*.png")])
     return []
+
+
+def check_design_density(img: Image.Image) -> dict:
+    """DESIGN-01：四象限差异像素分布提示，不作为设计验收。
+
+    只看内容像素（亮度偏离主色 >60）的空间分布，不改判任何既有 FAIL：
+    - 全页内容占比 < 6% 且存在 ≥2 个内容占比 < 0.5% 的象限 → WARN
+      （版面大面积空置，典型如"标题+文字列表+缩略图表"的文档式页面）；
+    - 四象限内容占比最大/最小 > 12 倍 → WARN（单象限孤岛布局）。
+    判据为观察提示（WARN 不阻断），供 SAMPLE-GATE 人工复核参考；
+    对留白型封面/金句页的误报由人工裁决，不升级 FAIL。
+    """
+    small = img.resize((256, 144), Image.LANCZOS)
+    pixels = list(small.getdata())
+    total = len(pixels)
+    from collections import Counter
+    dominant, _ = Counter(pixels).most_common(1)[0]
+    flags = [int(max(abs(a - b) for a, b in zip(px, dominant)) > 60) for px in pixels]
+    overall = sum(flags) / total
+    quads = []
+    for qy in range(2):
+        for qx in range(2):
+            cell = [flags[y * 256 + x] for y in range(qy * 72, (qy + 1) * 72)
+                    for x in range(qx * 128, (qx + 1) * 128)]
+            quads.append(sum(cell) / len(cell))
+    empty_quads = sum(1 for q in quads if q < 0.005)
+    if overall < 0.06 and empty_quads >= 2:
+        return {"id": "DESIGN-01", "status": "WARN",
+                "msg": f"差异像素 {overall:.1%}，{empty_quads} 个象限近空，请结合页面角色复核"}
+    if max(quads) > 0 and max(quads) / max(min(quads), 1e-6) > 12:
+        return {"id": "DESIGN-01", "status": "WARN",
+                "msg": f"象限差异像素分布不均，{empty_quads} 个象限近空，请结合页面角色复核"}
+    return {"id": "DESIGN-01", "status": "PASS",
+            "msg": f"差异像素 {overall:.1%}，象限分布 {['%.1f%%' % (q*100) for q in quads]}；不代表设计验收通过"}
 
 
 def main() -> int:

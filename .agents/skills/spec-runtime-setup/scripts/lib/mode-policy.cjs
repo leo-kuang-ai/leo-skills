@@ -57,6 +57,11 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
     return blockedPlan(args.errors[0].reason_code, args);
   }
 
+  // Bare setup converges the registry-declared baseline. Existing safety
+  // gates still reject unsafe paths and higher-precedence conflicts.
+  const bareInvocation = argv.length === 0;
+  if (bareInvocation) args.repairHostConfig = true;
+
   if (args.repo && args.folder) return blockedPlan('repo-and-folder', args);
   if (args.repo && args.allRepos) return blockedPlan('repo-and-all-repos', args);
   if (args.folder && args.allRepos) return blockedPlan('folder-and-all-repos', args);
@@ -106,7 +111,7 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
     (args.verifyOnly || args.refreshFacts) && 'verify',
     args.plan && 'plan',
     args.projectConfig && 'project-config',
-    (args.only.length > 0 || args.installationOnly) && !args.plan && !(args.installationOnly && (args.verifyOnly || args.refreshFacts)) && workspaceActions.length === 0 && 'only',
+    (args.only.length > 0 || args.installationOnly) && !args.plan && !((args.verifyOnly || args.refreshFacts) && !args.refresh) && workspaceActions.length === 0 && 'only',
     args.repairHostConfig && args.only.length === 0 && !args.installationOnly && !args.plan && 'host-config-repair',
   ].filter(Boolean);
   if (new Set(selectedModes).size > 1) {
@@ -134,14 +139,18 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
 
   let mode = selectedModes[0] || 'bare';
   if (args.refresh && !args.plan) mode = 'graphify-refresh';
-  const actions = ACTIONS_BY_MODE[mode].map((entry) => ({ ...entry }));
+  if (['plan', 'verify'].includes(mode) && args.only.length === 0 && !args.requirementWorkspace) {
+    args.installationOnly = true;
+  }
+  const actions = (bareInvocation ? ACTIONS_BY_MODE.only : ACTIONS_BY_MODE[mode])
+    .map((entry) => ({ ...entry }));
   const capabilities = actions
     .filter((entry) => entry.mutation)
     .map((entry) => entry.capability);
 
   return {
     blocked: false,
-    mode,
+    mode: bareInvocation ? 'bare' : mode,
     mutation: actions.some((entry) => entry.mutation),
     capabilities,
     reason_code: 'action-plan-ready',
@@ -149,10 +158,10 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
     args,
     selection_source: args.only.length > 0
       ? 'explicit-only'
-      : ((['verify', 'plan'].includes(mode) || args.installationOnly) ? 'default-required' : 'not-selected'),
+      : ((bareInvocation || ['verify', 'plan'].includes(mode) || args.installationOnly) ? 'default-required' : 'not-selected'),
     selected_ids: args.only.length > 0
       ? [...args.only]
-      : ((['verify', 'plan'].includes(mode) || args.installationOnly) ? [...defaultIds] : []),
+      : ((bareInvocation || ['verify', 'plan'].includes(mode) || args.installationOnly) ? [...defaultIds] : []),
   };
 }
 

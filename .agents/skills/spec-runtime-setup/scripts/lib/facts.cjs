@@ -20,7 +20,7 @@ const CONFIRMED_SOURCES = new Set([
   'confirmed-local-state',
 ]);
 const { captureSourceSnapshot } = require('./source-snapshot.cjs');
-const CANONICAL_HOSTS = new Set(['claude', 'codex', 'cursor', 'kiro', 'opencode', 'qoder', 'zcode']);
+const CANONICAL_HOSTS = new Set(require('./host-authority.cjs').CANONICAL_HOSTS);
 
 function collectSetupFacts(options = {}) {
   const registry = options.registry || {};
@@ -46,7 +46,7 @@ function collectSetupFacts(options = {}) {
   const generatedAt = (options.now || new Date()).toISOString();
   const repoRoot = path.resolve(options.repoRoot || process.cwd());
   const sourceSnapshot = captureSourceSnapshot({
-    repoRoot, skillRoot: options.skillRoot, homeDir: options.homeDir, env: options.env, host: options.host, platform: options.platform, now: options.now || new Date(),
+    repoRoot, sourceRegistry: options.sourceRegistry, skillRoot: options.skillRoot, homeDir: options.homeDir, env: options.env, host: options.host, platform: options.platform, now: options.now || new Date(),
   });
   const baselineReady = items
     .filter((item) => item.required && item.baseline_blocking)

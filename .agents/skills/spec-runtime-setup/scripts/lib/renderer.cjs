@@ -26,6 +26,7 @@ function renderInstallPlan(plan = {}) {
     overall_status: plan.overall_status || (blocked ? 'action-required' : 'ready'),
     reason_code: plan.reason_code || null,
     mode: plan.mode || 'plan',
+    readiness_scope: plan.args && plan.args.installationOnly ? 'installation' : 'artifact',
     optional_provider_selection: normalizeOptionalProviderSelection(plan, selectedIds, blocked),
     provider_selection: providerSelection,
     planned_operations: plannedOperations,
@@ -259,6 +260,15 @@ function renderHumanSummary(
   }
   lines.push('', '后续步骤');
   const nextActions = [];
+  const providerNeedsInit = (toolFacts.provider_readiness || []).some((provider) => {
+    const lifecycle = provider.lifecycle || {};
+    return lifecycle.installed === true && (lifecycle.initialized !== true || lifecycle.artifact_exists !== true);
+  });
+  const repoRoot = runtimeCapabilities.repo_root || (runtimeCapabilities.target && runtimeCapabilities.target.target_root);
+  if (execution.overall_status === 'action-required' && providerNeedsInit && repoRoot) {
+    nextActions.push(`推荐：执行完整项目级 setup：MCP_SETUP_HOST=${runtimeCapabilities.host || '<host>'} spec-runtime-setup --only codegraph,graphify --repo "${repoRoot}"`);
+    nextActions.push('仅需生成 setup facts 时使用 --verify-only；仅需本地配置覆盖时使用 --project-config。');
+  }
   if (manifest.status === 'stale' || manifest.status === 'missing') {
     nextActions.push('对所选 topology 运行 spec-first init，然后重新运行 spec-runtime-setup --verify-only。');
   }

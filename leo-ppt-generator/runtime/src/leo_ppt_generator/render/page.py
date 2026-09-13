@@ -446,7 +446,8 @@ def render_page(
         "fonts_checked": requested_fonts,
     }
     if binding is not None:
-        provenance["binding_digest"] = binding["binding_digest"]
+        provenance["expression_binding_digest"] = binding.get("expression_binding_digest")
+        provenance["materialization_binding_digest"] = binding.get("materialization_binding_digest")
         provenance["content_digest"] = binding["content_digest"]
     sidecar = out.with_name(out.name + ".render.json")
     sidecar.write_text(

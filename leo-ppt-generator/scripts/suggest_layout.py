@@ -53,7 +53,7 @@ if str(RUNTIME_SRC) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SRC))
 
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
-from leo_ppt_generator.content_projection import ROLE_PAGE_TYPES
+from leo_ppt_generator.content_projection import page_types_for_role
 from leo_ppt_generator.page_intent import analyze_page_intent, semantic_layout_adjustment
 from leo_ppt_generator.render.layout import capacity_level
 from leo_ppt_generator.layout_selection import rank_page, load_style_routing, _role_fit, _capacity_fit, _rhythm
@@ -63,8 +63,7 @@ CONFIDENCE_FLOOR = 0.5
 TOP_CANDIDATES = 2
 
 # 13_页面语义 25 角色 → 版式 page_type（6 值枚举）。未列角色按中性 0.5 评分。
-# 角色映射唯一所有者为 runtime content_projection.ROLE_PAGE_TYPES（dashi
-# 集成 K2 统一入口），推荐脚本只消费不复制。
+# 角色映射唯一来自 page-type-regime-v2，推荐脚本只消费不复制。
 
 INPUT_SCHEMA = {
     "type": "object",
@@ -209,7 +208,7 @@ def main(argv: list[str]) -> int:
     )
     results = []
     for page in pages:
-        page_types = set(ROLE_PAGE_TYPES.get(str(page.get("page_role", "")), []))
+        page_types = set(page_types_for_role(str(page.get("page_role", ""))) or [])
         _, page_adjust = load_style_routing(
             effective_style, home=home, resolver=resolver,
             page_types=page_types or None,

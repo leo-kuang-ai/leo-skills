@@ -273,9 +273,12 @@ def content_binding_summary(run_root: str | Path) -> dict | None:
         summary["selected_layouts"] = {
             pid: entry.get("layout_id")
             for pid, entry in (selection.get("selection") or {}).items()}
-        summary["binding_digests"] = {
-            pid: entry.get("binding_digest")
-            for pid, entry in (selection.get("selection") or {}).items()}
+        entries = selection.get("selection") or {}
+        # 双层 binding：旧摘要保留用于历史收据，新字段供 v2 消费者逐步切换。
+        summary["expression_binding_digests"] = {
+            pid: entry.get("expression_binding_digest") for pid, entry in entries.items()}
+        summary["materialization_binding_digests"] = {
+            pid: entry.get("materialization_binding_digest") for pid, entry in entries.items()}
     design_path = root / "input" / "resolved-design.json"
     if design_path.is_file():
         try:

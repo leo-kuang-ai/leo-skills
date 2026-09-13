@@ -1043,6 +1043,8 @@ def compose_design(
     color_overrides: dict | None = None,
     font_overrides: dict | None = None,
     pages: list[dict] | None = None,
+    selection: dict | None = None,
+    selection_digest: str | None = None,
     resolver=None,
 ) -> dict:
     """唯一设计组合器（§7.0 阶段表）：产出冻结 resolved_design。
@@ -1053,6 +1055,17 @@ def compose_design(
     """
     from .asset_resolver import AssetResolver, ResolverError as _ResolverError
     from .render.layout import CapacityOverflowError, require_capacity, validate_profile
+    if selection_digest is not None and selection is None:
+        raise DesignCompositionError("selection_digest_without_selection")
+    if selection is not None:
+        from .application.expression_pipeline import selection_digest as _selection_digest
+        if not selection.get("selection_frozen"):
+            raise DesignCompositionError("selection_frozen_mismatch")
+        frozen = selection.get("selection") if isinstance(selection.get("selection"), dict) else selection
+        expected = selection_digest or selection.get("selection_digest")
+        if expected != _selection_digest(frozen):
+            raise DesignCompositionError("selection_frozen_mismatch")
+        selection = frozen
 
     if resolver is None:
         resolver = AssetResolver()
@@ -1075,6 +1088,10 @@ def compose_design(
     for page in (pages or [{"page_no": 1, "page_role": "data", "slots": {}}]):
         role = page.get("page_role", "content")
         layout_query = page.get("layout")
+        if not layout_query:
+            page_id = page.get("page_id")
+            if selection is not None and page_id in selection:
+                layout_query = selection[page_id].get("layout_id")
         if not layout_query:
             route = routes.get(role)
             preferred = (route or {}).get("preferred") or []

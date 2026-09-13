@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Lint the page-type regime truth source.
 
-``template-library/governance/rules/page-type-regime-v1.json`` is the
+``template-library/governance/rules/page-type-regime-v2.json`` is the
 versioned semantic page-type truth source consumed by
 ``leo_ppt_generator.page_intent`` and ``scripts/suggest_layout.py``. It was
 introduced without lint coverage, so a broken or drifting regime could reach
@@ -41,8 +41,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 
-REGIME_PATH = SKILL_DIR / Path("template-library/governance/rules/page-type-regime-v1.json")
-REGIME_ID = "page-type-regime-v1"
+REGIME_PATH = SKILL_DIR / Path("template-library/governance/rules/page-type-regime-v2.json")
+REGIME_ID = "page-type-regime-v2"
 KNOWN_LANES = ("image", "render:html", "render:mermaid", "render:echarts")
 
 
@@ -97,8 +97,8 @@ def lint(regime_path: Path = REGIME_PATH) -> list[str]:
     regime = _load_regime(regime_path)
     errors: list[str] = []
 
-    if regime.get("schema_version") != 1:
-        errors.append(f"schema_version must be 1, got {regime.get('schema_version')!r}")
+    if regime.get("schema_version") != 2:
+        errors.append(f"schema_version must be 2, got {regime.get('schema_version')!r}")
     regime_id = regime.get("regime_id")
     if regime_id != REGIME_ID:
         errors.append(f"regime_id must be {REGIME_ID!r}, got {regime_id!r}")

@@ -128,6 +128,26 @@ def derive_structure_admission(library_root: Path) -> dict:
     }
 
 
+def derive_qualification(asset: dict, *, asset_generation: str, evidence_receipts: list[dict] | None = None) -> dict:
+    """Derive qualification from owner declaration plus probe receipts.
+
+    Declarations without matching, generation-bound positive and negative probes
+    remain unverified and can never enter publication-qualified views.
+    """
+    receipts = evidence_receipts or []
+    aid = asset.get("asset_id")
+    bound = [r for r in receipts if r.get("asset_id") == aid and r.get("asset_generation") == asset_generation]
+    positive = any(r.get("probe") == "positive" and r.get("status") == "passed" for r in bound)
+    negative = any(r.get("probe") == "negative" and r.get("status") == "passed" for r in bound)
+    status = "publication-qualified" if positive and negative else ("provisional" if asset.get("provisional") else "unverified")
+    digest = hashlib.sha256(_json_bytes(sorted(bound, key=lambda x: json.dumps(x, sort_keys=True)))).hexdigest() if bound else None
+    return {"schema_version": 1, "asset_id": aid, "asset_generation": asset_generation,
+            "qualification_status": status, "evidence_set_digest": digest,
+            "lanes": {lane: {"status": status if lane in (asset.get("lanes") or ["render:html"]) else "unverified",
+                              "probe_receipts": [r.get("receipt_id") for r in bound if r.get("lane") == lane]}
+                       for lane in (asset.get("lanes") or ["render:html"])} }
+
+
 def build_template_registry(library_root: Path) -> dict:
     """从 canonical + governance 输入确定性构建 registry（不写盘）。
 

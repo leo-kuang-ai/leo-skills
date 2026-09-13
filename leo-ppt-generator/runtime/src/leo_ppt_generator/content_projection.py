@@ -10,8 +10,8 @@
 
 硬资格检查（K2 顺序：内容包 + 设计上下文 → 角色规范化 → 候选预编译 →
 容量/媒体/backend/必需内容覆盖 → 合格池）：硬失败候选不合格，软评分不可
-抵消；无合格候选返回待定与具体原因。角色映射的唯一所有者是本模块的
-``ROLE_PAGE_TYPES``（scripts/suggest_layout.py 等从这里导入）。
+抵消；无合格候选返回待定与具体原因。角色映射唯一来自
+page-type-regime-v2 治理文件。
 """
 from __future__ import annotations
 
@@ -26,37 +26,18 @@ PROJECTION_COMPILER = {"name": "leo-ppt-generator/content_projection", "version"
 
 CANONICAL_PAGE_ROLES = ("cover", "agenda", "section", "content", "data", "closing")
 
-# 13_页面语义 25 角色 → 版式 page_type（6 值枚举）。未列角色按未知处理，
-# 不能自动入选。仅补真正缺少的别名，不另起角色系统（K2）。
-ROLE_PAGE_TYPES: dict[str, list[str]] = {
-    "封面": ["cover"],
-    "拆解·目录": ["agenda"],
-    "分隔·过渡": ["section"],
-    "陈述·金句": ["section", "content"],
-    "氛围页": ["closing", "section"],
-    "结尾": ["closing"],
-    "指标·计分榜": ["data"],
-    "结论·数字海报": ["data"],
-    "对比·多维": ["content", "data"],
-    "分布·漏斗": ["data"],
-    "趋势·时间线": ["content", "data"],
-    "流程·路径": ["content"],
-    "关系·网络": ["content"],
-    "团队": ["content"],
-    "图片主导": ["content", "closing"],
-    "案例·分镜": ["content"],
-    "小结·回顾": ["content", "closing"],
-    "参考·文献": ["content", "data"],
-    "目标·学习目标": ["content"],
-    "练习·检测": ["content"],
-    "风险·问答": ["content"],
-    "洞察·展望": ["content"],
-    "背景·定位矩阵": ["content", "data"],
-    "落地·下一步": ["content"],
-    "融资路演链": ["content"],
-    # evidence 版式（frame-shot 等）此前无角色入口——K2「仅补真正缺少的别名」。
-    "证据·实拍": ["evidence"],
-}
+def page_types_for_role(role: str | None) -> list[str] | None:
+    """Derive role/page-type view exclusively from page-type-regime-v2."""
+    if not role:
+        return None
+    from .page_intent import load_page_type_regime
+    role = role.strip()
+    result = []
+    for ptype, spec in load_page_type_regime().get("page_types", {}).items():
+        if role in (spec.get("role_aliases") or []):
+            result.extend(spec.get("layout_page_types") or [ptype])
+    return sorted(set(result)) or None
+
 
 # 模板输入字段的显示文本族（string 且名字在此集合 → 承载 claim/要点文本）。
 TITLE_FIELD_NAMES = {
@@ -76,7 +57,7 @@ def normalize_page_role(narrative_role: str | None) -> list[str] | None:
     """中文叙事角色 → canonical page_type 集合；未知角色返回 None。"""
     if not narrative_role:
         return None
-    return ROLE_PAGE_TYPES.get(narrative_role.strip())
+    return page_types_for_role(narrative_role)
 
 
 from .storage import canonical_json_bytes as _canonical_json
@@ -105,10 +86,37 @@ def compute_binding_digest(binding: dict) -> str:
     return _sha(digest_input)
 
 
+def compute_expression_binding_digest(binding: dict) -> str:
+    """只覆盖 lane-neutral 页面表达与事实引用。"""
+    return _sha({"page_id": binding["page_id"], "item_ids": sorted(binding["item_ids"]),
+                 "page_digest": (binding.get("effective") or {}).get("page_digest"),
+                 "compiler": binding["compiler"],
+                 "expression": binding.get("expression") or binding.get("expression_choice_identity")})
+
+
+def compute_materialization_binding_digest(binding: dict) -> str:
+    """覆盖 lane-specific 执行配对；不改变 legacy binding_digest。"""
+    return _sha({"expression_binding_digest": compute_expression_binding_digest(binding),
+                 "layout_id": binding["layout_id"], "template_id": binding["template_id"],
+                 "backend": binding["backend"], "slot_map": binding["slot_map"],
+                 "context_digest": binding["context_digest"], "effective": binding.get("effective"),
+                 "eligibility": binding.get("eligibility")})
+
+
+def verify_dual_binding_digests(binding: dict) -> None:
+    """v2 binding 的双摘要完整性门；缺失或漂移均 fail closed。"""
+    if binding.get("expression_binding_digest") != compute_expression_binding_digest(binding):
+        raise ProjectionError("expression_binding_digest_mismatch")
+    if binding.get("materialization_binding_digest") != compute_materialization_binding_digest(binding):
+        raise ProjectionError("materialization_binding_digest_mismatch")
+
+
 def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
                              frozen_design: dict | None = None) -> None:
     """校验同一绑定、页面及资产；旧 v1 保留读取但不获得 v2 完整性声明。"""
-    if binding.get("binding_digest") != compute_binding_digest(binding):
+    if binding.get("schema_version") == 2:
+        verify_dual_binding_digests(binding)
+    elif binding.get("binding_digest") != compute_binding_digest(binding):
         raise ProjectionError("effective_binding_digest_mismatch")
     if binding.get("page_id") != pack_page.get("page_id"):
         raise ProjectionError("effective_binding_page_mismatch")
@@ -546,6 +554,8 @@ def precompile_binding(
                       for key in ("colors", "fonts", "chart_palette")},
             "assets": [resolver.fingerprint(a) for a in sorted(dependencies)],
         }
+    binding["expression_binding_digest"] = compute_expression_binding_digest(binding)
+    binding["materialization_binding_digest"] = compute_materialization_binding_digest(binding)
     binding["binding_digest"] = compute_binding_digest(binding)
     if template_manifest is not None and not hard_failures and not figures:
         errors = validate_template_data(template_manifest, materialize_html(binding, pack_page, resolver=resolver))

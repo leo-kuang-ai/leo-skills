@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"leo-ppt/qualification-v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","asset_id","asset_generation","qualification_status","evidence_set_digest","lanes"],
+  "properties":{
+    "schema_version":{"const":1},"asset_id":{"type":"string","minLength":1},
+    "asset_generation":{"type":"string","pattern":"^[0-9a-f]{16,64}$"},
+    "qualification_status":{"enum":["unverified","provisional","publication-qualified"]},
+    "evidence_set_digest":{"type":["string","null"],"pattern":"^[0-9a-f]{16,64}$"},
+    "lanes":{"type":"object","minProperties":1,"additionalProperties":{"type":"object","required":["status","probe_receipts"],"additionalProperties":false,"properties":{"status":{"enum":["unverified","provisional","publication-qualified"]},"probe_receipts":{"type":"array","items":{"type":"string"}},"gaps":{"type":"array","items":{"type":"string"}}}}}
+  }
+}

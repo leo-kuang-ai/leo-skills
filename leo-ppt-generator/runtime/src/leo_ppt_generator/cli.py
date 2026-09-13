@@ -20,6 +20,7 @@ from .application.routes import (
     classify_input,
     route_definition,
     select_route,
+    generate_expression,
 )
 from .application.run_index import IdempotencyConflict, RevisionConflict, RunIndex
 from .application.sample_decisions import record_sample_decision, verify_sample_decision
@@ -679,7 +680,8 @@ def _freeze_content_binding(run_path: str | Path, slides_path: str | Path,
                 entry = selected[page["page_id"]]
                 effective = entry.get("binding") or {}
                 if (effective.get("schema_version") != 2
-                        or effective.get("binding_digest") != entry.get("binding_digest")
+                        or not effective.get("expression_binding_digest")
+                        or not effective.get("materialization_binding_digest")
                         or effective.get("layout_id") != entry.get("layout_id")
                         or effective.get("content_digest") != pack["content_digest"]
                         or not effective.get("effective", {}).get("assets")):
@@ -3078,9 +3080,13 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     receipt = load_render_receipt(args.render_receipt)
                     from .render.provenance import verify_receipt_matches_artifact
                     verify_receipt_matches_artifact(receipt, image_path)
-                    if (receipt.get("binding_digest") != expected["binding_digest"]
+                    if (receipt.get("expression_binding_digest") != expected.get("expression_binding_digest")
                             or receipt.get("content_digest") != expected["content_digest"]):
                         raise ContractError("effective_binding_render_receipt_mismatch")
+                    # v2 双层摘要存在时必须与渲染收据一致；旧收据继续走兼容路径。
+                    for key in ("expression_binding_digest", "materialization_binding_digest"):
+                        if expected.get(key) is not None and receipt.get(key) != expected.get(key):
+                            raise ContractError("effective_binding_render_receipt_mismatch")
             # R-73 对齐门：图像 lane 整页生成页在 record 前机械拦截。
             # 判域只看冻结 provenance 事实（composite/render 豁免）；无 OCR
             # 文本 = not_run 披露，不冒充通过；WARN 期失败只披露不阻断。

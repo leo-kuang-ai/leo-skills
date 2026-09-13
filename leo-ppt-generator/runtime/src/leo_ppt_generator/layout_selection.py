@@ -20,7 +20,7 @@ import json
 
 from pathlib import Path
 from .asset_resolver import AssetResolver, ResolverError
-from .content_projection import ROLE_PAGE_TYPES
+from .content_projection import page_types_for_role
 from .page_intent import analyze_page_intent, semantic_layout_adjustment
 from .render.layout import capacity_level
 
@@ -113,7 +113,7 @@ def qualified_pool(
             "renderer_support": profile.get("renderer_support") or {}}
     factor, adjust = load_style_routing(
         design_context.get("style", {}).get("asset_id"), resolver=resolver,
-        page_types=set(ROLE_PAGE_TYPES.get(signals["page_role"], [])))
+        page_types=set(page_types_for_role(signals["page_role"]) or []))
     ranked = rank_page(signals, bank, factor, adjust, backend, hard_qualified=True)
     by_id = {entry["layout_id"]: entry for entry in pool}
     pool = [{**by_id[candidate["layout"]], "ranking": candidate}
@@ -298,6 +298,8 @@ def _selection_result(pack: dict, pools: dict, selection: dict,
         pid: {
             "layout_id": entry["layout_id"],
             "binding_digest": entry["binding"]["binding_digest"],
+            "expression_binding_digest": entry["binding"].get("expression_binding_digest"),
+            "materialization_binding_digest": entry["binding"].get("materialization_binding_digest"),
             "binding": entry["binding"],
         }
         for pid, entry in selection.items()}
@@ -362,7 +364,7 @@ def load_style_routing(
 def _role_fit(page: dict, layout: dict) -> tuple[float | None, str]:
     """角色对齐分；None = 出局。"""
     role = str(page.get("page_role", ""))
-    allowed = ROLE_PAGE_TYPES.get(role)
+    allowed = page_types_for_role(role)
     ptype = layout.get("page_type", "content")
     if allowed is None:
         return 0.5, f"角色未识别:{role}（中性评分）"

@@ -263,3 +263,10 @@ class ReviewFixRegressionTests(unittest.TestCase):
             "- 标题：附录二\n视觉行：附录条\n- 备注：附录二\n\n## 数字登记表")
         with self.assertRaisesRegex(ContentPackError, "重复"):
             compile_master(text)
+
+class PageExpressionContractTests(unittest.TestCase):
+    def test_expression_rejects_unknown_order_reference(self):
+        from leo_ppt_generator.content_pack import compile_page_expression, ContentPackError
+        pack = {"pages": [{"page_id": "pg-abc", "items": [{"item_id": "i1"}]}]}
+        with self.assertRaises(ContentPackError):
+            compile_page_expression(pack, "pg-abc", reading_task="comparison", focus="f", reading_order=["missing"], relation_encoding={"dimensions": ["x"]})

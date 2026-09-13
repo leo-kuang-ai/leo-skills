@@ -99,3 +99,18 @@ class DesignExecutionBindingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class DualBindingDigestTests(unittest.TestCase):
+    def test_digest_helpers_are_lane_split(self):
+        from leo_ppt_generator.content_projection import compute_expression_binding_digest, compute_materialization_binding_digest
+        binding = {"page_id":"p", "item_ids":["i"], "content_digest":"c", "compiler":"x", "layout_id":"l", "template_id":"t", "backend":"render:html", "slot_map":{}, "context_digest":"ctx"}
+        e = compute_expression_binding_digest(binding)
+        binding["backend"] = "image"
+        self.assertEqual(e, compute_expression_binding_digest(binding))
+        self.assertNotEqual(compute_materialization_binding_digest({**binding, "backend":"image"}), compute_materialization_binding_digest({**binding, "backend":"render:html"}))
+
+class DualBindingVerificationTests(unittest.TestCase):
+    def test_missing_expression_digest_fails_closed(self):
+        from leo_ppt_generator.content_projection import verify_dual_binding_digests, ProjectionError
+        binding = {"page_id":"p", "item_ids":["i"], "content_digest":"c", "compiler":"x", "layout_id":"l", "template_id":"t", "backend":"render:html", "slot_map":{}, "context_digest":"ctx", "materialization_binding_digest":"x"}
+        with self.assertRaises(ProjectionError): verify_dual_binding_digests(binding)

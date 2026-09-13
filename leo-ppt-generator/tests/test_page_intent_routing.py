@@ -48,7 +48,7 @@ def _suggest(page: dict) -> dict:
 class PageIntentRoutingTest(unittest.TestCase):
     def test_regime_has_versioned_semantic_contract(self) -> None:
         regime = load_page_type_regime()
-        self.assertEqual(regime["regime_id"], "page-type-regime-v1")
+        self.assertEqual(regime["regime_id"], "page-type-regime-v2")
         self.assertLessEqual(
             {"comparison", "trend", "process", "kpi", "evidence"}, set(regime["page_types"])
         )
@@ -203,3 +203,11 @@ class PageIntentRoutingTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class PageIntentRegimeV2ContractTest(unittest.TestCase):
+    def test_relation_minimum_encoding_is_declared(self) -> None:
+        regime = load_page_type_regime()
+        for page_type in ("comparison", "trend", "process", "system", "statement"):
+            spec = regime["page_types"][page_type]
+            self.assertIsInstance(spec.get("relation_kind"), str)
+            self.assertTrue(spec.get("minimum_encoding"))

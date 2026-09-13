@@ -1,3 +1,4 @@
+
 # Changelog
 
 All notable changes to this project are documented here. The format is based on
@@ -7,6 +8,34 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：补齐 expression-first 合同与迁移基础设施**：新增 qualification、asset-locations、expression-pipeline、impact、deck-quality 与 task-local proposal schemas；page-type-regime-v2 角色视图改由治理文件派生，并移除生产侧手写角色/形状映射。 (user-visible)
+- **leo-ppt-generator：增加 compose 前 selection 冻结校验**：新增 `verify_selection_frozen`，摘要缺失或 selection 被篡改时返回 `selection_frozen_mismatch`。 (user-visible)
+- **leo-ppt-generator：expression pipeline 封存 selection_digest**：整册选型结果现在生成与顺序无关的稳定摘要并标记 `selection_frozen`，为 compose 防重选提供明确输入。 (user-visible)
+- **leo-ppt-generator：接通 generate expression route**：application routes 现在通过唯一薄 pipeline 入口转发表达优先请求，非法请求 fail closed。 (user-visible)
+- **leo-ppt-generator：新增 expression pipeline 薄编排入口**：固定内容包到整册选型的调用顺序，空内容或不完整设计上下文 fail closed，不复制排名和模板逻辑。 (user-visible)
+- **leo-ppt-generator：整册 selection 暴露双层 binding 摘要**：选型结果页级 entry 同步携带 expression/materialization 摘要，供下游避免解析嵌套 binding 才能校验。 (user-visible)
+- **leo-ppt-generator：增加双层 binding fail-closed 校验**：v2 binding 的表达/物化摘要缺失或漂移时拒绝验证，并保留旧 binding 的兼容路径。 (user-visible)
+- **leo-ppt-generator：CLI 校验渲染收据双层 binding 摘要**：v2 binding 携带新摘要时，CLI 要求 receipt 逐项一致；历史收据仍保留兼容路径。 (user-visible)
+- **leo-ppt-generator：渲染 provenance 记录双层 binding 摘要**：HTML 页面 sidecar 现在携带 expression/materialization 摘要，便于按表达与 lane 分别追踪漂移。 (user-visible)
+- **leo-ppt-generator：预览缓存纳入双层 binding 摘要**：expression/materialization 摘要变化现在会使对应预览缓存失效，避免 lane 或页面表达漂移后复用旧像素。 (user-visible)
+- **leo-ppt-generator：RunIndex 与 preview 暴露双层 binding 摘要**：页级投影和预览报告现在携带 expression/materialization 摘要，支持后续 lane-specific 新鲜度校验。 (user-visible)
+- **leo-ppt-generator：receipt 写入双层 binding 摘要**：收据新增页级 `expression_binding_digests` 与 `materialization_binding_digests`，保留旧摘要以支持渐进消费者迁移。 (user-visible)
+- **leo-ppt-generator：增加双层 binding 摘要计算**：新增 lane-neutral `expression_binding_digest` 与 lane-specific `materialization_binding_digest` 辅助计算，保留既有 `binding_digest` 兼容校验，并验证 lane 变化只影响物化摘要。 (user-visible)
+- **leo-ppt-generator：将 page-expression 合同接入 content_model v2 编译**：具备关系结构的页面现在生成可校验的页级 expression，并复用同页 item/data 引用与确定性 reading order；合同失败时阻断内容包编译。 (user-visible)
+- **leo-ppt-generator：接入页面表达合同编译器**：新增 `compile_page_expression`，严格校验同页 item 引用、唯一阅读顺序、关系编码、事实引用与 schema，悬空或不完整表达 fail closed。 (user-visible)
+- **leo-ppt-generator：新增 page-expression-v1 schema 合同**：约束 page_id、reading task、focus、reading order、relation encoding、fact refs 与 uncertainty，作为表达垂直切片的机器边界。 (user-visible)
+- **leo-ppt-generator：page_intent 切换消费 page-type-regime-v2**：新增版本化关系最小编码并更新路由测试；旧 v1 文件暂保留用于迁移期对照，完整消费者清理仍待后续单元。 (user-visible)
+- **leo-ppt-generator：落地 expression-first page-type-regime-v2 初始合同**：新增 comparison/trend/process/causal/independent 的最小关系编码与版本化治理文件；通过 regime lint 与 page intent routing focused 回归。仅完成治理真值切片，完整 pipeline、迁移和真实导出仍未完成。 (user-visible)
+- **leo-ppt-generator：按多专家会议逐项收口 expression-first 方案**：固化 image lane 发布门、真实差页同构证明、有解分母冻结、迁移前后 pairing 同形校验、execution/diagnostic 隔离、publish 两阶段恢复与 receipt 防重放、cleanup 外部漂移、恶意输入负例、用户价值指标及 dirty-path 基线边界。仅更新方案文档，未实施代码或真实验收。 (user-visible)
+- 更新 PPT 表达优先实施方案：补充生产调用链、冻结 selection API、旧映射零残留负例、LibraryContext 全消费者迁移、双 lane 合同拆分与 readiness/真实证据边界。
+- **leo-ppt-generator：修复 expression-first 文档准入与接口追踪残留**：重新验证 PRD 的四个 `source_inputs` 并刷新机器收据 hash/时间戳；在 004 方案补充 `expression_pipeline/v1`、`library_context/v1`、`image-recipe/v1`、`qualification/v1`、`binding/v2`、`impact/v2`、`deck-quality/v1` 到 owner/consumer/闭合证据的逐项追踪。仅更新文档，未实施代码、迁移或视觉验收。 (user-visible)
+- **spec-runtime-setup：裸调用自动收敛运行时基线**：裸调用现在会按 registry 默认项执行依赖安装、host MCP 冲突修复和 Provider 验证/首次建图；不安全路径与高优先级冲突仍保持 fail-closed。 (user-visible)
+- **leo-ppt-generator：按全面审查逐项收口 expression-first 方案**：冻结 `expression_pipeline`、`LibraryContext`、`image-recipe`、qualification、双层 binding、impact/scorecard 合同；统一五阶段迁移状态与 CLI，补充 v2 regime 映射清理、staging root 注入、预迁移价值门和共享文件写入 owner；同步 PRD 的开发期一次性 v2 切换边界。仅更新方案与 PRD，未实施代码或迁移。 (user-visible)
+- **leo-ppt-generator：整合能力提升 PRD 与 expression-first 方案**：将 004 固定为 R-85a、表达合同、资格/binding、模板库结构迁移和消费者切换的唯一实施入口；保留 003 U12 对 R-85b 全库语义升级与资产质量晋升的 owner。新增 PRD→方案单元→owner→验收边界追踪矩阵，明确 R-71/R-74/R-77/R-84 为接口或条件承接，R-70/R-73/R-76/R-78/R-79/R-80/R-82 外置，R-83/R-81/R-72 不重新激活；按用户确认的一次性 v2 切换 supersede PRD 中旧 run 恢复表述。仅更新文档，未实施代码或迁移。 (user-visible)
+- **leo-ppt-generator：逐项收口 expression-first 复审残余问题**：在方案中将 generation/evidence 改为 `asset_generation → evidence_set_digest → catalog_generation` 单向 DAG，移除 catalog generation 对 expression identity 的耦合，定义 image-only layout 的 recipe pairing、publish maintenance lock/CAS 恢复边界，并扩展 `deck_quality` 的 failed/stale/error 状态；同步复审记录，以上修订均待 runtime/schema/probe 实现验证。 (user-visible)
+- **leo-ppt-generator：按五专家复审重构 expression-first 实施方案**：原地优化 `docs/plans/2026-09-11-004-feat-leo-ppt-expression-first-plan.md`，保留表达优先 Product Contract 与 R1–R9/AE1–AE8，将重复的表达、模板能力与 renderer 资产层收敛为 `page-type-regime`、layout/template/`renderer_support` 单一真值及派生执行配对；补充应用层薄编排、判别式候选身份、lane-neutral/lane-specific 双层 binding、逐关系正向 probe＋反例证据、切换前旧链视觉基线，以及 `preview → stage → verify → publish → cleanup` 隔离迁移与交付工作树摘要收敛。修正 closure 覆盖 `evals/` 与 `docs/leo-ppt-generator`、补齐 executable-side guides/ornament/QA profile 位置处置，并新增 U12/U13 解耦价值证伪与全库搬迁。后续 headless 复审进一步拆开 lane-neutral 表达选择与 lane-specific 执行配对，前置 cleanup 前视觉门，补足 U7-A/U7-B 快照、run-input 原子提交、独立 worktree、relation oracle、publish CAS/锁及 byte-bound cleanup。未实施代码、迁移、构建、Provider、真实导出或视觉验收。 (user-visible)
+- **leo-ppt-generator：表达优先方案多领域专家复审（代码事实层）**：按 coherence/feasibility/adversarial/scope-guardian/product-lens 五种角色建立复审包；独立 worker 派发因宿主容量全部返回 429，未形成独立 reviewer 证据。主 Agent 结合 HEAD `710846e2` 复核源码 hash、565 实体分母、catalog 指针与关键行为分支，并保留历史 35 项 findings 的证据索引。当前方案已落位主要迁移与能力模型修订；新增残余关注包括 generation/evidence 循环、表达摘要与页级失效边界冲突、27 个 image-only layout 的 pairing 身份以及 publish 全局停写/CAS 收敛边界。评审记录见 `docs/leo-ppt-generator/reviews/2026-09-12-expression-first-multi-expert-review.md`；代码迁移、真实导出与人工视觉验收仍未运行。 (user-visible)
+- **leo-ppt-generator：逐项修订表达优先模板重构方案**：基于当前 HEAD `710846e20a900e02bd5349629015d6e3bd441510` 更新 source snapshot 边界、page-expression 最小 schema 与负例、`axis→axis-guide` 完整 ID 映射、`stale_catalog` 单一错误码、R75/U5 分离、关系最小编码、迁移/消费者闭环、catalog 原子发布、四维真实视觉 rubric 和 page-level receipt；补充 15 项问题到 owner/验证映射，并校正 U1/U11 时序、U7/U9 消费者清零口径及历史分母状态。仅更新方案与评审文档，代码迁移、真实导出和视觉验收仍待实施。 (user-visible)
 - **leo-ppt-generator：补充表达优先方案独立复审证据校准**：刷新当前源码快照哈希与盘点分母，记录 point 隐式回填、v1 binding、canonical rebuild、causal/system 压平及 R75/U5 提案语义冲突；补充项目虚拟环境下 focused/full test 结果，并明确独立 worker 因 429 未返回。 (user-visible)
 - **leo-ppt-generator：U11 容量重排提案与六节点决策简报**：新增 runtime `layout_proposals.py`——容量 overflow → ≤3 项带一句话代价的菜单（换版式优先、内容减法次之），逐项可 `preview_apply` 纯函数预演并按门同口径复检闭环（宽度真源 `visual_width` 收编 `render/layout.py`，check_deck_geometry 同源委托）；不可行如实报告并给拆页/降密度/混合确认替代路线，不硬凑；永不自动改正文、不缩字号。新增 `references/decision-brief.md` 六节点三行简报模板与确定性构建器（术语白名单通俗化、单行 60 字上限、页码"计数＋区间"格式、波及页数与 `compute_impact.py` 输出对账不编造、委托模式仍生成仅豁免呈现）；执行合同补六节点挂点。17 项测试新增。 (user-visible)
 - **leo-ppt-generator：U14 交付披露面（diffs 拼图/alt 清单/讲稿时长）**：新增 runtime `delivery_disclosure.py`——R-78 新旧页图拼图写 `<run>/diffs/`（页集合与波及面严格相等、缺图/多图拒绝、图注带 regime 版本戳）；R-79 alt 清单写 `<run>/disclosure/`（负责人裁决：reports/ 属 qa_reports 指纹类，披露工件移出该命名空间），缺失按 missing 披露不静默；R-82 讲稿时长校准（页级预算优先→整册均分→双缺失 unknown，advisory 不阻断）接入 `export_speaker_notes --duration-check`（DURATION-WARN 出口）；收据新增**非指纹** `disclosure` 摘要块，旧收据验证不受影响（负例断言披露工件不落入五类指纹类）；控制台新增 `/diffs/` serve（严格包含检查防穿越）。15 项测试新增。 (user-visible)
@@ -71,6 +100,12 @@ adheres to a loose semantic-versioning convention.
 - **仓库级：清理全部评测 workspace 产物与 graphify-out（约 4.3G）**：均为 git-ignored 可再生产物（重跑 `skill-up run evals/eval.yaml` 或 spec-runtime-setup 刷新即可重建），仅保留当日活跃的 `ppt-flow-diagram-workspace/`。同步改写 `docs/` 与 `evidence-first-writing/` 中指向已删工作区的悬空证据路径为"原存 git-ignored 工作区（已于 2026-09-11 清理）"表述，含命令块中指向已删任务隔离 `.venv` 的路径（改 `<python>` 占位并注明等价形式）；保留 CHANGELOG 历史条目、机器证据 JSON（`docs/leo-ppt-generator/evidence/style-index-verification.json` 的轨迹/判官哈希记录）与 `docs/tasks/` 冻结任务清单 context_refs、评测 fixture 中的历史记录性引用。
 
 ### Fixed
+- **leo-ppt-generator：修正 expression 摘要的页级失效范围**：不再把整册 `content_digest` 纳入 expression binding 摘要，单页变更不会误使无关页面预览缓存失效。 (user-visible)
+- **leo-ppt-generator：补齐 content-pack v2 expression schema 投影**：为 page-level `expression` 增加 schema 接口，修复内容模型回归因新增字段被拒绝的问题。 (user-visible)
+- **leo-ppt-generator：修正 URL 安全语义单测隔离**：HEAD/GET 与重定向用例仅隔离初始 DNS 检查，仍真实覆盖私网重定向拒绝逻辑。 (user-visible)
+- **leo-ppt-generator：隔离 URL 失败分支单元测试的 DNS 安全前置**：404 测试显式注入安全检查 stub，保持生产 SSRF 防护与错误语义不变。 (user-visible)
+- **leo-ppt-generator：隔离 URL HEAD 单元测试的 DNS 安全前置**：测试显式 mock `_unsafe_url_target` 后验证 HEAD 200 语义，生产 SSRF 防护逻辑保持不变。 (user-visible)
+- **leo-ppt-generator：同步容量历史 fixture 到 P1 当前 slot 合同**：将已移除的 `meta` 槽迁移为 `footer_left`，恢复 over-spec 边界测试对当前 canonical layout 的有效覆盖。 (user-visible)
 - **leo-ppt-generator：补齐模板库重构方案的全面实施边界**：修正任务内布局提案与 U11 canonical 迁移的范围歧义；新增 `consumer-closure-v1` 扫描合同、固定 roots/excludes、raw/excluded/unclassified/active 命中分项和隔离 checkout 命令；补充逐 kind `asset-locations-v2` 映射；为 003/004 增加机器可读 supersede 元数据；锁定迁移参数的 worktree containment、dirty scope、plan/report/allowlist 摘要绑定与失败状态。仅更新方案，未执行代码迁移或视觉验收。 (user-visible)
 - **leo-ppt-generator：收口表达优先方案的实施契约**：明确 004 对原 Product Contract 的单一范围 supersede 边界，登记与 003 U12 的结构/语义 owner 分工；为模板消费者增加逐文件分类与旧路径清零检查要求；锁定迁移脚本 `preview/apply/verify/cleanup` 子命令、摘要校验、脏工作树保护、失败状态和精确删除 allowlist。方案仍未执行迁移、代码实现或视觉验收。 (user-visible)
 - **仓库级：修正 2026-09-04 文档目录重组遗留的旧扁平路径引用**：`leo-ppt-generator/` 的 README、`evals/eval.yaml` 注释、`evals/known-issues.md` 与 `docs/plans/` 三份 plan、`docs/ideation/` 一份 HTML 共 7 个文件 16 行中的 `docs/leo-ppt-generator-*.md` 悬空引用，更新为重组后子目录路径（目标文件已逐一核验存在）；CHANGELOG 历史条目按 append-only 纪律保留原文。
@@ -2630,3 +2665,16 @@ adheres to a loose semantic-versioning convention.
   (`<!-- spec-first:lang:start/end -->`): absolute Chinese-language policy and
   the workflow-entry governance pointer to the installed `using-spec-first`
   skill.
+- Ensure compose consumes only frozen expression selections and rejects digest drift.
+- Make page type regime lint target the v2 canonical rules.
+- Add phase aliases to template migration CLI for preview, stage, verify, publish, and cleanup workflows.
+- Preview migration now emits a hash-bound migration plan for staged execution.
+- Require migration phases to validate the preview plan ledger digest before execution.
+- Emit a hash-bound verified migration receipt for gated publish phases.
+- Gate publish on a current verified migration receipt and ledger digest.
+- Gate cleanup of the legacy styles tree on a current published migration receipt.
+- Stage migration now emits a content-hashed staging manifest.
+- Verify migration now checks every staged file against the content-hashed manifest.
+- Add run-scoped task-local layout proposal validation and schema.
+- Wire task-local proposal validation into the expression pipeline and add regression coverage.
+- Expose the expression-first generation route through the CLI application imports.

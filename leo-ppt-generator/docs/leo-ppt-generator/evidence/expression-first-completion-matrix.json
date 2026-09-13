@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "plan": "docs/plans/2026-09-11-004-feat-leo-ppt-expression-first-plan.md",
+  "generated_from": "current working tree",
+  "units": {
+    "U1": {
+      "status": "partial",
+      "files": [
+        "runtime/src/leo_ppt_generator/page_intent.py",
+        "runtime/src/leo_ppt_generator/content_pack.py",
+        "runtime/src/leo_ppt_generator/schemas/page-expression-v1.schema.json",
+        "template-library/governance/rules/page-type-regime-v2.json"
+      ],
+      "implementation_evidence": [
+        "page-type-regime-v2",
+        "page-expression-v1",
+        "focused tests"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_page_intent_routing tests.test_chapter_content_model",
+      "result": "passed",
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U2": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U3": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U4": {
+      "status": "partial",
+      "files": [
+        "runtime/src/leo_ppt_generator/application/expression_pipeline.py"
+      ],
+      "implementation_evidence": [
+        "routes.generate -> run_expression_pipeline",
+        "atomic input generation"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline",
+      "result": "passed",
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U5": {
+      "status": "partial",
+      "files": [
+        "runtime/src/leo_ppt_generator/task_local_layout_proposals.py",
+        "runtime/src/leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json"
+      ],
+      "implementation_evidence": [
+        "closed op enum",
+        "candidate limit",
+        "scope validation"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline",
+      "result": "passed",
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U6": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "real Provider/image export/visual replay unavailable"
+    },
+    "U7": {
+      "status": "partial",
+      "files": [
+        "template-library/governance/rules/asset-locations-v2.json",
+        "template-library/governance/migration/migration-plan.json"
+      ],
+      "implementation_evidence": [
+        "preview plan with source snapshot, closure, mapping, allowlist, digest"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase preview",
+      "result": "passed",
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U8": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "v2 catalog builder and execution/diagnostic error separation not implemented"
+    },
+    "U9": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "active consumer closure and legacy path removal not verified"
+    },
+    "U10": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "required evidence or implementation not complete"
+    },
+    "U11": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "publish lock/CAS/journal/cleanup convergence not implemented"
+    },
+    "U12": {
+      "status": "partial",
+      "files": [],
+      "implementation_evidence": [],
+      "test_command": null,
+      "result": null,
+      "remaining_gap": "relation probes and paired baseline receipts not produced"
+    },
+    "U13": {
+      "status": "blocked",
+      "files": [
+        "scripts/migrate_template_library.py"
+      ],
+      "implementation_evidence": [
+        "stage shadow tree attempted"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase stage --plan template-library/governance/migration/migration-plan.json",
+      "result": "exit 1; 748 source files missing under references/styles",
+      "remaining_gap": "source snapshot/ledger points to absent legacy tree; migration cannot safely stage"
+    }
+  },
+  "global_verification": {
+    "compileall": "passed",
+    "lint": "passed",
+    "full_tests": {
+      "exit_code": 1,
+      "summary": "Ran 2059 tests; 16 failures, 3 errors",
+      "log": "/tmp/leo_expr_full_test.log"
+    },
+    "provider": "blocked",
+    "real_image_export": "not_run",
+    "visual_replay": "blocked",
+    "user_defect_replay": "blocked"
+  }
+}

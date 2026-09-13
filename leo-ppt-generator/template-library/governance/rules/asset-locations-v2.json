@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","schema_version":2,"rule_id":"asset-locations-v2",
+  "roots":{"canonical":"canonical","catalog":"catalog","evidence":"evidence","governance":"governance"},
+  "kinds":{"style":"canonical/styles","theme":"canonical/themes","layout":"canonical/layouts","template":"canonical/templates","component":"canonical/components","recipe":"canonical/executable/recipes","font":"canonical/fonts","ornament":"canonical/ornaments","qa-profile":"governance/qa"},
+  "forbidden_legacy_roots":["references/styles","template-library/reference/sources/retired-styles-tree"],
+  "symlink_policy":"reject_escape"
+}

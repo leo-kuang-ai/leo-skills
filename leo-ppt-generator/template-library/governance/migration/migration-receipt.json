@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "template-library-migration-receipt",
+  "phase": "published",
+  "ledger_sha256": "7acbcadcff3ecc3e067aab7d046068c4574f49c8170b8090f81023f6c2d87a33",
+  "plan_sha256": "1356b2fc378ccc020019b9e3716f6504137ccc9f73bcc708191f9374db0ddb7d",
+  "entry_count": 891
+}

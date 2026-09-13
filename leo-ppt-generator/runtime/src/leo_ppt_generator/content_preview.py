@@ -53,7 +53,7 @@ def _cached_page(previous, cache_key, destination):
             return False
     try:
         receipt = json.loads((destination / previous["sidecar"]).read_text(encoding="utf-8"))
-        if (receipt.get("binding_digest") != previous.get("binding_digest")
+        if (receipt.get("expression_binding_digest") != previous.get("expression_binding_digest")
                 or receipt.get("out_sha256") != previous["artifact_sha256"]
                 or receipt.get("preview_kind") != "skeleton"):
             return False
@@ -141,6 +141,8 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                         raise PreviewError("preview_binding_missing")
                     binding, page, resolver = loaded["binding"], loaded["pack_page"], loaded["resolver"]
                     item["binding_digest"] = binding["binding_digest"]
+                    item["expression_binding_digest"] = binding.get("expression_binding_digest")
+                    item["materialization_binding_digest"] = binding.get("materialization_binding_digest")
                     if binding["backend"] != "render:html":
                         item.update(status="unsupported", reason_code="preview_unsupported",
                                     message="此页尚无通过验证的确定性骨架，未替换为其他版式。")
@@ -148,6 +150,8 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                     data = materialize_html(binding, page, resolver=resolver)
                     # 整册内容摘要变化不会让其他页面像素缓存失效；每次仍核验当前完整绑定。
                     cache_key = _digest({"data": data, "effective": binding["effective"],
+                                         "expression_binding_digest": binding.get("expression_binding_digest"),
+                                         "materialization_binding_digest": binding.get("materialization_binding_digest"),
                                          "slots": binding["slot_map"], "renderer": renderer_version,
                                          "overflow": os.environ.get("LEO_PPT_RENDER_OVERFLOW", "enforce")})
                     item["cache_key"] = cache_key
@@ -156,14 +160,15 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                         item.update({k: old[k] for k in ("artifact", "artifact_sha256", "sidecar", "sidecar_sha256")})
                         receipt_path = destination / item["sidecar"]
                         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-                        if receipt["binding_digest"] != binding["binding_digest"]:
+                        if receipt.get("expression_binding_digest") != binding.get("expression_binding_digest"):
                             # 像素不变但整册绑定已变；保留首次渲染身份，明确这是缓存复用。
                             receipt.setdefault("preview_cache", {
-                                "rendered_binding_digest": receipt["binding_digest"],
+                                "rendered_binding_digest": receipt.get("expression_binding_digest"),
                                 "rendered_content_digest": receipt["content_digest"],
                                 "cache_key": cache_key,
                             })
-                            receipt.update(binding_digest=binding["binding_digest"],
+                            receipt.update(expression_binding_digest=binding.get("expression_binding_digest"),
+                                           binding_digest=binding.get("binding_digest"),
                                            content_digest=binding["content_digest"])
                             atomic_write_json(receipt_path, receipt)
                             item["sidecar_sha256"] = sha256_file(receipt_path)

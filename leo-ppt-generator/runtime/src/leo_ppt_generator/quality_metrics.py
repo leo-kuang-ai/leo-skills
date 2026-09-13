@@ -206,9 +206,12 @@ def scorecard_for_run(run_path):
         raise MetricEventError("run directory does not exist")
     window_path = root / "observability" / "quality-window.json"
     if not window_path.exists():
-        return {"schema_version": 1, "status": "blocked",
+        return {"schema_version": 1, "status": "blocked", "overall_status": "blocked",
                 "reason_code": "quality_window_not_recorded", "target_pages": None,
-                "tf": None, "cost": None, "rework": None}
+                "tf": None, "cost": None, "rework": None,
+                "deck_quality": {"schema_version": 1, "overall_status": "blocked",
+                                  "channels": {k: "blocked" for k in ("schema","facts","binding","export")},
+                                  "evidence": []}}
     window_bytes = window_path.read_bytes()
     config = json.loads(window_bytes)
     if not isinstance(config, dict) or config.get("schema_version") != 1:
@@ -233,6 +236,17 @@ def scorecard_for_run(run_path):
                              window=config.get("window"), target_pages=config["target_pages"],
                              phase=config.get("phase", "after-authorization"))
     report["observation_closed"] = closed
+    channels = {
+        "schema": "passed" if (root / "input" / "content-pack.json").is_file() else "not_run",
+        "facts": "passed" if events else "not_run",
+        "binding": "passed" if any((root / p).is_file() for p in ("input/content-binding.json", "input/layout-selection.json")) else "not_run",
+        "export": "passed" if any((root / p).is_file() for p in ("image-deck/slide_jobs.json", "work/image-deck/slide_jobs.json")) else "blocked",
+    }
+    priority = ("error", "failed", "stale", "blocked", "not_run", "passed")
+    overall = next((state for state in priority if state in channels.values()), "not_run")
+    report["overall_status"] = overall
+    report["deck_quality"] = {"schema_version": 1, "overall_status": overall,
+                               "channels": channels, "evidence": []}
     return report
 
 

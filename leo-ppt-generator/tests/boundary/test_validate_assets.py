@@ -326,6 +326,9 @@ class CheckUrlSemanticsTest(unittest.TestCase):
         import email.message
 
         calls = self._patch([(200, email.message.Message())])
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "ok")
         self.assertEqual(calls, ["HEAD"])
@@ -342,6 +345,9 @@ class CheckUrlSemanticsTest(unittest.TestCase):
 
         urllib.request.urlopen = fake_urlopen
         self.addCleanup(setattr, urllib.request, "urlopen", orig)
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "unreachable")
         self.assertIn("404", result["detail"])
@@ -380,6 +386,9 @@ class CheckUrlSemanticsTest(unittest.TestCase):
         orig = urllib.request.urlopen
         urllib.request.urlopen = fake_urlopen
         self.addCleanup(setattr, urllib.request, "urlopen", orig)
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "ok")
         self.assertEqual(calls, ["HEAD", "GET"])
@@ -407,8 +416,12 @@ class CheckUrlSemanticsTest(unittest.TestCase):
             def __exit__(self, *exc):
                 return False
 
+        original_target_check = self.module._unsafe_url_target
+        def allow_initial(ref):
+            return None if "example.com" in ref else original_target_check(ref)
         with mock.patch.object(self.module.urllib.request, "urlopen", return_value=FakeResponse()):
-            result = self.module.check_url("https://example.com/chart.png")
+            with mock.patch.object(self.module, "_unsafe_url_target", side_effect=allow_initial):
+                result = self.module.check_url("https://example.com/chart.png")
         self.assertEqual(result["status"], "unreachable")
         self.assertIn("重定向后的 URL 被拒绝", result["detail"])
 

@@ -830,7 +830,8 @@ def projection_view(run_dir: str | Path) -> dict:
                 "master_page": page.get("master_page"),
                 "claim": page.get("claim"),
                 "layout_id": entry.get("layout_id"),
-                "binding_digest": entry.get("binding_digest"),
+                "expression_binding_digest": entry.get("expression_binding_digest"),
+                "materialization_binding_digest": entry.get("materialization_binding_digest"),
                 "item_count": len(page.get("items", [])),
             })
         view["pages"].sort(key=lambda p: p.get("number") or 0)

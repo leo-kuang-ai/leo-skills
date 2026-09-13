@@ -17,28 +17,8 @@ REGIME_PATH = (
     / "template-library"
     / "governance"
     / "rules"
-    / "page-type-regime-v1.json"
+    / "page-type-regime-v2.json"
 )
-
-_ROLE_TO_SHAPE = {
-    "封面": "cover",
-    "拆解·目录": "agenda",
-    "分隔·过渡": "section",
-    "陈述·金句": "statement",
-    "氛围页": "statement",
-    "结尾": "closing",
-    "指标·计分榜": "kpi",
-    "结论·数字海报": "kpi",
-    "对比·多维": "comparison",
-    "分布·漏斗": "evidence",
-    "趋势·时间线": "trend",
-    "流程·路径": "process",
-    "关系·网络": "system",
-    "证据·实拍": "evidence",
-    "参考·文献": "table",
-    "落地·下一步": "process",
-    "小结·回顾": "closing",
-}
 
 _KEYWORDS = {
     "comparison": ("对比", "比较", "差异", "优劣", "之前", "之后", "vs", " versus "),
@@ -52,6 +32,15 @@ _KEYWORDS = {
 }
 
 
+def _role_shape(role: str, regime: dict[str, Any]) -> str | None:
+    """Derive role aliases from the v2 regime; no second hand-authored map."""
+    for page_type, spec in regime.get("page_types", {}).items():
+        for alias in spec.get("role_aliases", []):
+            if alias == role:
+                return page_type
+    return None
+
+
 @lru_cache(maxsize=1)
 def load_page_type_regime() -> dict[str, Any]:
     """读取版本化页型真值源；缺失或非法时快速失败。"""
@@ -59,7 +48,7 @@ def load_page_type_regime() -> dict[str, Any]:
         document = json.loads(REGIME_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"page_type_regime_unavailable: {REGIME_PATH}") from exc
-    if document.get("schema_version") != 1 or not isinstance(document.get("page_types"), dict):
+    if document.get("schema_version") not in (1, 2) or not isinstance(document.get("page_types"), dict):
         raise RuntimeError("page_type_regime_invalid")
     return document
 
@@ -149,11 +138,12 @@ def analyze_page_intent(page: dict[str, Any]) -> dict[str, Any]:
     explicit = _explicit_shape(page)
     structural = _structure_shape(page)
     keyword, keyword_hits = _keyword_shape(text)
-    shape = explicit or structural or _ROLE_TO_SHAPE.get(role) or keyword
-    source = "explicit" if explicit else "structure" if structural else "role" if role in _ROLE_TO_SHAPE else "keyword" if keyword else "unknown"
+    role_shape = _role_shape(role, regime)
+    shape = explicit or structural or role_shape or keyword
+    source = "explicit" if explicit else "structure" if structural else "role" if role_shape else "keyword" if keyword else "unknown"
 
     # 只有结构和显式字段能给出高置信；单一关键词只提供候选，不直接自动定稿。
-    confidence = 1.0 if explicit else 0.9 if structural else 0.82 if role in _ROLE_TO_SHAPE else min(0.74, 0.45 + keyword_hits * 0.1) if keyword else 0.0
+    confidence = 1.0 if explicit else 0.9 if structural else 0.82 if role_shape else min(0.74, 0.45 + keyword_hits * 0.1) if keyword else 0.0
     if page.get("confidence") == "undecided" or page.get("semantic_structure") == "undecided":
         confidence = min(confidence, 0.35)
     if shape is None:

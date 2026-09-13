@@ -593,6 +593,16 @@ def _extend_content_model(pack, master_text):
                                                   and page["semantic_structure"] != "undecided") else "undecided"
         if page["confidence"] == "undecided":
             page["basis"] = [*page["basis"], "证据或结构不足，保留 undecided"]
+        # expression-first：已有 content_model v2 页面声明转为可校验的页级表达合同。
+        task = page.get("semantic_structure")
+        if task in {"comparison", "trend", "process", "causal", "independent"}:
+            order = [item["item_id"] for item in page["items"]]
+            page["expression"] = compile_page_expression(
+                pack, page["page_id"], reading_task=task,
+                focus=page["claim"], reading_order=order,
+                relation_encoding={"item_ids": order},
+                fact_refs=page.get("data_refs", []),
+                uncertainty=[] if page["confidence"] == "medium" else ["structure"])
 
 
 def _verify_content_model(pack):
@@ -719,3 +729,41 @@ def propose_page_id_stamping(master_text: str) -> str:
         pos = base + insert_at
         out = out[:pos] + f"page_id: {proposal}\n" + out[pos:]
     return out
+
+# ---------------------------------------------------------------------------
+# 表达合同编译（expression-first vertical slice）
+# ---------------------------------------------------------------------------
+
+def compile_page_expression(pack: dict, page_id: str, *, reading_task: str,
+                            focus: str, reading_order: list[str],
+                            relation_encoding: dict, fact_refs: list[str] | None = None,
+                            uncertainty: list[str] | None = None) -> dict:
+    """从已验证内容包编译单页表达；所有引用必须指向同页 item。"""
+    if not isinstance(pack, dict) or not isinstance(page_id, str):
+        raise ContentPackError("expression_incomplete")
+    page = next((p for p in pack.get("pages", []) if p.get("page_id") == page_id), None)
+    if page is None:
+        raise ContentPackError("expression_incomplete: page_id")
+    if not isinstance(focus, str) or not focus.strip() or not isinstance(reading_order, list) or not reading_order:
+        raise ContentPackError("expression_incomplete")
+    item_ids = {i.get("item_id") for i in page.get("items", []) if isinstance(i, dict)}
+    if len(set(reading_order)) != len(reading_order) or not set(reading_order).issubset(item_ids):
+        raise ContentPackError("expression_incomplete: reading_order")
+    if not isinstance(relation_encoding, dict) or not relation_encoding:
+        raise ContentPackError("expression_incomplete: relation")
+    refs = fact_refs or []
+    if not isinstance(refs, list) or not set(refs).issubset(item_ids):
+        raise ContentPackError("expression_incomplete: fact_refs")
+    expression = {"page_id": page_id, "reading_task": reading_task,
+                  "focus": focus.strip(), "reading_order": list(reading_order),
+                  "relation": {"kind": reading_task, "encoding": relation_encoding},
+                  "fact_refs": list(refs), "uncertainty": list(uncertainty or [])}
+    schema_path = Path(__file__).parent / "schemas" / "page-expression-v1.schema.json"
+    try:
+        from jsonschema import Draft202012Validator
+        errors = list(Draft202012Validator(json.loads(schema_path.read_text(encoding="utf-8"))).iter_errors(expression))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ContentPackError("expression_schema_unavailable") from exc
+    if errors:
+        raise ContentPackError("expression_incomplete: " + errors[0].message)
+    return expression

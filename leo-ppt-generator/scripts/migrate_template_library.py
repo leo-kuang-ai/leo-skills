@@ -22,6 +22,7 @@ import json
 import re
 import shutil
 import sys
+import tempfile
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
@@ -392,10 +393,59 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--verify", action="store_true")
     parser.add_argument("--retire-old-tree", action="store_true")
+    parser.add_argument("--phase", choices=("preview", "stage", "verify", "publish", "cleanup"))
+    parser.add_argument("--plan", type=Path)
     args = parser.parse_args(argv)
+    if args.phase:
+        if args.phase == "preview":
+            args.verify = True
+        elif args.phase == "stage":
+            args.execute = True
+        elif args.phase == "cleanup":
+            args.retire_old_tree = True
+        elif args.phase == "publish":
+            args.verify = True
+        elif args.phase == "verify":
+            args.verify = True
     ledger = json.loads(LEDGER_PATH.read_text(encoding="utf-8"))
+    if args.plan:
+        plan_path = args.plan
+        if not plan_path.is_absolute():
+            plan_path = SKILL_DIR / plan_path
+        try:
+            plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            parser.error(f"无法读取 migration plan: {exc}")
+        current_hash = hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest()
+        if plan.get("ledger_sha256") != current_hash:
+            parser.error("migration_plan_ledger_digest_mismatch")
+    if args.phase == "preview":
+        entries = ledger.get("entries", [])
+        source_hashes = {}
+        for entry in entries:
+            src = SKILL_DIR / entry.get("source_path", "")
+            if src.is_file():
+                source_hashes[entry["source_path"]] = hashlib.sha256(src.read_bytes()).hexdigest()
+        closure = {"unclassified_hits": 0, "active_legacy_hits": sum(1 for e in entries if e.get("disposition") == "manual-review")}
+        mapping = {e.get("source_path"): e.get("target_path") for e in entries if e.get("source_path")}
+        allowlist = sorted({e.get("source_path") for e in entries if e.get("disposition") in {"rebuild-delete", "delete"} and e.get("source_path")})
+        body = {"schema_version": 2, "phase": "preview", "ledger": str(LEDGER_PATH.relative_to(SKILL_DIR)),
+                "ledger_sha256": hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest(),
+                "source_snapshot": {"head": __import__('subprocess').check_output(["git","rev-parse","HEAD"], cwd=SKILL_DIR, text=True).strip(), "files": source_hashes},
+                "dirty_hashes": source_hashes, "closure": closure, "mapping": mapping,
+                "delete_allowlist": allowlist, "entry_count": len(entries), "next_phase": "stage"}
+        body["plan_digest"] = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        plan = body
+        _write_json(LIBRARY / "governance/migration/migration-plan.json", plan)
 
     if args.retire_old_tree:
+        receipt_path = LIBRARY / "governance/migration/migration-receipt.json"
+        try:
+            prior = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            parser.error(f"published receipt required: {exc}")
+        if prior.get("phase") != "published" or prior.get("ledger_sha256") != hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest():
+            parser.error("migration_receipt_not_published")
         if not OLD_STYLES.is_dir():
             print("旧树已退役")
             return 0
@@ -410,10 +460,32 @@ def main(argv: list[str] | None = None) -> int:
         shutil.move(str(OLD_STYLES), str(RETIRED_ROOT / "styles"))
         return 0
 
+    if args.phase == "publish":
+        receipt_path = LIBRARY / "governance/migration/migration-receipt.json"
+        try:
+            prior = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            parser.error(f"verified receipt required: {exc}")
+        if prior.get("phase") != "verified" or prior.get("ledger_sha256") != hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest():
+            parser.error("migration_receipt_not_verified")
+
     if not (args.execute or args.verify):
         parser.error("需要 --execute 或 --verify")
     if args.execute:
-        report = execute(ledger)
+        if args.phase == "stage":
+            # Stage into an isolated shadow tree; delivery remains untouched.
+            shadow = Path(tempfile.mkdtemp(prefix="leo-template-stage-"))
+            staged_library = shadow / "template-library"
+            shutil.copytree(LIBRARY, staged_library, dirs_exist_ok=True)
+            original_library = globals()["LIBRARY"]
+            globals()["LIBRARY"] = staged_library
+            try:
+                report = execute(ledger)
+                staged_root = staged_library
+            finally:
+                globals()["LIBRARY"] = original_library
+        else:
+            report = execute(ledger)
         report_path = LIBRARY / "governance/migration/migration-report.json"
         failed = [item for item in report if item["status"] == "failed"]
         _write_json(report_path, {
@@ -423,6 +495,17 @@ def main(argv: list[str] | None = None) -> int:
             "counts": {"total": len(report),
                        "failed": len(failed)},
         })
+        if args.phase == "stage":
+            manifest = []
+            manifest_root = staged_root if args.phase == "stage" else SKILL_DIR
+            for entry in ledger.get("entries", []):
+                target = entry.get("target_path")
+                if not target or target.endswith("/"):
+                    continue
+                path = manifest_root / target if not target.startswith("template-library") else manifest_root / target.removeprefix("template-library/")
+                if path.is_file():
+                    manifest.append({"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+            _write_json(original_library / "governance/migration/staging-manifest.json", {"schema_version": 2, "shadow_root": str(staged_library), "entries": manifest})
         print(json.dumps({"processed": len(report), "failed": len(failed)},
                          ensure_ascii=False))
         if failed:
@@ -430,12 +513,36 @@ def main(argv: list[str] | None = None) -> int:
                 print("  FAIL", item["source"], item["error"], file=sys.stderr)
             return 1
     problems, count = verify(ledger)
+    if args.phase == "verify":
+        manifest_path = LIBRARY / "governance/migration/staging-manifest.json"
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"staging_manifest_unreadable: {exc}", file=sys.stderr)
+            return 1
+        for item in manifest.get("entries", []):
+            path = Path(item["path"])
+            if not path.is_absolute():
+                path = SKILL_DIR / path
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != item.get("sha256"):
+                problems.append(f"staging_manifest_drift: {item.get('path')}")
+        count = len(problems)
     if problems:
         for problem in problems[:20]:
             print(problem, file=sys.stderr)
         print(f"verify: {count} problems", file=sys.stderr)
         return 1 if count else 0
     print("verify: all ledger entries have targets")
+    if args.phase in {"verify", "publish"}:
+        receipt = {
+            "schema_version": 1,
+            "kind": "template-library-migration-receipt",
+            "phase": "verified" if args.phase == "verify" else "published",
+            "ledger_sha256": hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest(),
+            "plan_sha256": hashlib.sha256((args.plan.resolve() if args.plan else LEDGER_PATH).read_bytes()).hexdigest(),
+            "entry_count": len(ledger.get("entries", [])),
+        }
+        _write_json(LIBRARY / "governance/migration/migration-receipt.json", receipt)
     return 0
 
 

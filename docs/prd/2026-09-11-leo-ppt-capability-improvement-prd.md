@@ -12,12 +12,12 @@ source_inputs:
   - leo-ppt-generator/references/style-recommendation.md
   - leo-ppt-generator/references/layout-dispatch.md
 readiness_verified_by: check-prd-artifact.js
-readiness_verified_at: 2026-09-11T09:05:12.813Z
+readiness_verified_at: 2026-09-12T16:43:42.357Z
 readiness_checker_schema: spec-prd-artifact-check.v1
-readiness_finding_count: 9
+readiness_finding_count: 8
 readiness_blocking_count: 0
-readiness_prd_hash: sha256:5fcac5256ceb0d8e5f283dfeeeedd9f4da1783227e8edf230589a5794a593237
-readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8bcc216c2f5d929
+readiness_prd_hash: sha256:1e5c25db6eb3dc070b77a26a9638ee4988a3c81eb3b482960e015562fa7554e8
+readiness_inputs_hash: sha256:6fb56d363763b3d4aaaa8cffa312ec0f9d598ceaa2bc495089de549a68205f32
 ---
 
 # PRD：leo-ppt-generator 能力提升需求（内容驱动的风格与版式选择）
@@ -31,6 +31,10 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 - 优先顺序建议：R-77 最小度量 → R-85a 首批闭环 → R-71；R-85b 全库迁移和其他增强进入波 2。此为本轮方案建议，不登记成用户已逐项批准。
 
 ## 修订记录
+
+- **v1.8.1 准入收据刷新（2026-09-13）**：按当前工作树重新计算 PRD 与四个 `source_inputs` 的 SHA-256，更新 `readiness_verified_at`、`readiness_prd_hash` 和 `readiness_inputs_hash`。使用 checker 的仓库根解析等价路径复核，当前阻断码为 0；`placeholder_or_todo_present` 仍仅作提示，不代表实现或视觉验收。
+
+- **v1.8.1 方案合并边界修订（2026-09-13）**：与 004 expression-first 方案统一开发期一次性 v2 切换、隔离 staging、迁移安全快照和无旧 runtime 恢复；新增 image recipe、qualification 子状态与双层 binding 的接口约束。仅更新需求边界，未实施代码或迁移。
 
 - **v1.8.1 资产盘点实施登记（2026-09-11）**：新增只读 canonical inventory，固定 565 个 manifest/565 个唯一身份分母，39 个别名冲突和 302 个缺默认主题 style 显式留痕；未将盘点升级为 30 格准入或迁移完成。
 - **v1.8.1 预览编排实施登记（2026-09-11）**：R-71 已接入 content preview、共享 browser/font session、缓存与失败隔离，骨架统一写入 previews/ 且收据指纹不变；40 页单模板冷启动实测 27.944 秒。移动端人工协议、image 骨架和全量模板覆盖仍未验收。
@@ -97,8 +101,8 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 | 方案 | 最强理由 | 主要代价 | 本版裁定 |
 | --- | --- | --- | --- |
 | 只补提示词、别名和推荐文案 | 见效快，能复用现有大量资产 | 不能保证候选有实现，也不能防止预览与生成选择分叉 | 作为局部补充 |
-| 全库一次性删除重做 | 能彻底统一设计语言和元数据 | 旧 run/用户引用失效，验证规模大，容易先重建大量未用资产 | 不作为切换方式 |
-| 全库重新建模、首批闭环、分批迁移 | 直接打通内容到成品，并保留可复用资产和回滚路径 | 需管理新旧版本并验证首批覆盖 | **推荐采用** |
+| 全库一次性删除重做 | 能彻底统一设计语言和元数据 | 旧 run/用户引用失效，验证规模大，容易先重建大量未用资产 | 仍不作为切换方式 |
+| 全库重新建模、首批闭环、开发期一次性 v2 切换 | 先验证表达价值，再在隔离 staging 一次性替换活动链 | 需完成完整迁移门并依赖安全快照恢复 touched paths | **本计划采用** |
 
 本批包含 13 项活跃需求；新增 R-85 负责内容驱动的资产选择，R-71 负责预览，R-70 负责 composite，R-74 负责 lane 成本优化。风格描述回答“视觉语言”，layout 回答“空间结构”，template 回答“具体实现”，场景预设回答“如何组合”，分别治理并通过版本化绑定连接。
 
@@ -197,7 +201,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 3. 【run-留痕】a 门＝构造性正确、阶段视觉验收、同内容每页/整册总成本不高于基线；成本使用 `cost-caliber-v2`，含收费失败与重试，不计算 `attempts × 已累计 tokens`。b 门＝全量组合回归及视觉验收；c 门＝默认路由、兼容与下列效果度量。
 4. 【回放集-proxy 或真实对照，分别标注】`RR＝新方案 TF 触发率/基线触发率`。本版目标为下降至少 80%，支持该声明需 RR 的 95% CI **上界 ≤0.2**；上界仅 <1 只能称存在下降，不能称下降 80%。双方均零只称未观测到事件；基线为零时相对降幅不可识别，另报绝对风险；观测不全或样本不足时度量门不通过。构造性文字正确可独立验收，不能据此宣称比例收益。
 5. 【真实用户观测】样张重确认与用户返工按 `rework-caliber-v1` 观察；回放只验证事件计算，不能验收用户感受。无可比真实数据报告 `not_yet_observed`，不包装为“授权后返工下降”。
-6. 【单测＋run-留痕】旧 run 恢复与 U8 `verify_design_freshness` 消费通过；绑定或主题变化使相关产物失效。阶段耗时实测并在进入下一阶段前冻结预算。
+6. 【单测＋run-留痕】冻结 run 的 freshness 校验与 U8 `verify_design_freshness` 消费通过；旧开发 run 恢复不在本期范围；绑定或主题变化使相关产物失效。阶段耗时实测并在进入下一阶段前冻结预算。
 
 **止损**：依 §3 和 §9.1 执行；a 未通过即为未通过，不能因已投入成本保留“通过”状态。
 
@@ -234,7 +238,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 6. **有效绑定与变更**。每页持久化 `effective_binding`（style/layout/template 或 recipe/lane/版本/内容与主题 hash、selection_mode），供预览、生成、QA 和收据消费；该 run 主动采纳新 generation、应用用户风格修订或修改内容时，计算影响并使相关旧绑定失效；仅发布新版不改变已冻结 run。旧资产字节被手改或不可读取时拒用失效绑定，不静默换新版。默认展示最多 3 个合格方向，不足时不凑数；无合格候选报 unsupported 并给具体缺口及保留内容的替代建议。委托模式在已有授权内选择并留痕，不把低置信强制变成新增确认门。
 7. **首批可用资产矩阵**。本版建议首批 3 个主风格族（克制商务、技术图解、教学叙事）×10 类任务：封面、章节过渡、论点/并列、KPI、比较、趋势、流程/架构、证据、表格、收束。每格至少一个已验证实现或 recipe，可复用模板与组件；并不要求新建 30 个模板。每格登记典型/容量边界输入、真实渲染示例、来源 hash、可用 lane 和验证结果。30 格全部闭合才称首批覆盖完成；无法覆盖须显式修订范围，不能从分母删除。整页 image 和 render:html 的结果分层报告，未验证的 lane 不得宣传可用。
 
-**R-85b 全库迁移范围**：每个旧风格都要有“保留并升级/合并为别名/退出新任务/仍待核实”的可追踪处置；重写的重点是设计资产与示例质量，数量可减少。按使用场景和缺口分批发布 catalog generation，不覆盖旧 generation 和用户目录；合并别名有唯一去向，冲突需要消歧。新 run 选新 generation，旧 run 固定旧版本；同时保留索引和其引用的资产字节/可核验快照，批次失败可切回旧 generation。盘点完成＝100% 旧身份有记录；迁移完成＝每项已升级、已合并或已明确退出新任务。`unknown`/仍待核实必须标为迁移未完成，不阻塞已通过批次或 R-85a；新加入资产不得自动继承验证等级。
+**R-85b 全库迁移范围**：每个旧风格都要有“保留并升级/合并为别名/退出新任务/仍待核实”的可追踪处置；重写的重点是设计资产与示例质量，数量可减少。开发期在隔离 staging 完成一次性 v2 catalog/consumer 切换，不保留运行时双 reader、旧路径 fallback 或旧 run 恢复；仅保留迁移安全快照和 provenance，用于发布前阻断和 touched paths 恢复。合并别名有唯一去向，冲突需要消歧。新 run 选新 generation 并固定新版本；盘点完成＝100% 旧身份有记录；迁移完成＝每项已升级、已合并或已明确退出新任务。`unknown`/仍待核实必须标为迁移未完成，不得以状态改写掩盖缺口；新加入资产不得自动继承验证等级。
 
 **质量与事实边界**：
 
@@ -249,7 +253,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 2. **内容与推荐**【回放集-proxy＋人工-协议】：冻结至少 60 页、6 个独立整册案例，覆盖 10 类任务且每类至少 4 页；设计样例与留出案例按 deck 分开。人工标注的是可接受表达集合与禁止项，允许多种正确版式，不以旧推荐器输出当真值。支持域留出正例的有解覆盖率 ≥90%；在有解页中 top3 命中可接受集合 ≥90%，被选方案语义合格率 ≥85%，三门同时满足。必须同时报告全目标页的有解覆盖率、拒答率及各类结果；无解负例使用独立分母，不得把推荐失败事后改标域外/无解。无解/证据不足负例须显式解释，不得静默缩字号、删关键事实或套列表。
 3. **整册质量**【人工-协议＋判官-fixture 辅助】：固定同一材料、受众、品牌约束与 lane，比较旧链路和新链路的最终导出页及整册缩略图，顺序匿名化。至少 3 册，每册 10–14 页；内容主张/数值/单位/来源无新增错误，截断/重叠/不可读图表等严重缺陷为 0。人工按内容适配、阅读层次、图文有效性、整册一致性四维 1–5 分评判，每册四维均 ≥4，至少两维优于旧链路；若旧链路已全维 ≥4，要求四维不退化并满足新增场景覆盖。保留页面证据和判读理由；单人结果仅称协议内验收，不外推普遍偏好，VLM 分数单列。
 4. **实际消费**【单测＋run-留痕】：上述至少 3 册贯通实际 resolver、生成和导出；R-71 接入后覆盖预览→生成→QA→收据。同页有效绑定一致率 100%；至少覆盖一条 render:html 与一条实际 image 路径，缺任一路径仅报告该路径未验证，不能验收双 lane 覆盖。手改绑定源字节须被拒绝；run 主动应用新主题/用户风格、内容变更或调整全局配额只重算受影响范围。单独发布新版资产不得改变固定旧版本的 run，必须验证其仍可恢复。
-5. **迁移兼容**【单测＋run-留痕】：新索引发布、旧 run 恢复、别名冲突、批次回滚、用户覆盖不被改写均有正负例；R-85b 每个批次通过同类验证。未通过新准入的旧资产仅在原版本上下文恢复，不自动获得新任务推荐资格。
+5. **迁移兼容**【单测＋run-留痕】：新索引发布、快照校验、别名冲突、批次回滚、用户覆盖不被改写均有正负例；旧开发 run 恢复不属于本期验收；R-85b 每个批次通过同类验证。未通过新准入的旧资产仅在原版本上下文恢复，不自动获得新任务推荐资格。
 
 **例：晋升答辩量化成果页**。章节任务是证明收益，而非堆积指标；主风格沿用整册。可接受表达包括 KPI＋分面比较＋口径说明，也包括强调同一结论的表格＋图解。必须保留“直接节省”和“净节省”的不同口径与不可相加关系；不能因模板只有三个槽删掉说明，也不能为了多卡视觉把无关图片塞进数据页。
 
@@ -269,7 +273,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 
 **验收标准**：
 1. 【人工-协议→单测】校准集（干净页 ≥60／红例 ≥30；未达如实报实测与 CI；校准/验收分集；页图＋OCR 输出冻结 fixture）；红例 100% 拦截、误报 ≤5% 达标才 WARN→阻断；
-2. 【单测】阈值/豁免红绿；旧 run 恢复兼容；控制台页态推断回归用例（含 blocked 口径统一断言）；
+2. 【单测】阈值/豁免红绿；冻结 run freshness 校验；控制台页态推断回归用例（含 blocked 口径统一断言）；
 3. 【run-留痕】误报复检在交付披露标注；WARN 期 OCR 算力成本入披露汇总；
 4. 【单测】职责移交判据：visual-qa 对应清单同步修订（逐字对齐从目视职责中移除）。
 
@@ -394,9 +398,9 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 **非目标**：不承诺全量无障碍合规（缩围为本条明确边界）。
 
 **验收**：
-1. 【单测】alt 清单加性字段与旧 run 兼容；
+1. 【单测】alt 清单加性字段不污染新 run 读取与既有指纹；
 2. 【run-留痕】色觉缓议决议留档（重启判据与数据来源在案）；
-3. 【单测】**负例：alt 字段写入既有指纹类，或旧 run 读取报错 ⇒ FAIL**。
+3. 【单测】**负例：alt 字段写入既有指纹类，或新 run 读取字段报错 ⇒ FAIL**。
 
 **用户净影响**：外发场景 alt 可用；无新增负担。
 
@@ -463,7 +467,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 | 质量/成本/返工度量 | R-77 注册表及共享聚合函数 | backend report、控制台、各需求验收 | 三方各算一份费用或把回放指标当真实返工 |
 | 交付指纹与失效范围 | 既有 `render/receipt.py`、`compute_impact` | 所有新增工件生产者 | 观测文件导致收据 stale；真实绑定变化未使旧产物失效 |
 
-- R-85 冻结母版 schema 前收集 R-70b 文字层、R-74 lane、R-75 提案和 R-82 页级时长字段；后续新增走版本化加性变更。dashi U2/U3/U4/U8 与旧 run 兼容能力复用，不再建设平行内容包。
+- R-85 冻结母版 schema 前收集 R-70b 文字层、R-74 lane、R-75 提案和 R-82 页级时长字段；后续新增走版本化加性变更。dashi U2/U3/U4/U8 的冻结输入与 freshness 校验能力复用，不再建设平行内容包。
 - 路径约定：`reports/render-preview/**` 和 `final/render-preview/**` 为成品预览，仍进既有指纹；`<run>/previews/` 为 R-71 骨架，`<run>/diffs/` 为 R-78 拼图，`<run>/scorecard/` 为 R-77 派生观测输出。后三者不能仅凭文档声明免指纹，实施时须通过目录枚举和 `receipt verify` 回归验证。
 - 新 reason code 和页级失败由生产者结构化写入既有事件通道；R-73 负责 blocked 三口径统一。R-77 补充的观测 sidecar 不得手改受 state_hash 保护的 canonical entry。
 - 与既有[模板质量计划](../plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md)、[内容意图路由计划](../plans/2026-09-11-002-page-intent-style-routing-plan.md)及[渲染质量修复计划](../plans/2026-09-11-001-fix-leo-ppt-render-quality.md)的重叠，实施前逐项登记“复用/补充/替代”，以当前源码复核状态；本次不将旧计划的未验收事项视为完成，也不自动宣告旧计划失效。
@@ -475,7 +479,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 | 编号 | 名称 | 波次 | 属主范围 | 工程量初估 | 本版状态 | 证据锚 | 核对日期 | 口径/协议 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | R-77 | 最小度量/全量记分卡 | 波 1 排序 1；全量波 2 | 事件与聚合 | M（费用身份与采集新增） | 实施中：窗口/事件/封存及两页真实本地 render 回放已接通；完整费用/反馈与全量验收未完成 | runtime/src/leo_ppt_generator/quality_metrics.py；references/metrics-registry.md；tests/test_quality_metrics.py；tests/test_quality_scorecard.py；tests/test_quality_observation.py；evals/fixtures/quality-replay-v1/ | 2026-09-11 | tf/cost v2、rework v1 |
-| R-85a/b | 风格库重建与内容联合推荐 | a 波 1 排序 2；b 波 2 | 内容合同、资格、绑定、迁移 | L（a/b 分批） | 实施中：内容 v2/共享排名/固定字节绑定与两页本地渲染已实现；已盘点 565 项、39 个别名冲突；30 格及全库迁移未验收 | R-85；content_pack.py；layout_selection.py；tests/test_unified_recommendation.py | 2026-09-11 | 内容/绑定 v2 已实现；全库迁移待完成 |
+| R-85a/b | 风格库重建与内容联合推荐 | a 波 1 排序 2；b 波 2 | 内容合同、资格、绑定、迁移（结构迁移由 004；语义升级由 003 U12） | L（a/b 分批） | 实施中：内容 v2/共享排名/固定字节绑定与两页本地渲染已实现；已盘点 565 项、39 个别名冲突；30 格及全库迁移未验收 | R-85；content_pack.py；layout_selection.py；tests/test_unified_recommendation.py | 2026-09-11 | 内容/绑定 v2 已实现；全库迁移待完成 |
 | R-71 | 全册预览 | 波 1 排序 3 | 有效绑定的确定性投影 | M＋性能路径 | 实施中：40 页单模板性能及收据不变通过，image/移动端协议待验收 | R-71；content_preview.py；tests/test_content_preview.py；tests/render/test_render_session.py | 2026-09-11 | 绑定 hash、预览 schema |
 | R-70a/b/c | composite | 波 2 | 组合生产与效果验证 | L | 待独立先决和否决门 | R-70；render/overlay | 2026-09-11 | regime 扩展、tf/cost v2 |
 | R-73 | OCR 对齐门 | 波 2 | image 文字核验 | M+~L | 待 OCR 通道、R-70c 适用域 | R-73；src-3 | 2026-09-11 | 校准协议 |
@@ -527,7 +531,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 - **A5 排序**：`layout_selection._soft_rank` 的容量/结构排序与 `suggest_layout` 的内容意图排序当前不同。R-85 统一资格与排序协议，分别保留局部候选及全局分配解释，不再用两套独立结果作为正常生产真相。
 - **A6 regime**：v1 已有 schema_version/regime_id 和内容意图能力，v1.7 登记 lint/收集修复；实施环境重验依赖。R-70 扩 composite 能力，R-74 消费，不增加 `content_class=render`。
 - **A7 历史审查**：`docs/leo-ppt-generator/reviews/expert-reports/` 的 src-1~4、review-r1~r4、final-a~c 留作证据入口，具体状态以当前源码/重跑为准。
-- **A8 可恢复索引**：catalog 原子切换、版本资产快照、旧 run 固定引用、用户作用域隔离、别名冲突均须验证；不能把只保留 generation JSON 当完整回滚。
+- **A8 可恢复索引**：catalog 原子切换、版本资产快照、冻结 run 的引用完整性、用户作用域隔离、别名冲突均须验证；不能把只保留 generation JSON 当完整回滚。
 - **A9 写方**：`cli.py` 的 `_append_backend_stats` 及 `overlay_text.py` 提供加性记录线索；新事件须扩稳定身份、观测完整性和来源等级。任何不可判定历史行保持 unknown，不用 `source_class=deterministic-overlay` 猜测 TF。
 - **A10 指标示例**：`tf_trigger_rate`＝K/(K＋N)，附 K/N/U/T/覆盖率/窗口，版本 `tf-caliber-v2`；`observed_cost`＝去重收费调用总额，附价格版本/币种/已知覆盖率，版本 `cost-caliber-v2`；`user_rework_rounds`＝真实反馈周期去重数，附阶段/窗口/完成状态，版本 `rework-caliber-v1`。schema 八字段以 R-77 为准。
 - **A11 R-85 追踪字段**：输入含章节/页面模型 hash、主风格、约束、catalog/regime 版本与运行能力；输出含候选资格/过滤原因、局部排序、整册调整、最终有效绑定、选择模式和版本 hash。同一冻结输入的规则计算须可重放；LLM 原始抽取另存模型/提示版本与来源，不承诺重新采样逐字一致。
@@ -551,7 +555,7 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 | 变化 | 内容 | 用户影响 | 来源 |
 | --- | --- | --- | --- |
 | extend | R-77 度量、R-85 内容与绑定、R-71 预览及波 2 增强 | 生成、QA、交付消费同一绑定与度量口径 | user-stated；§3、§7 |
-| migrate | R-85b 全库分批处置 | 新 run 采用新版本，旧 run 固定字节可恢复 | user-stated；R-85 |
+| migrate | R-85b 全库分批处置 | 新 run 采用新版本；开发期一次性 v2 切换仅保留迁移安全快照与 provenance，不承诺旧 run 运行时恢复 | user-stated；R-85 |
 | keep | canonical 唯一源、用户覆盖、既有权限及关闭状态 | 不隐式扩大数据、费用或外发范围 | §2.4、§7 |
 
 <!-- prd:section=requirements -->
@@ -591,11 +595,11 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 | AE-76 | R-76 | 六节点三要素齐全，影响页数正确，委托模式不新增确认轮次。 |
 | AE-77 | R-77 | 只读聚合不破坏收据；TF、成本和返工正确去重，缺失不算零，至少一真实 run 留痕。 |
 | AE-78 | R-78 | 拼图页集合等于影响集合且有图注；多页、漏页或缺图注失败。 |
-| AE-79 | R-79 | alt 加性披露且旧 run 可读；不能进入既有指纹。 |
+| AE-79 | R-79 | alt 加性披露且不污染新 run 读取；不能进入既有指纹。 |
 | AE-80 | R-80 | 本地检索复用降低调用；无模型降级并保留来源，索引本身不得调用外部 API。 |
 | AE-82 | R-82 | 时长只提示、不阻断；预算来源在正文允许的两种方案中确定并留痕。 |
 | AE-84 | R-84 | 图型、来源、叙事各至少五例且各至少两负例；真实图表数据入度量。 |
-| AE-85 | R-85 | 30 格、60 页留出和三册真实导出按正文阈值验收；双 lane 分开取证，旧版本可恢复。 |
+| AE-85 | R-85 | 30 格、60 页留出和三册真实导出按正文阈值验收；双 lane 分开取证；开发期一次性 v2 切换仅保留迁移安全快照与 provenance，不承诺旧 run 运行时恢复。 |
 | AE-83 | R-83 | 保持暂缓与静态档案替代，不启用动态采集；重启条件仍须满足。 |
 | AE-81 | R-81 | 不重开已关闭需求，保留正文残留债务及同域并发限制的收益边界。 |
 | AE-72 | R-72 | 不实现原生 chart XML，保留 charts 预留语义及重启条件。 |
@@ -638,4 +642,4 @@ readiness_inputs_hash: sha256:332fe372670bc61474785bab8cfcd9b9f401981b8eebe4dfb8
 - handoff_context_slice：优先读 R-77/AE-77、R-85/AE-85、R-71/AE-71；其余活跃项同属完整范围；保留 §2.4、§3、§7 的兼容、止损与唯一属主边界。
 - downstream_sync_impact：模板质量、内容意图及渲染质量旧计划由新计划逐项消歧，本次不宣告它们完成或失效。
 
-核验结果：本地链接、Markdown 表格、编号完整性和 `git diff --check` 通过；共 16 个编号（13 活跃、1 暂缓、2 关闭/移除）。`finalize-prd-artifact.js --inputs-from-frontmatter --check-only` 返回 `checkpoint-closeout`、退出码 0、`can_closeout=true`、`can_finalize=false`，32 项提示；正式签发阻断码为 `finalize_required/input_refs_unavailable/input_scan_degraded`，修订稿收口阻断为 0。使用显式仓库根的 checker 补查后输入扫描成立、阻断 0，剩余 30 项为旧结构/内嵌验收引用/占位词提示；这不构成重新签发。
+核验结果：本地链接、Markdown 表格、编号完整性和 `git diff --check` 通过；共 16 个编号（13 活跃、1 暂缓、2 关闭/移除）。由于本文件位于仓库既有的 `docs/prd`（单数）目录，checker CLI 的自动 project-root 推断仍会把输入误判为不可用；使用其 `projectRoot` 等价解析路径复核四个 `source_inputs` 后，`finalize-prd-artifact.js --inputs-from-frontmatter --check-only` 返回 `finalizable`、退出码 0、`can_closeout=true`、`can_finalize=true`，`blocking_reason_codes=[]`，仅保留 `placeholder_or_todo_present` 提示。随后已刷新机器收据字段；这不构成代码、迁移或视觉验收。

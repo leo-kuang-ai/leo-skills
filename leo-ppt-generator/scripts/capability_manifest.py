@@ -148,6 +148,31 @@ def derive_qualification(asset: dict, *, asset_generation: str, evidence_receipt
                        for lane in (asset.get("lanes") or ["render:html"])} }
 
 
+def build_qualification_manifest(library_root: Path, evidence_path: Path | None = None) -> dict:
+    """Build a generation-bound qualification view; declarations alone stay unverified."""
+    registry = build_template_registry(library_root)
+    receipts = []
+    if evidence_path and evidence_path.is_file():
+        payload = json.loads(evidence_path.read_text(encoding="utf-8"))
+        receipts = payload if isinstance(payload, list) else payload.get("receipts", [])
+    rows = []
+    for entity in registry["entities"]:
+        if entity.get("kind") not in {"layout", "template"}:
+            continue
+        try:
+            data = json.loads((library_root / entity["path"]).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            data = {}
+        lanes = list((data.get("renderer_support") or {}).keys()) or [data.get("lane", "render:html")]
+        rows.append(derive_qualification({"asset_id": entity["asset_id"], "lanes": lanes},
+                                         asset_generation=registry["generation"],
+                                         evidence_receipts=receipts))
+    return {"schema_version": 1, "kind": "qualification-manifest",
+            "asset_generation": registry["generation"],
+            "evidence_set_digest": hashlib.sha256(_json_bytes(receipts)).hexdigest() if receipts else None,
+            "qualifications": rows}
+
+
 def build_template_registry(library_root: Path) -> dict:
     """从 canonical + governance 输入确定性构建 registry（不写盘）。
 
@@ -406,33 +431,44 @@ def rollback_template_catalog(library_root: Path, target_generation: str) -> dic
 
 
 def check_template_registry(library_root: Path) -> tuple[dict, int]:
-    """只读校验 current 指针的 generation 与源输入一致（漂移即非零）。"""
+    """只读校验 catalog，并区分 missing/invalid/stale/current。"""
     try:
         fresh = build_template_registry(library_root)
     except ValueError as exc:
-        return {"reason_code": "registry_rebuild_failed", "detail": str(exc)}, 2
+        return {"reason_code": "registry_rebuild_failed", "catalog_state": "invalid",
+                "detail": str(exc)}, 2
     try:
         pointer = json.loads((library_root / "catalog" / "current.json").read_text())
-    except (OSError, ValueError):
+    except FileNotFoundError:
         return {"reason_code": "registry_pointer_missing",
+                "catalog_state": "missing",
                 "expected_generation": fresh["generation"]}, 1
+    except (OSError, ValueError) as exc:
+        return {"reason_code": "registry_pointer_invalid", "catalog_state": "invalid",
+                "detail": str(exc), "expected_generation": fresh["generation"]}, 1
     if pointer.get("generation") != fresh["generation"]:
         return {"reason_code": "registry_stale",
+                "catalog_state": "stale",
                 "expected_generation": fresh["generation"],
                 "actual_generation": pointer.get("generation")}, 1
     registry_path = (library_root / "catalog" / "generations" /
                      fresh["generation"] / "registry.json")
     try:
         published = json.loads(registry_path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+    except FileNotFoundError:
         return {"reason_code": "registry_content_stale",
+                "catalog_state": "missing",
                 "generation": fresh["generation"]}, 1
+    except (OSError, ValueError) as exc:
+        return {"reason_code": "registry_content_invalid", "catalog_state": "invalid",
+                "detail": str(exc), "generation": fresh["generation"]}, 1
     if published != fresh:
         return {"reason_code": "registry_content_stale",
+                "catalog_state": "stale",
                 "generation": fresh["generation"],
                 "entities": len(fresh["entities"])}, 1
     return {"reason_code": "none", "generation": fresh["generation"],
-            "entities": len(fresh["entities"])}, 0
+            "catalog_state": "current", "entities": len(fresh["entities"])}, 0
 
 
 def rel_sorted(root: Path, rel_dir: Path, pattern: str = "*.md") -> list[Path]:
@@ -577,6 +613,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--library-publish", action="store_true", help="配合 --template-library 发布")
     parser.add_argument("--library-check", action="store_true", help="配合 --template-library 只读校验")
     parser.add_argument("--library-inventory", action="store_true", help="只读盘点 canonical，保留缺失及冲突分母")
+    parser.add_argument("--library-qualification", action="store_true", help="派生 generation-bound qualification view")
+    parser.add_argument("--evidence-receipts", help="relation/probe receipt JSON for qualification")
     parser.add_argument("--library-rollback", metavar="GENERATION",
                         help="配合 --template-library：current.json 指针原子切回既有 generation（批次回滚）")
     args = parser.parse_args(argv)
@@ -603,14 +641,18 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.template_library:
-        if args.compare or args.out:
+        if args.compare or (args.out and not args.library_qualification):
             parser.error("--template-library 不与旧清单参数混用")
         library_root = (Path(args.library_root).expanduser().resolve()
                         if args.library_root else root / "template-library")
         if not library_root.is_dir():
             print(f"模板库根不存在: {library_root}", file=sys.stderr)
             return EXIT_USAGE
-        if args.library_rollback:
+        if args.library_qualification:
+            evidence = Path(args.evidence_receipts).expanduser().resolve() if args.evidence_receipts else None
+            result = build_qualification_manifest(library_root, evidence)
+            code = 0
+        elif args.library_rollback:
             if args.library_publish or args.library_check:
                 parser.error("--library-rollback 不与发布或校验混用")
             try:
@@ -633,7 +675,12 @@ def main(argv: list[str] | None = None) -> int:
                       "source_digest": registry["source_digest"],
                       "structure_admission": derive_structure_admission(library_root)}
             code = 0
-        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+        rendered = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+        if args.library_qualification and args.out:
+            output = Path(args.out).expanduser().resolve()
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(rendered, encoding="utf-8")
+        print(rendered, end="")
         return code
 
     manifest = build_manifest(root)

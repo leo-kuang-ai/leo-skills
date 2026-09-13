@@ -22,11 +22,18 @@
     },
     "U2": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
-      "test_command": null,
-      "result": null,
-      "remaining_gap": "required evidence or implementation not complete"
+      "files": [
+        "scripts/capability_manifest.py",
+        "template-library/evidence/qualification-manifest.json",
+        "runtime/src/leo_ppt_generator/schemas/qualification-v1.schema.json"
+      ],
+      "implementation_evidence": [
+        "generation-bound qualification manifest",
+        "all 57 declarations unverified without receipts"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-check; PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-qualification --out template-library/evidence/qualification-manifest.json",
+      "result": "catalog exit 0; qualification exit 0; all qualifications unverified",
+      "remaining_gap": "relation×lane positive/negative probes, evidence drift and capacity receipts absent"
     },
     "U3": {
       "status": "partial",
@@ -66,32 +73,49 @@
     },
     "U6": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
-      "test_command": null,
-      "result": null,
-      "remaining_gap": "real Provider/image export/visual replay unavailable"
+      "files": [
+        "runtime/src/leo_ppt_generator/quality_metrics.py",
+        "scripts/run_quality_scorecard.py",
+        "runtime/src/leo_ppt_generator/schemas/impact-v2.schema.json",
+        "runtime/src/leo_ppt_generator/schemas/deck-quality-v1.schema.json"
+      ],
+      "implementation_evidence": [
+        "four-channel deck_quality states",
+        "impact-v2 page-level invalidation",
+        "real export absence remains blocked"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_quality*.py'; PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/compute_impact.py --v2 <old> <new>",
+      "result": "focused quality tests 38 passed; real Provider/image/visual replay not run",
+      "remaining_gap": "real Provider receipt, image export, R-85 replay and user defect replay"
     },
     "U7": {
       "status": "partial",
       "files": [
-        "template-library/governance/rules/asset-locations-v2.json",
+        "scripts/migrate_template_library.py",
         "template-library/governance/migration/migration-plan.json"
       ],
       "implementation_evidence": [
-        "preview plan with source snapshot, closure, mapping, allowlist, digest"
+        "preview emits source snapshot, dirty hashes, closure, mapping, allowlist and plan digest",
+        "preview fail-closed on missing source"
       ],
       "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase preview",
-      "result": "passed",
-      "remaining_gap": "required evidence or implementation not complete"
+      "result": "exit 1; verify reports 525 source_missing entries",
+      "remaining_gap": "legacy source tree absent; stage cannot safely proceed"
     },
     "U8": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
-      "test_command": null,
-      "result": null,
-      "remaining_gap": "v2 catalog builder and execution/diagnostic error separation not implemented"
+      "files": [
+        "scripts/capability_manifest.py",
+        "template-library/catalog/current.json",
+        "template-library/catalog/generations/e483ed0d93736774ab3142848dbec997/registry.json"
+      ],
+      "implementation_evidence": [
+        "v2 catalog generation and atomic current pointer",
+        "catalog_state current/missing/invalid/stale diagnostics"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-check",
+      "result": "exit 0; 565 entities; generation e483ed0d93736774ab3142848dbec997",
+      "remaining_gap": "execution pairing/recipe derivation and all consumer closure not verified"
     },
     "U9": {
       "status": "partial",
@@ -99,7 +123,7 @@
       "implementation_evidence": [],
       "test_command": null,
       "result": null,
-      "remaining_gap": "active consumer closure and legacy path removal not verified"
+      "remaining_gap": "active consumer closure and active_legacy_hits=0 not verified"
     },
     "U10": {
       "status": "partial",
@@ -107,15 +131,22 @@
       "implementation_evidence": [],
       "test_command": null,
       "result": null,
-      "remaining_gap": "required evidence or implementation not complete"
+      "remaining_gap": "complete execution pairing identity and image recipe pairing not verified"
     },
     "U11": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
-      "test_command": null,
-      "result": null,
-      "remaining_gap": "publish lock/CAS/journal/cleanup convergence not implemented"
+      "files": [
+        "scripts/migrate_template_library.py",
+        "tests/test_migration_phases.py"
+      ],
+      "implementation_evidence": [
+        "shadow manifest CAS publish",
+        "maintenance lock and publication journal",
+        "hash-bound cleanup allowlist with drift rejection"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_migration_phases.py'",
+      "result": "5 tests passed; real delivery publish not run",
+      "remaining_gap": "missing source blocks verified receipt and convergence on delivery"
     },
     "U12": {
       "status": "partial",
@@ -123,7 +154,7 @@
       "implementation_evidence": [],
       "test_command": null,
       "result": null,
-      "remaining_gap": "relation probes and paired baseline receipts not produced"
+      "remaining_gap": "relation probes, paired baseline receipts and environment fingerprint not produced"
     },
     "U13": {
       "status": "blocked",
@@ -133,9 +164,9 @@
       "implementation_evidence": [
         "stage shadow tree attempted"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase stage --plan template-library/governance/migration/migration-plan.json",
-      "result": "exit 1; 748 source files missing under references/styles",
-      "remaining_gap": "source snapshot/ledger points to absent legacy tree; migration cannot safely stage"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase preview",
+      "result": "exit 1; 525 source_missing entries",
+      "remaining_gap": "legacy source snapshot points to absent references/styles tree; no safe recovery path in checkout"
     }
   },
   "global_verification": {
@@ -143,12 +174,16 @@
     "lint": "passed",
     "full_tests": {
       "exit_code": 1,
-      "summary": "Ran 2059 tests; 16 failures, 3 errors",
-      "log": "/tmp/leo_expr_full_test.log"
+      "summary": "Ran 2064 tests; 4 failures, 4 errors",
+      "log": "/tmp/leo_expr_full_test_latest.log"
     },
     "provider": "blocked",
     "real_image_export": "not_run",
     "visual_replay": "blocked",
-    "user_defect_replay": "blocked"
+    "user_defect_replay": "blocked",
+    "focused_migration": "5 passed",
+    "catalog": "exit 0; 565 entities; generation e483ed0d93736774ab3142848dbec997",
+    "qualification": "exit 0; 57 rows; all unverified without receipts",
+    "migration_preview": "exit 1; 525 source_missing"
   }
 }

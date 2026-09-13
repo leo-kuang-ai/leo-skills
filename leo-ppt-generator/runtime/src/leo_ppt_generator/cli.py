@@ -2400,9 +2400,10 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
     if args.command == "backend":
         if getattr(args, "backend_command", "") == "report":
             run_path = _run_path(args)
-            from .quality_metrics import scorecard_for_run, MetricEventError
+            from .quality_metrics import scorecard_for_run, deck_quality_for_run, MetricEventError
             try:
                 quality = scorecard_for_run(run_path)
+                quality["deck_quality"] = deck_quality_for_run(run_path, quality)
             except (MetricEventError, OSError, ValueError) as exc:
                 quality = {"status": "blocked", "reason_code": "quality_scorecard_invalid",
                            "detail": str(exc)}

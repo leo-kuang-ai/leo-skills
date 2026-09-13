@@ -199,6 +199,55 @@ def aggregate_metrics(events, *, run_id, window, target_pages, phase="after-auth
             "cost_by_phase": {p: _cost([e for e in unique if e["phase"] == p]) for p in phases}}
 
 
+def deck_quality_for_run(run_path, report):
+    """Derive the four evidence channels from the run's current artifacts.
+
+    Presence of a file is only an input to the channel decision.  Binding
+    digests must be present for every selected page and an export channel is
+    blocked until a real PNG exists; no channel is upgraded from another one.
+    """
+    root = Path(run_path)
+    evidence = []
+    pack = root / "input" / "content-pack.json"
+    if pack.is_file():
+        evidence.append({"channel": "schema", "status": "passed", "path": str(pack)})
+    else:
+        evidence.append({"channel": "schema", "status": "not_run"})
+    binding = root / "input" / "content-binding.json"
+    selection = root / "input" / "layout-selection.json"
+    if binding.is_file() or selection.is_file():
+        source = binding if binding.is_file() else selection
+        try:
+            payload = json.loads(source.read_text(encoding="utf-8"))
+            rows = payload.get("pages") or payload.get("selection") or {}
+            rows = rows.values() if isinstance(rows, dict) else rows
+            status = ("passed" if isinstance(rows, list) and rows
+                      and all(isinstance(row, dict)
+                              and row.get("expression_binding_digest")
+                              and row.get("materialization_binding_digest")
+                              for row in rows) else "failed")
+        except (OSError, ValueError, AttributeError):
+            status = "error"
+        evidence.append({"channel": "binding", "status": status, "path": str(source)})
+    else:
+        evidence.append({"channel": "binding", "status": "not_run"})
+    facts_status = ("passed" if report.get("tf")
+                    and report["tf"].get("status") in {"observed", "not_applicable"}
+                    else "not_run")
+    evidence.append({"channel": "facts", "status": facts_status})
+    export_candidates = [root / "image-deck", root / "work" / "image-deck", root / "rendered"]
+    exports = [path for path in export_candidates
+               if path.is_dir() and any(path.rglob("*.png"))]
+    evidence.append({"channel": "export", "status": "passed" if exports else "blocked",
+                     "paths": [str(path) for path in exports]})
+    states = {item["status"] for item in evidence}
+    priority = ("error", "failed", "stale", "blocked", "not_run", "passed")
+    overall = next(state for state in priority if state in states)
+    return {"schema_version": 1, "overall_status": overall,
+            "channels": {item["channel"]: item["status"] for item in evidence},
+            "evidence": evidence}
+
+
 def scorecard_for_run(run_path):
     """读取显式冻结窗口与加性事件，不从 manifest 猜测观测分母。"""
     root = Path(run_path)
@@ -206,12 +255,9 @@ def scorecard_for_run(run_path):
         raise MetricEventError("run directory does not exist")
     window_path = root / "observability" / "quality-window.json"
     if not window_path.exists():
-        return {"schema_version": 1, "status": "blocked", "overall_status": "blocked",
+        return {"schema_version": 1, "status": "blocked",
                 "reason_code": "quality_window_not_recorded", "target_pages": None,
-                "tf": None, "cost": None, "rework": None,
-                "deck_quality": {"schema_version": 1, "overall_status": "blocked",
-                                  "channels": {k: "blocked" for k in ("schema","facts","binding","export")},
-                                  "evidence": []}}
+                "tf": None, "cost": None, "rework": None}
     window_bytes = window_path.read_bytes()
     config = json.loads(window_bytes)
     if not isinstance(config, dict) or config.get("schema_version") != 1:
@@ -236,17 +282,6 @@ def scorecard_for_run(run_path):
                              window=config.get("window"), target_pages=config["target_pages"],
                              phase=config.get("phase", "after-authorization"))
     report["observation_closed"] = closed
-    channels = {
-        "schema": "passed" if (root / "input" / "content-pack.json").is_file() else "not_run",
-        "facts": "passed" if events else "not_run",
-        "binding": "passed" if any((root / p).is_file() for p in ("input/content-binding.json", "input/layout-selection.json")) else "not_run",
-        "export": "passed" if any((root / p).is_file() for p in ("image-deck/slide_jobs.json", "work/image-deck/slide_jobs.json")) else "blocked",
-    }
-    priority = ("error", "failed", "stale", "blocked", "not_run", "passed")
-    overall = next((state for state in priority if state in channels.values()), "not_run")
-    report["overall_status"] = overall
-    report["deck_quality"] = {"schema_version": 1, "overall_status": overall,
-                               "channels": channels, "evidence": []}
     return report
 
 

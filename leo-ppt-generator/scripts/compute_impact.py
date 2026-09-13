@@ -17,6 +17,7 @@
 退出码：0 正常（含零受影响页）；2 用法或解析失败。
 """
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -272,12 +273,41 @@ def compute_impact(old_text, new_text):
     }
 
 
+def compute_impact_v2(old_text, new_text, *, expression_changed=False,
+                      theme_changed=False, asset_changed=False, lane_changed=False):
+    """Return the page-level invalidation contract used by binding v2."""
+    legacy = compute_impact(old_text, new_text)
+    changed = set(legacy["affected_pages"])
+    reasons = {pid: ["content"] for pid in changed}
+    if expression_changed:
+        for pid in changed:
+            reasons[pid].append("expression")
+    if theme_changed:
+        for pid in changed:
+            reasons[pid].append("theme")
+    if asset_changed:
+        for pid in changed:
+            reasons[pid].append("asset")
+    if lane_changed:
+        for pid in changed:
+            reasons[pid].append("lane")
+    return {"schema_version": 2, "content_digest": hashlib.sha256(new_text.encode()).hexdigest(),
+            "expression_digest": hashlib.sha256((new_text + "|expression").encode()).hexdigest(),
+            "pages": {pid: {"page_id": pid, "reasons": sorted(set(values)), "status": "stale"}
+                      for pid, values in sorted(reasons.items())}}
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="从两个母版版本的 diff 确定性推导受影响页清单")
     ap.add_argument("old", help="旧母版 markdown 路径")
     ap.add_argument("new", help="新母版 markdown 路径")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
+    ap.add_argument("--v2", action="store_true", help="输出 impact-v2 page-level invalidation contract")
+    ap.add_argument("--expression-changed", action="store_true")
+    ap.add_argument("--theme-changed", action="store_true")
+    ap.add_argument("--asset-changed", action="store_true")
+    ap.add_argument("--lane-changed", action="store_true")
     args = ap.parse_args()
 
     texts = []
@@ -289,7 +319,10 @@ def main():
             print(f"FAIL: 无法读取 {raw}: {exc}", file=sys.stderr)
             return 2
     try:
-        result = compute_impact(texts[0], texts[1])
+        result = (compute_impact_v2(texts[0], texts[1], expression_changed=args.expression_changed,
+                                    theme_changed=args.theme_changed, asset_changed=args.asset_changed,
+                                    lane_changed=args.lane_changed)
+                  if args.v2 else compute_impact(texts[0], texts[1]))
     except ParseError as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 2

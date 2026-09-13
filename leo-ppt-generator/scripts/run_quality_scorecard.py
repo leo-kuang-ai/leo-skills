@@ -11,7 +11,7 @@ import sys
 import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime" / "src"))
-from leo_ppt_generator.quality_metrics import MetricEventError, scorecard_for_run
+from leo_ppt_generator.quality_metrics import MetricEventError, scorecard_for_run, deck_quality_for_run
 
 
 def write_scorecard(root, output, payload):
@@ -62,6 +62,7 @@ def main(argv=None):
     try:
         root = Path(args.run).expanduser().resolve()
         result = scorecard_for_run(root)
+        result["deck_quality"] = deck_quality_for_run(root, result)
         payload = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
         if args.out:
             write_scorecard(root, args.out, payload)

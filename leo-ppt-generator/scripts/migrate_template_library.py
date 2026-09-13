@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import sys
@@ -45,6 +46,11 @@ def _write_json(path: Path, data) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=False) + "\n",
                     encoding="utf-8")
+
+
+def _plan_digest(plan: dict) -> str:
+    body = {k: v for k, v in plan.items() if k != "plan_digest"}
+    return hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def _families_for(name: str) -> list[str]:
@@ -380,12 +386,84 @@ def verify(ledger: dict) -> tuple[list[str], int]:
         if entry["disposition"] in grouped_ok:
             continue
         target = entry["target_path"]
+        source = SKILL_DIR / entry.get("source_path", "")
+        if not source.is_file() and entry.get("disposition") not in grouped_ok:
+            problems.append(f"source_missing: {entry.get('source_path')}")
+            continue
         if "）" in target or target.endswith("/"):
             continue  # 目录组条目由具体文件条目承载
         path = SKILL_DIR / target if not target.startswith("template-library") else LIBRARY / target.removeprefix("template-library/")
         if not path.is_file():
             problems.append(f"missing: {entry['source_path']} -> {target}")
     return problems, len(problems)
+
+
+def publish_staged_manifest(library: Path, *, plan_digest: str,
+                            delivery_root: Path | None = None) -> dict:
+    """CAS-publish a verified shadow manifest under an exclusive maintenance lock."""
+    from filelock import FileLock
+    manifest_path = library / "governance/migration/staging-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("plan_digest") != plan_digest:
+        raise ValueError("staging_manifest_plan_mismatch")
+    shadow_root = Path(manifest.get("shadow_root", "")).resolve()
+    if not shadow_root.is_dir():
+        raise ValueError("staging_shadow_missing")
+    delivery_root = (delivery_root or Path(__file__).resolve().parents[1]).resolve()
+    journal_path = library / "governance/migration/publication-journal.json"
+    journal = {"schema_version": 1, "plan_digest": plan_digest, "status": "started", "paths": []}
+    _write_json(journal_path, journal)
+    try:
+        with FileLock(str(library / "governance/migration/maintenance.lock")):
+            for item in manifest.get("entries", []):
+                source = Path(item["path"]).resolve(); delivery = Path(item["delivery_path"]).resolve()
+                if not source.is_file() or not source.is_relative_to(shadow_root):
+                    raise ValueError("staged_file_missing:" + str(source))
+                if delivery.is_symlink() or not delivery.is_relative_to(delivery_root):
+                    raise ValueError("delivery_path_escape")
+                current = hashlib.sha256(delivery.read_bytes()).hexdigest() if delivery.is_file() else None
+                if current != item.get("delivery_sha256"):
+                    raise ValueError("delivery_drift:" + str(delivery))
+                delivery.parent.mkdir(parents=True, exist_ok=True)
+                temporary = delivery.with_name("." + delivery.name + ".publish.tmp")
+                shutil.copyfile(source, temporary)
+                os.replace(temporary, delivery)
+                journal["paths"].append({"path": str(delivery), "sha256": item["sha256"]})
+            journal["status"] = "published"
+            _write_json(journal_path, journal)
+    except Exception:
+        journal["status"] = "failed"
+        _write_json(journal_path, journal)
+        raise
+    return journal
+
+
+def cleanup_published(library: Path, plan: dict, receipt: dict,
+                      delivery_root: Path | None = None) -> dict:
+    """Delete only receipt-bound legacy files whose bytes still match preview."""
+    if receipt.get("phase") != "published":
+        raise ValueError("migration_receipt_not_published")
+    if receipt.get("plan_digest") != _plan_digest(plan):
+        raise ValueError("migration_receipt_plan_mismatch")
+    allowlist = plan.get("delete_allowlist")
+    if not isinstance(allowlist, list) or any(not isinstance(item, str) for item in allowlist):
+        raise ValueError("delete_allowlist_invalid")
+    snapshot = plan.get("source_snapshot", {}).get("files", {})
+    root = (delivery_root or Path(__file__).resolve().parents[1]).resolve()
+    deleted = []
+    for relative in sorted(set(allowlist)):
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root) or path.is_symlink():
+            raise ValueError("cleanup_path_escape:" + relative)
+        if not path.exists():
+            continue
+        expected = snapshot.get(relative)
+        actual = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+        if expected is None or actual != expected:
+            raise ValueError("cleanup_drift:" + relative)
+        path.unlink()
+        deleted.append(relative)
+    return {"phase": "cleaned", "deleted": deleted, "allowlist_count": len(set(allowlist))}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -419,6 +497,8 @@ def main(argv: list[str] | None = None) -> int:
         current_hash = hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest()
         if plan.get("ledger_sha256") != current_hash:
             parser.error("migration_plan_ledger_digest_mismatch")
+        if plan.get("plan_digest") and plan.get("plan_digest") != _plan_digest(plan):
+            parser.error("migration_plan_digest_mismatch")
     if args.phase == "preview":
         entries = ledger.get("entries", [])
         source_hashes = {}
@@ -426,7 +506,8 @@ def main(argv: list[str] | None = None) -> int:
             src = SKILL_DIR / entry.get("source_path", "")
             if src.is_file():
                 source_hashes[entry["source_path"]] = hashlib.sha256(src.read_bytes()).hexdigest()
-        closure = {"unclassified_hits": 0, "active_legacy_hits": sum(1 for e in entries if e.get("disposition") == "manual-review")}
+        missing_sources = sorted(e.get("source_path") for e in entries if e.get("source_path") and not (SKILL_DIR / e["source_path"]).is_file())
+        closure = {"unclassified_hits": len(missing_sources), "active_legacy_hits": sum(1 for e in entries if e.get("disposition") == "manual-review"), "missing_sources": missing_sources}
         mapping = {e.get("source_path"): e.get("target_path") for e in entries if e.get("source_path")}
         allowlist = sorted({e.get("source_path") for e in entries if e.get("disposition") in {"rebuild-delete", "delete"} and e.get("source_path")})
         body = {"schema_version": 2, "phase": "preview", "ledger": str(LEDGER_PATH.relative_to(SKILL_DIR)),
@@ -437,6 +518,18 @@ def main(argv: list[str] | None = None) -> int:
         body["plan_digest"] = hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         plan = body
         _write_json(LIBRARY / "governance/migration/migration-plan.json", plan)
+
+    if args.phase == "cleanup":
+        receipt_path = LIBRARY / "governance/migration/migration-receipt.json"
+        plan_path = args.plan.resolve() if args.plan else LIBRARY / "governance/migration/migration-plan.json"
+        try:
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            cleanup_plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            result = cleanup_published(LIBRARY, cleanup_plan, receipt)
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            parser.error(str(exc))
+        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+        return 0
 
     if args.retire_old_tree:
         receipt_path = LIBRARY / "governance/migration/migration-receipt.json"
@@ -466,8 +559,16 @@ def main(argv: list[str] | None = None) -> int:
             prior = json.loads(receipt_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             parser.error(f"verified receipt required: {exc}")
-        if prior.get("phase") != "verified" or prior.get("ledger_sha256") != hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest():
+        plan_path = args.plan.resolve() if args.plan else LIBRARY / "governance/migration/migration-plan.json"
+        current_plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        if (prior.get("phase") != "verified"
+                or prior.get("ledger_sha256") != hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest()
+                or prior.get("plan_digest") != _plan_digest(current_plan)):
             parser.error("migration_receipt_not_verified")
+        try:
+            publish_staged_manifest(LIBRARY, plan_digest=_plan_digest(current_plan))
+        except (OSError, ValueError, KeyError) as exc:
+            parser.error(str(exc))
 
     if not (args.execute or args.verify):
         parser.error("需要 --execute 或 --verify")
@@ -504,8 +605,11 @@ def main(argv: list[str] | None = None) -> int:
                     continue
                 path = manifest_root / target if not target.startswith("template-library") else manifest_root / target.removeprefix("template-library/")
                 if path.is_file():
-                    manifest.append({"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-            _write_json(original_library / "governance/migration/staging-manifest.json", {"schema_version": 2, "shadow_root": str(staged_library), "entries": manifest})
+                    delivery = (SKILL_DIR / target).resolve()
+                    manifest.append({"path": str(path), "delivery_path": str(delivery),
+                                     "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                     "delivery_sha256": hashlib.sha256(delivery.read_bytes()).hexdigest() if delivery.is_file() else None})
+            _write_json(original_library / "governance/migration/staging-manifest.json", {"schema_version": 2, "plan_digest": _plan_digest(json.loads((original_library / "governance/migration/migration-plan.json").read_text())), "shadow_root": str(staged_library), "entries": manifest})
         print(json.dumps({"processed": len(report), "failed": len(failed)},
                          ensure_ascii=False))
         if failed:
@@ -540,6 +644,7 @@ def main(argv: list[str] | None = None) -> int:
             "phase": "verified" if args.phase == "verify" else "published",
             "ledger_sha256": hashlib.sha256(LEDGER_PATH.read_bytes()).hexdigest(),
             "plan_sha256": hashlib.sha256((args.plan.resolve() if args.plan else LEDGER_PATH).read_bytes()).hexdigest(),
+            "plan_digest": _plan_digest(json.loads((LIBRARY / "governance/migration/migration-plan.json").read_text())) if (LIBRARY / "governance/migration/migration-plan.json").is_file() else None,
             "entry_count": len(ledger.get("entries", [])),
         }
         _write_json(LIBRARY / "governance/migration/migration-receipt.json", receipt)

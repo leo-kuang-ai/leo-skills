@@ -39,7 +39,7 @@
 再使用有限关键词作保守推断；输出 `page_type`、`evidence_type`、
 `visual_weight`、`text_density`、`preferred_layouts`、`fallback_layouts` 和
 `regime_version`。真值源为
-`template-library/governance/rules/page-type-regime-v1.json`。
+`template-library/governance/rules/page-type-regime-v2.json`。
 
 语义层只提供可解释的软排序加分，不绕过角色、容量、媒体或 renderer 硬资格。
 显式结构优先于标题关键词；无法可靠判断时输出 `decision: undecided`，保留既有

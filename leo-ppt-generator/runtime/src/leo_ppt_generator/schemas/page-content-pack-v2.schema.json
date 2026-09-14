@@ -160,7 +160,10 @@
           "data_refs",
           "confidence",
           "capacity_requirements",
-          "style_exception"
+          "style_exception",
+          "expression",
+          "page_content_digest",
+          "page_expression_digest"
         ],
         "properties": {
           "page_id": {
@@ -547,7 +550,15 @@
             ]
           },
           "expression": {
-            "$ref": "#/$defs/page_expression"
+            "$ref": "https://leo-ppt.invalid/schemas/page-expression/v1"
+          },
+          "page_content_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "page_expression_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
           }
         }
       }
@@ -692,78 +703,6 @@
               "string",
               "null"
             ]
-          }
-        }
-      }
-    }
-  },
-  "$defs": {
-    "page_expression": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "leo-ppt/page-expression-v1",
-      "type": "object",
-      "required": [
-        "page_id",
-        "reading_task",
-        "focus",
-        "reading_order",
-        "relation"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "page_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reading_task": {
-          "type": "string",
-          "enum": [
-            "comparison",
-            "trend",
-            "process",
-            "causal",
-            "independent"
-          ]
-        },
-        "focus": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reading_order": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "relation": {
-          "type": "object",
-          "required": [
-            "kind",
-            "encoding"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "kind": {
-              "type": "string"
-            },
-            "encoding": {
-              "type": "object"
-            }
-          }
-        },
-        "fact_refs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "uniqueItems": true
-        },
-        "uncertainty": {
-          "type": "array",
-          "items": {
-            "type": "string"
           }
         }
       }

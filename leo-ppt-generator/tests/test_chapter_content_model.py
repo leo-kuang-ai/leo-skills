@@ -18,7 +18,14 @@ MODEL = {"schema_version": 2, "main_claim": "效率提升须按同口径比较",
 def master(model=None, expression=None):
     expression = expression or {"chapter_id": "ch-evidence", "semantic_structure": "comparison",
                                 "media_role": "support", "evidence_refs": ["试点台账"],
-                                "basis": ["同期间同单位对照"], "budget_seconds": 75}
+                                "basis": ["同期间同单位对照"], "budget_seconds": 75,
+                                "expression": {"reading_task": "comparison", "focus": "claim",
+                                    "reading_order": ["claim", "point:1", "fact:1", "fact:2", "/structures/sides/0", "/structures/sides/1"],
+                                    "fact_refs": ["fact:1", "fact:2"], "uncertainty": [],
+                                    "relation_encoding": {"item_refs": ["/structures/sides/0", "/structures/sides/1"],
+                                        "dimension_refs": ["/facts/fact:1/unit"],
+                                        "cells": [{"item_ref": "/structures/sides/0", "dimension_ref": "/facts/fact:1/unit", "fact_ref": "fact:1", "unknown": False},
+                                                  {"item_ref": "/structures/sides/1", "dimension_ref": "/facts/fact:1/unit", "fact_ref": "fact:2", "unknown": False}]}}}
     return """# 母版
 decision_source: user-delegated
 goal: 汇报效率
@@ -27,7 +34,7 @@ content_model: %s
 
 ## S1 口径
 page_id: pg-11111111
-page_expression: {"chapter_id":"ch-context","semantic_structure":"undecided","media_role":"none","evidence_refs":[],"basis":[]}
+page_expression: {"chapter_id":"ch-context","semantic_structure":"undecided","media_role":"none","evidence_refs":[],"basis":[],"expression":{"reading_task":"independent","focus":"claim","reading_order":["claim","point:1"],"relation_encoding":{"item_refs":["point:1"],"edges":[]},"fact_refs":[],"uncertainty":["结构尚未确定"]}}
 - 标题：先统一口径
 - 要点 1：两组必须同期间
 
@@ -53,6 +60,39 @@ def compile_text(text=None):
 
 
 class ChapterContentTests(unittest.TestCase):
+    def test_canonical_json_roundtrip_preserves_required_text_and_contract(self):
+        pack = compile_text()
+        frozen = json.loads(json.dumps(pack, ensure_ascii=False, sort_keys=True))
+        verify_content_pack(frozen)
+        self.assertEqual(frozen["pages"][1]["required_text"], pack["pages"][1]["required_text"])
+
+    def test_checked_in_authoring_example_compiles(self):
+        from pathlib import Path
+        path = Path(__file__).resolve().parents[1] / "references/authoring/page-expression-example.md"
+        pack = compile_text(path.read_text())
+        self.assertEqual(len(pack["pages"]), 2)
+        self.assertEqual(pack["pages"][1]["expression"]["relation"]["kind"], "comparison")
+
+    def test_missing_explicit_expression_rejected_without_default_focus(self):
+        text = master().replace('"focus": "claim", ', '', 1)
+        with self.assertRaisesRegex(ContentPackError, "expression_incomplete"):
+            compile_text(text)
+
+    def test_expression_change_only_invalidates_its_page_key(self):
+        before = compile_text()
+        after = compile_text(master().replace('"focus": "claim"', '"focus": "point:1"'))
+        self.assertNotEqual(before["content_digest"], after["content_digest"])
+        self.assertEqual(before["pages"][0], after["pages"][0])
+        self.assertEqual(before["pages"][1]["page_content_digest"], after["pages"][1]["page_content_digest"])
+        self.assertNotEqual(before["pages"][1]["page_expression_digest"], after["pages"][1]["page_expression_digest"])
+
+    def test_recomputed_deck_digest_cannot_hide_expression_tampering(self):
+        pack = compile_text()
+        pack["pages"][1]["expression"]["fact_refs"] = []
+        pack["content_digest"] = content_digest(pack)
+        with self.assertRaisesRegex(ContentPackError, "expression_incomplete"):
+            verify_content_pack(pack)
+
     def test_v2_records_chapters_required_text_sources_and_budget(self):
         pack = compile_text()
         self.assertEqual(pack["schema_version"], 2)

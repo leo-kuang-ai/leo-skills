@@ -32,6 +32,7 @@ file missing or unparseable).
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import sys
@@ -118,13 +119,34 @@ def lint(regime_path: Path = REGIME_PATH) -> list[str]:
         return errors
 
     aliases = _catalog_layout_aliases()
+    relations = regime.get("relations", {})
+    if not relations or not regime.get("reading_task_relations"):
+        errors.append("relations and reading_task_relations are required")
     for page_type, spec in page_types.items():
         _check_spec(page_type, spec, errors)
         if not isinstance(spec, dict):
             continue
+        relation = relations.get(spec.get("relation_kind"), {})
+        if spec.get("minimum_encoding") != relation.get("required_encoding_fields"):
+            errors.append(f"{page_type}: minimum encoding differs from relation owner")
         for layout in [*(spec.get("preferred_layouts") or []), *(spec.get("fallback_layouts") or [])]:
             if layout not in aliases:
                 errors.append(f"{page_type}: layout {layout!r} is not a catalog layout asset")
+    return errors
+
+
+def scan_active_regime_residue(paths: list[Path]) -> list[str]:
+    """检查生产 Python 的旧真值源和手写角色映射，包括 import/attribute 用法。"""
+    forbidden = {"_ROLE_" + "TO_SHAPE", "ROLE_" + "PAGE_TYPES"}
+    old_regime = "page-type-regime-" + "v1"
+    errors = []
+    for path in paths:
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            name = (node.id if isinstance(node, ast.Name) else node.attr if isinstance(node, ast.Attribute)
+                    else node.name if isinstance(node, ast.alias) else None)
+            if name in forbidden or (isinstance(node, ast.Constant) and isinstance(node.value, str) and old_regime in node.value):
+                errors.append(f"{path}:{getattr(node, 'lineno', 0)}: active v1 regime residue")
     return errors
 
 
@@ -139,6 +161,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     errors = lint(args.regime)
+    errors += scan_active_regime_residue([
+        *(SKILL_DIR / "runtime/src").rglob("*.py"), *(SKILL_DIR / "scripts").glob("*.py")])
     for message in errors:
         print(f"ERROR: {message}")
     print(f"\npage-type regime: {len(errors)} ERROR")

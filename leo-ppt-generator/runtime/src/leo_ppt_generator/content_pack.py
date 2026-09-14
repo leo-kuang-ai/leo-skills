@@ -399,6 +399,8 @@ def compile_content_pack(master_text: str, *, master_path: str,
     """从母版文本编译内容包；同输入必须得到相同 content_digest。"""
     parsed = parse_master(master_text)
     identity = require_stable_identity(parsed)
+    if not identity:
+        raise ContentPackError("expression_incomplete: empty deck")
     if decision_source is None:
         decision_source = (parsed["deck_meta"].get("decision_source")
                            or "user-confirmed")
@@ -548,7 +550,7 @@ def _required_page_text(page, numbers):
         if isinstance(value, list):
             return [s for item in value for s in strings(item)]
         if isinstance(value, dict):
-            return [s for item in value.values() for s in strings(item)]
+            return [s for key in sorted(value) for s in strings(value[key])]
         return []
     text.extend(strings(page.get("structures", {})))
     text.extend(n["value"] for n in numbers if page["page_id"] in n["page_ids"])
@@ -574,7 +576,7 @@ def _extend_content_model(pack, master_text):
         pack["deck"][key] = model.get(key)
     pack["deck"]["duration_seconds"] = model.get("duration_seconds")
     allowed_expression = {"chapter_id", "semantic_structure", "media_role", "evidence_refs", "basis",
-                          "budget_seconds", "style_exception"}
+                          "budget_seconds", "style_exception", "expression"}
     for page, expression in zip(pack["pages"], expressions):
         if expression is None or set(expression) - allowed_expression:
             raise ContentPackError(f"{page['page_id']}: 缺 page_expression 或存在未知字段")
@@ -593,16 +595,29 @@ def _extend_content_model(pack, master_text):
                                                   and page["semantic_structure"] != "undecided") else "undecided"
         if page["confidence"] == "undecided":
             page["basis"] = [*page["basis"], "证据或结构不足，保留 undecided"]
-        # expression-first：已有 content_model v2 页面声明转为可校验的页级表达合同。
-        task = page.get("semantic_structure")
-        if task in {"comparison", "trend", "process", "causal", "independent"}:
-            order = [item["item_id"] for item in page["items"]]
-            page["expression"] = compile_page_expression(
-                pack, page["page_id"], reading_task=task,
-                focus=page["claim"], reading_order=order,
-                relation_encoding={"item_ids": order},
-                fact_refs=page.get("data_refs", []),
-                uncertainty=[] if page["confidence"] == "medium" else ["structure"])
+        declared = expression.get("expression")
+        fields = {"reading_task", "focus", "reading_order", "relation_encoding", "fact_refs", "uncertainty"}
+        if not isinstance(declared, dict) or set(declared) != fields:
+            raise ContentPackError(f"expression_incomplete: {page['page_id']} 必须显式声明 expression 六个字段")
+        aliases = {"claim": "claim"}
+        for kind, prefix in (("point", "point"), ("number-ref", "fact"), ("figure", "figure")):
+            matching = [item for item in page["items"] if item["kind"] == kind]
+            aliases.update({f"{prefix}:{i}": item["item_id"] for i, item in enumerate(matching, 1)})
+        def bind_references(value):
+            if isinstance(value, dict):
+                return {key: bind_references(child) for key, child in value.items()}
+            if isinstance(value, list):
+                return [bind_references(child) for child in value]
+            if isinstance(value, str):
+                if value.startswith("/facts/"):
+                    parts = value.split("/")
+                    parts[2] = aliases.get(parts[2], parts[2])
+                    return "/".join(parts)
+                return aliases.get(value, value)
+            return value
+        page["expression"] = compile_page_expression(pack, page["page_id"], **bind_references(declared))
+        page["page_content_digest"] = _page_content_digest(page, pack["numbers"])
+        page["page_expression_digest"] = sha256_text(canonical_json(page["expression"]))
 
 
 def _verify_content_model(pack):
@@ -615,6 +630,15 @@ def _verify_content_model(pack):
         raise ContentPackError("章节身份与叙事顺序不一致")
     page_chapters = []
     for page in pack["pages"]:
+        expr = page["expression"]
+        rebuilt = compile_page_expression(pack, page["page_id"], reading_task=expr["reading_task"],
+                    focus=expr["focus"], reading_order=expr["reading_order"],
+                    relation_encoding=expr["relation"]["encoding"], fact_refs=expr["fact_refs"], uncertainty=expr["uncertainty"])
+        if rebuilt != expr:
+            raise ContentPackError("expression_declaration_conflict: relation kind")
+        if (page["page_content_digest"] != _page_content_digest(page, pack["numbers"])
+                or page["page_expression_digest"] != sha256_text(canonical_json(expr))):
+            raise ContentPackError("expression_incomplete: page digest mismatch")
         if not page_chapters or page_chapters[-1] != page["chapter_id"]:
             page_chapters.append(page["chapter_id"])
     if page_chapters != order:
@@ -669,8 +693,12 @@ def verify_content_pack(pack: dict) -> None:
             "content_digest 不一致：内容包在生成后被手改。内容包是母版的单向"
             "派生物——修改内容须回母版并重新编译，不得直接编辑包")
     from jsonschema import Draft202012Validator
+    from referencing import Registry, Resource
+    from .schemas import load_schema
     schema_path = Path(__file__).parent / "schemas" / f"page-content-pack-v{pack['schema_version']}.schema.json"
-    errors = list(Draft202012Validator(json.loads(schema_path.read_text(encoding="utf-8"))).iter_errors(pack))
+    expression_schema = load_schema("page-expression-v1.schema")
+    registry = Registry().with_resource(expression_schema["$id"], Resource.from_contents(expression_schema))
+    errors = list(Draft202012Validator(json.loads(schema_path.read_text(encoding="utf-8")), registry=registry).iter_errors(pack))
     if errors:
         raise ContentPackError("内容包 schema 校验失败: " + errors[0].message)
     if pack["schema_version"] == 2:
@@ -734,30 +762,149 @@ def propose_page_id_stamping(master_text: str) -> str:
 # 表达合同编译（expression-first vertical slice）
 # ---------------------------------------------------------------------------
 
+def _page_content_digest(page, numbers):
+    excluded = {"expression", "page_content_digest", "page_expression_digest", "number", "master_page"}
+    body = {key: value for key, value in page.items() if key not in excluded}
+    facts = [number for number in numbers if page["page_id"] in number["page_ids"]]
+    return sha256_text(canonical_json({"page": body, "facts": facts}))
+
+
+def _expression_references(page, numbers):
+    refs = {"claim": page.get("claim")}
+    items = {item["item_id"]: item for item in page.get("items", [])}
+    refs.update(items)
+    facts = {number["item_id"]: number for number in numbers if page["page_id"] in number.get("page_ids", [])}
+    refs.update(facts)
+    def visit(value, path):
+        refs[path] = value
+        if isinstance(value, dict):
+            for key, child in value.items():
+                visit(child, path + "/" + str(key).replace("~", "~0").replace("/", "~1"))
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                visit(child, path + "/" + str(index))
+    visit(page.get("structures", {}), "/structures")
+    visit(facts, "/facts")
+    return refs, items, facts
+
+
+def _verify_relation_encoding(page, expression, refs, facts):
+    encoding = expression["relation"]["encoding"]
+    kind = expression["relation"]["kind"]
+    def require(reference):
+        if reference not in refs or refs[reference] is None:
+            raise ContentPackError("expression_incomplete: dangling ref " + reference)
+        return refs[reference]
+    def walk(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key.endswith("_ref") and child is not None: require(child)
+                elif key.endswith("_refs"):
+                    for reference in child: require(reference)
+                else: walk(child)
+        elif isinstance(value, list):
+            for child in value: walk(child)
+    walk(encoding)
+    structures = page.get("structures") or {}
+    # authoring 的结构数据存于 fields；两种来源都必须参与冲突检查。
+    structural_scopes = [structures, structures.get("fields") or {}]
+    for scope in structural_scopes:
+        if not isinstance(scope, dict):
+            raise ContentPackError("expression_declaration_conflict: structural fields")
+        if kind == "causal" and scope.get("relation_type") in {"correlation", "association"}:
+            raise ContentPackError("expression_declaration_conflict: correlation is not causation")
+        if ((scope.get("sides") and kind != "comparison")
+                or (scope.get("steps") and kind != "process")
+                or (scope.get("edges") and kind == "independent")):
+            raise ContentPackError("expression_declaration_conflict: structural relation")
+    declared = page.get("semantic_structure")
+    if declared in {"comparison", "trend", "process", "causal", "independent", "statement"} and declared != expression["reading_task"]:
+        raise ContentPackError("expression_declaration_conflict: semantic_structure")
+    subjects = encoding.get("item_refs", encoding.get("nodes", []))
+    if not set(subjects).issubset(expression["reading_order"]):
+        raise ContentPackError("expression_incomplete: relation subject not positioned")
+    if kind == "comparison":
+        expected = {(item, dimension) for item in encoding["item_refs"] for dimension in encoding["dimension_refs"]}
+        actual = [(cell["item_ref"], cell["dimension_ref"]) for cell in encoding["cells"]]
+        if len(actual) != len(set(actual)) or set(actual) != expected:
+            raise ContentPackError("expression_incomplete: comparison grid")
+        for cell in encoding["cells"]:
+            if cell["unknown"] and not expression["uncertainty"]:
+                raise ContentPackError("expression_incomplete: unknown cell requires uncertainty")
+            if cell["fact_ref"] and cell["fact_ref"] not in expression["reading_order"]:
+                raise ContentPackError("expression_incomplete: fact not positioned")
+    elif kind == "trend":
+        from decimal import Decimal, InvalidOperation
+        times, values = [], []
+        unit, period = require(encoding["unit_ref"]), require(encoding["period_ref"])
+        if not isinstance(unit, str) or not unit.strip() or not isinstance(period, str) or not period.strip():
+            raise ContentPackError("expression_declaration_conflict: unit/period")
+        for sample in encoding["samples"]:
+            time = require(sample["time_ref"])
+            fact = facts.get(sample["value_ref"])
+            if not fact or fact.get("unit") != unit or fact.get("period") != period:
+                raise ContentPackError("expression_declaration_conflict: trend unit/period/value")
+            try:
+                numeric = Decimal(str(fact["value"]))
+                if not numeric.is_finite(): raise InvalidOperation
+            except (InvalidOperation, KeyError):
+                raise ContentPackError("expression_declaration_conflict: nonnumeric trend") from None
+            if not isinstance(time, str) or not re.fullmatch(r"\d{4}(?:-\d{2}(?:-\d{2})?|Q[1-4])?", time):
+                raise ContentPackError("expression_declaration_conflict: unordered time")
+            times.append(time)
+            values.append(sample["value_ref"])
+        if times != sorted(set(times)) or len(values) != len(set(values)):
+            raise ContentPackError("expression_declaration_conflict: repeated or reversed samples")
+    elif kind in {"process", "causal"}:
+        nodes = encoding["nodes"]
+        for node in nodes: require(node)
+        pairs = set()
+        for edge in encoding["edges"]:
+            source, target = edge["from"], edge["to"]
+            if source not in nodes or target not in nodes or source == target or (source, target) in pairs:
+                raise ContentPackError("expression_incomplete: invalid edge")
+            pairs.add((source, target))
+            if kind == "process" and nodes.index(source) >= nodes.index(target):
+                raise ContentPackError("expression_declaration_conflict: dependency order")
+            if kind == "process" and expression["reading_order"].index(source) >= expression["reading_order"].index(target):
+                raise ContentPackError("expression_declaration_conflict: reading order contradicts dependency")
+            if kind == "causal":
+                meaning = require(edge["meaning_ref"])
+                if not isinstance(meaning, str) or not meaning.strip():
+                    raise ContentPackError("expression_incomplete: edge meaning")
+                for support in edge["support_refs"]:
+                    value = require(support)
+                    if not isinstance(value, dict) or not (value.get("source_ref") or value.get("source")):
+                        raise ContentPackError("expression_incomplete: causal source support")
+        if kind == "process":
+            branches = encoding["parallel_branches"]
+            for branch in branches:
+                if not set(branch).issubset(nodes) or any(a in branch and b in branch for a, b in pairs):
+                    raise ContentPackError("expression_declaration_conflict: parallel branch")
+    elif kind == "independent":
+        if encoding["edges"]:
+            raise ContentPackError("expression_declaration_conflict: independent edges")
+
+
 def compile_page_expression(pack: dict, page_id: str, *, reading_task: str,
                             focus: str, reading_order: list[str],
                             relation_encoding: dict, fact_refs: list[str] | None = None,
                             uncertainty: list[str] | None = None) -> dict:
-    """从已验证内容包编译单页表达；所有引用必须指向同页 item。"""
+    """编译显式表达；只引用同页 claim/item/structure/fact，不猜测顺序或焦点。"""
     if not isinstance(pack, dict) or not isinstance(page_id, str):
         raise ContentPackError("expression_incomplete")
     page = next((p for p in pack.get("pages", []) if p.get("page_id") == page_id), None)
     if page is None:
         raise ContentPackError("expression_incomplete: page_id")
-    if not isinstance(focus, str) or not focus.strip() or not isinstance(reading_order, list) or not reading_order:
-        raise ContentPackError("expression_incomplete")
-    item_ids = {i.get("item_id") for i in page.get("items", []) if isinstance(i, dict)}
-    if len(set(reading_order)) != len(reading_order) or not set(reading_order).issubset(item_ids):
-        raise ContentPackError("expression_incomplete: reading_order")
-    if not isinstance(relation_encoding, dict) or not relation_encoding:
-        raise ContentPackError("expression_incomplete: relation")
-    refs = fact_refs or []
-    if not isinstance(refs, list) or not set(refs).issubset(item_ids):
-        raise ContentPackError("expression_incomplete: fact_refs")
+    from .page_intent import load_page_type_regime
+    regime = load_page_type_regime()
+    kind = regime["reading_task_relations"].get(reading_task) if isinstance(reading_task, str) else None
+    if kind is None:
+        raise ContentPackError("expression_incomplete: reading_task")
     expression = {"page_id": page_id, "reading_task": reading_task,
-                  "focus": focus.strip(), "reading_order": list(reading_order),
-                  "relation": {"kind": reading_task, "encoding": relation_encoding},
-                  "fact_refs": list(refs), "uncertainty": list(uncertainty or [])}
+                  "focus": focus, "reading_order": reading_order,
+                  "relation": {"kind": kind, "encoding": relation_encoding},
+                  "fact_refs": fact_refs, "uncertainty": uncertainty}
     schema_path = Path(__file__).parent / "schemas" / "page-expression-v1.schema.json"
     try:
         from jsonschema import Draft202012Validator
@@ -766,4 +913,16 @@ def compile_page_expression(pack: dict, page_id: str, *, reading_task: str,
         raise ContentPackError("expression_schema_unavailable") from exc
     if errors:
         raise ContentPackError("expression_incomplete: " + errors[0].message)
+    minimum = regime["relations"][kind]["required_encoding_fields"]
+    if set(relation_encoding) != set(minimum):
+        raise ContentPackError("expression_incomplete: relation fields")
+    refs, items, facts = _expression_references(page, pack.get("numbers", []))
+    required = {key for key, item in items.items() if item.get("required", True)} | {"claim"} | set(facts)
+    positioned = set(reading_order)
+    if (not required.issubset(positioned) or not positioned.issubset(refs)
+            or focus not in positioned or refs.get(focus) is None or not page.get("claim")):
+        raise ContentPackError("expression_incomplete: focus/claim/point/fact placement")
+    if set(fact_refs) != set(facts):
+        raise ContentPackError("expression_incomplete: fact_refs")
+    _verify_relation_encoding(page, expression, refs, facts)
     return expression

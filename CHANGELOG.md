@@ -8,6 +8,7 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：修复 U1 页面表达的事实与关系合同**：content pack v2 直接引用正式 page-expression schema，要求 authoring 显式给出焦点、阅读顺序、关系、事实与不确定性；比较矩阵、趋势单位/期间、流程依赖、因果来源、无边并列分别校验。增加页级 content/expression 摘要、关系声明冲突和 v1 残留负例；regime loader 只接受 v2，角色与别名均由该真值派生。 (user-visible)
 - **leo-ppt-generator：补齐 U2/U6/U8–U13 的可复核门禁与迁移保护**：资格清单按 catalog generation 派生并在缺 probe receipt 时保持 `unverified`；scorecard 四类 evidence channel 与 impact-v2 页面失效输出统一由真实 run 输入驱动；catalog 检查区分 missing/invalid/stale/current；迁移 publish 使用 shadow manifest、维护锁、CAS、publication journal，cleanup 仅删除 hash-bound allowlist。当前真实 Provider/image/视觉回放及缺失 legacy source 仍保持 blocked。 (user-visible)
 - **leo-ppt-generator：补齐 expression-first 合同与迁移基础设施**：新增 qualification、asset-locations、expression-pipeline、impact、deck-quality 与 task-local proposal schemas；page-type-regime-v2 角色视图改由治理文件派生，并移除生产侧手写角色/形状映射。 (user-visible)
 - **leo-ppt-generator：增加 compose 前 selection 冻结校验**：新增 `verify_selection_frozen`，摘要缺失或 selection 被篡改时返回 `selection_frozen_mismatch`。 (user-visible)

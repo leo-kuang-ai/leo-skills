@@ -205,6 +205,38 @@ if __name__ == "__main__":
     unittest.main()
 
 class PageIntentRegimeV2ContractTest(unittest.TestCase):
+    def test_explicit_relation_conflict_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "expression_declaration_conflict"):
+            analyze_page_intent({"semantic_structure": "process", "structures": {"sides": [{"label": "A"}, {"label": "B"}]}})
+
+    def test_causal_and_independent_keep_their_own_page_types(self):
+        for kind in ("causal", "independent"):
+            self.assertEqual(analyze_page_intent({"semantic_structure": kind})["page_type"], kind)
+
+    def test_active_v1_scan_rejects_imports_attributes_and_paths(self):
+        import tempfile
+        from lint_page_type_regime import scan_active_regime_residue
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "consumer.py"
+            for source in ('from x import ROLE_PAGE_TYPES', 'x = page_intent._ROLE_TO_SHAPE',
+                           'path = "page-type-regime-v1.json"'):
+                path.write_text(source)
+                self.assertTrue(scan_active_regime_residue([path]), source)
+
+    def test_runtime_loader_rejects_v1_document(self):
+        import tempfile
+        from unittest.mock import patch
+        import leo_ppt_generator.page_intent as owner
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "regime.json"
+            path.write_text(json.dumps({"schema_version": 1, "page_types": {}}))
+            owner.load_page_type_regime.cache_clear()
+            try:
+                with patch.object(owner, "REGIME_PATH", path), self.assertRaisesRegex(RuntimeError, "page_type_regime_invalid"):
+                    owner.load_page_type_regime()
+            finally:
+                owner.load_page_type_regime.cache_clear()
+
     def test_relation_minimum_encoding_is_declared(self) -> None:
         regime = load_page_type_regime()
         for page_type in ("comparison", "trend", "process", "system", "statement"):

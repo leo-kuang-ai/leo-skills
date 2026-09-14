@@ -48,7 +48,8 @@ def load_page_type_regime() -> dict[str, Any]:
         document = json.loads(REGIME_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"page_type_regime_unavailable: {REGIME_PATH}") from exc
-    if document.get("schema_version") not in (1, 2) or not isinstance(document.get("page_types"), dict):
+    if (document.get("schema_version") != 2 or document.get("regime_id") != "page-type-regime-v2"
+            or not isinstance(document.get("page_types"), dict) or not document.get("relations")):
         raise RuntimeError("page_type_regime_invalid")
     return document
 
@@ -86,13 +87,7 @@ def _explicit_shape(page: dict[str, Any]) -> str | None:
     if isinstance(value, dict):
         value = value.get("kind") or value.get("type")
     if isinstance(value, str):
-        aliases = {
-            "list": "text_list", "text": "text_list", "bullets": "text_list",
-            "kpi-stat": "kpi", "chart": "trend", "timeline": "trend",
-            "comparison": "comparison", "process": "process", "system-diagram": "system",
-            "evidence-grid": "evidence", "image-hero": "statement",
-            "causal": "system",
-        }
+        aliases = load_page_type_regime()["shape_aliases"]
         normalized = aliases.get(value.strip().lower(), value.strip().lower())
         if normalized in load_page_type_regime()["page_types"]:
             return normalized
@@ -137,6 +132,9 @@ def analyze_page_intent(page: dict[str, Any]) -> dict[str, Any]:
     text = _text(page)
     explicit = _explicit_shape(page)
     structural = _structure_shape(page)
+    if (explicit and structural and explicit != structural
+            and (explicit, structural) not in {("comparison", "table"), ("causal", "system")}):
+        raise ValueError("expression_declaration_conflict: " + explicit + "/" + structural)
     keyword, keyword_hits = _keyword_shape(text)
     role_shape = _role_shape(role, regime)
     shape = explicit or structural or role_shape or keyword

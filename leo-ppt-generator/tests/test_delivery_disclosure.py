@@ -58,9 +58,9 @@ class DiffPuzzleTest(unittest.TestCase):
             run_root=self.run,
             pairs=[{"page_id": "S7", "number": 7, "old": self.old, "new": self.new}],
             affected_pages=["S7"],
-            regime_version="page-type-regime-v1")
+            regime_version="page-type-regime-v2")
         self.assertEqual(sorted(p["page_id"] for p in index["pages"]), ["S7"])
-        self.assertIn("regime=page-type-regime-v1", index["pages"][0]["caption"])
+        self.assertIn("regime=page-type-regime-v2", index["pages"][0]["caption"])
         self.assertIn("左=旧  右=新", index["pages"][0]["caption"])
         puzzle = self.run / "diffs" / "S7.png"
         self.assertTrue(puzzle.is_file())

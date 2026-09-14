@@ -27,8 +27,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "封面"
@@ -61,8 +61,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "拆解·目录"
@@ -97,8 +97,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "分隔·过渡"
@@ -133,8 +133,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "陈述·金句",
@@ -172,8 +172,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "指标·计分榜",
@@ -210,8 +210,9 @@
       ],
       "relation_kind": "comparison",
       "minimum_encoding": [
-        "dimensions",
-        "items"
+        "item_refs",
+        "dimension_refs",
+        "cells"
       ],
       "role_aliases": [
         "对比·多维"
@@ -248,9 +249,10 @@
       ],
       "relation_kind": "trend",
       "minimum_encoding": [
-        "time",
-        "values",
-        "unit"
+        "samples",
+        "unit_ref",
+        "period_ref",
+        "baseline_ref"
       ],
       "role_aliases": [
         "趋势·时间线"
@@ -286,8 +288,9 @@
       ],
       "relation_kind": "process",
       "minimum_encoding": [
-        "steps",
-        "order"
+        "nodes",
+        "edges",
+        "parallel_branches"
       ],
       "role_aliases": [
         "流程·路径",
@@ -360,8 +363,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "分布·漏斗",
@@ -398,8 +401,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "参考·文献"
@@ -435,8 +438,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ]
     },
     "closing": {
@@ -464,8 +467,8 @@
       ],
       "relation_kind": "independent",
       "minimum_encoding": [
-        "focus",
-        "reading_order"
+        "item_refs",
+        "edges"
       ],
       "role_aliases": [
         "结尾",
@@ -475,6 +478,125 @@
         "closing",
         "content"
       ]
+    },
+    "causal": {
+      "semantic_requirements": [
+        "nodes-and-relations",
+        "mechanism"
+      ],
+      "preferred_layouts": [
+        "P17",
+        "P14",
+        "P13"
+      ],
+      "fallback_layouts": [
+        "P16",
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "nodes-or-relations"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "single-kpi"
+      ],
+      "relation_kind": "causal",
+      "minimum_encoding": [
+        "nodes",
+        "edges"
+      ],
+      "layout_page_types": [
+        "content"
+      ]
+    },
+    "independent": {
+      "semantic_requirements": [
+        "qualitative",
+        "enumerated-points"
+      ],
+      "preferred_layouts": [
+        "P4",
+        "P5",
+        "P27"
+      ],
+      "fallback_layouts": [
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "points"
+      ],
+      "forbidden_shapes": [
+        "single-kpi",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ]
     }
+  },
+  "relations": {
+    "independent": {
+      "required_encoding_fields": [
+        "item_refs",
+        "edges"
+      ]
+    },
+    "comparison": {
+      "required_encoding_fields": [
+        "item_refs",
+        "dimension_refs",
+        "cells"
+      ]
+    },
+    "process": {
+      "required_encoding_fields": [
+        "nodes",
+        "edges",
+        "parallel_branches"
+      ]
+    },
+    "causal": {
+      "required_encoding_fields": [
+        "nodes",
+        "edges"
+      ]
+    },
+    "trend": {
+      "required_encoding_fields": [
+        "samples",
+        "unit_ref",
+        "period_ref",
+        "baseline_ref"
+      ]
+    }
+  },
+  "reading_task_relations": {
+    "independent": "independent",
+    "comparison": "comparison",
+    "process": "process",
+    "causal": "causal",
+    "trend": "trend",
+    "statement": "independent"
+  },
+  "shape_aliases": {
+    "list": "text_list",
+    "text": "text_list",
+    "bullets": "text_list",
+    "kpi-stat": "kpi",
+    "chart": "trend",
+    "timeline": "trend",
+    "system-diagram": "system",
+    "evidence-grid": "evidence",
+    "image-hero": "statement"
   }
 }

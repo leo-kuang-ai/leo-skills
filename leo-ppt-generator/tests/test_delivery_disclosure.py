@@ -29,6 +29,7 @@ from leo_ppt_generator.render.receipt import (  # noqa: E402
     verify_delivery_receipt,
 )
 from leo_ppt_generator.storage import sha256_file  # noqa: E402
+from tests.expression_test_support import copy_real_html_run
 
 EXPORT_SCRIPT = SKILL_DIR / "scripts" / "export_speaker_notes.py"
 FINGERPRINT_CLASSES = {
@@ -113,6 +114,7 @@ class AltManifestTest(unittest.TestCase):
 
             build_alt_manifest(run_root=tmp, pages=[])
             (Path(tmp) / "diffs").mkdir()
+            copy_real_html_run(Path(tmp))
             fingerprints = collect_fingerprints(Path(tmp))
             self.assertEqual(set(fingerprints), FINGERPRINT_CLASSES)
             for class_name, items in fingerprints.items():
@@ -122,17 +124,18 @@ class AltManifestTest(unittest.TestCase):
                         f"{class_name} 指纹不得覆盖披露工件：{relative}")
 
 
-class ReceiptBackwardCompatibilityTest(unittest.TestCase):
-    """R-79/R-78：加性 disclosure 块不破坏旧收据验证。"""
+class ReceiptDisclosureTest(unittest.TestCase):
+    """R-79/R-78：可选 disclosure 不参与表达收据的输入与产物摘要。"""
 
-    def test_old_style_receipt_without_disclosure_still_verifies(self):
+    def test_expression_receipt_without_optional_disclosure_still_verifies(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "final").mkdir(parents=True)
             _png(root / "final" / "deck.png")
+            copy_real_html_run(root)
             result = create_delivery_receipt(root)
             receipt_path = Path(result["path"])
-            # 模拟"旧版收据"：剥离 disclosure 块后重新落盘。
+            # 剥离可选披露块，保留正式双层绑定与真实产物。
             receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
             receipt.pop("disclosure", None)
             receipt_path.write_text(json.dumps(receipt, ensure_ascii=False), encoding="utf-8")
@@ -144,6 +147,7 @@ class ReceiptBackwardCompatibilityTest(unittest.TestCase):
             root = Path(tmp)
             (root / "final").mkdir(parents=True)
             _png(root / "final" / "deck.png")
+            copy_real_html_run(root)
             result = create_delivery_receipt(root)
             self.assertIsNotNone(result["receipt"]["disclosure"])
             # disclosure 为 null/摘要块均不影响 verify。

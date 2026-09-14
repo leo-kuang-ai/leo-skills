@@ -93,75 +93,34 @@ def _iter_regular_files(directory: Path) -> list[Path]:
     return files
 
 
-def _fingerprint_map(
-    run_root: Path,
-    files: list[Path],
-    *,
-    external_anchor: Path | None = None,
-) -> dict[str, str]:
-    mapping: dict[str, str] = {}
+def _fingerprint_map(run_root: Path, files: list[Path]) -> dict[str, str]:
+    mapping = {}
     for path in files:
-        resolved = path.resolve()
+        if any(parent.is_symlink() for parent in (path, *path.parents)):
+            raise ReceiptError("delivery_artifact_path_invalid")
         try:
-            key = resolved.relative_to(run_root).as_posix()
-        except ValueError:
-            # 库回退：模板文件在 run 之外，锚定模板库根并加 library/ 前缀，
-            # 键仍确定（create/verify 同码路径一致）。
-            if external_anchor is None:
-                raise
-            key = f"library/{resolved.relative_to(external_anchor).as_posix()}"
-        mapping[key] = sha256_file(resolved)
+            relative = path.relative_to(run_root).as_posix()
+        except ValueError as exc:
+            raise ReceiptError("delivery_artifact_path_invalid") from exc
+        mapping[relative] = sha256_file(path)
     return mapping
 
 
-def _template_library_root(root: Path) -> Path:
-    """只引用当前已提交 generation 的资产，不能重新发现活动安装库。"""
-    from ..application.expression_pipeline import committed_input_root
-    return committed_input_root(root) / "asset-snapshot/builtin/canonical/templates"
-
-
-def _used_template_files(root: Path, input_files: list[Path], *, allow_missing: bool) -> list[Path]:
-    run_local_root = root / "template-library/canonical/templates"
-    template_root = _template_library_root(root)
-    selected = set()
-    design_found = False
-    for path in input_files:
-        if path.suffix != ".json":
-            continue
-        try:
-            value = json.loads(path.read_text(encoding="utf-8"))
-        except (ValueError, OSError):
-            continue
-        if not isinstance(value, dict) or value.get("entity") != "resolved-design":
-            continue
-        design_found = True
-        pages = value.get("pages")
-        if not isinstance(pages, list) or any(not isinstance(page, dict) for page in pages):
-            raise ReceiptError("delivery_template_binding_invalid")
-        for page in pages:
-            template_id = page.get("template_id")
-            if template_id is None:
-                continue
-            if not isinstance(template_id, str) or not re.fullmatch(
-                r"builtin:template:[a-z0-9][a-z0-9-]*", template_id
-            ):
-                raise ReceiptError("delivery_template_binding_invalid")
-            selected.add(template_id.rsplit(":", 1)[-1])
-    # 「缺绑定即拒绝」只对 run 本地模板根生效（run 自己 stage 了模板却无
-    # 冻结绑定 = 不可解释）；库回退时无绑定表示该 run 未消费模板，留空清单。
-    if run_local_root.is_dir() and not design_found:
-        raise ReceiptError("delivery_template_binding_required")
+def _used_template_files(committed: dict) -> list[Path]:
+    """仅按冻结 binding 的资产身份收集模板与主题，支持 builtin/user scope。"""
+    from ..asset_resolver import AssetResolver
+    resolver = AssetResolver.from_snapshot(committed["root"] / "asset-snapshot")
+    identities = {pin["asset_id"] for bindings in committed["payload"]["bindings"].values()
+                  for binding in bindings.values() for pin in binding["effective"]["assets"]}
     files = []
-    templates_anchor = template_root.resolve()
-    for slug in sorted(selected):
-        directory = template_root / slug
-        if directory.is_symlink() or not directory.resolve().is_relative_to(templates_anchor):
-            raise ReceiptError("delivery_template_path_invalid")
-        if (directory / "page.html").is_symlink():
-            raise ReceiptError("delivery_template_path_invalid")
-        if not allow_missing and not (directory / "page.html").is_file():
-            raise ReceiptError("delivery_template_source_missing")
-        files.extend(_iter_regular_files(directory))
+    for identity in sorted(identities):
+        entity = resolver.resolve(identity)
+        if entity["kind"] not in {"template", "theme", "style"}:
+            continue
+        path = Path(entity["path"])
+        if not path.is_absolute():
+            path = Path(entity["trusted_root"]) / path
+        files.extend(_iter_regular_files(path.parent))
     return files
 
 
@@ -212,12 +171,10 @@ def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -
                 except (ValueError, OSError) as exc:
                     raise ReceiptError("delivery_materialization_invalid: " + str(exc)) from exc
     input_files = [root / "input/current.json", *_iter_regular_files(committed["root"])]
-    style_inputs = [
-        path for path in input_files if _STYLE_SOURCE_RE.search(path.name)
-    ]
-    plain_inputs = [
-        path for path in input_files if not _STYLE_SOURCE_RE.search(path.name)
-    ]
+    template_files = set(_used_template_files(committed))
+    template_files.update(path for path in input_files if _STYLE_SOURCE_RE.search(path.name))
+    plain_inputs = [path for path in input_files if path not in template_files]
+
 
     qa_files = [
         path
@@ -235,20 +192,13 @@ def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -
         *(_iter_regular_files(root / "final" / "render-preview")),
     ]
 
-    template_files = [
-        *style_inputs,
-        *_used_template_files(root, input_files, allow_missing=allow_missing),
-    ]
-    templates_anchor = _template_library_root(root).resolve()
 
     return {
         "page_artifacts": _fingerprint_map(root, page_files),
         "local_assets": _fingerprint_map(root, plain_inputs),
         "qa_reports": _fingerprint_map(root, qa_files),
         "render_previews": _fingerprint_map(root, preview_files),
-        "template_style_sources": _fingerprint_map(
-            root, template_files, external_anchor=templates_anchor
-        ),
+        "template_style_sources": _fingerprint_map(root, sorted(template_files)),
     }
 
 
@@ -446,6 +396,39 @@ def _load_receipt(root: Path) -> dict[str, Any]:
             for digest in items.values()
         ):
             raise ReceiptError("delivery_receipt_invalid")
+    binding = value.get("content_binding")
+    fields = {"content_digest", "page_ids", "page_count", "input_generation",
+              "expression_binding_digests", "materialization_binding_digests",
+              "selected_layouts", "design_digests", "page_artifact_numbers"}
+    if not isinstance(binding, dict) or set(binding) != fields:
+        raise ReceiptError("binding_schema_mismatch")
+    try:
+        pages = binding["page_ids"]
+        if (not isinstance(pages, list) or not pages or any(not isinstance(pid, str) or not pid for pid in pages)
+                or len(set(pages)) != len(pages) or type(binding["page_count"]) is not int
+                or binding["page_count"] != len(pages)
+                or not isinstance(binding["expression_binding_digests"], dict)
+                or set(binding["expression_binding_digests"]) != set(pages)):
+            raise ValueError("page identity")
+        materials = binding["materialization_binding_digests"]
+        if (not isinstance(materials, dict) or not materials or not set(materials).issubset({"render:html", "image"})
+                or set(binding["selected_layouts"]) != set(materials)
+                or set(binding["design_digests"]) != set(materials)):
+            raise ValueError("lane identity")
+        hashes = [binding["content_digest"], binding["input_generation"],
+                  *binding["expression_binding_digests"].values(), *binding["design_digests"].values()]
+        seen_pages = set()
+        for lane, entries in materials.items():
+            if not isinstance(entries, dict) or not entries or not set(entries).issubset(pages):
+                raise ValueError("page identity")
+            if set(entries) != set(binding["selected_layouts"][lane]):
+                raise ValueError("layout identity")
+            hashes.extend(entries.values())
+            seen_pages.update(entries)
+        if seen_pages != set(pages) or any(not isinstance(h, str) or not re.fullmatch(r"[0-9a-f]{64}", h) for h in hashes):
+            raise ValueError("binding digest")
+    except (KeyError, TypeError, ValueError, AttributeError) as exc:
+        raise ReceiptError("binding_schema_mismatch") from exc
     return value
 
 
@@ -469,9 +452,10 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         }
     try:
         receipt = _load_receipt(root)
-    except ReceiptError:
+    except ReceiptError as exc:
         return {
             "status": "invalid",
+            "reason_code": str(exc),
             "run_root": str(root),
             "receipt_path": str(target),
             "fresh": False,

@@ -83,7 +83,7 @@ class ScorecardTests(unittest.TestCase):
 
     def test_explicit_scorecard_preserves_all_five_receipt_fingerprints(self):
         from leo_ppt_generator.render.receipt import collect_fingerprints, create_delivery_receipt, verify_delivery_receipt
-        from test_delivery_receipt import _make_mini_run
+        from tests.test_delivery_receipt import _make_mini_run
         self.configure()
         _make_mini_run(self.root)
         create_delivery_receipt(self.root)

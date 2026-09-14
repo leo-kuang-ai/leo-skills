@@ -8,6 +8,7 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：迁移交付收据回归到真实冻结输入**：使用当前浏览器导出的 HTML 页及不可变输入代验证收据；缺 pointer、损坏输入与页图篡改均拒绝，收据新鲜度不替代视觉验收。 (user-visible)
 - **leo-ppt-generator：增加串行验证执行器**：按 compileall、schema、lint、表达消费者、迁移、quality、全量 unittest 顺序运行，每条命令保留 PID、完整日志、退出码和 hash，并对照验证前后源码快照；观察超时或源码漂移不能算通过。同步刷新已修改 layout 的规范 manifest 摘要。 (user-visible)
 - **leo-ppt-generator：保留 image Provider 原始响应证据**：OpenAI compatible adapter 保留真实 request ID、HTTP 状态和响应字节；图片导出保存原图、等比留边转换与双层 binding 收据，缺响应身份不编造，语义与视觉始终另行验收。禁用 SDK 隐式重试，响应未知时阻止自动重复付费请求。 (user-visible)
 - **leo-ppt-generator：新增正式 image recipe 合同与投影 owner**：recipe 拥有独立身份、版本、lane、画布、槽位与四类完整 prompt 输入，校验 layout 双向引用和类型；缺数字引用、槽位或非法格式占位符时拒绝。声明与 prompt 本身不证明真实 Provider 输出或视觉通过。 (user-visible)

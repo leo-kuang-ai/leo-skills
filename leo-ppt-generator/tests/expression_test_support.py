@@ -52,6 +52,7 @@ def real_validation_inputs():
 def _real_html_run():
     from leo_ppt_generator.application.expression_pipeline import PipelineRequest
     from leo_ppt_generator.application.routes import generate
+    from leo_ppt_generator.content_preview import render_run_preview
     temporary = tempfile.TemporaryDirectory()
     atexit.register(temporary.cleanup)
     root = Path(temporary.name).resolve() / "run"
@@ -62,6 +63,9 @@ def _real_html_run():
     result = generate(request, resolver=resolver)
     if result["status"] != "html_validated":
         raise AssertionError(result)
+    preview = render_run_preview(root)
+    if any(page["status"] != "ready" for page in preview["pages"]):
+        raise AssertionError(preview)
     return root
 
 

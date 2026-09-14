@@ -241,6 +241,7 @@ def render_page(
     binding: dict | None = None,
     pack_page: dict | None = None,
     session: RenderSession | None = None,
+    observation_path: str | Path | None = None,
 ) -> dict[str, Any]:
     """渲染单页并返回 provenance/度量字段；产物与 sidecar 落盘。"""
 
@@ -408,6 +409,10 @@ def render_page(
                 )
             except Exception as exc:
                 raise RenderError("render_timeout", f"screenshot: {exc}") from exc
+            if observation_path is not None:
+                from ..relation_oracle import DOM_MEASURE_JS
+                measurement = page.evaluate(DOM_MEASURE_JS)
+                measurement["browser_version"] = active.browser.version
 
     try:
         actual = _png_dimensions(out)
@@ -454,6 +459,12 @@ def render_page(
         json.dumps(provenance, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    if observation_path is not None:
+        from ..storage import atomic_write_json
+        measurement.update(artifact_sha256=provenance["out_sha256"],
+                           data_sha256=provenance["data_sha256"],
+                           template_sha256=provenance["template_sha256"])
+        atomic_write_json(Path(observation_path), measurement)
     return {
         **provenance,
         "sidecar": str(sidecar),

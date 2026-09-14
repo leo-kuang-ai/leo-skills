@@ -26,7 +26,7 @@ from leo_ppt_generator.render.assets import (template_http_entry,
 from leo_ppt_generator.templates import (compose_design,
                                          verify_design_freshness)
 
-BASELINE_ENTITIES = 565  # canonical pro 模板、主题与衬线字体扩展后的基线
+BASELINE_ENTITIES = 566  # image recipe 纳入 executable catalog 后的基线
 
 
 def _library_check(bundle_root: Path) -> subprocess.CompletedProcess:

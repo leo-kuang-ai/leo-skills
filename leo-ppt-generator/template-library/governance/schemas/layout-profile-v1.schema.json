@@ -210,6 +210,10 @@
           }
         }
       }
+    },
+    "image_recipe": {
+      "type": "string",
+      "pattern": "^(builtin|user):recipe:[a-z0-9-]+$"
     }
   },
   "definitions": {

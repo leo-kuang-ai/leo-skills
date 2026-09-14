@@ -140,6 +140,15 @@ class OpenAICompatibleImageProvider(ImageProvider):
         result = self._create_client().images.generate(**payload)
         return [_image_payload(item) for item in result.data]
 
+    def generate_with_receipt(self, payload: Dict[str, Any], *, timeout_seconds: int) -> dict:
+        """保留服务端响应身份与原始字节；执行期禁止 SDK 暗中重试付费请求。"""
+        client = self._create_client().with_options(timeout=timeout_seconds, max_retries=0)
+        response = client.images.with_raw_response.generate(**payload)
+        result = response.parse()
+        return {"images": [_image_payload(item) for item in result.data],
+                "request_id": response.headers.get("x-request-id") or response.headers.get("request-id"),
+                "status_code": response.status_code, "response_bytes": response.content}
+
     def edit(
         self,
         payload: Dict[str, Any],

@@ -22,12 +22,13 @@ import re
 from pathlib import Path
 
 ASSET_ID_RE = re.compile(
-    r"^(?P<scope>builtin|user):(?P<kind>style|theme|layout|template|component|axis|brand|preset|font|ornament|qa-profile):(?P<slug>[A-Za-z0-9\-\u4e00-\u9fff]+)$")
+    r"^(?P<scope>builtin|user):(?P<kind>style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):(?P<slug>[A-Za-z0-9\-\u4e00-\u9fff]+)$")
 KIND_ENTITY_FILE = {
     "style": "brief.json",
     "theme": "theme.json",
     "layout": "layout.json",
     "template": "template.json",
+    "recipe": "recipe.json",
     "brand": "brand.json",
     "preset": "preset.json",
     "font": "manifest.json",
@@ -40,6 +41,7 @@ KIND_ENTITY_FILE = {
 KIND_CANONICAL_DIR = {
     "style": "styles", "theme": "themes", "layout": "layouts",
     "template": "templates", "component": "components", "axis": "axes",
+    "recipe": "executable/recipes",
     "brand": "brands", "preset": "presets", "font": "fonts", "ornament": "ornaments",
 }
 

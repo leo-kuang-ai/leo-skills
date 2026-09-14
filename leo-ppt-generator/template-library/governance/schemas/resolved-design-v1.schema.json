@@ -94,7 +94,9 @@
           "layout_id",
           "profile_id",
           "template_id",
-          "slots"
+          "slots",
+          "page_id",
+          "recipe_id"
         ],
         "additionalProperties": false,
         "properties": {
@@ -124,6 +126,16 @@
           },
           "slots": {
             "type": "object"
+          },
+          "page_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recipe_id": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       }

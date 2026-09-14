@@ -34,7 +34,8 @@
     {
       "slot": "chart",
       "selector": "[data-leo-block='chart']",
-      "binding_kind": "structural"
+      "binding_kind": "structural",
+      "input_path": "chart_svg"
     },
     {
       "slot": "page-no",

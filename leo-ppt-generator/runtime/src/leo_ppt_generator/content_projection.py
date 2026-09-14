@@ -67,63 +67,94 @@ def _sha(value) -> str:
     return hashlib.sha256(_canonical_json(value)).hexdigest()
 
 
-def compute_binding_digest(binding: dict) -> str:
-    """绑定摘要：同输入重编译必须相同；覆盖 page/资产/上下文/内容/编译器。"""
-    digest_input = {
-        "page_id": binding["page_id"],
-        "layout_id": binding["layout_id"],
-        "template_id": binding["template_id"],
-        "backend": binding["backend"],
-        "slot_map": binding["slot_map"],
-        "item_ids": sorted(binding["item_ids"]),
-        "context_digest": binding["context_digest"],
-        "content_digest": binding["content_digest"],
-        "compiler": binding["compiler"],
-    }
-    if binding.get("schema_version") == 2:
-        digest_input["effective"] = binding["effective"]
-        digest_input["eligibility"] = binding["eligibility"]
-    return _sha(digest_input)
+def expression_choice_identity(page: dict) -> dict:
+    from .page_intent import load_page_type_regime
+    expression = page.get("expression")
+    regime = load_page_type_regime()
+    return {"page_expression_digest": _sha(expression), "expression": deepcopy(expression),
+            "primary_expression": page.get("semantic_structure"),
+            "supporting_expression": page.get("media_role"),
+            "selection_policy_revision": "expression-policy-v1", "regime_revision": _sha(regime)}
+
+
+def _effective_page_digest(page):
+    return _sha({key: value for key, value in page.items() if key not in {"number", "master_page"}})
 
 
 def compute_expression_binding_digest(binding: dict) -> str:
-    """只覆盖 lane-neutral 页面表达与事实引用。"""
-    return _sha({"page_id": binding["page_id"], "item_ids": sorted(binding["item_ids"]),
-                 "page_digest": (binding.get("effective") or {}).get("page_digest"),
-                 "compiler": binding["compiler"],
-                 "expression": binding.get("expression") or binding.get("expression_choice_identity")})
+    """lane-neutral；不使用映射后的 item_ids、catalog、主题、slot 或执行资产。"""
+    return _sha({"page_id": binding["page_id"], "page_content_digest": binding["page_content_digest"],
+                 "page_expression_digest": binding["page_expression_digest"],
+                 "expression_choice_identity": binding["expression_choice_identity"]})
 
 
 def compute_materialization_binding_digest(binding: dict) -> str:
-    """覆盖 lane-specific 执行配对；不改变 legacy binding_digest。"""
+    """每条 lane 的实际执行身份；整册完整性摘要和展示页号不参与失效。"""
     return _sha({"expression_binding_digest": compute_expression_binding_digest(binding),
+                 "execution_pairing_identity": binding["execution_pairing_identity"],
                  "layout_id": binding["layout_id"], "template_id": binding["template_id"],
-                 "backend": binding["backend"], "slot_map": binding["slot_map"],
-                 "context_digest": binding["context_digest"], "effective": binding.get("effective"),
-                 "eligibility": binding.get("eligibility")})
+                 "recipe_id": binding["recipe_id"], "backend": binding["backend"],
+                 "qualification_purpose": binding["qualification_purpose"],
+                 "display_page_number": binding["number"],
+                 "slot_map": binding["slot_map"], "effective": binding["effective"],
+                 "eligibility": binding["eligibility"], "proposal": binding.get("proposal")})
 
 
 def verify_dual_binding_digests(binding: dict) -> None:
-    """v2 binding 的双摘要完整性门；缺失或漂移均 fail closed。"""
-    if binding.get("expression_binding_digest") != compute_expression_binding_digest(binding):
+    """仅接收完整 binding/v2；旧字段、缺字段和新旧混用返回同一错误。"""
+    if (not isinstance(binding, dict) or binding.get("schema_version") != 2
+            or "binding_digest" in binding or not binding.get("expression_binding_digest")
+            or not binding.get("materialization_binding_digest")):
+        raise ProjectionError("binding_schema_mismatch")
+    try:
+        verify_binding_reference(binding)
+        from jsonschema import Draft202012Validator
+        schema = json.loads((Path(__file__).parent / "schemas/binding-v2.schema.json").read_text())
+        if list(Draft202012Validator(schema).iter_errors(binding)):
+            raise ProjectionError("binding_schema_mismatch")
+        expression = compute_expression_binding_digest(binding)
+        materialization = compute_materialization_binding_digest(binding)
+        if binding["eligibility"].get("qualified"):
+            from .execution_pairing import pairing_key
+            from .qualification import qualification_admits
+            pairing_key(binding["execution_pairing_identity"])
+            if (not binding["page_content_digest"] or not binding["expression_choice_identity"].get("expression")
+                    or not qualification_admits(binding["eligibility"].get("checks", {}).get("qualification", {}),
+                                                purpose=binding["qualification_purpose"])):
+                raise ProjectionError("binding_schema_mismatch")
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ProjectionError("binding_schema_mismatch") from exc
+    if binding["expression_binding_digest"] != expression:
         raise ProjectionError("expression_binding_digest_mismatch")
-    if binding.get("materialization_binding_digest") != compute_materialization_binding_digest(binding):
+    if binding["materialization_binding_digest"] != materialization:
         raise ProjectionError("materialization_binding_digest_mismatch")
+
+
+def verify_binding_reference(reference, expected=None):
+    """receipt/selection/RunIndex 只引用两级摘要；不可把一种摘要当作另一种。"""
+    import re
+    fields = ("expression_binding_digest", "materialization_binding_digest")
+    if (not isinstance(reference, dict) or "binding_digest" in reference
+            or any(not isinstance(reference.get(key), str)
+                   or not re.fullmatch(r"[0-9a-f]{64}", reference[key]) for key in fields)):
+        raise ProjectionError("binding_schema_mismatch")
+    if expected is not None:
+        verify_binding_reference(expected)
+        for key in fields:
+            if reference[key] != expected[key]:
+                raise ProjectionError(key + "_mismatch")
+        if reference.get("backend") is not None and reference.get("backend") != expected.get("backend"):
+            raise ProjectionError("materialization_binding_lane_mismatch")
 
 
 def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
                              frozen_design: dict | None = None) -> None:
-    """校验同一绑定、页面及资产；旧 v1 保留读取但不获得 v2 完整性声明。"""
-    if binding.get("schema_version") == 2:
-        verify_dual_binding_digests(binding)
-    elif binding.get("binding_digest") != compute_binding_digest(binding):
-        raise ProjectionError("effective_binding_digest_mismatch")
+    """校验同一 binding/v2、页面和冻结资产；不接受旧 run 的隐式降级。"""
+    verify_dual_binding_digests(binding)
     if binding.get("page_id") != pack_page.get("page_id"):
         raise ProjectionError("effective_binding_page_mismatch")
-    if binding.get("schema_version") != 2:
-        return
     effective = binding["effective"]
-    if effective.get("page_digest") != _sha(pack_page):
+    if effective.get("page_digest") != _effective_page_digest(pack_page):
         raise ProjectionError("effective_binding_content_changed")
     if frozen_design is not None:
         from .templates import _design_digest
@@ -133,7 +164,7 @@ def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
         if frozen_design.get("design_context_digest") != binding["context_digest"]:
             raise ProjectionError("effective_binding_design_mismatch")
         selected = next((p for p in frozen_design.get("pages", [])
-                         if p.get("page_no") == pack_page.get("number")), None)
+                         if p.get("page_id") == pack_page.get("page_id")), None)
         if selected is None or selected.get("layout_id") != binding["layout_id"]:
             raise ProjectionError("effective_binding_layout_mismatch")
     if resolver is None:
@@ -147,20 +178,31 @@ def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
             raise ProjectionError(f"effective_binding_asset_unavailable: {pin['asset_id']}") from exc
         if current != pin:
             raise ProjectionError(f"effective_binding_asset_changed: {pin['asset_id']}")
+    from .qualification import QualificationError, verify_bound_qualification
+    try:
+        verify_bound_qualification(binding["eligibility"]["checks"].get("qualification", {}),
+            layout_entity=resolver.resolve(binding["layout_id"]), resolver=resolver,
+            relation=pack_page["expression"]["relation"]["kind"], lane=binding["backend"],
+            purpose=binding["qualification_purpose"])
+    except (QualificationError, KeyError, TypeError) as exc:
+        raise ProjectionError(str(exc)) from exc
 
 
-def load_run_binding(run_path: str | Path, page_identity: str | int) -> dict | None:
-    """生成/record 从同一冻结输入读取绑定；旧 policy 1 保持兼容。"""
+def load_run_binding(run_path: str | Path, page_identity: str | int, *, backend: str | None = None) -> dict:
+    """生成/record 必须读取完整冻结 binding/v2，不能退回无绑定执行。"""
     from .asset_resolver import AssetResolver
     from .content_pack import verify_content_pack
 
-    root = Path(run_path) / "input"
-    selection_path = root / "layout-selection.json"
-    if not selection_path.exists():
-        return None
-    selection = json.loads(selection_path.read_text(encoding="utf-8"))
-    if str(selection.get("policy_version", "1")) == "1":
-        return None
+    from .application.expression_pipeline import load_committed_input
+    committed = load_committed_input(run_path)
+    root = committed["root"]
+    selections = committed["payload"]["lane_selections"]
+    if backend is None and len(selections) != 1:
+        raise ProjectionError("materialization_binding_lane_required")
+    backend = backend or next(iter(selections))
+    if backend not in selections:
+        raise ProjectionError("materialization_binding_lane_unsupported")
+    selection = selections[backend]
     if str(selection.get("policy_version")) != "2" or selection.get("status") != "complete":
         raise ProjectionError("effective_binding_selection_invalid")
     pack = json.loads((root / "page-content-pack.json").read_text(encoding="utf-8"))
@@ -172,15 +214,17 @@ def load_run_binding(run_path: str | Path, page_identity: str | int) -> dict | N
     entry = (selection.get("selection") or {}).get(page["page_id"]) or {}
     binding = entry.get("binding") or {}
     if (binding.get("schema_version") != 2
-            or binding.get("binding_digest") != entry.get("binding_digest")
+            or "binding_digest" in binding or "binding_digest" in entry
+            or not entry.get("expression_binding_digest") or not entry.get("materialization_binding_digest")
+            or binding.get("expression_binding_digest") != entry["expression_binding_digest"]
+            or binding.get("materialization_binding_digest") != entry["materialization_binding_digest"]
             or binding.get("layout_id") != entry.get("layout_id")
             or binding.get("content_digest") != pack["content_digest"]
             or selection.get("content_digest") != pack["content_digest"]
             or not binding.get("effective", {}).get("assets")):
-        raise ProjectionError("effective_binding_required")
+        raise ProjectionError("binding_schema_mismatch")
     resolver = AssetResolver.from_snapshot(root / "asset-snapshot")
-    design_path = root / "resolved-design.json"
-    design = json.loads(design_path.read_text(encoding="utf-8")) if design_path.exists() else None
+    design = committed["payload"]["designs"][backend]
     verify_effective_binding(binding, page, resolver=resolver, frozen_design=design)
     return {"binding": binding, "pack_page": page, "resolver": resolver}
 
@@ -206,6 +250,8 @@ def precompile_binding(
     content_digest: str,
     numbers: list[dict] | None = None,
     resolver=None,
+    qualification_purpose="publication",
+    provider_contract=None,
 ) -> dict:
     """候选绑定预编译：硬资格检查 + 只读映射；不合格也返回（带原因）。
 
@@ -225,10 +271,15 @@ def precompile_binding(
 
     # 角色规范化：未知角色或角色不匹配 → 硬失败（K2）。
     role_types = normalize_page_role(pack_page.get("narrative_role"))
+    requested_pairing = None
     try:
-        layout_entity = (resolver.require(layout_query, kind="layout")
-                          if isinstance(layout_query, str)
-                          else resolver.resolve(layout_query))
+        if isinstance(layout_query, dict):
+            from .execution_pairing import pairing_key
+            requested_pairing = layout_query.get("identity", layout_query)
+            pairing_key(requested_pairing)
+            layout_entity = resolver.resolve(requested_pairing["layout_identity"]["asset_id"])
+        else:
+            layout_entity = resolver.require(layout_query, kind="layout")
         profile = layout_entity["data"]
         validate_profile(profile)
     except ResolverError as exc:
@@ -270,6 +321,21 @@ def precompile_binding(
             raise ProjectionError(
                 f"content_projection_invalid: 模板解析失败 {template_id}: {exc}") from exc
 
+    recipe = None
+    if backend == "image":
+        try:
+            from .config.backend_contract import BackendRegistry
+            from .image_deck.recipe import validate_recipe
+            if not provider_contract:
+                raise ValueError("provider_contract_missing")
+            BackendRegistry.default().load(provider_contract, required={"generate"})
+            if provider_contract["mode"] != "generate":
+                raise ValueError("provider_contract_mode_mismatch")
+            recipe = resolver.resolve(profile.get("image_recipe", ""))
+            validate_recipe(recipe["data"], profile)
+        except ValueError as exc:
+            hard_failures.append(str(exc))
+
     points = _items_of(pack_page, "point")
     figures = _items_of(pack_page, "figure")
     number_refs = _items_of(pack_page, "number-ref")
@@ -281,7 +347,7 @@ def precompile_binding(
     slot_map: dict[str, dict] = {}
     mapped_item_ids: set[str] = set()
     bound_structured_texts: list[str] = []
-    if explicit_fields and backend != "render:html":
+    if explicit_fields and backend != "render:html" and recipe is None:
         hard_failures.append("structured_backend_unsupported: 结构数据需要声明输入合同的 HTML 模板")
 
     if template_manifest is None and template_id and backend != "render:html":
@@ -331,6 +397,16 @@ def precompile_binding(
                     mapped_item_ids.add(figure["item_id"])
         if claim:
             slot_map["claim"] = {"source": "claim"}
+        if recipe is not None:
+            # recipe 完整携带结构数据；只有独立输出 oracle 能证明成图保真。
+            def collect_values(value):
+                if isinstance(value, dict):
+                    for child in value.values(): collect_values(child)
+                elif isinstance(value, list):
+                    for child in value: collect_values(child)
+                elif isinstance(value, (str, int, float)):
+                    bound_structured_texts.append(str(value))
+            collect_values(pack_page.get("structures", {}))
 
     if template_manifest is not None:
         fields = template_manifest.get("input_fields") or []
@@ -513,13 +589,22 @@ def precompile_binding(
                 f"number_coverage_missing: 数值未出现在任何绑定显示文本 {missing_numbers}")
 
     binding = {
-        "schema_version": 1,
+        "schema_version": 2,
         "kind": "candidate-binding",
         "page_id": pack_page.get("page_id"),
         "number": pack_page.get("number"),
         "layout_id": layout_entity["asset_id"],
-        "template_id": template_id,
+        "template_id": template_id if backend == "render:html" else None,
         "backend": backend,
+        "qualification_purpose": qualification_purpose,
+        "recipe_id": profile.get("image_recipe") if backend == "image" else None,
+        "execution_pairing_identity": None,
+        "expression_choice_identity": expression_choice_identity(pack_page),
+        "page_content_digest": pack_page.get("page_content_digest"),
+        "page_expression_digest": _sha(pack_page.get("expression")),
+        "effective": {"generation": getattr(resolver, "generation", None),
+                      "page_digest": _effective_page_digest(pack_page),
+                      "theme": deepcopy(design_context.get("effective", {})), "assets": []},
         "slot_map": slot_map,
         "item_ids": sorted(mapped_item_ids),
         "context_digest": design_context["context_digest"],
@@ -535,6 +620,8 @@ def precompile_binding(
         asset_ids = {layout_entity["asset_id"]}
         if template_manifest is not None:
             asset_ids.add(template_id)
+        if recipe is not None:
+            asset_ids.add(recipe["asset_id"])
         for key in ("style", "theme_entity"):
             entity = design_context.get(key)
             if entity:
@@ -549,20 +636,54 @@ def precompile_binding(
         binding["schema_version"] = 2
         binding["effective"] = {
             "generation": resolver.generation,
-            "page_digest": _sha(pack_page),
+            "page_digest": _effective_page_digest(pack_page),
             "theme": {key: deepcopy(design_context.get("effective", {}).get(key, {}))
                       for key in ("colors", "fonts", "chart_palette")},
             "assets": [resolver.fingerprint(a) for a in sorted(dependencies)],
         }
-    binding["expression_binding_digest"] = compute_expression_binding_digest(binding)
-    binding["materialization_binding_digest"] = compute_materialization_binding_digest(binding)
-    binding["binding_digest"] = compute_binding_digest(binding)
+        if backend == "image":
+            from .storage import json_document_bytes
+            binding["effective"]["provider_contract_sha256"] = hashlib.sha256(json_document_bytes(provider_contract)).hexdigest() if provider_contract else None
+            refs = set((pack_page.get("expression") or {}).get("fact_refs", []))
+            binding["effective"]["number_facts"] = [deepcopy(n) for n in numbers if n["item_id"] in refs]
     if template_manifest is not None and not hard_failures and not figures:
-        errors = validate_template_data(template_manifest, materialize_html(binding, pack_page, resolver=resolver))
+        errors = validate_template_data(template_manifest, _materialize_html_data(binding, pack_page))
         if errors:
             hard_failures.extend(f"template_input_invalid: {e}" for e in errors)
-            binding["eligibility"]["qualified"] = False
-            binding["binding_digest"] = compute_binding_digest(binding)
+    # 投影/容量验证完成后统一核验证据；explicit 与自动候选没有旁路。
+    from .content_pack import ContentPackError, compile_page_expression
+    from .qualification import QualificationError, qualify_layout, qualification_admits
+    expression = pack_page.get("expression")
+    try:
+        if not isinstance(expression, dict):
+            raise ContentPackError("expression_incomplete: page expression required")
+        compiled = compile_page_expression({"pages": [pack_page], "numbers": numbers}, pack_page["page_id"],
+            reading_task=expression.get("reading_task"), focus=expression.get("focus"),
+            reading_order=expression.get("reading_order"), relation_encoding=(expression.get("relation") or {}).get("encoding"),
+            fact_refs=expression.get("fact_refs"), uncertainty=expression.get("uncertainty"))
+        if compiled != expression:
+            raise ContentPackError("expression_declaration_conflict")
+        qualification = qualify_layout(layout_entity, resolver=resolver,
+            relation=expression["relation"]["kind"], lane=backend)
+        checks["qualification"] = qualification
+        admitted = qualification_admits(qualification, purpose=qualification_purpose)
+        if admitted:
+            from .execution_pairing import pairing_identity
+            executable = resolver.resolve(template_id if backend == "render:html" else profile["image_recipe"])
+            binding["execution_pairing_identity"] = pairing_identity(layout=layout_entity, executable=executable,
+                lane=backend, catalog_generation=resolver.generation,
+                evidence_digest=qualification["evidence_set_digest"])
+            if requested_pairing is not None and requested_pairing != binding["execution_pairing_identity"]:
+                hard_failures.append("execution_pairing_stale")
+        if not admitted:
+            hard_failures.extend(["capability_unqualified: " + reason for reason in qualification["gaps"]]
+                                 or ["capability_unqualified: " + qualification["status"]])
+    except (ContentPackError, QualificationError) as exc:
+        hard_failures.append(str(exc))
+        checks["qualification"] = {"status": "rejected", "gaps": [str(exc)]}
+    binding["eligibility"]["qualified"] = not hard_failures
+    binding["expression_binding_digest"] = compute_expression_binding_digest(binding)
+    binding["materialization_binding_digest"] = compute_materialization_binding_digest(binding)
     return binding
 
 
@@ -578,6 +699,11 @@ def materialize_html(binding: dict, pack_page: dict, *, media: dict | None = Non
         raise ProjectionError(
             "content_projection_invalid: 绑定不合格，不得物化 "
             f"({binding['eligibility']['hard_failures'][:3]})")
+    return _materialize_html_data(binding, pack_page, media=media)
+
+
+def _materialize_html_data(binding, pack_page, *, media=None):
+    """候选容量检查复用纯字段投影；只有公开 materialize_html 执行绑定资格校验。"""
     points = {i["item_id"]: i for i in pack_page.get("items", [])
               if i.get("kind") == "point"}
     sides = (pack_page.get("structures") or {}).get("sides")
@@ -643,33 +769,19 @@ def materialize_image_prompt(binding: dict, pack_page: dict,
     image 预检不冒充成品保真：``required_text`` 是生成合同输入，真实图片
     文字保真由成品 QA 核验（方案 K3/7.1）。
     """
-    from .templates import project_design_to_prompt
-
     verify_effective_binding(binding, pack_page, resolver=resolver, frozen_design=frozen_design)
     if not binding.get("eligibility", {}).get("qualified"):
         raise ProjectionError(
             "content_projection_invalid: 绑定不合格，不得物化 "
             f"({binding['eligibility']['hard_failures'][:3]})")
-    points = [i for i in pack_page.get("items", []) if i.get("kind") == "point"]
-    required_text = pack_page.get("required_text", [pack_page.get("claim")] + [p.get("text") for p in points])
-    prompt_inputs: dict = {
-        "page_id": pack_page.get("page_id"),
-        "layout_id": binding["layout_id"],
-        "composition": (binding.get("eligibility", {}).get("checks", {})
-                        .get("backend", {}).get("template_id")),
-        "required_text": [t for t in required_text if t],
-        "content_digest": binding["content_digest"],
-        "binding_digest": binding["binding_digest"],
-    }
-    if frozen_design is not None:
-        page_for_prompt = {
-            "page_no": pack_page.get("number"),
-            "page_role": pack_page.get("narrative_role"),
-            "layout": binding["layout_id"],
-            "slots": {},
-        }
-        projected = project_design_to_prompt(frozen_design, page_for_prompt)
-        prompt_inputs["style_projection"] = projected
+    from .asset_resolver import AssetResolver
+    from .image_deck.recipe import project_recipe
+    resolver = resolver or AssetResolver()
+    prompt_inputs = project_recipe(resolver.resolve(binding["recipe_id"])["data"], page=pack_page,
+        layout=resolver.resolve(binding["layout_id"])["data"], theme=binding["effective"]["theme"],
+        numbers=binding["effective"]["number_facts"])
+    for name in ("content_digest", "expression_binding_digest", "materialization_binding_digest"):
+        prompt_inputs[name] = binding[name]
     return prompt_inputs
 
 
@@ -685,3 +797,58 @@ def materialize_page(binding: dict, pack_page: dict,
                 **materialize_image_prompt(binding, pack_page, frozen_design, resolver=resolver)}
     raise ProjectionError(
         f"content_projection_invalid: 未知 backend {binding['backend']}")
+
+
+def binding_impact(before: dict, after: dict) -> dict:
+    """从两份真实 binding 集合计算最小页/lane 失效，不接受手工 changed 标记。"""
+    for snapshot in (before, after):
+        if not isinstance(snapshot, dict):
+            raise ProjectionError("binding_schema_mismatch")
+        expressions = {}
+        for lane, pages in snapshot.items():
+            if lane not in {"render:html", "image"} or not isinstance(pages, dict):
+                raise ProjectionError("binding_schema_mismatch")
+            for pid, binding in pages.items():
+                verify_dual_binding_digests(binding)
+                if binding["page_id"] != pid or binding["backend"] != lane:
+                    raise ProjectionError("binding_schema_mismatch")
+                if pid in expressions and expressions[pid] != binding["expression_binding_digest"]:
+                    raise ProjectionError("expression_binding_lane_mismatch")
+                expressions[pid] = binding["expression_binding_digest"]
+    ids = {pid for snapshot in (before, after) for pages in snapshot.values() for pid in pages}
+    pages = {}
+    for pid in sorted(ids):
+        lanes, reasons = {}, set()
+        expression_stale = False
+        for lane in sorted(set(before) | set(after)):
+            old, new = before.get(lane, {}).get(pid), after.get(lane, {}).get(pid)
+            if old is None and new is None:
+                continue
+            changed = []
+            if old is None or new is None:
+                changed.append("lane")
+                # 新增/删除整页的表达也失效；仅增加一条 lane 时表达仍可复用。
+                if not any(pid in entries for entries in (before if old is None else after).values()):
+                    changed.append("content")
+            else:
+                if old["page_content_digest"] != new["page_content_digest"]:
+                    changed.append("content")
+                if old["expression_choice_identity"] != new["expression_choice_identity"]:
+                    changed.append("expression")
+                if old["effective"].get("theme") != new["effective"].get("theme"):
+                    changed.append("theme")
+                if any(old.get(key) != new.get(key) for key in ("execution_pairing_identity", "slot_map", "proposal")) or old["effective"].get("assets") != new["effective"].get("assets"):
+                    changed.append("asset")
+                if old["number"] != new["number"]:
+                    changed.append("display_order")
+                if not changed and old["materialization_binding_digest"] != new["materialization_binding_digest"]:
+                    changed.append("asset")
+            reasons.update(changed)
+            expression_stale |= bool({"content", "expression"}.intersection(changed))
+            lanes[lane] = {"status": "stale" if changed else "passed", "reasons": sorted(set(changed))}
+        pages[pid] = {"page_id": pid, "reasons": sorted(reasons), "status": "stale" if reasons else "passed",
+                      "expression_status": "stale" if expression_stale else "passed", "materializations": lanes}
+    content = {pid: binding["page_content_digest"] for entries in after.values() for pid, binding in entries.items()}
+    expression = {pid: binding["expression_binding_digest"] for entries in after.values() for pid, binding in entries.items()}
+    return {"schema_version": 2, "input_digests": {"before": _sha(before), "after": _sha(after)},
+            "content_digest": _sha(content), "expression_digest": _sha(expression), "pages": pages}

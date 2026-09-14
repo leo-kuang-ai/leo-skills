@@ -115,19 +115,9 @@ def _fingerprint_map(
 
 
 def _template_library_root(root: Path) -> Path:
-    """模板库根：run 本地优先，退回技能库 canonical（与渲染搜索同源）。"""
-    snapshot = root / "input/asset-snapshot"
-    if snapshot.exists():
-        return snapshot / "builtin/canonical/templates"
-    run_local = root / "template-library/canonical/templates"
-    if run_local.is_dir():
-        return run_local
-    from ..asset_resolver import _candidate_bundle_roots
-    for bundle_root in _candidate_bundle_roots():
-        candidate = Path(bundle_root) / "template-library/canonical/templates"
-        if candidate.is_dir():
-            return candidate
-    return run_local
+    """只引用当前已提交 generation 的资产，不能重新发现活动安装库。"""
+    from ..application.expression_pipeline import committed_input_root
+    return committed_input_root(root) / "asset-snapshot/builtin/canonical/templates"
 
 
 def _used_template_files(root: Path, input_files: list[Path], *, allow_missing: bool) -> list[Path]:
@@ -192,7 +182,36 @@ def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -
         ),
     ]
 
-    input_files = _iter_regular_files(root / "input")
+    from ..application.expression_pipeline import load_committed_input, materialization_paths, ExpressionPipelineError
+    try:
+        committed = load_committed_input(root)
+    except ExpressionPipelineError as exc:
+        raise ReceiptError(exc.reason_code) from exc
+    for lane, bindings in committed["payload"]["bindings"].items():
+        for pid in bindings:
+            for path in materialization_paths(root, lane, pid):
+                if path.is_symlink() or any(parent.is_symlink() for parent in path.parents):
+                    raise ReceiptError("delivery_artifact_path_invalid")
+                if path.is_file():
+                    page_files.append(path)
+                elif not allow_missing:
+                    raise ReceiptError("delivery_materialization_missing")
+            if not allow_missing:
+                from ..content_projection import load_run_binding, verify_binding_reference
+                try:
+                    bound = load_run_binding(root, pid, backend=lane)
+                    artifact, sidecar = materialization_paths(root, lane, pid)
+                    if lane == "render:html":
+                        from .provenance import load_render_receipt, verify_receipt_matches_artifact
+                        rendered = load_render_receipt(sidecar)
+                        verify_receipt_matches_artifact(rendered, artifact)
+                        verify_binding_reference(rendered, bound["binding"])
+                    else:
+                        from ..image_deck.expression_adapter import verify_provider_export
+                        verify_provider_export(json.loads(sidecar.read_text()), root=sidecar.parent, binding=bound["binding"])
+                except (ValueError, OSError) as exc:
+                    raise ReceiptError("delivery_materialization_invalid: " + str(exc)) from exc
+    input_files = [root / "input/current.json", *_iter_regular_files(committed["root"])]
     style_inputs = [
         path for path in input_files if _STYLE_SOURCE_RE.search(path.name)
     ]
@@ -211,6 +230,7 @@ def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -
             qa_files.append(candidate)
 
     preview_files = [
+        *(_iter_regular_files(root / "previews")),
         *(_iter_regular_files(root / "reports" / "render-preview")),
         *(_iter_regular_files(root / "final" / "render-preview")),
     ]
@@ -246,48 +266,37 @@ def _run_identity(run_root: Path) -> dict[str, Any]:
 
 
 def content_binding_summary(run_root: str | Path) -> dict | None:
-    """dashi K7：从冻结 run 输入派生内容绑定摘要（可重建，非第二份真值）。
-
-    关联当前内容包（content_digest/页身份）、整册选择（policy/每页 layout）
-    与冻结设计（design_digest）。输入缺失返回 None（无绑定的 run 不伪造）。
-    """
+    """只从提交代派生所有 lane 的摘要；不重新选择，不从主 lane 外推其他 lane。"""
     root = Path(run_root).resolve()
-    summary: dict = {}
-    pack_path = root / "input" / "page-content-pack.json"
-    if pack_path.is_file():
-        try:
-            pack = json.loads(pack_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            raise ReceiptError("content_pack_unreadable")
-        summary["content_digest"] = pack.get("content_digest")
-        summary["page_ids"] = [p.get("page_id") for p in pack.get("pages", [])]
-        summary["page_count"] = len(pack.get("pages", []))
-    selection_path = root / "input" / "layout-selection.json"
-    if selection_path.is_file():
-        try:
-            selection = json.loads(selection_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            raise ReceiptError("layout_selection_unreadable")
-        summary["selection_policy"] = selection.get("policy_version")
-        summary["selection_status"] = selection.get("status")
-        summary["selected_layouts"] = {
-            pid: entry.get("layout_id")
-            for pid, entry in (selection.get("selection") or {}).items()}
-        entries = selection.get("selection") or {}
-        # 双层 binding：旧摘要保留用于历史收据，新字段供 v2 消费者逐步切换。
-        summary["expression_binding_digests"] = {
-            pid: entry.get("expression_binding_digest") for pid, entry in entries.items()}
-        summary["materialization_binding_digests"] = {
-            pid: entry.get("materialization_binding_digest") for pid, entry in entries.items()}
-    design_path = root / "input" / "resolved-design.json"
-    if design_path.is_file():
-        try:
-            design = json.loads(design_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            raise ReceiptError("resolved_design_unreadable")
-        summary["design_digest"] = design.get("design_digest")
-        summary["design_context_digest"] = design.get("design_context_digest")
-    return summary or None
+    from ..application.expression_pipeline import load_committed_input, materialization_paths, ExpressionPipelineError
+    from ..content_projection import verify_binding_reference
+    try:
+        committed = load_committed_input(root)
+        payload = committed["payload"]
+        pack = payload["pack"]
+        summary = {"content_digest": pack["content_digest"], "page_ids": [p["page_id"] for p in pack["pages"]],
+            "page_count": len(pack["pages"]), "input_generation": committed["generation"],
+            "expression_binding_digests": {}, "materialization_binding_digests": {},
+            "selected_layouts": {}, "design_digests": {}, "page_artifact_numbers": {}}
+        for lane, selection in payload["lane_selections"].items():
+            summary["materialization_binding_digests"][lane] = {}
+            summary["selected_layouts"][lane] = {}
+            summary["design_digests"][lane] = payload["designs"][lane]["design_digest"]
+            for pid, entry in selection["selection"].items():
+                verify_binding_reference(entry, entry["binding"])
+                expression = entry["expression_binding_digest"]
+                if summary["expression_binding_digests"].get(pid, expression) != expression:
+                    raise ValueError("expression_binding_cross_lane_mismatch")
+                summary["expression_binding_digests"][pid] = expression
+                summary["materialization_binding_digests"][lane][pid] = entry["materialization_binding_digest"]
+                summary["selected_layouts"][lane][pid] = entry["layout_id"]
+                for path in materialization_paths(root, lane, pid):
+                    summary["page_artifact_numbers"][path.relative_to(root).as_posix()] = entry["binding"]["number"]
+        return summary
+    except ExpressionPipelineError as exc:
+        raise ReceiptError(exc.reason_code) from exc
+    except (KeyError, ValueError, TypeError) as exc:
+        raise ReceiptError("content_binding_invalid: " + str(exc)) from exc
 
 
 def _disclosure_summary(root: Path) -> dict[str, Any] | None:
@@ -364,14 +373,14 @@ def _diff_fingerprints(
     return changed
 
 
-def _infer_impact(changed: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+def _infer_impact(changed: dict[str, list[dict[str, Any]]], page_numbers=None) -> dict[str, Any]:
     """按指纹类别推断波及面：页产物→页号；资产/样式源→全册；QA→仅 QA。"""
 
     impacted_pages: list[int] = []
     page_paths: list[str] = []
     deck_level_drift = False
     for entry in changed.get("page_artifacts", []):
-        number = _page_number(entry["path"])
+        number = (page_numbers or {}).get(entry["path"], _page_number(entry["path"]))
         if number is None:
             deck_level_drift = True
         else:
@@ -503,7 +512,7 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
     if receipt.get("content_binding") != current_binding:
         changed.append({"class": "content_binding", "path": "input/*",
                         "before": "recorded", "after": "current"})
-    impact = _infer_impact(changed_by_class)
+    impact = _infer_impact(changed_by_class, (current_binding or {}).get("page_artifact_numbers"))
     return {
         "status": "stale" if changed else "fresh",
         "run_root": str(root),

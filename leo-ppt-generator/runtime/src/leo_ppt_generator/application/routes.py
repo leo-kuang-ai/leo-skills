@@ -167,18 +167,9 @@ def validate_input_content(path: str | Path, kind: str) -> None:
         raise RouteContractError("input_type_mismatch") from exc
 
 
-def generate_expression(request, *, resolver=None):
+def generate(request, *, resolver=None):
     """唯一表达优先生成入口；路由层不复制编排。"""
     from .expression_pipeline import PipelineRequest, run_expression_pipeline
-    if isinstance(request, PipelineRequest):
-        pipeline_request = request
-    elif isinstance(request, dict):
-        pipeline_request = PipelineRequest(
-            pack=request.get("pack") or {},
-            design_context=request.get("design_context") or {},
-            backend=request.get("backend", "render:html"),
-        )
-    else:
+    if not isinstance(request, PipelineRequest):
         raise RouteContractError("expression_request_invalid")
-    return run_expression_pipeline(pipeline_request, resolver=resolver,
-                                   proposal=(request.get("proposal") if isinstance(request, dict) else None))
+    return run_expression_pipeline(request, resolver=resolver)

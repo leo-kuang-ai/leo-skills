@@ -63,9 +63,9 @@ class SlotUpperBound(unittest.TestCase):
 
 class RealLibraryFiltering(unittest.TestCase):
     def test_title_filter_matches_cover_by_max_chars(self):
-        """P1 title.max_chars=8：title<=8 命中，title<=7 排除。"""
-        hit = filter_layout_bank_by_capacity("title<=8")["matched"]
-        miss = filter_layout_bank_by_capacity("title<=7")["matched"]
+        """当前 P1/cover-pro 标题上限 40；39 必须排除该资产。"""
+        hit = filter_layout_bank_by_capacity("title<=40")["matched"]
+        miss = filter_layout_bank_by_capacity("title<=39")["matched"]
         self.assertIn("P1", [item["layout_id"] for item in hit])
         self.assertNotIn("P1", [item["layout_id"] for item in miss])
 

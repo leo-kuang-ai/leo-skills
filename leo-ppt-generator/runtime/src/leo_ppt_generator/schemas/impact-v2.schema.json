@@ -1,1 +1,129 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"leo-ppt/impact-v2","type":"object","additionalProperties":false,"required":["schema_version","content_digest","expression_digest","pages"],"properties":{"schema_version":{"const":2},"content_digest":{"type":"string"},"expression_digest":{"type":"string"},"pages":{"type":"object","additionalProperties":{"type":"object","required":["page_id","reasons","status"],"additionalProperties":false,"properties":{"page_id":{"type":"string"},"reasons":{"type":"array","items":{"enum":["content","expression","theme","asset","lane"]}},"status":{"enum":["passed","failed","stale","error","blocked","not_run"]}}}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/impact/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_digests",
+    "content_digest",
+    "expression_digest",
+    "pages"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "input_digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after"
+      ],
+      "properties": {
+        "before": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "after": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "content_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expression_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "pages": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "page_id",
+          "reasons",
+          "status",
+          "expression_status",
+          "materializations"
+        ],
+        "properties": {
+          "page_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reasons": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "content",
+                "expression",
+                "theme",
+                "asset",
+                "lane",
+                "display_order"
+              ]
+            }
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "stale"
+            ]
+          },
+          "expression_status": {
+            "enum": [
+              "passed",
+              "stale"
+            ]
+          },
+          "materializations": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "render:html",
+                "image"
+              ]
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "reasons"
+              ],
+              "properties": {
+                "status": {
+                  "enum": [
+                    "passed",
+                    "stale"
+                  ]
+                },
+                "reasons": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "enum": [
+                      "content",
+                      "expression",
+                      "theme",
+                      "asset",
+                      "lane",
+                      "display_order"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

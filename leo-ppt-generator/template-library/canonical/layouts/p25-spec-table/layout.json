@@ -74,6 +74,10 @@
       {
         "slot": "rows",
         "kind": "table"
+      },
+      {
+        "slot": "rows",
+        "kind": "time-series"
       }
     ]
   }

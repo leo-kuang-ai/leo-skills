@@ -273,28 +273,11 @@ def compute_impact(old_text, new_text):
     }
 
 
-def compute_impact_v2(old_text, new_text, *, expression_changed=False,
-                      theme_changed=False, asset_changed=False, lane_changed=False):
-    """Return the page-level invalidation contract used by binding v2."""
-    legacy = compute_impact(old_text, new_text)
-    changed = set(legacy["affected_pages"])
-    reasons = {pid: ["content"] for pid in changed}
-    if expression_changed:
-        for pid in changed:
-            reasons[pid].append("expression")
-    if theme_changed:
-        for pid in changed:
-            reasons[pid].append("theme")
-    if asset_changed:
-        for pid in changed:
-            reasons[pid].append("asset")
-    if lane_changed:
-        for pid in changed:
-            reasons[pid].append("lane")
-    return {"schema_version": 2, "content_digest": hashlib.sha256(new_text.encode()).hexdigest(),
-            "expression_digest": hashlib.sha256((new_text + "|expression").encode()).hexdigest(),
-            "pages": {pid: {"page_id": pid, "reasons": sorted(set(values)), "status": "stale"}
-                      for pid, values in sorted(reasons.items())}}
+def compute_impact_v2(before, after):
+    """v2 只比较编译后的双层 bindings，以稳定 page_id 和 lane 为连接键。"""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime/src"))
+    from leo_ppt_generator.content_projection import binding_impact
+    return binding_impact(before, after)
 
 
 def main():
@@ -304,10 +287,6 @@ def main():
     ap.add_argument("new", help="新母版 markdown 路径")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
     ap.add_argument("--v2", action="store_true", help="输出 impact-v2 page-level invalidation contract")
-    ap.add_argument("--expression-changed", action="store_true")
-    ap.add_argument("--theme-changed", action="store_true")
-    ap.add_argument("--asset-changed", action="store_true")
-    ap.add_argument("--lane-changed", action="store_true")
     args = ap.parse_args()
 
     texts = []
@@ -319,15 +298,13 @@ def main():
             print(f"FAIL: 无法读取 {raw}: {exc}", file=sys.stderr)
             return 2
     try:
-        result = (compute_impact_v2(texts[0], texts[1], expression_changed=args.expression_changed,
-                                    theme_changed=args.theme_changed, asset_changed=args.asset_changed,
-                                    lane_changed=args.lane_changed)
+        result = (compute_impact_v2(json.loads(texts[0]), json.loads(texts[1]))
                   if args.v2 else compute_impact(texts[0], texts[1]))
-    except ParseError as exc:
+    except (ParseError, ValueError, TypeError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 2
 
-    if args.json:
+    if args.json or args.v2:
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
         return 0
     affected = result["affected_pages"]

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "head": "7d9ae01d18c0ef4085ca18d4354a28ec01b00acb",
+  "target_repo": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator",
+  "allowed_extra_file": "CHANGELOG.md",
+  "dirty_paths": [
+    {
+      "path": ".codex/hooks.json.graphify-bak",
+      "git_status": "??",
+      "tracked": false,
+      "type": "file",
+      "sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "owner": "external-host-cache; producer identity unverified",
+      "action": "preserve; outside task write/commit scope"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "git_status": "??",
+      "tracked": false,
+      "type": "file",
+      "sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "owner": "external-host-cache; producer identity unverified",
+      "action": "preserve; outside task write/commit scope"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "git_status": "??",
+      "tracked": false,
+      "type": "file",
+      "sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "owner": "external-host-cache; producer identity unverified",
+      "action": "preserve; outside task write/commit scope"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "git_status": "??",
+      "tracked": false,
+      "type": "file",
+      "sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "owner": "external-host-cache; producer identity unverified",
+      "action": "preserve; outside task write/commit scope"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "git_status": "??",
+      "tracked": false,
+      "type": "file",
+      "sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "owner": "external-host-cache; producer identity unverified",
+      "action": "preserve; outside task write/commit scope"
+    }
+  ],
+  "staged_paths": [],
+  "index_sha256": "2fa38182e5ff71dad395f8a4fdc646581d440fd8c8f52196711dcab41763ce3c",
+  "plan_sha256": "ff65622ac39c9ebe56721a92e3d635f01f2d428c29d5d53b5389b9ace0df24ba"
+}

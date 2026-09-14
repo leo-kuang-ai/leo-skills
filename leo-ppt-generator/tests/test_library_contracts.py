@@ -36,7 +36,8 @@ EXPECTED_SCHEMAS = {
     "style-validation-v1.schema.json", "evidence-revocation-v1.schema.json",
     # U7 QA profile 合同；R-33 可执行模板采用记录（style_pack adopt）。
     "render-qa-profile-v1.schema.json", "executable-adoption-v1.schema.json",
-    "page-expression-v1.schema.json", "qualification-v1.schema.json",
+    "page-expression-v1.schema.json", "qualification-v1.schema.json", "capability-evidence-v1.schema.json",
+    "image-recipe-v1.schema.json",
 }
 
 

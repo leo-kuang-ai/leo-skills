@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/binding/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "page_id",
+    "number",
+    "layout_id",
+    "template_id",
+    "recipe_id",
+    "backend",
+    "slot_map",
+    "item_ids",
+    "context_digest",
+    "content_digest",
+    "compiler",
+    "eligibility",
+    "effective",
+    "expression_choice_identity",
+    "execution_pairing_identity",
+    "page_content_digest",
+    "page_expression_digest",
+    "expression_binding_digest",
+    "materialization_binding_digest",
+    "qualification_purpose"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "kind": {
+      "const": "candidate-binding"
+    },
+    "page_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "layout_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "template_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recipe_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "backend": {
+      "enum": [
+        "render:html",
+        "image"
+      ]
+    },
+    "slot_map": {
+      "type": "object"
+    },
+    "item_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "context_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "content_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "compiler": {
+      "type": "object"
+    },
+    "eligibility": {
+      "type": "object"
+    },
+    "effective": {
+      "type": "object"
+    },
+    "expression_choice_identity": {
+      "type": "object"
+    },
+    "execution_pairing_identity": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "page_content_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "page_expression_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expression_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "materialization_binding_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "proposal": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "qualification_purpose": {
+      "enum": [
+        "publication",
+        "validation"
+      ]
+    }
+  }
+}

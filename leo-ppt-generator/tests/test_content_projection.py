@@ -100,8 +100,12 @@ class RoleNormalizationTests(unittest.TestCase):
     def test_suggest_layout_consumes_same_mapping(self):
         sys.path.insert(0, str(PKG_ROOT / "scripts"))
         import suggest_layout
-        self.assertIs(suggest_layout.ROLE_PAGE_TYPES,
-                      sys.modules["leo_ppt_generator.content_projection"].ROLE_PAGE_TYPES)
+        from leo_ppt_generator.content_projection import page_types_for_role
+        self.assertIs(suggest_layout.page_types_for_role, page_types_for_role)
+        from leo_ppt_generator.page_intent import load_page_type_regime
+        for spec in load_page_type_regime()["page_types"].values():
+            for role in spec.get("role_aliases", []):
+                self.assertEqual(suggest_layout.page_types_for_role(role), normalize_page_role(role))
 
 
 class PrecompileEligibilityTests(unittest.TestCase):
@@ -395,6 +399,12 @@ argument_role: 数据
         binding["eligibility"] = {**binding["eligibility"],
                                   "qualified": True, "hard_failures": []}
         binding["binding_digest"] = compute_binding_digest(binding)
+        from leo_ppt_generator.content_projection import (
+            compute_expression_binding_digest, compute_materialization_binding_digest)
+        with self.assertRaisesRegex(ProjectionError, "materialization_binding_digest_mismatch"):
+            materialize_html(binding, page)
+        binding["expression_binding_digest"] = compute_expression_binding_digest(binding)
+        binding["materialization_binding_digest"] = compute_materialization_binding_digest(binding)
         data = materialize_html(binding, page,
                                 media={"F1": "data:image/png;base64,QQ==",
                                        "F2": "data:image/png;base64,Qg=="})

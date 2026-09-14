@@ -46,7 +46,7 @@ class RunIndex:
         self.lock = FileLock(str(self.run_dir / ".run.json.lock"))
 
     @classmethod
-    def create(cls, run_dir: str | Path, *, route: str, runtime_identity: str) -> RunIndex:
+    def create(cls, run_dir: str | Path, *, route: str, runtime_identity: str, run_id: str | None = None) -> RunIndex:
         from .routes import route_definition
 
         route_definition(route)
@@ -58,12 +58,14 @@ class RunIndex:
                 current = owner.snapshot()
                 if current.get("route") != route or current.get("runtime_identity") != runtime_identity:
                     raise RevisionConflict("run_identity_conflict")
+                if run_id is not None and current.get("run_id") != run_id:
+                    raise RevisionConflict("run_identity_conflict")
                 return owner
             atomic_write_json(
                 owner.path,
                 {
                     "schema_version": 1,
-                    "run_id": uuid.uuid4().hex,
+                    "run_id": run_id or uuid.uuid4().hex,
                     "route": route,
                     "runtime_identity": runtime_identity,
                     "output_dir": str(owner.run_dir),
@@ -282,6 +284,27 @@ class RunIndex:
 
     def snapshot(self) -> dict[str, Any]:
         return json.loads(self.path.read_text(encoding="utf-8"))
+
+    def register_input_generation(self, generation: str) -> dict[str, Any]:
+        """只登记已提交代；pointer 后崩溃可重建索引，重复登记不增加 revision。"""
+        from .expression_pipeline import load_committed_input
+        committed = load_committed_input(self.run_dir)
+        if committed["generation"] != generation:
+            raise RevisionConflict("input_generation_conflict")
+        request = committed["payload"]["request"]
+        def apply(current):
+            if current["run_id"] != request["run_id"]:
+                raise RevisionConflict("run_identity_conflict")
+            previous = current.get("input_generation")
+            if previous is not None:
+                if previous != generation:
+                    raise RevisionConflict("input_generation_conflict")
+                return None
+            current.update(input_generation=generation,
+                input_generation_digest=request["input_digest"], status="prepared", stage="input-committed")
+            current["revision"] += 1
+            return current
+        return self._mutate(apply)
 
     def _mutate(self, callback) -> dict[str, Any]:
         with self.lock:
@@ -806,9 +829,15 @@ def projection_view(run_dir: str | Path) -> dict:
         "rebuildable": True,
         "pages": [],
     }
+    from .expression_pipeline import committed_input_root, ExpressionPipelineError
+    try:
+        input_root = committed_input_root(root)
+    except ExpressionPipelineError as exc:
+        view.update(status="invalid", reason_code=exc.reason_code)
+        return view
 
     def _load(name: str) -> dict | None:
-        path = root / "input" / name
+        path = input_root / name
         if not path.is_file():
             return None
         try:
@@ -824,6 +853,12 @@ def projection_view(run_dir: str | Path) -> dict:
         selected = (selection or {}).get("selection") or {}
         for page in pack.get("pages", []):
             entry = selected.get(page.get("page_id")) or {}
+            from ..content_projection import ProjectionError, verify_binding_reference
+            try:
+                verify_binding_reference(entry)
+            except ProjectionError as exc:
+                view.update(status="invalid", reason_code=str(exc), pages=[])
+                return view
             view["pages"].append({
                 "page_id": page.get("page_id"),
                 "number": page.get("number"),

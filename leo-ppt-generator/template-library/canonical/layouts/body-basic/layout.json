@@ -59,7 +59,25 @@
       {
         "slot": "chart",
         "kind": "chart-svg"
+      },
+      {
+        "slot": "chart",
+        "kind": "sequence"
+      },
+      {
+        "slot": "chart",
+        "kind": "directed-graph"
+      }
+    ],
+    "groups": [
+      {
+        "name": "并列要点",
+        "members": [
+          "bullets"
+        ],
+        "relation": "group"
       }
     ]
-  }
+  },
+  "image_recipe": "builtin:recipe:body-basic"
 }

@@ -89,9 +89,7 @@ def sha256_file(path: Path) -> str:
 
 def derive_structure_admission(library_root: Path) -> dict:
     """dashi K5/U5：结构准入派生——从 canonical 声明与既有验证记录得出，
-    不另存手写准入名单。HTML 绑定声明即验证（renderer 反向绑定经
-    lint_template_contract 核对）；image profile 需 structure 声明 +
-    renderer_support.image 构图说明；缺声明记 unknown 不准入自动池。
+    声明计数只作诊断；自动池只统计 verifier 当前允许的 relation/lane。
     """
     layouts_dir = library_root / "canonical" / "layouts"
     sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
@@ -124,53 +122,60 @@ def derive_structure_admission(library_root: Path) -> dict:
         "image_declared": image_declared,
         "structure_unknown": unknown,
         "distinct_families": len(families),
-        "auto_pool": html_declared + image_declared,
+        "auto_pool": sum(1 for row in build_qualification_manifest(library_root)["qualifications"]
+                         if ":layout:" in row["asset_id"] and any(
+                             relation["status"] == "publication-qualified"
+                             for lane in row["lanes"].values() for relation in lane["relations"].values())),
     }
 
 
-def derive_qualification(asset: dict, *, asset_generation: str, evidence_receipts: list[dict] | None = None) -> dict:
-    """Derive qualification from owner declaration plus probe receipts.
-
-    Declarations without matching, generation-bound positive and negative probes
-    remain unverified and can never enter publication-qualified views.
-    """
-    receipts = evidence_receipts or []
-    aid = asset.get("asset_id")
-    bound = [r for r in receipts if r.get("asset_id") == aid and r.get("asset_generation") == asset_generation]
-    positive = any(r.get("probe") == "positive" and r.get("status") == "passed" for r in bound)
-    negative = any(r.get("probe") == "negative" and r.get("status") == "passed" for r in bound)
-    status = "publication-qualified" if positive and negative else ("provisional" if asset.get("provisional") else "unverified")
-    digest = hashlib.sha256(_json_bytes(sorted(bound, key=lambda x: json.dumps(x, sort_keys=True)))).hexdigest() if bound else None
-    return {"schema_version": 1, "asset_id": aid, "asset_generation": asset_generation,
-            "qualification_status": status, "evidence_set_digest": digest,
-            "lanes": {lane: {"status": status if lane in (asset.get("lanes") or ["render:html"]) else "unverified",
-                              "probe_receipts": [r.get("receipt_id") for r in bound if r.get("lane") == lane]}
-                       for lane in (asset.get("lanes") or ["render:html"])} }
+from leo_ppt_generator.qualification import derive_qualification
 
 
 def build_qualification_manifest(library_root: Path, evidence_path: Path | None = None) -> dict:
-    """Build a generation-bound qualification view; declarations alone stay unverified."""
+    """资格和生产候选消费同一 verifier；声明、catalog 名称都不授予资格。"""
+    from leo_ppt_generator.asset_resolver import AssetResolver
+    from leo_ppt_generator.qualification import (
+        asset_generation, digest, environment_fingerprint, layout_capability_contract,
+        load_receipts, read_evidence_bytes,
+    )
+    library_root = Path(library_root)
     registry = build_template_registry(library_root)
-    receipts = []
-    if evidence_path and evidence_path.is_file():
-        payload = json.loads(evidence_path.read_text(encoding="utf-8"))
-        receipts = payload if isinstance(payload, list) else payload.get("receipts", [])
+    resolver = AssetResolver(library=library_root)
+    receipts = load_receipts(library_root)
+    if evidence_path is not None:
+        relative = Path(evidence_path).resolve().relative_to(library_root.resolve()).as_posix()
+        payload = json.loads(read_evidence_bytes(library_root, relative))
+        receipts = payload if isinstance(payload, list) else payload["receipts"]
+    generation = asset_generation(library_root)
+    environment = environment_fingerprint()
     rows = []
     for entity in registry["entities"]:
-        if entity.get("kind") not in {"layout", "template"}:
+        if entity["kind"] not in {"layout", "template"}:
             continue
-        try:
-            data = json.loads((library_root / entity["path"]).read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            data = {}
-        lanes = list((data.get("renderer_support") or {}).keys()) or [data.get("lane", "render:html")]
-        rows.append(derive_qualification({"asset_id": entity["asset_id"], "lanes": lanes},
-                                         asset_generation=registry["generation"],
-                                         evidence_receipts=receipts))
-    return {"schema_version": 1, "kind": "qualification-manifest",
-            "asset_generation": registry["generation"],
-            "evidence_set_digest": hashlib.sha256(_json_bytes(receipts)).hexdigest() if receipts else None,
-            "qualifications": rows}
+        resolved = resolver.resolve(entity["asset_id"])
+        if entity["kind"] == "layout":
+            contract, dependencies = layout_capability_contract(resolved, resolver=resolver)
+            dependencies = {lane: layout_capability_contract(resolved, resolver=resolver, lane=lane)[1]
+                            for lane in contract["lanes"]}
+        else:
+            contracts, dependencies = [], {}
+            for layout_id in resolved["data"].get("layout_profiles", []):
+                owner, required = layout_capability_contract(resolver.resolve(layout_id), resolver=resolver, lane="render:html")
+                contracts.append(owner)
+                dependencies.update(required)
+            contract = {"asset_id": entity["asset_id"], "lanes": ["render:html"],
+                "relations": sorted({relation for owner in contracts for relation in owner["relations"]}),
+                "gaps": {"render:html": sorted({gap for owner in contracts for gap in owner["gaps"].get("render:html", [])})},
+                "lifecycle_status": resolved["data"].get("lifecycle_status", "unknown")}
+            if not contracts:
+                contract["gaps"]["render:html"].append("lane_dependency_missing")
+        rows.append(derive_qualification(contract, asset_generation=generation,
+            evidence_receipts=receipts, library_root=library_root,
+            expected_dependencies=dependencies, environment=environment))
+    return {"schema_version": 1, "kind": "qualification-manifest", "asset_generation": generation,
+        "evidence_set_digest": digest(sorted(receipts, key=lambda receipt: json.dumps(receipt, sort_keys=True))),
+        "qualifications": rows}
 
 
 def build_template_registry(library_root: Path) -> dict:
@@ -680,7 +685,7 @@ def main(argv: list[str] | None = None) -> int:
             output = Path(args.out).expanduser().resolve()
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(rendered, encoding="utf-8")
-        print(rendered, end="")
+        print(rendered, end="") if args.library_qualification else print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return code
 
     manifest = build_manifest(root)

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "partial",
+  "html_probe_report": "template-library/evidence/probes/expression-first-output-v3/report.json",
+  "html_output_pairs": 5,
+  "html_checks": [
+    {
+      "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/independent",
+      "relation": "independent",
+      "status": "provisional",
+      "gaps": [
+        "visual_review_not_run"
+      ]
+    },
+    {
+      "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/comparison",
+      "relation": "comparison",
+      "status": "provisional",
+      "gaps": [
+        "visual_review_not_run"
+      ]
+    },
+    {
+      "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/trend",
+      "relation": "trend",
+      "status": "provisional",
+      "gaps": [
+        "visual_review_not_run"
+      ]
+    },
+    {
+      "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/process",
+      "relation": "process",
+      "status": "provisional",
+      "gaps": [
+        "visual_review_not_run"
+      ]
+    },
+    {
+      "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/causal",
+      "relation": "causal",
+      "status": "provisional",
+      "gaps": [
+        "visual_review_not_run"
+      ]
+    }
+  ],
+  "image_status": "blocked",
+  "visual_status": "not_run",
+  "publication_ready": false
+}

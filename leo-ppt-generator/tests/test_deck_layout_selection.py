@@ -318,8 +318,8 @@ class CanonicalAdmissionTests(unittest.TestCase):
         admission = json.loads(proc.stdout)["structure_admission"]
         self.assertEqual(admission["html_declared"], 15)
         self.assertEqual(admission["structure_unknown"], 27)
-        self.assertEqual(admission["auto_pool"], admission["html_declared"]
-                         + admission["image_declared"])
+        # 声明数量不是资格；生产库没有当前正反例与视觉 receipt 时必须关门。
+        self.assertEqual(admission["auto_pool"], 0)
 
 
 if __name__ == "__main__":

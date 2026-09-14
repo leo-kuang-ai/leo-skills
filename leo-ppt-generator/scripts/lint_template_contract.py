@@ -67,7 +67,8 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
         if slot in seen_slots:
             errors.append(f"{slug}: duplicate slot {slot}")
         seen_slots.add(slot)
-        if slot not in input_names and binding.get("binding_kind") != "structural":
+        input_name = str(binding.get("input_path", slot)).split(".")[0]
+        if input_name not in input_names and binding.get("binding_kind") != "structural":
             errors.append(f"{slug}: slot {slot} missing from input_fields (or binding_kind=structural)")
         match = SELECTOR_RE.search(selector or "")
         if not match:
@@ -100,6 +101,10 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
         layout = known_layouts.get(ref)
         if layout and (layout.get("renderer_support") or {}).get("render:html") != data.get("asset_id"):
             errors.append(f"{slug}: layout {ref} renderer_support.render:html does not point to {data.get('asset_id')}")
+        # 显式 input_path 是容量槽位到原有输入的映射，不能指向未声明的字段。
+        if layout and any("input_path" in b for b in slots):
+            from leo_ppt_generator.template_inputs import slot_input_path_errors
+            errors.extend(f"{slug}: {e}" for e in slot_input_path_errors(data, layout))
     # dashi K3/U3：输入字段数量能力与同名 layout slot 交叉一致；嵌套结构
     # 字段（items 形状）必须声明数量边界。
     for field in data.get("input_fields", []):

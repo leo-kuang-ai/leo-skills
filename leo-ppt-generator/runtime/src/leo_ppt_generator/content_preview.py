@@ -14,7 +14,7 @@ from time import monotonic
 from filelock import FileLock
 
 from .content_pack import verify_content_pack
-from .content_projection import load_run_binding, materialize_html
+from .content_projection import load_run_binding, materialize_html, verify_binding_reference
 from .render.page import RenderSession, render_page, _playwright_version
 from .render.errors import RenderError
 from .storage import atomic_write_bytes, atomic_write_json, canonical_json_bytes, sha256_file
@@ -53,6 +53,7 @@ def _cached_page(previous, cache_key, destination):
             return False
     try:
         receipt = json.loads((destination / previous["sidecar"]).read_text(encoding="utf-8"))
+        verify_binding_reference(receipt, previous)
         if (receipt.get("expression_binding_digest") != previous.get("expression_binding_digest")
                 or receipt.get("out_sha256") != previous["artifact_sha256"]
                 or receipt.get("preview_kind") != "skeleton"):
@@ -95,7 +96,9 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
     """整册总览保持完整页集；pages 只指定此次允许重渲的页，其余有效缓存可复用。"""
     root = Path(run_path).resolve()
     destination = _safe_destination(root, output_dir)
-    pack_path = root / "input/page-content-pack.json"
+    from .application.expression_pipeline import committed_input_root
+    input_root = committed_input_root(root)
+    pack_path = input_root / "page-content-pack.json"
     if not pack_path.is_file():
         raise PreviewError("preview_content_pack_missing")
     raw_pack = pack_path.read_bytes()
@@ -122,7 +125,7 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                   "pages": [{"page_id": p["page_id"], "number": p["number"], "title": p.get("claim"),
                              "status": "pending", "cached": False} for p in pack["pages"]],
                   "external_calls": 0, "output_dir": str(destination)}
-        design = root / "input/resolved-design.json"
+        design = input_root / "resolved-design.json"
         if design.exists():
             report["design_digest"] = json.loads(design.read_text())["design_digest"]
         _write_overview(destination, report)
@@ -136,11 +139,10 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                 try:
                     if pack_path.read_bytes() != raw_pack:
                         raise PreviewError("preview_inputs_changed")
-                    loaded = load_run_binding(root, item["page_id"])
+                    loaded = load_run_binding(root, item["page_id"], backend="render:html")
                     if loaded is None:
                         raise PreviewError("preview_binding_missing")
                     binding, page, resolver = loaded["binding"], loaded["pack_page"], loaded["resolver"]
-                    item["binding_digest"] = binding["binding_digest"]
                     item["expression_binding_digest"] = binding.get("expression_binding_digest")
                     item["materialization_binding_digest"] = binding.get("materialization_binding_digest")
                     if binding["backend"] != "render:html":
@@ -151,7 +153,6 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                     # 整册内容摘要变化不会让其他页面像素缓存失效；每次仍核验当前完整绑定。
                     cache_key = _digest({"data": data, "effective": binding["effective"],
                                          "expression_binding_digest": binding.get("expression_binding_digest"),
-                                         "materialization_binding_digest": binding.get("materialization_binding_digest"),
                                          "slots": binding["slot_map"], "renderer": renderer_version,
                                          "overflow": os.environ.get("LEO_PPT_RENDER_OVERFLOW", "enforce")})
                     item["cache_key"] = cache_key
@@ -160,15 +161,16 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                         item.update({k: old[k] for k in ("artifact", "artifact_sha256", "sidecar", "sidecar_sha256")})
                         receipt_path = destination / item["sidecar"]
                         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-                        if receipt.get("expression_binding_digest") != binding.get("expression_binding_digest"):
+                        if receipt.get("content_digest") != binding.get("content_digest"):
                             # 像素不变但整册绑定已变；保留首次渲染身份，明确这是缓存复用。
                             receipt.setdefault("preview_cache", {
-                                "rendered_binding_digest": receipt.get("expression_binding_digest"),
+                                "rendered_expression_binding_digest": receipt.get("expression_binding_digest"),
+                                "rendered_materialization_binding_digest": receipt.get("materialization_binding_digest"),
                                 "rendered_content_digest": receipt["content_digest"],
                                 "cache_key": cache_key,
                             })
                             receipt.update(expression_binding_digest=binding.get("expression_binding_digest"),
-                                           binding_digest=binding.get("binding_digest"),
+                                           materialization_binding_digest=binding.get("materialization_binding_digest"),
                                            content_digest=binding["content_digest"])
                             atomic_write_json(receipt_path, receipt)
                             item["sidecar_sha256"] = sha256_file(receipt_path)

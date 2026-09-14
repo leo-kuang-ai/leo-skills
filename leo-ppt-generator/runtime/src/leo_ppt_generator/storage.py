@@ -183,9 +183,13 @@ def atomic_write_bytes(path: str | Path, body: bytes, checkpoint=None) -> None:
             os.unlink(temporary)
 
 
+def json_document_bytes(value: Any) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode()
+
+
 def atomic_write_json(path: str | Path, value: Any, checkpoint=None) -> None:
     atomic_write_bytes(
         path,
-        (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode(),
+        json_document_bytes(value),
         checkpoint=checkpoint,
     )

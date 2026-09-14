@@ -511,6 +511,9 @@
       ],
       "layout_page_types": [
         "content"
+      ],
+      "role_aliases": [
+        "因果·论证"
       ]
     },
     "independent": {
@@ -541,6 +544,12 @@
       "minimum_encoding": [
         "item_refs",
         "edges"
+      ],
+      "role_aliases": [
+        "并列·事项"
+      ],
+      "layout_page_types": [
+        "content"
       ]
     }
   },

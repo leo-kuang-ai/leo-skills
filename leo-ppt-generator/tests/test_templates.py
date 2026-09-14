@@ -124,7 +124,8 @@ class LayoutResolutionTests(unittest.TestCase):
 
     def test_p_code_matches_exactly_not_by_substring(self):
         result = templates.load_layout("P1")
-        self.assertEqual(result["name"], "P1 · Cover · 封面页")
+        self.assertEqual(result["name"], "P1 · cover-pro")
+        self.assertEqual(result["purpose"], "cover")
 
     def test_load_layout_rejects_ambiguous_substring(self):
         with _temp_library() as bundle:
@@ -147,8 +148,8 @@ class LayoutResolutionTests(unittest.TestCase):
     def test_resolver_name_hit_wins_over_title_substring(self):
         # 新库等价断言：resolver 名称命中优先于 notes 标题子串匹配。
         result = templates.load_layout("Cover")
-        self.assertEqual(result["name"], "P1 · Cover · 封面页")
-        self.assertEqual(result["purpose"], "整套 deck 起手 / 主题宣言。")
+        self.assertEqual(result["name"], "P1 · cover-pro")
+        self.assertEqual(result["purpose"], "cover")
 
     def test_layout_alias_can_be_loaded_when_template_shares_the_slug(self):
         # body-basic 同时存在 template 与 layout；kind 过滤必须在名称优先前生效。

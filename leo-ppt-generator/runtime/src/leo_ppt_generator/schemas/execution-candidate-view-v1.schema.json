@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/execution-candidate-view/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "catalog_generation",
+    "qualification_purpose",
+    "candidates",
+    "gaps"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "execution-candidate-view"
+    },
+    "catalog_generation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualification_purpose": {
+      "enum": [
+        "publication",
+        "validation"
+      ]
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "identity",
+          "identity_digest",
+          "relations"
+        ],
+        "properties": {
+          "identity": {
+            "$ref": "https://leo-ppt.invalid/schemas/execution-pairing/v1"
+          },
+          "identity_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "relations": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "enum": [
+                "independent",
+                "comparison",
+                "trend",
+                "process",
+                "causal"
+              ]
+            },
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "status",
+                "probe_receipts",
+                "gaps",
+                "evidence_set_digest"
+              ],
+              "properties": {
+                "status": {
+                  "enum": [
+                    "publication-qualified",
+                    "provisional"
+                  ]
+                },
+                "probe_receipts": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "gaps": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "evidence_set_digest": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "layout_id",
+          "lane",
+          "reason"
+        ],
+        "properties": {
+          "layout_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lane": {
+            "enum": [
+              "image",
+              "render:html"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

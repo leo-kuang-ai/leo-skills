@@ -4,7 +4,7 @@
   "library_id": "builtin",
   "name": "leo-ppt-generator 内置模板库",
   "protocol": {
-    "asset_id_pattern": "^(builtin|user):(style|theme|layout|template|component|axis|brand|preset|font|ornament|qa-profile):[a-z0-9\\-\\u4e00-\\u9fff]+$",
+    "asset_id_pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):[a-z0-9\\-\\u4e00-\\u9fff]+$",
     "resolver": "asset_resolver/v1",
     "builder": "capability_manifest/template-registry/v1",
     "catalog_pointer": "catalog/current.json",

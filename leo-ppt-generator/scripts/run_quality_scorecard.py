@@ -62,7 +62,6 @@ def main(argv=None):
     try:
         root = Path(args.run).expanduser().resolve()
         result = scorecard_for_run(root)
-        result["deck_quality"] = deck_quality_for_run(root, result)
         payload = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
         if args.out:
             write_scorecard(root, args.out, payload)

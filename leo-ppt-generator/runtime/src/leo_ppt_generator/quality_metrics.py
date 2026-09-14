@@ -199,53 +199,196 @@ def aggregate_metrics(events, *, run_id, window, target_pages, phase="after-auth
             "cost_by_phase": {p: _cost([e for e in unique if e["phase"] == p]) for p in phases}}
 
 
-def deck_quality_for_run(run_path, report):
-    """Derive the four evidence channels from the run's current artifacts.
+EVIDENCE_STATES = ("error", "failed", "stale", "blocked", "not_run", "passed")
 
-    Presence of a file is only an input to the channel decision.  Binding
-    digests must be present for every selected page and an export channel is
-    blocked until a real PNG exists; no channel is upgraded from another one.
-    """
-    root = Path(run_path)
-    evidence = []
-    pack = root / "input" / "content-pack.json"
-    if pack.is_file():
-        evidence.append({"channel": "schema", "status": "passed", "path": str(pack)})
-    else:
-        evidence.append({"channel": "schema", "status": "not_run"})
-    binding = root / "input" / "content-binding.json"
-    selection = root / "input" / "layout-selection.json"
-    if binding.is_file() or selection.is_file():
-        source = binding if binding.is_file() else selection
+
+def _evidence_status(states):
+    return next((state for state in EVIDENCE_STATES if state in states), "not_run")
+
+
+def _run_relative(root, path):
+    candidate = Path(path)
+    if candidate.is_absolute():
         try:
-            payload = json.loads(source.read_text(encoding="utf-8"))
-            rows = payload.get("pages") or payload.get("selection") or {}
-            rows = rows.values() if isinstance(rows, dict) else rows
-            status = ("passed" if isinstance(rows, list) and rows
-                      and all(isinstance(row, dict)
-                              and row.get("expression_binding_digest")
-                              and row.get("materialization_binding_digest")
-                              for row in rows) else "failed")
-        except (OSError, ValueError, AttributeError):
-            status = "error"
-        evidence.append({"channel": "binding", "status": status, "path": str(source)})
+            return candidate.relative_to(root).as_posix()
+        except ValueError as exc:
+            raise MetricEventError("evidence_outside_run") from exc
+    if ".." in candidate.parts:
+        raise MetricEventError("evidence_outside_run")
+    return candidate.as_posix()
+
+
+def _export_evidence(root, payload, generation):
+    from .qualification import read_evidence_bytes
+    from .content_projection import verify_binding_reference
+    from PIL import Image
+    import io
+    lanes = {"render:html": {"status": "not_run", "pages": {}}, "image": {"status": "not_run", "pages": {}}}
+    try:
+        manifest = json.loads(read_evidence_bytes(root, "pipeline-result.json"))
+    except (ValueError, OSError):
+        for lane in payload["bindings"]:
+            lanes[lane].update(status="blocked", blocker="export_manifest_missing")
+        return lanes
+    if (manifest.get("input_generation") != generation
+            or manifest.get("input_digest") != payload["request"]["input_digest"]):
+        for lane in payload["bindings"]:
+            lanes[lane].update(status="stale", blocker="export_generation_stale")
+        return lanes
+    artifact_owners = set()
+    for lane, bindings in payload["bindings"].items():
+        rows = lanes[lane]["pages"]
+        declared = manifest.get("receipt_refs", {}).get(lane, {})
+        if set(declared) != set(bindings):
+            lanes[lane].update(status="failed", blocker="export_page_set_mismatch")
+            continue
+        for pid, binding in bindings.items():
+            claim = declared[pid]
+            if claim.get("status") != "passed":
+                state = claim.get("status") if claim.get("status") in EVIDENCE_STATES else "error"
+                rows[pid] = {"status": state, "blocker": claim.get("reason_code", "export_not_completed")}
+                continue
+            try:
+                artifact_path = _run_relative(root, claim["artifact"])
+                receipt_path = _run_relative(root, claim["receipt"])
+                if artifact_path in artifact_owners:
+                    raise MetricEventError("export_artifact_reused")
+                artifact_owners.add(artifact_path)
+                raw = read_evidence_bytes(root, artifact_path)
+                receipt_bytes = read_evidence_bytes(root, receipt_path)
+                receipt = json.loads(receipt_bytes)
+                verify_binding_reference(receipt, binding)
+                if receipt.get("out_sha256") != hashlib.sha256(raw).hexdigest():
+                    raise MetricEventError("export_artifact_stale")
+                with Image.open(io.BytesIO(raw)) as picture:
+                    dimensions = picture.size
+                    if picture.format != "PNG" or dimensions != (2560, 1440):
+                        raise MetricEventError("export_dimensions_invalid")
+                    picture.verify()
+                if (receipt.get("width"), receipt.get("height")) != dimensions:
+                    raise MetricEventError("export_receipt_dimensions_mismatch")
+                if lane == "render:html":
+                    if (receipt.get("kind") != "render_provenance" or receipt.get("backend") != lane
+                            or receipt.get("template_id") != binding["template_id"]
+                            or receipt.get("overflow_check") != "pass" or not receipt.get("renderer")):
+                        raise MetricEventError("html_export_receipt_invalid")
+                else:
+                    from .image_deck.expression_adapter import verify_provider_export
+                    verify_provider_export(receipt, root=(root / receipt_path).parent, binding=binding)
+                    if (receipt.get("kind") != "provider-export-receipt" or receipt.get("status") != "succeeded"
+                            or receipt.get("lane") != "image" or not receipt.get("provider")
+                            or receipt.get("evidence_source") != "provider-http"
+                            or not receipt.get("request_id") or receipt.get("page_id") != pid
+                            or receipt.get("run_id") != payload["request"]["run_id"]
+                            or receipt.get("input_generation") != generation):
+                        raise MetricEventError("provider_export_receipt_missing_or_invalid")
+                rows[pid] = {"status": "passed", "artifact": artifact_path, "receipt": receipt_path,
+                    "artifact_sha256": hashlib.sha256(raw).hexdigest(), "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest()}
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                state = "stale" if "stale" in str(exc) or "digest_mismatch" in str(exc) else "failed"
+                rows[pid] = {"status": state, "blocker": str(exc)}
+        lanes[lane]["status"] = _evidence_status([row["status"] for row in rows.values()])
+    return lanes
+
+
+def _visual_evidence(root, generation, exports):
+    from .qualification import read_evidence_bytes, environment_fingerprint
+    try:
+        receipt = json.loads(read_evidence_bytes(root, "qa/visual-replay.json"))
+    except (ValueError, OSError):
+        return {"status": "not_run", "blocker": "visual_replay_receipt_missing"}
+    try:
+        if receipt["input_generation"] != generation:
+            return {"status": "stale", "blocker": "visual_generation_stale"}
+        actual = {row["artifact"]: row["artifact_sha256"] for lane in exports.values()
+                  for row in lane["pages"].values() if row["status"] == "passed"}
+        if not actual or receipt["artifact_hashes"] != actual:
+            return {"status": "stale", "blocker": "visual_artifact_set_stale"}
+        if receipt["environment"] != environment_fingerprint() or receipt["baseline_environment"] != receipt["environment"]:
+            return {"status": "blocked", "blocker": "paired_environment_mismatch"}
+        if receipt.get("status") != "passed":
+            return {"status": receipt["status"] if receipt.get("status") in EVIDENCE_STATES else "error", "blocker": "visual_replay_not_passed"}
+        dimensions = {"fidelity", "relation", "readability", "focus"}
+        if (set(receipt["scores"]) != dimensions or set(receipt["baseline_scores"]) != dimensions
+                or not receipt.get("reviewer") or receipt.get("severe_defects") != 0
+                or any(type(score) not in (int, float) or not 4 <= score <= 5 for score in receipt["scores"].values())
+                or sum(receipt["scores"][key] > receipt["baseline_scores"][key] for key in dimensions) < 2
+                or any(receipt["baseline_scores"][key] >= 4 and receipt["scores"][key] < receipt["baseline_scores"][key] for key in dimensions)):
+            return {"status": "failed", "blocker": "paired_visual_threshold_not_met"}
+        return {"status": "passed", "receipt": "qa/visual-replay.json"}
+    except (KeyError, ValueError, TypeError) as exc:
+        return {"status": "error", "blocker": "visual_receipt_schema_mismatch"}
+
+
+def deck_quality_for_run(run_path, report=None):
+    """当前输入、事实投影、双层绑定与真实导出四通道；观测事件不授予质量。"""
+    from .application.expression_pipeline import load_committed_input, ExpressionPipelineError
+    from .asset_resolver import AssetResolver
+    from .content_projection import verify_effective_binding, materialize_html, materialize_image_prompt, binding_impact
+    from .template_inputs import display_texts, validate_template_data
+    root = Path(run_path).resolve()
+    channels = dict.fromkeys(("schema", "facts", "binding", "export"), "not_run")
+    evidence = []
+    lanes = {lane: {"status": "not_run", "pages": {}} for lane in ("render:html", "image")}
+    visual = {"status": "not_run", "blocker": "visual_replay_receipt_missing"}
+    try:
+        committed = load_committed_input(root)
+    except (ValueError, OSError) as exc:
+        reason = str(exc)
+        channels["schema"] = "not_run" if reason == "input_pointer_missing" else "stale"
+        channels["export"] = "blocked"
+        evidence.append({"channel": "schema", "status": channels["schema"], "blocker": reason})
     else:
-        evidence.append({"channel": "binding", "status": "not_run"})
-    facts_status = ("passed" if report.get("tf")
-                    and report["tf"].get("status") in {"observed", "not_applicable"}
-                    else "not_run")
-    evidence.append({"channel": "facts", "status": facts_status})
-    export_candidates = [root / "image-deck", root / "work" / "image-deck", root / "rendered"]
-    exports = [path for path in export_candidates
-               if path.is_dir() and any(path.rglob("*.png"))]
-    evidence.append({"channel": "export", "status": "passed" if exports else "blocked",
-                     "paths": [str(path) for path in exports]})
-    states = {item["status"] for item in evidence}
-    priority = ("error", "failed", "stale", "blocked", "not_run", "passed")
-    overall = next(state for state in priority if state in states)
-    return {"schema_version": 1, "overall_status": overall,
-            "channels": {item["channel"]: item["status"] for item in evidence},
-            "evidence": evidence}
+        payload = committed["payload"]
+        channels["schema"] = "passed"
+        evidence.append({"channel": "schema", "status": "passed", "generation": committed["generation"]})
+        try:
+            resolver = AssetResolver.from_snapshot(committed["root"] / "asset-snapshot")
+            fact_errors, binding_errors, capacity_errors = [], [], []
+            for lane, bindings in payload["bindings"].items():
+                for pid, binding in bindings.items():
+                    page = next(p for p in payload["pack"]["pages"] if p["page_id"] == pid)
+                    verify_effective_binding(binding, page, resolver=resolver, frozen_design=payload["designs"][lane])
+                    if lane == "render:html":
+                        projected = materialize_html(binding, page, resolver=resolver)
+                        capacity_errors.extend(validate_template_data(resolver.resolve(binding["template_id"])["data"], projected))
+                        texts = display_texts(projected)
+                    else:
+                        projected = materialize_image_prompt(binding, page, payload["designs"][lane], resolver=resolver)
+                        texts = projected["required_text"]
+                    displayed = "\n".join(texts)
+                    for required in page["required_text"]:
+                        if required not in displayed:
+                            fact_errors.append({"page_id": pid, "lane": lane, "reason": "required_text_not_projected", "text": required})
+                    for number in payload["pack"]["numbers"]:
+                        if pid in number["page_ids"] and (number["value"] not in displayed or number.get("unit") and number["unit"] not in displayed):
+                            fact_errors.append({"page_id": pid, "lane": lane, "reason": "number_or_unit_not_projected", "fact_ref": number["item_id"]})
+            channels["facts"] = "failed" if fact_errors else "passed"
+            channels["schema"] = "failed" if capacity_errors else "passed"
+            if payload.get("impact") != binding_impact(payload.get("previous_bindings", {}), payload["bindings"]):
+                binding_errors.append("impact_receipt_missing_or_stale")
+            channels["binding"] = "stale" if binding_errors else "passed"
+            evidence.extend([{"channel": "facts", "status": channels["facts"], "gaps": fact_errors},
+                             {"channel": "schema", "status": channels["schema"], "capacity_errors": capacity_errors},
+                             {"channel": "binding", "status": channels["binding"], "gaps": binding_errors}])
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            channels["binding"] = "stale" if "changed" in str(exc) or "mismatch" in str(exc) else "error"
+            evidence.append({"channel": "binding", "status": channels["binding"], "blocker": str(exc)})
+        lanes = _export_evidence(root, payload, committed["generation"])
+        channels["export"] = _evidence_status([lanes[lane]["status"] for lane in payload["bindings"]])
+        visual = _visual_evidence(root, committed["generation"], lanes)
+    states = set(channels.values())
+    if visual["status"] in {"failed", "stale", "error"}:
+        states.add(visual["status"])
+    overall = _evidence_status(states)
+    if overall == "passed":
+        overall = ("visual_validated" if visual["status"] == "passed" else
+                   "image_validated" if lanes["image"]["status"] == "passed" else
+                   "html_validated" if lanes["render:html"]["status"] == "passed" else "implementation_complete")
+    return {"schema_version": 1, "overall_status": overall, "channels": channels, "evidence": evidence,
+            "lanes": lanes, "visual": visual,
+            "user_replay": {"status": "not_run", "blocker": "user_defect_replay_required"},
+            "publication_ready": False}
 
 
 def scorecard_for_run(run_path):
@@ -257,7 +400,7 @@ def scorecard_for_run(run_path):
     if not window_path.exists():
         return {"schema_version": 1, "status": "blocked",
                 "reason_code": "quality_window_not_recorded", "target_pages": None,
-                "tf": None, "cost": None, "rework": None}
+                "tf": None, "cost": None, "rework": None, "deck_quality": deck_quality_for_run(root)}
     window_bytes = window_path.read_bytes()
     config = json.loads(window_bytes)
     if not isinstance(config, dict) or config.get("schema_version") != 1:
@@ -282,6 +425,7 @@ def scorecard_for_run(run_path):
                              window=config.get("window"), target_pages=config["target_pages"],
                              phase=config.get("phase", "after-authorization"))
     report["observation_closed"] = closed
+    report["deck_quality"] = deck_quality_for_run(root)
     return report
 
 

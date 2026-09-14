@@ -110,6 +110,36 @@ def validate_template_data(manifest: dict, data) -> list[str]:
     return errors
 
 
+def slot_input_path_errors(manifest: dict, layout: dict) -> list[str]:
+    """容量槽位必须能追溯到输入字段与 DOM；结构装饰不冒充内容槽位。"""
+    errors = []
+    bindings = {binding.get("slot"): binding for binding in manifest.get("slot_bindings", [])}
+    fields = {field.get("name"): field for field in manifest.get("input_fields", [])}
+    for slot in layout.get("slots", {}):
+        binding = bindings.get(slot)
+        if not binding:
+            errors.append(f"slot_binding_missing:{slot}")
+            continue
+        path = binding.get("input_path", slot)
+        if not isinstance(path, str) or not path or any(not part for part in path.split(".")):
+            errors.append(f"slot_input_path_invalid:{slot}")
+            continue
+        segments = path.split(".")
+        schema = fields.get(segments[0])
+        for part in segments[1:]:
+            if not isinstance(schema, dict):
+                break
+            if part == "*" and schema.get("type") == "array":
+                schema = schema.get("items")
+            elif schema.get("type") == "object":
+                schema = next((f for f in schema.get("fields", []) if f.get("name") == part), None)
+            else:
+                schema = None
+        if not isinstance(schema, dict):
+            errors.append(f"slot_input_path_invalid:{slot}")
+    return errors
+
+
 def display_texts(value, *, _key: str | None = None):
     """显示字段叶值；布尔值是样式开关，不计入文字覆盖。"""
     if _key in _NON_DISPLAY_KEYS:

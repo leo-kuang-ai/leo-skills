@@ -75,28 +75,53 @@ def qualified_pool(
     backend: str = "render:html",
     candidates: list[str] | None = None,
     resolver=None,
+    qualification_purpose="publication",
+    provider_contract=None,
 ) -> dict:
     """完整合格候选池（K5）：全部候选跑硬资格；不合格带原因保留在
     ``excluded``，供「无合格候选返回原因」与准入报告使用。
     """
-    from .asset_resolver import AssetResolver
-    from .content_projection import precompile_binding
+    from .asset_resolver import AssetResolver, AssetNotFoundError, DependencyMissingError
+    from .content_projection import precompile_binding, ProjectionError
 
     if resolver is None:
         resolver = AssetResolver()
     if candidates is None:
-        candidates = sorted(_canonical_layouts())
+        candidates = sorted(entity["asset_id"] for entity in resolver.entities if entity["kind"] == "layout")
     pool: list[dict] = []
     excluded: list[dict] = []
+    seen = set()
     for query in candidates:
-        binding = precompile_binding(
-            pack_page, design_context, query, backend=backend,
-            content_digest=content_digest, numbers=numbers, resolver=resolver)
+        try:
+            binding = precompile_binding(
+                pack_page, design_context, query, backend=backend,
+                content_digest=content_digest, numbers=numbers, resolver=resolver,
+                qualification_purpose=qualification_purpose, provider_contract=provider_contract)
+        except (AssetNotFoundError, DependencyMissingError, ProjectionError) as exc:
+            if isinstance(exc, ProjectionError) and not isinstance(exc.__cause__, (AssetNotFoundError, DependencyMissingError)):
+                raise
+            excluded.append({"layout_id": query, "hard_failures": ["lane_dependency_missing: " + str(exc)]})
+            continue
         entry = {
             "layout_id": binding["layout_id"],
             "binding": binding,
         }
         if binding["eligibility"]["qualified"]:
+            from .execution_pairing import pairing_key, derive_execution_pairings
+            identity_digest = pairing_key(binding["execution_pairing_identity"])
+            qualification = binding["eligibility"]["checks"]["qualification"]
+            relation = pack_page["expression"]["relation"]["kind"]
+            view = derive_execution_pairings([resolver.resolve(binding["layout_id"])],
+                [resolver.resolve(binding["template_id"] if backend == "render:html" else binding["recipe_id"])],
+                {binding["layout_id"]: {"lanes": {backend: {"relations": {relation: qualification}}}}},
+                catalog_generation=resolver.generation, qualification_purpose=qualification_purpose)
+            if not any(candidate["identity_digest"] == identity_digest for candidate in view["candidates"]):
+                excluded.append({**entry, "hard_failures": ["execution_pairing_not_admitted"], "pairing_gaps": view["gaps"]})
+                continue
+            if identity_digest in seen:
+                continue
+            seen.add(identity_digest)
+            entry["identity_digest"] = identity_digest
             pool.append(entry)
         else:
             excluded.append({**entry,
@@ -115,9 +140,10 @@ def qualified_pool(
         design_context.get("style", {}).get("asset_id"), resolver=resolver,
         page_types=set(page_types_for_role(signals["page_role"]) or []))
     ranked = rank_page(signals, bank, factor, adjust, backend, hard_qualified=True)
-    by_id = {entry["layout_id"]: entry for entry in pool}
-    pool = [{**by_id[candidate["layout"]], "ranking": candidate}
-            for candidate in ranked["candidates"]]
+    pool = [{**entry, "ranking": candidate}
+            for candidate in ranked["candidates"]
+            for entry in sorted(pool, key=lambda row: row["identity_digest"])
+            if entry["layout_id"] == candidate["layout"]]
     return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"]}
 
 
@@ -153,6 +179,8 @@ def allocate_deck(
     candidates: list[str] | None = None,
     search_budget: int = DEFAULT_SEARCH_BUDGET,
     resolver=None,
+    qualification_purpose="publication",
+    provider_contract=None,
 ) -> dict:
     """整册分配：确定性有界搜索，返回选中绑定 + 摘要 + 报告。
 
@@ -176,7 +204,8 @@ def allocate_deck(
         page_pool = qualified_pool(
             page, design_context, content_digest=pack["content_digest"],
             numbers=pack.get("numbers"), backend=backend,
-            candidates=candidates, resolver=resolver)
+            candidates=candidates, resolver=resolver, qualification_purpose=qualification_purpose,
+            provider_contract=provider_contract)
         pools[pid] = page_pool
         explicit_query = explicit.get(pid)
         if explicit_query:
@@ -297,7 +326,6 @@ def _selection_result(pack: dict, pools: dict, selection: dict,
     chosen = {
         pid: {
             "layout_id": entry["layout_id"],
-            "binding_digest": entry["binding"]["binding_digest"],
             "expression_binding_digest": entry["binding"].get("expression_binding_digest"),
             "materialization_binding_digest": entry["binding"].get("materialization_binding_digest"),
             "binding": entry["binding"],

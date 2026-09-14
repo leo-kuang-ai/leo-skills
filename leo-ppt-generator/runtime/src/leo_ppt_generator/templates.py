@@ -161,7 +161,7 @@ def _parse_notes(title: str, text: str, fallback: dict | None = None) -> dict:
     renderer_support = fallback.get("renderer_support") or {}
     image_skeleton = renderer_support.get("image")
     return {
-        "name": title.replace("# 版式：", "").strip(),
+        "name": title.replace("# 版式：", "").lstrip("# ").strip(),
         "purpose": _field(text, "**用途**") or str(fallback.get("page_role") or ""),
         "content_type": _field(text, "**适用内容类型**"),
         "skeleton": _field(text, "**骨架**") or (
@@ -996,7 +996,7 @@ def resolve_design_context(
         "theme_entity": theme_entity,
         "effective": effective,
         "constraints": constraints,
-        "seen_constraint_texts": seen_texts,
+        "seen_constraint_texts": sorted(seen_texts),
     }
     context["context_digest"] = hashlib.sha256(_canonical_json({
         "style": style["asset_id"],
@@ -1045,6 +1045,7 @@ def compose_design(
     pages: list[dict] | None = None,
     selection: dict | None = None,
     selection_digest: str | None = None,
+    design_context: dict | None = None,
     resolver=None,
 ) -> dict:
     """唯一设计组合器（§7.0 阶段表）：产出冻结 resolved_design。
@@ -1055,68 +1056,47 @@ def compose_design(
     """
     from .asset_resolver import AssetResolver, ResolverError as _ResolverError
     from .render.layout import CapacityOverflowError, require_capacity, validate_profile
-    if selection_digest is not None and selection is None:
-        raise DesignCompositionError("selection_digest_without_selection")
-    if selection is not None:
-        from .application.expression_pipeline import selection_digest as _selection_digest
-        if not selection.get("selection_frozen"):
-            raise DesignCompositionError("selection_frozen_mismatch")
-        frozen = selection.get("selection") if isinstance(selection.get("selection"), dict) else selection
-        expected = selection_digest or selection.get("selection_digest")
+    from .application.expression_pipeline import selection_digest as _selection_digest
+    from .content_projection import verify_binding_reference
+    if not isinstance(selection, dict) or not selection.get("selection_frozen") or not pages:
+        raise DesignCompositionError("selection_frozen_mismatch")
+    frozen = selection.get("selection")
+    expected = selection_digest or selection.get("selection_digest")
+    try:
         if expected != _selection_digest(frozen):
             raise DesignCompositionError("selection_frozen_mismatch")
-        selection = frozen
+        if {page.get("page_id") for page in pages} != set(frozen) or len(pages) != len(frozen):
+            raise DesignCompositionError("selection_frozen_mismatch")
+        for page in pages:
+            entry = frozen[page["page_id"]]
+            verify_binding_reference(entry, entry.get("binding"))
+            if page.get("layout") not in (None, entry["layout_id"]):
+                raise DesignCompositionError("selection_frozen_mismatch")
+    except (ValueError, KeyError, TypeError) as exc:
+        raise DesignCompositionError("selection_frozen_mismatch") from exc
+    selection = frozen
 
     if resolver is None:
         resolver = AssetResolver()
 
     # 1–5) 共用设计上下文（K2 抽取）：选择/主题/覆盖/约束与候选预编译同源。
-    context = resolve_design_context(
+    context = copy.deepcopy(design_context) if design_context is not None else resolve_design_context(
         style_query, mode=mode, theme_query=theme_query, brand_data=brand_data,
         color_overrides=color_overrides, font_overrides=font_overrides, resolver=resolver)
+    if any(entry["binding"]["context_digest"] != context["context_digest"] for entry in selection.values()):
+        raise DesignCompositionError("selection_frozen_mismatch")
     style = context["style"]
     theme_entity = context["theme_entity"]
     effective = context["effective"]
     constraints = context["constraints"]
-    seen_texts = context["seen_constraint_texts"]
+    seen_texts = set(context["seen_constraint_texts"])
 
-    # 6) 页面解析：页级显式 layout 优先，再用风格路由；校验 renderer 与容量。
-    routes = {route.get("page_type"): route
-              for route in style["data"].get("bindings", {}).get("layout_routes", [])}
+    # layout 只来自已冻结 selection，不能再使用风格路由。
     resolved_pages: list[dict] = []
     capacity_reports: list[dict] = []
-    for page in (pages or [{"page_no": 1, "page_role": "data", "slots": {}}]):
+    for page in pages:
         role = page.get("page_role", "content")
-        layout_query = page.get("layout")
-        if not layout_query:
-            page_id = page.get("page_id")
-            if selection is not None and page_id in selection:
-                layout_query = selection[page_id].get("layout_id")
-        if not layout_query:
-            route = routes.get(role)
-            preferred = (route or {}).get("preferred") or []
-            if len(preferred) > 1:
-                # 内容形状收窄：表格形状（rows+columns 槽）只保留 layout_type
-                # == "table" 的候选；收窄后仍不唯一才要求页级显式消歧。
-                slots = page.get("slots") or {}
-                if "rows" in slots and "columns" in slots:
-                    table_candidates = []
-                    for candidate in preferred:
-                        try:
-                            profile = resolver.resolve(candidate)["data"]
-                        except _ResolverError:
-                            continue
-                        if profile.get("layout_type") == "table":
-                            table_candidates.append(candidate)
-                    preferred = table_candidates or preferred
-            if len(preferred) > 1:
-                raise DesignCompositionError(
-                    f"design_composition_invalid: page_role {role} 有多个首选 layout，"
-                    "需页级显式 layout 消歧")
-            layout_query = preferred[0] if preferred else None
-        if not layout_query:
-            raise DesignCompositionError(
-                f"design_composition_invalid: page_role {role} 无可用版式路由")
+        layout_query = selection[page["page_id"]]["layout_id"]
         try:
             layout_entity = (resolver.require(layout_query, kind="layout")
                               if isinstance(layout_query, str) else
@@ -1128,7 +1108,8 @@ def compose_design(
             validate_profile(profile)
         except _ResolverError as exc:
             raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
-        template_id = (profile.get("renderer_support") or {}).get("render:html")
+        selected_binding = selection[page["page_id"]]["binding"]
+        template_id = selected_binding["template_id"]
         slots = page.get("slots") or {}
         capacity = None
         if profile.get("layout_type") == "table" and "rows" in slots:
@@ -1140,6 +1121,8 @@ def compose_design(
                 raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
             capacity_reports.append({"page_no": page.get("page_no", 1), **capacity})
         resolved_pages.append({
+            "page_id": page["page_id"],
+            "recipe_id": selected_binding.get("recipe_id"),
             "page_no": page.get("page_no", 1),
             "page_role": role,
             "content_ref": page.get("content_ref") or "inline",

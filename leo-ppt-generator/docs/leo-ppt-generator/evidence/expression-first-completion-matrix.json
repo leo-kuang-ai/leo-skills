@@ -6,132 +6,216 @@
     "U1": {
       "status": "partial",
       "files": [
-        "runtime/src/leo_ppt_generator/page_intent.py",
-        "runtime/src/leo_ppt_generator/content_pack.py",
-        "runtime/src/leo_ppt_generator/schemas/page-expression-v1.schema.json",
-        "template-library/governance/rules/page-type-regime-v2.json"
+        "runtime/src/leo_ppt_generator/content_pack.py:compile_page_expression",
+        "runtime/src/leo_ppt_generator/page_intent.py:load_page_type_regime",
+        "scripts/lint_page_type_regime.py:scan_active_regime_residue",
+        "references/authoring/page-expression-example.md"
       ],
       "implementation_evidence": [
-        "page-type-regime-v2",
-        "page-expression-v1",
-        "focused tests"
+        "正式 schema 由 content pack v2 直接引用",
+        "最小编码、事实落位、fields 结构冲突、独立页级摘要；v1 regime 文件移除"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_page_intent_routing tests.test_chapter_content_model",
-      "result": "passed",
-      "remaining_gap": "required evidence or implementation not complete"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_page_expression_contract tests.test_chapter_content_model tests.test_page_intent_routing tests.test_content_pack",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 63 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u1-final-unit.log",
+        "scope": "已提交 U1 单元；后续集成尚未全绿"
+      },
+      "remaining_gap": [
+        "最终 compile/lint/full-suite 未重跑",
+        "U12 旧链 baseline 没有在原 U1 改动之前冻结；须隔离历史字节运行并如实记录重建时间"
+      ],
+      "local_commit": "4036e13"
     },
     "U2": {
       "status": "partial",
       "files": [
-        "scripts/capability_manifest.py",
-        "template-library/evidence/qualification-manifest.json",
-        "runtime/src/leo_ppt_generator/schemas/qualification-v1.schema.json"
+        "runtime/src/leo_ppt_generator/qualification.py:verify_capability_evidence",
+        "runtime/src/leo_ppt_generator/qualification.py:layout_capability_contract",
+        "scripts/capability_manifest.py:build_qualification_manifest",
+        "runtime/src/leo_ppt_generator/content_projection.py:precompile_binding",
+        "runtime/src/leo_ppt_generator/relation_oracle.py:evaluate_output",
+        "runtime/src/leo_ppt_generator/render/page.py:render_page",
+        "scripts/probe_relation_capabilities.py:run_probes",
+        "runtime/src/leo_ppt_generator/template_inputs.py:slot_input_path_errors"
       ],
       "implementation_evidence": [
-        "generation-bound qualification manifest",
-        "all 57 declarations unverified without receipts"
+        "独立 oracle 冻结；relation×lane、正反例/字节/依赖/环境/视觉与 Provider receipt 准入",
+        "全自动候选与 explicit 共用 precompile 门；无证据关闭自动池",
+        "真实 Chromium 五关系各一组正反 PNG/DOM 测量，当前 verifier 重新核验为 provisional；不是 publication-qualified",
+        "browser/font/vendor 字节指纹；模板输入路径与容量槽位闭合；input/owner/measurement/artifact 对应校验"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-check; PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-qualification --out template-library/evidence/qualification-manifest.json",
-      "result": "catalog exit 0; qualification exit 0; all qualifications unverified",
-      "remaining_gap": "relation×lane positive/negative probes, evidence drift and capacity receipts absent"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_relation_oracle tests.test_qualification_evidence",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 16 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u2-real-output-tests.log",
+        "receipt": "docs/leo-ppt-generator/evidence/u2-real-evidence-verification.json",
+        "scope": "最新 source-binding 检查之后须再跑最终单元验证"
+      },
+      "remaining_gap": [
+        "真实 image recipe/Provider/独立输出 oracle 未接通",
+        "缺 U6-A 视觉裁决；当前真实 HTML 能力仅 provisional，生产池保持关闭",
+        "user/proposal scope 资格证据还需闭合",
+        "asset-locations-v2 仍待 U8 迁移",
+        "消费者全量回归未关闭"
+      ]
     },
     "U3": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
-      "test_command": null,
-      "result": null,
-      "remaining_gap": "required evidence or implementation not complete"
+      "files": [
+        "runtime/src/leo_ppt_generator/content_projection.py",
+        "runtime/src/leo_ppt_generator/layout_selection.py",
+        "runtime/src/leo_ppt_generator/content_preview.py"
+      ],
+      "implementation_evidence": [
+        "生产单摘要读取和 compute_binding_digest 已移除，旧/缺/混用统一拒绝",
+        "expression 与 materialization 分离，判别式 pairing/schema 已落地；预览/收据/RunIndex/CLI 开始切换"
+      ],
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 37 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
+        "scope": "上一阶段机制验证，当前源待重跑"
+      },
+      "remaining_gap": [
+        "统一 projector 尚未成为全部候选唯一来源；同身份跨 relation 去重需合并",
+        "双 lane 同页不一致的 impact snapshot 需拒绝",
+        "旧消费者集成、真实资格与物化闭环未完成"
+      ]
     },
     "U4": {
       "status": "partial",
       "files": [
-        "runtime/src/leo_ppt_generator/application/expression_pipeline.py"
+        "runtime/src/leo_ppt_generator/application/expression_pipeline.py",
+        "runtime/src/leo_ppt_generator/application/routes.py",
+        "runtime/src/leo_ppt_generator/application/run_index.py"
       ],
       "implementation_evidence": [
-        "routes.generate -> run_expression_pipeline",
-        "atomic input generation"
+        "PipelineRequest→routes.generate→run_expression_pipeline，compose 只接 frozen selection",
+        "staging/generation/current 与 RunIndex 登记、恢复、冲突、空 deck 拒绝已实现"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline",
-      "result": "passed",
-      "remaining_gap": "required evidence or implementation not complete"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 37 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
+        "scope": "上一阶段机制验证，当前源待重跑"
+      },
+      "remaining_gap": [
+        "冻结 evidence/oracle/environment 闭包缺失",
+        "CLI 旧 prepare 分支未完全收口；真实正向 pipeline/preview 未贯通",
+        "image Provider adapter 未完成；HTML 单产物中断恢复待补"
+      ]
     },
     "U5": {
       "status": "partial",
       "files": [
-        "runtime/src/leo_ppt_generator/task_local_layout_proposals.py",
-        "runtime/src/leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json"
+        "runtime/src/leo_ppt_generator/task_local_layout_proposals.py"
       ],
       "implementation_evidence": [
-        "closed op enum",
-        "candidate limit",
-        "scope validation"
+        "四种封闭 op 真实应用，类型/范围/anchor/slot/run/base/内容不变校验，三个候选上限与 curation 已实现"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline",
-      "result": "passed",
-      "remaining_gap": "required evidence or implementation not complete"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 37 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
+        "scope": "上一阶段机制验证，当前源待重跑"
+      },
+      "remaining_gap": [
+        "proposal 尚未回到统一资格/物化链；新 patch 需要自身 evidence",
+        "proposal resolver 与资产/evidence 快照、跨 run 生产回放待接通"
+      ]
     },
     "U6": {
       "status": "partial",
       "files": [
         "runtime/src/leo_ppt_generator/quality_metrics.py",
         "scripts/run_quality_scorecard.py",
-        "runtime/src/leo_ppt_generator/schemas/impact-v2.schema.json",
-        "runtime/src/leo_ppt_generator/schemas/deck-quality-v1.schema.json"
+        "scripts/compute_impact.py"
       ],
       "implementation_evidence": [
-        "four-channel deck_quality states",
-        "impact-v2 page-level invalidation",
-        "real export absence remains blocked"
+        "四通道从 committed input、实际投影/绑定/PNG/sidecar 派生，移除文件存在即 passed",
+        "impact-v2 比较实际双 binding；HTML/image/visual 状态分层，publication 不自动晋升"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_quality*.py'; PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/compute_impact.py --v2 <old> <new>",
-      "result": "focused quality tests 38 passed; real Provider/image/visual replay not run",
-      "remaining_gap": "real Provider receipt, image export, R-85 replay and user defect replay"
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_quality_channels tests.test_quality_metrics tests.test_compute_impact",
+      "result": {
+        "exit_code": 0,
+        "summary": "Ran 47 tests; OK",
+        "log": "docs/leo-ppt-generator/evidence/u6-quality.log",
+        "scope": "机制验证，不能外推真实用户/视觉"
+      },
+      "remaining_gap": [
+        "真实 baseline 引用与配对文件字节验证待补",
+        "R-85 runner、U6-A/U6-B、用户差页 replay 工具待完整实现",
+        "真实 Provider/image、配对视觉及用户收益证据未完成"
+      ]
     },
     "U7": {
       "status": "partial",
       "files": [
         "scripts/migrate_template_library.py",
-        "template-library/governance/migration/migration-plan.json"
+        "docs/leo-ppt-generator/evidence/legacy-source-recovery-audit.json"
       ],
       "implementation_evidence": [
-        "preview emits source snapshot, dirty hashes, closure, mapping, allowlist and plan digest",
-        "preview fail-closed on missing source"
+        "891 来源逐项核验；651 归档同字节、8 Git 同字节、157 原位同字节、75 原位已变化，unresolved=0"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase preview",
-      "result": "exit 1; verify reports 525 source_missing entries",
-      "remaining_gap": "legacy source tree absent; stage cannot safely proceed"
+      "test_command": null,
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "旧 migration-plan source_missing 不是当前阻塞结论",
+        "需从当前 canonical 重冻 U7-A 位置/closure 与 U7-B 执行快照；U7-B 依赖价值门"
+      ]
     },
     "U8": {
       "status": "partial",
       "files": [
-        "scripts/capability_manifest.py",
-        "template-library/catalog/current.json",
-        "template-library/catalog/generations/e483ed0d93736774ab3142848dbec997/registry.json"
+        "scripts/capability_manifest.py:build_template_registry",
+        "runtime/src/leo_ppt_generator/asset_resolver.py",
+        "template-library/governance/rules/asset-locations-v2.json"
       ],
       "implementation_evidence": [
-        "v2 catalog generation and atomic current pointer",
-        "catalog_state current/missing/invalid/stale diagnostics"
+        "当前 catalog 实测仍为 v1 schema/旧 canonical 路径；先前 v2 完成描述撤回"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/capability_manifest.py --template-library --library-check",
-      "result": "exit 0; 565 entities; generation e483ed0d93736774ab3142848dbec997",
-      "remaining_gap": "execution pairing/recipe derivation and all consumer closure not verified"
+      "test_command": null,
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "LibraryContext、v2 分类/位置、asset→evidence→catalog DAG、不可变 generation、execution/diagnostic 分离未闭合"
+      ]
     },
     "U9": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
+      "files": [
+        "runtime/src/leo_ppt_generator/asset_resolver.py",
+        "scripts/migrate_template_library.py"
+      ],
+      "implementation_evidence": [
+        "待根据固定 roots 建立逐命中 owner closure"
+      ],
       "test_command": null,
-      "result": null,
-      "remaining_gap": "active consumer closure and active_legacy_hits=0 not verified"
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "runtime/scripts/tests/evals/SKILL/references/prompts 与方案 roots 未完整分类",
+        "旧 readers/aliases/fallback/活动旧路径及 bundle/install 消费者未全部切换；零命中未证明"
+      ]
     },
     "U10": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
+      "files": [
+        "runtime/src/leo_ppt_generator/layout_selection.py",
+        "runtime/src/leo_ppt_generator/content_projection.py"
+      ],
+      "implementation_evidence": [
+        "目前仅 layout_id 粗身份；image 仅构图说明，资格门已明确 image_recipe_missing"
+      ],
       "test_command": null,
-      "result": null,
-      "remaining_gap": "complete execution pairing identity and image recipe pairing not verified"
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "canonical/proposal 判别式 identity、template/recipe 双 lane 配对、slot closure、证据派生与去重未实现完整"
+      ]
     },
     "U11": {
       "status": "partial",
@@ -140,50 +224,73 @@
         "tests/test_migration_phases.py"
       ],
       "implementation_evidence": [
-        "shadow manifest CAS publish",
-        "maintenance lock and publication journal",
-        "hash-bound cleanup allowlist with drift rejection"
+        "现有 CAS/lock/helper 测试只证明局部机制"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_migration_phases.py'",
-      "result": "5 tests passed; real delivery publish not run",
-      "remaining_gap": "missing source blocks verified receipt and convergence on delivery"
+      "test_command": null,
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "publication-ready 同 plan receipt、完整 staging hash/HEAD/dirty/CAS/journal/current-last/recovery 未闭合",
+        "cleanup 路径/type/symlink/hash/already_absent 及最终 staging↔delivery convergence 未验证",
+        "真实 publish 依赖 U6-A 价值门，尚不满足"
+      ]
     },
     "U12": {
       "status": "partial",
-      "files": [],
-      "implementation_evidence": [],
+      "files": [
+        "template-library/evidence/oracles/relation-output-v1.json",
+        "docs/leo-ppt-generator/evidence/u12-oracle-freeze.json"
+      ],
+      "implementation_evidence": [
+        "U2 新 verifier 编码前已固定独立五关系 oracle；未从能力声明导出预期"
+      ],
       "test_command": null,
-      "result": null,
-      "remaining_gap": "relation probes, paired baseline receipts and environment fingerprint not produced"
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "真实旧链配对基线、浏览器/字体/Provider fingerprint 与实测 probes 待生成",
+        "需隔离历史 Git/归档源重建，不能把当前输出冒充过去基线"
+      ]
     },
     "U13": {
-      "status": "blocked",
+      "status": "partial",
       "files": [
         "scripts/migrate_template_library.py"
       ],
       "implementation_evidence": [
-        "stage shadow tree attempted"
+        "源码可精确恢复，撤回 no safe recovery path 断言"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library.py --phase preview",
-      "result": "exit 1; 525 source_missing entries",
-      "remaining_gap": "legacy source snapshot points to absent references/styles tree; no safe recovery path in checkout"
+      "test_command": null,
+      "result": "本轮最终验证待运行",
+      "remaining_gap": [
+        "仍有旧机械 converter/phase aliases；必须收口为固定五阶段 CLI",
+        "独立 shadow worktree 与同 plan stage/verify/receipt/bundle 尚未真实闭合",
+        "执行 U7-B/U13 价值前置门尚未通过"
+      ]
     }
   },
   "global_verification": {
-    "compileall": "passed",
-    "lint": "passed",
-    "full_tests": {
+    "current_source_full_suite": "not_run",
+    "previous_full_suite": {
       "exit_code": 1,
       "summary": "Ran 2064 tests; 4 failures, 4 errors",
       "log": "/tmp/leo_expr_full_test_latest.log"
     },
-    "provider": "blocked",
+    "provider": "not_run",
     "real_image_export": "not_run",
-    "visual_replay": "blocked",
-    "user_defect_replay": "blocked",
-    "focused_migration": "5 passed",
-    "catalog": "exit 0; 565 entities; generation e483ed0d93736774ab3142848dbec997",
-    "qualification": "exit 0; 57 rows; all unverified without receipts",
-    "migration_preview": "exit 1; 525 source_missing"
-  }
+    "visual_replay": "not_run",
+    "user_defect_replay": "not_run",
+    "publication": "not_run",
+    "source_recovery": "unresolved=0; 75 changed-in-place sources retained",
+    "note": "移除历史占位/错误完成描述；当前状态只使用具体源码和日志。"
+  },
+  "full_suite": {
+    "exit_code": 1,
+    "tests": 2120,
+    "failures": 52,
+    "errors": 66,
+    "receipt": "docs/leo-ppt-generator/evidence/full-suite-integration-audit.json",
+    "failure_ledger": "docs/leo-ppt-generator/evidence/full-suite-failure-ledger.json",
+    "scope": "中途审计，先于本次 oracle/owner 变更"
+  },
+  "overall_status": "partial",
+  "goal_completion_eligible": false
 }

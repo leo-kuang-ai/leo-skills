@@ -20,7 +20,7 @@ from .application.routes import (
     classify_input,
     route_definition,
     select_route,
-    generate_expression,
+    generate,
 )
 from .application.run_index import IdempotencyConflict, RevisionConflict, RunIndex
 from .application.sample_decisions import record_sample_decision, verify_sample_decision
@@ -1252,6 +1252,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=__version__)
     subcommands = parser.add_subparsers(dest="command", required=True)
 
+    expression_generate = subcommands.add_parser("generate", help="从正式 PipelineRequest 冻结表达并生成各 lane")
+    expression_generate.add_argument("--request", required=True)
+    expression_generate.add_argument("--json", action="store_true")
+
     doctor = subcommands.add_parser("doctor")
     doctor.add_argument("--route")
     doctor.add_argument("--json", action="store_true")
@@ -2296,6 +2300,9 @@ def _parse_var_overrides(items: list[str] | None) -> dict[str, str] | None:
 
 
 def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
+    if args.command == "generate":
+        from .application.expression_pipeline import PipelineRequest
+        return generate(PipelineRequest.from_dict(_json_file(args.request)))
     if args.command == "version":
         return _version_report()
     if args.command == "rollback":
@@ -3070,7 +3077,7 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 requested_generation=args.generation,
             )
             from .content_projection import load_run_binding
-            bound_page = load_run_binding(run_path, number)
+            bound_page = load_run_binding(run_path, number, backend=args.backend)
             if bound_page is not None:
                 expected = bound_page["binding"]
                 if args.backend != expected["backend"]:
@@ -3084,10 +3091,11 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                     if (receipt.get("expression_binding_digest") != expected.get("expression_binding_digest")
                             or receipt.get("content_digest") != expected["content_digest"]):
                         raise ContractError("effective_binding_render_receipt_mismatch")
-                    # v2 双层摘要存在时必须与渲染收据一致；旧收据继续走兼容路径。
-                    for key in ("expression_binding_digest", "materialization_binding_digest"):
-                        if expected.get(key) is not None and receipt.get(key) != expected.get(key):
-                            raise ContractError("effective_binding_render_receipt_mismatch")
+                    from .content_projection import verify_binding_reference, ProjectionError
+                    try:
+                        verify_binding_reference(receipt, expected)
+                    except ProjectionError as exc:
+                        raise ContractError(str(exc)) from exc
             # R-73 对齐门：图像 lane 整页生成页在 record 前机械拦截。
             # 判域只看冻结 provenance 事实（composite/render 豁免）；无 OCR
             # 文本 = not_run 披露，不冒充通过；WARN 期失败只披露不阻断。

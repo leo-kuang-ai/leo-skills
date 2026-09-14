@@ -13,8 +13,8 @@
       "profile": "body-basic/layout.json",
       "asset_id": "builtin:layout:body-basic",
       "notes": "body-basic/notes.md",
-      "revision": "bf90b0405ade2f93",
-      "layout_sha256": "bf90b0405ade2f9375afe2f32db77b7f7a94ba66c0cdd42361fbc2b73153bac4",
+      "revision": "49e56bb0ab443a9b",
+      "layout_sha256": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
       "notes_sha256": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09"
     },
     {
@@ -181,8 +181,8 @@
       "profile": "p25-spec-table/layout.json",
       "asset_id": "builtin:layout:p25-spec-table",
       "notes": "p25-spec-table/notes.md",
-      "revision": "a8f7c934f105f691",
-      "layout_sha256": "a8f7c934f105f6917f837d7db9f9e65502a1c09ea5db4023e32c782055db86d8",
+      "revision": "2acd760c9fc51f5e",
+      "layout_sha256": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36",
       "notes_sha256": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2"
     },
     {

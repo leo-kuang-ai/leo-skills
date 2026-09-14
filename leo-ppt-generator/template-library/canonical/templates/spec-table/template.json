@@ -12,7 +12,12 @@
     {
       "name": "columns",
       "required": true,
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "count_min": 2,
+      "count_max": 3
     },
     {
       "name": "column_align",
@@ -22,7 +27,15 @@
     {
       "name": "rows",
       "required": true,
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "count_min": 3,
+      "count_max": 8
     },
     {
       "name": "page_no",
@@ -50,6 +63,12 @@
       "slot": "page_no",
       "selector": "[data-leo-block='page-no']",
       "binding_kind": "structural"
+    },
+    {
+      "slot": "cell",
+      "selector": "[data-leo-block='table'] tbody td",
+      "binding_kind": "data",
+      "input_path": "rows.*.*"
     }
   ],
   "theme_roles": [

@@ -100,9 +100,12 @@ class PreviewBrowserTests(browser_test_case()):
             self.assertTrue(current['pages'][1]['cached'])
             self.assertEqual(first['pages'][1]['artifact_sha256'], current['pages'][1]['artifact_sha256'])
             receipt = json.loads((root / 'previews' / current['pages'][1]['sidecar']).read_text())
-            self.assertEqual(receipt['binding_digest'], current['pages'][1]['binding_digest'])
+            self.assertEqual(receipt['expression_binding_digest'], current['pages'][1]['expression_binding_digest'])
+            self.assertEqual(receipt['materialization_binding_digest'], current['pages'][1]['materialization_binding_digest'])
+            self.assertNotIn('binding_digest', receipt)
             self.assertEqual(receipt['content_digest'], current['content_digest'])
-            self.assertEqual(receipt['preview_cache']['rendered_binding_digest'], original['binding_digest'])
+            self.assertEqual(receipt['preview_cache']['rendered_expression_binding_digest'], original['expression_binding_digest'])
+            self.assertEqual(receipt['preview_cache']['rendered_materialization_binding_digest'], original['materialization_binding_digest'])
 
     def test_real_preview_cache_corruption_and_receipt_fingerprints(self):
         with tempfile.TemporaryDirectory() as tmp:

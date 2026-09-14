@@ -1,0 +1,371 @@
+{
+  "recorded_at": "2026-09-14T06:15:18.359106+00:00",
+  "head": "4036e1391b2da80ef0edecde0640098dbc39aeee",
+  "target_repo": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator",
+  "rows": [
+    {
+      "status": " M",
+      "path": "CHANGELOG.md",
+      "owner": "expression-first/previous-turn",
+      "sha256": "2ca2ec102cb1a6e3e4473dee283d43ec295d86fdf7083e170dc0345cc3e61a13",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-completion-matrix.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "cb22d2bcc59640a12dfb209580fabfcf14d344e81cf97e68fcca4fcbbe9b7871",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "4e9f8cc12d4a72fcbcc4b7277b6994f63e2bb141cc572c63faf03cd38063a75a",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/routes.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "e3e05692ffd9a5c3d79e4450e1d905e72be581891eca79951ceca6bfdb8d88df",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/run_index.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "f24f543c5c9643d8d14de283b30eae0fd37153c4a7c8e1e03dbb23661be6d50d",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "cf8377b8d62777924106d91438f1b1696c67ee69c07ec709962164ac9f5b7eca",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/content_preview.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "b9be72e7945b6de9952e8b0e88fba4e7e1dcace9dca52b20f12ff7498bf07d93",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "49c004ec989340306289cb783620203ffd5e167cf35ac766de9d03ae98d233a8",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/layout_selection.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "b6a864a3fdeb3eba53e2fa3b0e640976f02c3209e09fa5316182491f4d019e7f",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/quality_metrics.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "2d81648195a39e08443670fcc84888b481a8e1bd2837ea8d7feb4697e343c381",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/provenance.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "2cabb59df5e33bb40f6fd0abec936e79a08dbcda1928e995928bb949b64ddf66",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/receipt.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "3f009feb38cd8e8d07adf1b073a2491b679d519fef98c8c429f807e4893cf6a1",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/deck-quality-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "21c6bc156cd6a7645b04d9a706c1a3e6e18f6acb292220cf9ddd2bf4d2e9cbac",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/expression-pipeline-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "edd397cf47444cef6fcd9665c43fe35d3dd1298ad54de8d9d2cf3f4389b27533",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/impact-v2.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "7bae6c70ba7b1d17e4aabeca9772c32d623e63ed8cc38430f3afc987f5bb900f",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "a9dd3fc2c8cfd4112390f17ae4d9fee0e641376fd0dc75a4d6e2f42c4836a527",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/task_local_layout_proposals.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "95653b0a8494e3d7f487ad21d2d5cd81565254cd5b44c86c03393765acfd1eb3",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "2825c6b740125bbec5fba2350b260ee97778cce869056df7358896bcb540f5aa",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/capability_manifest.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "45d5f48b1c5bc6b655bd8a7868d1688b1dd8f09ca0927bc54ff8f80e403b8162",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/compute_impact.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "f852eec8c4c22cd6171c85b61754b9fdca54884f9eaa8190474fba29903c5bd6",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/run_quality_scorecard.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "e53659d934b1fc0676b9fe118a35311fa034b27aed6ba56f640117bb88a57585",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/schemas/qualification-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "70a1b72bfa740e865623386329daec788dfc84fe629d41a696e4d25260fd5ed3",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/schemas/resolved-design-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "51aa8e2de1a075feef894be8ab7074f36797a273fe81b58089c7a54e3d298c86",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_content_preview.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "ee9ffaac29ebd20c8601f8fb92b65320d14ea74fc61dfc862abddfaf0010528f",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_content_projection.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "d65d14cf2031f4f99f27d0469e90861fce2427b92f20fca39342f54f06900305",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_deck_layout_selection.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "f9f2097c6bd524848fee0e7af0471b6f776fee9c2f7a27b1c4c8e76c68e6f00b",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_expression_pipeline.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "38ed2f1c10202252602c8e2b72190f7bdac2b0573246b2be19ec651c1d566635",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_layout_capacity_filter.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "3e958e9e63fea10e73bd2bf970c593d71edddc28dcc3f9f8734e1211de5088de",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_library_contracts.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "24ae4138f34413571727d31a7543d106ff8dccf715fe15fbf153234e4a54450c",
+      "type": "file"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_templates.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "8c18d21b5483bb6fc421ed9481255e4556cd7781c84c17c8ea618d351aa7ab6b",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks.json.graphify-bak",
+      "owner": "external-preexisting/protected",
+      "sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "owner": "external-preexisting/protected",
+      "sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "owner": "external-preexisting/protected",
+      "sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "owner": "external-preexisting/protected",
+      "sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "owner": "external-preexisting/protected",
+      "sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-autonomous-work.md",
+      "owner": "expression-first/previous-turn",
+      "sha256": "a436b5a30533d0acfe5519de7b8122465ca7b4bbe968ed814a6c8f4c0211fbf4",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-resume-baseline.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "eb9132c21d7a9dc5bccccb4767b73590f896a0857dba13c5f09371bff829d9d8",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/full-suite-integration-audit.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "3f1adb28529e57582cce506ec42b3e64ab75c6d9d239ab095d50c4c8d66b7f26",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/legacy-source-recovery-audit.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "44adc3f21f4d9f6d4882f848214ce96b6232d22c1ccf9c8e61be34b2672ab515",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u12-oracle-freeze.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "ad4f9707ee6e56290497950f242ba95e95f7ccc2528fcd7a1f3c946d5f695e80",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/execution_pairing.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "2cde0aefe98b657a788e70bc97b104783ad41768bc31c0c34dcdb18bbdae4b06",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/qualification.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "5c8bce315016ff7637f3108f8fd2fc13899dda48b3fff867acb2d3ea9148f4ee",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/binding-v2.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "36ec7919894c48f442c1784d89ed15ce505ebc3add8dbbc05d75fed38b810bc1",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/capability-evidence-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "89ea25609a3cf25738d549dbd6b0c8899859564f43e6bcafdba3c147460ad026",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/execution-pairing-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "69068f00f72f6ddc660604a1cff4c945e3713b1b5c630975ade4a5e8b1e8ce4b",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/qualification-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "70a1b72bfa740e865623386329daec788dfc84fe629d41a696e4d25260fd5ed3",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/oracles/relation-output-v1.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/governance/schemas/capability-evidence-v1.schema.json",
+      "owner": "expression-first/previous-turn",
+      "sha256": "89ea25609a3cf25738d549dbd6b0c8899859564f43e6bcafdba3c147460ad026",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_binding_v2.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "58691388b747ab594351f69fb126d1a5dce794f8328844f53e0ed321daf294e3",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_expression_quality_channels.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "d35ad077bce2b562ca11ca800e4dc3197edf3fa1b7634cd2b22d5cadf7c61c3a",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_qualification_evidence.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "69194dfd716970f8fcb4eef4d2b2482c6107b240fca1a1860c78cda9e3fd4603",
+      "type": "file"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_task_local_expression_proposals.py",
+      "owner": "expression-first/previous-turn",
+      "sha256": "08d23b51629d3477bdad6d15a8011b697b23d3fcec939ed6529f9a3daf404b2f",
+      "type": "file"
+    }
+  ]
+}

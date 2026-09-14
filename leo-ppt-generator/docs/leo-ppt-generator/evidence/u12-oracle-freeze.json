@@ -1,0 +1,11 @@
+{
+  "baseline_status": "not_run",
+  "frozen_before": "U2 relation qualification verifier implementation",
+  "kind": "oracle-freeze",
+  "limitation": "本记录只冻结独立输出 oracle，不证明旧链基线、真实导出或视觉通过。",
+  "oracle": "template-library/evidence/oracles/relation-output-v1.json",
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "owner": "004-U12-product-contract",
+  "plan_sha256": "ff65622ac39c9ebe56721a92e3d635f01f2d428c29d5d53b5389b9ace0df24ba",
+  "schema_version": 1
+}

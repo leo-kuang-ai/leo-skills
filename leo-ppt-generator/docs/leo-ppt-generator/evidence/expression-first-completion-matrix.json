@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "plan": "docs/plans/2026-09-11-004-feat-leo-ppt-expression-first-plan.md",
-  "generated_from": "current working tree",
+  "generated_from": "current source and expression-verification-integration-v3",
   "units": {
     "U1": {
       "status": "partial",
@@ -46,13 +46,11 @@
         "真实 Chromium 五关系各一组正反 PNG/DOM 测量，当前 verifier 重新核验为 provisional；不是 publication-qualified",
         "browser/font/vendor 字节指纹；模板输入路径与容量槽位闭合；input/owner/measurement/artifact 对应校验"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_relation_oracle tests.test_qualification_evidence",
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_qualification_evidence tests.test_relation_oracle tests.test_image_expression_adapter",
       "result": {
         "exit_code": 0,
-        "summary": "Ran 16 tests; OK",
-        "log": "docs/leo-ppt-generator/evidence/u2-real-output-tests.log",
-        "receipt": "docs/leo-ppt-generator/evidence/u2-real-evidence-verification.json",
-        "scope": "最新 source-binding 检查之后须再跑最终单元验证"
+        "summary": "机制 focused tests passed; real image output remains unrun",
+        "log": "docs/leo-ppt-generator/evidence/u2-real-output-tests.log"
       },
       "remaining_gap": [
         "真实 image recipe/Provider/独立输出 oracle 未接通",
@@ -73,12 +71,11 @@
         "生产单摘要读取和 compute_binding_digest 已移除，旧/缺/混用统一拒绝",
         "expression 与 materialization 分离，判别式 pairing/schema 已落地；预览/收据/RunIndex/CLI 开始切换"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_binding_v2 tests.test_execution_pairing tests.test_expression_quality_channels",
       "result": {
         "exit_code": 0,
-        "summary": "Ran 37 tests; OK",
-        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
-        "scope": "上一阶段机制验证，当前源待重跑"
+        "summary": "binding/pairing/impact focused tests passed",
+        "log": "docs/leo-ppt-generator/evidence/u3-u4-receipt-consumers-v3.log"
       },
       "remaining_gap": [
         "统一 projector 尚未成为全部候选唯一来源；同身份跨 relation 去重需合并",
@@ -97,12 +94,11 @@
         "PipelineRequest→routes.generate→run_expression_pipeline，compose 只接 frozen selection",
         "staging/generation/current 与 RunIndex 登记、恢复、冲突、空 deck 拒绝已实现"
       ],
-      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
+      "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_delivery_receipt",
       "result": {
         "exit_code": 0,
-        "summary": "Ran 37 tests; OK",
-        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
-        "scope": "上一阶段机制验证，当前源待重跑"
+        "summary": "真实 HTML pipeline、冻结输入、收据 focused tests passed",
+        "log": "docs/leo-ppt-generator/evidence/u3-u4-receipt-consumers-v3.log"
       },
       "remaining_gap": [
         "冻结 evidence/oracle/environment 闭包缺失",
@@ -121,9 +117,8 @@
       "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_pipeline tests.test_binding_v2 tests.test_qualification_evidence tests.test_task_local_expression_proposals",
       "result": {
         "exit_code": 0,
-        "summary": "Ran 37 tests; OK",
-        "log": "docs/leo-ppt-generator/evidence/u3-u5-integrated.log",
-        "scope": "上一阶段机制验证，当前源待重跑"
+        "summary": "封闭 op/边界/最多 3 候选 focused tests passed; 未接统一生产链",
+        "log": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/expression-consumers.log"
       },
       "remaining_gap": [
         "proposal 尚未回到统一资格/物化链；新 patch 需要自身 evidence",
@@ -144,9 +139,8 @@
       "test_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_expression_quality_channels tests.test_quality_metrics tests.test_compute_impact",
       "result": {
         "exit_code": 0,
-        "summary": "Ran 47 tests; OK",
-        "log": "docs/leo-ppt-generator/evidence/u6-quality.log",
-        "scope": "机制验证，不能外推真实用户/视觉"
+        "summary": "quality channel/receipt focused tests passed; visual/provider blocked",
+        "log": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/quality.log"
       },
       "remaining_gap": [
         "真实 baseline 引用与配对文件字节验证待补",
@@ -268,28 +262,31 @@
     }
   },
   "global_verification": {
-    "current_source_full_suite": "not_run",
-    "previous_full_suite": {
+    "current_source_full_suite": {
       "exit_code": 1,
-      "summary": "Ran 2064 tests; 4 failures, 4 errors",
-      "log": "/tmp/leo_expr_full_test_latest.log"
+      "tests": 2135,
+      "failures": 58,
+      "errors": 64,
+      "log": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/full-suite.log",
+      "source_stable": true
     },
+    "ordered_run": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/verification.json",
     "provider": "not_run",
     "real_image_export": "not_run",
     "visual_replay": "not_run",
     "user_defect_replay": "not_run",
     "publication": "not_run",
     "source_recovery": "unresolved=0; 75 changed-in-place sources retained",
-    "note": "移除历史占位/错误完成描述；当前状态只使用具体源码和日志。"
+    "receipt_consumer": "62 focused tests passed; strict pointer/binding schema active"
   },
   "full_suite": {
     "exit_code": 1,
-    "tests": 2120,
-    "failures": 52,
-    "errors": 66,
-    "receipt": "docs/leo-ppt-generator/evidence/full-suite-integration-audit.json",
-    "failure_ledger": "docs/leo-ppt-generator/evidence/full-suite-failure-ledger.json",
-    "scope": "中途审计，先于本次 oracle/owner 变更"
+    "tests": 2135,
+    "failures": 58,
+    "errors": 64,
+    "receipt": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/verification.json",
+    "log": "docs/leo-ppt-generator/evidence/expression-verification-integration-v3/full-suite.log",
+    "scope": "当前源码快照；required protocol migration failures remain"
   },
   "overall_status": "partial",
   "goal_completion_eligible": false

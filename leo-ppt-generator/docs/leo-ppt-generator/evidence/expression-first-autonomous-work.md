@@ -27,6 +27,15 @@
 
 ## 已确认的修正
 
+## 2026-09-14 continuation audit
+
+- 提交 `9c16a88`：冻结表达证据、双 lane pipeline、资格与 recipe/provenance 基础。
+- 提交 `cb1ee91`：收据仅消费 committed input generation；真实 HTML 产物、模板漂移、缺 pointer、旧/缺/混用 binding 摘要均 fail closed；62 个 receipt/quality/pipeline focused tests 通过。
+- 提交 `1770709`：刷新 completion matrix，引用当前有序验证结果。
+- 有序验证证据：`docs/leo-ppt-generator/evidence/expression-verification-integration-v3/verification.json`；compileall/schema/lint/quality 通过，expression-consumers 退出 1，migration 退出 1，全量 2135 tests / 58 failures / 64 errors / exit 1，`source_stable=true`。
+- 当前仍未完成：U5 proposal 尚未接入真实 U3/U4 生产链；U6 缺真实 Provider、配对视觉与用户差页 replay；U7–U13 缺 v2 catalog、consumer closure、完整五阶段迁移、verified publish/CAS/current-last、cleanup/convergence；不得以现有 focused tests 或本地 HTTP fixture 晋升这些状态。
+- 外部 dirty 保护文件仍未修改；未 push、未创建 PR。
+
 - 旧 ledger 891 项：651 项可从当前归档完全按 hash 找回，8 项可从 Git 找回；
   157 项原位 hash 一致，75 项原位已变更。见 `legacy-source-recovery-audit.json`。
   原“源丢失无法恢复”阻塞已被证伪；75 项不得用旧字节覆盖当前内容。

@@ -1,0 +1,147 @@
+{
+  "artifact_sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+  "blocks": [
+    {
+      "box": [
+        96,
+        76,
+        1088,
+        92
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        206,
+        1088,
+        200.78125
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        206,
+        1088,
+        49.59375
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        281.59375,
+        1088,
+        49.59375
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        357.1875,
+        1088,
+        49.59375
+      ],
+      "overflow": false
+    }
+  ],
+  "browser_version": "151.0.7922.34",
+  "data_sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+  "edges": [],
+  "kind": "render-measurement",
+  "schema_version": 1,
+  "source": "browser-dom",
+  "template_sha256": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852",
+  "texts": [
+    {
+      "box": [
+        96,
+        71,
+        416,
+        75
+      ],
+      "boxes": [
+        [
+          96,
+          71,
+          416,
+          75
+        ]
+      ],
+      "color": "rgb(20, 33, 61)",
+      "font_size": 52,
+      "font_weight": "700",
+      "order": 0,
+      "text": "三项工作分别推进"
+    },
+    {
+      "box": [
+        143.0625,
+        207,
+        128,
+        46
+      ],
+      "boxes": [
+        [
+          143.0625,
+          207,
+          128,
+          46
+        ]
+      ],
+      "color": "rgb(44, 50, 66)",
+      "font_size": 32,
+      "font_weight": "400",
+      "order": 1,
+      "text": "统一口径"
+    },
+    {
+      "box": [
+        143.0625,
+        282.59375,
+        302.34375,
+        46
+      ],
+      "boxes": [
+        [
+          143.0625,
+          282.59375,
+          302.34375,
+          46
+        ]
+      ],
+      "color": "rgb(44, 50, 66)",
+      "font_size": 32,
+      "font_weight": "400",
+      "order": 2,
+      "text": "统一口径 → 收集证据"
+    },
+    {
+      "box": [
+        143.0625,
+        358.1875,
+        128,
+        46
+      ],
+      "boxes": [
+        [
+          143.0625,
+          358.1875,
+          128,
+          46
+        ]
+      ],
+      "color": "rgb(44, 50, 66)",
+      "font_size": 32,
+      "font_weight": "400",
+      "order": 3,
+      "text": "复核结果"
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ]
+}

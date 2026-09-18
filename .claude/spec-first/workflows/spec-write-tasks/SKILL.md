@@ -66,8 +66,11 @@ Overrides: none
 7. Scripts validate identity, freshness, structure, hashes, concrete paths, and same-wave overlap. LLM/reviewers judge semantic task quality.
 8. Do not hand-edit `.claude/`, `.codex/`, or `.agents/skills/` as source fixes.
 9. `--repo <artifact-root>` selects the artifact/source resolution root only. It does not authorize or select the downstream mutation `target_repo`.
+10. Compile executable tasks only from `status: active`. `completed`, `partially-shipped`, and `superseded` plans return `source_plan_non_active`; do not hash them into a new executable task pack or route them to `spec-work`. A legacy plan without managed status remains a visible `source-plan-lifecycle-unmanaged` limitation.
 
 ## Input Paths
+
+当前用户明确要求补完非活跃历史计划时，将 `source_plan_non_active`、已核验来源和剩余范围线索交给 `spec-plan` Phase 0.1。旧计划与旧 task-pack pins 保持不变；owner 返回有效后继后才按本 skill 正常生成和校验新任务包。仅拆分历史材料或只读请求不产生实施授权。
 
 - Source plan path: read the source plan frontmatter and focused sections: Requirements, Scope Boundaries, Technical Approach, Implementation Units, Files, Test Scenarios, Verification, and Deferred to Implementation.
 - Existing task-pack path: read the task pack, source plan, and `Task Pack Contract`; validate identity/freshness/structure before treating it as executable.

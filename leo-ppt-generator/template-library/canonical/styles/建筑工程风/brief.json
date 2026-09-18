@@ -1,0 +1,164 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:建筑工程风",
+  "name": "建筑工程风",
+  "aliases": [
+    "建筑风",
+    "工程建造风",
+    "construction"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/制造能源/建筑工程风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "architecture/construction style, structural rigor, blueprint-grounded, built-environment credibility, project-management clarity, professional construction polish"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "建筑风",
+      "工程建造风",
+      "construction"
+    ],
+    "best_for": "建筑工程与规划设计,需要主体结构、工程过程与项目管理的严谨表达",
+    "visual_direction": "architecture/construction style, structural rigor, blueprint-grounded, built-environment credibility, project-management clarity, professional construction polish",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "blueprint-tinted / light concrete, structured",
+      "composition": "structure + process + project",
+      "density": "medium-high, precise"
+    },
+    "color_palette": {
+      "primary": "blueprint blue #1E3A5F / slate, white",
+      "secondary": "cool gray #94A3B8, cyan linework #22D3EE",
+      "accent": "one amber accent #F59E0B",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "structural, precise, blueprint-grounded"
+    },
+    "typography": {
+      "title": "clear technical sans (IBM Plex / 思源黑体)",
+      "body": "concise technical body",
+      "labels": "phase/area tags",
+      "text_quality": "accurate engineering terms"
+    },
+    "layout_patterns": [
+      "project masterplan",
+      "structure/BIM abstract",
+      "construction schedule",
+      "delivery & quality"
+    ],
+    "layout_usage_rule": "Structural and process rigor; masterplan and schedule clarity, blueprint grounding.",
+    "layout_blueprints": [
+      {
+        "name": "项目总览",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "项目/标名"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "总平面/效果"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "规模",
+              "工期"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "进度页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "里程碑"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "阶段",
+              "管控"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "blueprint linework, masterplan, schedule bars, structural grid, cobalt accents",
+      "avoid": "cartoon, clutter, fluffy renders, misleading scope"
+    },
+    "rendering_constraints": [
+      "Structural, precise, blueprint-grounded.",
+      "Masterplan and schedule clarity; construction rigor.",
+      "Accurate engineering terms; no invented logos.",
+      "Define perspective, scale, material, light, and spatial function; for maps, specify landmarks, labels, and accuracy. Avoid implausible perspective. (awesome-gpt-image-2 · architecture-space)"
+    ],
+    "reference": "GitHub: 建筑工程 · 工程表达惯例"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Structural, precise, blueprint-grounded.",
+      "Masterplan and schedule clarity; construction rigor.",
+      "Accurate engineering terms; no invented logos.",
+      "Define perspective, scale, material, light, and spatial function; for maps, specify landmarks, labels, and accuracy. Avoid implausible perspective. (awesome-gpt-image-2 · architecture-space)"
+    ]
+  }
+}

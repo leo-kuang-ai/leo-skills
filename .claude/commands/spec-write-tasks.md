@@ -1,6 +1,6 @@
 ---
-name: spec-write-tasks
-description: "Public workflow entrypoint (spec-write-tasks): compile a settled local spec-plan into an optional derived task pack for spec-work, or validate an existing local task pack before execution. Use for explicit plan-splitting/task-doc requests or high-complexity work suitability; do not use for plan authoring, implementation execution, unresolved scope, small low-risk plans, progress/approval state, remote/generic task lists, or generated runtime mirror edits. Keep the plan as single source of truth; tasks are derived and optional."
+description: "Compile or validate an optional derived Spec-First task pack"
+argument-hint: "[implementation-ready plan or task-pack path]"
 ---
 
 Command support root: `.claude/spec-first/workflows/spec-write-tasks`. Treat it as the loaded skill directory whenever this inlined workflow refers to `SKILL_DIR` or the directory containing `SKILL.md`.
@@ -66,8 +66,11 @@ Overrides: none
 7. Scripts validate identity, freshness, structure, hashes, concrete paths, and same-wave overlap. LLM/reviewers judge semantic task quality.
 8. Do not hand-edit `.claude/`, `.codex/`, or `.agents/skills/` as source fixes.
 9. `--repo <artifact-root>` selects the artifact/source resolution root only. It does not authorize or select the downstream mutation `target_repo`.
+10. Compile executable tasks only from `status: active`. `completed`, `partially-shipped`, and `superseded` plans return `source_plan_non_active`; do not hash them into a new executable task pack or route them to `spec-work`. A legacy plan without managed status remains a visible `source-plan-lifecycle-unmanaged` limitation.
 
 ## Input Paths
+
+当前用户明确要求补完非活跃历史计划时，将 `source_plan_non_active`、已核验来源和剩余范围线索交给 `spec-plan` Phase 0.1。旧计划与旧 task-pack pins 保持不变；owner 返回有效后继后才按本 skill 正常生成和校验新任务包。仅拆分历史材料或只读请求不产生实施授权。
 
 - Source plan path: read the source plan frontmatter and focused sections: Requirements, Scope Boundaries, Technical Approach, Implementation Units, Files, Test Scenarios, Verification, and Deferred to Implementation.
 - Existing task-pack path: read the task pack, source plan, and `Task Pack Contract`; validate identity/freshness/structure before treating it as executable.

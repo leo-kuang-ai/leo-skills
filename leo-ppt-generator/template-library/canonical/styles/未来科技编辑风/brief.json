@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:未来科技编辑风",
+  "name": "未来科技编辑风",
+  "aliases": [
+    "futuristic tech editorial",
+    "科技杂志编辑风",
+    "电蓝编辑风",
+    "tech magazine"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/未来科技编辑风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技浅色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "futuristic tech magazine editorial, white canvas with clean 12-column grid, electric blue single accent for key data and section markers, bold controlled sans hierarchy, labeled blocks and steps instead of bullet lists, thin lines implying structure, coordinate marks axis lines and brackets, flat sparse editorial charts with blue only on the selected signal, open modules over heavy cards, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "futuristic tech editorial",
+      "科技杂志编辑风",
+      "电蓝编辑风",
+      "tech magazine"
+    ],
+    "best_for": "以白底电蓝强调、12 栏精密网格与数据化结构表达前沿、精准、当下的科技杂志编辑感",
+    "visual_direction": "futuristic tech magazine editorial, white canvas with clean 12-column grid, electric blue single accent for key data and section markers, bold controlled sans hierarchy, labeled blocks and steps instead of bullet lists, thin lines implying structure, coordinate marks axis lines and brackets, flat sparse editorial charts with blue only on the selected signal, open modules over heavy cards, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white #FFFFFF with pale module fill #F7F9FC",
+      "composition": "one dominant block + one supporting cluster, one visibly quieter side",
+      "density": "medium, structured and calm"
+    },
+    "color_palette": {
+      "primary": "white #FFFFFF ground, primary text #2B2B2B",
+      "secondary": "secondary text #6B6B6B, grid and dividers #E6EAF2",
+      "accent": "electric blue #2F6BFF — emphasis, chart highlights, section markers, below 10 percent of slide area",
+      "neutral": "pale module fill #F7F9FC, grid gray #E6EAF2",
+      "rule": "electric blue for emphasis only and under 10% of slide area; graphite and pale grid lines carry context"
+    },
+    "typography": {
+      "title": "modern bold sans (Inter / 思源黑体), 700-800 weight, controlled",
+      "body": "clean sans (Inter / 思源黑体), 400-500 weight",
+      "labels": "uppercase section labels (Inter / 黑体), 600-700 weight, 11-13px feel",
+      "text_quality": "bold, current, letter spacing 0 — no decorative fonts"
+    },
+    "layout_patterns": [
+      "asymmetric block pair: one dominant block + one supporting cluster, one side visibly quieter",
+      "labeled modules: dense bullets converted into labeled blocks, steps, timelines or comparison modules",
+      "editorial chart: flat sparse chart, blue only for the selected signal, graphite for context, direct labels",
+      "thin-line structure: 1-2px dividers and coordinate marks imply structure without enclosing cards"
+    ],
+    "layout_usage_rule": "Align to a clear grid; thin lines imply structure instead of enclosing every element.",
+    "negative_prompt": [
+      "no soft shadows, glow, blur or radial gradients",
+      "no 3D forms or skeuomorphic surfaces",
+      "no dense bullet lists — convert to labeled blocks or steps",
+      "no blue exceeding 10 percent of slide area"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "supportive"
+    },
+    "visual_elements": {
+      "allowed": "thin rules, brackets, ticks, coordinate marks, axis lines, open modules, flat charts",
+      "avoid": "soft shadows, glow, gradients, 3D forms, heavy cards"
+    },
+    "rendering_constraints": [
+      "Flat sparse editorial charts; direct labels over legends.",
+      "Electric blue reserved for the selected signal.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: Awesome-PPT-Design-Skills · futuristic-tech-editorial style-system"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Flat sparse editorial charts; direct labels over legends.",
+      "Electric blue reserved for the selected signal.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

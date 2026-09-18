@@ -19,7 +19,8 @@ const CONFIRMED_SOURCES = new Set([
   'read-only-probe',
   'confirmed-local-state',
 ]);
-const CANONICAL_HOSTS = new Set(['claude', 'codex', 'cursor', 'kiro', 'opencode', 'qoder']);
+const { captureSourceSnapshot } = require('./source-snapshot.cjs');
+const CANONICAL_HOSTS = new Set(require('./host-authority.cjs').CANONICAL_HOSTS);
 
 function collectSetupFacts(options = {}) {
   const registry = options.registry || {};
@@ -44,6 +45,9 @@ function collectSetupFacts(options = {}) {
   const configuredDependencies = (options.configuredDependencies || []).map(normalizeConfiguredDependency);
   const generatedAt = (options.now || new Date()).toISOString();
   const repoRoot = path.resolve(options.repoRoot || process.cwd());
+  const sourceSnapshot = captureSourceSnapshot({
+    repoRoot, sourceRegistry: options.sourceRegistry, skillRoot: options.skillRoot, homeDir: options.homeDir, env: options.env, host: options.host, platform: options.platform, now: options.now || new Date(),
+  });
   const baselineReady = items
     .filter((item) => item.required && item.baseline_blocking)
     .every((item) => item.result === 'ready');
@@ -73,6 +77,7 @@ function collectSetupFacts(options = {}) {
       'provider-readiness-generic',
     ],
     target: options.target || null,
+    source_snapshot: sourceSnapshot,
     source: {
       repo_status: options.repoStatus || 'git-repo',
       authority_level: 'confirmed-local-state',
@@ -91,7 +96,9 @@ function collectSetupFacts(options = {}) {
         ? options.directEvidence.ripgrep
         : commandReady(items, 'rg'),
       ast_grep: commandReady(items, 'ast-grep'),
-      git_diff: true,
+      git_diff: options.directEvidence && typeof options.directEvidence.git_diff === 'boolean'
+        ? options.directEvidence.git_diff
+        : options.repoStatus !== 'not-git-repo',
       tests_and_logs: true,
     },
     setup_summary: {
@@ -180,6 +187,7 @@ function normalizeItem(entry, observed = null, kind) {
     required,
     setup_required: entry.setup_required === true,
     baseline_blocking: baselineBlocking,
+    ...(entry.demand ? { demand: entry.demand } : {}),
     dependency_status: installed
       ? 'ready'
       : (observedDependencyStatus || (observedStatus === 'missing' ? 'missing' : 'unknown')),

@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/expression-pipeline/v1",
+  "$defs": {
+    "PipelineRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pack",
+        "design_context",
+        "catalog_generation",
+        "lane_matrix",
+        "run_root",
+        "run_id",
+        "library_root",
+        "policy_revision",
+        "explicit",
+        "purpose",
+        "provider_contract"
+      ],
+      "properties": {
+        "pack": {
+          "type": "object"
+        },
+        "design_context": {
+          "type": "object"
+        },
+        "catalog_generation": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32,64}$"
+        },
+        "lane_matrix": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "render:html",
+                "image"
+              ]
+            }
+          }
+        },
+        "run_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,128}$"
+        },
+        "library_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "explicit": {
+          "type": "object"
+        },
+        "purpose": {
+          "enum": [
+            "publication",
+            "validation"
+          ]
+        },
+        "provider_contract": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "proposals": {
+          "type": "object",
+          "additionalProperties": {"type": "object"}
+        },
+        "proposal_probe_cases": {
+          "type": ["object", "null"]
+        }
+      }
+    },
+    "PipelineResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "kind",
+        "run_id",
+        "input_digest",
+        "input_generation",
+        "selection",
+        "resolved_design",
+        "bindings",
+        "receipt_refs",
+        "status",
+        "purpose",
+        "publication_ready"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "PipelineResult"
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "input_generation": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "selection": {
+          "type": "object"
+        },
+        "resolved_design": {
+          "type": "object"
+        },
+        "bindings": {
+          "type": "object"
+        },
+        "receipt_refs": {
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "blocked",
+            "html_validated",
+            "image_validated",
+            "failed",
+            "lanes_materialized"
+          ]
+        },
+        "purpose": {
+          "enum": [
+            "publication",
+            "validation"
+          ]
+        },
+        "publication_ready": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PipelineFailure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "kind",
+        "status",
+        "reason_code",
+        "phase",
+        "retryable",
+        "details"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "PipelineFailure"
+        },
+        "status": {
+          "const": "failed"
+        },
+        "reason_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase": {
+          "enum": [
+            "request",
+            "qualification",
+            "compose",
+            "freeze",
+            "materialization"
+          ]
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/PipelineRequest"
+    },
+    {
+      "$ref": "#/$defs/PipelineResult"
+    },
+    {
+      "$ref": "#/$defs/PipelineFailure"
+    }
+  ]
+}

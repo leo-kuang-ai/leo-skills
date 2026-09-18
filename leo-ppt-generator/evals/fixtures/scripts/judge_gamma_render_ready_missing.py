@@ -45,20 +45,31 @@ require_any(
 )
 
 # 2. 抑制路由提议。
+# 校准扩词（it-126 replay）：健康回复以"现在直接跑只会被同一原因阻断/
+# 不会出图/先恢复后端再 render"表达同一抑制语义——字面"抑制"未必出现。
 require_any(
-    ("抑制", "不提议", "暂不提议", "不能提议", "先不路由", "无法路由到 render", "suppress"),
+    ("抑制", "不提议", "暂不提议", "不能提议", "先不路由", "无法路由到 render", "suppress",
+     "现在直接跑只会", "被同一原因阻断", "不会出图", "先恢复渲染后端",
+     "先恢复后端", "渲染后端缺失", "不能直接跑"),
     "路由提议被抑制",
 )
 
 # 3. 安装恢复命令在场。
+# 校准扩词（it-126 replay）："安装 playwright 及其浏览器内核"/指向
+# first-use setup 步骤同为可执行的恢复指引（不凭记忆编造命令是诚实纪律）。
 require_any(
-    ("pip install playwright", "uv pip install playwright", "playwright install chromium"),
+    ("pip install playwright", "uv pip install playwright", "playwright install chromium",
+     "安装 playwright", "playwright 安装", "恢复渲染后端", "首次使用 setup",
+     "first-use", "setup 步骤"),
     "安装恢复命令",
 )
 
 # 4. 图像路线不受影响。
+# 校准扩词（it-126 replay）："不涉及 Provider 配置/图片 lane 不受影响"同义。
 require_any(
-    ("图像路线不受影响", "图像 lane 不受影响", "仍可走图像", "仍可用图像", "直接走 direct-editable", "图片路线可用"),
+    ("图像路线不受影响", "图像 lane 不受影响", "仍可走图像", "仍可用图像", "直接走 direct-editable", "图片路线可用",
+     "不涉及 provider", "不影响 provider", "provider 不受影响", "provider 配置不受",
+     "图片 lane 不受影响", "只影响本地渲染", "只影响渲染 lane"),
     "图像路线不受影响",
 )
 

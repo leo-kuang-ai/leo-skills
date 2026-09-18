@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/executable-adoption/v1",
+  "title": "可执行模板采用记录（用户库 governance/trust/；包内自报 trusted 无效）",
+  "type": "object",
+  "required": [
+    "kind",
+    "schema_version",
+    "adoption_id",
+    "template_asset_id",
+    "code_digests",
+    "review"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "executable-adoption"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "adoption_id": {
+      "type": "string",
+      "pattern": "^[0-9a-z\\-]+$"
+    },
+    "template_asset_id": {
+      "type": "string"
+    },
+    "scope": {
+      "enum": [
+        "user"
+      ]
+    },
+    "code_digests": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "绑定模板及全部递归代码依赖的 sha256（路径→hash）",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": [
+        "reviewed_by",
+        "basis"
+      ],
+      "properties": {
+        "reviewed_by": {
+          "type": "string",
+          "description": "实际审阅来源（人工维护者）",
+          "minLength": 2
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 8
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "adopted_from": {
+      "type": "string"
+    }
+  }
+}

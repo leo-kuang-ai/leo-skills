@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:高级料理杂志风",
+  "name": "高级料理杂志风",
+  "aliases": [
+    "高级料理杂志",
+    "烹饪创新演示",
+    "culinary-innovation"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/文旅餐饮/高级料理杂志风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "美食编辑"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "fine-dining magazine editorial, generous negative space, tall vertical image crops, cream paper with near-black serif and muted olive accents, refined culinary innovation storytelling"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "高级料理杂志",
+      "烹饪创新演示",
+      "culinary-innovation"
+    ],
+    "best_for": "A highly refined, editorial presentation style reminiscent o…;适合Fine dining and culinary pitches/Luxury brand presentations/Editorial and magazi",
+    "visual_direction": "fine-dining magazine editorial, generous negative space, tall vertical image crops, cream paper with near-black serif and muted olive accents, refined culinary innovation storytelling",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "Split layout utilizing negative space Left side: Large serif title and small sans-serif subtitle…",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1A1A1A(主色/标题锚)",
+      "secondary": "#F4F0EB(辅助色)",
+      "accent": "#5A6347(强调色)",
+      "neutral": "#F4F0EB(文字与中性锚)",
+      "rule": "锚点 #F4F0EB, #1A1A1A, #5A6347;A highly refined, editorial presentation style reminisce…"
+    },
+    "typography": {
+      "title": "思源宋体 / Georgia;Elegant Display Serif, Clean Sans-Serif",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "Thin vertical framing line and a circled date/nu",
+      "Left vertical image, bottom-righ",
+      "Circled serif number badge",
+      "Left vertical image, bottom-righ"
+    ],
+    "layout_usage_rule": "版式骨架 cover/agenda/section/content/data/quote/closing;按版式骨架排布,同 deck 内封面/收尾构图呼应",
+    "visual_elements": {
+      "allowed": "Cover: Left-aligned text, right-aligned vertical image, far-…",
+      "avoid": "Cluttered layouts with edge-to-edge text;Bright, neon, or highly saturated color palettes;Heavy, blocky, or comical fonts"
+    },
+    "rendering_constraints": [
+      "Cluttered layouts with edge-to-edge text",
+      "Bright, neon, or highly saturated color palettes",
+      "Heavy, blocky, or comical fonts",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "Cluttered layouts with edge-to-edge text",
+      "Bright, neon, or highly saturated color palettes",
+      "Heavy, blocky, or comical fonts",
+      "Drop shadows, bevels, or 3D text effects",
+      "Standard 16:9 uncropped images (unless used as full-bleed backgrounds)"
+    ],
+    "reference": "gpt-image2-ppt-skills · styles/featured/culinary-innovation.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Cluttered layouts with edge-to-edge text",
+      "Bright, neon, or highly saturated color palettes",
+      "Heavy, blocky, or comical fonts",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:cards-stat",
+  "name": "cards-stat",
+  "lane": "render:html",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "title",
+      "required": true,
+      "type": "string",
+      "maxLength": 24
+    },
+    {
+      "name": "cards",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 14
+          },
+          "claim": {
+            "type": "string",
+            "maxLength": 22
+          },
+          "stat": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "type": "string",
+                "maxLength": 12
+              },
+              "unit": {
+                "type": "string",
+                "maxLength": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 22
+              }
+            },
+            "required": [
+              "value"
+            ]
+          },
+          "alt": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "label",
+          "claim"
+        ]
+      },
+      "count_min": 3,
+      "count_max": 6
+    },
+    {
+      "name": "bottom",
+      "required": false,
+      "type": "string",
+      "maxLength": 56
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "kicker",
+      "selector": "[data-leo-block='kicker']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "cards",
+      "selector": "[data-leo-block='cards']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "bottom",
+      "selector": "[data-leo-block='bottom']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "primary",
+    "accent",
+    "background",
+    "surface",
+    "text",
+    "muted",
+    "border",
+    "on_primary"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p16-16-multi-card-brief-layouts"
+  ],
+  "dependencies": [
+    "builtin:layout:p16-16-multi-card-brief-layouts"
+  ],
+  "notes": "输入对象形状、数量与 layout 槽位一致；字号来自 effective_theme，几何来自 layout profile。"
+}

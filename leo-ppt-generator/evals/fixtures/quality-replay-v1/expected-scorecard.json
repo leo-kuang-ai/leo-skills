@@ -1,0 +1,84 @@
+{
+  "cost": {
+    "caliber_version": "cost-caliber-v2",
+    "calls": 0,
+    "known_call_coverage": null,
+    "known_totals": {},
+    "limitation": "recorded calls do not prove complete billing-window coverage",
+    "per_page": {},
+    "price_buckets": {},
+    "status": "blocked",
+    "unknown_calls": [],
+    "window_complete": false
+  },
+  "cost_by_phase": {
+    "after-authorization": {
+      "caliber_version": "cost-caliber-v2",
+      "calls": 0,
+      "known_call_coverage": null,
+      "known_totals": {},
+      "limitation": "recorded calls do not prove complete billing-window coverage",
+      "per_page": {},
+      "price_buckets": {},
+      "status": "blocked",
+      "unknown_calls": [],
+      "window_complete": false
+    },
+    "before-authorization": {
+      "caliber_version": "cost-caliber-v2",
+      "calls": 0,
+      "known_call_coverage": null,
+      "known_totals": {},
+      "limitation": "recorded calls do not prove complete billing-window coverage",
+      "per_page": {},
+      "price_buckets": {},
+      "status": "blocked",
+      "unknown_calls": [],
+      "window_complete": false
+    },
+    "development": {
+      "caliber_version": "cost-caliber-v2",
+      "calls": 0,
+      "known_call_coverage": null,
+      "known_totals": {},
+      "limitation": "recorded calls do not prove complete billing-window coverage",
+      "per_page": {},
+      "price_buckets": {},
+      "status": "blocked",
+      "unknown_calls": [],
+      "window_complete": false
+    }
+  },
+  "evidence_level": "recorded-events",
+  "excluded_synthetic_events": [],
+  "observation_closed": true,
+  "phase": "after-authorization",
+  "rework": {
+    "caliber_version": "rework-caliber-v1",
+    "completed_rounds": null,
+    "cycles": [],
+    "status": "not_yet_observed"
+  },
+  "run_id": "4c5cfb7788ae492185b2c9c48248f9e1",
+  "schema_version": 1,
+  "target_pages": [
+    "1",
+    "2"
+  ],
+  "tf": {
+    "K": 0,
+    "N": 2,
+    "T": 2,
+    "U": 0,
+    "caliber_version": "tf-caliber-v2",
+    "coverage": 1.0,
+    "event_count": 0,
+    "rate": 0.0,
+    "status": "observed",
+    "target_interval": [
+      0.0,
+      0.0
+    ]
+  },
+  "window": "local-render"
+}

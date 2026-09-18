@@ -1,0 +1,321 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/layout-profile/v1",
+  "title": "版式 profile（几何唯一源：slot/容量/几何/renderer 绑定；不拥有风格配色、业务内容）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "canvas",
+    "page_role",
+    "layout_type",
+    "slots",
+    "renderer_support"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "layout-profile"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "required": [
+        "width",
+        "height",
+        "units"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "const": 1280
+        },
+        "height": {
+          "const": 720
+        },
+        "units": {
+          "const": "logical-px"
+        }
+      }
+    },
+    "page_role": {
+      "enum": [
+        "cover",
+        "agenda",
+        "section",
+        "content",
+        "data",
+        "quote",
+        "evidence",
+        "closing"
+      ]
+    },
+    "layout_type": {
+      "enum": [
+        "fixed-regions",
+        "stack-row",
+        "stack-column",
+        "grid",
+        "table"
+      ],
+      "description": "首批限定五类；不允许任意 CSS 表达式"
+    },
+    "reuse_friendly": {
+      "type": "boolean",
+      "description": "false = 强视觉锚点版式；一 deck 不超 max_per_deck 次"
+    },
+    "max_per_deck": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "仅对 reuse_friendly=false 生效；缺省按 1 处理"
+    },
+    "regions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/region"
+      }
+    },
+    "slots": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/slot"
+      }
+    },
+    "columns": {
+      "type": "object",
+      "description": "table/grid 专用",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "weights": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    },
+    "font_size_refs": {
+      "type": "object",
+      "description": "字号/行高从 effective_theme 引用（如 table_header/table_body），不在本文件写数值"
+    },
+    "padding": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "renderer_support": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "description": "每 lane 的实际支持：render:html → template asset_id；image → composition 说明或 null（报缺）"
+    },
+    "flow": {
+      "type": "object",
+      "description": "流式区域按容器剩余空间求解；循环依赖拒绝"
+    },
+    "notes": {
+      "type": "string",
+      "description": "机械迁移来源/几何深化说明；纯 image 版式的指导性几何"
+    },
+    "structure": {
+      "type": "object",
+      "required": [
+        "reading_order"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reading_order": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "槽位阅读顺序（dashi K5 结构声明；只记录结构，不存主题/文案/评分/第二套几何）"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "members",
+              "relation"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "members": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "relation": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "encodings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "slot",
+              "kind"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "slot": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image_recipe": {
+      "type": "string",
+      "pattern": "^(builtin|user):recipe:[a-z0-9-]+$"
+    }
+  },
+  "definitions": {
+    "region": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": [
+        "region"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "region": {
+          "type": "string",
+          "description": "regions 键引用"
+        },
+        "content_type": {
+          "enum": [
+            "text",
+            "points",
+            "sides",
+            "chart",
+            "media",
+            "table",
+            "page-no"
+          ],
+          "description": "dashi K3：槽位承载的内容类型；media 声明媒体能力，与 template manifest 交叉校验"
+        },
+        "count_min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "count_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_chars": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "chars_per_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_lines": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "desc": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "description": "版式 profile v1。绑定 render:html 模板的版式必须声明 regions（几何真值驱动 DOM）；纯 image 版式的几何为指导性（notes）。",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "renderer_support": {
+            "properties": {
+              "render:html": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "render:html"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "regions"
+        ]
+      }
+    }
+  ]
+}

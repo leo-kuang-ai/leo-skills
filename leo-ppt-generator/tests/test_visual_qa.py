@@ -100,13 +100,32 @@ class VisualQaCheckFamily(unittest.TestCase):
     def setUpClass(cls):
         cls.module = _load_module()
 
-    def test_blank_png_fails_on_blank_and_size(self):
+    def test_blank_png_fails_on_pixels_not_compression(self):
         with tempfile.TemporaryDirectory() as tmp:
             png = _blank_png(Path(tmp) / "slide_01.png")
             checks = {c["id"]: c for c in self.module.run_checks(png)}
             self.assertEqual(checks["BLANK-01"]["status"], "FAIL")
-            self.assertEqual(checks["SIZE-01"]["status"], "FAIL")
+            self.assertEqual(checks["SIZE-01"]["status"], "WARN")
             self.assertEqual(checks["DIM-01"]["status"], "PASS")
+
+    def test_sparse_readable_title_is_review_hint_not_blank_failure(self):
+        image = Image.new("RGB", (2560, 1440), "white")
+        draw = ImageDraw.Draw(image)
+        for x in range(160, 1600, 90):
+            draw.rectangle((x, 120, x + 45, 210), fill="black")
+        self.assertEqual(self.module.check_blank_ratio(image)["status"], "WARN")
+
+    def test_large_island_with_zero_quadrants_warns(self):
+        image = Image.new("RGB", (2560, 1440), "white")
+        ImageDraw.Draw(image).rectangle((100, 100, 1150, 620), fill="black")
+        result = self.module.check_design_density(image)
+        self.assertEqual(result["status"], "WARN")
+        self.assertIn("象限", result["msg"])
+
+    def test_equal_luminance_color_blocks_are_not_blank(self):
+        image = Image.new("RGB", (2560, 1440), (240, 40, 40))
+        ImageDraw.Draw(image).rectangle((100, 100, 1150, 1300), fill=(40, 240, 40))
+        self.assertEqual(self.module.check_blank_ratio(image)["status"], "PASS")
 
     def test_dense_fixture_passes_all_checks(self):
         with tempfile.TemporaryDirectory() as tmp:

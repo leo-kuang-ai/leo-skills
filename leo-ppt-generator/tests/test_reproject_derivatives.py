@@ -35,6 +35,25 @@ confirmation: confirmed（测试基线）
 | 智能客服 | — | S2 |
 """
 
+MASTER_IDENT = """# 母版 v2（稳定身份）
+confirmation: confirmed（测试基线）
+
+## S1 封面
+page_id: pg-11111111
+- 标题：增长质量
+视觉行：图[F1] 模式:preserve 状态:vision-reviewed 焦点:核心指标 | 承载:全幅图
+
+## S2 财务
+page_id: pg-22222222
+- 标题：营收 1.24 亿元
+视觉行：图[F2] 模式:overview+detail 状态:metadata-reviewed 焦点:趋势 | 承载:对比小表
+
+## 数字登记表
+| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1.24 亿元 | S2 | Q3 财报 | 合并 | 2026Q3 | 人民币元 | 引用 | yes | 2026-10-28 |
+"""
+
 
 def run(*args):
     return subprocess.run(
@@ -193,6 +212,68 @@ class ReprojectDerivativesTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertFalse(self.manifest.exists())
         self.assertFalse(self.glossary.exists())
+
+
+class StableIdentityAndInheritanceTests(unittest.TestCase):
+    """dashi 集成 K1/U2：稳定页身份进 manifest；素材更换不继承流程字段。"""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name) / "ident"
+        (self.root / "content").mkdir(parents=True)
+        (self.root / "content" / "deck-master-v2.md").write_text(
+            MASTER_IDENT, encoding="utf-8")
+        self.manifest = self.root / "content" / "sources-manifest.json"
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def reproject(self, *extra):
+        return run("--project-root", str(self.root), "--json", *extra)
+
+    def test_identity_master_uses_stable_page_ids(self):
+        proc = self.reproject()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        manifest = json.loads(self.manifest.read_text(encoding="utf-8"))
+        self.assertEqual([p["page_id"] for p in manifest["pages"]],
+                         ["pg-11111111", "pg-22222222"])
+
+    def test_partial_identity_master_fails(self):
+        text = MASTER_IDENT.replace("page_id: pg-22222222\n", "")
+        (self.root / "content" / "deck-master-v3.md").write_text(
+            text, encoding="utf-8")
+        (self.root / "content" / "deck-master-v2.md").unlink()
+        proc = self.reproject()
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("page_id", proc.stderr)
+
+    def test_flow_fields_not_inherited_when_material_changes(self):
+        self.reproject()
+        sources = self.root / "sources" / "paper"
+        sources.mkdir(parents=True)
+        material = sources / "fig1.png"
+        material.write_bytes(b"original-bytes")
+        import hashlib
+        manifest = json.loads(self.manifest.read_text(encoding="utf-8"))
+        manifest["pages"][0]["visuals"][0].update({
+            "tier": "引用", "source_class": "user-material",
+            "source_ref": "sources/paper/fig1.png",
+            "source_sha256": hashlib.sha256(b"original-bytes").hexdigest(),
+        })
+        self.manifest.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+        # 素材未变：流程字段照常继承。
+        self.reproject()
+        kept = json.loads(self.manifest.read_text(encoding="utf-8"))
+        self.assertEqual(kept["pages"][0]["visuals"][0].get("source_ref"),
+                         "sources/paper/fig1.png")
+        # 同 figure ID 更换素材：旧 hash/审查流程字段不得继承。
+        material.write_bytes(b"replaced-bytes")
+        payload = json.loads(self.reproject().stdout)
+        rebuilt = json.loads(self.manifest.read_text(encoding="utf-8"))
+        visual = rebuilt["pages"][0]["visuals"][0]
+        self.assertNotIn("source_sha256", visual)
+        self.assertNotIn("source_ref", visual)
+        self.assertTrue(any("不继承旧 hash" in d for d in payload["drift"]))
 
 
 if __name__ == "__main__":

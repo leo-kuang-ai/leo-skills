@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:晋升述职风",
+  "name": "晋升述职风",
+  "aliases": [],
+  "variant_of": "成果汇报风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/汇报述职/晋升述职风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "promotion-review style, competence-plus-impact narrative, confident-but-humble, evidence of growth and potential, structured self-advocacy"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "成果汇报风",
+    "best_for": "晋升述职,需展现能力、成果、影响与潜力,谦逊而自信",
+    "visual_direction": "promotion-review style, competence-plus-impact narrative, confident-but-humble, evidence of growth and potential, structured self-advocacy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light gray, generous",
+      "composition": "results-first: overview → detail → next step",
+      "density": "medium, structured"
+    },
+    "color_palette": {
+      "primary": "professional blue #2563EB / slate #334155, white",
+      "secondary": "calm teal #14B8A6, light gray #E5E7EB",
+      "accent": "one accent #0D9488 for highlights",
+      "neutral": "near-black #1F2937, slate #64748B, hairline #E5E7EB",
+      "rule": "restrained, evidence-forward; low saturation"
+    },
+    "typography": {
+      "title": "clear authoritative sans (Inter / 思源黑体)",
+      "body": "concise evidence body",
+      "labels": "metric/date tags",
+      "text_quality": "exact figures, formal tone"
+    },
+    "layout_patterns": [
+      "capability summary",
+      "key results & impact",
+      "growth & learning",
+      "future direction"
+    ],
+    "layout_usage_rule": "Confident evidence of capability and impact; growth and future direction balanced.",
+    "layout_blueprints": [
+      {
+        "name": "能力概览",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "岗位/职级"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "能力1",
+              "能力2",
+              "能力3"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "成果页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "代表成果"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "影响",
+              "成长",
+              "方向"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "KPI cards, timeline, milestone bars, evidence blocks, progress charts",
+      "avoid": "cartoon, clutter, marketing hype, random stock, over-decoration"
+    },
+    "rendering_constraints": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ],
+    "reference": "GitHub: 晋升述职 · 述职惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ]
+  }
+}

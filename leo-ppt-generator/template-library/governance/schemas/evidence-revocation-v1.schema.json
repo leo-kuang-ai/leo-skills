@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/evidence-revocation/v1",
+  "title": "不可变撤销记录（evidence/revocations/<id>.json；不修改或删除原证据）",
+  "type": "object",
+  "required": [
+    "kind",
+    "schema_version",
+    "revocation_id",
+    "validation_id",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "evidence-revocation"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "revocation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-z\\-]+$"
+    },
+    "validation_id": {
+      "type": "string"
+    },
+    "validation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scopes": {
+      "type": "array",
+      "description": "按 (lane, style, theme, mode, layout) 撤销范围"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 4
+    },
+    "revoked_by": {
+      "type": "string"
+    },
+    "created_ref": {
+      "type": "string",
+      "description": "外部不可变时间引用（不进确定性摘要的运行信息）"
+    }
+  }
+}

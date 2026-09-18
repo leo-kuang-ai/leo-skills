@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""generate_style_gallery.py 单测：确定性生成 / --check 漂移守卫 / 内置 11 套在场 /
+"""generate_style_gallery.py 单测：确定性生成 / --check 漂移守卫 / active 内置风格在场 /
 金样板渲染（R-26）、嵌图行、双跑 sha 确定性、--check 金样板回归（R-65）、
-降级模式（渲染后端缺失时回落输入 sha 对比）、S5 家族代表扩展（19 风格名单 /
+降级模式（渲染后端缺失时回落输入 sha 对比）、S5 家族代表扩展（18 风格名单 /
 子目录 brief 解析 / 暗底家族可见性守护 / 代表渲染与画廊新节）。"""
 import json
 import os
@@ -17,8 +17,9 @@ from unittest import mock
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPT = SKILL_DIR / "scripts" / "generate_style_gallery.py"
 GALLERY = SKILL_DIR / "samples" / "style-gallery.md"
-SAMPLE_BRIEF = SKILL_DIR / "references" / "styles" / "清爽专业风.md"
-FAMILY_STYLES_DIR = SKILL_DIR / "references" / "styles" / "01_通用母版"
+LEGACY_STYLES_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
+SAMPLE_BRIEF = LEGACY_STYLES_DIR / "清爽专业风.md"
+FAMILY_STYLES_DIR = LEGACY_STYLES_DIR / "01_通用母版"
 REP_BRIEF = FAMILY_STYLES_DIR / "终端配色" / "Dracula紫风.md"
 
 sys.path.insert(0, str(SKILL_DIR / "scripts"))
@@ -36,7 +37,7 @@ def _fixture_root(tmp: Path, brief_name: str = "清爽专业风") -> Path:
     styles = tmp / "styles"
     styles.mkdir(parents=True)
     shutil.copy(SAMPLE_BRIEF, styles / f"{brief_name}.md")
-    sidecar = SKILL_DIR / "references" / "styles" / f"{brief_name}.layouts.json"
+    sidecar = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / f"{brief_name}.layouts.json"
     if sidecar.is_file():
         shutil.copy(sidecar, styles / f"{brief_name}.layouts.json")
     return styles
@@ -56,6 +57,22 @@ def _family_fixture_root(tmp: Path) -> Path:
 
 
 class GalleryTest(unittest.TestCase):
+    def test_canonical_theme_reaches_both_chart_and_page(self):
+        from leo_ppt_generator.render.theme import compute_effective_theme
+        resolver = gallery._canonical_resolver()
+        expected = compute_effective_theme(resolver.resolve(
+            "builtin:theme:consulting-pyramid-light")["data"])
+        inputs = gallery.golden_inputs("咨询金字塔风")
+        self.assertEqual(inputs["theme.json"], expected)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+            gallery, "_run_render", return_value=({}, False)
+        ) as render:
+            root = Path(tmp)
+            gallery.render_page("body-basic", root / "slide.json", root / "out.png",
+                                theme=root / "theme.json")
+            args = render.call_args.args[0]
+            self.assertEqual(args[args.index("--theme-file") + 1], str(root / "theme.json"))
+
     def test_backend_missing_on_stderr_uses_documented_degradation(self):
         result = subprocess.CompletedProcess([], 2, "", json.dumps({"status": "blocked", "reason_code": "render_backend_missing"}))
         with mock.patch.object(gallery, "runtime_python", return_value=Path(sys.executable)), mock.patch.object(gallery.subprocess, "run", return_value=result):
@@ -70,14 +87,16 @@ class GalleryTest(unittest.TestCase):
         second = GALLERY.read_text(encoding="utf-8")
         self.assertEqual(first, second)
 
-    def test_all_eleven_builtins_present(self):
+    def test_active_builtins_present(self):
         content = GALLERY.read_text(encoding="utf-8")
         for name in (
-            "党政红风格", "创意杂志风", "手绘白板风", "教学课件风",
-            "数据仪表盘风", "清爽专业风", "电子墨水杂志风", "科研答辩风",
+            "学术克制风", "品牌创意风", "清爽专业风", "咨询金字塔风",
+            "教育明快风", "金融藏青风", "政务庄重风", "医疗洁净风",
+            "管理清晰风", "科技暗色风",
         ):
             self.assertIn(name, content)
-        self.assertIn("## 内置风格（11 套，直接可选）", content)
+        self.assertIn("## 内置风格（10 套，直接可选）", content)
+        self.assertNotIn("retired-styles-tree", content)
 
     def test_family_representatives_section_present(self):
         _run([])  # gallery is a generated artifact; rebuild before asserting
@@ -86,8 +105,8 @@ class GalleryTest(unittest.TestCase):
         for family, name, _ in gallery.FAMILY_REPRESENTATIVES:
             self.assertIn(f"### {family} · {name}", content)
             self.assertIn(f"style-gallery/{name}/thumb-cover.png", content)
-        # 11 builtins + 8 representatives each embed three thumbnails
-        self.assertEqual(len(re.findall(r"thumb-cover\.png", content)), 19)
+        # 10 active builtins + 8 representatives each embed three thumbnails
+        self.assertEqual(len(re.findall(r"thumb-cover\.png", content)), 18)
 
     def test_check_passes_when_up_to_date(self):
         _run([])
@@ -107,12 +126,12 @@ class GalleryTest(unittest.TestCase):
 
 
 class FamilyRepresentativeTest(unittest.TestCase):
-    """S5 家族代表扩展：19 风格名单 / 子目录 brief 解析 / 可见性守护。"""
+    """S5 家族代表扩展：18 风格名单 / canonical brief 解析 / 可见性守护。"""
 
-    def test_golden_roster_covers_nineteen_styles(self):
+    def test_golden_roster_covers_current_catalog_styles(self):
         names = gallery.golden_style_names()
-        self.assertEqual(len(names), 19)
-        self.assertEqual(len(set(names)), 19)
+        self.assertEqual(len(names), 18)
+        self.assertEqual(len(set(names)), 18)
         for _, name, _ in gallery.FAMILY_REPRESENTATIVES:
             self.assertIn(name, names)
         for name, _ in gallery.builtin_styles():
@@ -121,31 +140,25 @@ class FamilyRepresentativeTest(unittest.TestCase):
     def test_representative_briefs_resolve_to_family_dir(self):
         for family, name, _ in gallery.FAMILY_REPRESENTATIVES:
             path = gallery._brief_path(name)
-            expected = (
-                gallery.STYLES_DIR / "01_通用母版" / family / f"{name}.md"
-            )
+            expected = gallery.STYLES_DIR / f"{name}" / "brief.json"
             self.assertEqual(path, expected)
             self.assertTrue(path.is_file(), f"missing {path}")
 
-    def test_dark_family_palette_falls_back_to_paper(self):
+    def test_family_uses_canonical_theme(self):
         # terminal (dark canvas + light foreground) and cream families (dark
         # neutral ink, hex-free canvas note) must not land dark backgrounds
         # or washed-out plot anchors on the light templates
-        for name, kept_anchor in (("Dracula紫风", "#FF79C6"),
-                                  ("奶油温柔风", "#A3B18A")):
+        for name in ("Dracula紫风", "奶油温柔风"):
             inputs = gallery.golden_inputs(name)
-            self.assertNotIn("background_color", inputs["slide-cover.json"])
             theme = inputs["theme.json"]
-            self.assertNotIn("background", theme)
-            self.assertEqual(sorted(theme), ["accent"])
-            self.assertEqual(theme["accent"], kept_anchor)
+            self.assertIn("colors", theme)
+            self.assertIn("fonts", theme)
 
-    def test_light_family_keeps_palette_background(self):
+    def test_light_family_uses_canonical_theme(self):
         inputs = gallery.golden_inputs("故宫墨红风")
-        self.assertEqual(inputs["slide-cover.json"]["background_color"], "#E6E1D3")
         theme = inputs["theme.json"]
-        self.assertEqual(theme["primary"], "#8C3232")
-        self.assertEqual(theme["background"], "#E6E1D3")
+        self.assertEqual(theme["colors"]["primary"], "#8C3232")
+        self.assertEqual(theme["colors"]["background"], "#F4F1E9")
 
 
 class GoldenSampleTest(unittest.TestCase):

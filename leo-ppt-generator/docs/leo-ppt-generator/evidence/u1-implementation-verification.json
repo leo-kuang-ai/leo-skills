@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "unit": "U1",
+  "status": "partial",
+  "claim_scope": "合同、编译、authoring、regime 单元机制；不声明全量 runtime 或视觉完成",
+  "source_hashes": {
+    "references/layout-dispatch.md": "8b343d80342485d0e81270c439cbd8f63ed7ff8039a1575e222bb57b3bc08d02",
+    "references/authoring/page-expression.md": "b80d8c848b5cdbb4d91729163ad6863ef8ecbd4080d9e8120b28a0fdfa023644",
+    "references/authoring/page-expression-example.md": "6a0dce17396f776c10d21b3abd9be987c64adfa8aa8c6c014bc19869ac1feb52",
+    "runtime/src/leo_ppt_generator/content_pack.py": "3bd1f9219c57516c74d5fe4c13c2bcc2352cc3f7c394291cc24e2d7b0d58b6bf",
+    "runtime/src/leo_ppt_generator/page_intent.py": "0f5f292204afc0396e86c3c5211908f6a7c2a52faa23353f8ca7f3fbeaa6896c",
+    "runtime/src/leo_ppt_generator/schemas/page-content-pack-v2.schema.json": "c715471b68e65faee66df94e948d6becfd67f47f07a9517bcb71b25c68447845",
+    "runtime/src/leo_ppt_generator/schemas/page-expression-v1.schema.json": "23c9a9a574a375b18434858a1b232223ad936ea60bbb8ed8255886b27754be13",
+    "scripts/lint_page_type_regime.py": "3bb8e2b97b2ee975ecb9391e35389554b6662037fef6e5c2ad078fcd6e81fed3",
+    "template-library/governance/rules/page-type-regime-v1.json": null,
+    "template-library/governance/rules/page-type-regime-v2.json": "04260d35286c02e5288706103deab96b68d6f697f6593c4e3891de197fce4bb8",
+    "template-library/governance/schemas/page-expression-v1.schema.json": "23c9a9a574a375b18434858a1b232223ad936ea60bbb8ed8255886b27754be13",
+    "tests/test_chapter_content_model.py": "8f17e8d2c2951114f429b595e0f54154ad9d28c038090c3fb6efa2b16c367757",
+    "tests/test_page_expression_contract.py": "638ba2ef73c595251c918a02bc093ef1e8c6079f2027ab705237c338aeba0ced",
+    "tests/test_page_intent_routing.py": "d3fef641b65d6868b4071706a2e091ce0b54a47321f7168773a66c3af71d2685",
+    "tests/test_delivery_disclosure.py": "fe32abbc875b08e6e02fd2780d679e8923d8ea26985fe0695abf64f97d6e00f0"
+  },
+  "checks": [
+    {
+      "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_page_expression_contract tests.test_chapter_content_model tests.test_page_intent_routing tests.test_content_pack",
+      "exit_code": 0,
+      "summary": "Ran 63 tests; OK",
+      "log": "docs/leo-ppt-generator/evidence/u1-final-unit.log",
+      "log_sha256": "96524570c056819267957d24764c916827fcd0d12f2621eeb5a0e55f67548442"
+    },
+    {
+      "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/lint_page_type_regime.py",
+      "exit_code": 0,
+      "summary": "page-type regime: 0 ERROR",
+      "log": "docs/leo-ppt-generator/evidence/u1-regime-lint.log",
+      "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18"
+    }
+  ],
+  "remaining_gap": [
+    "最终整包和活动消费者切换验证尚未完成",
+    "旧链 baseline 没有在原始 U1 改动前冻结；需要如实隔离历史源重建，不得冒充历史运行"
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:research-defense",
+  "name": "科研答辩风",
+  "aliases": [
+    "学术答辩风",
+    "课题申报风",
+    "基金答辩风",
+    "thesis-defense"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/科研答辩风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "学术答辩"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "formal Chinese academic research defense deck, authoritative but adaptable project presentation, evidence-driven layout, structured scientific diagrams, concise conclusions, and disciplined visual hierarchy"
+  },
+  "bindings": {
+    "theme_default": null,
+    "modes_supported": [],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      },
+      {
+        "page_type": "agenda",
+        "preferred": [
+          "builtin:layout:p32-32-agenda-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "section",
+        "preferred": [
+          "builtin:layout:p23-p23-section-divider-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p10-10-dot-matrix-statement-layouts"
+        ]
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p26-p26-reference-list-layouts",
+          "builtin:layout:p28-p28-recap-layouts",
+          "builtin:layout:p30-30-swiss-image-split-layouts",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p12-12-manifesto-ink-banner-layouts"
+        ]
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p21-21-tech-spec-sheet-layouts",
+          "builtin:layout:p6-06-kpi-tower-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p24-p24-number-hero-layouts"
+        ]
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": [
+          "builtin:layout:p36-36-ambience-full-bleed-layouts"
+        ]
+      }
+    ],
+    "capacity_factor": {
+      "text": 1.0,
+      "note": "中性折减：答辩档密度由档位而非风格折减表达"
+    }
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 11）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 11,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "source": {
+      "license": "unknown"
+    },
+    "taxonomy": {
+      "families": [
+        "family:academic-defense"
+      ]
+    },
+    "aliases": [
+      "学术答辩风",
+      "课题申报风",
+      "基金答辩风",
+      "thesis-defense"
+    ],
+    "best_for": "科研项目申报、基金答辩、课题中期检查、结题验收、论文答辩和实验室阶段性成果汇报等正式学术场景",
+    "visual_direction": "formal Chinese academic research defense deck, authoritative but adaptable project presentation, evidence-driven layout, structured scientific diagrams, concise conclusions, and disciplined visual hierarchy",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean white #FFFFFF with subtle light gray #F5F7FA content background",
+      "composition": "structured academic slide with title area, evidence area, explanatory diagrams, tables, callouts, or conclusion area chosen according to slide content",
+      "density": "two declared tiers, choose one at the visual-direction confirmation: [minimal 组会简报档] low-to-medium density, one assertion + one visual + generous whitespace per page, roughly six or fewer text lines, for group meetings and conference-style reading reports; [dense-defense 答辩证据密集档] committee-grade evidence-dense pages for thesis defense, proposal and mid-term review: persistent page chrome (left sidebar TOC rail listing all five modules with the current one highlighted, plus slim footer with module/source/page number), body organized into 2-4 numbered tinted panels per page, 4-column substance blocks (icon + bold headline + 2-3 lines of concrete facts + one bold mini-stat), real numbers and redrawn tables and embedded original figures instead of keyword cards ('Numbers, not adjectives'), density disciplined by grid and tints while keeping clear reading order and alignment"
+    },
+    "color_palette": {
+      "primary": "deep academic blue #003F8F or #004A9F",
+      "secondary": "research blue #0B5CAD and pale blue #EAF2FF",
+      "accent": "formal red #B5121B or #C00000 used sparingly for key conclusions, risks, breakthroughs, and emphasized phrases",
+      "neutral": "black #111111, dark gray #333333, light border gray #D8DEE8, pale table fill #F3F6FA",
+      "optional": "muted gold #F3DFA2 only for cover or major title emphasis",
+      "rule": "prefer blue for structure and red for critical arguments, but adapt emphasis to the topic and source material; avoid colorful decorative palettes, heavy gradients, playful icons, and casual illustration styles"
+    },
+    "typography": {
+      "title": "bold Chinese sans-serif, large, formal, report-like, left aligned",
+      "section_labels": "white bold Chinese text on deep blue blocks or arrow labels",
+      "body": "dense but readable Chinese sans-serif, mostly black, key phrases in red bold",
+      "tables": "compact academic table typography with clear header rows and restrained category emphasis",
+      "text_quality": "Chinese text must be exact, readable, non-garbled, and suitable for formal research defense",
+      "labels": "small sans labels (思源黑体 / Noto Sans SC) for figure captions, axis and source notes"
+    },
+    "page_system": {
+      "header": "usually use a clear title area with optional section number and optional project/institution mark; cover pages and divider pages may use a different composition",
+      "divider": "optional thin horizontal rule, blue segment, or subtle academic separator when it helps hierarchy",
+      "body": "structured content area with light borders, module labels, evidence cards, diagrams, or tables as needed",
+      "footer": "optional one-sentence takeaway strip or conclusion line when the slide needs a strong final claim",
+      "logo_rule": "use only user-provided logos or a neutral text placeholder such as 项目标识; do not invent real institution logos or unrelated brand names"
+    },
+    "layout_patterns": [
+      "research background with literature timeline, policy/report evidence, and problem statement",
+      "research status with left-side evidence collage and right-side challenge comparison",
+      "topic decomposition with multi-column task chain and right-side vertical research path",
+      "research content page with three evidence cards and supporting mechanism images",
+      "core objective page with arrow label, large target sentence, technical route, and mechanism diagram",
+      "platform support page with equipment photos, prior achievements, certificates, and bullet evidence",
+      "risk analysis four-quadrant grid with risk type, risk judgment, mitigation evidence, and bottom conclusion",
+      "expected outcomes table with category, measurable indicators, and assessment method",
+      "dense-defense tier: left sidebar TOC rail with 2-4 numbered evidence panels per body",
+      "dense-defense tier: 4-column substance block with concrete numbers, redrawn tables, and embedded original figures"
+    ],
+    "layout_usage_rule": "Use these patterns as flexible starting points, not mandatory templates. Keep the deck's academic tone, disciplined hierarchy, restrained palette, and evidence-first logic, while adapting the body layout to each slide's role and source material.",
+    "layout_blueprints": [
+      {
+        "name": "研究背景 / 研究现状",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "one-sentence problem or status statement with optional emphasized phrases"
+            ]
+          },
+          {
+            "position": "left large area",
+            "count": 1,
+            "labels": [
+              "literature timeline / technical evolution / evidence collage"
+            ]
+          },
+          {
+            "position": "right column",
+            "count": 1,
+            "labels": [
+              "report evidence / industry challenge / application pain point"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "optional takeaway conclusion"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "课题分解 / 技术路线",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "project objective sentence"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 3,
+            "labels": [
+              "课题一",
+              "课题二",
+              "课题三"
+            ]
+          },
+          {
+            "position": "left side",
+            "count": 2,
+            "labels": [
+              "应用基础研究",
+              "关键任务核心内容"
+            ]
+          },
+          {
+            "position": "right side",
+            "count": 4,
+            "labels": [
+              "性能研究",
+              "应用验证",
+              "深入探索",
+              "关系研究"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "chain-summary sentence"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "核心目标 / 研究目标",
+        "sections": [
+          {
+            "position": "top-left",
+            "count": 1,
+            "labels": [
+              "blue arrow label: 核心目标 or 研究目标"
+            ]
+          },
+          {
+            "position": "top-right",
+            "count": 1,
+            "labels": [
+              "target sentence with key phrases"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 2,
+            "labels": [
+              "content detail box 1",
+              "content detail box 2"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 3,
+            "labels": [
+              "method diagram",
+              "mechanism image",
+              "application validation image"
+            ]
+          },
+          {
+            "position": "bottom-center",
+            "count": 1,
+            "labels": [
+              "technical route statement"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "研究内容 / 证据展示",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "research content sentence with key variables"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 3,
+            "labels": [
+              "研究内容一",
+              "研究内容二",
+              "研究内容三"
+            ]
+          },
+          {
+            "position": "inside each card",
+            "count": 3,
+            "labels": [
+              "blue title bar",
+              "scientific figure or chart",
+              "short evidence caption"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "integrated conclusion or mechanism statement"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "风险分析",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "risk control thesis statement"
+            ]
+          },
+          {
+            "position": "middle grid",
+            "count": 4,
+            "labels": [
+              "技术风险",
+              "安全风险",
+              "性能风险",
+              "管理风险"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "supporting scientific images and final conclusion"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "预期成果 / 考核指标",
+        "sections": [
+          {
+            "position": "top",
+            "count": 3,
+            "labels": [
+              "高价值",
+              "全覆盖",
+              "可量化"
+            ]
+          },
+          {
+            "position": "middle",
+            "count": 1,
+            "labels": [
+              "large table: 类别 / 具体指标 / 考核方式"
+            ]
+          },
+          {
+            "position": "left table column",
+            "count": 4,
+            "labels": [
+              "理论创新与知识产权",
+              "技术突破与材料开发",
+              "人才培养与学术影响",
+              "长远发展潜力"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "dense-defense · 答辩证据密集档（左 TOC 侧栏 + 编号面板）",
+        "sections": [
+          {
+            "position": "left sidebar (full-height TOC rail)",
+            "count": 1,
+            "labels": [
+              "module list of all five beats (背景/问题/方法/证据/结论) with current module highlighted by filled deep-blue pill and red left tab; small project mark at rail top; inactive modules muted grey"
+            ]
+          },
+          {
+            "position": "body top",
+            "count": 1,
+            "labels": [
+              "numbered assertion title (e.g. 3.2 复杂度分析：…) with thin rule ending in a dot"
+            ]
+          },
+          {
+            "position": "body grid",
+            "count": 4,
+            "labels": [
+              "numbered panel ① mechanism diagram or embedded original figure",
+              "numbered panel ② redrawn results table with winning cell highlighted",
+              "numbered panel ③ substance block: real numbers, not adjectives (h=8 / d=512 / O(n²·d) / 28.4 BLEU style)",
+              "numbered panel ④ KPI mini-stat or highlighted takeaway box with left accent bar"
+            ]
+          },
+          {
+            "position": "footer line",
+            "count": 1,
+            "labels": [
+              "module · source · page number"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "academic tables, blue arrow labels, restrained red emphasis text, flow arrows, technical route diagrams, paper figure collages, mechanism diagrams, laboratory or equipment photos, certificates, report thumbnails, structured grids, light shadows",
+      "avoid": "minimalist empty pages, marketing hero layouts, cartoon illustrations, decorative gradients, random icons, playful stickers, excessive whitespace, vague stock photos, fruits, animals, people cutouts, unrelated decorative objects"
+    },
+    "negative_prompt": [
+      "minimalist empty pages or excessive whitespace",
+      "marketing hero layouts",
+      "cartoon illustrations or playful stickers",
+      "decorative gradients and random icons",
+      "vague stock photos, fruits, animals, or people cutouts"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "supportive"
+    },
+    "writing_style": {
+      "sentence_patterns": [
+        "系统研究……并揭示……机制",
+        "构建……体系，实现……精准调控",
+        "围绕……形成完整闭环研究链条",
+        "通过……验证……性能",
+        "可有效规避或化解……风险",
+        "所有成果均设置具体、可测量指标"
+      ],
+      "emphasis_rule": "Use red bold text selectively for the scientific problem, key breakthrough, risk judgment, measurable outcome, or page-level conclusion; do not over-highlight every sentence."
+    },
+    "rendering_constraints": [
+      "The slide must look like a serious Chinese academic research defense deck, not a commercial pitch deck.",
+      "Keep a recognizable academic presentation system across slides, but do not force every page into the same header or grid.",
+      "Every page should have a clear top-to-bottom or left-to-right reading order.",
+      "Use high-density scientific content, but keep text blocks aligned and readable.",
+      "Use blue structural labels and red conclusion phrases when useful, without making the page mechanically blue-red.",
+      "Do not include fruit, people, animals, random objects, fictional brand marks, or unrelated decorative icons.",
+      "No watermark, no unrelated logo, no fake real institution logo, no extra slide number unless requested."
+    ]
+  },
+  "constraints": {
+    "negative": [
+      "The slide must look like a serious Chinese academic research defense deck, not a commercial pitch deck.",
+      "Keep a recognizable academic presentation system across slides, but do not force every page into the same header or grid.",
+      "Every page should have a clear top-to-bottom or left-to-right reading order.",
+      "Use high-density scientific content, but keep text blocks aligned and readable.",
+      "Use blue structural labels and red conclusion phrases when useful, without making the page mechanically blue-red.",
+      "Do not include fruit, people, animals, random objects, fictional brand marks, or unrelated decorative icons.",
+      "No watermark, no unrelated logo, no fake real institution logo, no extra slide number unless requested."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.85,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

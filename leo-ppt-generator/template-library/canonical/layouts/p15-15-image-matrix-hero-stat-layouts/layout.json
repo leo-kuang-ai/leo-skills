@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+  "name": "Image Matrix Hero Stat",
+  "aliases": [
+    "P15"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "items": {
+      "region": "content",
+      "desc": "矩阵卡（仅短标题）",
+      "count_min": 8,
+      "count_max": 12
+    },
+    "item_title": {
+      "region": "content",
+      "desc": "每项短标题",
+      "max_chars": 91,
+      "chars_per_line": 19,
+      "max_lines": 4
+    },
+    "hero_stat": {
+      "region": "content",
+      "desc": "底部巨数（汇总值：项目总数/总流量/总用户）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部标题（留 9vh 间距）；中段 4×3 矩阵卡（每卡 12vh 固定高度，灰底禁描边）；底部巨数 + 标签推到底"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/15_Image_Matrix_Hero_Stat.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

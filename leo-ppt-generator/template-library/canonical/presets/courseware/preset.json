@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:courseware",
+  "id": "courseware",
+  "name_zh": "课件",
+  "match_signals": {
+    "genre": [
+      "课件",
+      "公开课",
+      "讲义",
+      "教案",
+      "培训"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:teaching-courseware",
+    "layouts": [],
+    "density": "balanced"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:handdrawn-whiteboard",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

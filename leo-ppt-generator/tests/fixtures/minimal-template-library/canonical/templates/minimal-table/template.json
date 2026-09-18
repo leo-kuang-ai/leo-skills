@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:minimal-table",
+  "name": "最小规格表模板",
+  "input_fields": [
+    {
+      "name": "title",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "columns",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "rows",
+      "required": true,
+      "type": "array"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']"
+    },
+    {
+      "slot": "columns",
+      "selector": "[data-leo-block='table'] thead"
+    },
+    {
+      "slot": "rows",
+      "selector": "[data-leo-block='table'] tbody"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "border",
+    "table_header",
+    "table_body"
+  ],
+  "dependencies": [
+    "builtin:layout:minimal-table"
+  ],
+  "layout_profiles": [
+    "builtin:layout:minimal-table"
+  ],
+  "lane": "render:html"
+}

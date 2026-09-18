@@ -81,9 +81,71 @@ def _layers(nodes, edges):
     return layers
 
 
+def _validate_spec(spec):
+    """Validate the small input contract before layout can discard bad data."""
+    if not isinstance(spec, dict):
+        raise ValueError("diagram_spec_not_object")
+    direction = spec.get("direction", "LR")
+    if direction not in ("LR", "TB"):
+        raise ValueError(f"diagram_direction_invalid: {direction!r}")
+    nodes = spec.get("nodes", [])
+    edges = spec.get("edges", [])
+    if not isinstance(nodes, list):
+        raise ValueError("diagram_nodes_not_array")
+    if not nodes:
+        raise ValueError("diagram_has_no_nodes")
+    node_ids = []
+    for node in nodes:
+        if (
+            not isinstance(node, dict)
+            or not isinstance(node.get("id"), str)
+            or not node["id"].strip()
+        ):
+            raise ValueError("diagram_node_invalid")
+        if "label" in node and not isinstance(node["label"], str):
+            raise ValueError(f"diagram_node_label_invalid: {node['id']!r}")
+        node_ids.append(node["id"])
+    if len(set(node_ids)) != len(node_ids):
+        raise ValueError("diagram_duplicate_node_id")
+    if not isinstance(edges, list):
+        raise ValueError("diagram_edges_not_array")
+    known = set(node_ids)
+    adjacency = {node_id: [] for node_id in node_ids}
+    for edge in edges:
+        if (
+            not isinstance(edge, dict)
+            or not isinstance(edge.get("from"), str)
+            or not isinstance(edge.get("to"), str)
+        ):
+            raise ValueError("diagram_edge_invalid")
+        source, target = edge["from"], edge["to"]
+        if source not in known or target not in known:
+            raise ValueError(f"diagram_edge_unknown_node: {source!r}->{target!r}")
+        if "label" in edge and edge["label"] is not None and not isinstance(edge["label"], str):
+            raise ValueError("diagram_edge_label_invalid")
+        adjacency[source].append(target)
+    # A cyclic graph has no finite dependency layering; reject it explicitly.
+    indegree = {node_id: 0 for node_id in node_ids}
+    for targets in adjacency.values():
+        for target in targets:
+            indegree[target] += 1
+    queue = [node_id for node_id in node_ids if indegree[node_id] == 0]
+    visited = 0
+    while queue:
+        source = queue.pop(0)
+        visited += 1
+        for target in adjacency[source]:
+            indegree[target] -= 1
+            if indegree[target] == 0:
+                queue.append(target)
+    if visited != len(node_ids):
+        raise ValueError("diagram_cycle")
+
+
 def render(spec, out_path):
     from PIL import Image, ImageDraw
 
+    _validate_spec(spec)
     direction = spec.get("direction", "LR")
     nodes = spec.get("nodes", [])
     edges = spec.get("edges", [])

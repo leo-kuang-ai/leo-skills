@@ -1,0 +1,455 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/style-brief/v2",
+  "title": "风格 brief（作者真值：身份/适用性/指令/绑定；不拥有精确色板、字体文件、几何、通过状态）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "lifecycle",
+    "taxonomy",
+    "visual_language",
+    "bindings"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "entity": {
+      "const": "style-brief"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "variant_of": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "lifecycle": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/lifecycle"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "origin"
+      ],
+      "properties": {
+        "origin": {
+          "enum": [
+            "authored",
+            "intake",
+            "user-imported",
+            "legacy-migrated"
+          ]
+        },
+        "upstream": {
+          "type": "string"
+        },
+        "license_note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "taxonomy": {
+      "type": "object",
+      "required": [
+        "families"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "industries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "recommendation_features": {
+      "type": "object",
+      "required": [],
+      "additionalProperties": false,
+      "properties": {
+        "audience_conservatism": {
+          "enum": [
+            "reserved",
+            "balanced",
+            "expressive"
+          ]
+        },
+        "formality": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "density": {
+          "enum": [
+            null,
+            "very-low",
+            "low",
+            "low-medium",
+            "balanced",
+            "medium-high",
+            "high"
+          ]
+        },
+        "environments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "desktop-review",
+              "meeting-room-projector",
+              "large-venue-screen",
+              "bright-large-venue",
+              "roadshow-stage",
+              "conference-screen",
+              "classroom-screen",
+              "community-hall",
+              "lecture-hall",
+              "store-loop-screen",
+              "print"
+            ]
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counter_indications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "反例：明确不适用的任务条件"
+        },
+        "feature_defaults_basis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "推荐特征默认值的来源；不表示已验证"
+        }
+      }
+    },
+    "visual_language": {
+      "type": "object",
+      "required": [
+        "direction"
+      ],
+      "properties": {
+        "direction": {
+          "type": "string",
+          "minLength": 8
+        },
+        "features": {
+          "type": "array",
+          "minItems": 2,
+          "description": "可观察构图/排印/材质特征，至少两条；active 必填（语义门）"
+        },
+        "composition_discipline": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "continuity": {
+          "type": "object",
+          "description": "封面/正文/数据/结尾各角色纪律"
+        }
+      },
+      "additionalProperties": true
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "negative": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 4
+          },
+          "description": "负面约束：针对真实失败、可观察；不凑模板话术"
+        },
+        "hard_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "稳定约束 ID 引用（governance/rules）"
+        }
+      },
+      "additionalProperties": false
+    },
+    "bindings": {
+      "type": "object",
+      "required": [],
+      "additionalProperties": false,
+      "properties": {
+        "theme_default": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "active 必填（语义门）；draft 可缺（adaptation_gaps 记录）"
+        },
+        "modes_supported": {
+          "type": "array",
+          "items": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/mode"
+          }
+        },
+        "layout_routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "page_type",
+              "preferred"
+            ],
+            "properties": {
+              "page_type": {
+                "type": "string"
+              },
+              "preferred": {
+                "type": "array",
+                "items": {
+                  "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+                }
+              },
+              "discouraged": {
+                "type": "array",
+                "items": {
+                  "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "capacity_factor": {
+          "type": "object",
+          "description": "迁移保留的容量折减视图；容量真值归实际 layout profile"
+        }
+      }
+    },
+    "adaptation_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "draft/reference 的明确缺口；不允许猜值凑完成率"
+    },
+    "content_review": {
+      "type": "object",
+      "required": [
+        "reviewed"
+      ],
+      "properties": {
+        "reviewed": {
+          "type": "boolean"
+        },
+        "disposition": {
+          "enum": [
+            "keep",
+            "revise",
+            "revise-candidate",
+            "merged",
+            "draft",
+            "reference"
+          ]
+        },
+        "reviewer_note": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "hex_anchors": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "has_negative_constraints": {
+              "type": "boolean"
+            },
+            "density_mapped": {
+              "type": "boolean"
+            },
+            "gaps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "description": "迁移时静态审阅依据；不构成渲染或视觉验收证据"
+        }
+      },
+      "additionalProperties": false
+    },
+    "legacy_payload": {
+      "type": "object",
+      "description": "机械迁移保留的旧 brief 原始字段（color_palette/typography/layout_patterns 等）；仅作 U3 审阅来源，不是新真值"
+    },
+    "industry_sample_checks": {
+      "type": "string",
+      "minLength": 1,
+      "description": "行业样张需要执行的检查项，不表示检查已通过"
+    },
+    "token_sidecar": {
+      "type": "object",
+      "description": "机器可读风格 token sidecar（R-27，可选纯增量，同 aliases 先例；不带 --var 时 style render 输出不变）。palette 核心键 primary/accent/background/surface/text 对齐 H 线 theme.json 渲染锚，可按 social-card 8 token 先例扩展键名（paper/ink/muted/line/accent_soft 等）；palette 值一律纯 #RRGGBB。style render --var key=value 在本面覆盖：primary/text 按 4.5:1、accent 按 3:1 相对生效 background 硬校验，覆盖 background 时三者全量重查（形态见 references/render-contract.md 渲染 lane 合同）。layout 子键为版式系统锚源（R-31，被 --layout-lock 优先读取，降级源为 brief 顶层 layout 键）",
+      "properties": {
+        "palette": {
+          "type": "object",
+          "description": "HEX token 面；核心五键显式声明，扩展键（social-card 8 token 先例：paper/paper_2/ink/muted/line/accent_soft/accent_on 等）经 additionalProperties 放行，值同须纯 #RRGGBB；chart_smart 为图解专用填充槽（源 presentation-ai smartLayout）",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+          },
+          "properties": {
+            "primary": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "accent": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "background": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "text": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "chart_smart": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "description": "图解专用填充色槽（chart_series 数据系列色序列之外的语义槽，源 presentation-ai smartLayout 七语义槽）：金字塔/饼图/阶梯/循环/时间线等 smart 图解结构填色，通常取 primary 近邻或其刻意变体；区别于中性卡面 surface，不承担文字底色可读性"
+            }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "density": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layout": {
+          "type": "object",
+          "description": "版式系统锚源（R-31）：style render --layout-lock 优先读本键（brief 顶层 layout 键为降级源）；五字段齐备才注入 layout_lock 锁定块，缺一报 layout_lock_unavailable（exit 2 不静默）；不带旗标输出逐字节不变",
+          "required": [
+            "grid",
+            "safe_margin",
+            "page_no",
+            "corner_radius",
+            "line_weight"
+          ],
+          "properties": {
+            "grid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "safe_margin": {
+              "type": "string",
+              "minLength": 1
+            },
+            "page_no": {
+              "type": "string",
+              "minLength": 1
+            },
+            "corner_radius": {
+              "type": "string",
+              "minLength": 1
+            },
+            "line_weight": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "description": "版式系统锚降级源（R-31，可选纯增量；--layout-lock 在无 token_sidecar.layout 时读本键）：grid 网格 token / safe_margin 安全边距 / page_no 页码位 / corner_radius 圆角 / line_weight 线重，五字段缺一报 layout_lock_unavailable（见 references/render-contract.md §13）",
+      "required": [
+        "grid",
+        "safe_margin",
+        "page_no",
+        "corner_radius",
+        "line_weight"
+      ],
+      "properties": {
+        "grid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "safe_margin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page_no": {
+          "type": "string",
+          "minLength": 1
+        },
+        "corner_radius": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line_weight": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "description": "风格 brief v2。draft 允许缺 theme_default/features/推荐特征（机械迁移不凑字段）；lifecycle=active 的语义完整性由治理 lint/U2 强制。 R-27/R-31 可选增量键：此前仅登记于 v1 schema，v2 的 additionalProperties=False 在结构上禁止了全部 canonical 风格使用 token_sidecar/layout（320 个风格零 token 的直接原因）。"
+}

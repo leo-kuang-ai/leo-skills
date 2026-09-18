@@ -1,5 +1,5 @@
 {
-  "manifestVersion": "1.15.1",
+  "manifestVersion": "1.15.3",
   "platform": "claude",
   "commands": [
     "spec-app-consistency-audit.md",
@@ -21,6 +21,7 @@
     "spec-write-tasks.md"
   ],
   "skills": [
+    "autoresearch",
     "spec-commit",
     "spec-commit-push-pr",
     "spec-explain",
@@ -28,7 +29,9 @@
     "spec-lfg",
     "spec-pov",
     "spec-product-pulse",
+    "spec-project-rules",
     "spec-promote",
+    "spec-prototype",
     "spec-resolve-pr-feedback",
     "spec-riffrec-feedback-analysis",
     "spec-rule-miner",

@@ -4,7 +4,7 @@
 将外部源仓库 ``oh-my-ppt``（arcsin1，manifest 快照 2026-06-20）的 74 个
 风格包（SKILL.md 世界观 + style.json 双语元数据 + preview.html）转换为
 leo 风格库 brief（markdown + GPT-Image-2 JSON 块），写入
-``references/styles/01_通用母版/`` 对应子目录。
+``template-library/reference/sources/retired-styles-tree/styles/01_通用母版/`` 对应子目录。
 
 配额与去重纪律（docs/plans/2026-08-31-006 进货批 S1a）：
 
@@ -49,7 +49,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
-STYLES_ROOT = SKILL_DIR / "references" / "styles"
+STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SOURCE_ROOT = Path("/Users/kuang/knowledge/ppt-github/oh-my-ppt/resources/styles")
 
 HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}\b")

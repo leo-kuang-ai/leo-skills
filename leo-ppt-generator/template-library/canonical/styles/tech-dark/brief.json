@@ -1,0 +1,116 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:tech-dark",
+  "name": "科技暗色风",
+  "aliases": [
+    "科技",
+    "tech-dark"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "科技方向"
+    ],
+    "industries": [
+      "科技"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "density": "balanced",
+    "environments": [
+      "conference-screen",
+      "roadshow-stage",
+      "bright-large-venue",
+      "desktop-review"
+    ],
+    "components": [
+      "系统图",
+      "回路图",
+      "时间线"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "暗底受控强调色 + 等宽字体点缀的系统图示；系统拓扑/回路/时间线结构优先",
+    "features": [
+      "暗底受控强调色 + 等宽字体点缀的系统图示",
+      "系统拓扑/回路/时间线结构优先",
+      "亮环境自动切浅色变体（light 双模式声明）"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止靠辉光效果承载信息",
+      "禁止系统关系不可辨的抽象背景",
+      "暗底正文对比不足不得通过"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:tech-dark-mode",
+    "modes_supported": [
+      "dark",
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p17-17-system-diagram-layouts",
+          "builtin:layout:p11-11-horizontal-timeline-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts",
+          "builtin:layout:p6-06-kpi-tower-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p21-21-tech-spec-sheet-layouts",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "系统关系可辨、亮环境可读、不靠辉光承载信息",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  }
+}

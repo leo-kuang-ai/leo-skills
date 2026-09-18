@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, initial-scale=1">
+  <title>spec-table</title>
+  <style>
+    /* leo render lane 模板：spec-table（canonical，主题/几何真值外置）
+       颜色/字号/几何全部来自 --leo-* CSS 变量（theme.json + layout.json 编译）；
+       本文件不拥有任何列宽、区域、字号、色值真值。 */
+    @font-face {
+      font-family: "Noto Sans SC";
+      src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "Noto Sans SC";
+      src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+      font-weight: 700;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1280px; height: 720px; overflow: hidden; }
+    body {
+      background: var(--leo-c-background);
+      color: var(--leo-c-text);
+      font-family: var(--leo-f-family-body), "Noto Sans SC", sans-serif;
+    }
+    .leo-slide {
+      position: absolute;
+      left: var(--leo-g-content-x); top: var(--leo-g-content-y);
+      width: var(--leo-g-content-w); height: var(--leo-g-content-h);
+      display: flex; flex-direction: column;
+    }
+    .slide-head { position: absolute; left: 90px; top: 68px; width: 1100px; }
+    .title {
+      font-family: var(--leo-f-family-title), "Noto Sans SC", sans-serif; font-weight: var(--leo-f-weight-title);
+      font-size: var(--leo-f-size-title); line-height: var(--leo-f-line-height-title);
+      color: var(--leo-c-primary);
+      padding-bottom: 20px; border-bottom: 3px solid var(--leo-c-border);
+      margin-bottom: 30px;
+    }
+    table.spec { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    table.spec th {
+      background: var(--leo-c-primary); color: var(--leo-c-on-primary);
+      font-family: var(--leo-f-family-table_header), "Noto Sans SC", sans-serif;
+      font-weight: var(--leo-f-weight-table_header);
+      font-size: var(--leo-f-size-table_header);
+      line-height: var(--leo-f-line-height-table_header);
+      text-align: left; letter-spacing: 0.04em;
+      padding: var(--leo-g-padding-block) var(--leo-g-padding-inline);
+    }
+    table.spec td {
+      font-family: var(--leo-f-family-table_body), "Noto Sans SC", sans-serif;
+      font-weight: var(--leo-f-weight-table_body);
+      font-size: var(--leo-f-size-table_body);
+      line-height: var(--leo-f-line-height-table_body);
+      color: var(--leo-c-text);
+      padding: var(--leo-g-padding-block) var(--leo-g-padding-inline);
+      border-bottom: 1px solid var(--leo-c-border);
+      overflow-wrap: break-word;
+    }
+    table.spec tr:nth-child(even) td { background: var(--leo-c-surface); }
+    table.spec th.num, table.spec td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .page-no {
+      position: absolute; right: 44px; bottom: 30px;
+      font-size: var(--leo-f-size-page_no); color: var(--leo-c-muted);
+    }
+    html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+      animation: none !important; transition: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-head"><h1 class="title" data-leo-block="title"></h1></div>
+  <main class="leo-slide" id="leo-slide">
+    <table class="spec" data-leo-block="table">
+      <colgroup id="leo-cols"></colgroup>
+      <thead><tr id="leo-head-row"></tr></thead>
+      <tbody id="leo-body"></tbody>
+    </table>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    var colors = theme.colors || {};
+    Object.keys(colors).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(colors[role]));
+    });
+    var fonts = theme.fonts || {};
+    Object.keys(fonts).forEach(function (role) {
+      var def = fonts[role] || {};
+      if (def.family) root.style.setProperty("--leo-f-family-" + role, String(def.family));
+      if (def.weight != null) root.style.setProperty("--leo-f-weight-" + role, String(def.weight));
+      if (def.size != null) root.style.setProperty("--leo-f-size-" + role, def.size + "px");
+      if (def.line_height != null) root.style.setProperty("--leo-f-line-height-" + role, String(def.line_height));
+    });
+    var geometry = theme.geometry || {};
+    // 只消费数值几何（compile_geometry 输出）；column_weights 等数组值
+    // 不是 CSS 变量，由模板自身结构逻辑（colgroup）消费。
+    Object.keys(geometry).forEach(function (key) {
+      if (typeof geometry[key] === "number") {
+        root.style.setProperty("--leo-g-" + key, geometry[key] + "px");
+      }
+    });
+    var weights = theme.column_weights || geometry.column_weights || [];
+    var colgroup = document.getElementById("leo-cols");
+    colgroup.innerHTML = "";
+    weights.forEach(function (w) {
+      var col = document.createElement("col");
+      col.style.width = w + "%";
+      colgroup.appendChild(col);
+    });
+  }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  function applyData(data) {
+    data = data || {};
+    document.querySelector('[data-leo-block="title"]').textContent = data.title || "";
+    var columns = Array.isArray(data.columns) ? data.columns : [];
+    var aligns = Array.isArray(data.column_align) ? data.column_align : [];
+    var rows = Array.isArray(data.rows) ? data.rows : [];
+    var headRow = document.getElementById("leo-head-row");
+    headRow.innerHTML = "";
+    columns.forEach(function (name, i) {
+      var th = document.createElement("th");
+      th.setAttribute("data-leo-block-item", "column");
+      th.textContent = String(name);
+      if (String(aligns[i] || "") === "right" || String(aligns[i] || "") === "center") {
+        th.className = "num";
+      }
+      headRow.appendChild(th);
+    });
+    var body = document.getElementById("leo-body");
+    body.innerHTML = "";
+    rows.forEach(function (row) {
+      var tr = document.createElement("tr");
+      tr.setAttribute("data-leo-block-item", "row");
+      (Array.isArray(row) ? row : []).forEach(function (cell, i) {
+        var td = document.createElement("td");
+        td.setAttribute("data-leo-block-item", "cell");
+        td.textContent = String(cell);
+        var align = String(aligns[i] || "");
+        if (align === "right" || align === "center") td.className = "num";
+        tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    });
+    document.querySelector('[data-leo-block="page-no"]').textContent =
+      data.page_no != null ? String(data.page_no) : "";
+  }
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

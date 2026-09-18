@@ -31,6 +31,9 @@
   ⑫ 收束金额测算行（R2 测评迭代，WARN 级、向后兼容）：收束页要点中的
      金额在登记表须有口径/来源列含 测算/推算/询价/报价/引用 标记的同值
      行，或该要点行内显式 unknown。
+  ⑬ 页稳定身份（dashi 集成 K1/U2）：页首 `page_id: pg-<8-16 hex>` 行——
+     有任何页声明身份时，全 deck 每页必须声明且唯一、格式合法（部分携带
+     即 FAIL）；全部缺失为 legacy 母版，静默跳过（内容包编译另行拒绝）。
 
 母版机读语法约定（deck-master.md 合同）：
   - 页由 `## S<N> ` 或 `## 附` 起始；
@@ -51,6 +54,16 @@ TAKEAWAY-READTHROUGH；失败项写 stderr，exit 1；仅 WARN 项 exit 2。
 import re
 import sys
 from pathlib import Path
+
+# Common master parsing lives in the runtime content-pack module (K1/U2).
+RUNTIME_SRC = Path(__file__).resolve().parents[1] / "runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
+from leo_ppt_generator.content_pack import (  # noqa: E402
+    PAGE_ID_FORMAT_RE,
+    PAGE_ID_LINE_RE,
+    split_page_blocks,
+)
 
 PAGE_RE = re.compile(r"^##\s+(S(\d+)|附)[^\n]*$", re.M)
 TITLE_RE = re.compile(r"[-•]\s*标题[：:]\s*(.+)")
@@ -125,6 +138,21 @@ def page_is_functional(body):
         if any(w in m.group(1) for w in FUNCTIONAL_ROLE_WORDS):
             return True
     return False
+
+
+def check_rst_relations(pages, failures, advisories=None):
+    """Enforce the hard same-unit invariant at the page boundary.
+
+    ``rst_relation`` describes this page relative to the preceding page, so
+    ``same-unit`` necessarily means the unit was split across two pages.
+    Other relations remain advisory metadata.
+    """
+    relation_re = re.compile(r"(?:rst_relation|rst)\s*[：:]\s*([a-z-]+)", re.I)
+    for header, body in pages:
+        match = relation_re.search(body)
+        if match and match.group(1).lower() == "same-unit":
+            failures.append(
+                f"{header.strip()}: rst_relation=same-unit 跨页拆分；同单元必须整体置于一页")
 
 
 def collect_figure_rows(text):
@@ -576,6 +604,42 @@ def check_closing_amounts(text, pages, warnings, advisories=None):
             "纪律；口径/来源列须含 测算/推算/询价 等标记）：" + "；".join(bad[:3]))
 
 
+def check_page_identity(text, failures):
+    """⑬ 页稳定身份（K1/U2）：全有或全无；部分携带/重复/格式非法即 FAIL。
+
+    页身份行由 content_pack 公共解析切页后按页判定；全部缺失为 legacy
+    母版，静默跳过（内容包编译会拒绝并要求一次性补齐身份）。
+    """
+    try:
+        blocks = split_page_blocks(text)
+    except Exception:
+        return  # 解析失败由页块判据报告，此处不重复报错
+    declared = []
+    for block in blocks:
+        m = PAGE_ID_LINE_RE.search(block["body"])
+        declared.append((block["master_page"], m.group(1) if m else None,
+                         block["start_line"]))
+    if not any(pid for _, pid, _ in declared):
+        return  # legacy：静默跳过
+    seen = {}
+    for label, pid, start_line in declared:
+        where = f"{label}（第 {start_line} 行起）"
+        if pid is None:
+            failures.append(
+                f"{where}: 缺 page_id 声明——deck 内已有页声明身份，必须全 deck 一致"
+                "（部分携带的母版是损坏母版）")
+            continue
+        if not PAGE_ID_FORMAT_RE.fullmatch(pid):
+            failures.append(
+                f"{where}: page_id「{pid}」格式非法（须为 pg-<8-16 位十六进制）")
+            continue
+        if pid in seen:
+            failures.append(
+                f"{where}: page_id「{pid}」与 {seen[pid]} 重复（deck 内必须唯一）")
+        else:
+            seen[pid] = where
+
+
 def main():
     if len(sys.argv) != 2:
         print("usage: check_master_contract.py <deck-master.md>", file=sys.stderr)
@@ -606,6 +670,7 @@ def main():
     if "## 数字登记表" not in text:
         failures.append("全 deck: 缺少「## 数字登记表」节")
     check_figure_rows(text, failures)
+    check_rst_relations(pages, failures, advisories)
     content_pages = total - functional_count
     check_deck_contract(text, content_pages, failures, warnings)
     page_seq = []
@@ -615,6 +680,7 @@ def main():
     promise_count = check_deck_promises(text, page_seq, failures)
     tier_count = check_bullet_tiers(text, failures)
     check_counter_carriage(pages, warnings, advisories)
+    check_page_identity(text, failures)
     tier = check_delivery_tier(text, failures, warnings)
     if tier:
         declared = "declared" if DELIVERY_TIER_RE.search(text) else "default"

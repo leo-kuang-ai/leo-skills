@@ -1,6 +1,6 @@
 # Product Pulse First-Run Interview
 
-Loaded by `SKILL.md` at the start of Phase 1. Captures the configuration that will be merged into `.spec-first/config.local.yaml` (the unified spec-first local config, gitignored, machine-local) as `pulse_*` keys and re-read on every subsequent run.
+Loaded by `references/setup.md` at the start of Phase 1. Captures the configuration that will be merged into `.spec-first/config.local.yaml` (the unified spec-first local config, gitignored, machine-local) as `pulse_*` keys and re-read on every subsequent run.
 
 For each section: ask the opening question, evaluate the answer against the quality bar, push back when it falls into a named anti-pattern, and capture the final answer in the user's own language.
 
@@ -9,7 +9,7 @@ For each section: ask the opening question, evaluate the answer against the qual
 1. **Push back, but don't spiral.** One round of pushback per section max. If the second answer still isn't usable, capture what the user gave, flag it in the config as `needs-review`, and move on.
 2. **Name events in the user's own words.** The config will be readable by the whole team - use the terms they actually use, not a generic template.
 3. **Ask about tools, not credentials.** The interview captures *which* tool and *what shape of query*. It does not collect API keys, tokens, or database passwords. Those stay in the user's environment.
-4. **Honor strategy seeds.** If `SKILL.md` Phase 1.0 surfaced a product name or a list of key metrics from `STRATEGY.md`, start with those as defaults and let the user edit. Do not re-ask questions that the strategy doc already answered unambiguously.
+4. **Honor strategy seeds.** Use the product name and metrics from the STRATEGY or legacy source that setup read under `references/strategy-source.md` as defaults for correction. Do not re-ask questions the document already answered unambiguously.
 5. **Evaluate metrics against the SMART bar.** Every event, metric, and signal the user proposes should be:
    - **Specific** - a named event or a named metric, not a category. `message_sent` passes; "engagement" does not.
    - **Measurable** - you can point to the tool and query that returns a number. "Users like it" does not pass; "NPS score from Delighted" does.
@@ -91,7 +91,7 @@ Optional section. 0-3 events is typical.
 
 ## 5. Quality Scoring (optional, AI products)
 
-**Opening question:** "Is this an AI product where a conversation or session could be rated for quality? If yes, I'll sample up to 10 sessions per run and score each 1-5 on a dimension you define. Say no if this isn't applicable."
+**Opening question:** "Is this an AI product where a conversation or session could be rated for quality? If yes, I'll sample up to 10 provider-projected, de-identified sessions per run and score each 1-5 on a dimension you define. The bounded content needed for scoring enters the current agent/model context, although no message content or identity fields are saved in the report. If the provider cannot remove direct identity and unrelated fields before returning the sample, scoring will not run. Say no if this isn't applicable."
 
 If the user opts in, ask: "What dimension should sessions be scored on? (e.g., 'got to a useful answer', 'response was accurate', 'no hallucinations')."
 
@@ -101,7 +101,7 @@ If the user opts in, ask: "What dimension should sessions be scored on? (e.g., '
 - **Multiple dimensions** ("accurate AND actionable") -> "Start with one. You can add dimensions by editing the config later. Keeping it at one keeps the scores comparable across runs. Which matters more right now?"
 - **Reviewability test** - after the user names a dimension, apply this check silently: could two separate reviewers look at the same session and agree on the score? If no, push back once: "Let's tighten this - what would make a reviewer score this a 5 vs a 3? If you can name the distinction in one sentence, the dimension is tight enough." If the user can answer, capture it as a scoring note alongside the dimension. If they can't, flag the dimension `needs-review` and move on.
 
-**Capture:** opt-in (yes/no), dimension (if opted in), scoring note (1 sentence distinguishing 5 from 3), scoring discipline reminder ("default to 4-5; reserve 1-3 for clear failures").
+**Capture:** opt-in after the context-processing disclosure (yes/no), dimension (if opted in), scoring note (1 sentence distinguishing 5 from 3), scoring discipline reminder ("default to 4-5; reserve 1-3 for clear failures").
 
 ---
 
@@ -252,9 +252,9 @@ pulse_schedule: {{daily | weekly | manual | ask-again-after-3-runs}}  # include 
 
 **Notes on what is NOT persisted in config:**
 
-- **Strategy metrics carried forward**: surfaced in the report, not stored as config — they live in `STRATEGY.md` and are re-read each run from there.
+- **Strategy metrics carried forward**: display them in the report, not as stored config; re-read current strategy metrics on every run using `references/strategy-source.md`.
 - **Per-source connection details** (URLs, API keys, query specifics): live with the user's MCP configuration, not in this config.
-- **Hardcoded operational settings** (15-minute trailing buffer, top-N error count, p50/p95/p99 latencies, "no PII in reports", "parallel analytics + tracing, serial DB"): these are skill behavior, not user config; they live in `SKILL.md` and stay constant.
+- **Hardcoded operational settings** (15-minute trailing buffer, top-N error count, p50/p95/p99 latencies, "no PII in reports", "parallel analytics + tracing, serial DB"): these are skill behavior, not user config; they live in `SKILL.md` and `references/run.md` and stay constant.
 - **Tracing top-N count and latency on/off**: not configurable in this version. The report always includes top 5 errors and full p50/p95/p99 latency. Add config keys later if a real need surfaces.
 
 After writing, surface the resulting `pulse_*` block to the user in chat. Offer one round of edits. Then return to SKILL.md Phase 2.

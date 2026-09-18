@@ -1,0 +1,6071 @@
+{
+  "entities": [
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:accenture",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "accenture",
+      "path": "canonical/brands/accenture/brand.json",
+      "revision": "cd6ff1ff4d6532b0"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:airbnb",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "airbnb",
+      "path": "canonical/brands/airbnb/brand.json",
+      "revision": "33903bf260fae2bd"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:alibaba",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "alibaba",
+      "path": "canonical/brands/alibaba/brand.json",
+      "revision": "0d04bb0961f02271"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:anthropic",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "anthropic",
+      "path": "canonical/brands/anthropic/brand.json",
+      "revision": "23f16114d3738a6f"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:apple",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "apple",
+      "path": "canonical/brands/apple/brand.json",
+      "revision": "fca4c641545ba8fc"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:aws",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "aws",
+      "path": "canonical/brands/aws/brand.json",
+      "revision": "3094dd72f4e02d36"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:bain",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "bain",
+      "path": "canonical/brands/bain/brand.json",
+      "revision": "33f473f192a86caf"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:bcg",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "bcg",
+      "path": "canonical/brands/bcg/brand.json",
+      "revision": "15c43f6a1e327ff3"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:bmw",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "bmw",
+      "path": "canonical/brands/bmw/brand.json",
+      "revision": "0443345b4f3698dd"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:deloitte",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "deloitte",
+      "path": "canonical/brands/deloitte/brand.json",
+      "revision": "ef3acc8733afa708"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:figma",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "figma",
+      "path": "canonical/brands/figma/brand.json",
+      "revision": "7483c8452e441ebc"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:framer",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "framer",
+      "path": "canonical/brands/framer/brand.json",
+      "revision": "b935eb21dbe091bf"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:google",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "google",
+      "path": "canonical/brands/google/brand.json",
+      "revision": "b56db14e09a3a1f7"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:huawei",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "huawei",
+      "path": "canonical/brands/huawei/brand.json",
+      "revision": "18184375716e6e52"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:ibm",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "ibm",
+      "path": "canonical/brands/ibm/brand.json",
+      "revision": "77d90da074e7555b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:jpmorgan",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "jpmorgan",
+      "path": "canonical/brands/jpmorgan/brand.json",
+      "revision": "eb3cdd40d590df60"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:linear",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "linear",
+      "path": "canonical/brands/linear/brand.json",
+      "revision": "d950f3ee3ea0b295"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:mckinsey",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "mckinsey",
+      "path": "canonical/brands/mckinsey/brand.json",
+      "revision": "8d696dee3535a5a5"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:microsoft",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "microsoft",
+      "path": "canonical/brands/microsoft/brand.json",
+      "revision": "e05ec7fe0cd655e3"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:notion",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "notion",
+      "path": "canonical/brands/notion/brand.json",
+      "revision": "e11b8141469d467b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:nvidia",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "nvidia",
+      "path": "canonical/brands/nvidia/brand.json",
+      "revision": "0d4cc4527c96130b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:pwc",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "pwc",
+      "path": "canonical/brands/pwc/brand.json",
+      "revision": "f2c97dbd7d08c9f4"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:shopify",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "shopify",
+      "path": "canonical/brands/shopify/brand.json",
+      "revision": "641a21872ab22d6e"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:spotify",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "spotify",
+      "path": "canonical/brands/spotify/brand.json",
+      "revision": "5d834c23aaadf908"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:starbucks",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "starbucks",
+      "path": "canonical/brands/starbucks/brand.json",
+      "revision": "5b273775e95bcd6b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:stripe",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "stripe",
+      "path": "canonical/brands/stripe/brand.json",
+      "revision": "c99e487a1dc21f63"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:supabase",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "supabase",
+      "path": "canonical/brands/supabase/brand.json",
+      "revision": "2b1c6fd4b1caab0a"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:tencent",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "tencent",
+      "path": "canonical/brands/tencent/brand.json",
+      "revision": "53e43da7fe2322fe"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:tesla",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "tesla",
+      "path": "canonical/brands/tesla/brand.json",
+      "revision": "b30701309115b0eb"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:vercel",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "vercel",
+      "path": "canonical/brands/vercel/brand.json",
+      "revision": "f182799db25bc6c8"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:xiaomi",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "xiaomi",
+      "path": "canonical/brands/xiaomi/brand.json",
+      "revision": "444f2449e9b438d5"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:中国电信",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "中国电信",
+      "path": "canonical/brands/中国电信/brand.json",
+      "revision": "87eb14383a66a762"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:中国电建",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "中国电建",
+      "path": "canonical/brands/中国电建/brand.json",
+      "revision": "bc6a74e0b11563d7"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:中汽研",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "中汽研",
+      "path": "canonical/brands/中汽研/brand.json",
+      "revision": "21eff2a9804b2f53"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:招商银行",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "招商银行",
+      "path": "canonical/brands/招商银行/brand.json",
+      "revision": "7d471754b282d21b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:brand:重庆大学",
+      "dependencies": [],
+      "kind": "brand",
+      "lifecycle": "draft",
+      "name": "重庆大学",
+      "path": "canonical/brands/重庆大学/brand.json",
+      "revision": "019ab32cc6031eec"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:font:noto-sans-sc",
+      "dependencies": [],
+      "kind": "font",
+      "lifecycle": "draft",
+      "name": "Noto Sans SC",
+      "path": "canonical/fonts/noto-sans-sc/manifest.json",
+      "revision": "2e015f6cc4368a22"
+    },
+    {
+      "aliases": [
+        "body-basic"
+      ],
+      "asset_id": "builtin:layout:body-basic",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "要点正文",
+      "path": "canonical/layouts/body-basic/layout.json",
+      "revision": "b2361b04f36c78b2"
+    },
+    {
+      "aliases": [
+        "compare"
+      ],
+      "asset_id": "builtin:layout:compare",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "双栏对照",
+      "path": "canonical/layouts/compare/layout.json",
+      "revision": "327ececd3d9d15da"
+    },
+    {
+      "aliases": [
+        "cover-basic"
+      ],
+      "asset_id": "builtin:layout:cover-basic",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "基础封面",
+      "path": "canonical/layouts/cover-basic/layout.json",
+      "revision": "a06f3098a9be0f47"
+    },
+    {
+      "aliases": [
+        "frame-shot"
+      ],
+      "asset_id": "builtin:layout:frame-shot",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "截图框架",
+      "path": "canonical/layouts/frame-shot/layout.json",
+      "revision": "b4dcab3b4a90022a"
+    },
+    {
+      "aliases": [
+        "P1"
+      ],
+      "asset_id": "builtin:layout:p1-01-cover-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Cover",
+      "path": "canonical/layouts/p1-01-cover-layouts/layout.json",
+      "revision": "ebd8e76d528ec102"
+    },
+    {
+      "aliases": [
+        "P10"
+      ],
+      "asset_id": "builtin:layout:p10-10-dot-matrix-statement-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Dot Matrix Statement",
+      "path": "canonical/layouts/p10-10-dot-matrix-statement-layouts/layout.json",
+      "revision": "cb3c6aecd9a6b92b"
+    },
+    {
+      "aliases": [
+        "P11"
+      ],
+      "asset_id": "builtin:layout:p11-11-horizontal-timeline-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Horizontal Timeline",
+      "path": "canonical/layouts/p11-11-horizontal-timeline-layouts/layout.json",
+      "revision": "5c0f1514b92a871a"
+    },
+    {
+      "aliases": [
+        "P12"
+      ],
+      "asset_id": "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Manifesto Ink Banner",
+      "path": "canonical/layouts/p12-12-manifesto-ink-banner-layouts/layout.json",
+      "revision": "7b8a8da737896b70"
+    },
+    {
+      "aliases": [
+        "P13"
+      ],
+      "asset_id": "builtin:layout:p13-13-three-forces-cards-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Three Forces Cards",
+      "path": "canonical/layouts/p13-13-three-forces-cards-layouts/layout.json",
+      "revision": "3db7f9eb96eb860b"
+    },
+    {
+      "aliases": [
+        "P14"
+      ],
+      "asset_id": "builtin:layout:p14-14-loop-diagram-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Loop Diagram",
+      "path": "canonical/layouts/p14-14-loop-diagram-layouts/layout.json",
+      "revision": "651fcfb61542deca"
+    },
+    {
+      "aliases": [
+        "P15"
+      ],
+      "asset_id": "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Image Matrix Hero Stat",
+      "path": "canonical/layouts/p15-15-image-matrix-hero-stat-layouts/layout.json",
+      "revision": "48b953059b8cc4b3"
+    },
+    {
+      "aliases": [
+        "P16"
+      ],
+      "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Multi card Brief",
+      "path": "canonical/layouts/p16-16-multi-card-brief-layouts/layout.json",
+      "revision": "48eaf3829cec3767"
+    },
+    {
+      "aliases": [
+        "P17"
+      ],
+      "asset_id": "builtin:layout:p17-17-system-diagram-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "System Diagram",
+      "path": "canonical/layouts/p17-17-system-diagram-layouts/layout.json",
+      "revision": "5278b493f4c01c4d"
+    },
+    {
+      "aliases": [
+        "P18"
+      ],
+      "asset_id": "builtin:layout:p18-18-why-now-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Why Now",
+      "path": "canonical/layouts/p18-18-why-now-layouts/layout.json",
+      "revision": "3447caae0bbfd584"
+    },
+    {
+      "aliases": [
+        "P19"
+      ],
+      "asset_id": "builtin:layout:p19-19-four-cards-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Four Cards",
+      "path": "canonical/layouts/p19-19-four-cards-layouts/layout.json",
+      "revision": "240a814ae1fd0db1"
+    },
+    {
+      "aliases": [
+        "P2"
+      ],
+      "asset_id": "builtin:layout:p2-02-vertical-timeline-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Vertical Timeline",
+      "path": "canonical/layouts/p2-02-vertical-timeline-layouts/layout.json",
+      "revision": "671dbae5aa56a857"
+    },
+    {
+      "aliases": [
+        "P20"
+      ],
+      "asset_id": "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Stacked KPI Ledger",
+      "path": "canonical/layouts/p20-20-stacked-kpi-ledger-layouts/layout.json",
+      "revision": "b8ca985b0715f135"
+    },
+    {
+      "aliases": [
+        "P21"
+      ],
+      "asset_id": "builtin:layout:p21-21-tech-spec-sheet-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Tech Spec Sheet",
+      "path": "canonical/layouts/p21-21-tech-spec-sheet-layouts/layout.json",
+      "revision": "2efeb1d5dd88915c"
+    },
+    {
+      "aliases": [
+        "P22"
+      ],
+      "asset_id": "builtin:layout:p22-22-image-hero-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Image Hero",
+      "path": "canonical/layouts/p22-22-image-hero-layouts/layout.json",
+      "revision": "2149ec20d4e44a42"
+    },
+    {
+      "aliases": [
+        "P23"
+      ],
+      "asset_id": "builtin:layout:p23-p23-section-divider-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Section Divider",
+      "path": "canonical/layouts/p23-p23-section-divider-layouts/layout.json",
+      "revision": "51c3319694efdf6c"
+    },
+    {
+      "aliases": [
+        "P24"
+      ],
+      "asset_id": "builtin:layout:p24-p24-number-hero-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Number Hero",
+      "path": "canonical/layouts/p24-p24-number-hero-layouts/layout.json",
+      "revision": "911ade5a9d19b450"
+    },
+    {
+      "aliases": [
+        "P25",
+        "Spec Table"
+      ],
+      "asset_id": "builtin:layout:p25-spec-table",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "规格参数表",
+      "path": "canonical/layouts/p25-spec-table/layout.json",
+      "revision": "15fb3b3a20e4348d"
+    },
+    {
+      "aliases": [
+        "P26"
+      ],
+      "asset_id": "builtin:layout:p26-p26-reference-list-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Reference List",
+      "path": "canonical/layouts/p26-p26-reference-list-layouts/layout.json",
+      "revision": "1858454991bafc4d"
+    },
+    {
+      "aliases": [
+        "P27"
+      ],
+      "asset_id": "builtin:layout:p27-p27-learning-objectives-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Learning Objectives",
+      "path": "canonical/layouts/p27-p27-learning-objectives-layouts/layout.json",
+      "revision": "9313a66ec338c825"
+    },
+    {
+      "aliases": [
+        "P28"
+      ],
+      "asset_id": "builtin:layout:p28-p28-recap-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Recap",
+      "path": "canonical/layouts/p28-p28-recap-layouts/layout.json",
+      "revision": "6b3a7fc50eaffa10"
+    },
+    {
+      "aliases": [
+        "P29"
+      ],
+      "asset_id": "builtin:layout:p29-p29-quiz-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Quiz",
+      "path": "canonical/layouts/p29-p29-quiz-layouts/layout.json",
+      "revision": "29a39308673cbe0a"
+    },
+    {
+      "aliases": [
+        "P3"
+      ],
+      "asset_id": "builtin:layout:p3-03-statement-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Statement",
+      "path": "canonical/layouts/p3-03-statement-layouts/layout.json",
+      "revision": "c53b987c13bdd213"
+    },
+    {
+      "aliases": [
+        "P30"
+      ],
+      "asset_id": "builtin:layout:p30-30-swiss-image-split-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Swiss Image Split",
+      "path": "canonical/layouts/p30-30-swiss-image-split-layouts/layout.json",
+      "revision": "e48ef2b988ff3936"
+    },
+    {
+      "aliases": [
+        "P31"
+      ],
+      "asset_id": "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Swiss Evidence Grid",
+      "path": "canonical/layouts/p31-31-swiss-evidence-grid-layouts/layout.json",
+      "revision": "75e52ce445bc1537"
+    },
+    {
+      "aliases": [
+        "P32"
+      ],
+      "asset_id": "builtin:layout:p32-32-agenda-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Agenda",
+      "path": "canonical/layouts/p32-32-agenda-layouts/layout.json",
+      "revision": "ba133ec04428ca0f"
+    },
+    {
+      "aliases": [
+        "P33"
+      ],
+      "asset_id": "builtin:layout:p33-33-team-grid-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Team Grid",
+      "path": "canonical/layouts/p33-33-team-grid-layouts/layout.json",
+      "revision": "b586fbd6b2c93c68"
+    },
+    {
+      "aliases": [
+        "P34"
+      ],
+      "asset_id": "builtin:layout:p34-34-quote-hero-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Quote Hero",
+      "path": "canonical/layouts/p34-34-quote-hero-layouts/layout.json",
+      "revision": "7675da24777ed725"
+    },
+    {
+      "aliases": [
+        "P35"
+      ],
+      "asset_id": "builtin:layout:p35-35-data-wall-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Data Wall",
+      "path": "canonical/layouts/p35-35-data-wall-layouts/layout.json",
+      "revision": "7ef9c8850017e718"
+    },
+    {
+      "aliases": [
+        "P36"
+      ],
+      "asset_id": "builtin:layout:p36-36-ambience-full-bleed-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Ambience Full Bleed",
+      "path": "canonical/layouts/p36-36-ambience-full-bleed-layouts/layout.json",
+      "revision": "0b6e786c73eb82b2"
+    },
+    {
+      "aliases": [
+        "P4"
+      ],
+      "asset_id": "builtin:layout:p4-04-six-cells-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Six Cells",
+      "path": "canonical/layouts/p4-04-six-cells-layouts/layout.json",
+      "revision": "f03d8a75c8795e3a"
+    },
+    {
+      "aliases": [
+        "P5"
+      ],
+      "asset_id": "builtin:layout:p5-05-three-sub-cards-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Three Sub cards",
+      "path": "canonical/layouts/p5-05-three-sub-cards-layouts/layout.json",
+      "revision": "a1c9a69fff56f82f"
+    },
+    {
+      "aliases": [
+        "P6"
+      ],
+      "asset_id": "builtin:layout:p6-06-kpi-tower-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "KPI Tower",
+      "path": "canonical/layouts/p6-06-kpi-tower-layouts/layout.json",
+      "revision": "b6b854bdf1e83196"
+    },
+    {
+      "aliases": [
+        "P7"
+      ],
+      "asset_id": "builtin:layout:p7-07-h-bar-chart-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "H Bar Chart",
+      "path": "canonical/layouts/p7-07-h-bar-chart-layouts/layout.json",
+      "revision": "5c7a08b6828eb8d4"
+    },
+    {
+      "aliases": [
+        "P8"
+      ],
+      "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Duo Compare",
+      "path": "canonical/layouts/p8-08-duo-compare-layouts/layout.json",
+      "revision": "c75e9dd86d298062"
+    },
+    {
+      "aliases": [
+        "P9"
+      ],
+      "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "Closing Manifesto",
+      "path": "canonical/layouts/p9-09-closing-manifesto-layouts/layout.json",
+      "revision": "146dcc33f097cd4f"
+    },
+    {
+      "aliases": [
+        "pull-quote"
+      ],
+      "asset_id": "builtin:layout:pull-quote",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "引语金句",
+      "path": "canonical/layouts/pull-quote/layout.json",
+      "revision": "75c95c99f57409b0"
+    },
+    {
+      "aliases": [
+        "timeline"
+      ],
+      "asset_id": "builtin:layout:timeline",
+      "dependencies": [],
+      "kind": "layout",
+      "lifecycle": "draft",
+      "name": "横向时间线",
+      "path": "canonical/layouts/timeline/layout.json",
+      "revision": "8047cf91adda4b31"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:annual-review",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "annual-review",
+      "path": "canonical/presets/annual-review/preset.json",
+      "revision": "a86e922f4353012f"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:board-review",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "board-review",
+      "path": "canonical/presets/board-review/preset.json",
+      "revision": "52aada59a0a38e4c"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:courseware",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "courseware",
+      "path": "canonical/presets/courseware/preset.json",
+      "revision": "8c15a04ca8428509"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:investor-pitch",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "investor-pitch",
+      "path": "canonical/presets/investor-pitch/preset.json",
+      "revision": "8b983f73fe269f6e"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:lab-briefing",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "lab-briefing",
+      "path": "canonical/presets/lab-briefing/preset.json",
+      "revision": "3c4701618375d256"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:product-launch",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "product-launch",
+      "path": "canonical/presets/product-launch/preset.json",
+      "revision": "71a70eea4e96688d"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:project-retro",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "project-retro",
+      "path": "canonical/presets/project-retro/preset.json",
+      "revision": "3df1ae8735891539"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:preset:thesis-defense",
+      "dependencies": [],
+      "kind": "preset",
+      "lifecycle": "draft",
+      "name": "thesis-defense",
+      "path": "canonical/presets/thesis-defense/preset.json",
+      "revision": "0419acdc8a062489"
+    },
+    {
+      "aliases": [
+        "3D软体风",
+        "卡通渲染风",
+        "soft 3D"
+      ],
+      "asset_id": "builtin:style:3D软体卡通风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "3D软体卡通风",
+      "path": "canonical/styles/3D软体卡通风/brief.json",
+      "revision": "0c8fda5b6dcc601b"
+    },
+    {
+      "aliases": [
+        "BCG 익스히빗 덱",
+        "BCG exhibit",
+        "展板编号"
+      ],
+      "asset_id": "builtin:style:BCG展板风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "BCG展板风",
+      "path": "canonical/styles/BCG展板风/brief.json",
+      "revision": "9a34553f6a930e6f"
+    },
+    {
+      "aliases": [
+        "CEO汇报风",
+        "高管商务风",
+        "executive premium"
+      ],
+      "asset_id": "builtin:style:CEO高级商务风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "CEO高级商务风",
+      "path": "canonical/styles/CEO高级商务风/brief.json",
+      "revision": "3c466a7361dfc795"
+    },
+    {
+      "aliases": [
+        "Catppuccin拿铁",
+        "Catppuccin Latte",
+        "catppuccin",
+        "latte",
+        "拿铁",
+        "开发者",
+        "catppuccin-latte"
+      ],
+      "asset_id": "builtin:style:Catppuccin拿铁风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Catppuccin拿铁风",
+      "path": "canonical/styles/Catppuccin拿铁风/brief.json",
+      "revision": "dcc6ac28e6f0a357"
+    },
+    {
+      "aliases": [
+        "Catppuccin摩卡",
+        "Catppuccin Mocha",
+        "catppuccin",
+        "mocha",
+        "摩卡",
+        "深色开发者",
+        "catppuccin-mocha"
+      ],
+      "asset_id": "builtin:style:Catppuccin摩卡风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Catppuccin摩卡风",
+      "path": "canonical/styles/Catppuccin摩卡风/brief.json",
+      "revision": "fa34a7080928ddb1"
+    },
+    {
+      "aliases": [
+        "Dracula紫",
+        "Dracula",
+        "紫红",
+        "代码分享",
+        "dracula"
+      ],
+      "asset_id": "builtin:style:Dracula紫风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Dracula紫风",
+      "path": "canonical/styles/Dracula紫风/brief.json",
+      "revision": "c3582a609fb5bd17"
+    },
+    {
+      "aliases": [
+        "Gruvbox暗",
+        "Gruvbox Dark",
+        "gruvbox",
+        "复古深色",
+        "terminal",
+        "gruvbox-dark"
+      ],
+      "asset_id": "builtin:style:Gruvbox暗风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Gruvbox暗风",
+      "path": "canonical/styles/Gruvbox暗风/brief.json",
+      "revision": "452c678b400ae272"
+    },
+    {
+      "aliases": [
+        "MBB Ghost Deck",
+        "mckinsey ghost",
+        "幽灵草稿"
+      ],
+      "asset_id": "builtin:style:MBB幽灵框架风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "MBB幽灵框架风",
+      "path": "canonical/styles/MBB幽灵框架风/brief.json",
+      "revision": "310935f1d6bf4fa7"
+    },
+    {
+      "aliases": [
+        "SaaS风",
+        "软件服务风",
+        "SaaS pitch"
+      ],
+      "asset_id": "builtin:style:SaaS介绍风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "SaaS介绍风",
+      "path": "canonical/styles/SaaS介绍风/brief.json",
+      "revision": "e972722616056fe5"
+    },
+    {
+      "aliases": [
+        "Stripe蓝白",
+        "清爽科技蓝",
+        "clean-tech-blue"
+      ],
+      "asset_id": "builtin:style:Stripe蓝白风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Stripe蓝白风",
+      "path": "canonical/styles/Stripe蓝白风/brief.json",
+      "revision": "e38ee5787ccc8977"
+    },
+    {
+      "aliases": [
+        "Web3风",
+        "加密风",
+        "链上风",
+        "区块链风"
+      ],
+      "asset_id": "builtin:style:Web3加密风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Web3加密风",
+      "path": "canonical/styles/Web3加密风/brief.json",
+      "revision": "b3b6a18693d45b9a"
+    },
+    {
+      "aliases": [
+        "Y2K铬金属",
+        "Y2k Chrome",
+        "y2k",
+        "chrome",
+        "千禧",
+        "铬",
+        "y2k-chrome"
+      ],
+      "asset_id": "builtin:style:Y2K铬金属风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "Y2K铬金属风",
+      "path": "canonical/styles/Y2K铬金属风/brief.json",
+      "revision": "fab33a2846d14279"
+    },
+    {
+      "aliases": [
+        "学术",
+        "academic-austere"
+      ],
+      "asset_id": "builtin:style:academic-austere",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p7-07-h-bar-chart-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:academic-austere-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "学术克制风",
+      "path": "canonical/styles/academic-austere/brief.json",
+      "revision": "69da3dda03bb65d6"
+    },
+    {
+      "aliases": [
+        "品牌",
+        "brand-creative"
+      ],
+      "asset_id": "builtin:style:brand-creative",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p22-22-image-hero-layouts",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p34-34-quote-hero-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:brand-creative-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "品牌创意风",
+      "path": "canonical/styles/brand-creative/brief.json",
+      "revision": "edd11c035c48b833"
+    },
+    {
+      "aliases": [
+        "简约专业风",
+        "清新商务风",
+        "clean-corporate"
+      ],
+      "asset_id": "builtin:style:clean-professional",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p13-13-three-forces-cards-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p23-p23-section-divider-layouts",
+        "builtin:layout:p24-p24-number-hero-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p8-08-duo-compare-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:clean-professional-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "清爽专业风",
+      "path": "canonical/styles/clean-professional/brief.json",
+      "revision": "0bd53a6b4e4a4632"
+    },
+    {
+      "aliases": [
+        "咨询",
+        "consulting-pyramid"
+      ],
+      "asset_id": "builtin:style:consulting-pyramid",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p8-08-duo-compare-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:consulting-pyramid-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "咨询金字塔风",
+      "path": "canonical/styles/consulting-pyramid/brief.json",
+      "revision": "43b246f5b3087379"
+    },
+    {
+      "aliases": [
+        "杂志编辑风",
+        "时尚杂志风",
+        "杂志风",
+        "editorial"
+      ],
+      "asset_id": "builtin:style:creative-magazine",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+        "builtin:layout:p13-13-three-forces-cards-layouts",
+        "builtin:layout:p16-16-multi-card-brief-layouts",
+        "builtin:layout:p23-p23-section-divider-layouts",
+        "builtin:layout:p30-30-swiss-image-split-layouts",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "创意杂志风",
+      "path": "canonical/styles/creative-magazine/brief.json",
+      "revision": "fffba72a8369a9d4"
+    },
+    {
+      "aliases": [
+        "仪表盘风",
+        "数据大屏风",
+        "BI风",
+        "dashboard"
+      ],
+      "asset_id": "builtin:style:data-dashboard",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p16-16-multi-card-brief-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p34-34-quote-hero-layouts",
+        "builtin:layout:p35-35-data-wall-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "数据仪表盘风",
+      "path": "canonical/styles/data-dashboard/brief.json",
+      "revision": "37010508b5711da3"
+    },
+    {
+      "aliases": [
+        "教育",
+        "edu-bright"
+      ],
+      "asset_id": "builtin:style:edu-bright",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p28-p28-recap-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:edu-bright-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "教育明快风",
+      "path": "canonical/styles/edu-bright/brief.json",
+      "revision": "a15f5c48fdb15ee3"
+    },
+    {
+      "aliases": [
+        "墨水屏风",
+        "kindle风",
+        "e-ink",
+        "ink-magazine"
+      ],
+      "asset_id": "builtin:style:eink-magazine",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p26-p26-reference-list-layouts",
+        "builtin:layout:p3-03-statement-layouts",
+        "builtin:layout:p34-34-quote-hero-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p8-08-duo-compare-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "电子墨水杂志风",
+      "path": "canonical/styles/eink-magazine/brief.json",
+      "revision": "37e4e3717d5330a3"
+    },
+    {
+      "aliases": [
+        "金融",
+        "finance-navy"
+      ],
+      "asset_id": "builtin:style:finance-navy",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:finance-navy-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "金融藏青风",
+      "path": "canonical/styles/finance-navy/brief.json",
+      "revision": "306c049635e7716d"
+    },
+    {
+      "aliases": [
+        "政务",
+        "gov-red"
+      ],
+      "asset_id": "builtin:style:gov-red",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:gov-red-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "政务庄重风",
+      "path": "canonical/styles/gov-red/brief.json",
+      "revision": "79ffccc60b388335"
+    },
+    {
+      "aliases": [
+        "技术手绘风",
+        "手绘讲解风",
+        "手绘图解风",
+        "hand-drawn-explainer"
+      ],
+      "asset_id": "builtin:style:handdrawn-tech-explainer",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p14-14-loop-diagram-layouts",
+        "builtin:layout:p17-17-system-diagram-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p22-22-image-hero-layouts",
+        "builtin:layout:p3-03-statement-layouts",
+        "builtin:layout:p30-30-swiss-image-split-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "手绘技术解释风",
+      "path": "canonical/styles/handdrawn-tech-explainer/brief.json",
+      "revision": "e6eab58b2a1c1a2d"
+    },
+    {
+      "aliases": [
+        "白板风",
+        "手绘笔记风",
+        "whiteboard",
+        "sketchnote"
+      ],
+      "asset_id": "builtin:style:handdrawn-whiteboard",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p14-14-loop-diagram-layouts",
+        "builtin:layout:p17-17-system-diagram-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p22-22-image-hero-layouts",
+        "builtin:layout:p3-03-statement-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "手绘白板风",
+      "path": "canonical/styles/handdrawn-whiteboard/brief.json",
+      "revision": "99428c9d92a60f17"
+    },
+    {
+      "aliases": [
+        "医疗",
+        "health-clean"
+      ],
+      "asset_id": "builtin:style:health-clean",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:health-clean-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "医疗洁净风",
+      "path": "canonical/styles/health-clean/brief.json",
+      "revision": "ad34199284d4f83f"
+    },
+    {
+      "aliases": [
+        "管理",
+        "management-clear"
+      ],
+      "asset_id": "builtin:style:management-clear",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:management-clear-light"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "管理清晰风",
+      "path": "canonical/styles/management-clear/brief.json",
+      "revision": "a7e8084a8f263088"
+    },
+    {
+      "aliases": [
+        "党建红",
+        "政府红",
+        "红色党政",
+        "party-red"
+      ],
+      "asset_id": "builtin:style:official-red-classic",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+        "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+        "builtin:layout:p23-p23-section-divider-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p34-34-quote-hero-layouts",
+        "builtin:layout:p35-35-data-wall-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "党政红风格",
+      "path": "canonical/styles/official-red-classic/brief.json",
+      "revision": "abbadb80c6a96eda"
+    },
+    {
+      "aliases": [
+        "学术答辩风",
+        "课题申报风",
+        "基金答辩风",
+        "thesis-defense"
+      ],
+      "asset_id": "builtin:style:research-defense",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p23-p23-section-divider-layouts",
+        "builtin:layout:p24-p24-number-hero-layouts",
+        "builtin:layout:p25-spec-table",
+        "builtin:layout:p26-p26-reference-list-layouts",
+        "builtin:layout:p28-p28-recap-layouts",
+        "builtin:layout:p30-30-swiss-image-split-layouts",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "科研答辩风",
+      "path": "canonical/styles/research-defense/brief.json",
+      "revision": "d3ec344cba5c93c6"
+    },
+    {
+      "aliases": [
+        "扁平插画风",
+        "复古插画风",
+        "retro-flat",
+        "vintage-flat-illustration"
+      ],
+      "asset_id": "builtin:style:retro-flat-illustration",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p4-04-six-cells-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p7-07-h-bar-chart-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "复古扁平插画风",
+      "path": "canonical/styles/retro-flat-illustration/brief.json",
+      "revision": "e403b6894fd3ca6e"
+    },
+    {
+      "aliases": [
+        "课件风",
+        "教学风",
+        "PPT课件",
+        "courseware"
+      ],
+      "asset_id": "builtin:style:teaching-courseware",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p13-13-three-forces-cards-layouts",
+        "builtin:layout:p14-14-loop-diagram-layouts",
+        "builtin:layout:p23-p23-section-divider-layouts",
+        "builtin:layout:p27-p27-learning-objectives-layouts",
+        "builtin:layout:p29-p29-quiz-layouts",
+        "builtin:layout:p32-32-agenda-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "教学课件风",
+      "path": "canonical/styles/teaching-courseware/brief.json",
+      "revision": "c1b8ff460524b0c6"
+    },
+    {
+      "aliases": [
+        "科技",
+        "tech-dark"
+      ],
+      "asset_id": "builtin:style:tech-dark",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p11-11-horizontal-timeline-layouts",
+        "builtin:layout:p17-17-system-diagram-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+        "builtin:layout:p6-06-kpi-tower-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts",
+        "builtin:theme:tech-dark-mode"
+      ],
+      "kind": "style",
+      "lifecycle": "active",
+      "name": "科技暗色风",
+      "path": "canonical/styles/tech-dark/brief.json",
+      "revision": "8ab027e7c06701d8"
+    },
+    {
+      "aliases": [
+        "手工风",
+        "温暖插画风",
+        "暖手工风",
+        "warm-handcraft"
+      ],
+      "asset_id": "builtin:style:warm-handcraft",
+      "dependencies": [
+        "builtin:layout:p1-01-cover-layouts",
+        "builtin:layout:p10-10-dot-matrix-statement-layouts",
+        "builtin:layout:p19-19-four-cards-layouts",
+        "builtin:layout:p21-21-tech-spec-sheet-layouts",
+        "builtin:layout:p33-33-team-grid-layouts",
+        "builtin:layout:p36-36-ambience-full-bleed-layouts",
+        "builtin:layout:p5-05-three-sub-cards-layouts",
+        "builtin:layout:p9-09-closing-manifesto-layouts"
+      ],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "温暖手工风",
+      "path": "canonical/styles/warm-handcraft/brief.json",
+      "revision": "03e73e5f49bb4fea"
+    },
+    {
+      "aliases": [
+        "不羁玩梗流行风",
+        "不羁玩梗",
+        "玩梗流行",
+        "irreverent pop",
+        "reddit style"
+      ],
+      "asset_id": "builtin:style:不羁玩梗流行风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "不羁玩梗流行风",
+      "path": "canonical/styles/不羁玩梗流行风/brief.json",
+      "revision": "4b56a2f5674e31eb"
+    },
+    {
+      "aliases": [
+        "东京夜",
+        "Tokyo Night",
+        "tokyo",
+        "night",
+        "东京",
+        "蓝夜",
+        "tech-dark"
+      ],
+      "asset_id": "builtin:style:东京夜风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "东京夜风",
+      "path": "canonical/styles/东京夜风/brief.json",
+      "revision": "4f7c6330afcf38b2"
+    },
+    {
+      "aliases": [
+        "东方意境插画",
+        "Oriental Poetic Illustration",
+        "东方",
+        "禅意",
+        "竹影",
+        "oriental",
+        "zen"
+      ],
+      "asset_id": "builtin:style:东方意境插画风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "东方意境插画风",
+      "path": "canonical/styles/东方意境插画风/brief.json",
+      "revision": "161586da8f9161a6"
+    },
+    {
+      "aliases": [
+        "个人品牌风",
+        "宣言风",
+        "品牌宣言风",
+        "个人IP风"
+      ],
+      "asset_id": "builtin:style:个人品牌宣言风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "个人品牌宣言风",
+      "path": "canonical/styles/个人品牌宣言风/brief.json",
+      "revision": "0e92b81e93590581"
+    },
+    {
+      "aliases": [
+        "mid-century modern",
+        "MCM",
+        "五十年代复古",
+        "原子纹样风",
+        "starburst 复古风"
+      ],
+      "asset_id": "builtin:style:中世纪现代风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "中世纪现代风",
+      "path": "canonical/styles/中世纪现代风/brief.json",
+      "revision": "a013f81186ed1720"
+    },
+    {
+      "aliases": [
+        "K12课堂风",
+        "小学课堂风",
+        "少儿课件风"
+      ],
+      "asset_id": "builtin:style:中小学课堂风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "中小学课堂风",
+      "path": "canonical/styles/中小学课堂风/brief.json",
+      "revision": "5961c7822d151d60"
+    },
+    {
+      "aliases": [
+        "中式书卷风",
+        "书卷",
+        "卷轴",
+        "手卷",
+        "chinese scroll"
+      ],
+      "asset_id": "builtin:style:中式书卷风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "中式书卷风",
+      "path": "canonical/styles/中式书卷风/brief.json",
+      "revision": "d9f2e3f0b66beecf"
+    },
+    {
+      "aliases": [
+        "临床风",
+        "试验数据风",
+        "clinical trial"
+      ],
+      "asset_id": "builtin:style:临床试验风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "临床试验风",
+      "path": "canonical/styles/临床试验风/brief.json",
+      "revision": "532ac0969397d0fa"
+    },
+    {
+      "aliases": [
+        "在线教育风"
+      ],
+      "asset_id": "builtin:style:互联网产品风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "互联网产品风",
+      "path": "canonical/styles/互联网产品风/brief.json",
+      "revision": "865baf1cc78263d4"
+    },
+    {
+      "aliases": [
+        "品牌发布会风",
+        "展会博览会风",
+        "新品上市风"
+      ],
+      "asset_id": "builtin:style:产品发布会风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "产品发布会风",
+      "path": "canonical/styles/产品发布会风/brief.json",
+      "revision": "270b56657388a351"
+    },
+    {
+      "aliases": [
+        "AI大模型风",
+        "大模型风",
+        "LLM风",
+        "AIGC风"
+      ],
+      "asset_id": "builtin:style:人工智能大模型风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "人工智能大模型风",
+      "path": "canonical/styles/人工智能大模型风/brief.json",
+      "revision": "69484acf15903639"
+    },
+    {
+      "aliases": [
+        "人文风",
+        "史哲风",
+        "人文古典风",
+        "历史文化风"
+      ],
+      "asset_id": "builtin:style:人文史哲风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "人文史哲风",
+      "path": "canonical/styles/人文史哲风/brief.json",
+      "revision": "9870a254c8b88182"
+    },
+    {
+      "aliases": [
+        "人文圆角卡片风",
+        "人文圆角",
+        "圆角卡片",
+        "humanist rounded cards",
+        "khan style"
+      ],
+      "asset_id": "builtin:style:人文圆角卡片风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "人文圆角卡片风",
+      "path": "canonical/styles/人文圆角卡片风/brief.json",
+      "revision": "92abded189468019"
+    },
+    {
+      "aliases": [
+        "developer风",
+        "代码风",
+        "程序员风"
+      ],
+      "asset_id": "builtin:style:代码开发者风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "代码开发者风",
+      "path": "canonical/styles/代码开发者风/brief.json",
+      "revision": "1d3fe22e7c6d8a80"
+    },
+    {
+      "aliases": [
+        "内训风",
+        "企业培训风",
+        "corporate training风"
+      ],
+      "asset_id": "builtin:style:企业内训风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "企业内训风",
+      "path": "canonical/styles/企业内训风/brief.json",
+      "revision": "2ab9122cc97813c2"
+    },
+    {
+      "aliases": [
+        "eastern traditional",
+        "传统色风",
+        "植物染叙事风",
+        "东方传统色",
+        "heritage palette"
+      ],
+      "asset_id": "builtin:style:传统色叙事风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "传统色叙事风",
+      "path": "canonical/styles/传统色叙事风/brief.json",
+      "revision": "67826bb760c7f3f9"
+    },
+    {
+      "aliases": [
+        "low poly",
+        "低面数风",
+        "三角面风"
+      ],
+      "asset_id": "builtin:style:低多边形风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "低多边形风",
+      "path": "canonical/styles/低多边形风/brief.json",
+      "revision": "f7b3c57cea53cb23"
+    },
+    {
+      "aliases": [
+        "赛事风",
+        "体育竞技风",
+        "sports event"
+      ],
+      "asset_id": "builtin:style:体育赛事风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "体育赛事风",
+      "path": "canonical/styles/体育赛事风/brief.json",
+      "revision": "ffeeb4836eba2537"
+    },
+    {
+      "aliases": [
+        "Scatterbrain",
+        "scatterbrain",
+        "便利贴拼贴",
+        "playful",
+        "creative"
+      ],
+      "asset_id": "builtin:style:便利贴拼贴风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "便利贴拼贴风",
+      "path": "canonical/styles/便利贴拼贴风/brief.json",
+      "revision": "55f6fe223fa06fac"
+    },
+    {
+      "aliases": [
+        "Bento Grid",
+        "便当格",
+        "bento",
+        "指标卡矩阵",
+        "模块卡片网格"
+      ],
+      "asset_id": "builtin:style:便当格卡片风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "便当格卡片风",
+      "path": "canonical/styles/便当格卡片风/brief.json",
+      "revision": "fe5c820c2c6a813b"
+    },
+    {
+      "aliases": [
+        "保险风",
+        "险企风",
+        "insurance风"
+      ],
+      "asset_id": "builtin:style:保险品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "保险品牌风",
+      "path": "canonical/styles/保险品牌风/brief.json",
+      "revision": "de9140a54a19ec36"
+    },
+    {
+      "aliases": [
+        "健康科普风",
+        "医学科普风",
+        "health illustration"
+      ],
+      "asset_id": "builtin:style:健康科普插画风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "健康科普插画风",
+      "path": "canonical/styles/健康科普插画风/brief.json",
+      "revision": "bec429bb4344225a"
+    },
+    {
+      "aliases": [
+        "健身风",
+        "训练计划风",
+        "fitness"
+      ],
+      "asset_id": "builtin:style:健身训练风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "健身训练风",
+      "path": "canonical/styles/健身训练风/brief.json",
+      "revision": "3a7787cee642e607"
+    },
+    {
+      "aliases": [
+        "pixel art",
+        "8-bit风",
+        "像素画风"
+      ],
+      "asset_id": "builtin:style:像素复古风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "像素复古风",
+      "path": "canonical/styles/像素复古风/brief.json",
+      "revision": "661065850024a922"
+    },
+    {
+      "aliases": [
+        "党建风",
+        "红色党建风",
+        "party building"
+      ],
+      "asset_id": "builtin:style:党建活动风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "党建活动风",
+      "path": "canonical/styles/党建活动风/brief.json",
+      "revision": "80009ec8190fad13"
+    },
+    {
+      "aliases": [
+        "photo-editorial",
+        "摄影编辑风",
+        "图片散文风",
+        "大图杂志风",
+        "photo-essay"
+      ],
+      "asset_id": "builtin:style:全幅摄影编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "全幅摄影编辑风",
+      "path": "canonical/styles/全幅摄影编辑风/brief.json",
+      "revision": "49bfa47b101448a0"
+    },
+    {
+      "aliases": [
+        "Keynote 미니멀 풀블리드",
+        "keynote minimal fullbleed",
+        "한 장 한 메시지"
+      ],
+      "asset_id": "builtin:style:全幅极简演讲风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "全幅极简演讲风",
+      "path": "canonical/styles/全幅极简演讲风/brief.json",
+      "revision": "3cb8580cdc26d169"
+    },
+    {
+      "aliases": [
+        "全息科技风",
+        "虹彩科技风",
+        "holo tech"
+      ],
+      "asset_id": "builtin:style:全息棱镜科技风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "全息棱镜科技风",
+      "path": "canonical/styles/全息棱镜科技风/brief.json",
+      "revision": "d40ce8364f9eccf3"
+    },
+    {
+      "aliases": [
+        "公益风",
+        "公益传播风",
+        "nonprofit风"
+      ],
+      "asset_id": "builtin:style:公益科普风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "公益科普风",
+      "path": "canonical/styles/公益科普风/brief.json",
+      "revision": "c2b9d6ac53454c87"
+    },
+    {
+      "aliases": [
+        "公益风",
+        "非营利风",
+        "社会组织风",
+        "NGO风"
+      ],
+      "asset_id": "builtin:style:公益组织风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "公益组织风",
+      "path": "canonical/styles/公益组织风/brief.json",
+      "revision": "d7d954f774d2f435"
+    },
+    {
+      "aliases": [
+        "photoreal风",
+        "纪实摄影风",
+        "真实照片风"
+      ],
+      "asset_id": "builtin:style:写实摄影风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "写实摄影风",
+      "path": "canonical/styles/写实摄影风/brief.json",
+      "revision": "9135b827e08c938c"
+    },
+    {
+      "aliases": [
+        "冷蓝斜切医学风",
+        "冷蓝斜切",
+        "斜切生物医学",
+        "cold blue diagonal medical"
+      ],
+      "asset_id": "builtin:style:冷蓝斜切医学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "冷蓝斜切医学风",
+      "path": "canonical/styles/冷蓝斜切医学风/brief.json",
+      "revision": "55f57b30ef09ad11"
+    },
+    {
+      "aliases": [
+        "米白樱粉风"
+      ],
+      "asset_id": "builtin:style:凝脂杨妃风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "凝脂杨妃风",
+      "path": "canonical/styles/凝脂杨妃风/brief.json",
+      "revision": "000e0475d95714ae"
+    },
+    {
+      "aliases": [
+        "网约车风",
+        "出行风",
+        "mobility风"
+      ],
+      "asset_id": "builtin:style:出行服务风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "出行服务风",
+      "path": "canonical/styles/出行服务风/brief.json",
+      "revision": "dff38d40f2d13beb"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:创业大赛路演风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "创业大赛路演风",
+      "path": "canonical/styles/创业大赛路演风/brief.json",
+      "revision": "e54e3c3f49e6f217"
+    },
+    {
+      "aliases": [
+        "创意pitch风",
+        "概念提案风",
+        "creative风"
+      ],
+      "asset_id": "builtin:style:创意提案风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "创意提案风",
+      "path": "canonical/styles/创意提案风/brief.json",
+      "revision": "e7d140170be87871"
+    },
+    {
+      "aliases": [
+        "Pin & Paper",
+        "pin-and-paper",
+        "别针手账",
+        "crafted",
+        "handmade"
+      ],
+      "asset_id": "builtin:style:别针手账风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "别针手账风",
+      "path": "canonical/styles/别针手账风/brief.json",
+      "revision": "0bbf66d57cc054bd"
+    },
+    {
+      "aliases": [
+        "勃艮第红",
+        "Burgundy Premium",
+        "burgundy",
+        "酒红",
+        "高级感",
+        "红金",
+        "burgundy-premium"
+      ],
+      "asset_id": "builtin:style:勃艮第红风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "勃艮第红风",
+      "path": "canonical/styles/勃艮第红风/brief.json",
+      "revision": "47ce66fa60e1c753"
+    },
+    {
+      "aliases": [
+        "Bauhaus",
+        "包豪斯主义",
+        "构成主义风"
+      ],
+      "asset_id": "builtin:style:包豪斯风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "包豪斯风",
+      "path": "canonical/styles/包豪斯风/brief.json",
+      "revision": "6c7a0daaa754f6d8"
+    },
+    {
+      "aliases": [
+        "北极冷",
+        "Arctic Cool",
+        "arctic",
+        "冷",
+        "商业分析",
+        "arctic-cool"
+      ],
+      "asset_id": "builtin:style:北极冷风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "北极冷风",
+      "path": "canonical/styles/北极冷风/brief.json",
+      "revision": "c36e90d7cb46c028"
+    },
+    {
+      "aliases": [
+        "北欧",
+        "Nord",
+        "清冷",
+        "nord"
+      ],
+      "asset_id": "builtin:style:北欧风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "北欧风",
+      "path": "canonical/styles/北欧风/brief.json",
+      "revision": "f231068fe779ef34"
+    },
+    {
+      "aliases": [
+        "医养同源水墨风",
+        "医养同源",
+        "水墨草本",
+        "herbal ink-wash TCM"
+      ],
+      "asset_id": "builtin:style:医养同源水墨风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医养同源水墨风",
+      "path": "canonical/styles/医养同源水墨风/brief.json",
+      "revision": "6081d1e5eb9bbbc4"
+    },
+    {
+      "aliases": [
+        "医学书卷风",
+        "医学书卷",
+        "生物医学书卷",
+        "medical bookish"
+      ],
+      "asset_id": "builtin:style:医学书卷风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医学书卷风",
+      "path": "canonical/styles/医学书卷风/brief.json",
+      "revision": "e65e4723009da1de"
+    },
+    {
+      "aliases": [
+        "医学手稿答辩风",
+        "医学手稿",
+        "手稿答辩",
+        "medical manuscript defense"
+      ],
+      "asset_id": "builtin:style:医学手稿答辩风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医学手稿答辩风",
+      "path": "canonical/styles/医学手稿答辩风/brief.json",
+      "revision": "1ac2dbd0e2bb0e2e"
+    },
+    {
+      "aliases": [
+        "医学学术风",
+        "医疗风",
+        "medical academic"
+      ],
+      "asset_id": "builtin:style:医疗学术风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医疗学术风",
+      "path": "canonical/styles/医疗学术风/brief.json",
+      "revision": "d75d7065c5a756dc"
+    },
+    {
+      "aliases": [
+        "医药发布风",
+        "药企风",
+        "pharma launch"
+      ],
+      "asset_id": "builtin:style:医药发布会风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医药发布会风",
+      "path": "canonical/styles/医药发布会风/brief.json",
+      "revision": "0d18bef911754f9a"
+    },
+    {
+      "aliases": [
+        "医院风",
+        "医疗机构风",
+        "hospital brand"
+      ],
+      "asset_id": "builtin:style:医院品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "医院品牌风",
+      "path": "canonical/styles/医院品牌风/brief.json",
+      "revision": "11e273fc72d0b727"
+    },
+    {
+      "aliases": [
+        "semi-flat",
+        "准扁平风",
+        "轻度拟物风"
+      ],
+      "asset_id": "builtin:style:半扁平风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "半扁平风",
+      "path": "canonical/styles/半扁平风/brief.json",
+      "revision": "64bedf4ff4e6a6ef"
+    },
+    {
+      "aliases": [
+        "Monochrome Infrastructure Deck",
+        "monochrome infrastructure",
+        "单色工程"
+      ],
+      "asset_id": "builtin:style:单色基础设施风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "单色基础设施风",
+      "path": "canonical/styles/单色基础设施风/brief.json",
+      "revision": "299a85d0cd5db3bd"
+    },
+    {
+      "aliases": [
+        "Mono-Brand Type-as-Hero",
+        "单色海报风",
+        "满版品牌色",
+        "type-as-hero",
+        "品牌色海报"
+      ],
+      "asset_id": "builtin:style:单色满版海报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "单色满版海报风",
+      "path": "canonical/styles/单色满版海报风/brief.json",
+      "revision": "f15933ce4d7b094f"
+    },
+    {
+      "aliases": [
+        "museum memorial",
+        "纪念展陈风",
+        "展览图录风",
+        "档案馆风",
+        "museum exhibition"
+      ],
+      "asset_id": "builtin:style:博物馆纪念风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "博物馆纪念风",
+      "path": "canonical/styles/博物馆纪念风/brief.json",
+      "revision": "d1bfa499e8451984"
+    },
+    {
+      "aliases": [
+        "카카오 1Q26 보수 IR",
+        "kakao conservative earnings",
+        "卡新闻财报"
+      ],
+      "asset_id": "builtin:style:卡片新闻财报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "卡片新闻财报风",
+      "path": "canonical/styles/卡片新闻财报风/brief.json",
+      "revision": "0559625ea84ee0e2"
+    },
+    {
+      "aliases": [
+        "古风题材风",
+        "历史题材风",
+        "朝代服饰风"
+      ],
+      "asset_id": "builtin:style:历史古风题材风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "历史古风题材风",
+      "path": "canonical/styles/历史古风题材风/brief.json",
+      "revision": "1ad429aedc9a5c8f"
+    },
+    {
+      "aliases": [
+        "Biennale Yellow",
+        "biennale-yellow",
+        "双年展海报",
+        "editorial",
+        "atmospheric"
+      ],
+      "asset_id": "builtin:style:双年展海报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "双年展海报风",
+      "path": "canonical/styles/双年展海报风/brief.json",
+      "revision": "29ccf66beaf78808"
+    },
+    {
+      "aliases": [
+        "synthwave",
+        "outrun",
+        "复古未来电子风"
+      ],
+      "asset_id": "builtin:style:合成波风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "合成波风",
+      "path": "canonical/styles/合成波风/brief.json",
+      "revision": "f7ed3380b90a8614"
+    },
+    {
+      "aliases": [
+        "吉卜力手绘风",
+        "吉卜力",
+        "Ghibli",
+        "宫崎骏",
+        "吉卜力风"
+      ],
+      "asset_id": "builtin:style:吉卜力手绘风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "吉卜力手绘风",
+      "path": "canonical/styles/吉卜力手绘风/brief.json",
+      "revision": "68ac17b064407001"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:周报月报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "周报月报风",
+      "path": "canonical/styles/周报月报风/brief.json",
+      "revision": "3c8be071ee8a3494"
+    },
+    {
+      "aliases": [
+        "washi soft glow",
+        "和纸风",
+        "日式极简风",
+        "Muji 风",
+        "washi paper"
+      ],
+      "asset_id": "builtin:style:和纸柔光风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "和纸柔光风",
+      "path": "canonical/styles/和纸柔光风/brief.json",
+      "revision": "38fc598b2ea17683"
+    },
+    {
+      "aliases": [
+        "提案风",
+        "advisory风",
+        "proposal风"
+      ],
+      "asset_id": "builtin:style:咨询提案风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "咨询提案风",
+      "path": "canonical/styles/咨询提案风/brief.json",
+      "revision": "d04df684d062b27f"
+    },
+    {
+      "aliases": [
+        "컨설팅 정밀그리드",
+        "consulting precision grid",
+        "action title grid"
+      ],
+      "asset_id": "builtin:style:咨询精密网格风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "咨询精密网格风",
+      "path": "canonical/styles/咨询精密网格风/brief.json",
+      "revision": "89aacf35ba747f87"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:品牌发布会风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "品牌发布会风",
+      "path": "canonical/styles/品牌发布会风/brief.json",
+      "revision": "ed95fd956aa487d1"
+    },
+    {
+      "aliases": [
+        "品牌风",
+        "宣传风",
+        "brand campaign风"
+      ],
+      "asset_id": "builtin:style:品牌宣传风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "品牌宣传风",
+      "path": "canonical/styles/品牌宣传风/brief.json",
+      "revision": "67593411920a4424"
+    },
+    {
+      "aliases": [
+        "融资路演风",
+        "创业大赛路演风",
+        "财报季报风"
+      ],
+      "asset_id": "builtin:style:商业计划书风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "商业计划书风",
+      "path": "canonical/styles/商业计划书风/brief.json",
+      "revision": "89a1e2f509be0b07"
+    },
+    {
+      "aliases": [
+        "几何商务风",
+        "结构商务风",
+        "corporate geometric"
+      ],
+      "asset_id": "builtin:style:商务几何风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "商务几何风",
+      "path": "canonical/styles/商务几何风/brief.json",
+      "revision": "3f30b6182a44d817"
+    },
+    {
+      "aliases": [
+        "四大风",
+        "审计风",
+        "Big Four风"
+      ],
+      "asset_id": "builtin:style:四大审计风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "四大审计风",
+      "path": "canonical/styles/四大审计风/brief.json",
+      "revision": "4a62f227144b07c2"
+    },
+    {
+      "aliases": [
+        "团建风",
+        "团队风",
+        "team building风"
+      ],
+      "asset_id": "builtin:style:团队建设风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "团队建设风",
+      "path": "canonical/styles/团队建设风/brief.json",
+      "revision": "0605f9cc2667849a"
+    },
+    {
+      "aliases": [
+        "国风暖阳",
+        "Amber Aurora",
+        "扁豆紫",
+        "蜜陀僧",
+        "国风",
+        "暖紫橙",
+        "黄昏"
+      ],
+      "asset_id": "builtin:style:国风暖阳风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "国风暖阳风",
+      "path": "canonical/styles/国风暖阳风/brief.json",
+      "revision": "e197d9d0c53025af"
+    },
+    {
+      "aliases": [
+        "Pattern 볼드 포스터 키노트",
+        "pattern bold poster",
+        "整页海报"
+      ],
+      "asset_id": "builtin:style:图案海报演讲风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "图案海报演讲风",
+      "path": "canonical/styles/图案海报演讲风/brief.json",
+      "revision": "5a81b6cf19725ca5"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:在线教育风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "在线教育风",
+      "path": "canonical/styles/在线教育风/brief.json",
+      "revision": "36e86103841dc221"
+    },
+    {
+      "aliases": [
+        "地产风",
+        "房地产风",
+        "空间风",
+        "楼盘推介风"
+      ],
+      "asset_id": "builtin:style:地产空间风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "地产空间风",
+      "path": "canonical/styles/地产空间风/brief.json",
+      "revision": "ef04f40d79d2d28f"
+    },
+    {
+      "aliases": [
+        "地图战略风",
+        "地图战略",
+        "图集战略",
+        "cartographic strategy",
+        "map strategy",
+        "战略地图风"
+      ],
+      "asset_id": "builtin:style:地图战略风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "地图战略风",
+      "path": "canonical/styles/地图战略风/brief.json",
+      "revision": "97461ab21bbb4109"
+    },
+    {
+      "aliases": [
+        "分镜风",
+        "storyboard风",
+        "叙事分镜风"
+      ],
+      "asset_id": "builtin:style:场景叙事分镜风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "场景叙事分镜风",
+      "path": "canonical/styles/场景叙事分镜风/brief.json",
+      "revision": "2e7cf45a2abd9b9d"
+    },
+    {
+      "aliases": [
+        "项目复盘风"
+      ],
+      "asset_id": "builtin:style:培训课件风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "培训课件风",
+      "path": "canonical/styles/培训课件风/brief.json",
+      "revision": "a579eb464d20edc0"
+    },
+    {
+      "aliases": [
+        "声波风",
+        "霓虹声波风",
+        "音乐现场风",
+        "音浪风"
+      ],
+      "asset_id": "builtin:style:声波霓虹风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "声波霓虹风",
+      "path": "canonical/styles/声波霓虹风/brief.json",
+      "revision": "7311062adc9e6c87"
+    },
+    {
+      "aliases": [
+        "Long Table",
+        "long-table",
+        "复古晚宴餐牌",
+        "warm",
+        "intimate"
+      ],
+      "asset_id": "builtin:style:复古晚宴餐牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "复古晚宴餐牌风",
+      "path": "canonical/styles/复古晚宴餐牌风/brief.json",
+      "revision": "dbebaf0ff93b3dfe"
+    },
+    {
+      "aliases": [
+        "复古电视",
+        "Retro Tv",
+        "retro",
+        "tv",
+        "复古",
+        "CRT",
+        "retro-tv"
+      ],
+      "asset_id": "builtin:style:复古电视风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "复古电视风",
+      "path": "canonical/styles/复古电视风/brief.json",
+      "revision": "89329ba184faac2a"
+    },
+    {
+      "aliases": [
+        "Retro Windows",
+        "retro-windows",
+        "复古视窗",
+        "nostalgic",
+        "retro"
+      ],
+      "asset_id": "builtin:style:复古视窗风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "复古视窗风",
+      "path": "canonical/styles/复古视窗风/brief.json",
+      "revision": "8fd9e3c3fca23d42"
+    },
+    {
+      "aliases": [
+        "多巴胺活力撞色",
+        "Dopamine Clash",
+        "dopamine",
+        "多巴胺",
+        "撞色",
+        "活力",
+        "年轻"
+      ],
+      "asset_id": "builtin:style:多巴胺活力撞色风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "多巴胺活力撞色风",
+      "path": "canonical/styles/多巴胺活力撞色风/brief.json",
+      "revision": "46f485862b28ca75"
+    },
+    {
+      "aliases": [
+        "夜间独白",
+        "夜话风",
+        "深夜独白风",
+        "情绪共鸣风"
+      ],
+      "asset_id": "builtin:style:夜间独白风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "夜间独白风",
+      "path": "canonical/styles/夜间独白风/brief.json",
+      "revision": "8d46551099cce78f"
+    },
+    {
+      "aliases": [
+        "Earth & Sage",
+        "大地鼠尾草",
+        "生态有机"
+      ],
+      "asset_id": "builtin:style:大地有机风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "大地有机风",
+      "path": "canonical/styles/大地有机风/brief.json",
+      "revision": "d0c773effbf1e30b"
+    },
+    {
+      "aliases": [
+        "大字报风",
+        "巨型排版风",
+        "big type"
+      ],
+      "asset_id": "builtin:style:大字报巨型排版风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "大字报巨型排版风",
+      "path": "canonical/styles/大字报巨型排版风/brief.json",
+      "revision": "04416ffac0fc09a9"
+    },
+    {
+      "aliases": [
+        "奶油温柔",
+        "Cream Pastel",
+        "奶油",
+        "温柔",
+        "豆沙粉",
+        "抹茶",
+        "高级"
+      ],
+      "asset_id": "builtin:style:奶油温柔风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "奶油温柔风",
+      "path": "canonical/styles/奶油温柔风/brief.json",
+      "revision": "949939f6eeee39c1"
+    },
+    {
+      "aliases": [
+        "Memphis",
+        "New Wave 新浪潮",
+        "80s 孟菲斯",
+        "memphis-80s"
+      ],
+      "asset_id": "builtin:style:孟菲斯新潮风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "孟菲斯新潮风",
+      "path": "canonical/styles/孟菲斯新潮风/brief.json",
+      "revision": "31bdb9b6daacf262"
+    },
+    {
+      "aliases": [
+        "Memphis",
+        "孟菲斯设计",
+        "后现代拼贴风"
+      ],
+      "asset_id": "builtin:style:孟菲斯风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "孟菲斯风",
+      "path": "canonical/styles/孟菲斯风/brief.json",
+      "revision": "c453afb5e52da3d1"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:学术会议风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "学术会议风",
+      "path": "canonical/styles/学术会议风/brief.json",
+      "revision": "3a1deda914f911e5"
+    },
+    {
+      "aliases": [
+        "期刊风",
+        "论文排版风",
+        "journal风"
+      ],
+      "asset_id": "builtin:style:学术期刊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "学术期刊风",
+      "path": "canonical/styles/学术期刊风/brief.json",
+      "revision": "0bcd37651acf4da3"
+    },
+    {
+      "aliases": [
+        "学术会议风",
+        "毕业答辩风",
+        "课题申请风"
+      ],
+      "asset_id": "builtin:style:学术论文答辩风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "学术论文答辩风",
+      "path": "canonical/styles/学术论文答辩风/brief.json",
+      "revision": "d81f3fbbb3ba4252"
+    },
+    {
+      "aliases": [
+        "宋韵听雨",
+        "Song Rain Poetic",
+        "宋人",
+        "听雨",
+        "新中式",
+        "song",
+        "rain"
+      ],
+      "asset_id": "builtin:style:宋韵听雨风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "宋韵听雨风",
+      "path": "canonical/styles/宋韵听雨风/brief.json",
+      "revision": "65a33772eb7cfac2"
+    },
+    {
+      "aliases": [
+        "宣纸风",
+        "宣纸",
+        "rice paper",
+        "xuan paper"
+      ],
+      "asset_id": "builtin:style:宣纸风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "宣纸风",
+      "path": "canonical/styles/宣纸风/brief.json",
+      "revision": "9dfa8d4c856f0c56"
+    },
+    {
+      "aliases": [
+        "All-Text Manifesto",
+        "纯文字备忘录",
+        "宣言文档风",
+        "silent-read 备忘录",
+        "文字宣言"
+      ],
+      "asset_id": "builtin:style:宣言备忘录风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "宣言备忘录风",
+      "path": "canonical/styles/宣言备忘录风/brief.json",
+      "revision": "b5b82657afce1e05"
+    },
+    {
+      "aliases": [
+        "小红书白",
+        "Xiaohongshu White",
+        "xiaohongshu",
+        "红书",
+        "小红书",
+        "xhs",
+        "xiaohongshu-white"
+      ],
+      "asset_id": "builtin:style:小红书白风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "小红书白风",
+      "path": "canonical/styles/小红书白风/brief.json",
+      "revision": "5ce83448c651ec31"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:展会博览会风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "展会博览会风",
+      "path": "canonical/styles/展会博览会风/brief.json",
+      "revision": "00c982ddf98f06a1"
+    },
+    {
+      "aliases": [
+        "导览风",
+        "展陈风",
+        "exhibition风"
+      ],
+      "asset_id": "builtin:style:展览导览风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "展览导览风",
+      "path": "canonical/styles/展览导览风/brief.json",
+      "revision": "819f55272a03f61d"
+    },
+    {
+      "aliases": [
+        "山野葱郁",
+        "Mountain Green Literary",
+        "山野",
+        "夏天",
+        "深绿",
+        "文艺",
+        "奔跑"
+      ],
+      "asset_id": "builtin:style:山野葱郁风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "山野葱郁风",
+      "path": "canonical/styles/山野葱郁风/brief.json",
+      "revision": "dea27ec16102b23c"
+    },
+    {
+      "aliases": [
+        "工业风",
+        "硬件产品风",
+        "industrial"
+      ],
+      "asset_id": "builtin:style:工业产品风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "工业产品风",
+      "path": "canonical/styles/工业产品风/brief.json",
+      "revision": "1dbd11d81cbe64ad"
+    },
+    {
+      "aliases": [
+        "workshop风",
+        "共创风",
+        "研讨会风"
+      ],
+      "asset_id": "builtin:style:工作坊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "工作坊风",
+      "path": "canonical/styles/工作坊风/brief.json",
+      "revision": "286e28c804a514c6"
+    },
+    {
+      "aliases": [
+        "工具清单",
+        "清单风",
+        "工具合集风",
+        "资源清单风"
+      ],
+      "asset_id": "builtin:style:工具清单风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "工具清单风",
+      "path": "canonical/styles/工具清单风/brief.json",
+      "revision": "8b5a4cff6d370118"
+    },
+    {
+      "aliases": [
+        "工程白图",
+        "Engineering Whiteprint",
+        "engineering",
+        "工程",
+        "白图",
+        "坐标纸",
+        "engineering-whiteprint"
+      ],
+      "asset_id": "builtin:style:工程白图风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "工程白图风",
+      "path": "canonical/styles/工程白图风/brief.json",
+      "revision": "0d270f139b8a7281"
+    },
+    {
+      "aliases": [
+        "蓝图风",
+        "engineering blueprint",
+        "制图风"
+      ],
+      "asset_id": "builtin:style:工程蓝图风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "工程蓝图风",
+      "path": "canonical/styles/工程蓝图风/brief.json",
+      "revision": "07f2daa3422c8092"
+    },
+    {
+      "aliases": [
+        "年会风",
+        "庆典风",
+        "annual gala风"
+      ],
+      "asset_id": "builtin:style:年会庆典风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "年会庆典风",
+      "path": "canonical/styles/年会庆典风/brief.json",
+      "revision": "6d9355feedbf866c"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:年终总结风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "年终总结风",
+      "path": "canonical/styles/年终总结风/brief.json",
+      "revision": "f7218e369acfb4c6"
+    },
+    {
+      "aliases": [
+        "建筑风",
+        "工程建造风",
+        "construction"
+      ],
+      "asset_id": "builtin:style:建筑工程风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "建筑工程风",
+      "path": "canonical/styles/建筑工程风/brief.json",
+      "revision": "920e19ffa216a129"
+    },
+    {
+      "aliases": [
+        "Stained Glass Mosaic",
+        "彩窗玻璃",
+        "花窗"
+      ],
+      "asset_id": "builtin:style:彩窗马赛克风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "彩窗马赛克风",
+      "path": "canonical/styles/彩窗马赛克风/brief.json",
+      "revision": "da8587fde7546d0c"
+    },
+    {
+      "aliases": [
+        "影视风",
+        "电影宣发风",
+        "film promo"
+      ],
+      "asset_id": "builtin:style:影视宣发风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "影视宣发风",
+      "path": "canonical/styles/影视宣发风/brief.json",
+      "revision": "29614fb6b3d1c540"
+    },
+    {
+      "aliases": [
+        "律所风",
+        "法律风",
+        "legal风"
+      ],
+      "asset_id": "builtin:style:律所专业风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "律所专业风",
+      "path": "canonical/styles/律所专业风/brief.json",
+      "revision": "40ea468a5e3c5ab3"
+    },
+    {
+      "aliases": [
+        "轻拟物风",
+        "微立体风",
+        "semi-skeuomorphism"
+      ],
+      "asset_id": "builtin:style:微立体轻拟态风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "微立体轻拟态风",
+      "path": "canonical/styles/微立体轻拟态风/brief.json",
+      "revision": "29b393ebf34a8962"
+    },
+    {
+      "aliases": [
+        "快消风",
+        "FMCG风",
+        "消费品牌营销风"
+      ],
+      "asset_id": "builtin:style:快消营销风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "快消营销风",
+      "path": "canonical/styles/快消营销风/brief.json",
+      "revision": "622c048e2ef7297e"
+    },
+    {
+      "aliases": [
+        "情绪疗愈色卡",
+        "Healing Color Card",
+        "疗愈",
+        "情绪",
+        "薰衣草",
+        "薄荷",
+        "healing"
+      ],
+      "asset_id": "builtin:style:情绪疗愈色卡风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "情绪疗愈色卡风",
+      "path": "canonical/styles/情绪疗愈色卡风/brief.json",
+      "revision": "8aee73454cca19f4"
+    },
+    {
+      "aliases": [
+        "周报月报风",
+        "年终总结风",
+        "晋升述职风",
+        "高管汇报风"
+      ],
+      "asset_id": "builtin:style:成果汇报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "成果汇报风",
+      "path": "canonical/styles/成果汇报风/brief.json",
+      "revision": "6df0331df50242fb"
+    },
+    {
+      "aliases": [
+        "顾问报告风"
+      ],
+      "asset_id": "builtin:style:战略咨询风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "战略咨询风",
+      "path": "canonical/styles/战略咨询风/brief.json",
+      "revision": "dbbab3fa0f7ee38e"
+    },
+    {
+      "aliases": [
+        "Strategy Navy Deck",
+        "strategy navy",
+        "藏青战略"
+      ],
+      "asset_id": "builtin:style:战略藏青风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "战略藏青风",
+      "path": "canonical/styles/战略藏青风/brief.json",
+      "revision": "589f1635198e06ec"
+    },
+    {
+      "aliases": [
+        "户外风",
+        "越野风",
+        "outdoor"
+      ],
+      "asset_id": "builtin:style:户外运动风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "户外运动风",
+      "path": "canonical/styles/户外运动风/brief.json",
+      "revision": "7a37ef59046df4e7"
+    },
+    {
+      "aliases": [
+        "flat design",
+        "扁平化",
+        "纯扁平"
+      ],
+      "asset_id": "builtin:style:扁平风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "扁平风",
+      "path": "canonical/styles/扁平风/brief.json",
+      "revision": "ebe0fa7470eb6d38"
+    },
+    {
+      "aliases": [
+        "手绘秋日手账",
+        "Hand-drawn Autumn Travel Journal",
+        "手绘旅行风",
+        "秋日手账风",
+        "卡通插画风",
+        "hand-drawn-autumn"
+      ],
+      "asset_id": "builtin:style:手绘秋日手账风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "手绘秋日手账风",
+      "path": "canonical/styles/手绘秋日手账风/brief.json",
+      "revision": "7240702eac9d720c"
+    },
+    {
+      "aliases": [
+        "技术演讲风",
+        "tech talk风",
+        "开发者分享风"
+      ],
+      "asset_id": "builtin:style:技术分享风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "技术分享风",
+      "path": "canonical/styles/技术分享风/brief.json",
+      "revision": "a8284ab97c8330a4"
+    },
+    {
+      "aliases": [
+        "投标风",
+        "竞标风",
+        "bid风"
+      ],
+      "asset_id": "builtin:style:投标竞标风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "投标竞标风",
+      "path": "canonical/styles/投标竞标风/brief.json",
+      "revision": "9ccddc0bf0802c92"
+    },
+    {
+      "aliases": [
+        "골드만 IR 덱",
+        "goldman IR",
+        "投行投资者关系"
+      ],
+      "asset_id": "builtin:style:投行IR编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "投行IR编辑风",
+      "path": "canonical/styles/投行IR编辑风/brief.json",
+      "revision": "3752c39dbc5db3a6"
+    },
+    {
+      "aliases": [
+        "投资风",
+        "机构风",
+        "VC风",
+        "PE风"
+      ],
+      "asset_id": "builtin:style:投资机构风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "投资机构风",
+      "path": "canonical/styles/投资机构风/brief.json",
+      "revision": "c53eb05a57e24310"
+    },
+    {
+      "aliases": [
+        "抽象艺术画册",
+        "抽象艺术展示",
+        "abstract-art-showcase"
+      ],
+      "asset_id": "builtin:style:抽象艺术画册风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "抽象艺术画册风",
+      "path": "canonical/styles/抽象艺术画册风/brief.json",
+      "revision": "e8fd7a83c07dc670"
+    },
+    {
+      "aliases": [
+        "招商风",
+        "推介会风",
+        "investment promo风"
+      ],
+      "asset_id": "builtin:style:招商推介风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "招商推介风",
+      "path": "canonical/styles/招商推介风/brief.json",
+      "revision": "99b969e8e2732108"
+    },
+    {
+      "aliases": [
+        "摄影集风",
+        "影展风",
+        "photo gallery风"
+      ],
+      "asset_id": "builtin:style:摄影展作品集风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "摄影展作品集风",
+      "path": "canonical/styles/摄影展作品集风/brief.json",
+      "revision": "e337c5e022c75bc3"
+    },
+    {
+      "aliases": [
+        "政府报告风",
+        "政务风",
+        "白皮书风"
+      ],
+      "asset_id": "builtin:style:政府工作报告风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "政府工作报告风",
+      "path": "canonical/styles/政府工作报告风/brief.json",
+      "revision": "e24cb44ebb5244c8"
+    },
+    {
+      "aliases": [
+        "산업통상부 슬로건 캘리그래피",
+        "MOTIE slogan",
+        "政府口号海报"
+      ],
+      "asset_id": "builtin:style:政策口号书法风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "政策口号书法风",
+      "path": "canonical/styles/政策口号书法风/brief.json",
+      "revision": "52512eb6308701a1"
+    },
+    {
+      "aliases": [
+        "故宫墨红",
+        "Palace Ink Red",
+        "宫墙红",
+        "故宫配色",
+        "墨红高级感",
+        "新中式深色",
+        "palace"
+      ],
+      "asset_id": "builtin:style:故宫墨红风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "故宫墨红风",
+      "path": "canonical/styles/故宫墨红风/brief.json",
+      "revision": "03cdb0df4304209e"
+    },
+    {
+      "aliases": [
+        "数学教学风",
+        "数学可视化风",
+        "math teaching"
+      ],
+      "asset_id": "builtin:style:数学可视化教学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "数学可视化教学风",
+      "path": "canonical/styles/数学可视化教学风/brief.json",
+      "revision": "5b535d27ae62a57e"
+    },
+    {
+      "aliases": [
+        "데이터 인포그래픽 헤비",
+        "data infographic heavy",
+        "信息密集看板"
+      ],
+      "asset_id": "builtin:style:数据信息密集风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "数据信息密集风",
+      "path": "canonical/styles/数据信息密集风/brief.json",
+      "revision": "e1541cafce8923d1"
+    },
+    {
+      "aliases": [
+        "data-journalism",
+        "数据新闻风",
+        "Bloomberg 信息图",
+        "Economist 数据版",
+        "财经新闻编辑风"
+      ],
+      "asset_id": "builtin:style:数据新闻编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "数据新闻编辑风",
+      "path": "canonical/styles/数据新闻编辑风/brief.json",
+      "revision": "545fe78091344048"
+    },
+    {
+      "aliases": [
+        "BI风",
+        "数据风",
+        "data intelligence"
+      ],
+      "asset_id": "builtin:style:数据智能风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "数据智能风",
+      "path": "canonical/styles/数据智能风/brief.json",
+      "revision": "2a8ecd8274229f48"
+    },
+    {
+      "aliases": [
+        "文旅风",
+        "目的地宣传风",
+        "tourism风"
+      ],
+      "asset_id": "builtin:style:文旅目的地风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "文旅目的地风",
+      "path": "canonical/styles/文旅目的地风/brief.json",
+      "revision": "f5e1d08e0f4f7488"
+    },
+    {
+      "aliases": [
+        "Diagonal Cut",
+        "斜切工业",
+        "工业斜切"
+      ],
+      "asset_id": "builtin:style:斜切重工风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "斜切重工风",
+      "path": "canonical/styles/斜切重工风/brief.json",
+      "revision": "29c7c19cad5a3a0e"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:新品上市风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新品上市风",
+      "path": "canonical/styles/新品上市风/brief.json",
+      "revision": "c7b0b9ae86eb0896"
+    },
+    {
+      "aliases": [
+        "neumorphism",
+        "新拟物风",
+        "软UI风"
+      ],
+      "asset_id": "builtin:style:新拟态风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新拟态风",
+      "path": "canonical/styles/新拟态风/brief.json",
+      "revision": "2d8942dd014d15f1"
+    },
+    {
+      "aliases": [
+        "新消费风",
+        "DTC品牌风",
+        "new consumer"
+      ],
+      "asset_id": "builtin:style:新消费品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新消费品牌风",
+      "path": "canonical/styles/新消费品牌风/brief.json",
+      "revision": "71ad5e3c0a8bf001"
+    },
+    {
+      "aliases": [
+        "neubrutalism",
+        "新野兽派风",
+        "粗野主义风"
+      ],
+      "asset_id": "builtin:style:新粗野主义风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新粗野主义风",
+      "path": "canonical/styles/新粗野主义风/brief.json",
+      "revision": "283ebf5f13304788"
+    },
+    {
+      "aliases": [
+        "双碳风",
+        "新能源风",
+        "碳中和风"
+      ],
+      "asset_id": "builtin:style:新能源双碳风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新能源双碳风",
+      "path": "canonical/styles/新能源双碳风/brief.json",
+      "revision": "c095be6b52f1fb1e"
+    },
+    {
+      "aliases": [
+        "新闻播报",
+        "News Broadcast",
+        "news",
+        "广播",
+        "播报",
+        "突发新闻",
+        "news-broadcast"
+      ],
+      "asset_id": "builtin:style:新闻播报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "新闻播报风",
+      "path": "canonical/styles/新闻播报风/brief.json",
+      "revision": "3514bfc00ffc3380"
+    },
+    {
+      "aliases": [
+        "旅行风",
+        "攻略指南风",
+        "travel guide风"
+      ],
+      "asset_id": "builtin:style:旅行指南风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "旅行指南风",
+      "path": "canonical/styles/旅行指南风/brief.json",
+      "revision": "0a5a02c1d92fee7a"
+    },
+    {
+      "aliases": [
+        "日光浅",
+        "Solarized Light",
+        "solarized",
+        "日光",
+        "低眩光",
+        "solarized-light"
+      ],
+      "asset_id": "builtin:style:日光浅风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "日光浅风",
+      "path": "canonical/styles/日光浅风/brief.json",
+      "revision": "6b9dd63f224e8f19"
+    },
+    {
+      "aliases": [
+        "Japanese lifestyle editorial",
+        "日杂编辑风",
+        "焦橙杂志风",
+        "生活杂志风",
+        "edge-press 杂志风"
+      ],
+      "asset_id": "builtin:style:日式生活杂志风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "日式生活杂志风",
+      "path": "canonical/styles/日式生活杂志风/brief.json",
+      "revision": "ae1078820a9f8d57"
+    },
+    {
+      "aliases": [
+        "日落暖",
+        "Sunset Warm",
+        "sunset",
+        "暖",
+        "日落",
+        "生活方式",
+        "sunset-warm"
+      ],
+      "asset_id": "builtin:style:日落暖风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "日落暖风",
+      "path": "canonical/styles/日落暖风/brief.json",
+      "revision": "6d0007fa5835382b"
+    },
+    {
+      "aliases": [
+        "时尚咨询工具包",
+        "时尚商业咨询工具包美学",
+        "fashion-business-consulting-toolkit-aesthetic"
+      ],
+      "asset_id": "builtin:style:时尚咨询工具包风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "时尚咨询工具包风",
+      "path": "canonical/styles/时尚咨询工具包风/brief.json",
+      "revision": "3e47b3afe788d089"
+    },
+    {
+      "aliases": [
+        "时尚风",
+        "fashion风",
+        "潮流品牌风"
+      ],
+      "asset_id": "builtin:style:时尚品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "时尚品牌风",
+      "path": "canonical/styles/时尚品牌风/brief.json",
+      "revision": "e0bdad99d949f7c1"
+    },
+    {
+      "aliases": [
+        "SKT 인터랙티브 AI 피라미드",
+        "SKT interactive AI pyramid",
+        "单色蓝金字塔"
+      ],
+      "asset_id": "builtin:style:星幕金字塔风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "星幕金字塔风",
+      "path": "canonical/styles/星幕金字塔风/brief.json",
+      "revision": "8a6107d6e3985d67"
+    },
+    {
+      "aliases": [
+        "星月夜风",
+        "星月夜",
+        "梵高",
+        "Starry Night",
+        "Van Gogh"
+      ],
+      "asset_id": "builtin:style:星月夜风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "星月夜风",
+      "path": "canonical/styles/星月夜风/brief.json",
+      "revision": "7ad3d11fbc115995"
+    },
+    {
+      "aliases": [
+        "星火夜空",
+        "Starlight Fireworks",
+        "星河",
+        "烟火",
+        "对角",
+        "dreamy",
+        "duality"
+      ],
+      "asset_id": "builtin:style:星火夜空风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "星火夜空风",
+      "path": "canonical/styles/星火夜空风/brief.json",
+      "revision": "5dfce1fa7767cc2d"
+    },
+    {
+      "aliases": [
+        "春日嫩柳",
+        "Chinese Pastel Spring",
+        "国风",
+        "春日",
+        "嫩绿",
+        "桃花",
+        "pastel"
+      ],
+      "asset_id": "builtin:style:春日嫩柳风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "春日嫩柳风",
+      "path": "canonical/styles/春日嫩柳风/brief.json",
+      "revision": "8ae2648c1f93514b"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:晋升述职风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "晋升述职风",
+      "path": "canonical/styles/晋升述职风/brief.json",
+      "revision": "1ab2ce9e5b0a51a5"
+    },
+    {
+      "aliases": [
+        "晴橙落日海",
+        "Sunset Bay",
+        "落日海",
+        "晴橙",
+        "治愈",
+        "海边",
+        "夕阳"
+      ],
+      "asset_id": "builtin:style:晴橙落日海风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "晴橙落日海风",
+      "path": "canonical/styles/晴橙落日海风/brief.json",
+      "revision": "b10f71e05c1ed7bf"
+    },
+    {
+      "aliases": [
+        "工业4.0风",
+        "数字化工厂风",
+        "smart manufacturing"
+      ],
+      "asset_id": "builtin:style:智能制造风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "智能制造风",
+      "path": "canonical/styles/智能制造风/brief.json",
+      "revision": "51fb8a44ad38202d"
+    },
+    {
+      "aliases": [
+        "暖色有机风",
+        "柔和几何风",
+        "warm organic"
+      ],
+      "asset_id": "builtin:style:暖调柔形风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暖调柔形风",
+      "path": "canonical/styles/暖调柔形风/brief.json",
+      "revision": "912f7175753111ee"
+    },
+    {
+      "aliases": [
+        "暖陶土医学风",
+        "暖陶土",
+        "暖陶土医学",
+        "terracotta medical"
+      ],
+      "asset_id": "builtin:style:暖陶土医学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暖陶土医学风",
+      "path": "canonical/styles/暖陶土医学风/brief.json",
+      "revision": "ddfde1dd99fa3ec7"
+    },
+    {
+      "aliases": [
+        "luxury dark",
+        "暗黑奢华",
+        "香槟金夜色",
+        "dark luxury editorial"
+      ],
+      "asset_id": "builtin:style:暗夜奢华风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暗夜奢华风",
+      "path": "canonical/styles/暗夜奢华风/brief.json",
+      "revision": "cc5f913145c0f996"
+    },
+    {
+      "aliases": [
+        "暗夜植物风",
+        "植物园风",
+        "暗夜植物学",
+        "Dark Botanical"
+      ],
+      "asset_id": "builtin:style:暗夜植物园风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暗夜植物园风",
+      "path": "canonical/styles/暗夜植物园风/brief.json",
+      "revision": "ac9b95692cc9e246"
+    },
+    {
+      "aliases": [
+        "Dark Hairline Terminal",
+        "Linear 暗色",
+        "暗色发丝线",
+        "hairline terminal",
+        "暗线精密风"
+      ],
+      "asset_id": "builtin:style:暗线终端风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暗线终端风",
+      "path": "canonical/styles/暗线终端风/brief.json",
+      "revision": "e2b4fbf40d5d1166"
+    },
+    {
+      "aliases": [
+        "Dark Academia",
+        "暗黑学术",
+        "学院古典"
+      ],
+      "asset_id": "builtin:style:暗黑学院风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暗黑学院风",
+      "path": "canonical/styles/暗黑学院风/brief.json",
+      "revision": "b8ea87ed76c361c7"
+    },
+    {
+      "aliases": [
+        "dark tech",
+        "深色科技风",
+        "黑科技发布会"
+      ],
+      "asset_id": "builtin:style:暗黑科技风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "暗黑科技风",
+      "path": "canonical/styles/暗黑科技风/brief.json",
+      "revision": "5d6a45efb1806a06"
+    },
+    {
+      "aliases": [
+        "有机渐变形",
+        "渐变有机植物风",
+        "flowery"
+      ],
+      "asset_id": "builtin:style:有机渐变形风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "有机渐变形风",
+      "path": "canonical/styles/有机渐变形风/brief.json",
+      "revision": "d7fce754c1af087e"
+    },
+    {
+      "aliases": [
+        "futuristic tech editorial",
+        "科技杂志编辑风",
+        "电蓝编辑风",
+        "tech magazine"
+      ],
+      "asset_id": "builtin:style:未来科技编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "未来科技编辑风",
+      "path": "canonical/styles/未来科技编辑风/brief.json",
+      "revision": "5e8301ad01b6909d"
+    },
+    {
+      "aliases": [
+        "杂志大字",
+        "Magazine Bold",
+        "magazine",
+        "bold",
+        "大字杂志",
+        "magazine-bold"
+      ],
+      "asset_id": "builtin:style:杂志大字风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "杂志大字风",
+      "path": "canonical/styles/杂志大字风/brief.json",
+      "revision": "d2e3925d5db0fe2e"
+    },
+    {
+      "aliases": [
+        "杂志衬线",
+        "Editorial Serif",
+        "editorial",
+        "serif",
+        "magazine",
+        "杂志",
+        "编排"
+      ],
+      "asset_id": "builtin:style:杂志衬线风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "杂志衬线风",
+      "path": "canonical/styles/杂志衬线风/brief.json",
+      "revision": "726764ec5590aca5"
+    },
+    {
+      "aliases": [
+        "松烟画报风",
+        "松烟画报",
+        "电影画报",
+        "pine soot pictorial"
+      ],
+      "asset_id": "builtin:style:松烟画报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "松烟画报风",
+      "path": "canonical/styles/松烟画报风/brief.json",
+      "revision": "8c8d04cdc175aca2"
+    },
+    {
+      "aliases": [
+        "极光",
+        "Aurora",
+        "封面",
+        "aurora"
+      ],
+      "asset_id": "builtin:style:极光风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "极光风",
+      "path": "canonical/styles/极光风/brief.json",
+      "revision": "51f3cd3e729ca359"
+    },
+    {
+      "aliases": [
+        "미니멀 모노 노트",
+        "minimal mono note",
+        "打字机笔记"
+      ],
+      "asset_id": "builtin:style:极简单色笔记风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "极简单色笔记风",
+      "path": "canonical/styles/极简单色笔记风/brief.json",
+      "revision": "0bf0721f52fdcba0"
+    },
+    {
+      "aliases": [
+        "minimalist luxury",
+        "奢侈品牌手册风",
+        "暖棕奢品风",
+        "brand book 风",
+        "quiet luxury 暖调"
+      ],
+      "asset_id": "builtin:style:极简奢侈品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "极简奢侈品牌风",
+      "path": "canonical/styles/极简奢侈品牌风/brief.json",
+      "revision": "dd7e6559bcebbcd6"
+    },
+    {
+      "aliases": [
+        "minimalism",
+        "极简主义",
+        "性冷淡风"
+      ],
+      "asset_id": "builtin:style:极简风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "极简风",
+      "path": "canonical/styles/极简风/brief.json",
+      "revision": "04f1a4d3f27ff9f2"
+    },
+    {
+      "aliases": [
+        "Editorial Forest",
+        "editorial-forest",
+        "林间三色季刊",
+        "editorial",
+        "quiet"
+      ],
+      "asset_id": "builtin:style:林间三色季刊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "林间三色季刊风",
+      "path": "canonical/styles/林间三色季刊风/brief.json",
+      "revision": "2b9133e765e1995c"
+    },
+    {
+      "aliases": [
+        "Soft Editorial",
+        "soft-editorial",
+        "柔彩衬线编辑",
+        "literary",
+        "elegant"
+      ],
+      "asset_id": "builtin:style:柔彩衬线编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "柔彩衬线编辑风",
+      "path": "canonical/styles/柔彩衬线编辑风/brief.json",
+      "revision": "a883e955afa4ec9f"
+    },
+    {
+      "aliases": [
+        "柔雾甜梦",
+        "Macaron Mist",
+        "柔雾甜点",
+        "柔雾",
+        "梦幻",
+        "少女",
+        "甜品"
+      ],
+      "asset_id": "builtin:style:柔雾甜梦风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "柔雾甜梦风",
+      "path": "canonical/styles/柔雾甜梦风/brief.json",
+      "revision": "1cf1604cb00fd2da"
+    },
+    {
+      "aliases": [
+        "Archival Index Deck",
+        "archival index",
+        "档案卡片"
+      ],
+      "asset_id": "builtin:style:档案索引风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "档案索引风",
+      "path": "canonical/styles/档案索引风/brief.json",
+      "revision": "24dc531df0561b59"
+    },
+    {
+      "aliases": [
+        "梦幻星河",
+        "Gradient Cosmic",
+        "星河",
+        "烟火",
+        "梦幻",
+        "cosmic",
+        "epic"
+      ],
+      "asset_id": "builtin:style:梦幻星河风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "梦幻星河风",
+      "path": "canonical/styles/梦幻星河风/brief.json",
+      "revision": "bbe97cc7d11caee4"
+    },
+    {
+      "aliases": [
+        "森林绿临床水彩风",
+        "森林绿临床",
+        "森林绿水彩",
+        "forest green clinical watercolor"
+      ],
+      "asset_id": "builtin:style:森林绿临床水彩风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "森林绿临床水彩风",
+      "path": "canonical/styles/森林绿临床水彩风/brief.json",
+      "revision": "8a6e018715b2ea50"
+    },
+    {
+      "aliases": [
+        "보태니컬 오가닉",
+        "botanical organic",
+        "植物手绘"
+      ],
+      "asset_id": "builtin:style:植物有机编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "植物有机编辑风",
+      "path": "canonical/styles/植物有机编辑风/brief.json",
+      "revision": "34075e84a69675e3"
+    },
+    {
+      "aliases": [
+        "Stencil & Tablet",
+        "stencil-tablet",
+        "模版印刷标语",
+        "archival",
+        "earthy"
+      ],
+      "asset_id": "builtin:style:模版印刷标语风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "模版印刷标语风",
+      "path": "canonical/styles/模版印刷标语风/brief.json",
+      "revision": "94d83035b89216c1"
+    },
+    {
+      "aliases": [
+        "Sakura Chroma",
+        "sakura-chroma",
+        "樱彩磁带包装",
+        "retro",
+        "playful"
+      ],
+      "asset_id": "builtin:style:樱彩磁带包装风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "樱彩磁带包装风",
+      "path": "canonical/styles/樱彩磁带包装风/brief.json",
+      "revision": "4c52b7159ffe14a6"
+    },
+    {
+      "aliases": [
+        "樱粉雾蓝",
+        "Dreamy Pink Gradient",
+        "渐变",
+        "樱粉",
+        "雾蓝",
+        "dreamy",
+        "gradient"
+      ],
+      "asset_id": "builtin:style:樱粉雾蓝风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "樱粉雾蓝风",
+      "path": "canonical/styles/樱粉雾蓝风/brief.json",
+      "revision": "f448cad1077e41ff"
+    },
+    {
+      "aliases": [
+        "樱花治愈",
+        "Sakura Soft Healing",
+        "樱花",
+        "sakura",
+        "莫兰迪",
+        "慢生活",
+        "治愈系"
+      ],
+      "asset_id": "builtin:style:樱花治愈风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "樱花治愈风",
+      "path": "canonical/styles/樱花治愈风/brief.json",
+      "revision": "0493cfe56c38260c"
+    },
+    {
+      "aliases": [
+        "橄榄奶白",
+        "Olive Elegant",
+        "橄榄绿",
+        "奶白绿",
+        "高级",
+        "稳重",
+        "古典"
+      ],
+      "asset_id": "builtin:style:橄榄奶白风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "橄榄奶白风",
+      "path": "canonical/styles/橄榄奶白风/brief.json",
+      "revision": "6398e259b82609c1"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:毕业答辩风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "毕业答辩风",
+      "path": "canonical/styles/毕业答辩风/brief.json",
+      "revision": "03d99e73cff734ba"
+    },
+    {
+      "aliases": [
+        "水墨江南",
+        "Ink Wash Jiangnan",
+        "水墨",
+        "江南",
+        "ink wash",
+        "jiangnan",
+        "中国风"
+      ],
+      "asset_id": "builtin:style:水墨江南风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "水墨江南风",
+      "path": "canonical/styles/水墨江南风/brief.json",
+      "revision": "f97a134a06b0a0ad"
+    },
+    {
+      "aliases": [
+        "水墨风",
+        "国风禅意风",
+        "shuimo"
+      ],
+      "asset_id": "builtin:style:水墨禅意风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "水墨禅意风",
+      "path": "canonical/styles/水墨禅意风/brief.json",
+      "revision": "efbe2f90b9ec887a"
+    },
+    {
+      "aliases": [
+        "水彩风",
+        "晕染插画风",
+        "watercolor"
+      ],
+      "asset_id": "builtin:style:水彩晕染风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "水彩晕染风",
+      "path": "canonical/styles/水彩晕染风/brief.json",
+      "revision": "704d700ebad9c757"
+    },
+    {
+      "aliases": [
+        "作品集风",
+        "portfolio风",
+        "求职展示风"
+      ],
+      "asset_id": "builtin:style:求职作品集风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "求职作品集风",
+      "path": "canonical/styles/求职作品集风/brief.json",
+      "revision": "73f285ee53539bbc"
+    },
+    {
+      "aliases": [
+        "汽车风",
+        "车企风",
+        "automotive风"
+      ],
+      "asset_id": "builtin:style:汽车品牌风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "汽车品牌风",
+      "path": "canonical/styles/汽车品牌风/brief.json",
+      "revision": "c37d39d344e0ac69"
+    },
+    {
+      "aliases": [
+        "pop art",
+        "波普风",
+        "沃霍尔风"
+      ],
+      "asset_id": "builtin:style:波普艺术风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "波普艺术风",
+      "path": "canonical/styles/波普艺术风/brief.json",
+      "revision": "6884e54b599f8490"
+    },
+    {
+      "aliases": [
+        "活页手册风",
+        "标签手册风",
+        "笔记本标签风",
+        "Notebook Tabs"
+      ],
+      "asset_id": "builtin:style:活页标签手册风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "活页标签手册风",
+      "path": "canonical/styles/活页标签手册风/brief.json",
+      "revision": "997e3dbbfeb0d847"
+    },
+    {
+      "aliases": [
+        "Liquid Light",
+        "液态流光",
+        "liquid flow"
+      ],
+      "asset_id": "builtin:style:流光液态风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "流光液态风",
+      "path": "canonical/styles/流光液态风/brief.json",
+      "revision": "268527a8a71b9625"
+    },
+    {
+      "aliases": [
+        "浅粉棕医院运营风",
+        "浅粉棕",
+        "医院运营风",
+        "粉棕经营风",
+        "hospital operations pink-brown"
+      ],
+      "asset_id": "builtin:style:浅粉棕医院运营风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "浅粉棕医院运营风",
+      "path": "canonical/styles/浅粉棕医院运营风/brief.json",
+      "revision": "04012ff05833a91b"
+    },
+    {
+      "aliases": [
+        "深海军蓝医学风",
+        "深海军蓝",
+        "海军蓝医学",
+        "navy medical research"
+      ],
+      "asset_id": "builtin:style:深海军蓝医学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深海军蓝医学风",
+      "path": "canonical/styles/深海军蓝医学风/brief.json",
+      "revision": "4dbf52817677d1eb"
+    },
+    {
+      "aliases": [
+        "深色弥散",
+        "Neon Haze",
+        "弥散光",
+        "深色",
+        "霓虹",
+        "氛围",
+        "赛博"
+      ],
+      "asset_id": "builtin:style:深色弥散风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深色弥散风",
+      "path": "canonical/styles/深色弥散风/brief.json",
+      "revision": "44c6de63fd056905"
+    },
+    {
+      "aliases": [
+        "科技杂志风",
+        "深色杂志风",
+        "暗色科技杂志风"
+      ],
+      "asset_id": "builtin:style:深色科技杂志风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深色科技杂志风",
+      "path": "canonical/styles/深色科技杂志风/brief.json",
+      "revision": "eaba8cfb36c2058b"
+    },
+    {
+      "aliases": [
+        "editorial report",
+        "FT 深色简报",
+        "Bloomberg 深色报告",
+        "深色财经编辑风",
+        "dark briefing"
+      ],
+      "asset_id": "builtin:style:深色编辑报告风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深色编辑报告风",
+      "path": "canonical/styles/深色编辑报告风/brief.json",
+      "revision": "d86cb66ead4b727c"
+    },
+    {
+      "aliases": [
+        "深蓝极简工作坊",
+        "极简深蓝商务工作坊",
+        "mind-maps-workshop-professional"
+      ],
+      "asset_id": "builtin:style:深蓝极简工作坊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深蓝极简工作坊风",
+      "path": "canonical/styles/深蓝极简工作坊风/brief.json",
+      "revision": "69c6400e7958487b"
+    },
+    {
+      "aliases": [
+        "深蓝灰科研风",
+        "深蓝灰",
+        "深蓝灰医学",
+        "slate medical research"
+      ],
+      "asset_id": "builtin:style:深蓝灰科研风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深蓝灰科研风",
+      "path": "canonical/styles/深蓝灰科研风/brief.json",
+      "revision": "94f95c2095b38d66"
+    },
+    {
+      "aliases": [
+        "深蓝红新闻编辑",
+        "红蓝双色调新闻风演示模板",
+        "economic-impact-of-coronavirus"
+      ],
+      "asset_id": "builtin:style:深蓝红新闻编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深蓝红新闻编辑风",
+      "path": "canonical/styles/深蓝红新闻编辑风/brief.json",
+      "revision": "21f88f07b8292058"
+    },
+    {
+      "aliases": [
+        "深蓝菱形答辩风",
+        "深蓝菱形",
+        "菱形答辩",
+        "indigo diamond defense"
+      ],
+      "asset_id": "builtin:style:深蓝菱形答辩风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "深蓝菱形答辩风",
+      "path": "canonical/styles/深蓝菱形答辩风/brief.json",
+      "revision": "a0b6297d3c7dc633"
+    },
+    {
+      "aliases": [
+        "Warm Hospitality Deck",
+        "warm hospitality",
+        "款待暖调"
+      ],
+      "asset_id": "builtin:style:温暖款待风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "温暖款待风",
+      "path": "canonical/styles/温暖款待风/brief.json",
+      "revision": "0988d73e3bedb78a"
+    },
+    {
+      "aliases": [
+        "攻略风",
+        "游戏风",
+        "game guide"
+      ],
+      "asset_id": "builtin:style:游戏攻略风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "游戏攻略风",
+      "path": "canonical/styles/游戏攻略风/brief.json",
+      "revision": "a3af66cc99a1c0a5"
+    },
+    {
+      "aliases": [
+        "煤炭工业",
+        "煤炭工业企业简介",
+        "coal-industry-business-company-profile"
+      ],
+      "asset_id": "builtin:style:煤炭工业风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "煤炭工业风",
+      "path": "canonical/styles/煤炭工业风/brief.json",
+      "revision": "d49c76778bb2bbac"
+    },
+    {
+      "aliases": [
+        "物流风",
+        "供应链风",
+        "logistics风"
+      ],
+      "asset_id": "builtin:style:物流供应链风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "物流供应链风",
+      "path": "canonical/styles/物流供应链风/brief.json",
+      "revision": "d5fbf93cd2c6a0b6"
+    },
+    {
+      "aliases": [
+        "玩味手绘极简风",
+        "玩味手绘",
+        "怪诞编辑",
+        "playful maximalist editorial",
+        "collins style",
+        "mailchimp 风"
+      ],
+      "asset_id": "builtin:style:玩味手绘极简风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "玩味手绘极简风",
+      "path": "canonical/styles/玩味手绘极简风/brief.json",
+      "revision": "91560e954814532f"
+    },
+    {
+      "aliases": [
+        "玫瑰松",
+        "Rose Pine",
+        "rose",
+        "pine",
+        "玫瑰",
+        "柔和暗色",
+        "rose-pine"
+      ],
+      "asset_id": "builtin:style:玫瑰松风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "玫瑰松风",
+      "path": "canonical/styles/玫瑰松风/brief.json",
+      "revision": "aa34aa8db6a7f318"
+    },
+    {
+      "aliases": [
+        "环保风",
+        "绿色生态风",
+        "eco风"
+      ],
+      "asset_id": "builtin:style:环保绿动风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "环保绿动风",
+      "path": "canonical/styles/环保绿动风/brief.json",
+      "revision": "0b487a18c27097ab"
+    },
+    {
+      "aliases": [
+        "现代周报",
+        "Tabular Business",
+        "表格",
+        "table",
+        "tabular",
+        "周报",
+        "报表"
+      ],
+      "asset_id": "builtin:style:现代周报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "现代周报风",
+      "path": "canonical/styles/现代周报风/brief.json",
+      "revision": "f175206ddebb5827"
+    },
+    {
+      "aliases": [
+        "modern illustration editorial",
+        "矢量编辑插画风",
+        "雾蓝陶橙插画风",
+        "illustration editorial"
+      ],
+      "asset_id": "builtin:style:现代插画编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "现代插画编辑风",
+      "path": "canonical/styles/现代插画编辑风/brief.json",
+      "revision": "65855325c7047b97"
+    },
+    {
+      "aliases": [
+        "glassmorphism",
+        "毛玻璃风",
+        "玻璃态"
+      ],
+      "asset_id": "builtin:style:玻璃拟态风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "玻璃拟态风",
+      "path": "canonical/styles/玻璃拟态风/brief.json",
+      "revision": "ec9c3b87a455b20b"
+    },
+    {
+      "aliases": [
+        "珊瑚紫双色调",
+        "创意机构双色调演示模板",
+        "creative-agency"
+      ],
+      "asset_id": "builtin:style:珊瑚紫双色调风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "珊瑚紫双色调风",
+      "path": "canonical/styles/珊瑚紫双色调风/brief.json",
+      "revision": "85f543dda5964d69"
+    },
+    {
+      "aliases": [
+        "Swiss style",
+        "国际主义排版风",
+        "网格主义风"
+      ],
+      "asset_id": "builtin:style:瑞士网格风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "瑞士网格风",
+      "path": "canonical/styles/瑞士网格风/brief.json",
+      "revision": "dcb826be60ffac54"
+    },
+    {
+      "aliases": [
+        "大促风",
+        "电商风",
+        "双十一风"
+      ],
+      "asset_id": "builtin:style:电商大促风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "电商大促风",
+      "path": "canonical/styles/电商大促风/brief.json",
+      "revision": "be5850f3f918b432"
+    },
+    {
+      "aliases": [
+        "Cinematic Keynote Deck",
+        "cinematic keynote",
+        "影院演讲"
+      ],
+      "asset_id": "builtin:style:电影感演讲风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "电影感演讲风",
+      "path": "canonical/styles/电影感演讲风/brief.json",
+      "revision": "dffc52954d7adb1a"
+    },
+    {
+      "aliases": [
+        "电竞风",
+        "赛事数据风",
+        "esports风"
+      ],
+      "asset_id": "builtin:style:电竞数据风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "电竞数据风",
+      "path": "canonical/styles/电竞数据风/brief.json",
+      "revision": "bc3e503ae00f0e07"
+    },
+    {
+      "aliases": [
+        "带货风",
+        "直播风",
+        "livestream风"
+      ],
+      "asset_id": "builtin:style:直播带货风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "直播带货风",
+      "path": "canonical/styles/直播带货风/brief.json",
+      "revision": "74197198ffe64097"
+    },
+    {
+      "aliases": [
+        "卡片风",
+        "知识卡风",
+        "knowledge card风"
+      ],
+      "asset_id": "builtin:style:知识卡片风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "知识卡片风",
+      "path": "canonical/styles/知识卡片风/brief.json",
+      "revision": "93350abdf0f03a4c"
+    },
+    {
+      "aliases": [
+        "科普风",
+        "知识普及风",
+        "science风"
+      ],
+      "asset_id": "builtin:style:知识科普风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "知识科普风",
+      "path": "canonical/styles/知识科普风/brief.json",
+      "revision": "e3c42ef542e96938"
+    },
+    {
+      "aliases": [
+        "短视频风",
+        "脚本分镜风",
+        "short video风"
+      ],
+      "asset_id": "builtin:style:短视频脚本风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "短视频脚本风",
+      "path": "canonical/styles/短视频脚本风/brief.json",
+      "revision": "fd4d8e234bcbfca9"
+    },
+    {
+      "aliases": [
+        "Emerald Editorial",
+        "emerald-editorial",
+        "祖母绿刊头",
+        "editorial",
+        "considered"
+      ],
+      "asset_id": "builtin:style:祖母绿刊头风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "祖母绿刊头风",
+      "path": "canonical/styles/祖母绿刊头风/brief.json",
+      "revision": "df265652a23ea9a4"
+    },
+    {
+      "aliases": [
+        "秋叶麦田水彩医学风",
+        "秋叶麦田",
+        "秋叶麦田水彩",
+        "autumn wheat watercolor medical"
+      ],
+      "asset_id": "builtin:style:秋叶麦田水彩医学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "秋叶麦田水彩医学风",
+      "path": "canonical/styles/秋叶麦田水彩医学风/brief.json",
+      "revision": "d8280982fdeaadec"
+    },
+    {
+      "aliases": [
+        "futurism",
+        "未来科技风",
+        "sci-fi风"
+      ],
+      "asset_id": "builtin:style:科技未来感风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "科技未来感风",
+      "path": "canonical/styles/科技未来感风/brief.json",
+      "revision": "1a65c794d34ed383"
+    },
+    {
+      "aliases": [
+        "沉稳商务风",
+        "经典商务风",
+        "corporate classic"
+      ],
+      "asset_id": "builtin:style:稳重商务风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "稳重商务风",
+      "path": "canonical/styles/稳重商务风/brief.json",
+      "revision": "ac4d3a92b9408ce0"
+    },
+    {
+      "aliases": [
+        "paper-cut",
+        "剪纸风",
+        "纸艺层叠风",
+        "剪贴纸雕风"
+      ],
+      "asset_id": "builtin:style:立体剪纸风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "立体剪纸风",
+      "path": "canonical/styles/立体剪纸风/brief.json",
+      "revision": "7d9765f2d3e3a194"
+    },
+    {
+      "aliases": [
+        "童趣暖橙",
+        "Children Warm Orange",
+        "童趣",
+        "儿童节",
+        "橙暖",
+        "可爱",
+        "木马"
+      ],
+      "asset_id": "builtin:style:童趣暖橙风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "童趣暖橙风",
+      "path": "canonical/styles/童趣暖橙风/brief.json",
+      "revision": "c2f16ef18df9e9fd"
+    },
+    {
+      "aliases": [
+        "竹简风",
+        "竹简",
+        "简牍",
+        "bamboo slip"
+      ],
+      "asset_id": "builtin:style:竹简风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "竹简风",
+      "path": "canonical/styles/竹简风/brief.json",
+      "revision": "65d35b996f40b2de"
+    },
+    {
+      "aliases": [
+        "简历风",
+        "自我介绍风",
+        "resume风"
+      ],
+      "asset_id": "builtin:style:简历自我介绍风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "简历自我介绍风",
+      "path": "canonical/styles/简历自我介绍风/brief.json",
+      "revision": "4afdb067f9f8b858"
+    },
+    {
+      "aliases": [
+        "简洁商务风",
+        "极简商务风",
+        "clean business"
+      ],
+      "asset_id": "builtin:style:简约商务风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "简约商务风",
+      "path": "canonical/styles/简约商务风/brief.json",
+      "revision": "ec395206f2ed47d6"
+    },
+    {
+      "aliases": [
+        "米白樱粉",
+        "Chinese Cream Blossom",
+        "米白",
+        "樱粉",
+        "温柔",
+        "cream",
+        "blossom"
+      ],
+      "asset_id": "builtin:style:米白樱粉风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "米白樱粉风",
+      "path": "canonical/styles/米白樱粉风/brief.json",
+      "revision": "3cfabd87fdf8802f"
+    },
+    {
+      "aliases": [
+        "chalkboard",
+        "黑板风",
+        "板书风",
+        "粉笔课风",
+        "classroom board"
+      ],
+      "asset_id": "builtin:style:粉笔黑板风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "粉笔黑板风",
+      "path": "canonical/styles/粉笔黑板风/brief.json",
+      "revision": "e1fab73bf569e200"
+    },
+    {
+      "aliases": [
+        "粉紫云层诊断风",
+        "粉紫诊断",
+        "云层诊断",
+        "soft cloud-layer diagnostic",
+        "pink purple diagnosis"
+      ],
+      "asset_id": "builtin:style:粉紫云层诊断风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "粉紫云层诊断风",
+      "path": "canonical/styles/粉紫云层诊断风/brief.json",
+      "revision": "5c5cd7defa48a4a5"
+    },
+    {
+      "aliases": [
+        "Pink Editorial",
+        "粉紫渐变编辑",
+        "gradient stats"
+      ],
+      "asset_id": "builtin:style:粉紫编辑风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "粉紫编辑风",
+      "path": "canonical/styles/粉紫编辑风/brief.json",
+      "revision": "2e6b92816b8140f3"
+    },
+    {
+      "aliases": [
+        "Bold Block Infographic Deck",
+        "bold block infographic",
+        "色块信息图"
+      ],
+      "asset_id": "builtin:style:粗块信息图风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "粗块信息图风",
+      "path": "canonical/styles/粗块信息图风/brief.json",
+      "revision": "22e7f04cdbaa26f8"
+    },
+    {
+      "aliases": [
+        "brutalist",
+        "粗野主义报刊",
+        "报纸年报风",
+        "brutalist newspaper"
+      ],
+      "asset_id": "builtin:style:粗野报刊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "粗野报刊风",
+      "path": "canonical/styles/粗野报刊风/brief.json",
+      "revision": "fefb2295d52eb00a"
+    },
+    {
+      "aliases": [
+        "Precision Fintech Deck",
+        "precision fintech",
+        "金融科技极简"
+      ],
+      "asset_id": "builtin:style:精密金融科技风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "精密金融科技风",
+      "path": "canonical/styles/精密金融科技风/brief.json",
+      "revision": "956b9a73d76e339f"
+    },
+    {
+      "aliases": [
+        "纸质文件夹拟物",
+        "会议议程演示",
+        "meeting-agenda"
+      ],
+      "asset_id": "builtin:style:纸质文件夹拟物风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "纸质文件夹拟物风",
+      "path": "canonical/styles/纸质文件夹拟物风/brief.json",
+      "revision": "1dea10a6edbbe895"
+    },
+    {
+      "aliases": [
+        "terminal",
+        "CRT 终端风",
+        "磷光绿屏风",
+        "命令行风",
+        "phosphor terminal"
+      ],
+      "asset_id": "builtin:style:终端命令行风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "终端命令行风",
+      "path": "canonical/styles/终端命令行风/brief.json",
+      "revision": "32718903720ef737"
+    },
+    {
+      "aliases": [
+        "美妆风",
+        "护肤风",
+        "美妆护肤风",
+        "beauty风"
+      ],
+      "asset_id": "builtin:style:美妆个护风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "美妆个护风",
+      "path": "canonical/styles/美妆个护风/brief.json",
+      "revision": "9ca012f1fcfe5c0f"
+    },
+    {
+      "aliases": [
+        "Spotlight Stage",
+        "聚光灯舞台",
+        "舞台光"
+      ],
+      "asset_id": "builtin:style:聚光舞台风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "聚光舞台风",
+      "path": "canonical/styles/聚光舞台风/brief.json",
+      "revision": "e629ec60a14a17e4"
+    },
+    {
+      "aliases": [
+        "Capsule",
+        "capsule",
+        "胶囊卡波普",
+        "playful",
+        "modern"
+      ],
+      "asset_id": "builtin:style:胶囊卡波普风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "胶囊卡波普风",
+      "path": "canonical/styles/胶囊卡波普风/brief.json",
+      "revision": "9b037f6c3ecb8b4a"
+    },
+    {
+      "aliases": [
+        "Chromatic Aberration",
+        "CRT 色差",
+        "RGB 分离"
+      ],
+      "asset_id": "builtin:style:色差故障风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "色差故障风",
+      "path": "canonical/styles/色差故障风/brief.json",
+      "revision": "5ca608470e4644cd"
+    },
+    {
+      "aliases": [
+        "色谱风",
+        "分类色谱风",
+        "多彩图表风"
+      ],
+      "asset_id": "builtin:style:色谱图表风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "色谱图表风",
+      "path": "canonical/styles/色谱图表风/brief.json",
+      "revision": "fa18a15a85d63d09"
+    },
+    {
+      "aliases": [
+        "节日风",
+        "节气风",
+        "festival风"
+      ],
+      "asset_id": "builtin:style:节日节气风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "节日节气风",
+      "path": "canonical/styles/节日节气风/brief.json",
+      "revision": "0010b91921ffa725"
+    },
+    {
+      "aliases": [
+        "荧光科技风",
+        "高对比暗色风",
+        "neon tech"
+      ],
+      "asset_id": "builtin:style:荧光高对比科技风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "荧光高对比科技风",
+      "path": "canonical/styles/荧光高对比科技风/brief.json",
+      "revision": "2c1b7afbd61dc295"
+    },
+    {
+      "aliases": [
+        "荧光黄商务",
+        "投资公司商业计划书",
+        "investment-company-business-plan"
+      ],
+      "asset_id": "builtin:style:荧光黄商务风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "荧光黄商务风",
+      "path": "canonical/styles/荧光黄商务风/brief.json",
+      "revision": "f2002828f49b5cd1"
+    },
+    {
+      "aliases": [
+        "莫奈风",
+        "莫奈",
+        "Monet",
+        "impressionist",
+        "印象派"
+      ],
+      "asset_id": "builtin:style:莫奈风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "莫奈风",
+      "path": "canonical/styles/莫奈风/brief.json",
+      "revision": "2bd13bb008e02659"
+    },
+    {
+      "aliases": [
+        "申报风",
+        "评奖风",
+        "award风"
+      ],
+      "asset_id": "builtin:style:获奖申报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "获奖申报风",
+      "path": "canonical/styles/获奖申报风/brief.json",
+      "revision": "8e1349c586fe91f4"
+    },
+    {
+      "aliases": [
+        "vaporwave",
+        "蒸汽波美学",
+        "赛博怀旧风"
+      ],
+      "asset_id": "builtin:style:蒸汽波风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "蒸汽波风",
+      "path": "canonical/styles/蒸汽波风/brief.json",
+      "revision": "2ac1d1b74617a6d3"
+    },
+    {
+      "aliases": [
+        "blueprint",
+        "蓝晒",
+        "cyanotype",
+        "工程制图深蓝版",
+        "深蓝图纸风"
+      ],
+      "asset_id": "builtin:style:蓝晒图纸风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "蓝晒图纸风",
+      "path": "canonical/styles/蓝晒图纸风/brief.json",
+      "revision": "acde40221ff84d37"
+    },
+    {
+      "aliases": [
+        "蓝焰作战室风",
+        "蓝焰作战室",
+        "作战室",
+        "blue flame war room"
+      ],
+      "asset_id": "builtin:style:蓝焰作战室风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "蓝焰作战室风",
+      "path": "canonical/styles/蓝焰作战室风/brief.json",
+      "revision": "6468389a36587406"
+    },
+    {
+      "aliases": [
+        "薄荷清新",
+        "Mint Fresh",
+        "薄荷",
+        "绿色系",
+        "清新",
+        "高级绿",
+        "植物"
+      ],
+      "asset_id": "builtin:style:薄荷清新风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "薄荷清新风",
+      "path": "canonical/styles/薄荷清新风/brief.json",
+      "revision": "faa82f1d7878824d"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:融资路演风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "融资路演风",
+      "path": "canonical/styles/融资路演风/brief.json",
+      "revision": "03ba8455a10bac1a"
+    },
+    {
+      "aliases": [
+        "People's Platform (Block & Bold)",
+        "peoples-platform",
+        "行动主义海报",
+        "activist",
+        "loud"
+      ],
+      "asset_id": "builtin:style:行动主义海报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "行动主义海报风",
+      "path": "canonical/styles/行动主义海报风/brief.json",
+      "revision": "83faebd65c5491ae"
+    },
+    {
+      "aliases": [
+        "Art Deco",
+        "装饰主义风",
+        "爵士时代风"
+      ],
+      "asset_id": "builtin:style:装饰艺术风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "装饰艺术风",
+      "path": "canonical/styles/装饰艺术风/brief.json",
+      "revision": "347a92c8630742ea"
+    },
+    {
+      "aliases": [
+        "读书会风",
+        "书摘风",
+        "book notes风"
+      ],
+      "asset_id": "builtin:style:读书笔记风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "读书笔记风",
+      "path": "canonical/styles/读书笔记风/brief.json",
+      "revision": "f15f914ea81ddb04"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:课题申请风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "课题申请风",
+      "path": "canonical/styles/课题申请风/brief.json",
+      "revision": "48c61c6d0403d134"
+    },
+    {
+      "aliases": [
+        "Monochrome",
+        "monochrome",
+        "象牙账本",
+        "restrained",
+        "literary"
+      ],
+      "asset_id": "builtin:style:象牙账本风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "象牙账本风",
+      "path": "canonical/styles/象牙账本风/brief.json",
+      "revision": "1003e7ea2b7424d0"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:财报季报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "财报季报风",
+      "path": "canonical/styles/财报季报风/brief.json",
+      "revision": "7dd1cbff4029e8d4"
+    },
+    {
+      "aliases": [
+        "release notes风",
+        "版本发布风",
+        "产品更新风"
+      ],
+      "asset_id": "builtin:style:软件发布风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "软件发布风",
+      "path": "canonical/styles/软件发布风/brief.json",
+      "revision": "705c92b1e36a8dbf"
+    },
+    {
+      "aliases": [
+        "达人风",
+        "KOL营销风",
+        "创作者营销风",
+        "种草战役风"
+      ],
+      "asset_id": "builtin:style:达人营销风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "达人营销风",
+      "path": "canonical/styles/达人营销风/brief.json",
+      "revision": "00a6a0eb780019ee"
+    },
+    {
+      "aliases": [
+        "国潮风",
+        "新中式潮流风",
+        "guochao"
+      ],
+      "asset_id": "builtin:style:迷幻国潮风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "迷幻国潮风",
+      "path": "canonical/styles/迷幻国潮风/brief.json",
+      "revision": "0eee25ff56050f7b"
+    },
+    {
+      "aliases": [
+        "酒店风",
+        "民宿风",
+        "hospitality风"
+      ],
+      "asset_id": "builtin:style:酒店民宿风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "酒店民宿风",
+      "path": "canonical/styles/酒店民宿风/brief.json",
+      "revision": "8842e4ad68b5fc29"
+    },
+    {
+      "aliases": [
+        "risograph",
+        "Riso 印刷",
+        "孔版印刷风",
+        "zine 印刷风",
+        "双色油印风"
+      ],
+      "asset_id": "builtin:style:里索印刷风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "里索印刷风",
+      "path": "canonical/styles/里索印刷风/brief.json",
+      "revision": "7128735504ca8458"
+    },
+    {
+      "aliases": [
+        "投行风",
+        "黑金商务风",
+        "金融高端风"
+      ],
+      "asset_id": "builtin:style:金融奢华风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "金融奢华风",
+      "path": "canonical/styles/金融奢华风/brief.json",
+      "revision": "a793d9484ce15b1f"
+    },
+    {
+      "aliases": [
+        "鎏金象牙",
+        "Gold Ivory",
+        "鎏金",
+        "象牙白",
+        "奢华",
+        "古典",
+        "高级"
+      ],
+      "asset_id": "builtin:style:鎏金象牙风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "鎏金象牙风",
+      "path": "canonical/styles/鎏金象牙风/brief.json",
+      "revision": "e910586ae5406940"
+    },
+    {
+      "aliases": [
+        "Cobalt Grid",
+        "cobalt-grid",
+        "钴蓝网格简报",
+        "editorial",
+        "design-research"
+      ],
+      "asset_id": "builtin:style:钴蓝网格简报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "钴蓝网格简报风",
+      "path": "canonical/styles/钴蓝网格简报风/brief.json",
+      "revision": "9c436d3e83c4adef"
+    },
+    {
+      "aliases": [
+        "银行风",
+        "年报风",
+        "bank annual风"
+      ],
+      "asset_id": "builtin:style:银行年报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "银行年报风",
+      "path": "canonical/styles/银行年报风/brief.json",
+      "revision": "53546bdf8cb6d799"
+    },
+    {
+      "aliases": [
+        "锐利黑白",
+        "Sharp Mono",
+        "sharp",
+        "mono",
+        "黑白",
+        "纯黑白",
+        "sharp-mono"
+      ],
+      "asset_id": "builtin:style:锐利黑白风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "锐利黑白风",
+      "path": "canonical/styles/锐利黑白风/brief.json",
+      "revision": "aad457b9c452a517"
+    },
+    {
+      "aliases": [
+        "삼성전자 IR 절제",
+        "samsung IR restrained",
+        "集团财报"
+      ],
+      "asset_id": "builtin:style:集团IR克制风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "集团IR克制风",
+      "path": "canonical/styles/集团IR克制风/brief.json",
+      "revision": "0bab88c68c3a3d7d"
+    },
+    {
+      "aliases": [
+        "雾感鼠尾草风",
+        "雾感鼠尾草",
+        "鼠尾草医疗",
+        "misty sage healthcare"
+      ],
+      "asset_id": "builtin:style:雾感鼠尾草风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "雾感鼠尾草风",
+      "path": "canonical/styles/雾感鼠尾草风/brief.json",
+      "revision": "38ee7fb5e80fa4ab"
+    },
+    {
+      "aliases": [
+        "青绿湖蓝",
+        "Chinese Fresh Trio",
+        "三色",
+        "青绿",
+        "湖蓝",
+        "trio",
+        "fresh"
+      ],
+      "asset_id": "builtin:style:青绿湖蓝风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "青绿湖蓝风",
+      "path": "canonical/styles/青绿湖蓝风/brief.json",
+      "revision": "2a8b358e08856384"
+    },
+    {
+      "aliases": [
+        "青莲碧蓝",
+        "Indigo Lotus",
+        "青莲",
+        "碧蓝",
+        "梦幻",
+        "国风",
+        "紫蓝"
+      ],
+      "asset_id": "builtin:style:青莲碧蓝风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "青莲碧蓝风",
+      "path": "canonical/styles/青莲碧蓝风/brief.json",
+      "revision": "1a4094530ea49ced"
+    },
+    {
+      "aliases": [
+        "青蓝水墨医学风",
+        "青蓝水墨",
+        "青蓝水墨医学",
+        "teal ink-wash medical"
+      ],
+      "asset_id": "builtin:style:青蓝水墨医学风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "青蓝水墨医学风",
+      "path": "canonical/styles/青蓝水墨医学风/brief.json",
+      "revision": "02b39cd2d80a9393"
+    },
+    {
+      "aliases": [
+        "quiet luxury",
+        "静奢风",
+        "低调奢华风"
+      ],
+      "asset_id": "builtin:style:静奢极简风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "静奢极简风",
+      "path": "canonical/styles/静奢极简风/brief.json",
+      "revision": "c89b2a906416b6ce"
+    },
+    {
+      "aliases": [
+        "과기정통부 정부 라이트",
+        "korea gov light",
+        "政府浅蓝简报"
+      ],
+      "asset_id": "builtin:style:韩式政府浅蓝风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "韩式政府浅蓝风",
+      "path": "canonical/styles/韩式政府浅蓝风/brief.json",
+      "revision": "5b44c1af3fcc3f6c"
+    },
+    {
+      "aliases": [
+        "한국 정책보고서 네이비",
+        "korea policy navy",
+        "政策报告"
+      ],
+      "asset_id": "builtin:style:韩式政策报告风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "韩式政策报告风",
+      "path": "canonical/styles/韩式政策报告风/brief.json",
+      "revision": "fc56a5bc2b1d117c"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:项目复盘风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "项目复盘风",
+      "path": "canonical/styles/项目复盘风/brief.json",
+      "revision": "d2332cf2ed7aefe5"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:顾问报告风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "顾问报告风",
+      "path": "canonical/styles/顾问报告风/brief.json",
+      "revision": "ba9833cea22b14ab"
+    },
+    {
+      "aliases": [
+        "风投路演",
+        "Pitch Deck Vc",
+        "pitch",
+        "vc",
+        "融资",
+        "路演",
+        "pitch-deck-vc"
+      ],
+      "asset_id": "builtin:style:风投路演风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "风投路演风",
+      "path": "canonical/styles/风投路演风/brief.json",
+      "revision": "ced2bf505a156d38"
+    },
+    {
+      "aliases": [
+        "美食风",
+        "餐饮风",
+        "food风"
+      ],
+      "asset_id": "builtin:style:餐饮美食风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "餐饮美食风",
+      "path": "canonical/styles/餐饮美食风/brief.json",
+      "revision": "38e584be729281eb"
+    },
+    {
+      "aliases": [
+        "CS50 糖果舞台",
+        "高桥流",
+        "Takahashi",
+        "一屏一词",
+        "candy lecture stage"
+      ],
+      "asset_id": "builtin:style:高桥流糖果舞台风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "高桥流糖果舞台风",
+      "path": "canonical/styles/高桥流糖果舞台风/brief.json",
+      "revision": "223517ad689b3c3c"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:style:高管汇报风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "高管汇报风",
+      "path": "canonical/styles/高管汇报风/brief.json",
+      "revision": "3630e56f8c24f0a1"
+    },
+    {
+      "aliases": [
+        "高级撞色",
+        "Premium Color Blocking",
+        "撞色",
+        "高级配色",
+        "色彩对峙",
+        "杂志风",
+        "editorial"
+      ],
+      "asset_id": "builtin:style:高级撞色风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "高级撞色风",
+      "path": "canonical/styles/高级撞色风/brief.json",
+      "revision": "ece38282f59e86e1"
+    },
+    {
+      "aliases": [
+        "高级料理杂志",
+        "烹饪创新演示",
+        "culinary-innovation"
+      ],
+      "asset_id": "builtin:style:高级料理杂志风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "高级料理杂志风",
+      "path": "canonical/styles/高级料理杂志风/brief.json",
+      "revision": "6f34f02a92f78386"
+    },
+    {
+      "aliases": [
+        "McKinsey风",
+        "咨询报告风",
+        "顶级咨询风",
+        "mckinsey-pptx navy"
+      ],
+      "asset_id": "builtin:style:麦肯锡咨询风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "麦肯锡咨询风",
+      "path": "canonical/styles/麦肯锡咨询风/brief.json",
+      "revision": "5fa963ef93947b8f"
+    },
+    {
+      "aliases": [
+        "Every 골든 그리드 키노트",
+        "golden grid keynote",
+        "黄金比例"
+      ],
+      "asset_id": "builtin:style:黄金网格演讲风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黄金网格演讲风",
+      "path": "canonical/styles/黄金网格演讲风/brief.json",
+      "revision": "abe656ce42e2893c"
+    },
+    {
+      "aliases": [
+        "claymation",
+        "黏土动画风",
+        "定格动画风"
+      ],
+      "asset_id": "builtin:style:黏土定格风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黏土定格风",
+      "path": "canonical/styles/黏土定格风/brief.json",
+      "revision": "5c12702060794336"
+    },
+    {
+      "aliases": [
+        "Black Big-Number Stage",
+        "黑底剧场",
+        "keynote 剧场",
+        "巨型数字舞台",
+        "黑底大字"
+      ],
+      "asset_id": "builtin:style:黑底数字剧场风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黑底数字剧场风",
+      "path": "canonical/styles/黑底数字剧场风/brief.json",
+      "revision": "2e37ea4413195dd2"
+    },
+    {
+      "aliases": [
+        "黑白杂志",
+        "editorial-mono"
+      ],
+      "asset_id": "builtin:style:黑白杂志风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黑白杂志风",
+      "path": "canonical/styles/黑白杂志风/brief.json",
+      "revision": "efdedd5fcd388d33"
+    },
+    {
+      "aliases": [
+        "黑白艺术展风",
+        "美术馆风",
+        "mono gallery"
+      ],
+      "asset_id": "builtin:style:黑白极简艺术展风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黑白极简艺术展风",
+      "path": "canonical/styles/黑白极简艺术展风/brief.json",
+      "revision": "aedeb1b9c5820e88"
+    },
+    {
+      "aliases": [
+        "黑白水墨临床风",
+        "黑白水墨临床",
+        "黑白水墨医学",
+        "monochrome ink clinical"
+      ],
+      "asset_id": "builtin:style:黑白水墨临床风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黑白水墨临床风",
+      "path": "canonical/styles/黑白水墨临床风/brief.json",
+      "revision": "4e4dc734052f08f5"
+    },
+    {
+      "aliases": [
+        "黑金期刊风",
+        "黑金期刊",
+        "黑金台账",
+        "black gold ledger"
+      ],
+      "asset_id": "builtin:style:黑金期刊风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "黑金期刊风",
+      "path": "canonical/styles/黑金期刊风/brief.json",
+      "revision": "cd23bbf7602274a7"
+    },
+    {
+      "aliases": [
+        "Sage Grain",
+        "谷物暗纹",
+        "暗调鼠尾草"
+      ],
+      "asset_id": "builtin:style:鼠尾草谷物暗纹风",
+      "dependencies": [],
+      "kind": "style",
+      "lifecycle": "draft",
+      "name": "鼠尾草谷物暗纹风",
+      "path": "canonical/styles/鼠尾草谷物暗纹风/brief.json",
+      "revision": "221a03d98b864780"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:body-basic",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "body-basic",
+      "path": "canonical/templates/body-basic/template.json",
+      "revision": "d317bfcc0e3676ea"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:compare",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "compare",
+      "path": "canonical/templates/compare/template.json",
+      "revision": "f91eacb99f39d656"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:cover-basic",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "cover-basic",
+      "path": "canonical/templates/cover-basic/template.json",
+      "revision": "50bc6ba9a0e1d873"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:frame-shot",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "frame-shot",
+      "path": "canonical/templates/frame-shot/template.json",
+      "revision": "1e30f390be97598f"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:pull-quote",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "pull-quote",
+      "path": "canonical/templates/pull-quote/template.json",
+      "revision": "5077b9ecb873b0b1"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:spec-table",
+      "dependencies": [
+        "builtin:layout:p25-spec-table"
+      ],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "规格表模板",
+      "path": "canonical/templates/spec-table/template.json",
+      "revision": "737d051d4d5a914a"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:template:timeline",
+      "dependencies": [],
+      "kind": "template",
+      "lifecycle": "draft",
+      "name": "timeline",
+      "path": "canonical/templates/timeline/template.json",
+      "revision": "10029cf3201653b6"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:academic-austere-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "academic austere light",
+      "path": "canonical/themes/academic-austere-light/theme.json",
+      "revision": "01a416b9cc4c244f"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:brand-creative-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "brand creative light",
+      "path": "canonical/themes/brand-creative-light/theme.json",
+      "revision": "2765adf3a43ed705"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:clean-professional-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "清爽专业·浅色",
+      "path": "canonical/themes/clean-professional-light/theme.json",
+      "revision": "afe3e5e22c0b9cbd"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:consulting-pyramid-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "consulting pyramid light",
+      "path": "canonical/themes/consulting-pyramid-light/theme.json",
+      "revision": "fc35f8b72c4c87e8"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:edu-bright-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "edu bright light",
+      "path": "canonical/themes/edu-bright-light/theme.json",
+      "revision": "868f6947de4ea566"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:finance-navy-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "finance navy light",
+      "path": "canonical/themes/finance-navy-light/theme.json",
+      "revision": "313cc7d9a5954a09"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:gov-red-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "gov red light",
+      "path": "canonical/themes/gov-red-light/theme.json",
+      "revision": "dbe3e1192ce21e69"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:health-clean-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "health clean light",
+      "path": "canonical/themes/health-clean-light/theme.json",
+      "revision": "5c5a3b0da4ff8f95"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:management-clear-light",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "management clear light",
+      "path": "canonical/themes/management-clear-light/theme.json",
+      "revision": "5705a270c2bea6d8"
+    },
+    {
+      "aliases": [],
+      "asset_id": "builtin:theme:tech-dark-mode",
+      "dependencies": [],
+      "kind": "theme",
+      "lifecycle": "draft",
+      "name": "tech dark mode",
+      "path": "canonical/themes/tech-dark-mode/theme.json",
+      "revision": "1d9fb229f9dd18b5"
+    }
+  ],
+  "evidence_set_digest": null,
+  "generation": "b72cfbca8dfa03758cd95fdc5e6aaf7f",
+  "kind": "template-registry",
+  "schema_version": 1,
+  "source_digest": "b72cfbca8dfa03758cd95fdc5e6aaf7f6411fea1a8077f3c75a12de548f1729c"
+}

@@ -1,0 +1,109 @@
+{
+  "kind": "curation-policy",
+  "schema_version": 1,
+  "plan": "docs/plans/2026-09-08-001-feat-leo-ppt-template-quality-plan.md",
+  "deck_style": {
+    "definition": "四角色（封面/正文/复杂证据/结尾）完整覆盖且同一已解析主题的整稿组合",
+    "eligibility_owner": "style_validation.deck_style_eligibility（证据派生）",
+    "requires": [
+      "evidence_verified",
+      "four_roles_same_theme",
+      "declared_lane_mode_locale"
+    ],
+    "prohibited": [
+      "仅封面证据冒整稿",
+      "跨主题/跨 lane 借证据",
+      "自报 visual.pass 晋升"
+    ]
+  },
+  "page_component": {
+    "definition": "单页能力条目（封面/单页组件）；可在匹配的单页请求中推荐，不占整稿位"
+  },
+  "directions": [
+    "管理",
+    "咨询",
+    "科技",
+    "金融",
+    "医疗",
+    "教育",
+    "政务",
+    "品牌",
+    "学术"
+  ],
+  "max_initial_logical_styles": 12,
+  "selections": [
+    {
+      "direction": "管理",
+      "style": "builtin:style:management-clear",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "金融",
+      "style": "builtin:style:finance-navy",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "咨询",
+      "style": "builtin:style:consulting-pyramid",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "科技",
+      "style": "builtin:style:tech-dark",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "政务",
+      "style": "builtin:style:gov-red",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "医疗",
+      "style": "builtin:style:health-clean",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "教育",
+      "style": "builtin:style:edu-bright",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "品牌",
+      "style": "builtin:style:brand-creative",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    },
+    {
+      "direction": "学术",
+      "style": "builtin:style:academic-austere",
+      "kind": "deck-style",
+      "selected_by": "U3 maintainer",
+      "basis": "§8.1 种子表 + 四角色路由声明",
+      "evidence_status": "pending-u7"
+    }
+  ],
+  "note": "selections 由维护者按 §8 精选标准填充（U3）；本文件不写自报通过。"
+}

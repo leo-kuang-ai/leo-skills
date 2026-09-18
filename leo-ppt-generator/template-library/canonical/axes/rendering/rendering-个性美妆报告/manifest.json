@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-个性美妆报告",
+  "name": "图片渲染：个性美妆报告（personalized-beauty-report）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

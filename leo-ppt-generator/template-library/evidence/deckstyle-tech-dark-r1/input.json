@@ -1,0 +1,56 @@
+{
+  "cover": {
+    "kicker": "INFRA PLATFORM",
+    "title": "推理集群容量与稳定性报告",
+    "subtitle": "系统拓扑 · 回路 · 时间线",
+    "footer_left": "平台工程部",
+    "footer_right": "v2.4",
+    "page_no": 1
+  },
+  "content": {
+    "title": "系统现状：三层拓扑与关键回路",
+    "bullets": [
+      "网关层：QPS 峰值 12.4 万，熔断触发率 0.3%",
+      "调度层：排队 P99 210ms，弹性扩容 <90s",
+      "推理层：GPU 利用率 78%，冷启动 1.2s"
+    ],
+    "page_no": 2
+  },
+  "evidence": {
+    "title": "容量与延迟（近四周）",
+    "columns": [
+      "指标",
+      "本周",
+      "目标"
+    ],
+    "column_align": [
+      "left",
+      "right",
+      "right"
+    ],
+    "rows": [
+      [
+        "QPS 峰值",
+        "124k",
+        "≥100k"
+      ],
+      [
+        "P99 延迟",
+        "210ms",
+        "≤300ms"
+      ],
+      [
+        "错误率",
+        "0.031%",
+        "≤0.1%"
+      ]
+    ],
+    "page_no": 3
+  },
+  "closing": {
+    "quote": "Stability is a feature.",
+    "source_name": "SRE 值班报告",
+    "source_meta": "Week 41",
+    "page_no": 4
+  }
+}

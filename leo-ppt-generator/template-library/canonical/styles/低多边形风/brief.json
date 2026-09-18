@@ -1,0 +1,155 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:低多边形风",
+  "name": "低多边形风",
+  "aliases": [
+    "low poly",
+    "低面数风",
+    "三角面风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/低多边形风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "low-poly style, triangular facet geometry, stylized 3D, flat-shaded facets, crisp angular forms, modern clean abstraction, engineered structural clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "low poly",
+      "低面数风",
+      "三角面风"
+    ],
+    "best_for": "三角面几何、风格化 3D、扁平着色面营造简洁、现代、有结构感的视觉",
+    "visual_direction": "low-poly style, triangular facet geometry, stylized 3D, flat-shaded facets, crisp angular forms, modern clean abstraction, engineered structural clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "soft gradient field (cool→warm)",
+      "composition": "one low-poly landscape / object hero",
+      "density": "low-medium, geometric"
+    },
+    "color_palette": {
+      "primary": "deep indigo #2A3B6B / teal #0E7490",
+      "secondary": "facet gradient tints (cyan #22D3EE, violet #7C3AED)",
+      "accent": "one warm accent (amber #F59E0B)",
+      "neutral": "near-black #1F2937, soft gray, white",
+      "rule": "geometric, modern, controlled; no photoreal, no smooth glossy"
+    },
+    "typography": {
+      "title": "geometric sans-serif (Futura / 思源黑体), modern",
+      "body": "clean, technical",
+      "labels": "small facet labels",
+      "text_quality": "exact technical/concept terms"
+    },
+    "layout_patterns": [
+      "low-poly landscape hero",
+      "faceted object render",
+      "geometric background + text",
+      "angular structure diagram"
+    ],
+    "layout_usage_rule": "Crisp angular facets carry the look; keep shading flat and forms readable.",
+    "layout_blueprints": [
+      {
+        "name": "场景页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "低多边形场景/主体"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "标题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "系统页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "低多边形结构"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "模块1",
+              "模块2",
+              "模块3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "triangular facets, flat shading, angular forms, gradient facet tints",
+      "avoid": "photoreal, smooth rounded 3D, high-poly noise, cluttered"
+    },
+    "rendering_constraints": [
+      "Clean, modern, structured low-poly.",
+      "Flat-shaded facets and angular forms; readable silhouettes.",
+      "Exact terms; no invented logos."
+    ],
+    "reference": "GitHub: OhMyStyle (low-poly) · 低多边形风"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Clean, modern, structured low-poly.",
+      "Flat-shaded facets and angular forms; readable silhouettes.",
+      "Exact terms; no invented logos."
+    ]
+  }
+}

@@ -36,6 +36,18 @@ class RenderPageOfflineContract(unittest.TestCase):
                 render_page("../escape", data, Path(tmp) / "out.png")
             self.assertEqual(ctx.exception.reason_code, "render_template_not_found")
 
+    def test_canonical_template_asset_id_is_accepted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp) / "slide.json"
+            data.write_text(json.dumps(SLIDE_DATA), encoding="utf-8")
+            # Browser execution is covered elsewhere; this assertion reaches
+            # template resolution before Playwright is required.
+            from leo_ppt_generator.render.assets import template_path
+            self.assertEqual(
+                template_path("builtin:template:body-basic"),
+                template_path("body-basic"),
+            )
+
     def test_invalid_slide_data_reports_render_data_invalid(self):
         with tempfile.TemporaryDirectory() as tmp:
             data = Path(tmp) / "slide.json"
@@ -43,6 +55,31 @@ class RenderPageOfflineContract(unittest.TestCase):
             with self.assertRaises(RenderError) as ctx:
                 render_page("body-basic", data, Path(tmp) / "out.png")
             self.assertEqual(ctx.exception.reason_code, "render_data_invalid")
+
+    def test_chart_svg_is_sanitized_before_browser_injection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp) / "slide.json"
+            data.write_text(
+                json.dumps({
+                    "title": "图表页",
+                    "chart_svg": '<svg xmlns="http://www.w3.org/2000/svg"><rect onload="alert(1)"/></svg>',
+                }),
+                encoding="utf-8",
+            )
+            with self.assertRaises(RenderError) as ctx:
+                render_page("body-basic", data, Path(tmp) / "out.png")
+            self.assertEqual(ctx.exception.reason_code, "render_data_invalid")
+
+    def test_duplicate_or_nonfinite_json_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp) / "slide.json"
+            for payload in ('{"title":"x","title":"y"}', '{"title":"x","page_no":1e999}',
+                            '{"title":"x","page_no":NaN}', '{"title":"x","hidden":42}'):
+                with self.subTest(payload=payload):
+                    data.write_text(payload, encoding="utf-8")
+                    with self.assertRaises(RenderError) as ctx:
+                        render_page("body-basic", data, Path(tmp) / "out.png")
+                    self.assertEqual(ctx.exception.reason_code, "render_data_invalid")
 
 
 class RenderPageBrowser(browser_test_case()):
@@ -53,6 +90,12 @@ class RenderPageBrowser(browser_test_case()):
         self.addCleanup(self._tmp.cleanup)
         self.data = Path(self._tmp.name) / "slide.json"
         self.data.write_text(json.dumps(SLIDE_DATA), encoding="utf-8")
+
+    def test_render_page_accepts_canonical_asset_id(self):
+        out = Path(self._tmp.name) / "asset-id.png"
+        result = render_page("builtin:template:body-basic", self.data, out)
+        self.assertEqual(result["backend"], "render:html")
+        self.assertTrue(out.is_file())
 
     def test_render_page_writes_provenance_sidecar_with_template_hash(self):
         out = Path(self._tmp.name) / "slide.png"

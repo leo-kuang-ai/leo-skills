@@ -184,22 +184,11 @@ class CliPrepareSourcesTest(unittest.TestCase):
     def setUp(self) -> None:
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
-        self.run_root = Path(self._tmp.name) / "run"
-        (self.run_root / "input").mkdir(parents=True)
-        (self.run_root / "run.json").write_text(
-            json.dumps(
-                {
-                    "schema_version": 1,
-                    "run_id": "r1",
-                    "route": "generate",
-                    "revision": 0,
-                    "supplemental_inputs": {},
-                }
-            ),
-            encoding="utf-8",
-        )
+        self.run_root = Path(self._tmp.name).resolve() / "run"
+        from tests.expression_test_support import copy_real_html_run, slides_for_run
+        copy_real_html_run(self.run_root, request_index=True)
         self.slides_path = Path(self._tmp.name) / "slides.json"
-        self.slides_path.write_text(json.dumps(SLIDES), encoding="utf-8")
+        self.slides_path.write_text(json.dumps(slides_for_run(self.run_root)), encoding="utf-8")
         self.manifest_path = Path(self._tmp.name) / "sources-manifest.json"
         self.manifest_path.write_text(
             json.dumps(make_manifest(), ensure_ascii=False), encoding="utf-8"
@@ -355,6 +344,8 @@ class DispatchDisciplineWarningTest(unittest.TestCase):
         self.assertEqual(len(warnings), 1)
         self.assertEqual(warnings[0]["agent_id"], "serial-agent")
         self.assertEqual(warnings[0]["recorded_by_agent"], 3)
+        self.assertEqual(warnings[0]["schema_version"], 1)
+        self.assertEqual(warnings[0]["page"], "3")
 
     def test_distinct_agents_do_not_warn(self):
         for n, agent in ((1, "w1"), (2, "w2"), (3, "w3")):

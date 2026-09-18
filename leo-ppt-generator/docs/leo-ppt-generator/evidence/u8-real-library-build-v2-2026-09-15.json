@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "scope": "isolated-real-library-build-not-delivery-publication",
+  "mapped_files": 2155,
+  "error_type": "CatalogError",
+  "error": "unclassified_canonical_file:canonical/executable/layouts/manifest.json"
+}

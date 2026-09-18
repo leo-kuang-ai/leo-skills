@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:新拟态风",
+  "name": "新拟态风",
+  "aliases": [
+    "neumorphism",
+    "新拟物风",
+    "软UI风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/新拟态风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "neumorphism style, soft extruded look via inner/outer shadows on a same-color canvas, tactile soft-UI, gentle monochrome depth, modern and calm, touchable interface aesthetic"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "neumorphism",
+      "新拟物风",
+      "软UI风"
+    ],
+    "best_for": "以同色内外投影营造压印般的软 UI 质感,柔和现代、有触感",
+    "visual_direction": "neumorphism style, soft extruded look via inner/outer shadows on a same-color canvas, tactile soft-UI, gentle monochrome depth, modern and calm, touchable interface aesthetic",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "single soft gray/light tone (#E0E5EC)",
+      "composition": "extruded cards on same ground, soft nubs",
+      "density": "medium, calm"
+    },
+    "color_palette": {
+      "primary": "soft monochrome ground #E0E5EC, dark text #334155",
+      "secondary": "shadow tones #C3CBD8 / #F9FBFF",
+      "accent": "one accent #6C7A93 for active state",
+      "neutral": "#334155, #9AA7B8, ground #E0E5EC",
+      "rule": "soft, monochrome, extruded; avoid harsh contrast and saturated color fields"
+    },
+    "typography": {
+      "title": "clean modern soft sans (Nunito / 思源黑体)",
+      "body": "clear on soft ground",
+      "labels": "soft chips",
+      "text_quality": "accurate, calm"
+    },
+    "layout_patterns": [
+      "extruded card grid",
+      "soft nub controls/buttons",
+      "tactile stat blocks",
+      "layered soft panels"
+    ],
+    "layout_usage_rule": "Extrusion via outer+inner shadow on one ground, not color contrast; keep tones calm.",
+    "layout_blueprints": [
+      {
+        "name": "功能页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "模块1",
+              "模块2",
+              "模块3",
+              "模块4"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "数据页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 2,
+            "labels": [
+              "主指标软卡",
+              "趋势"
+            ]
+          },
+          {
+            "position": "side",
+            "count": 2,
+            "labels": [
+              "对比",
+              "结论"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "soft extrusion, same-ground shadows, gentle monochrome, tactile volume",
+      "avoid": "multicolor gradients, flat harsh borders, glossy, clutter"
+    },
+    "rendering_constraints": [
+      "Soft, modern, tactile; volume comes from shadow, not color.",
+      "Keep a near-monochrome ground and calm tones.",
+      "Accurate content; no invented logos."
+    ],
+    "reference": "GitHub: 新拟态（neumorphism）趋势 · 常见PPT风格类型"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Soft, modern, tactile; volume comes from shadow, not color.",
+      "Keep a near-monochrome ground and calm tones.",
+      "Accurate content; no invented logos."
+    ]
+  }
+}

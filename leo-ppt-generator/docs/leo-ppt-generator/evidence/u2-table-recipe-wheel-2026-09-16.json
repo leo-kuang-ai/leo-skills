@@ -1,0 +1,750 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "uv",
+        "build",
+        "--python",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "--wheel",
+        "--out-dir",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/table-recipe-wheel-2026-09-16/dist",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/table-recipe-wheel-2026-09-16/source"
+      ],
+      "exit_code": 0,
+      "log": "docs/leo-ppt-generator/evidence/u2-table-recipe-wheel-build-2026-09-16.log",
+      "log_sha256": "24733b9368bcb10d1dad0b529ad5d624c95409f37e6162951998ece56a5eac95"
+    },
+    {
+      "argv": [
+        "uv",
+        "pip",
+        "install",
+        "--python",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "--no-deps",
+        "--no-index",
+        "--target",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/table-recipe-wheel-2026-09-16/installed",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/table-recipe-wheel-2026-09-16/dist/leo_ppt_generator_runtime-0.1.1-py3-none-any.whl"
+      ],
+      "exit_code": 0,
+      "log": "docs/leo-ppt-generator/evidence/u2-table-recipe-wheel-install-2026-09-16.log",
+      "log_sha256": "97fabd10273ae7ee5dfeaed8ff7c7d5fdbcfa21110ae340bc236a15944d4302a"
+    }
+  ],
+  "wheel": ".migration-work/table-recipe-wheel-2026-09-16/dist/leo_ppt_generator_runtime-0.1.1-py3-none-any.whl",
+  "wheel_sha256": "7e3e84554fb6dbae56c522666903d359770035ac4c8d3a2f5aac43a8a2a64efc",
+  "matching_package_files": [
+    {
+      "path": "leo_ppt_generator/__init__.py",
+      "sha256": "da234402328d50b154757971d592431252c80cb0ca98c3898a478af8d38b5a08"
+    },
+    {
+      "path": "leo_ppt_generator/__main__.py",
+      "sha256": "76fa916e93e0ae1a6c1bb51dcc0bcf289c014e9f760a47165f8a84401ccf41d7"
+    },
+    {
+      "path": "leo_ppt_generator/asset_resolver.py",
+      "sha256": "f677411765ed0125f81773d3bf774fb28dfccab57eefc4a1c4632ed360cd14e5"
+    },
+    {
+      "path": "leo_ppt_generator/backend_execution.py",
+      "sha256": "6f1cc2bd47f62c4223a7b64857902817bdd057f6a386fd555cf7633b2eb4c914"
+    },
+    {
+      "path": "leo_ppt_generator/capability_probes.py",
+      "sha256": "dc9e1a10b4b8d02798ce5ab5cac7fdb33312b0077d63d2aebfb215346c13c8fb"
+    },
+    {
+      "path": "leo_ppt_generator/cli.py",
+      "sha256": "c9ead48c1aad12418a624000e0c69ed58328b7a90f4f8913111bab531ae77ca7"
+    },
+    {
+      "path": "leo_ppt_generator/content_pack.py",
+      "sha256": "3bd1f9219c57516c74d5fe4c13c2bcc2352cc3f7c394291cc24e2d7b0d58b6bf"
+    },
+    {
+      "path": "leo_ppt_generator/content_preview.py",
+      "sha256": "b5c2d9e6d8cc44ab514eb652084c4c5b5b961ddcf287c32dd38169c054642ebe"
+    },
+    {
+      "path": "leo_ppt_generator/content_projection.py",
+      "sha256": "a0f35fc66f56b64d4d0d2fe0204e9df8cce110505a4da0fe2f88f35563fbb1d5"
+    },
+    {
+      "path": "leo_ppt_generator/contracts.py",
+      "sha256": "c142c0e0f0bfa896240352f1a2e399776d20d8064b69e62fab6a663ada7c43a1"
+    },
+    {
+      "path": "leo_ppt_generator/credentials.py",
+      "sha256": "7136d3dc0ff88861528494943511de84bb88657afad1519ac04d414091e5e5d2"
+    },
+    {
+      "path": "leo_ppt_generator/delivery_disclosure.py",
+      "sha256": "e6accc642ec7c0bc62b6f4200f7250b1462a4227ac18b1882561fffd23009605"
+    },
+    {
+      "path": "leo_ppt_generator/evidence.py",
+      "sha256": "46d077602b4bdaa2de4d4ef03026dc49bb7579d0c98e89061aabf2c05ae22a75"
+    },
+    {
+      "path": "leo_ppt_generator/execution_pairing.py",
+      "sha256": "fefa877dec87635d332e98a1dcb95ee71de745d981e2898cfe78e45821eef886"
+    },
+    {
+      "path": "leo_ppt_generator/layout_bank.py",
+      "sha256": "eb42023a37c4dd86557102e4ef1672936e379f080ef24401da42ecd25d041877"
+    },
+    {
+      "path": "leo_ppt_generator/layout_proposals.py",
+      "sha256": "27b7416fd7bfca6415a986a988ccba2b095883f76ade9126b3d2e3354e25e4cf"
+    },
+    {
+      "path": "leo_ppt_generator/layout_selection.py",
+      "sha256": "9e318ee0075ec3b09c71dc3c6aade4656bf15d200e9a96bc87ae970eb743a5ba"
+    },
+    {
+      "path": "leo_ppt_generator/library_migration.py",
+      "sha256": "610e65eec2eae21f7d3e388d91bcc3ea8eca9405b5c0db7e24b1a4b1ef251e02"
+    },
+    {
+      "path": "leo_ppt_generator/lifecycle.py",
+      "sha256": "03745355e323d58fc8721fc5c5a66bdedf94d3d80dc39a6a8bbbbf938e9d9260"
+    },
+    {
+      "path": "leo_ppt_generator/observability.py",
+      "sha256": "4891fbbe5695c99c802f4b4657167d8423941db5d2c12e19105bc69117bbe259"
+    },
+    {
+      "path": "leo_ppt_generator/ocr_alignment.py",
+      "sha256": "520ea774f4490f8b93024cdf29c239050266d8b1815bde93ac2c6bbbe3971654"
+    },
+    {
+      "path": "leo_ppt_generator/page_intent.py",
+      "sha256": "0f5f292204afc0396e86c3c5211908f6a7c2a52faa23353f8ca7f3fbeaa6896c"
+    },
+    {
+      "path": "leo_ppt_generator/qualification.py",
+      "sha256": "580e55f51100bce77d174b11d0e0a9799cf7c5513e19aea5d745658416f552a5"
+    },
+    {
+      "path": "leo_ppt_generator/quality_metrics.py",
+      "sha256": "1c1714594c973e6b338272bcb62246abf5fd0ab84772cff7ae0b3c1f8c709955"
+    },
+    {
+      "path": "leo_ppt_generator/quality_replay.py",
+      "sha256": "5493436c8e6b3f385c40944b2fc9b78549f3d6e32e11179c7f97dc28b6d7cf4e"
+    },
+    {
+      "path": "leo_ppt_generator/raster_oracle.py",
+      "sha256": "588d8fa9d649948ab2ed175fdbce1c5922aef0cf096d46b98e8486925afd6a26"
+    },
+    {
+      "path": "leo_ppt_generator/raster_text.swift",
+      "sha256": "7356a8e25c2d38772b77e9f80488b14b1aefb8aa03c9d21da49101ef8e76d112"
+    },
+    {
+      "path": "leo_ppt_generator/recommendation.py",
+      "sha256": "18ac040e923959db409032d953cc6e797cf08b7c7df90f2e9076e5a2566d0cf7"
+    },
+    {
+      "path": "leo_ppt_generator/relation_oracle.py",
+      "sha256": "76d1d01a9ec5d88b90e75641931005254aacb7ac9f1f8fb3eb35597d5a046cce"
+    },
+    {
+      "path": "leo_ppt_generator/runs_console.py",
+      "sha256": "b0de2aac417232da66d713aa6e5bfe39bb60a4defe60bee263a9e1a3c4922fd4"
+    },
+    {
+      "path": "leo_ppt_generator/setup.py",
+      "sha256": "183bea4de1111cc275731fe1cedce3dda51a153fd51b2e7bba6eadb4113a0261"
+    },
+    {
+      "path": "leo_ppt_generator/storage.py",
+      "sha256": "242d4636193d8ffd43b3a55b2a32912a10dff2b8a1c23da73d359fd60305c10b"
+    },
+    {
+      "path": "leo_ppt_generator/style_validation.py",
+      "sha256": "7dbcaa77b045aabd445d04013f3035ad3b463bc49f15d0cd4b29f83032c96d47"
+    },
+    {
+      "path": "leo_ppt_generator/styles.py",
+      "sha256": "138a115b2642345ce676b629752f8e4503f0bbd47c1ed15da53782eeb0032f5a"
+    },
+    {
+      "path": "leo_ppt_generator/task_local_layout_proposals.py",
+      "sha256": "526f30a12463f499d6e46ef5072b4337a8978cf91a3a66ad56da67ba5f249ed9"
+    },
+    {
+      "path": "leo_ppt_generator/template_catalog.py",
+      "sha256": "355533883f549fa92f2a54875a0fb0749fcdf8a34b45ef89f552ca6f977a790e"
+    },
+    {
+      "path": "leo_ppt_generator/template_inputs.py",
+      "sha256": "e0c17aaf6b33ee0b8121a8becd3d17e1bde03d3f11b09790cdc7f2af0b774ca9"
+    },
+    {
+      "path": "leo_ppt_generator/templates.py",
+      "sha256": "df4f9e16fc2519207e99c964c33deccb703ccbe0f6501e7f6483722297eabc29"
+    },
+    {
+      "path": "leo_ppt_generator/upstream_bridge.py",
+      "sha256": "ddd492d06b256cb6f3b61b8091e610ea6d4d1a3dd30b46a9d607bdd110d156e0"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/__init__.py",
+      "sha256": "3f79d3175a73efe246bdd012caf851e14466ce019653d0f08c401c83a069cc03"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/__init__.py",
+      "sha256": "8331ebe29df5b9bf5731847a62aeebab09e9b5f6cda1b978bbcb1c7169600c82"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/assemble_ppt.py",
+      "sha256": "c8498d63d0c5cf02a12616a7673c1dd5d06d108ca1bda51c0da993e52aba9ca9"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/codex_ppt_runtime.py",
+      "sha256": "f4c9f38c1b6a41c0e79e30e2e1278e517e640556dd529020dce08e301b164d5f"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_gen.py",
+      "sha256": "0524f359e7116ca881f36943e9e43d5fe9793b2a11a0d078d29a1ee5b0c19b46"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/prepare_slide_prompts.py",
+      "sha256": "74ff34e42ae025f8c15a785c05de5fb5043b6553e65666102c5d155bed5d80e7"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/record_slide_blocker.py",
+      "sha256": "92be04beb2a690ec6c19dea48a9674d2daea3ceabe2de9e64b181361d0dbde9c"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/record_slide_dispatch.py",
+      "sha256": "f5ce8806a0aecf24ea3b7c657c8d20507d83b6fd21a81da86d8f6f9da623ed54"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/record_slide_result.py",
+      "sha256": "ae14297acf87991ef0cb4af41bd0a591665f288d25ff5d6f0b9b264e5a59bac1"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/remove_chroma_key.py",
+      "sha256": "bf5c9c5712c50b7a9e9c292bd5d83c69e937824ca4e46da353b85042512292be"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/slide_job_status.py",
+      "sha256": "15c90c28b5733275990b162e36c32dd7940465ec7c6522f49aaa8a42c5dbd293"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/slide_run_state.py",
+      "sha256": "0c30396598bd34d05989d87bb90543cf94a3d8adaea177da2d3afe9ac9a9d931"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/__init__.py",
+      "sha256": "f4a8db421052b42be962037d7a3df74bec598a67be4bcae6ac3aaefff64a5c3e"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/atlascloud.py",
+      "sha256": "bcdc6c35afd7c483f01125cb5788ef852c16cd9525eddebb6b206673193fa450"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/base.py",
+      "sha256": "027468265d72c0bf4e4372bdbfbe8cf12759f929e873fa10c16c13577a468296"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/factory.py",
+      "sha256": "629d85a39367f7e30009742c8667bd30558131adca6d70bb82fcfb9087813bf6"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/native.py",
+      "sha256": "f2ef72202b8e59b875ca4e25aa13c013c04f0da98fcce61420664c1026afe7a0"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/codex_ppt/image_providers/openai_compatible.py",
+      "sha256": "42ba2aa798e542c7c67a4b9e1a120a9c808a9d38e4b27e75ba30babe98e08610"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/__init__.py",
+      "sha256": "3aeeeb28deb91c5838733c26ff79dd6bbff898884dad1ed5a89292d0e7e45501"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/__init__.py",
+      "sha256": "a7833154ef22876fa19e1ec8355064aea30a04319390cb28d4b11b33a9b1de38"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/cli.py",
+      "sha256": "7a1fef4e8c9e9bdcb877e05d5191f3d0daf1d884449fa944602107c1dda699ac"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/__init__.py",
+      "sha256": "3ca19eef7cca8923807c80dc0ecd6d67b262f45c889ae761edd9b5c1dc5c4e54"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/_input_normalization.py",
+      "sha256": "966bdebe5e8779e33988d00e6c3bb9dfc8f142c69f7216f28d20065f2c8f054f"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/_page_artifacts.py",
+      "sha256": "f3c46c78cfd1661897d655bfdedd872bc27383325588c7bc7dc26186647e744b"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/build_pptx_from_manifest.py",
+      "sha256": "e69418788e6b8d14cdeed878714cbdd880278be12d83cb4c106f8404641b13c8"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/configure_image_backend.py",
+      "sha256": "e72de59a09ab6ef45490562a4f99ecaae456beab000d6188217b5a2be0075fef"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/deck_run_state.py",
+      "sha256": "32a21b77ccd6c06dfec118489942495e149c79f106bfeb9261db30d244e7fd5c"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/deck_text_hints.py",
+      "sha256": "2f267a49504992ce3829683daa7f4a8bd54cf70912ab61263393f792099feda6"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/finalize_deck_run.py",
+      "sha256": "fbf2f819c2c4d62144b5c6007fbaf17024eda3f56e436e7bff36aad08378b29d"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/formula_renderer.py",
+      "sha256": "65f4c0883d3457f67fcc1f13ba8bcfe001216641839bacd9b6affea30f86202e"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/image_gen.py",
+      "sha256": "0c466ac15ec271b004170f9a8d03b95836d62bdfc6d75fcfa4fc48025ab53734"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/main.py",
+      "sha256": "6b23bcaf25a20ce3161711ee5d116865014c99d474e82a84d1df8d9bb9967198"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/make_page_contact_sheet.py",
+      "sha256": "b205774265de2fcca2c3ea3228cb1b9e3da82b394f320255f5d82c3fe67a4412"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/paddle_text_hints.py",
+      "sha256": "1f9647acc267863c693bc9284bcf1bbb6a4eceb572f2a8a63d6ed214a323377d"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/page_job_status.py",
+      "sha256": "01e8effade4c3ab6719341c60490cb874f6c9d780e1fdbe00088696362d8703b"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/page_text_metrics.py",
+      "sha256": "683948879b666ea47eb12fb10bc2371be52f271cf531e3802d759fc6398a1595"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/prepare_deck_run.py",
+      "sha256": "b0f96ea60479cb62f001d49c5384739e13187e8a8605a871de00b7cc3c8d3cf7"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/process_asset_sheet.py",
+      "sha256": "c33faed5c78d67d4a217e49baaf85ad04ad8e8a722ecb14b32247b4a584357b5"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/record_imagegen_result.py",
+      "sha256": "fc959b5809ccd59c4b58ba5bf1e705dff18895046b818dc928776c217a3242fb"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/record_page_dispatch.py",
+      "sha256": "d91b45281c0eafa10801b1344f3c423712b5aeae0aea0231d2243003176f0522"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/record_page_result.py",
+      "sha256": "fdc359451946f2559be2c97961d91ec64ec5b1a1c0c6f226d1df22b68c1b8ac4"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/remove_chroma_key.py",
+      "sha256": "68b018feee3e97f140daa3216b05cfb09f79efb58c305f2bf8656f1ff751939d"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/reset_page_job.py",
+      "sha256": "81181eb9e5bb42cb973608795592d1a7c1dd04e5bd4ddd339bdc0864f080f42e"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/runtime_env.py",
+      "sha256": "425f525efe99b6339332d521f8641c8cd23cce8c8fea7690829e20ae6cbe77a7"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/split_alpha_components.py",
+      "sha256": "16e3976b057e62aae02d272e0778870d4024404afa5da4b2b27657cc27e6a681"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/text_hints.py",
+      "sha256": "07daccc89a847bf9c481fa8f2f2044cc7924e59389e12e0a36eff0a43b45001d"
+    },
+    {
+      "path": "leo_ppt_generator/_vendor/editable_ppt/editppt/runtime/validate_pptx.py",
+      "sha256": "7446410b44a45160c0cdb538e9de396dcd5f460d620c10e202f1c26479dd49b3"
+    },
+    {
+      "path": "leo_ppt_generator/application/__init__.py",
+      "sha256": "f6fc981a0f3898ffb516bdb39e0ed85f2ac19217797fa07ea0ed1d579beea494"
+    },
+    {
+      "path": "leo_ppt_generator/application/expression_pipeline.py",
+      "sha256": "74cd196c61c1a04e50f02565adc1a27696c4aa7aeaec9566caac2a2874b0250a"
+    },
+    {
+      "path": "leo_ppt_generator/application/routes.py",
+      "sha256": "88fd03837e8eacd01cb4be4e258c2c1ce164292f48fd2d13b8b6efa0b18d9c51"
+    },
+    {
+      "path": "leo_ppt_generator/application/run_index.py",
+      "sha256": "f24f543c5c9643d8d14de283b30eae0fd37153c4a7c8e1e03dbb23661be6d50d"
+    },
+    {
+      "path": "leo_ppt_generator/application/sample_decisions.py",
+      "sha256": "3ae1633e97df8fa0de54edefdb7985c45bc82a067565498ca77eb63e8cc62713"
+    },
+    {
+      "path": "leo_ppt_generator/config/__init__.py",
+      "sha256": "13c35baea72571acc04ece61a4dc90f30787e47464099ed341c5e50b8c9089bd"
+    },
+    {
+      "path": "leo_ppt_generator/config/backend_contract.py",
+      "sha256": "0c83ac1c1bf6825d8dfaedf5bcd75ded91d7ff47edb8b59b061b67ee30b95b12"
+    },
+    {
+      "path": "leo_ppt_generator/config/builder_selection.py",
+      "sha256": "e78b3de45f2646b6129a59bee19210d9b22de7ccafa4bcb842c4a169e3f07ad6"
+    },
+    {
+      "path": "leo_ppt_generator/config/channel_catalog.py",
+      "sha256": "ae658623a884c0cdca7778c5a5d758594a8471c0c42baad55fd3ff6b4a5bbe66"
+    },
+    {
+      "path": "leo_ppt_generator/config/host_guard.py",
+      "sha256": "4a65d53abc2887790ec830c7c5ef41fc38861a45d6318267d20f1f29d4cdb26c"
+    },
+    {
+      "path": "leo_ppt_generator/config/models.py",
+      "sha256": "d52752dd7ade8806cbb5ea522510eb1a254d2c0fc11f3c1b8db101056eda07dc"
+    },
+    {
+      "path": "leo_ppt_generator/config/ports.py",
+      "sha256": "96e482b53e1efdea894e1e962a37441363e0145ad527a66042a36fc3e303c68b"
+    },
+    {
+      "path": "leo_ppt_generator/config/provider_registry.py",
+      "sha256": "e6c06497c4703ccf0e0122f027df12a7eecadf0401217e134a407ece4b02065a"
+    },
+    {
+      "path": "leo_ppt_generator/config/providers.yaml",
+      "sha256": "f4475bc3580d2aea027da556672d2b7b2dd9feee36d664e4406368669d046315"
+    },
+    {
+      "path": "leo_ppt_generator/config/readiness.py",
+      "sha256": "e92f84fc0671ccf93ce927ca6431aea829d8e2c996c13421ad1a9dfc76c04dc2"
+    },
+    {
+      "path": "leo_ppt_generator/config/reason_codes.py",
+      "sha256": "4e8762b61eaa7f58407c405736ebc5fd34a727b4f4e311db7e088cb8d5b3b457"
+    },
+    {
+      "path": "leo_ppt_generator/config/receipt_store.py",
+      "sha256": "a36866db2e5a3cbed60ed9e3fedf18205fd9ab06d2078cc79271034f1eacd640"
+    },
+    {
+      "path": "leo_ppt_generator/config/runtime_config.py",
+      "sha256": "23d0fa88f7feb65511f1ea070ad2c9343f138a8b6c056f933d9fd5ff3b107294"
+    },
+    {
+      "path": "leo_ppt_generator/config/selection.py",
+      "sha256": "892ed214e0a6dd1d4a22a4139a0b42c4f293c71713125e7fa0d26fe99a71b8e5"
+    },
+    {
+      "path": "leo_ppt_generator/config/service.py",
+      "sha256": "d47387e1cc6ed7f292feab5facae29fedf49e3b183192aab6efbf5e93cc7577e"
+    },
+    {
+      "path": "leo_ppt_generator/config/transactions.py",
+      "sha256": "3ebabfc8749509647a70474fef63b6d6751c6caa04d1b270945fe3a204257195"
+    },
+    {
+      "path": "leo_ppt_generator/config/verification.py",
+      "sha256": "641ad1f700bd95f61e810522d084aaced365c58a2118e5659ef2637c8f25e3be"
+    },
+    {
+      "path": "leo_ppt_generator/config/verification_operations.py",
+      "sha256": "17b105bb8fd5e57622f2078b8143ce175290f3f09715a01bf0f6305fb63b0046"
+    },
+    {
+      "path": "leo_ppt_generator/config/web.py",
+      "sha256": "5f81ea77e76c67bedb8318405730c4f4bfcc82b03708e1598170b54de82859f3"
+    },
+    {
+      "path": "leo_ppt_generator/config/wizard.py",
+      "sha256": "6e18641a7e8d0eb590df51f61df70319430318b53202db5c11f3fe87242285a4"
+    },
+    {
+      "path": "leo_ppt_generator/config/assets/config-ui.html",
+      "sha256": "20a203785449858dc2cd5eb63566f5884b2f03dcb21ef65987b3ee8192072398"
+    },
+    {
+      "path": "leo_ppt_generator/config/assets/config-ui.js",
+      "sha256": "b78c3f92ca2c5a40e85b72aa6e6e84d7a2cc1e220fdbb6312401bc2e412920a1"
+    },
+    {
+      "path": "leo_ppt_generator/editable/__init__.py",
+      "sha256": "525c93a6bb46b2e7f5be05f7d1aeafeaa753d8afbc11327af6002438a3e9c77c"
+    },
+    {
+      "path": "leo_ppt_generator/editable/_oxml.py",
+      "sha256": "5ba3ed9abf4c3b5117aec370a642d298f2d4751d3ad7d3d2a3371bb1f91990ef"
+    },
+    {
+      "path": "leo_ppt_generator/editable/adapter.py",
+      "sha256": "af898fdc7393cb1f9150f699b1471bb4f5a7da86d18f330ab7faabc6ebd73ef3"
+    },
+    {
+      "path": "leo_ppt_generator/editable/deterministic_zip.py",
+      "sha256": "fa49804314fdff2a099c015578e0b07544db7ba3c77b7289b512a0aed35df680"
+    },
+    {
+      "path": "leo_ppt_generator/editable/geometry.py",
+      "sha256": "b756bc05f6afeb8440727766e549fac770c0af76e35c42fe5356d86ede512863"
+    },
+    {
+      "path": "leo_ppt_generator/editable/object_builder.py",
+      "sha256": "0f9b33d8bc996c4a06a85463bc8d75da2ed4a7c706d7765628c77f193cd19405"
+    },
+    {
+      "path": "leo_ppt_generator/editable/object_projection.py",
+      "sha256": "4009b60f2fc382cce96f352f462536c5d5b279912cc12fa0458074035ef250ea"
+    },
+    {
+      "path": "leo_ppt_generator/hybrid/__init__.py",
+      "sha256": "88f750d91e7521d369e6113df60ea47f6e2e8df896f591ea9090ccc838a9e22e"
+    },
+    {
+      "path": "leo_ppt_generator/hybrid/assembler.py",
+      "sha256": "e704dde0d996ba228e6c68888c73c3c9ea977090b210f619858b0e99ab91dc1c"
+    },
+    {
+      "path": "leo_ppt_generator/image_deck/__init__.py",
+      "sha256": "3a2df89d345005410eefd27bb3f608fdb1f134e66753c2d8348ff28f3864736f"
+    },
+    {
+      "path": "leo_ppt_generator/image_deck/adapter.py",
+      "sha256": "ae26349d461bab37bd2a0cd2a72ff0028e49b5a5631c69fcccae50719fa19828"
+    },
+    {
+      "path": "leo_ppt_generator/image_deck/expression_adapter.py",
+      "sha256": "09639dc49c1cccfc639fe5a4c11f116759b0ad0ca812585146b10e984ae6b270"
+    },
+    {
+      "path": "leo_ppt_generator/image_deck/recipe.py",
+      "sha256": "e9fd4ac60c749d97e0e169c624d949627c9d5643d555f8aeaa720d41bdcfdb0c"
+    },
+    {
+      "path": "leo_ppt_generator/render/__init__.py",
+      "sha256": "3bd80827f9725af3434687593684b4ee0a5c272ee674e84055241c081e2f5328"
+    },
+    {
+      "path": "leo_ppt_generator/render/assets.py",
+      "sha256": "0ffce7a7f2d4e8fbcd043075b25ec1677e13b8e5e3fac18d244df29f6392403e"
+    },
+    {
+      "path": "leo_ppt_generator/render/chart.py",
+      "sha256": "12134332d5d3a53f68dbe445450797af2d7b88a23022699d397063160c092111"
+    },
+    {
+      "path": "leo_ppt_generator/render/composite.py",
+      "sha256": "6db72f0f42b4b1d64bf7b780b93f516386feacb49f95c546ada47068fc7a773f"
+    },
+    {
+      "path": "leo_ppt_generator/render/errors.py",
+      "sha256": "d1a423c5c7c7f3dc2f7fbfe44f8885df3c553d34b1a5fb22b30977dd534e4249"
+    },
+    {
+      "path": "leo_ppt_generator/render/fonts.py",
+      "sha256": "2fee2f789293d9ac7fca8d8b3c0d4b88cb87e2cdfd5c39bbcf8c0b9efd50111a"
+    },
+    {
+      "path": "leo_ppt_generator/render/layout.py",
+      "sha256": "1b08072a0ca294bc7b5deca2f410db7dcc944f4db05e5839b48c9ee40cd51047"
+    },
+    {
+      "path": "leo_ppt_generator/render/page.py",
+      "sha256": "3163206c2d823d9a9f274a6c7866540953e75cad57b668bf2a487aff8a72357c"
+    },
+    {
+      "path": "leo_ppt_generator/render/provenance.py",
+      "sha256": "2cabb59df5e33bb40f6fd0abec936e79a08dbcda1928e995928bb949b64ddf66"
+    },
+    {
+      "path": "leo_ppt_generator/render/raster.py",
+      "sha256": "20d997a0c03ad370b6f35ac27264a937bfe0942d37e65f98a6f07d4f01268402"
+    },
+    {
+      "path": "leo_ppt_generator/render/readiness.py",
+      "sha256": "8a91b675dcc8f2e7a7384c54e9bc1d886d0f1111f88a4ba7736b2059680cce62"
+    },
+    {
+      "path": "leo_ppt_generator/render/receipt.py",
+      "sha256": "8c865cf27af8190a6670c5a92b7bfd5e7551b71fd94424c9650a617694b8463e"
+    },
+    {
+      "path": "leo_ppt_generator/render/svg_policy.py",
+      "sha256": "ae9ef8c7dded59083fa8c444e60b905c6d2c0055e1e915d88d296b39648da50b"
+    },
+    {
+      "path": "leo_ppt_generator/render/text_layer.py",
+      "sha256": "3bd495c4415a9a2cce49fde3ae5eddedbf4d294af4bc6149ed0bd1371d177433"
+    },
+    {
+      "path": "leo_ppt_generator/render/theme.py",
+      "sha256": "3347168ecefb4ed66cb3da6147a581680b4d1fb6b8c78913b4876afc55f34884"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/__init__.py",
+      "sha256": "374f463e63d2e6fae66f2ae6793ccada93c5080cbf83fc5bad71c5017543d9bf"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/backend-contract-v1.schema.json",
+      "sha256": "58b6617472a15dcea16a4942a228a4c8ada2e144fda828dca81886020963038c"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/binding-v2.schema.json",
+      "sha256": "a95755e20c27aba0dea90b493fd9309208df1799fb7ddb1409603e96db5123b9"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/bootstrap-result-v1.schema.json",
+      "sha256": "f084a5f8d72aa69a9eec4a255eaa7760aa33aeea52e06e65121dfe58da6cf03c"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/capability-evidence-v1.schema.json",
+      "sha256": "89ea25609a3cf25738d549dbd6b0c8899859564f43e6bcafdba3c147460ad026"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/command-result-v1.schema.json",
+      "sha256": "614fc375ae3cbb49b259c3fc4f7f694443b1004d950d0e43e5f44f39dcbb35f4"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/config-report-v1.json",
+      "sha256": "313cf65b84a5fdacf03fa22a37505c2b9b419de0f3310f66d158a69d7a56cb0e"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/credential-status-v1.schema.json",
+      "sha256": "5aeeb0edc5f09884a478b588c1954f9daf2ace8e2bfc8dd95f1aa38d241cce8d"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/deck-quality-v1.schema.json",
+      "sha256": "b799717f6afa5329d7d65003039a0a428e1dc31c71a2e2a3dd360fb1274b84cf"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/delivery-v1.schema.json",
+      "sha256": "13aebfbe44ccbd64b5d36ff9a29f7b9d6d6cb8c70dccf4c558f14a67d8ec394e"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/delivery.schema.json",
+      "sha256": "5fb0e6b31beed0d9973bde6e3fa3ed6c4944e70fbf5af06f0dd49c309e5a90ed"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/execution-candidate-view-v1.schema.json",
+      "sha256": "4fa7f39e99cbcf9ffa05f8b8408a92ee80478bc209b9dbede3b4539d8365941c"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/execution-pairing-v1.schema.json",
+      "sha256": "71b697895d1de109e904cfb87336a8046538814f6d7d037bd395193b315e61b4"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/expression-pipeline-v1.schema.json",
+      "sha256": "f8099f0e83d95728ec5b045c43aba900bf9344d85f34e35898feda2ee0adfea7"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/image-recipe-v1.schema.json",
+      "sha256": "55e18dcc8ecb160f5567e5f4a9ebe12c84b3dca989eddf9d7188b6eea069ecad"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/impact-v2.schema.json",
+      "sha256": "7bae6c70ba7b1d17e4aabeca9772c32d623e63ed8cc38430f3afc987f5bb900f"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/layout-bank-v1.schema.json",
+      "sha256": "7e86dd5351d910c35ad411def3c944642f6a7207aad042806ca6fa28c2cce97a"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/migration-plan-v2.schema.json",
+      "sha256": "8770962519f23f0bf4115d0608025335e22151d8a95c4156f3b637185d0216e7"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/page-artifact-v1.schema.json",
+      "sha256": "22b492917d10dffb8029a9a7528d688ebe40ef6b029faa75d8bfd55257ca510b"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/page-content-pack-v1.schema.json",
+      "sha256": "b74fceb8f57b627f1fdb649ca22e32704370695656a14f0f9257d56a4de43129"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/page-content-pack-v2.schema.json",
+      "sha256": "19e6d06f6231ee96b2593421a68b3b88e88c6f6ef196f95b1d4d3df74f26184f"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/page-expression-v1.schema.json",
+      "sha256": "23c9a9a574a375b18434858a1b232223ad936ea60bbb8ed8255886b27754be13"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/page_artifact.schema.json",
+      "sha256": "86cd299bc1e97b2a9f409a519baec5ad8b519f4cb6b89e38d2819450b4b7d276"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/qualification-v1.schema.json",
+      "sha256": "24f371439773997394c48d0b0af6884cbfa12716a6a7e12d0f93cef9e8274998"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/quality-event-v1.schema.json",
+      "sha256": "75a22de6ca69e3670f91a7133b566cc7b6819122422ab3a694233057d7826478"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/quality-replay-v1.schema.json",
+      "sha256": "a0346f4efb922e98172b01da3fec9aec89d6d957e4c39e0e5a14b28648876f63"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/run.schema.json",
+      "sha256": "cfc575143673f2e0b99245583e8490e57c91a4a58988b7f1234e74121582673c"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/setup-report-v1.schema.json",
+      "sha256": "011bdea46ba7383d21aff8cff3bff7c0fe8cd583b29c6c807e40fe674e94716d"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/style-brief-v1.schema.json",
+      "sha256": "2f7cb495bf1746516e89016eba267e5f1c3ec16ca838f3c852257c6558904d51"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/style-index-v1.schema.json",
+      "sha256": "9060cc3da594a2ad17d2cd1ffceb32daac090bb45321f46f4c3dc521aed1ff7b"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json",
+      "sha256": "a9dd3fc2c8cfd4112390f17ae4d9fee0e641376fd0dc75a4d6e2f42c4836a527"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/template-library-v2.schema.json",
+      "sha256": "796072c2ae8466d4e011a78cf64a82900c421c8e4b1b0446ac5758118fbed7c5"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/template-registry-v2.schema.json",
+      "sha256": "b71038d6d2ebf5ca3ae9b3001afd80a5f6302a9d0c776f34fc8abb18a932f83d"
+    },
+    {
+      "path": "leo_ppt_generator/schemas/verification-receipt-v1.json",
+      "sha256": "ddf45dff7ca6ce6fee1395160f64d5ed3d82a93bad896a88b5f85f451d1f7a9f"
+    },
+    {
+      "path": "leo_ppt_generator/upgrade/__init__.py",
+      "sha256": "b284a2db22364f815daa4eed39c2c0fc7b80b46b4803059c4a48eb36d348d81a"
+    },
+    {
+      "path": "leo_ppt_generator/upgrade/baseline.py",
+      "sha256": "c809abda0cfdf0b21c0455277fa6743ebfa9723de0c7afa7d9ec1ce83ee1e4e4"
+    }
+  ],
+  "status": "installed-byte-exact",
+  "claim": "当前代码与 schema 打包/安装摘要；不是 Provider 或正式迁移证据"
+}

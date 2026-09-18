@@ -1,0 +1,481 @@
+{
+  "exit_code": 1,
+  "tests": 2120,
+  "failures": 52,
+  "errors": 66,
+  "log": "full-suite-integration-audit.log",
+  "entries": [
+    {
+      "test": "ERROR: test_all_gates_pass_single_report (test_build_delivery_preflight.DeliveryPreflightTests.test_all_gates_pass_single_report)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_explicit_master_and_pptx_args_override_probes (test_build_delivery_preflight.DeliveryPreflightTests.test_explicit_master_and_pptx_args_override_probes)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_geometry_failure_blocks_and_is_reported (test_build_delivery_preflight.DeliveryPreflightTests.test_geometry_failure_blocks_and_is_reported)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_receipt_tampering_fails_the_gate (test_build_delivery_preflight.DeliveryPreflightTests.test_receipt_tampering_fails_the_gate)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_sensitive_candidates_warn_but_do_not_block (test_build_delivery_preflight.DeliveryPreflightTests.test_sensitive_candidates_warn_but_do_not_block)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_sources_failure_reported_as_failed (test_build_delivery_preflight.DeliveryPreflightTests.test_sources_failure_reported_as_failed)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_with_flag_rework_replaces_recorded_page (test_cli_rework_flag.CliReworkFlagTest.test_with_flag_rework_replaces_recorded_page)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_without_flag_late_record_rejected (test_cli_rework_flag.CliReworkFlagTest.test_without_flag_late_record_rejected)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_cli_preserves_partial_pages_and_output_link (test_content_preview.PreviewContractTests.test_cli_preserves_partial_pages_and_output_link)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_missing_binding_is_page_failure (test_content_preview.PreviewContractTests.test_missing_binding_is_page_failure)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_missing_pack_fails_before_output_creation (test_content_preview.PreviewContractTests.test_missing_pack_fails_before_output_creation)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_titles_are_escaped_in_single_file_overview (test_content_preview.PreviewContractTests.test_titles_are_escaped_in_single_file_overview)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_unknown_filter_does_not_silently_shrink_page_set (test_content_preview.PreviewContractTests.test_unknown_filter_does_not_silently_shrink_page_set)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_compare_materialization_carries_sides (test_content_projection.MaterializationTests.test_compare_materialization_carries_sides)",
+      "diagnostic": "leo_ppt_generator.content_projection.ProjectionError: content_projection_invalid: 绑定不合格，不得物化 (['expression_incomplete: page expression required'])"
+    },
+    {
+      "test": "ERROR: test_html_materialization_uses_bound_values (test_content_projection.MaterializationTests.test_html_materialization_uses_bound_values)",
+      "diagnostic": "leo_ppt_generator.content_projection.ProjectionError: content_projection_invalid: 绑定不合格，不得物化 (['expression_incomplete: page expression required'])"
+    },
+    {
+      "test": "ERROR: test_image_prompt_is_precheck_not_fidelity (test_content_projection.MaterializationTests.test_image_prompt_is_precheck_not_fidelity)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_materialize_page_dispatches_by_backend (test_content_projection.MaterializationTests.test_materialize_page_dispatches_by_backend)",
+      "diagnostic": "leo_ppt_generator.content_projection.ProjectionError: content_projection_invalid: 绑定不合格，不得物化 (['expression_incomplete: page expression required'])"
+    },
+    {
+      "test": "ERROR: test_font_override_changes_context_and_binding_digest (test_content_projection.PrecompileEligibilityTests.test_font_override_changes_context_and_binding_digest)",
+      "diagnostic": "KeyError: 'binding_digest'"
+    },
+    {
+      "test": "ERROR: test_multi_figure_media_materializes_by_index (test_content_projection.ReviewFixRegressionTests.test_multi_figure_media_materializes_by_index)",
+      "diagnostic": "ImportError: cannot import name 'compute_binding_digest' from 'leo_ppt_generator.content_projection' (/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py)"
+    },
+    {
+      "test": "ERROR: test_reskin_keeps_business_content_and_structure (test_dashi_integration_fixtures.ThemeIndependenceTests.test_reskin_keeps_business_content_and_structure)",
+      "diagnostic": "leo_ppt_generator.content_projection.ProjectionError: content_projection_invalid: 绑定不合格，不得物化 (['expression_incomplete: page expression required'])"
+    },
+    {
+      "test": "ERROR: test_receipt_binds_content_and_drift_invalidates (test_deck_projection_view.DeckProjectionViewTests.test_receipt_binds_content_and_drift_invalidates)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_receipt_verify_unreadable_pack_invalid (test_deck_projection_view.DeckProjectionViewTests.test_receipt_verify_unreadable_pack_invalid)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_additive_artifacts_never_enter_fingerprint_classes (test_delivery_disclosure.AltManifestTest.test_additive_artifacts_never_enter_fingerprint_classes)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_new_receipt_carries_non_fingerprint_disclosure_summary (test_delivery_disclosure.ReceiptBackwardCompatibilityTest.test_new_receipt_carries_non_fingerprint_disclosure_summary)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_old_style_receipt_without_disclosure_still_verifies (test_delivery_disclosure.ReceiptBackwardCompatibilityTest.test_old_style_receipt_without_disclosure_still_verifies)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_canonical_template_changes_invalidate_receipt (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_canonical_template_changes_invalidate_receipt)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_canonical_template_removal_invalidates_receipt (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_canonical_template_removal_invalidates_receipt)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_invalid_binding_and_symlink_block_creation (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_invalid_binding_and_symlink_block_creation)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_library_fallback_templates_use_anchored_keys (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_library_fallback_templates_use_anchored_keys)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_local_asset_drift_impacts_whole_deck (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_local_asset_drift_impacts_whole_deck)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_missing_selected_template_blocks_creation (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_missing_selected_template_blocks_creation)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_qa_report_drift_recommends_qa_rerun_only (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_qa_report_drift_recommends_qa_rerun_only)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_style_source_drift_impacts_whole_deck (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_style_source_drift_impacts_whole_deck)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_unbound_canonical_templates_block_creation (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_unbound_canonical_templates_block_creation)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_unused_canonical_template_does_not_invalidate_receipt (test_delivery_receipt.AssetDriftImpactsWholeDeck.test_unused_canonical_template_does_not_invalidate_receipt)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_churn_from_command_logging_keeps_receipt_fresh (test_delivery_receipt.CliEnvelopeSemantics.test_churn_from_command_logging_keeps_receipt_fresh)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_create_and_verify_via_cli (test_delivery_receipt.CliEnvelopeSemantics.test_create_and_verify_via_cli)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_tampered_verify_is_blocked_envelope (test_delivery_receipt.CliEnvelopeSemantics.test_tampered_verify_is_blocked_envelope)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_create_collects_five_fingerprint_classes_and_excludes_churn (test_delivery_receipt.CreateCollectsFiveFingerprintClasses.test_create_collects_five_fingerprint_classes_and_excludes_churn)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_two_creates_over_same_input_yield_identical_fingerprints (test_delivery_receipt.DeterministicFingerprints.test_two_creates_over_same_input_yield_identical_fingerprints)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_fresh_receipt_restores_accepted (test_delivery_receipt.MissingReceiptGateDisclosure.test_fresh_receipt_restores_accepted)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_stale_receipt_blocks_accepted_and_is_disclosed (test_delivery_receipt.MissingReceiptGateDisclosure.test_stale_receipt_blocks_accepted_and_is_disclosed)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_deleted_page_artifact_is_also_drift (test_delivery_receipt.TamperedPageIsStaleWithPageImpact.test_deleted_page_artifact_is_also_drift)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_tampered_single_page_reports_stale_and_infers_that_page (test_delivery_receipt.TamperedPageIsStaleWithPageImpact.test_tampered_single_page_reports_stale_and_infers_that_page)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: setUpClass (test_design_execution_binding.DesignExecutionBindingTests)",
+      "diagnostic": "AssertionError: {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:body-basic'}, 'points': {'count': 2, 'count_min': 2, 'count_max': 6}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "ERROR: test_digest_helpers_are_lane_split (test_design_execution_binding.DualBindingDigestTests.test_digest_helpers_are_lane_split)",
+      "diagnostic": "KeyError: 'page_content_digest'"
+    },
+    {
+      "test": "ERROR: test_governance_values_do_not_leak_into_projection (test_design_projection.DesignProjectionTest.test_governance_values_do_not_leak_into_projection)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_page_outside_design_rejected (test_design_projection.DesignProjectionTest.test_page_outside_design_rejected)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_projection_carries_only_effective_values_not_prose (test_design_projection.DesignProjectionTest.test_projection_carries_only_effective_values_not_prose)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_projection_is_deterministic (test_design_projection.DesignProjectionTest.test_projection_is_deterministic)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_snapshot_reusable_offline (test_design_projection.DesignProjectionTest.test_snapshot_reusable_offline)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_two_lanes_consume_same_frozen_design_digest (test_design_projection.DesignProjectionTest.test_two_lanes_consume_same_frozen_design_digest)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_fresh_design_resumes (test_library_bundle.DesignFreshnessResumeTest.test_fresh_design_resumes)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_stale_dependency_rejects_resume (test_library_bundle.DesignFreshnessResumeTest.test_stale_dependency_rejects_resume)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_composite_and_render_scopes_skip_gate (test_ocr_alignment.RecordGateIntegrationTest.test_composite_and_render_scopes_skip_gate)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_enforce_mode_blocks_misaligned_record (test_ocr_alignment.RecordGateIntegrationTest.test_enforce_mode_blocks_misaligned_record)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_not_run_disclosed_without_ocr_text (test_ocr_alignment.RecordGateIntegrationTest.test_not_run_disclosed_without_ocr_text)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_warn_mode_reports_failure_without_blocking (test_ocr_alignment.RecordGateIntegrationTest.test_warn_mode_reports_failure_without_blocking)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+    },
+    {
+      "test": "ERROR: test_explicit_scorecard_preserves_all_five_receipt_fingerprints (test_quality_scorecard.ScorecardTests.test_explicit_scorecard_preserves_all_five_receipt_fingerprints)",
+      "diagnostic": "leo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_pointer_missing"
+    },
+    {
+      "test": "ERROR: test_design_digest_deterministic_and_input_sensitive (test_render_theme_capacity.ComposeDesignPipelineTest.test_design_digest_deterministic_and_input_sensitive)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_image_only_canonical_layout_composes_without_regions (test_render_theme_capacity.ComposeDesignPipelineTest.test_image_only_canonical_layout_composes_without_regions)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_locked_brand_role_rejects_task_override (test_render_theme_capacity.ComposeDesignPipelineTest.test_locked_brand_role_rejects_task_override)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_style_resolves_by_chinese_name_to_stable_id (test_render_theme_capacity.ComposeDesignPipelineTest.test_style_resolves_by_chinese_name_to_stable_id)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_baseline_weights_30_45_25_drive_dom (test_render_theme_capacity.RenderGeometryDomTest.test_baseline_weights_30_45_25_drive_dom)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_json_change_25_50_25_padding_12_drives_dom_html_untouched (test_render_theme_capacity.RenderGeometryDomTest.test_json_change_25_50_25_padding_12_drives_dom_html_untouched)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "ERROR: test_render_page_produces_png_with_theme_variables (test_render_theme_capacity.RenderGeometryDomTest.test_render_page_produces_png_with_theme_variables)",
+      "diagnostic": "leo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cover-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 40, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:chain-flow'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:compare-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:quote-pro'}, 'text_capacity': {'quote': {'used': 7, 'limit': 90, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:timeline-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cards-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='finance-navy-light')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:table-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cover-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 40, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:chain-flow'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:compare-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:quote-pro'}, 'text_capacity': {'quote': {'used': 7, 'limit': 90, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:timeline-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cards-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='tech-dark-mode')",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:table-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_edit_one_page_reuses_other_pixels_with_current_binding (test_content_preview.PreviewBrowserTests.test_edit_one_page_reuses_other_pixels_with_current_binding)",
+      "diagnostic": "AssertionError: {'schema_version': 1, 'kind': 'deck-layout-selection', 'policy_version': '2', 'status': 'no_candidates', 'selection': {}, 'top2': {'pg-00000001': [], 'pg-00000002': []}, 'page_status': {'pg-00000001': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required']]}, 'pg-00000002': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required']]}}, 'content_digest': 'f21c7cd75cd4aea4af285aa2cb11c5ba901a17f04d06f35869deda3734aa42fb'}"
+    },
+    {
+      "test": "FAIL: test_real_preview_cache_corruption_and_receipt_fingerprints (test_content_preview.PreviewBrowserTests.test_real_preview_cache_corruption_and_receipt_fingerprints)",
+      "diagnostic": "AssertionError: {'schema_version': 1, 'kind': 'deck-layout-selection', 'policy_version': '2', 'status': 'no_candidates', 'selection': {}, 'top2': {'pg-00000001': [], 'pg-00000002': []}, 'page_status': {'pg-00000001': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required']]}, 'pg-00000002': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required']]}}, 'content_digest': 'f21c7cd75cd4aea4af285aa2cb11c5ba901a17f04d06f35869deda3734aa42fb'}"
+    },
+    {
+      "test": "FAIL: test_media_value_required_at_execution (test_content_projection.MaterializationTests.test_media_value_required_at_execution)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_body_basic_bullets_qualified_and_deterministic (test_content_projection.PrecompileEligibilityTests.test_body_basic_bullets_qualified_and_deterministic)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_compare_sides_two_qualified_one_and_three_rejected (test_content_projection.PrecompileEligibilityTests.test_compare_sides_two_qualified_one_and_three_rejected)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_page_reorder_keeps_item_binding_stable (test_content_projection.PrecompileEligibilityTests.test_page_reorder_keeps_item_binding_stable)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_numbers_only_in_table_cells_keep_spec_table_qualified (test_content_projection.ReviewFixRegressionTests.test_numbers_only_in_table_cells_keep_spec_table_qualified)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_compare_carries_two_sides (test_dashi_integration_fixtures.DecisionMatrixTests.test_compare_carries_two_sides)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_spec_table_carries_columns_rows (test_dashi_integration_fixtures.MetricBaselineTests.test_spec_table_carries_columns_rows)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_body_basic_carries_stage_points (test_dashi_integration_fixtures.ProcessOwnershipTests.test_body_basic_carries_stage_points)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_timeline_carries_steps_from_points (test_dashi_integration_fixtures.TrendEventsTests.test_timeline_carries_steps_from_points)",
+      "diagnostic": "AssertionError: False is not true : ['expression_incomplete: page expression required']"
+    },
+    {
+      "test": "FAIL: test_allocation_deterministic_and_ordered (test_deck_layout_selection.DeckAllocationTests.test_allocation_deterministic_and_ordered)",
+      "diagnostic": " : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']]}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']]}, 'pg-33333333': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']]}}"
+    },
+    {
+      "test": "FAIL: test_backtracking_reassigns_when_second_page_loses_top_choice (test_deck_layout_selection.DeckAllocationTests.test_backtracking_reassigns_when_second_page_loses_top_choice)",
+      "diagnostic": " : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']]}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']]}}"
+    },
+    {
+      "test": "FAIL: test_budget_exhausted_distinct_from_no_candidates (test_deck_layout_selection.DeckAllocationTests.test_budget_exhausted_distinct_from_no_candidates)",
+      "diagnostic": "+ budget_exhausted"
+    },
+    {
+      "test": "FAIL: test_explicit_choice_still_goes_through_qualification (test_deck_layout_selection.DeckAllocationTests.test_explicit_choice_still_goes_through_qualification)",
+      "diagnostic": "+ complete"
+    },
+    {
+      "test": "FAIL: test_max_per_deck_two_allows_reuse (test_deck_layout_selection.DeckAllocationTests.test_max_per_deck_two_allows_reuse)",
+      "diagnostic": " : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}}"
+    },
+    {
+      "test": "FAIL: test_reuse_limited_layout_respected_and_third_candidate_solves (test_deck_layout_selection.DeckAllocationTests.test_reuse_limited_layout_respected_and_third_candidate_solves)",
+      "diagnostic": " : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']]}}"
+    },
+    {
+      "test": "FAIL: test_top2_is_human_summary_full_pool_lives_behind (test_deck_layout_selection.DeckAllocationTests.test_top2_is_human_summary_full_pool_lives_behind)",
+      "diagnostic": "'builtin:layout:bullets-b'"
+    },
+    {
+      "test": "FAIL: test_preflight_projection_gate (test_deck_projection_view.DeckProjectionViewTests.test_preflight_projection_gate)",
+      "diagnostic": "+ passed"
+    },
+    {
+      "test": "FAIL: test_view_rebuilt_from_frozen_inputs (test_deck_projection_view.DeckProjectionViewTests.test_view_rebuilt_from_frozen_inputs)",
+      "diagnostic": "+ ok"
+    },
+    {
+      "test": "FAIL: test_view_reports_missing_binding_inputs (test_deck_projection_view.DeckProjectionViewTests.test_view_reports_missing_binding_inputs)",
+      "diagnostic": "+ no_binding_inputs"
+    },
+    {
+      "test": "FAIL: test_actual_html_mutation_is_rejected_with_unchanged_manifest (test_effective_binding.EffectiveBindingTests.test_actual_html_mutation_is_rejected_with_unchanged_manifest)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_bound_render_rejects_unbound_data_before_browser_launch (test_effective_binding.EffectiveBindingTests.test_bound_render_rejects_unbound_data_before_browser_launch)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_eligibility_and_slot_tampering_are_rejected (test_effective_binding.EffectiveBindingTests.test_eligibility_and_slot_tampering_are_rejected)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_materialize_preserves_binding_and_actual_text (test_effective_binding.EffectiveBindingTests.test_materialize_preserves_binding_and_actual_text)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_missing_template_file_is_rejected (test_effective_binding.EffectiveBindingTests.test_missing_template_file_is_rejected)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_page_mutation_is_rejected_even_with_same_item_ids (test_effective_binding.EffectiveBindingTests.test_page_mutation_is_rejected_even_with_same_item_ids)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_snapshot_survives_live_asset_replacement_and_rejects_snapshot_tamper (test_effective_binding.EffectiveBindingTests.test_snapshot_survives_live_asset_replacement_and_rejects_snapshot_tamper)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_unrelated_asset_change_does_not_invalidate_binding (test_effective_binding.EffectiveBindingTests.test_unrelated_asset_change_does_not_invalidate_binding)",
+      "diagnostic": "AssertionError: False is not true"
+    },
+    {
+      "test": "FAIL: test_kpi_fields_preserve_objects_and_display_values (test_pro_template_contracts.StructuredTemplateTests.test_kpi_fields_preserve_objects_and_display_values)",
+      "diagnostic": "AssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+    },
+    {
+      "test": "FAIL: test_frozen_local_render_replay_hashes_and_results (test_quality_observation.ObservationTests.test_frozen_local_render_replay_hashes_and_results)",
+      "diagnostic": "Diff is 4716 characters long. Set self.maxDiff to None to see it."
+    },
+    {
+      "test": "FAIL: test_hard_overflow_rejected_at_composition (test_render_theme_capacity.ComposeDesignPipelineTest.test_hard_overflow_rejected_at_composition)",
+      "diagnostic": "AssertionError: 'layout_capacity_exceeded' not found in 'selection_frozen_mismatch'"
+    },
+    {
+      "test": "FAIL: test_non_overrideable_role_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_non_overrideable_role_rejected)",
+      "diagnostic": "AssertionError: '不可覆盖' not found in 'selection_frozen_mismatch'"
+    },
+    {
+      "test": "FAIL: test_unknown_mode_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_unknown_mode_rejected)",
+      "diagnostic": "AssertionError: 'theme_invalid' not found in 'selection_frozen_mismatch'"
+    },
+    {
+      "test": "FAIL: test_constrained_infeasible_is_not_budget_exhausted (test_unified_recommendation.UnifiedRecommendationTests.test_constrained_infeasible_is_not_budget_exhausted)",
+      "diagnostic": "+ constraints_unsatisfied"
+    },
+    {
+      "test": "FAIL: test_full_pool_top_summary_and_choice_preserve_semantic_preference (test_unified_recommendation.UnifiedRecommendationTests.test_full_pool_top_summary_and_choice_preserve_semantic_preference)",
+      "diagnostic": "dry-run（加 --apply 落盘）；处理 N/A 份（apply 模式）"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:彩窗马赛克风",
+  "name": "彩窗马赛克风",
+  "aliases": [
+    "Stained Glass Mosaic",
+    "彩窗玻璃",
+    "花窗"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/西式精选/彩窗马赛克风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "stained-glass mosaic slide, full-bleed cell grid with 2pt near-black grout gaps, royal blue crimson gold green purple cells never repeating adjacently, translucent dark overlay unifying the field"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Stained Glass Mosaic",
+      "彩窗玻璃",
+      "花窗"
+    ],
+    "best_for": "彩窗玻璃格阵的教堂彩绘美学;适合文化艺术/博物馆叙事/装饰主题",
+    "visual_direction": "stained-glass mosaic slide, full-bleed cell grid with 2pt near-black grout gaps, royal blue crimson gold green purple cells never repeating adjacently, translucent dark overlay unifying the field",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#0A0A12",
+      "composition": "满版马赛克格阵 + 2pt 深色格缝 + 半透明深色叠层统一",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#0A0A12(近黑格缝底)",
+      "secondary": "#1A3A6E(皇室蓝格)",
+      "accent": "#E63030(绯红格)",
+      "neutral": "#F5D020(金黄格)"
+    },
+    "typography": {
+      "title": "Cormorant Garamond Bold(Trajan 兜底)16-22pt 宽字距叠字",
+      "body": "Georgia 13-15pt,置于叠层之下",
+      "labels": "Georgia 小字图注"
+    },
+    "layout_patterns": [
+      "6×4 等网格满版,格间 2pt 深色缝(#0A0A12 作 grout)",
+      "相邻格不同色,按彩窗节奏配蓝/红/金/绿/紫",
+      "半透明深色叠层压暗统一画面",
+      "标题作宽字距衬线叠字置底(Cormorant/Trajan 系)"
+    ],
+    "layout_usage_rule": "6×4 等网格满版,格间 2pt 深色缝(#0A0A12 作 grout)",
+    "visual_elements": {
+      "allowed": "满版马赛克格阵 + 2pt 深色格缝 + 半透明深色叠层统一",
+      "avoid": "不要粉彩或低饱和格子; 不要大片空格"
+    },
+    "rendering_constraints": [
+      "不要粉彩或低饱和格子",
+      "不要大片空格",
+      "不要无衬线叠字标题",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要粉彩或低饱和格子",
+      "不要大片空格",
+      "不要无衬线叠字标题"
+    ],
+    "paired_illustration": {
+      "family": "glass",
+      "density": "core"
+    },
+    "reference": "GitHub: corazzon/pptx-design-styles(via slides-grab design-styles-data.js,MIT)· 23 Stained Glass Mosaic"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要粉彩或低饱和格子",
+      "不要大片空格",
+      "不要无衬线叠字标题",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

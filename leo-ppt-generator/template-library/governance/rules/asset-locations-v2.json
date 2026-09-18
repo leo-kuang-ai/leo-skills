@@ -1,0 +1,274 @@
+{
+  "schema_version": 2,
+  "rule_id": "asset-locations-v2",
+  "entities": [
+    {
+      "kind": "style",
+      "pattern": "canonical/visual/styles/*/brief.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "visual",
+      "schema": "style-brief-v2.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "theme",
+      "pattern": "canonical/visual/themes/*/theme.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "visual",
+      "schema": "render-theme-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "brand",
+      "pattern": "canonical/visual/brands/*/brand.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "visual",
+      "schema": "brand-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "font",
+      "pattern": "canonical/visual/fonts/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "visual",
+      "schema": "font-manifest-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "ornament",
+      "pattern": "canonical/visual/ornaments/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "visual",
+      "schema": "ornament-manifest-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "layout",
+      "pattern": "canonical/executable/layouts/*/layout.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "executable",
+      "schema": "layout-profile-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "template",
+      "pattern": "canonical/executable/templates/*/template.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "executable",
+      "schema": "template-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "component",
+      "pattern": "canonical/executable/components/*/component.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "executable",
+      "schema": null,
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "recipe",
+      "pattern": "canonical/executable/recipes/*/recipe.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "executable",
+      "schema": "image-recipe-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "preset",
+      "pattern": "canonical/collections/presets/*/preset.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "curated-only",
+      "schema": "preset-v1.schema.json",
+      "exclude_segments": [
+        "guides",
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "argument",
+      "pattern": "canonical/semantic/argument-modes/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "page-semantics",
+      "pattern": "canonical/semantic/page-types/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "chart",
+      "pattern": "canonical/semantic/guides/chart/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "infographic",
+      "pattern": "canonical/semantic/guides/infographic/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "structure",
+      "pattern": "canonical/executable/layouts/guides/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    },
+    {
+      "kind": "axis",
+      "family": "rendering",
+      "pattern": "canonical/executable/renderers/guides/*/manifest.json",
+      "scopes": [
+        "builtin",
+        "user"
+      ],
+      "catalog": "reference-only",
+      "schema": "axis-manifest-v1.schema.json",
+      "exclude_segments": [
+        "examples",
+        "staging",
+        "generations"
+      ]
+    }
+  ],
+  "non_entities": [
+    {
+      "pattern": "reference/pools/*/pool.json",
+      "classification": "provenance-only"
+    },
+    {
+      "pattern": "governance/rules/*",
+      "classification": "governance-only"
+    }
+  ],
+  "symlink_policy": "reject",
+  "unknown_file_policy": "fail-closed"
+}

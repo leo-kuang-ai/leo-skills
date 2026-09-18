@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:莫奈风",
+  "name": "莫奈风",
+  "aliases": [
+    "莫奈风",
+    "莫奈",
+    "Monet",
+    "impressionist",
+    "印象派"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/印象派油画/莫奈风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "印象派油画"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "monet impressionist oil wash, flowing pastel blue-pink-gold gradient canvas with visible brush turbulence, dreamy light-filled composition"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "莫奈风",
+      "莫奈",
+      "Monet",
+      "impressionist",
+      "印象派"
+    ],
+    "best_for": "油画笔触动态背景与光影文字,印象派艺术风格;适合艺术赏析/文化活动/品牌美学",
+    "visual_direction": "monet impressionist oil wash, flowing pastel blue-pink-gold gradient canvas with visible brush turbulence, dreamy light-filled composition",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#E4D8C8→#A1C4FD→#C2E9FB→#FDDB92→#FBC2EB (莫奈风底)",
+      "composition": "全幅流动渐变 + 半透明磨砂白卡承载文字",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#A1C4FD(雾蓝笔触/标题锚)",
+      "secondary": "#FBC2EB(樱粉晕)",
+      "accent": "#FDDB92(暖金光)",
+      "neutral": "#2C3A47(深青灰字)",
+      "rule": "锚点 #A1C4FD, #FBC2EB, #FDDB92, #2C3A47;来源:LandPPT html_template CSS 实测 token;通过模拟油画笔触的动态背景、鲜明色彩的碰撞和光影文字，营造出极致梦幻、生动鲜活的印象派艺术风格。"
+    },
+    "typography": {
+      "title": "标题用 Georgia/Garamond 衬线,光影渐变着色",
+      "body": "正文 Georgia + 思源宋体",
+      "labels": "衬线小字,金色点缀"
+    },
+    "layout_patterns": [
+      "全幅印象派渐变背景,内容置于半透明白卡",
+      "标题衬线大字,金色光晕强调",
+      "卡片大圆角软阴影,轻玻璃质感",
+      "图文分区以柔和色带过渡"
+    ],
+    "layout_usage_rule": "全幅印象派渐变背景,内容置于半透明白卡",
+    "visual_elements": {
+      "allowed": "全幅流动渐变 + 半透明磨砂白卡承载文字",
+      "avoid": "不要硬边几何与锐利阴影;不要单色平涂,保持笔触渐变"
+    },
+    "rendering_constraints": [
+      "不要硬边几何与锐利阴影",
+      "不要单色平涂,保持笔触渐变",
+      "不要深黑大底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要硬边几何与锐利阴影",
+      "不要单色平涂,保持笔触渐变",
+      "不要深黑大底"
+    ],
+    "reference": "GitHub: LandPPT · template_examples/莫奈风.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.35,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要硬边几何与锐利阴影",
+      "不要单色平涂,保持笔触渐变",
+      "不要深黑大底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

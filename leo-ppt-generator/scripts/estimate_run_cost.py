@@ -8,8 +8,7 @@ assumed defaults and flags the basis so the estimate is never mistaken for a
 measurement. Deterministic: same inputs produce byte-identical output.
 
 Estimation model (approximation, documented here as the single source):
-  per-page expected tokens(page_type) = mean(tokens per recorded attempt)
-                                        x mean(attempts per page of that type)
+  per-page expected tokens(page_type) = mean(cumulative tokens per record)
   deck band = [estimate, estimate x headroom], headroom = 1.5 with history
   and 2.0 on assumed defaults (rework variance is higher when unmeasured).
 
@@ -62,8 +61,7 @@ def load_history(path: Path) -> list[dict]:
 def per_type_stats(records: list[dict]) -> dict[str, dict]:
     """Aggregate records into per-page-type attempt/token statistics.
 
-    ``tokens`` may be an int or the literal ``not-recorded``; unrecorded
-    attempts still count toward the rework factor but not the token mean.
+    ``tokens`` 为记录的累计用量；attempts 仅供诊断，不再乘到累计用量上。
     """
     grouped: dict[str, dict] = {}
     for record in records:
@@ -86,7 +84,7 @@ def per_type_stats(records: list[dict]) -> dict[str, dict]:
 
 
 def expected_tokens_per_page(stats: dict) -> "tuple[float | None, float]":
-    """Return (mean tokens per recorded attempt, mean attempts per page)."""
+    """返回累计 token 均值及仅供诊断的尝试次数均值。"""
     pages = max(len(stats["pages"]), 1)
     mean_attempts = stats["attempts"] / pages
     if stats["token_records"] == 0:
@@ -126,7 +124,7 @@ def build_estimate(args: argparse.Namespace) -> dict:
         if mean_tokens is not None and stats and stats["token_records"] > 0:
             basis = "history"
             headroom = HISTORY_HEADROOM
-            per_page = mean_tokens * max(mean_attempts, 1.0)
+            per_page = mean_tokens
         else:
             basis = "assumed-default"
             headroom = ASSUMED_HEADROOM
@@ -158,6 +156,9 @@ def build_estimate(args: argparse.Namespace) -> dict:
         "tokens_low": total_low,
         "tokens_high": total_high,
         "basis": deck_basis,
+        # U10/R-74：估算口径标签——本文件输出恒为估算带（cost-caliber-v2 的
+        # observed_cost 由 quality_metrics 记账，两者不得混写）。
+        "caliber": "cost-caliber-v2/estimate-band",
         "lines": lines,
     }
     if args.price_per_1k is not None:
@@ -169,7 +170,7 @@ def build_estimate(args: argparse.Namespace) -> dict:
 
 def render_text(estimate: dict) -> str:
     basis_labels = {
-        "history": "历史 backend_stats 均值 × 重试系数",
+        "history": "历史 backend_stats 累计用量均值",
         "mixed": "历史均值与保守假设混合(逐行见括号)",
         "assumed-default": "保守假设区间(无历史数据)",
     }
@@ -191,6 +192,52 @@ def render_text(estimate: dict) -> str:
         )
     parts.append("estimates are bands, not guarantees; reconcile with backend report after delivery")
     return "\n".join(parts)
+
+
+def reconcile_with_backend_report(stats_path: Path, estimate: dict) -> "list[dict]":
+    """report/caliber 对账（U10 场景4）：观测 tokens（cost-caliber-v2 observed）
+    与估算带逐桶对照；无观测记录的桶如实标 unknown，不判达标/超标。"""
+
+    observed: "dict[str, dict]" = {}
+    if stats_path.is_file():
+        for line in stats_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                entry = json.loads(line)
+            except ValueError:
+                continue
+            if not isinstance(entry, dict):
+                continue
+            bucket = str(entry.get("page_type") or "default")
+            agg = observed.setdefault(bucket, {"tokens": 0, "records": 0})
+            if isinstance(entry.get("tokens"), int):
+                agg["tokens"] += entry["tokens"]
+                agg["records"] += 1
+    rows = []
+    for line in estimate["lines"]:
+        bucket = str(line["page_type"])
+        stats = observed.get(bucket)
+        if stats and stats["records"]:
+            within = line["tokens_low"] <= stats["tokens"] <= line["tokens_high"]
+            rows.append({
+                "bucket": bucket,
+                "observed_tokens": stats["tokens"],
+                "tokens_low": line["tokens_low"],
+                "tokens_high": line["tokens_high"],
+                "within_band": within,
+                "basis": "observed",
+            })
+        else:
+            rows.append({
+                "bucket": bucket,
+                "observed_tokens": "unknown",
+                "tokens_low": line["tokens_low"],
+                "tokens_high": line["tokens_high"],
+                "within_band": None,
+                "basis": "unknown",
+            })
+    return rows
 
 
 def main(argv: "list[str] | None" = None) -> int:
@@ -228,10 +275,20 @@ def main(argv: "list[str] | None" = None) -> int:
         args.stats = str(candidate)
 
     estimate = build_estimate(args)
+    if args.stats:
+        estimate["reconciliation"] = reconcile_with_backend_report(
+            Path(args.stats), estimate)
     if args.json:
         print(json.dumps(estimate, ensure_ascii=False, indent=2, sort_keys=True))
     else:
         print(render_text(estimate))
+        if "reconciliation" in estimate:
+            for row in estimate["reconciliation"]:
+                print(
+                    f"  reconcile {row['bucket']}: observed={row['observed_tokens']}"
+                    f" estimate=[{row['tokens_low']}, {row['tokens_high']}]"
+                    f" basis={row['basis']} within_band={row['within_band']}"
+                )
     return 0
 
 

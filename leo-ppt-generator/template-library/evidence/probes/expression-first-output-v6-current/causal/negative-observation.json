@@ -1,0 +1,34 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v6-current/causal/negative.png",
+    "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "causal_uncertainty": false,
+    "directed_edges": true,
+    "edge_meaning": true,
+    "focus_visible": true,
+    "no_overflow": true,
+    "reading_order": true,
+    "source_support": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "a2969d5e76143476d3380e0d7a8ba8f844cde19b472c0aa6a19f035a713967fd",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v6-current/causal/negative-fixture.json",
+    "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v6-current/causal/negative-measurement.json",
+    "sha256": "b6bf47f67448523ae6f455a88d44cc5e725d0281dbbe2a9d7300db33e46fd05b"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "causal",
+  "render_input": {
+    "path": "evidence/probes/expression-first-output-v6-current/causal/negative-input.json",
+    "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+  }
+}

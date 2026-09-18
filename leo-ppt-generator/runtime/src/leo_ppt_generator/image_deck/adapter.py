@@ -183,11 +183,14 @@ class ImageDeckAdapter:
         lease: str | None = None,
         generation: int | None = None,
         rework: bool = False,
+        provenance: dict[str, Any] | None = None,
     ) -> PageArtifact:
         self._assert_run_mutable()
         source = Path(image).resolve()
         if not source.is_file():
             raise ContractError("missing_page_artifact")
+        if provenance is not None and provenance.get("out_sha256") != sha256_file(source):
+            raise ContractError("page_provenance_artifact_mismatch")
         jobs = self._jobs()
         # 已 recorded 页的终态保护（D-DEF-04）：仅幂等重放或显式 rework 可再写；
         # 防止绕过 CLI 包装层的迟到/冲突调用静默覆盖已完成页产物。
@@ -208,6 +211,7 @@ class ImageDeckAdapter:
                     "expected_state_hash": expected_state_hash,
                     "lease": lease,
                     "generation": generation,
+                    **({"provenance_sha256": sha256_bytes(canonical_json(provenance).encode())} if provenance is not None else {}),
                 }
             ).encode()
         )
@@ -218,6 +222,12 @@ class ImageDeckAdapter:
                 if operation["fingerprint"] != fingerprint:
                     raise ContractError("idempotency_conflict")
                 slide = next(item for item in jobs["slides"] if item["number"] == number)
+                # 债2：旧 operation 重放必须可解释——reset/sweep 复位会清掉
+                # artifact 等结果字段，此时重放不得裸 KeyError，明确报状态丢失。
+                if "artifact" not in slide:
+                    raise ContractError(
+                        f"operation_state_lost: operation {operation_id} 的页产物"
+                        "已随复位清除；按 pending 页重新派发，而非重放旧操作")
                 target = self.run_dir / slide["artifact"]
                 return PageArtifact.from_source(
                     f"page_{number:03d}", "image", target, target, None, notes=slide["notes"]
@@ -242,6 +252,8 @@ class ImageDeckAdapter:
                     "agent_id": agent_id,
                 }
             )
+            if provenance is not None:
+                slide["provenance"] = dict(provenance)
             jobs["operations"][operation_id] = {
                 "fingerprint": fingerprint,
                 "status": "completed",
@@ -278,9 +290,10 @@ class ImageDeckAdapter:
 
             with ledger.open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps({
+                    "schema_version": 1,
                     "ts": _time.strftime("%Y-%m-%dT%H:%M:%S"),
                     "step": "dispatch_discipline_warning",
-                    "page": number,
+                    "page": str(number),
                     "agent_id": agent_id,
                     "recorded_by_agent": recorded_by_agent,
                     "note": "同 agent 连续 record ≥3 页：疑似主 Agent 串行替代 worker（协议纪律观察）",

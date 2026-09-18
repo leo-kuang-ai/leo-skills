@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/template-library/v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "library_id",
+    "protocol"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "kind": {
+      "const": "template-library"
+    },
+    "library_id": {
+      "enum": [
+        "builtin",
+        "user"
+      ]
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "resolver",
+        "builder",
+        "asset_id_pattern"
+      ],
+      "properties": {
+        "resolver": {
+          "const": "asset_resolver/v2"
+        },
+        "builder": {
+          "const": "capability_manifest/template-registry/v2"
+        },
+        "asset_id_pattern": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

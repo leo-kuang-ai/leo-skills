@@ -46,7 +46,7 @@ class RunIndex:
         self.lock = FileLock(str(self.run_dir / ".run.json.lock"))
 
     @classmethod
-    def create(cls, run_dir: str | Path, *, route: str, runtime_identity: str) -> RunIndex:
+    def create(cls, run_dir: str | Path, *, route: str, runtime_identity: str, run_id: str | None = None) -> RunIndex:
         from .routes import route_definition
 
         route_definition(route)
@@ -58,12 +58,14 @@ class RunIndex:
                 current = owner.snapshot()
                 if current.get("route") != route or current.get("runtime_identity") != runtime_identity:
                     raise RevisionConflict("run_identity_conflict")
+                if run_id is not None and current.get("run_id") != run_id:
+                    raise RevisionConflict("run_identity_conflict")
                 return owner
             atomic_write_json(
                 owner.path,
                 {
                     "schema_version": 1,
-                    "run_id": uuid.uuid4().hex,
+                    "run_id": run_id or uuid.uuid4().hex,
                     "route": route,
                     "runtime_identity": runtime_identity,
                     "output_dir": str(owner.run_dir),
@@ -282,6 +284,27 @@ class RunIndex:
 
     def snapshot(self) -> dict[str, Any]:
         return json.loads(self.path.read_text(encoding="utf-8"))
+
+    def register_input_generation(self, generation: str) -> dict[str, Any]:
+        """只登记已提交代；pointer 后崩溃可重建索引，重复登记不增加 revision。"""
+        from .expression_pipeline import load_committed_input
+        committed = load_committed_input(self.run_dir)
+        if committed["generation"] != generation:
+            raise RevisionConflict("input_generation_conflict")
+        request = committed["payload"]["request"]
+        def apply(current):
+            if current["run_id"] != request["run_id"]:
+                raise RevisionConflict("run_identity_conflict")
+            previous = current.get("input_generation")
+            if previous is not None:
+                if previous != generation:
+                    raise RevisionConflict("input_generation_conflict")
+                return None
+            current.update(input_generation=generation,
+                input_generation_digest=request["input_digest"], status="prepared", stage="input-committed")
+            current["revision"] += 1
+            return current
+        return self._mutate(apply)
 
     def _mutate(self, callback) -> dict[str, Any]:
         with self.lock:
@@ -790,3 +813,70 @@ class RunIndex:
                 os.fsync(descriptor)
             finally:
                 os.close(descriptor)
+
+
+def projection_view(run_dir: str | Path) -> dict:
+    """dashi K7/U7：从冻结 run 输入重建内容投影视图（只读 View Model）。
+
+    页身份 → 展示页序 → 选中版式 → 绑定摘要 → 内容/设计/选择摘要的映射，
+    全部自 `<run>/input/` 冻结文件派生，可随时删除重建；不构成写状态入口，
+    领域 manifest 继续拥有执行状态。
+    """
+    root = Path(run_dir).resolve()
+    view: dict = {
+        "schema_version": 1,
+        "kind": "deck-projection-view",
+        "rebuildable": True,
+        "pages": [],
+    }
+    from .expression_pipeline import committed_input_root, ExpressionPipelineError
+    try:
+        input_root = committed_input_root(root)
+    except ExpressionPipelineError as exc:
+        view.update(status="invalid", reason_code=exc.reason_code)
+        return view
+
+    def _load(name: str) -> dict | None:
+        path = input_root / name
+        if not path.is_file():
+            return None
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+
+    pack = _load("page-content-pack.json")
+    selection = _load("layout-selection.json")
+    design = _load("resolved-design.json")
+    if pack is not None:
+        view["content_digest"] = pack.get("content_digest")
+        selected = (selection or {}).get("selection") or {}
+        for page in pack.get("pages", []):
+            entry = selected.get(page.get("page_id")) or {}
+            from ..content_projection import ProjectionError, verify_binding_reference
+            try:
+                verify_binding_reference(entry)
+            except ProjectionError as exc:
+                view.update(status="invalid", reason_code=str(exc), pages=[])
+                return view
+            view["pages"].append({
+                "page_id": page.get("page_id"),
+                "number": page.get("number"),
+                "master_page": page.get("master_page"),
+                "claim": page.get("claim"),
+                "layout_id": entry.get("layout_id"),
+                "expression_binding_digest": entry.get("expression_binding_digest"),
+                "materialization_binding_digest": entry.get("materialization_binding_digest"),
+                "item_count": len(page.get("items", [])),
+            })
+        view["pages"].sort(key=lambda p: p.get("number") or 0)
+    if selection is not None:
+        view["selection_policy"] = selection.get("policy_version")
+        view["selection_status"] = selection.get("status")
+    if design is not None:
+        view["design_digest"] = design.get("design_digest")
+    if pack is None and selection is None and design is None:
+        view["status"] = "no_binding_inputs"
+    else:
+        view["status"] = "ok"
+    return view

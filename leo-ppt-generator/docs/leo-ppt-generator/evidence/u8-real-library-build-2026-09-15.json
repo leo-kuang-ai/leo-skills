@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "scope": "isolated-real-library-build-not-published",
+  "mapped_files": 2155,
+  "error_type": "CatalogError",
+  "error": "unclassified_canonical_file:canonical/collections/presets/scene-presets/README.md"
+}

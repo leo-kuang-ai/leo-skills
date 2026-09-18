@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:timeline-pro",
+  "name": "timeline-pro",
+  "lane": "render:html",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "title",
+      "required": true,
+      "type": "string",
+      "maxLength": 24
+    },
+    {
+      "name": "steps",
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "no": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "desc": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "highlight": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "count_min": 3,
+      "count_max": 5
+    },
+    {
+      "name": "bottom",
+      "required": false,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "strong": {
+            "type": "string",
+            "maxLength": 18
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 36
+          }
+        },
+        "required": []
+      },
+      "count_min": 0,
+      "count_max": 2
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "kicker",
+      "selector": "[data-leo-block='kicker']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "title",
+      "selector": "[data-leo-block='title']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "steps",
+      "selector": "[data-leo-block='steps']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "bottom",
+      "selector": "[data-leo-block='bottom']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "primary",
+    "accent",
+    "background",
+    "surface",
+    "text",
+    "muted",
+    "border",
+    "on_primary"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p11-11-horizontal-timeline-layouts"
+  ],
+  "dependencies": [
+    "builtin:layout:p11-11-horizontal-timeline-layouts"
+  ],
+  "notes": "输入对象形状、数量与 layout 槽位一致；字号来自 effective_theme，几何来自 layout profile。"
+}

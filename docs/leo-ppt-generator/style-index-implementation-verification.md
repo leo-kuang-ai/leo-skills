@@ -18,7 +18,7 @@
 | U6 | 同作用域版式输入、独立容量门、样张继承和治理字段不入 prompt | `test_style_selection_layout.py`、`test_style_index_baseline.py`、容量与样张 Agent 用例 |
 | U4 | 包级回归、真实 Agent 轨迹与 Judge、固定查询配对、文档及分发说明 | 下述执行记录与最终结果 |
 
-测试路径均相对 `leo-ppt-generator/tests/`。工作区指仓库根目录 `leo-ppt-style-index-workspace/`，已忽略的原始日志与轨迹保留在本机，未打入技能包。
+测试路径均相对 `leo-ppt-generator/tests/`。原始日志与轨迹当时保留在仓库根目录已忽略工作区（2026-09-11 已清理；逐例哈希保留在机器可读验收证据中），未打入技能包。
 
 ## 资产完整性
 
@@ -39,7 +39,7 @@
 
 unknown 是既有扩展模板中的占位 JSON，不能执行。full 仅表示摘要所需结构覆盖，不表示视觉通过。随包 catalog 全部为 builtin，不包含用户资料。
 
-完整路径、before/after SHA-256 与差异字段见工作区 `final-asset-audit.json`。索引摘要：
+完整路径、before/after SHA-256 与差异字段原存工作区 `final-asset-audit.json`（已随 2026-09-11 清理移除）；资产级汇总见[机器可读验收证据](evidence/style-index-verification.json)。索引摘要：
 
 ```text
 source_digest=d1e58907a6a6952d3e9eb717e9f1d3803b183f60f8bd527b3382b6308a0eb519
@@ -52,7 +52,7 @@ snapshot_digest=d819ccd83a40a84aa02040285366677ea68d53163385cefb06332b4fb86903b0
 
 实际环境：macOS arm64、任务隔离 Python 3.12。没有用系统 Python 缺依赖的失败推断产品回归。
 
-- 包级测试：**1270 tests，0 failures，0 errors，0 skipped**，见工作区 `package-scope-final.json` 与同名 `.log`。后续窄范围入口调整由对应真实 Agent 回归覆盖，判官末次修改另复跑定向单测。
+- 包级测试：**1270 tests，0 failures，0 errors，0 skipped**（原始 `package-scope-final.json` 与同名 `.log` 原存 git-ignored 工作区，已随 2026-09-11 清理移除）。后续窄范围入口调整由对应真实 Agent 回归覆盖，判官末次修改另复跑定向单测。
 - brief lint：318 briefs、0 errors、0 warnings。
 - layout lint：0 errors，3 个已有白名单豁免，未新增豁免。
 - index/governance lint：均 0 errors；governance 0 warnings。
@@ -62,14 +62,13 @@ snapshot_digest=d819ccd83a40a84aa02040285366677ea68d53163385cefb06332b4fb86903b0
 - 完整 bundle 复制、目录链接、缺 generated 时独立摘要均有实际 fixture；摘要查询不写安装目录。
 - Windows x64 / macOS Intel：新增依赖 wheel 可获得性通过；未在对应操作系统运行测试。
 
-从 `leo-ppt-generator/` 执行的包级命令：
+从 `leo-ppt-generator/` 执行的包级命令（原经任务隔离工作区的 Python 与 `run_tests.py` 入口执行，该工作区已随 2026-09-11 清理移除；此处为等价 unittest 直调形式，`<python>` 为任一 Python 3.12 隔离环境）：
 
 ```sh
 env -u LEO_PPT_BUNDLE \
-  LEO_PPT_RUNTIME_PYTHON="$PWD/../leo-ppt-style-index-workspace/.venv/bin/python" \
+  LEO_PPT_RUNTIME_PYTHON="<python>" \
   PYTHONPATH="$PWD/runtime/src:$PWD" \
-  ../leo-ppt-style-index-workspace/.venv/bin/python \
-  ../leo-ppt-style-index-workspace/run_tests.py package-scope-final
+  <python> -m unittest discover -s tests -t . -p 'test_*.py'
 ```
 
 四条 lint 分别运行 `scripts/lint_style_briefs.py`、`scripts/lint_layout_grid.py`、`scripts/lint_style_index.py`、`scripts/lint_style_governance.py`；使用同一任务 Python，`PYTHONPATH=runtime/src:.`。
@@ -92,10 +91,10 @@ env -u LEO_PPT_BUNDLE \
 
 ```sh
 python3 scripts/check_style_eval_traces.py \
-  ../leo-ppt-style-index-workspace/evals-scope-final/iteration-1/result.json
+  <evals-scope-final/iteration-1/result.json>
 ```
 
-该命令当前 exit 0；明细在工作区 `evals-scope-final/iteration-1/trace-check.json` 与持久证据中。其余历史轮次的失败不覆盖、不删除。
+该命令当时 exit 0（目标 result.json 原存 git-ignored 工作区，已随 2026-09-11 清理移除）；明细在仓库内持久证据中。其余历史轮次的失败不覆盖、不删除。
 
 固定查询确定性对照：24 条有名称集合期望的查询，新摘要 24/24、旧 list/filter 15/24；开发集 19/19 对 12/19，留出集 5/5 对 3/5。剩余 8 条是场景/操作合同，不按名称命中评分。旧实现来自 `6a8578ba16624550c2150ed72245fa9bc3c9fa8c`，使用相同源资产和 Python。
 

@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/catalog-registry/v1",
+  "title": "registry（builder 产物：同一 generation 的实体索引；不手填）",
+  "type": "object",
+  "required": [
+    "kind",
+    "schema_version",
+    "generation",
+    "source_digest",
+    "entities"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "template-registry"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "generation": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16,64}$"
+    },
+    "source_digest": {
+      "type": "string",
+      "description": "canonical+governance+curation+evidence 输入摘要"
+    },
+    "evidence_set_digest": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "完整证据集合摘要（含未入 catalog 的新失败）；由 style_validation 提供"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "kind",
+          "path",
+          "revision",
+          "name",
+          "lifecycle"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "asset_id": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "description": "相对库根的实体主文件路径"
+          },
+          "revision": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/revision"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lifecycle": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/lifecycle"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+            }
+          }
+        }
+      }
+    }
+  }
+}

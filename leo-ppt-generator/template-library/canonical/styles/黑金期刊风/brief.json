@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:黑金期刊风",
+  "name": "黑金期刊风",
+  "aliases": [
+    "黑金期刊风",
+    "黑金期刊",
+    "黑金台账",
+    "black gold ledger"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/质感专业/黑金期刊风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "质感专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "financial-periodical ledger order, white evidence pages with hairline tables and axis-free charts, quarter dark judgment pages, single gold anchor discipline"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ],
+    "theme_default": "builtin:theme:black-gold-light"
+  },
+  "adaptation_gaps": [
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "黑金期刊风",
+      "黑金期刊",
+      "黑金台账",
+      "black gold ledger"
+    ],
+    "best_for": "黑白灰金融期刊台账+单金锚的证据/判断双色温节奏;适合投研报告/尽调/估值/基金季报/机构年报",
+    "visual_direction": "financial-periodical ledger order, white evidence pages with hairline tables and axis-free charts, quarter dark judgment pages, single gold anchor discipline",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF→#151515 (黑金期刊风底)",
+      "composition": "白证据页 3/4 + 深炭判断页 1/4,黑白灰数据台阶 + 单金锚(<3% 面积/页)",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#0A0A0A(墨黑标题/顶规线锚)",
+      "secondary": "#3D3C3A(暖深灰正文)",
+      "accent": "#D6A000(唯一金锚)",
+      "neutral": "#606060(副文灰/单位)",
+      "rule": "锚点 #0A0A0A, #3D3C3A, #D6A000, #606060;来源:源文件色板原文直迁;黑白灰金融期刊台账+单金锚的证据/判断双色温节奏"
+    },
+    "typography": {
+      "title": "思源黑体 700-800 结论式标题,一律左对齐",
+      "body": "思源黑体 400 正文,数字列对齐带千分位",
+      "labels": "全大写无衬线 Light tracking 0.20-0.28em 金融刊眉"
+    },
+    "layout_patterns": [
+      "白色证据页:细黑顶规线+结论式标题+灰色依据副题+浅灰分割线",
+      "深色判断页:字距加宽英文小标+白色结论标题+编号判断/通栏浅卡",
+      "横线表格无竖线无斑马纹,数据标签直标在图形标记上",
+      "封面短粗金线+右置超大浅灰水印字+底部黑色依据带"
+    ],
+    "layout_usage_rule": "白色证据页:细黑顶规线+结论式标题+灰色依据副题+浅灰分割线",
+    "visual_elements": {
+      "allowed": "白证据页 3/4 + 深炭判断页 1/4,黑白灰数据台阶 + 单金锚(<3% 面积/页)",
+      "avoid": "不要彩色图表序列或第二强调色(数据一律灰阶);不要红绿涨跌对,不要饼图/雷达/3D/阴影/渐变"
+    },
+    "rendering_constraints": [
+      "不要彩色图表序列或第二强调色(数据一律灰阶)",
+      "不要红绿涨跌对,不要饼图/雷达/3D/阴影/渐变",
+      "不要 y 轴网格图框或只能靠图例读图",
+      "不要大面积金色铺陈(单页<3%,一页一金焦点)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要彩色图表序列或第二强调色(数据一律灰阶)",
+      "不要红绿涨跌对,不要饼图/雷达/3D/阴影/渐变",
+      "不要 y 轴网格图框或只能靠图例读图",
+      "不要大面积金色铺陈(单页<3%,一页一金焦点)"
+    ],
+    "reference": "GitHub: open-kimi-ppt-skill · reference/design_system/finance/black-gold-ledger/design.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.75,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要彩色图表序列或第二强调色(数据一律灰阶)",
+      "不要红绿涨跌对,不要饼图/雷达/3D/阴影/渐变",
+      "不要 y 轴网格图框或只能靠图例读图",
+      "不要大面积金色铺陈(单页<3%,一页一金焦点)",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/render-template/v1",
+  "title": "可执行模板合同（输入 schema、slot→DOM、theme 角色、依赖；不拥有第二份几何规则和硬编码风格）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "input_fields",
+    "slot_bindings",
+    "theme_roles",
+    "dependencies"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "render-template"
+    },
+    "asset_id": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_id"
+    },
+    "name": {
+      "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/name_zh"
+    },
+    "input_fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          },
+          "count_min": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "数组/媒体字段的数量下限（dashi K3：嵌套输入真实形状）"
+          },
+          "count_max": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "数组/媒体字段的数量上限；与同名 layout slot 声明一致"
+          },
+          "items": {
+            "type": "object",
+            "description": "嵌套数组元素形状（如 compare sides 的 label/title/points）",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "type"],
+                  "properties": {
+                    "name": {"type": "string"},
+                    "type": {"type": "string"},
+                    "items": {"type": "object"}
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "slot_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "slot",
+          "selector"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "slot": {
+            "type": "string"
+          },
+          "selector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "binding_kind": {
+            "enum": [
+              "data",
+              "structural"
+            ]
+          },
+          "input_path": {
+            "type": "string",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*(?:\\.(?:[a-zA-Z_][a-zA-Z0-9_]*|\\*))*$",
+            "description": "容量槽位消费的输入路径；星号只遍历声明过的 array"
+          }
+        }
+      },
+      "description": "稳定 slot 到 DOM selector 一对一绑定"
+    },
+    "theme_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "必查角色；主题不能删项"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+      }
+    },
+    "layout_profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+      }
+    },
+    "capacity_notes": {
+      "type": "string"
+    },
+    "lane": {
+      "enum": [
+        "render:html"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "description": "机械迁移说明（U5 切换主题变量前的过渡标注）"
+    }
+  }
+}

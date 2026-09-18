@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:深色编辑报告风",
+  "name": "深色编辑报告风",
+  "aliases": [
+    "editorial report",
+    "FT 深色简报",
+    "Bloomberg 深色报告",
+    "深色财经编辑风",
+    "dark briefing"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/商务专业/深色编辑报告风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "serious dark editorial briefing, near-black ground, serif display headlines with caps kicker over a hairline, one designed chart per slide with single-highlight and takeaway rail, per-slide source line, roman-numeral section dividers, a single abstract glowing orb on near-black reserved for dividers, restrained gravitas, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "editorial report",
+      "FT 深色简报",
+      "Bloomberg 深色报告",
+      "深色财经编辑风",
+      "dark briefing"
+    ],
+    "best_for": "以近黑底、衬线大标题、每页一张设计图表与一红纪律表达 FT / Bloomberg 级的严肃深色简报分量",
+    "visual_direction": "serious dark editorial briefing, near-black ground, serif display headlines with caps kicker over a hairline, one designed chart per slide with single-highlight and takeaway rail, per-slide source line, roman-numeral section dividers, a single abstract glowing orb on near-black reserved for dividers, restrained gravitas, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "near-black briefing ground #0E0E12",
+      "composition": "serif headline + caps kicker over hairline, one designed chart per slide, takeaway rail",
+      "density": "medium-high, data-led but calm"
+    },
+    "color_palette": {
+      "primary": "near-black ground #0E0E12, paper ink #ECECEF",
+      "secondary": "briefing gold #D9A441 for chart secondary series and rules",
+      "accent": "the ONE red #E0392B — one emphasis per slide",
+      "neutral": "quiet silver #8C8C97 for captions and source lines",
+      "rule": "ONE red emphasis per slide; orb imagery on dividers only; no icon-card grids"
+    },
+    "typography": {
+      "title": "serif display (Georgia / 思源宋体) + caps kicker over a hairline",
+      "body": "quiet serif-or-sans body (Georgia / 思源宋体), measured leading",
+      "labels": "caps kickers and source lines (Arial / 黑体), tracked",
+      "text_quality": "FT-grade gravitas, calm precision, no visual shouting"
+    },
+    "layout_patterns": [
+      "headline stack: serif headline + caps kicker + hairline, then one designed chart",
+      "single-highlight chart: one series bar/line in the red, context in silver and gold",
+      "takeaway rail: a left rail sentence states the chart's conclusion",
+      "roman-numeral divider: orb image + numeral + chapter title — dividers only"
+    ],
+    "layout_usage_rule": "One designed chart and one red emphasis per slide; every slide carries a source line.",
+    "negative_prompt": [
+      "no icon-card grids — charts and type carry the page",
+      "no orb or atmospheric imagery on content slides — dividers only",
+      "no second red emphasis per slide",
+      "no light/white slide ground — dark gravitas is the register"
+    ],
+    "paired_illustration": {
+      "family": "dashboard",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "designed charts, serif headlines, takeaway rails, roman numerals, hairlines, source lines",
+      "avoid": "icon grids, decorative photography, gradients, rounded soft cards"
+    },
+    "rendering_constraints": [
+      "One designed chart per slide, single red highlight.",
+      "Restrained orb imagery on dividers only, mood per chapter.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: addsumtech/slides_maker · presets.py editorial_report"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "One designed chart per slide, single red highlight.",
+      "Restrained orb imagery on dividers only, mood per chapter.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

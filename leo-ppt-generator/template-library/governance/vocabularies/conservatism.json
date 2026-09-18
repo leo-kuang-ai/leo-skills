@@ -1,0 +1,40 @@
+{
+  "kind": "vocabulary",
+  "schema_version": 1,
+  "id": "audience_conservatism",
+  "description": "受众保守度三档；缺失可按 balanced 试探并标默认来源（§8.3）",
+  "terms": [
+    {
+      "id": "reserved",
+      "label_zh": "保守",
+      "signals": [
+        "监管评审",
+        "董事会",
+        "体制内",
+        "基金委",
+        "法务合规"
+      ],
+      "note": "偏向中性底、克制状态色、规范排印"
+    },
+    {
+      "id": "balanced",
+      "label_zh": "均衡",
+      "signals": [
+        "企业内部汇报",
+        "客户高管",
+        "行业会议"
+      ],
+      "note": "默认档"
+    },
+    {
+      "id": "expressive",
+      "label_zh": "表达",
+      "signals": [
+        "品牌发布",
+        "快闪展示",
+        "创意提案"
+      ],
+      "note": "允许高攻击/满版视觉方向"
+    }
+  ]
+}

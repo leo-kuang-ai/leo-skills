@@ -1,0 +1,180 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:迷幻国潮风",
+  "name": "迷幻国潮风",
+  "aliases": [
+    "国潮风",
+    "新中式潮流风",
+    "guochao"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/迷幻国潮风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "水墨国风",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "psychedelic guochao 2.0: traditional Chinese motifs (window lattice, auspicious clouds, ink mountains) fused with high-saturation gradient light effects, duotone-magenta-teal glow over xuan-paper neutrals, bold cultural iconography treated as neon-lit artifacts, dreamlike depth without losing ink-line structure"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "国潮风",
+      "新中式潮流风",
+      "guochao"
+    ],
+    "best_for": "文化 IP 联名、新消费品牌发布、文创提案、潮流营销；适合需要「东方意象 + 高饱和渐变光影」冲击力的封面、章节页与概念展示页；数据密集或严肃政务场景禁用",
+    "visual_direction": "psychedelic guochao 2.0: traditional Chinese motifs (window lattice, auspicious clouds, ink mountains) fused with high-saturation gradient light effects, duotone-magenta-teal glow over xuan-paper neutrals, bold cultural iconography treated as neon-lit artifacts, dreamlike depth without losing ink-line structure",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "xuan-paper white or deep ink as base; gradients live in light effects and motif fills, never as full-page wash",
+      "composition": "single dominant cultural motif per page (lattice / cloud / mountain) carrying one assertion; generous negative space lets the motif glow",
+      "density": "low"
+    },
+    "color_palette": {
+      "primary": "故宫红 vermilion #A61B29 for structural emphasis and title anchors, on xuan-paper white #F6F1E7",
+      "secondary": "琉璃黄 glazed-tile gold #D5A021 for gradient bands and motif fills",
+      "accent": "high-saturation psychedelic gradient pair: magenta #E8447E to teal #00B8A9, used only on light effects and the single focal motif per page",
+      "neutral": "deep ink #1F1B1C for text, warm gray #8A837B for captions, hairline #DDD5C6",
+      "rule": "high saturation lives only in gradients and one focal motif; base stays xuan-white or ink; never full-page neon; poly-pop 制式固定四色搭配（故宫红 #A61B29 / 琉璃黄 #D5A021 / 洋红 #E8447E / 青 #00B8A9），强调 = 最大对比对（洋红↔青）"
+    },
+    "typography": {
+      "title": "身份字体声明：中文主字族 思源宋体（Source Han Serif，Heavy/Bold 字重）——印章式庄重配迷幻光影的反差张力；英文搭配 Playfair Display / Georgia 衬线；字重区间 700–900 属 Shout 档，仅标题层、全 deck ≤2 页、逐处登记",
+      "body": "思源黑体 / Noto Sans SC（Regular 400–500），短段落、克制行文，正文永远不加粗",
+      "labels": "kicker/图注用 思源黑体 Light–Regular 小字 + 正字距（+.03em），可配英文小型大写衬线",
+      "text_quality": "中文逐字准确；书法感字形不得用于承载事实信息（事实文字一律印刷体）"
+    },
+    "layout_patterns": [
+      "单一文化图元（窗棂/祥云/山水）+ 一句断言标题 + 大留白",
+      "左右 5/7 分栏：左渐变图元 hero，右文字列",
+      "全幅图元氛围页（配 P36 Ambience，每 deck ≤2 页）"
+    ],
+    "layout_usage_rule": "封面/章节页用图元 hero；概念页用分栏；金句页配 P34 Quote Hero；数据页换 清爽专业风 或走可编辑路线——本风格不承载量化图表页",
+    "layout_blueprints": [
+      {
+        "name": "cover_motif_hero",
+        "sections": [
+          {
+            "position": "left 55%",
+            "count": 1,
+            "labels": [
+              "gradient cultural motif (lattice/cloud/mountain)"
+            ]
+          },
+          {
+            "position": "right 45%",
+            "count": 1,
+            "labels": [
+              "title stack: kicker + main title + meta"
+            ]
+          },
+          {
+            "position": "bottom-right",
+            "count": 1,
+            "labels": [
+              "seal-style accent mark"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "concept_split",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "assertion title"
+            ]
+          },
+          {
+            "position": "left 5/12",
+            "count": 1,
+            "labels": [
+              "glowing motif panel"
+            ]
+          },
+          {
+            "position": "right 7/12",
+            "count": 2,
+            "labels": [
+              "argument paragraph",
+              "key term strip"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": [
+        "窗棂/回纹/祥云/远山等传统图元（矢量化、可发光）",
+        "双色调渐变光带",
+        "印章式小标记",
+        "宣纸纹理（≤15%）"
+      ],
+      "avoid": [
+        "整页高饱和渐变底",
+        "龙凤堆砌与元素贴纸化",
+        "直接使用文物照片当背景",
+        "无意义故障风 glitch 噪点"
+      ]
+    },
+    "rendering_constraints": [
+      "配对渲染：矢量插画（见 视觉风格配对.md）；AI 图遵守 paste-ready 守卫（no text/lettering/numbers/logos/watermarks，2560×1440 宽幅构图）",
+      "渐变只允许 magenta#E8447E↔teal#00B8A9 与 gold#D5A021↔vermilion#A61B29 两条预设光带（poly-pop 四色内的组合），不得自由发明第三条",
+      "文字永远不压图元高光区；对比度守正文 ≥4.5:1",
+      "Shout 档字重例外按 通用设计规范 §一.1 登记：仅标题层，全 deck ≤2 页"
+    ],
+    "reference": "本土新增 2026-08-29（风格系统优化计划 U9；趋势来源 Canva 2026 / 微软官方设计博客；非上游 guizang/awesome 来源）"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "配对渲染：矢量插画（见 视觉风格配对.md）；AI 图遵守 paste-ready 守卫（no text/lettering/numbers/logos/watermarks，2560×1440 宽幅构图）",
+      "渐变只允许 magenta#E8447E↔teal#00B8A9 与 gold#D5A021↔vermilion#A61B29 两条预设光带（poly-pop 四色内的组合），不得自由发明第三条",
+      "文字永远不压图元高光区；对比度守正文 ≥4.5:1",
+      "Shout 档字重例外按 通用设计规范 §一.1 登记：仅标题层，全 deck ≤2 页"
+    ]
+  }
+}

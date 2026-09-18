@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest import mock
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "validate_assets.py"
@@ -325,6 +326,9 @@ class CheckUrlSemanticsTest(unittest.TestCase):
         import email.message
 
         calls = self._patch([(200, email.message.Message())])
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "ok")
         self.assertEqual(calls, ["HEAD"])
@@ -341,6 +345,9 @@ class CheckUrlSemanticsTest(unittest.TestCase):
 
         urllib.request.urlopen = fake_urlopen
         self.addCleanup(setattr, urllib.request, "urlopen", orig)
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "unreachable")
         self.assertIn("404", result["detail"])
@@ -379,9 +386,57 @@ class CheckUrlSemanticsTest(unittest.TestCase):
         orig = urllib.request.urlopen
         urllib.request.urlopen = fake_urlopen
         self.addCleanup(setattr, urllib.request, "urlopen", orig)
+        original_target_check = self.module._unsafe_url_target
+        self.module._unsafe_url_target = lambda ref: None
+        self.addCleanup(setattr, self.module, "_unsafe_url_target", original_target_check)
         result = self.module.check_url("https://example.com/a.png")
         self.assertEqual(result["status"], "ok")
         self.assertEqual(calls, ["HEAD", "GET"])
+
+    def test_private_literal_target_is_rejected_before_request(self):
+        with mock.patch.object(self.module.urllib.request, "urlopen") as urlopen:
+            result = self.module.check_url("https://127.0.0.1/chart.png")
+        self.assertEqual(result["status"], "unreachable")
+        self.assertIn("私网/回环/本机", result["detail"])
+        urlopen.assert_not_called()
+
+    def test_private_redirect_target_is_rejected(self):
+        import email.message
+
+        class FakeResponse:
+            status = 302
+            headers = email.message.Message()
+
+            def geturl(self):
+                return "https://127.0.0.1/internal.png"
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                return False
+
+        original_target_check = self.module._unsafe_url_target
+        def allow_initial(ref):
+            return None if "example.com" in ref else original_target_check(ref)
+        with mock.patch.object(self.module.urllib.request, "urlopen", return_value=FakeResponse()):
+            with mock.patch.object(self.module, "_unsafe_url_target", side_effect=allow_initial):
+                result = self.module.check_url("https://example.com/chart.png")
+        self.assertEqual(result["status"], "unreachable")
+        self.assertIn("重定向后的 URL 被拒绝", result["detail"])
+
+    def test_hostname_resolving_to_private_address_is_rejected(self):
+        with mock.patch.object(
+            self.module.socket,
+            "getaddrinfo",
+            return_value=[(self.module.socket.AF_INET, self.module.socket.SOCK_STREAM,
+                           6, "", ("10.10.0.8", 443))],
+        ) as resolver, mock.patch.object(self.module.urllib.request, "urlopen") as urlopen:
+            result = self.module.check_url("https://public-looking.example/chart.png")
+        self.assertEqual(result["status"], "unreachable")
+        self.assertIn("主机名解析到私网", result["detail"])
+        resolver.assert_called_once()
+        urlopen.assert_not_called()
 
 
 if __name__ == "__main__":

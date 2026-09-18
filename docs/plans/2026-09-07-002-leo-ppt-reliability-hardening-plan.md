@@ -1,6 +1,6 @@
 # Leo PPT Generator 可靠性加固技术方案（渠道执行面与操作摩擦收敛）
 
-> 依据：`docs/plans/2026-09-06-001-leo-ppt-reliability-baseline-evaluation-plan.md` 基线测评（30 轮）+ 重测轮 1 + 迭代 2 的全部证据。缺陷编号沿用 `leo-ppt-baseline-workspace/reports/defect-ledger.csv`。
+> 依据：`docs/plans/2026-09-06-001-leo-ppt-reliability-baseline-evaluation-plan.md` 基线测评（30 轮）+ 重测轮 1 + 迭代 2 的全部证据。缺陷编号沿用基线测评的 defect-ledger.csv（原存 git-ignore 工作区，已于 2026-09-11 清理）。
 
 ## 1. 背景与证据基线
 
@@ -159,7 +159,7 @@ deck_size_budget:
 | L3 行为抽样 | skill-up 随机 20% 用例（seed 固定可复现） | 每周/每发布 | 通过率不低于上次全量基线 −2pp |
 | L4 全量基线 | 30 轮矩阵 + 故障注入 + 验收轮 | 每里程碑 | 对照 `reliability-baseline.md` 指标无回退 |
 
-- L2 工件：把 `leo-ppt-baseline-workspace/tools/`（drive_deck / image_lane_deck / editable_worker / accept_round）提炼进 `leo-ppt-generator/bench/` 或 `scripts/baseline/`（保留 fixture 哈希冻结纪律），CI 可执行入口一个脚本。
+- L2 工件：把基线测评工作区的 tools（drive_deck / image_lane_deck / editable_worker / accept_round；原存 git-ignore 工作区，已于 2026-09-11 清理，需要时从评测脚本重建）提炼进 `leo-ppt-generator/bench/` 或 `scripts/baseline/`（保留 fixture 哈希冻结纪律），CI 可执行入口一个脚本。
 - L3 抽样 seed 进 `eval.yaml` 头注释，保证可复现与可比较。
 
 ### WS8 凭据治理（用户侧配合项）

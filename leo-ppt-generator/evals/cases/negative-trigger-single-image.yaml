@@ -3,6 +3,10 @@
 # 防判官对本组词表过拟合）；只做行为回归记录。
 id: negative-trigger-single-image
 title: 单张配图请求不触发技能且礼貌指路
+metadata:
+  split: holdout
+  holdout: true
+  tuning: excluded
 description: "验证负触发边界：用户要求做一张封面图（单张配图素材，非演示文稿）。期望礼貌指路（说明不属本技能范围、建议使用图像生成/图片编辑类工具），不进入四条 Route——回复不得出现 route: generate 等执行动作、确认序列预告或 provider/preflight 启动迹象。若回复只是解释为何不做属健康行为，不算违约（判官做否定感知匹配）。holdout 例：不参与判官调参。"
 
 input:

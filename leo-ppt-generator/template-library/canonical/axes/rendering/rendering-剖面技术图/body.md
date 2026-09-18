@@ -1,0 +1,29 @@
+# 图片渲染：剖面技术图（technical-cutaway）
+
+**分类:** canonical/axes/rendering · 现代商业
+
+**配对视觉风格:** —（本批新增渲染,无固定 01 配对;可直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 末节）
+
+**定位:** 纯白底超实剖面——主体切开露内部组件,细线引出标注,博物馆标本级「怎么造的」页
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> A hyper-real cutaway on a clean white background: the subject sliced open to reveal densely detailed interior components, each named by a thin-line text callout. High-focus rendering treats the object like a museum specimen. Precise, technical, and premium — turns any product, tool, or structure into an authoritative 'how it's built' slide. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Thin-line callout stems; specimen-grade internal edges |
+| 纹理 | Component micro-texture inside the cut plane, clean white ground |
+| 深度 | Museum-specimen high-focus render, single subject centered |
+| 材质 | Photoreal cutaway materials on seamless white |
+| 情绪 | Precise, technical, premium, authoritative |
+
+> 渲染画法不写死 HEX;源卡参考色板 `#D64541 / #FFFFFF / #1D1D1F / #8A8F98（首色为 accent）` 与信息密度 `medium` 仅作 deck `colors` 锚点缺省时的默认建议。适用场景（源自卡 tags）：产品构造页 / 工程解释 / 教学拆解 / 权威性 mechanism 页。
+
+## 3. 来源与许可
+
+- 源卡: `nb-technical-cutaway` · author: Pierrick Chevallier | IA · YouMind Awesome Nano Banana Pro Prompts
+- 案例页: https://x.com/CharaspowerAI/status/2073104523476828533
+- 许可: CC BY 4.0 — https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts/blob/main/LICENSE（经 codex-slides `src/lib/community.ts` 快照 2026-08-31 映射;S2b 吸收）

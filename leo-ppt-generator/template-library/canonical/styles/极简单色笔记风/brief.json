@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:极简单色笔记风",
+  "name": "极简单色笔记风",
+  "aliases": [
+    "미니멀 모노 노트",
+    "minimal mono note",
+    "打字机笔记"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/极简单色笔记风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "typewriter mono note, pure white sheet carrying only monospace text in ink black, one 1pt hairline divider, extreme restraint without any color"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "미니멀 모노 노트",
+      "minimal mono note",
+      "打字机笔记"
+    ],
+    "best_for": "纯白等宽打字机笔记的单色极简;适合技术笔记/极简宣言/开发分享",
+    "visual_direction": "typewriter mono note, pure white sheet carrying only monospace text in ink black, one 1pt hairline divider, extreme restraint without any color",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF",
+      "composition": "纯白页面仅等宽字体文本,墨黑一色,1pt 发丝线是唯一装饰",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(纸白)",
+      "secondary": "#111111(墨黑标题/强调)",
+      "accent": "#111111(强调同为墨黑,单色纪律)",
+      "neutral": "#8A8A8A(次级灰)"
+    },
+    "typography": {
+      "title": "JetBrains Mono 500 36pt(等宽)",
+      "body": "JetBrains Mono 400 22pt,leading 1.55",
+      "labels": "JetBrains Mono 400 小字,灰 #8A8A8A"
+    },
+    "layout_patterns": [
+      "纯白页面仅等宽字体文本,墨黑一色",
+      "1pt 发丝分隔线是唯一装饰",
+      "大量留白,层级用字号与字重区分",
+      "图表也只用黑/灰两档"
+    ],
+    "layout_usage_rule": "纯白页面仅等宽字体文本,墨黑一色",
+    "visual_elements": {
+      "allowed": "纯白页面仅等宽字体文本,墨黑一色,1pt 发丝线是唯一装饰",
+      "avoid": "不要任何有彩色(紫/蓝等全部禁止); 不要盒子/卡片/边框/阴影/面填充"
+    },
+    "rendering_constraints": [
+      "不要任何有彩色(紫/蓝等全部禁止)",
+      "不要盒子/卡片/边框/阴影/面填充",
+      "不要混入无衬线或衬线字体——等宽单一家族",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要任何有彩色(紫/蓝等全部禁止)",
+      "不要盒子/卡片/边框/阴影/面填充",
+      "不要混入无衬线或衬线字体——等宽单一家族"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD12 미니멀 모노 노트"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要任何有彩色(紫/蓝等全部禁止)",
+      "不要盒子/卡片/边框/阴影/面填充",
+      "不要混入无衬线或衬线字体——等宽单一家族",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

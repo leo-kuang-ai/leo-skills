@@ -1,0 +1,56 @@
+{
+  "cover": {
+    "kicker": "BRAND REVIEW",
+    "title": "让品牌被一眼认出",
+    "subtitle": "视觉资产年度盘点",
+    "footer_left": "品牌部",
+    "footer_right": "FY26",
+    "page_no": 1
+  },
+  "content": {
+    "title": "品牌资产的三个真相",
+    "bullets": [
+      "主视觉记忆度提升 26%",
+      "包装货架识别时间缩短至 1.8 秒",
+      "社媒二创使用量翻番"
+    ],
+    "page_no": 2
+  },
+  "evidence": {
+    "title": "视觉资产表现",
+    "columns": [
+      "资产",
+      "触达（万）",
+      "互动率"
+    ],
+    "column_align": [
+      "left",
+      "right",
+      "right"
+    ],
+    "rows": [
+      [
+        "主视觉",
+        "2,140",
+        "4.2%"
+      ],
+      [
+        "包装系统",
+        "1,380",
+        "5.1%"
+      ],
+      [
+        "社媒模板",
+        "3,860",
+        "6.8%"
+      ]
+    ],
+    "page_no": 3
+  },
+  "closing": {
+    "quote": "被记住，就是增长。",
+    "source_name": "品牌宣言",
+    "source_meta": "FY26",
+    "page_no": 4
+  }
+}

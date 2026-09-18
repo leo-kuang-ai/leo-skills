@@ -28,11 +28,12 @@ class SelectionLayoutTest(unittest.TestCase):
 
     def test_auto_high_score_does_not_override_hard_overflow(self):
         bank = suggest.load_bank()
+        # dashi 集成 U1/AE1：硬超候选直接排除（不再乘 0 压分），无合格候选
+        # 返回 undecided；独立几何闸对同输入仍判 overflow，显式指定也不能绕过。
         result = suggest.score_page({"page": 1, "page_role": "封面", "points": 1, "est_chars": 10000}, bank, 1.0, {})
-        self.assertEqual(result["decision"], "auto")
-        chosen = result["candidates"][0]["layout"]
-        self.assertTrue(any("硬超" in reason for reason in result["candidates"][0]["reasons"]))
-        code, output = self.capacity({"slides": [{"page": 1, "layout": chosen, "points": ["长" * 10000]}]})
+        self.assertEqual(result["candidates"], [])
+        self.assertEqual(result["decision"], "undecided")
+        code, output = self.capacity({"slides": [{"page": 1, "layout": "P1", "points": ["长" * 10000]}]})
         self.assertEqual(code, 1)
         self.assertIn("overflow", output)
 
@@ -40,11 +41,16 @@ class SelectionLayoutTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             home = Path(directory)
             name = "手绘白板风"
-            source = styles.load_style(name, home=home)["content"]
-            styles.save_style(name, source, home=home)
+            document = styles.load_style(name, home=home)
+            # 新协议：用户覆盖 = 把内置 brief 原样保存进用户 template-library。
+            compat_brief = json.loads(document["content"])
+            styles.save_style(name, json.dumps(compat_brief, ensure_ascii=False),
+                              home=home, overwrite=True)
             summary = styles.style_summary(name, home=home)
-            self.assertEqual(summary["scope"], "user")
-            result = templates.compose_style(name, home=home, expected_selection=summary["selection_fingerprint"])
+            self.assertEqual(summary["source"], "user")
+            result = templates.compose_style(
+                name, home=home,
+                expected_selection=summary["selection_fingerprint"])
             self.assertNotIn("image_rendering", result)
             factor, adjustments = suggest.load_style_routing(None)
             self.assertEqual((factor, adjustments), (1.0, {}))
@@ -52,26 +58,33 @@ class SelectionLayoutTest(unittest.TestCase):
             self.assertEqual(code, 0)
             self.assertIn("[OK]", output)
 
+    def test_metadata_only_change_keeps_visual_projection(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            name = "极简风"
+            document = styles.load_style(name, home=home)
+            brief = json.loads(document["content"])
+            styles.save_style(name, json.dumps(brief, ensure_ascii=False),
+                              home=home, overwrite=True)
+            first = styles.style_summary(name, home=home)
+            before = templates.compose_style(
+                name, home=home,
+                expected_selection=first["selection_fingerprint"])
+            # 元数据级改动（source 记录）：指纹变化，视觉投影逐字节不变。
+            brief["source"] = {"license": "unknown", "batch": "metadata-only"}
+            styles.save_style(name, json.dumps(brief, ensure_ascii=False),
+                              home=home, overwrite=True)
+            second = styles.style_summary(name, home=home)
+            after = templates.compose_style(
+                name, home=home,
+                expected_selection=second["selection_fingerprint"])
+            self.assertNotEqual(first["revision"], second["revision"])
+            self.assertEqual(before, after)
+
     def test_unknown_layout_and_empty_bank_are_not_success(self):
         self.assertEqual(self.capacity({"slides": [{"page": 1, "layout": "P999"}]})[0], 2)
         with mock.patch.object(geometry, "_load_layout_sidecars", return_value={}):
             self.assertEqual(self.capacity({"slides": [{"page": 1, "layout": "P1"}]})[0], 2)
-
-    def test_metadata_only_change_keeps_visual_projection(self):
-        with tempfile.TemporaryDirectory() as directory:
-            home = Path(directory)
-            name = "清爽专业风"
-            raw = styles.load_style(name, home=home)["content"]
-            brief = styles.parse_style_document(raw)["brief"]
-            styles.save_style(name, "```json\n" + json.dumps(brief, ensure_ascii=False) + "\n```\n", home=home)
-            first = styles.style_summary(name, home=home)
-            before = templates.compose_style(name, home=home, expected_selection=first["selection_fingerprint"])
-            brief["source"] = {"license": "unknown", "batch": "metadata-only"}
-            styles.save_style(name, "```json\n" + json.dumps(brief, ensure_ascii=False) + "\n```\n", home=home, overwrite=True)
-            second = styles.style_summary(name, home=home)
-            after = templates.compose_style(name, home=home, expected_selection=second["selection_fingerprint"])
-            self.assertNotEqual(first["style_content_digest"], second["style_content_digest"])
-            self.assertEqual(before, after)
 
 
 if __name__ == "__main__":

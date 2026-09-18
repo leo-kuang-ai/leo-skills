@@ -1,0 +1,132 @@
+<!doctype html>
+<!-- chain-flow：咨询级竖向责任链/路径页（绑 P2 vertical-timeline）。
+     结构：顶栏 + 左侧竖向节点链（每节点＝阶段名+标注+副行）+ 右侧标签卡栏 +
+     底部结果数字条。七条渲染合同同族。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>chain-flow</title>
+<style>
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype"); font-weight:400; }
+  @font-face { font-family:"Noto Sans SC"; src:url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype"); font-weight:700; }
+  * { margin:0; padding:0; box-sizing:border-box; letter-spacing:0; }
+  html, body, .slide { width:1280px; height:720px; overflow:hidden; }
+  body { position:relative; font-family:var(--leo-f-family-body,"Noto Sans SC"),sans-serif; font-size:var(--leo-f-size-body,25px); line-height:var(--leo-f-line-height-body,1.5); font-weight:var(--leo-f-weight-body,400); color:var(--leo-c-text,#26282B); background:var(--leo-c-background,#FAFAF7); }
+  .slide { position:relative; }
+  [data-leo-region] { position:absolute; min-width:0; min-height:0; }
+  [data-leo-block], [data-leo-block-item] { min-width:0; overflow-wrap:anywhere; }
+  .head { border-bottom:2px solid var(--leo-c-accent,#8A6D3B); }
+  .kicker { color:var(--leo-c-accent,#8A6D3B); font:var(--leo-f-weight-kicker,400) var(--leo-f-size-kicker,22px)/var(--leo-f-line-height-kicker,1.4) var(--leo-f-family-kicker,"Noto Sans SC"),sans-serif; margin-bottom:8px; }
+  .title, .quote { color:var(--leo-c-primary,#31435C); font:var(--leo-f-weight-title,700) var(--leo-f-size-title,46px)/var(--leo-f-line-height-title,1.25) var(--leo-f-family-title,"Noto Sans SC"),sans-serif; }
+  .page-no, .page-no2 { position:absolute; right:24px; bottom:8px; color:var(--leo-c-muted,#5D6672); font:var(--leo-f-weight-page_no,400) var(--leo-f-size-page_no,22px)/var(--leo-f-line-height-page_no,1.2) var(--leo-f-family-page_no,"Noto Sans SC"),sans-serif; }
+  .footnote, .bound, .meta { font-size:var(--leo-f-size-page_no,22px); line-height:1.3; color:var(--leo-c-muted,#5D6672); }
+  .foot, .footer, .bound { border-top:1px solid var(--leo-c-border,#D8DAD3); padding-top:10px; }
+  .bottom { display:flex; align-items:center; gap:var(--leo-g-padding-gap,16px); }
+  .bottom:empty, .kicker:empty, .source:empty { display:none; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after { animation: none !important; transition: none !important; }
+
+  .chain { display:flex; flex-direction:column; justify-content:space-between; }
+  .chain-axis { position:absolute; left:11px; top:14px; bottom:14px; width:2px; background:var(--leo-c-border,#D8DAD3); }
+  .node { display:flex; gap:18px; position:relative; }
+  .node > div:last-child { flex:1; min-width:0; }
+  .dot { flex:none; width:24px; height:24px; margin-top:6px; background:var(--leo-c-surface,#FFFFFF); border:2px solid var(--leo-c-primary,#31435C); z-index:1; }
+  .dot.a { background:var(--leo-c-accent,#8A6D3B); }
+  .n-name, .s-key { font-weight:700; color:var(--leo-c-primary,#31435C); }
+  .n-desc, .s-val { font-size:var(--leo-f-size-page_no,22px); line-height:1.35; color:var(--leo-c-muted,#5D6672); }
+  .tag { display:inline-block; font-size:var(--leo-f-size-page_no,22px); color:var(--leo-c-accent,#8A6D3B); margin-left:10px; padding:0 6px; }
+  .tag.lead { background:var(--leo-c-primary,#31435C); color:var(--leo-c-on_primary,#FFFFFF); }
+  .side { display:flex; flex-direction:column; gap:var(--leo-g-padding-gap,16px); }
+  .side-card { flex:1; display:flex; gap:18px; align-items:center; padding:var(--leo-g-padding-block,14px) var(--leo-g-padding-inline,18px); border-left:3px solid var(--leo-c-accent,#8A6D3B); background:var(--leo-c-surface,#FFFFFF); }
+  .s-key { flex:0 0 110px; }
+  .stats { display:flex; background:var(--leo-c-primary,#31435C); color:var(--leo-c-on_primary,#FFFFFF); }
+  .stats:empty { display:none; }
+  .stat { flex:1; padding:10px 18px; border-right:1px solid var(--leo-c-on_primary,#FFFFFF); }
+  .stat:last-child { border:0; }
+  .st-label { font-size:var(--leo-f-size-page_no,22px); }
+  .st-value { font-weight:700; }
+  .st-value em { font-style:normal; }
+
+  .head { left:var(--leo-g-header-x,64px); top:var(--leo-g-header-y,40px); width:var(--leo-g-header-width,1152px); height:var(--leo-g-header-height,124px); }
+  .chain { left:var(--leo-g-chain-x,64px); top:var(--leo-g-chain-y,180px); width:var(--leo-g-chain-width,560px); height:var(--leo-g-chain-height,386px); }
+  .side { left:var(--leo-g-side_cards-x,660px); top:var(--leo-g-side_cards-y,180px); width:var(--leo-g-side_cards-width,556px); height:var(--leo-g-side_cards-height,386px); }
+  .stats { left:var(--leo-g-stats_band-x,64px); top:var(--leo-g-stats_band-y,594px); width:var(--leo-g-stats_band-width,1152px); height:var(--leo-g-stats_band-height,88px); }
+</style>
+</head>
+<body>
+  <main class="slide">
+    <header class="head" data-leo-region="header">
+      <div class="kicker" data-leo-block="kicker"></div>
+      <h1 class="title" data-leo-block="title"></h1>
+    </header>
+    <section class="mid">
+      <div class="chain" data-leo-region="chain" data-leo-block="chain">
+        <div class="chain-axis"></div>
+      </div>
+      <div class="side" data-leo-region="side_cards" data-leo-block="side"></div>
+    </section>
+    <section class="stats" data-leo-region="stats_band" data-leo-block="stats"></section>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") { document.documentElement.dataset.leoRender = "1"; }
+  function el(tag, cls, text) { var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=String(text); return e; }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    Object.keys(theme.colors || {}).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(theme.colors[role]));
+    });
+    Object.keys(theme.fonts || {}).forEach(function (role) {
+      var font = theme.fonts[role];
+      ["family", "size", "weight", "line_height"].forEach(function (key) {
+        if (font[key] != null) root.style.setProperty("--leo-f-" + key.replace("_", "-") + "-" + role,
+          String(font[key]) + (key === "size" ? "px" : ""));
+      });
+    });
+    Object.keys(theme.geometry || {}).forEach(function (key) {
+      if (typeof theme.geometry[key] === "number")
+        root.style.setProperty("--leo-g-" + key, theme.geometry[key] + "px");
+    });
+  }
+  function applyData(data) {
+    data=data||{};
+    document.querySelector('[data-leo-block="kicker"]').textContent=data.kicker||"";
+    document.querySelector('[data-leo-block="title"]').textContent=data.title||"";
+    var chain=document.querySelector('[data-leo-block="chain"]');
+    (data.nodes||[]).forEach(function(n){
+      var node=el("div","node"); node.setAttribute("data-leo-block-item","node");
+      var dot=el("div","dot"+(n.highlight?" a":""));
+      var body=document.createElement("div");
+      var nameRow=document.createElement("div");
+      nameRow.appendChild(el("span","n-name",n.name));
+      if(n.tag) { var t=el("span","tag"+(n.lead?" lead":""),n.tag); nameRow.appendChild(t); }
+      body.appendChild(nameRow);
+      if(n.desc) body.appendChild(el("div","n-desc",n.desc));
+      node.appendChild(dot); node.appendChild(body);
+      chain.appendChild(node);
+    });
+    var side=document.querySelector('[data-leo-block="side"]');
+    (data.side_cards||[]).forEach(function(c){
+      var card=el("div","side-card"); card.setAttribute("data-leo-block-item","side_card");
+      card.appendChild(el("div","s-key",c.key));
+      card.appendChild(el("div","s-val",c.value));
+      side.appendChild(card);
+    });
+    var stats=document.querySelector('[data-leo-block="stats"]');
+    (data.stats||[]).forEach(function(s){
+      var st=el("div","stat"); st.setAttribute("data-leo-block-item","stat");
+      st.appendChild(el("div","st-label",s.label));
+      var v=el("div","st-value");
+      if(s.value_prefix) v.appendChild(el("em",null,s.value_prefix));
+      v.appendChild(document.createTextNode(s.value));
+      st.appendChild(v);
+      stats.appendChild(st);
+    });
+    document.querySelector('[data-leo-block="page-no"]').textContent=data.page_no!=null?String(data.page_no):"";
+  }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function(){ document.documentElement.dataset.leoReady="1"; });
+</script>
+</body>
+</html>

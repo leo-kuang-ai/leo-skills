@@ -50,12 +50,13 @@
 | `style_sensitive_content_forbidden` | 风格内容包含疑似密钥、令牌、密码或邮箱等敏感信息 | 是 | 移除敏感信息；凭据只允许由宿主注入 |
 | `style_name_conflict` | 用户风格名称已存在且未明确覆盖 | 是 | 使用 `--overwrite` 或 `--rename` 明确处理重名 |
 | `style_not_found` | 请求的内置或用户风格不存在 | 是 | 先用 `style list` 查看可用风格名称 |
-| `style_listed` | 风格列表已读取 | 不适用 | 从返回列表选择名称后执行 load/save |
+| `style_catalog_incomplete` | catalog 已登记的风格实体无法读取或 materialize，列表不提供部分 ready 结果 | 是 | 修复或移除损坏的 canonical brief，重新运行 `style list --summary` |
+| `style_listed` | 风格列表已读取；返回项含 `registry_source`，可为 `catalog` 或 `canonical-rebuild` | 不适用 | 仅将 `catalog` 视为新鲜索引证据；`canonical-rebuild` 需先重建/修复 catalog |
 | `style_loaded` | 风格内容已读取 | 不适用 | 使用返回的内容与 sha256 作为本次运行的风格输入 |
 | `style_saved` | 用户风格已原子保存 | 不适用 | 保存返回的路径与 sha256，后续运行优先读取该风格 |
 | `style_store_error` | 风格库操作的兜底错误 | 条件式 | 读取具体子 reason code 后修复并重试 |
 | `style_rendered` | 模板确定性注入内容已渲染 | 不适用 | 将返回的 template 写入 deck_spec.style 与 slides[].layout |
-| `layout_bank_capacity_filtered` | 版式库容量过滤结果已返回 | 不适用 | 按 matched/missing 消费；槽名语法见 `styles/12_版式库/00_容量档位参考.md` |
+| `layout_bank_capacity_filtered` | 版式库容量过滤结果已返回 | 不适用 | 按 matched/missing 消费；槽名语法见 `template-library/governance/rules/layouts/00_容量档位参考.md` |
 | `capacity_filter_invalid` | --capacity 条件语法错误（含空条件/互斥冲突） | 条件式 | 按 `槽名<=N` 语法修正后重试；与 --style/--layout 互斥 |
 | `templates_listed` | 模板轴清单已枚举 | 不适用 | 从清单选择渲染/版式/信息图/模式名 |
 | `template_store_error` | 模板知识库加载失败或模板不存在 | 是 | 用 `style render --list-templates` 查看可用名后重试 |
@@ -264,9 +265,12 @@
 | `render_backend_ready` | playwright + chromium + 离线字体目录探测通过 | 不适用 | 允许路由提议进入 render lane（寄生既有 backend 确认点） |
 | `render_backend_missing` | 渲染依赖未安装或 chromium 二进制缺失 | 是 | 按安装指引装 playwright + chromium 后重跑 `render ready`；期间路由提议被抑制并披露，图像 lane 不受影响 |
 | `render_backend_unknown` | 组件在场但 chromium 启动探测不可判 | 是 | 按 missing 抑制路由提议并披露探测不可判；排查启动错误后重跑 `render ready` |
-| `render_template_not_found` | 模板 id 不在 assets/render-templates/ | 是 | 核对模板 id 后重试；模板清单见该目录 README |
+| `render_template_not_found` | 模板 id 不在 template-library/canonical/templates/ | 是 | 核对模板 id 后重试；运行 `lint_render_templates.py` 查看模板清单 |
 | `render_template_contract_violation` | 模板缺 ready 信号/禁动画条款等合同失败（lint 级 FAIL） | 是 | 修模板或换模板；lint 见 `scripts/lint_render_templates.py` |
 | `render_data_invalid` | slide data / mermaid 块不可解析、`--source` 无 ```mermaid-example 块或语法渲染失败 | 是 | 修数据后重试；示例数字必须替换为 approved 真实数据 |
+| `render_script_error` | 模板页面脚本抛出未处理异常 | 是 | 修复模板脚本或输入数据后重试 |
+| `render_font_missing` | 主题字族未登记、字体文件缺失或 Chromium 实际加载失败 | 是 | 补齐 canonical font manifest/文件，或改用已登记字体后重试 |
+| `layout_profile_invalid` | 模板绑定版式的区域、列数或几何合同不满足 | 是 | 使用已声明列数/版式，不能静默套用其他比例 |
 | `render_timeout` | 渲染超过时限（goto/fonts.ready/screenshot） | 是 | 增大 `--timeout` 或简化页内容 |
 | `render_size_mismatch` | 产物 PNG 头实际像素 ≠ 请求档（或 --size 非 16:9/非 1x/2x 档） | 是 | 检查模板根容器 1280×720 与 device_scale_factor；不符时不产出 |
 | `render_output_invalid` | 截图不是合法 PNG | 是 | 重试；持续出现则排查渲染环境 |
@@ -279,3 +283,77 @@
 | `render_sweep_planned` | `image sweep --dry-run` 输出复位计划（完成码） | 不适用 | 确认计划后去掉 `--dry-run` 执行 |
 | `render_sweep_applied` | `image sweep` 已复位非 rendered 页（复用 reset_failed_pages） | 见协议 | 已 rendered 页无条件跳过；按 ≤2 轮上限继续 |
 | `render_sweep_rounds_exhausted` | 清扫轮次已达 `--max-rounds` 上限，拒绝再次复位 | 条件式 | 剩余失败页走缺页拒绝组装 / partial-hybrid 确认（upgrade）或向用户披露（generate） |
+
+## 组合页合成（R-70a/b 追加）
+
+以下 code 属 `render composite` / `render composite-verify` 控制面。合同与阶段门
+见 `references/render-contract.md` 组合页合成节；R-70c 路由转正前这些命令
+只用于门禁证据与显式调用。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `render_composite_completed` | `render composite` 成功（envelope 完成码） | 不适用 | 终页/透明文字层/双 provenance sidecar 已落盘；不晋升默认路由 |
+| `render_composite_verified` | `render composite-verify` 重推导一致（完成码） | 不适用 | 文字层与整页均未被手改 |
+| `composite_background_missing` | 背景层文件不存在 | 是 | 核对 `--background` 路径 |
+| `composite_background_invalid` | 背景层无法按图片读取 | 是 | 确认背景层为合法 PNG 且来自确认 backend |
+| `composite_spec_invalid` | spec 白名单/锚点/max_width/颜色/字号合同失败（含缺锚点、白名单外锚点、越界） | 是 | 按 detail 修 spec 后重试；白名单逐字合同见 render-contract |
+| `overlay_out_of_canvas` | 文字落位或换行后超出 2560×1440 画布 | 是 | 调整锚点/`max_width`/字号；不静默截断 |
+| `overlay_canvas_mismatch` | 背景画幅非 16:9 | 是 | 提供确认 backend 的 16:9 背景 |
+| `overlay_theme_invalid` | spec.theme 缺 colors / 角色非 #RRGGBB / color_role 未声明 | 是 | 修正 effective theme 结构后重试 |
+| `overlay_font_missing` | 主题字族未登记离线资产或缺 weight 400 文件 | 是 | 补齐字体 manifest 后重试；不落回系统字体 |
+| `text_contrast_insufficient` | 文字色对底图采样低于 visual-qa 下限（正文 4.5:1 / 大字 3:1） | 是 | 换主题角色/颜色或换背景；低对比不产出 |
+| `composite_design_stale` | 冻结设计依赖 sha256 漂移，拒绝旧 run 续跑 | 是 | 按 mismatches 重建设计或新建 run；不得静默重组 |
+| `composite_design_invalid` | `--design` 输入非 resolved-design 结构 | 是 | 提供冻结 resolved-design.json |
+| `composite_binding_theme_mismatch` | spec theme 与冻结绑定 effective.theme 不一致 | 是 | 用绑定主题重出 spec，或走绑定修订通道后重建 run |
+| `composite_binding_backend_mismatch` | 背景 receipt backend 与冻结绑定 backend 不一致 | 是 | 使用与绑定一致的背景产物 |
+| `composite_verify_missing` | composite-verify 待校验产物缺失 | 是 | 核对三件套路径 |
+| `composite_text_layer_modified` | 文字层与 spec 重推导字节不一致，疑似手改 | 是 | 用 `render composite` 重新生成文字层；不得手改后冒充 |
+| `composite_page_modified` | 整页与背景+文字层重合成不一致，疑似手改或替换 | 是 | 重新合成；同一 Pillow 工具链内校验（版本见 sidecar `tool`） |
+
+## OCR 对齐通道与对齐门（R-73 追加）
+
+以下 code 属 `image ocr` 一条龙与 `image record` 前置对齐门控制面。通道缺
+token/依赖/超时按页 `not_run` 披露——未运行不是通过；composite 与 render
+产物按 provenance 判域豁免，不做 OCR 重复校验。
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `image_ocr_completed` | `image ocr` 至少一页完成（完成码） | 不适用 | `page_<N>.txt` 已落盘；record 时对齐门自动消费 |
+| `ocr_page_selection_required` | `image ocr` 未指定 `--number`/`--all` 或同时指定 | 是 | 二选一后重试 |
+| `ocr_page_image_missing` | 目标页图（recorded artifact）不存在 | 是 | 先 `image record` 产物再跑 OCR |
+| `ocr_token_missing` | 缺 `PADDLE_OCR_TOKEN`，通道未运行 | 是 | 配置凭据后重试；门按 not_run 披露，不冒充通过 |
+| `ocr_dependency_missing` | OCR 通道依赖（requests/numpy/PIL/vendor 模块）缺失 | 是 | 安装声明依赖后重试 |
+| `ocr_job_timeout` | PaddleOCR 任务轮询超时 | 是 | 增大 `--timeout` 或重试；按 not_run 披露 |
+| `ocr_job_failed` | PaddleOCR 任务失败或返回空页 | 是 | 按页重试；持续失败登记缩围 |
+| `ocr_alignment_failed` | enforce 模式下 OCR 对齐失败，record 被拦截 | 是 | 回母版修文字或重新生成页图；WARN 期同判定只披露不阻断 |
+| `ocr_alignment_config_invalid` | `input/ocr-alignment.json` 结构非法（mode/threshold/exemptions） | 是 | 修正配置；阈值 ∈ (0,1]，exemptions 须含 text+reason |
+| `ocr_calibration_required_for_enforce` | `mode=enforce` 但校准报告缺失或未 passed | 是 | 先跑离线/真实校准集，`reports/ocr-calibration.json` status=passed 后方可硬门 |
+| `ocr_calibration_report_invalid` | 校准 manifest kind 不符或结构非法 | 是 | 用 `build_offline_calibration_manifest` 重新生成或修正真实采集清单 |
+
+## 调度恢复与 lane 成本（U13/U10 追加）
+
+| Reason code | 含义 | 可恢复性 | 动作 |
+| --- | --- | --- | --- |
+| `operation_state_lost` | 旧 operation 重放时页结果字段已被 reset 清除（债2） | 是 | 按 pending 页重新派发新操作，不得重放旧操作 |
+| `reset_blocked_by_inflight_workers` | 目标域存在 active worker，清扫拒绝复位 | 是 | 等待 worker 完成或显式取消后重试 sweep |
+
+## 内容冻结绑定与关联升级（dashi 集成 K4/K7）
+
+| reason code | 含义 | 恢复动作 |
+| --- | --- | --- |
+| `content_master_missing` | `content pack --master` 指向的母版文件不存在 | 核对母版路径后重试 |
+| `content_pack_invalid` | 内容包不可解析 / 摘要不自洽（手改）或母版缺稳定身份/确认标记 | 回母版修复（page_id、confirmation、登记表九列、图行三段）后重新编译 |
+| `content_pack_page_mismatch` | slides 页序与内容包页序不一致 | 对齐 slides 与母版页集后重新 prepare |
+| `resolved_design_invalid` | 冻结设计缺失 `entity: resolved-design` 或不可解析 | 用 compose_design 重新产出设计后重试 |
+| `design_page_mismatch` | 冻结设计页序与内容包页序不一致 | 同一内容包重新组合设计 |
+| `layout_selection_invalid` | 整册选择文件缺 `kind: deck-layout-selection` 或不可解析 | 用 layout_selection.allocate_deck 重新产出 |
+| `layout_selection_content_mismatch` | 选择的 content_digest ≠ 内容包摘要 | 同一内容包重跑选择 |
+| `layout_selection_page_mismatch` | 选择页覆盖 ≠ 内容包页集合 | 同一内容包重跑选择 |
+| `page-content-pack_fingerprint_conflict` | 已 prepare 后注入不同内容包 | 内容改版须建立新 run（同 run 拒绝） |
+| `resolved-design_fingerprint_conflict` | 已 prepare 后注入不同冻结设计 | 设计改版须建立新 run |
+| `layout-selection_fingerprint_conflict` | 已 prepare 后注入不同整册选择 | 重选须建立新 run 或回滚到原选择 |
+| `content_pack_unreadable` / `layout_selection_unreadable` / `resolved_design_unreadable` | 收据绑定时 run 输入区文件损坏 | 从冻结前来源恢复输入文件后重新生成收据 |
+| `delivery_template_binding_invalid` | 冻结设计缺页级 template_id 或格式非法 | 重新组合设计（绑定模板资产） |
+| `delivery_template_binding_required` | run 本地模板根存在但无冻结设计绑定 | 补 `--design` 后重新 prepare |
+| `delivery_template_path_invalid` | 模板目录符号链接/越出模板根 | 修复 run 内模板 stage 或使用 canonical 库 |
+| `delivery_template_source_missing` | 选中模板缺 page.html | 恢复模板目录后重新生成收据 |

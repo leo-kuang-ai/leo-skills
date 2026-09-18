@@ -17,6 +17,15 @@
   pending 重新确认）。`content/` 区别于 backend contract 专用的 `contracts/`
   与用户素材的 `sources/`。正式状态只写 `runs/<run-id>/`，canonical PPTX 只写
   当前 run 的 `final/`。
+- **run 目录规范与全局登记**：run 的正式位置是项目 workspace 内的
+  `<project-root>/runs/<run-id>/`（与 `content/`、`sources/`、`deliveries/`
+  同根自包含，可整体归档）。`leo-ppt run create` 成功后向全局
+  `${LEO_PPT_HOME}/runs-registry.jsonl` 追加一行登记
+  （`run_id`/`route`/`project_root`/`run_dir`/`created_at`，按 run_id 幂等；
+  登记失败只打 WARN 不阻断生成）。控制台「生成任务」Tab 以 home 的
+  `projects/*/runs/*` 布局为主发现源、registry 登记目录为补充（run_dir 内
+  run.json 的 run_id 必须与登记行一致才收编）。run 记录在 backend 合同签署
+  时创建——此前的合同、大纲与风格确认属会话内工作，不落 run。
 - backend contract 由 registry 创建和验证，不手写 capability、credential 或领域状态
   JSON。凭据只允许 `env:`、`host:`、`keychain:` reference。
 - **render-lane deck 合同（加固 WS5）**：全册页产物均为 `render:*` 的 deck 用
@@ -72,6 +81,13 @@
   失败的稳定 reason code 经 `blocker=<reason>`（slide）或 `validation.json`
   （page）登记。
 - worker 不修改其他页面、顶层 run、最终 PPTX 或 Git；父 Agent 负责 record 和最终验证。
+- 派发指引（R-81 残留①）：并发上限读 runtime 配置 `max_concurrent_workers`
+  （缺省 5），不擅自超发；同 run 多 worker 共享 canonical 状态时，record 遇
+  `vendor_revision_conflict` 必须以**完整原命令**重跑（读取最新 revision 后
+  重新提交），不得本地重试部分参数或改写 operation 身份。
+- image sweep 与在途 worker 互斥：目标域存在 active 页时清扫拒绝复位
+  （`reset_blocked_by_inflight_workers`），且 image sweep 只作用 image 域，
+  不越界复位 editable（R-81 残留②）。
 
 ### Worker 逐页三层容错协议
 
@@ -113,6 +129,22 @@ leo-ppt image sample-verify <run> --slides <slides.json> --binding <binding.json
 leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.json> --sources <sources-manifest.json>
 ```
 
+**内容冻结绑定（表达 pipeline）**：带稳定身份母版的 generate run 使用正式
+`PipelineRequest`，通过 `leo-ppt generate --request <request.json>` 调用唯一生产链。
+内容包、selection、design、binding、资产及资格证据一并封存到
+`<run>/input/generations/<generation>/`，原子切换 `input/current.json` 后登记 RunIndex。
+`image prepare` 仅读取已提交代，核对 slides 的 `page_id` 与 `number` 后登记补充讲稿
+和来源；不再接受独立 `--content-pack`、`--design` 或 `--layout-selection` 参数。
+缺 pointer、半份冻结或错页均拒绝；内容或设计改版必须**建立新 run**，同 run 的不同
+输入以 `input_generation_conflict` 拒绝。内容包经 `leo-ppt content pack --master
+<母版> --out <包>` 编译，legacy 母版先 `leo-ppt content stamp-page-ids`
+一次性补齐页身份并重新确认。可编辑目标走 `generate → upgrade
+import-baseline` 两段关联 run：baseline 冻结源交付、页图、notes 与内容/设计
+快照副本（`source_binding`：源 run ID、交付 SHA、内容/设计摘要、目标路线），
+复制校验全部通过才发布；导入后移走源目录不影响目标恢复；同一目标输入漂移
+即 `upgrade_baseline_conflict`。父 generate 成功仅表示前一阶段完成，可编辑
+目标只认 upgrade run 的最终对象与视觉回读证据。
+
 `binding.json` 必须包含 `backend`、`width`、`height`、`generation_method`、
 `style_visual_path`、`layout_binding_path` 六个字段。backend 与冻结 run 合同核对，
 尺寸读实际样张图片；风格填写已投影的视觉规则文件，布局填写实际绑定文件路径，
@@ -121,7 +153,17 @@ leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.jso
 `reports/sample-decision.json` 保存具体图 hash、canonical slides hash、实际风格/布局
 文件 hash、backend 合同与决策来源。`user-confirmed` 表示记录人工选择声明，
 `user-delegated` 表示授权范围内的 Agent 决策；授权文件必须包含真实引用，不得补造。
+按 SKILL.md 协作方式，样张门（🔶 SAMPLE-GATE）默认经用户呈现认可后记
+`user-confirmed`；仅当用户显式豁免样张呈现时记 `user-delegated`，
+`authorization-quote` 须为豁免原话。
 这只是可追溯声明，不是发言人认证，也不能用于设置最终人工验收通过。
+
+**六节点决策简报（R-76）**：合同/大纲/母版/视觉方向＋样张/PARTIAL-GATE/
+DELIVERY-GATE 六个推进节点向人呈现三行固定摘要（变了什么/影响什么/
+需要决定什么），模板与用户语言强制项见
+[`decision-brief.md`](decision-brief.md)；确定性构建走 runtime
+`layout_proposals.decision_brief`，呈现缺席降级 CLI 报告（cli-fallback），
+委托模式简报仍生成、仅呈现豁免（exempt-user-delegated 留痕）。
 
 新流程必须传 `--sample-binding`。已有收据时即使不传该参数也会在 prepare 与组装前核验；
 从未启用的历史任务显式返回 `legacy/not_run`，可兼容准备但不能声称恢复了样张批准。

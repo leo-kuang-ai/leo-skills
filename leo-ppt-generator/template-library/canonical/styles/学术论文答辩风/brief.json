@@ -1,0 +1,173 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:学术论文答辩风",
+  "name": "学术论文答辩风",
+  "aliases": [
+    "学术会议风",
+    "毕业答辩风",
+    "课题申请风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/教育学术/学术论文答辩风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "学术答辩"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "academic thesis-defense style, rigorous research narrative, clear question-method-evidence-conclusion logic, scholarly credibility, disciplined academic presentation"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "学术会议风",
+      "毕业答辩风",
+      "课题申请风"
+    ],
+    "variants": [
+      "学术会议风: 同板场景变体，限时精简的学术会议报告",
+      "毕业答辩风: 同板场景变体，学位答辩的问题-方法-证据-贡献",
+      "课题申请风: 同板场景变体，立项依据与可行性论证"
+    ],
+    "best_for": "论文与学位答辩,需要清晰的研究问题、方法、证据与贡献陈述",
+    "visual_direction": "academic thesis-defense style, rigorous research narrative, clear question-method-evidence-conclusion logic, scholarly credibility, disciplined academic presentation",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / pale, moderate",
+      "composition": "research logic: question → method → evidence → contribution",
+      "density": "medium, scholarly"
+    },
+    "color_palette": {
+      "primary": "steel blue #334155 / navy, white",
+      "secondary": "slate #64748B, warm gray #9C9484",
+      "accent": "one restrained accent #64748B",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "scholarly, disciplined, restrained color"
+    },
+    "typography": {
+      "title": "clear authoritative serif (Georgia / 思源宋体) or sans (Inter / 思源黑体)",
+      "body": "precise academic body",
+      "labels": "figure/table references",
+      "text_quality": "exact academic terms, references accurate"
+    },
+    "layout_patterns": [
+      "research question & motivation",
+      "method / framework design",
+      "results & evidence",
+      "findings & next work"
+    ],
+    "layout_usage_rule": "Disciplined research logic; question-method-evidence-contribution, scholarly tone.",
+    "layout_blueprints": [
+      {
+        "name": "答辩封面",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "论文题目"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "主视觉 + 作者/单位"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "答辩信息"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "方法页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "研究框架"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "流程图/框架图"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "数据",
+              "假设"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "study diagrams, figures/tables, reference notes, scholarly linework",
+      "avoid": "playful, clutter, shallow marketing, unsupported claims"
+    },
+    "rendering_constraints": [
+      "Scholarly, disciplined, evidence-forward.",
+      "Clear question-method-evidence-contribution structure.",
+      "Accurate academic terms and references; no invented data."
+    ],
+    "reference": "GitHub: 学术论文答辩 · 科研答辩风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.85,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Scholarly, disciplined, evidence-forward.",
+      "Clear question-method-evidence-contribution structure.",
+      "Accurate academic terms and references; no invented data."
+    ]
+  }
+}

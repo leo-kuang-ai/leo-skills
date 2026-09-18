@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:project-retro",
+  "id": "project-retro",
+  "name_zh": "项目复盘",
+  "match_signals": {
+    "genre": [
+      "复盘",
+      "经验沉淀",
+      "改进项目"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:培训课件风",
+    "layouts": [],
+    "density": "balanced"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:handdrawn-whiteboard",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

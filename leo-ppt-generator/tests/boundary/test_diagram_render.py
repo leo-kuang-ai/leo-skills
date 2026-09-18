@@ -74,6 +74,33 @@ class DiagramRenderTest(unittest.TestCase):
         r = _run([src, tempfile.mktemp(suffix=".png")])
         self.assertEqual(r.returncode, 0, r.stderr)
 
+    def test_rejects_unknown_direction(self):
+        src = _write(json.dumps(dict(SPEC, direction="DIAGONAL")))
+        r = _run([src, tempfile.mktemp(suffix=".png")])
+        self.assertEqual(r.returncode, 3)
+        self.assertIn("direction_invalid", r.stderr)
+
+    def test_rejects_unknown_edge_node(self):
+        spec = dict(SPEC, edges=[{"from": "a", "to": "missing"}])
+        src = _write(json.dumps(spec))
+        r = _run([src, tempfile.mktemp(suffix=".png")])
+        self.assertEqual(r.returncode, 3)
+        self.assertIn("unknown_node", r.stderr)
+
+    def test_rejects_cycle(self):
+        spec = dict(SPEC, edges=[{"from": "a", "to": "b"}, {"from": "b", "to": "a"}])
+        src = _write(json.dumps(spec))
+        r = _run([src, tempfile.mktemp(suffix=".png")])
+        self.assertEqual(r.returncode, 3)
+        self.assertIn("diagram_cycle", r.stderr)
+
+    def test_rejects_duplicate_node_id(self):
+        spec = dict(SPEC, nodes=[{"id": "a"}, {"id": "a"}], edges=[])
+        src = _write(json.dumps(spec))
+        r = _run([src, tempfile.mktemp(suffix=".png")])
+        self.assertEqual(r.returncode, 3)
+        self.assertIn("duplicate_node_id", r.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

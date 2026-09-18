@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/image-recipe/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entity",
+    "asset_id",
+    "name",
+    "version",
+    "lane",
+    "layout_profiles",
+    "slot_map",
+    "canvas",
+    "provider",
+    "required_data_projection",
+    "prompt_skeleton",
+    "probe_evidence_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "image-recipe"
+    },
+    "asset_id": {
+      "type": "string",
+      "pattern": "^(builtin|user):recipe:[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lane": {
+      "const": "image"
+    },
+    "layout_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(builtin|user):layout:[A-Za-z0-9\\-\\u4e00-\\u9fff]+$"
+      }
+    },
+    "slot_map": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "content_type",
+          "projection"
+        ],
+        "properties": {
+          "content_type": {
+            "enum": [
+              "text",
+              "points",
+              "chart",
+              "media",
+              "table",
+              "metric"
+            ]
+          },
+          "projection": {
+            "enum": [
+              "items",
+              "structures",
+              "claim"
+            ]
+          },
+          "input_path": {
+            "enum": [
+              "rows",
+              "columns",
+              "rows.*.*"
+            ],
+            "description": "结构化表格槽位的封闭输入路径；只允许从 page.structures.table 或 fields 派生"
+          }
+        }
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height"
+      ],
+      "properties": {
+        "width": {
+          "const": 2560
+        },
+        "height": {
+          "const": 1440
+        }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter",
+        "capability"
+      ],
+      "properties": {
+        "adapter": {
+          "const": "openai-compatible"
+        },
+        "capability": {
+          "const": "generate"
+        }
+      }
+    },
+    "required_data_projection": {
+      "const": [
+        "claim",
+        "items",
+        "structures",
+        "expression",
+        "numbers",
+        "required_text"
+      ]
+    },
+    "prompt_skeleton": {
+      "type": "string",
+      "minLength": 1
+    },
+    "probe_evidence_ref": {
+      "const": "evidence/capability-receipts.json"
+    }
+  }
+}

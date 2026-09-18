@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:情绪疗愈色卡风",
+  "name": "情绪疗愈色卡风",
+  "aliases": [
+    "情绪疗愈色卡",
+    "Healing Color Card",
+    "疗愈",
+    "情绪",
+    "薰衣草",
+    "薄荷",
+    "healing"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/柔和治愈/情绪疗愈色卡风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "柔和治愈"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "emotional healing color-card system, lavender warm-peach and mint swatches on soft paper, gentle psychological comfort layout"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 11,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "情绪疗愈色卡",
+      "Healing Color Card",
+      "疗愈",
+      "情绪",
+      "薰衣草",
+      "薄荷",
+      "healing"
+    ],
+    "best_for": "薰衣草暖桃薄荷，柔软治愈情绪色;适合疗愈冥想/生活方式/亲子儿童",
+    "visual_direction": "emotional healing color-card system, lavender warm-peach and mint swatches on soft paper, gentle psychological comfort layout",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#C8B8D9→#E8CEC8→#9CD9C9",
+      "composition": "大色块分区，柔和过渡",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#C8B8D9(主色/标题锚)",
+      "secondary": "#E8CEC8(辅助色)",
+      "accent": "#9CD9C9(强调色)",
+      "neutral": "#4A4448(文字与中性锚)",
+      "rule": "锚点 #C8B8D9, #E8CEC8, #9CD9C9, #DCC8E8;主色：薰衣草紫 `#C8B8D9`、暖桃米 `#E8CEC8`、薄荷绿 `#9CD9C9`"
+    },
+    "typography": {
+      "title": "标题用圆润无衬线（如 Noto Sans SC Medium）或手写感字体，柔墨灰",
+      "body": "正文用思源黑体 Light，行高 2.0，柔棕色，温度感强",
+      "labels": "副标题用细体无衬线，薰衣草紫或薄荷绿"
+    },
+    "layout_patterns": [
+      "大色块分区，柔和过渡",
+      "标题居中或偏左，搭配情绪关键词",
+      "信息卡片用大圆角，淡色底",
+      "充足留白，呼吸感强"
+    ],
+    "layout_usage_rule": "大色块分区，柔和过渡",
+    "visual_elements": {
+      "allowed": "大色块分区，柔和过渡",
+      "avoid": "不要高饱和刺眼色、不要暗黑背景;不要锋利几何、硬朗金属;不要密集排版，留白是治愈的基础"
+    },
+    "rendering_constraints": [
+      "不要高饱和刺眼色、不要暗黑背景",
+      "不要锋利几何、硬朗金属",
+      "不要密集排版，留白是治愈的基础",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和刺眼色、不要暗黑背景",
+      "不要锋利几何、硬朗金属",
+      "不要密集排版，留白是治愈的基础",
+      "不要严肃商务风"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/healing-color-card"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.3,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和刺眼色、不要暗黑背景",
+      "不要锋利几何、硬朗金属",
+      "不要密集排版，留白是治愈的基础",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

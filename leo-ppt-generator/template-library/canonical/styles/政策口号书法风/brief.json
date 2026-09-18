@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:政策口号书法风",
+  "name": "政策口号书法风",
+  "aliases": [
+    "산업통상부 슬로건 캘리그래피",
+    "MOTIE slogan",
+    "政府口号海报"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/政策口号书法风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "korean government vision poster, giant hangul calligraphy slogan fullscreen on dark navy, korean-peninsula and world map infographics, hero silhouettes and big number cards"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "산업통상부 슬로건 캘리그래피",
+      "MOTIE slogan",
+      "政府口号海报"
+    ],
+    "best_for": "巨型书法口号 + 地图信息图的政府愿景海报;适合政策发布/部门宣传/公共倡议",
+    "visual_direction": "korean government vision poster, giant hangul calligraphy slogan fullscreen on dark navy, korean-peninsula and world map infographics, hero silhouettes and big number cards",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#001838、#003070(变体锚)",
+      "composition": "巨型韩文书法口号整屏 + 地图信息图 + 英雄剪影 + 大数字卡",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#001838(深藏青整版)",
+      "secondary": "#003070(深蓝变体面)",
+      "accent": "#0060C0(亮蓝强调)",
+      "neutral": "#FFFFFF(白字)"
+    },
+    "typography": {
+      "title": "韩文书法体口号(Pretendard Black 兜底)64-96pt",
+      "body": "Pretendard Medium(Noto Sans KR 兜底)18-22pt",
+      "labels": "Pretendard ExtraBold 标题 34-44pt"
+    },
+    "layout_patterns": [
+      "巨型韩文书法手写口号整屏(64-96pt 视觉质量)",
+      "韩半岛/世界地图信息图与英雄剪影",
+      "大数字卡片承载政绩",
+      "浅蓝/浅青辅助页与深蓝整版交替"
+    ],
+    "layout_usage_rule": "巨型韩文书法手写口号整屏(64-96pt 视觉质量)",
+    "visual_elements": {
+      "allowed": "巨型韩文书法口号整屏 + 地图信息图 + 英雄剪影 + 大数字卡",
+      "avoid": "不要普通商务报告的表/柱图主体——口号/地图/剪影/大数字是主角; 不要 CSS 渐变与模糊底(光效用预渲染位图)"
+    },
+    "rendering_constraints": [
+      "不要普通商务报告的表/柱图主体——口号/地图/剪影/大数字是主角",
+      "不要 CSS 渐变与模糊底(光效用预渲染位图)",
+      "不要粉彩消费风/亲切插画/表情符号",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要普通商务报告的表/柱图主体——口号/地图/剪影/大数字是主角",
+      "不要 CSS 渐变与模糊底(光效用预渲染位图)",
+      "不要粉彩消费风/亲切插画/表情符号"
+    ],
+    "paired_illustration": {
+      "family": "hand-drawn",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD56 산업통상부 슬로건 캘리그래피"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要普通商务报告的表/柱图主体——口号/地图/剪影/大数字是主角",
+      "不要 CSS 渐变与模糊底(光效用预渲染位图)",
+      "不要粉彩消费风/亲切插画/表情符号",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

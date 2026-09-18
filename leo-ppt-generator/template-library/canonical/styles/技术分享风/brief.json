@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:技术分享风",
+  "name": "技术分享风",
+  "aliases": [
+    "技术演讲风",
+    "tech talk风",
+    "开发者分享风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/教学分享/技术分享风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "tech-talk style, technically crisp, mechanism-first, reproducible examples, engineering rigor, readable architecture clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "技术演讲风",
+      "tech talk风",
+      "开发者分享风"
+    ],
+    "best_for": "技术分享,需要硬核、清晰、可复现,突出机制与实践经验",
+    "visual_direction": "tech-talk style, technically crisp, mechanism-first, reproducible examples, engineering rigor, readable architecture clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm light ground, readable",
+      "composition": "objective → lesson → practice → takeaway",
+      "density": "medium, pedagogical"
+    },
+    "color_palette": {
+      "primary": "deep blue #1D4ED8 / slate, white",
+      "secondary": "cyan #22D3EE, light gray #E5E7EB",
+      "accent": "one accent #06B6D4",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "technical, crisp, readable; low fluff"
+    },
+    "typography": {
+      "title": "clean technical sans (IBM Plex / 思源黑体), sharp",
+      "body": "precise body",
+      "labels": "code/arch tags",
+      "text_quality": "exact technical terms"
+    },
+    "layout_patterns": [
+      "topic & motivation",
+      "architecture / mechanism",
+      "practice & pitfalls",
+      "impact & results"
+    ],
+    "layout_usage_rule": "Mechanism and reproducible clarity; crisp engineering rigor with real practice.",
+    "layout_blueprints": [
+      {
+        "name": "机制页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "主题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "实践页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "经验"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "踩坑",
+              "解法",
+              "效果"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "architecture diagrams, code blocks, mechanism linework, technical chips",
+      "avoid": "marketing fluff, clutter, vague, cartoon"
+    },
+    "rendering_constraints": [
+      "Crisp, mechanism-first, reproducible technical clarity.",
+      "Architecture, mechanism, practice, impact.",
+      "Exact technical terms; no invented benchmarks."
+    ],
+    "reference": "GitHub: 技术分享 · 工程惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Crisp, mechanism-first, reproducible technical clarity.",
+      "Architecture, mechanism, practice, impact.",
+      "Exact technical terms; no invented benchmarks."
+    ]
+  }
+}

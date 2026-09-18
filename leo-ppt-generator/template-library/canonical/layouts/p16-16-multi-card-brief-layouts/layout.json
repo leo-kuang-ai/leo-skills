@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+  "name": "Multi card Brief",
+  "aliases": [
+    "P16"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "cards_row": {
+      "x": 64,
+      "y": 180,
+      "width": 1152,
+      "height": 418
+    },
+    "bottom_band": {
+      "x": 64,
+      "y": 628,
+      "width": 1152,
+      "height": 60
+    }
+  },
+  "slots": {
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
+    },
+    "title": {
+      "region": "header",
+      "max_chars": 24
+    },
+    "cards": {
+      "region": "cards_row",
+      "count_min": 3,
+      "count_max": 6
+    },
+    "bottom": {
+      "region": "bottom_band",
+      "max_chars": 56
+    }
+  },
+  "renderer_support": {
+    "render:html": "builtin:template:cards-stat",
+    "image": "三列最多两行指标卡，每卡一个论点与对应数据"
+  },
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "cards",
+      "bottom"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "cards_row",
+        "members": [
+          "cards"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bottom"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "cards",
+        "kind": "comparison"
+      }
+    ]
+  }
+}

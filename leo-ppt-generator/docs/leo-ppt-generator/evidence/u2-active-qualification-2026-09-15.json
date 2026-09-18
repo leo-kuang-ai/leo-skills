@@ -1,0 +1,1525 @@
+{
+  "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+  "evidence_set_digest": "a0d31fc68db64816b175a95c79ddfbd5597c8f742e482f520c915948e23f527d",
+  "kind": "qualification-manifest",
+  "qualifications": [
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:body-basic",
+      "evidence_set_digest": "f83a934eff834ebebfb8a47c927022ffc23b06f926df47ec0ff178143b96296c",
+      "lanes": {
+        "image": {
+          "relations": {
+            "causal": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "trend": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        },
+        "render:html": {
+          "relations": {
+            "causal": {
+              "evidence_set_digest": "b5e04988d986c1831d5516b8869994858cfc91dd7a43296080459dd948fa81a9",
+              "gaps": [
+                "visual_review_not_run"
+              ],
+              "probe_receipts": [
+                "935a45417a5ccb0ee86625957b0e2d33f181e2464983f4a6f75e8a95b4a88dea/causal"
+              ],
+              "status": "provisional"
+            },
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": "0a45fd1132a4bbf9a78a58a999d189c9cd17d4a93ec59b38a512bb86bc146636",
+              "gaps": [
+                "visual_review_not_run"
+              ],
+              "probe_receipts": [
+                "935a45417a5ccb0ee86625957b0e2d33f181e2464983f4a6f75e8a95b4a88dea/independent"
+              ],
+              "status": "provisional"
+            },
+            "process": {
+              "evidence_set_digest": "24d2208b1196d3f3c6c633cc9b82eb7c94ad2f92d835148fdaccff3af4f968f3",
+              "gaps": [
+                "visual_review_not_run"
+              ],
+              "probe_receipts": [
+                "935a45417a5ccb0ee86625957b0e2d33f181e2464983f4a6f75e8a95b4a88dea/process"
+              ],
+              "status": "provisional"
+            },
+            "trend": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:compare",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:points",
+                "slot_binding_missing:sides"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:cover-basic",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        },
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:frame-shot",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        },
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p1-01-cover-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p10-10-dot-matrix-statement-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p11-11-horizontal-timeline-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p13-13-three-forces-cards-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p14-14-loop-diagram-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p15-15-image-matrix-hero-stat-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p17-17-system-diagram-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p18-18-why-now-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p19-19-four-cards-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p2-02-vertical-timeline-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p20-20-stacked-kpi-ledger-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p21-21-tech-spec-sheet-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p22-22-image-hero-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p23-p23-section-divider-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p24-p24-number-hero-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p25-spec-table",
+      "evidence_set_digest": "462e6a7757e6ed5b7690850da3235ba20925bd42b0f2020e9f85f364171b7072",
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "trend": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": "e68d371424b3e2e47c75905ee72718d0dd7014deb7c0417b62c5dc5b8a1e34cb",
+              "gaps": [
+                "visual_review_not_run"
+              ],
+              "probe_receipts": [
+                "935a45417a5ccb0ee86625957b0e2d33f181e2464983f4a6f75e8a95b4a88dea/comparison"
+              ],
+              "status": "provisional"
+            },
+            "trend": {
+              "evidence_set_digest": "af4d2a2765deb0507a56fb43aa0f7ac4f36ca569e366b35c0fc8c18e12d99806",
+              "gaps": [
+                "visual_review_not_run"
+              ],
+              "probe_receipts": [
+                "935a45417a5ccb0ee86625957b0e2d33f181e2464983f4a6f75e8a95b4a88dea/trend"
+              ],
+              "status": "provisional"
+            }
+          },
+          "status": "provisional"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p26-p26-reference-list-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p27-p27-learning-objectives-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p28-p28-recap-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p29-p29-quiz-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p3-03-statement-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p30-30-swiss-image-split-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p32-32-agenda-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p33-33-team-grid-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p34-34-quote-hero-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p35-35-data-wall-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p36-36-ambience-full-bleed-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p4-04-six-cells-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p5-05-three-sub-cards-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p6-06-kpi-tower-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p7-07-h-bar-chart-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:quote_em"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:quote_em"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:pull-quote",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {},
+          "status": "unverified"
+        },
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:layout:timeline",
+      "evidence_set_digest": null,
+      "lanes": {
+        "image": {
+          "relations": {
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "image_recipe_missing",
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        },
+        "render:html": {
+          "relations": {
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:steps"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:body-basic",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "causal": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "trend": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:cards-stat",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:chain-flow",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:compare",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:points",
+                "slot_binding_missing:sides"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:compare-pro",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:cover-basic",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:cover-pro",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:frame-shot",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:kpi-stat",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:pull-quote",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {},
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:quote-pro",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:quote_em"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:quote_em"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:spec-table",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "trend": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:table-pro",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "comparison": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:timeline",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "lane_slot_closure_missing",
+                "positive_negative_evidence_missing",
+                "slot_binding_missing:steps"
+              ],
+              "probe_receipts": [],
+              "status": "rejected"
+            }
+          },
+          "status": "rejected"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "rejected",
+      "schema_version": 1
+    },
+    {
+      "asset_generation": "2481c81f96d17d2740bf7f62fadce57098f2b79bded852f3677a556d525cfa9d",
+      "asset_id": "builtin:template:timeline-pro",
+      "evidence_set_digest": null,
+      "lanes": {
+        "render:html": {
+          "relations": {
+            "independent": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            },
+            "process": {
+              "evidence_set_digest": null,
+              "gaps": [
+                "positive_negative_evidence_missing"
+              ],
+              "probe_receipts": [],
+              "status": "unverified"
+            }
+          },
+          "status": "unverified"
+        }
+      },
+      "lifecycle_status": "unknown",
+      "qualification_status": "unverified",
+      "schema_version": 1
+    }
+  ],
+  "schema_version": 1
+}

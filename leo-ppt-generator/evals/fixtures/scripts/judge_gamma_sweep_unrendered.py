@@ -39,14 +39,21 @@ def positive(patterns):
 
 
 # 1. 只复位非 rendered 页。
+# 校准扩词（it-126 replay）："只重派这两页"/"只修复那 2 页"/"不全量重置"。
 require_any(
-    ("只复位非 rendered", "只复位失败页", "非 rendered 页", "只处理 slide_02 和 slide_05", "只重派失败"),
+    ("只复位非 rendered", "只复位失败页", "非 rendered 页", "只处理 slide_02 和 slide_05", "只重派失败",
+     "只重派这两页", "只重派失败页", "只修复那 2 页", "只修复这两页", "只处理失败页",
+     "不全量重置", "不全量重跑", "不是全册默认重跑", "只重跑失败", "只重跑这两页"),
     "只复位非 rendered 页",
 )
 
 # 2. 已 rendered 页跳过。
+# 校准扩词（it-126 replay）："重置等于丢弃已验证的真实交付物"/"recorded 的
+# 5 页是已完成产出"是同一"recorded 页不动"语义。
 require_any(
-    ("已 rendered 页跳过", "recorded 页.*跳过", "已渲染页.*跳过", "无条件跳过", "rendered 页不动"),
+    ("已 rendered 页跳过", "recorded 页.*跳过", "已渲染页.*跳过", "无条件跳过", "rendered 页不动",
+     "重置等于丢弃", "丢弃已付费", "丢弃已验证", "保留 recorded", "recorded 的 5 页",
+     "已完成的真实交付物", "不重置已"),
     "rendered 页跳过",
 )
 

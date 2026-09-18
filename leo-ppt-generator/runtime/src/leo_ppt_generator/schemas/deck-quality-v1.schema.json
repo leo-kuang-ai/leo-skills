@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/deck-quality/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "overall_status",
+    "channels",
+    "lanes",
+    "visual",
+    "user_replay",
+    "publication_ready"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "overall_status": {
+      "enum": [
+        "implementation_complete",
+        "html_validated",
+        "image_validated",
+        "visual_validated",
+        "failed",
+        "stale",
+        "error",
+        "blocked",
+        "not_run"
+      ]
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "facts",
+        "binding",
+        "export"
+      ],
+      "properties": {
+        "schema": {
+          "enum": [
+            "passed",
+            "failed",
+            "stale",
+            "error",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "facts": {
+          "enum": [
+            "passed",
+            "failed",
+            "stale",
+            "error",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "binding": {
+          "enum": [
+            "passed",
+            "failed",
+            "stale",
+            "error",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "export": {
+          "enum": [
+            "passed",
+            "failed",
+            "stale",
+            "error",
+            "blocked",
+            "not_run"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "lanes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "render:html",
+        "image"
+      ],
+      "properties": {
+        "render:html": {
+          "type": "object",
+          "required": [
+            "status",
+            "pages"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "stale",
+                "error",
+                "blocked",
+                "not_run"
+              ]
+            },
+            "pages": {
+              "type": "object"
+            },
+            "blocker": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "image": {
+          "type": "object",
+          "required": [
+            "status",
+            "pages"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "stale",
+                "error",
+                "blocked",
+                "not_run"
+              ]
+            },
+            "pages": {
+              "type": "object"
+            },
+            "blocker": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "required": [
+        "status"
+      ]
+    },
+    "user_replay": {
+      "type": "object",
+      "required": [
+        "status"
+      ]
+    },
+    "publication_ready": {
+      "type": "boolean"
+    },
+    "user_benefit": {
+      "type": "object",
+      "required": [
+        "status"
+      ]
+    }
+  }
+}

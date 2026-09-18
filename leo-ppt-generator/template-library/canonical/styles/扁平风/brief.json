@@ -1,0 +1,147 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:扁平风",
+  "name": "扁平风",
+  "aliases": [
+    "flat design",
+    "扁平化",
+    "纯扁平"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/扁平风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "flat design, no shadows or gradients, solid color blocks, simple icons, low-decoration, clean and modern, emphasis on color blocking and clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "flat design",
+      "扁平化",
+      "纯扁平"
+    ],
+    "best_for": "以纯色块、简洁图标与无衬线字体,去掉阴影渐变与立体感,简洁现代",
+    "visual_direction": "flat design, no shadows or gradients, solid color blocks, simple icons, low-decoration, clean and modern, emphasis on color blocking and clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white or light solid tint",
+      "composition": "grid of solid blocks, icon + text, balanced",
+      "density": "medium, clean"
+    },
+    "color_palette": {
+      "primary": "white #FFFFFF / light ground #F5F7FA, one brand color #2563EB",
+      "secondary": "2-3 supporting flat tints #BFDBFE / #DBEAFE",
+      "accent": "a single accent flat color #F59E0B",
+      "neutral": "near-black text #111827, light gray #E5E7EB, white",
+      "rule": "flat, clean, 60-30-10 color rule; no gradients, no depth, no shadows"
+    },
+    "typography": {
+      "title": "clean geometric sans-serif (Roboto / 思源黑体)",
+      "body": "clean, legible",
+      "labels": "flat tag chips",
+      "text_quality": "clear, brand-consistent"
+    },
+    "layout_patterns": [
+      "icon + text feature card",
+      "flat process steps",
+      "color-block compare",
+      "simple data fact blocks"
+    ],
+    "layout_usage_rule": "Keep it flat and color-blocked; 60-30-10 palette and a consistent icon system.",
+    "layout_blueprints": [
+      {
+        "name": "能力/特性页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 6,
+            "labels": [
+              "特性1",
+              "特性2",
+              "特性3",
+              "特性4",
+              "特性5",
+              "特性6"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "流程步骤页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 4,
+            "labels": [
+              "步骤1",
+              "步骤2",
+              "步骤3",
+              "步骤4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "solid flat colors, simple icons, 60-30-10 palette, clean geometry, generous whitespace",
+      "avoid": "gradients, shadows, 3D, stocky texture, random multiple bright colors, clutter"
+    },
+    "rendering_constraints": [
+      "Clean, modern, brand-consistent.",
+      "Flat color blocks + simple icons; obey 60-30-10.",
+      "No invented logos, no fake 3D or glossy effects."
+    ],
+    "reference": "GitHub: 扁平化设计趋势 · 常见PPT风格类型"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Clean, modern, brand-consistent.",
+      "Flat color blocks + simple icons; obey 60-30-10.",
+      "No invented logos, no fake 3D or glossy effects."
+    ]
+  }
+}

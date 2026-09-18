@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p3-03-statement-layouts",
+  "name": "Statement",
+  "aliases": [
+    "P3"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "section",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "statement": {
+      "region": "content",
+      "desc": "巨字陈述主标（≤12 字，8-10vw）",
+      "max_chars": 21,
+      "chars_per_line": 9,
+      "max_lines": 2
+    },
+    "footnote": {
+      "region": "content",
+      "desc": "右下小字注脚",
+      "max_chars": 69,
+      "chars_per_line": 29,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左 1/3 空白 + 中段巨字陈述（9.2vw weight 200，多行行距 1.1，按字计量）+ 右下小字注脚 + 底部 hairline"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/03_Statement.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

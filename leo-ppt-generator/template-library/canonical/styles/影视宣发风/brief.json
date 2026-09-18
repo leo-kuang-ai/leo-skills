@@ -1,0 +1,155 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:影视宣发风",
+  "name": "影视宣发风",
+  "aliases": [
+    "影视风",
+    "电影宣发风",
+    "film promo"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/游戏娱乐/影视宣发风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "film/TV promotion aesthetic, cinematic poster, atmospheric stills, letterboxd editorial, dramatic type, moody promotional polish, emotional resonance"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "影视风",
+      "电影宣发风",
+      "film promo"
+    ],
+    "best_for": "影视内容,需要电影感、海报质感与情绪化叙事",
+    "visual_direction": "film/TV promotion aesthetic, cinematic poster, atmospheric stills, letterboxd editorial, dramatic type, moody promotional polish, emotional resonance",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "cinematic dark / moody ground",
+      "composition": "poster hero + stills + quote",
+      "density": "low-medium, dramatic"
+    },
+    "color_palette": {
+      "primary": "deep charcoal #14161A / ink navy, dark",
+      "secondary": "film grain grays, muted gold #C9A227",
+      "accent": "one dramatic accent (red #B91C1C)",
+      "neutral": "near-black #0F0F10, cream #F5EFE6, muted gray #9CA3AF",
+      "rule": "cinematic, moody, dramatic; no flat bright, no clutter"
+    },
+    "typography": {
+      "title": "dramatic serif (Georgia / 思源宋体) or sans (Helvetica / 思源黑体), film-title",
+      "body": "sparse editorial copy",
+      "labels": "cast/rating/year tags",
+      "text_quality": "exact film/TV terms, no spoiler-in-title"
+    },
+    "layout_patterns": [
+      "poster hero",
+      "atmospheric still + quote",
+      "cast / crew list",
+      "rating & verdict"
+    ],
+    "layout_usage_rule": "Cinematic mood; poster, stills and quote carry the emotion.",
+    "layout_blueprints": [
+      {
+        "name": "海报页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "海报/剧照主视觉"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "标题",
+              "年份"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "影评页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "剧照 + 金句"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 2,
+            "labels": [
+              "评价",
+              "结论"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "film posters, stills, dramatic type, film grain, moody palette",
+      "avoid": "flat bright, clutter, spoiler, cartoon"
+    },
+    "rendering_constraints": [
+      "Cinematic, moody, emotional.",
+      "Poster + stills + quote; dramatic type.",
+      "Accurate credits; no spoiler-in-title, no fabricated awards."
+    ],
+    "reference": "GitHub: guizang category-cookbook (影视) · 影视宣发风"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Cinematic, moody, emotional.",
+      "Poster + stills + quote; dramatic type.",
+      "Accurate credits; no spoiler-in-title, no fabricated awards."
+    ]
+  }
+}

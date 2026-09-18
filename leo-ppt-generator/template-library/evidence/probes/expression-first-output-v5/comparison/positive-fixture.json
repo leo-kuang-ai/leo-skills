@@ -1,0 +1,102 @@
+{
+  "case_id": "comparison",
+  "data": {
+    "columns": [
+      "维度",
+      "旧流程",
+      "新流程"
+    ],
+    "rows": [
+      [
+        "时长",
+        "6小时",
+        "2小时"
+      ],
+      [
+        "期间",
+        "7月",
+        "8月"
+      ],
+      [
+        "样本",
+        "12项",
+        "待核对"
+      ]
+    ],
+    "title": "同口径比较处理效率"
+  },
+  "expected": {
+    "facts": [
+      "6小时",
+      "2小时",
+      "7月",
+      "8月",
+      "12项"
+    ],
+    "focus": "同口径比较处理效率",
+    "reading_order": [
+      "旧流程",
+      "新流程"
+    ],
+    "required_text": [
+      "同口径比较处理效率",
+      "维度",
+      "旧流程",
+      "新流程",
+      "时长",
+      "期间",
+      "样本",
+      "待核对"
+    ],
+    "structure": {
+      "cells": [
+        {
+          "dimension": "时长",
+          "item": "旧流程",
+          "text": "6小时",
+          "unknown": false
+        },
+        {
+          "dimension": "时长",
+          "item": "新流程",
+          "text": "2小时",
+          "unknown": false
+        },
+        {
+          "dimension": "期间",
+          "item": "旧流程",
+          "text": "7月",
+          "unknown": false
+        },
+        {
+          "dimension": "期间",
+          "item": "新流程",
+          "text": "8月",
+          "unknown": false
+        },
+        {
+          "dimension": "样本",
+          "item": "旧流程",
+          "text": "12项",
+          "unknown": false
+        },
+        {
+          "dimension": "样本",
+          "item": "新流程",
+          "text": "待核对",
+          "unknown": true
+        }
+      ],
+      "dimensions": [
+        "时长",
+        "期间",
+        "样本"
+      ],
+      "items": [
+        "旧流程",
+        "新流程"
+      ]
+    }
+  },
+  "probe": "positive"
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-分层爆炸图",
+  "name": "图片渲染：分层爆炸图（exploded-layers）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

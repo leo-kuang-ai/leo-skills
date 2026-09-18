@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:达人营销风",
+  "name": "达人营销风",
+  "aliases": [
+    "达人风",
+    "KOL营销风",
+    "创作者营销风",
+    "种草战役风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/消费时尚/达人营销风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "消费营销"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "trendy creator-campaign style, platform-native energy, sticker-like chips and content cards, bold short headlines, pastel-plus-vibrant accents, punchy and collectible"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "达人风",
+      "KOL营销风",
+      "创作者营销风",
+      "种草战役风"
+    ],
+    "best_for": "达人与创作者营销内容,需要平台原生感、节奏轻快的战役叙事",
+    "visual_direction": "trendy creator-campaign style, platform-native energy, sticker-like chips and content cards, bold short headlines, pastel-plus-vibrant accents, punchy and collectible",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF 白底,贴纸化内容卡网格",
+      "composition": "内容卡片 + 达人矩阵 + 平台标签的网格组织",
+      "density": "medium-high, 卡片化但留呼吸"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)配 #1A1A1A(墨字锚)",
+      "secondary": "#FFF6D8(奶黄贴纸底)",
+      "accent": "#FF5C8A(霓虹玫红主强调),#5865F2(平台蓝紫仅标平台名/渠道)",
+      "neutral": "#8A9099(灰注释)与 #EFEFEA(浅分隔)",
+      "rule": "白底 + 玫红单强调;平台色只作渠道语义,不铺满"
+    },
+    "typography": {
+      "title": "粗黑体(MiSans/思源黑体 Heavy)短标题",
+      "body": "思源黑体正文,短句清单化",
+      "labels": "话题标签/平台名胶囊标签(Nunito/思源黑体)"
+    },
+    "layout_patterns": [
+      "战役总览页:主张大字 + 阶段贴纸时间线",
+      "达人矩阵页:层级卡片 + 领域标签 + 粉丝量小注",
+      "内容支柱页:三列内容卡 + 选题示例",
+      "数据看板页:互动指标卡 + 平台对比条"
+    ],
+    "layout_usage_rule": "贴纸卡片承载信息;标题短促有力,一页一个战役决策",
+    "visual_elements": {
+      "allowed": "贴纸胶囊、内容卡、表情小图标、话题标签、手机框示意",
+      "avoid": "表情包堆砌、低俗营销字、过饱和渐变、PPT 项目符号堆砌"
+    },
+    "rendering_constraints": [
+      "白底玫红单强调,平台色仅标渠道",
+      "卡片网格整齐,不拥挤",
+      "不虚构粉丝量、转化率与达人报价"
+    ],
+    "negative_prompt": [
+      "不要表情包堆砌或低俗营销腔",
+      "不要过饱和渐变铺满",
+      "不要虚构达人数据与投放效果"
+    ],
+    "reference": "GitHub: awesome-ppt-skills · theme-style-prompt-library（Social Media/Influencer,思想级改写）"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "expressive",
+    "formality": 0.4,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "白底玫红单强调,平台色仅标渠道",
+      "卡片网格整齐,不拥挤",
+      "不虚构粉丝量、转化率与达人报价"
+    ]
+  }
+}

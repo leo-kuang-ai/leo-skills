@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- leo render lane 种子模板：body-basic（gamma M1 / D1-T2）
+  正文页骨架：标题 + 要点清单 + 可选 chart_svg 槽（D2 图表资产形态：
+  __LEO_SLIDE_DATA__.chart_svg 为 render chart 产出的 SVG 字符串，本页
+  原样内嵌，数值/单位/标签经 mermaid 原生渲染逐字保真）。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>body-basic</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Regular.otf) format("opentype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Noto Sans SC";
+    src: url(/leo-fonts/NotoSansSC-Bold.otf) format("opentype");
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; }
+  body {
+    font-family: var(--leo-f-family-body, "Noto Sans SC"), "Noto Sans SC", sans-serif;
+    background: var(--leo-c-background, #f7f5f0); color: var(--leo-c-text, #1f2430); position: relative;
+  }
+  .leo-slide {
+    position: absolute;
+    left: var(--leo-g-content-x, 96px); top: var(--leo-g-content-y, 76px);
+    width: var(--leo-g-content-width, 1088px); height: var(--leo-g-content-height, 568px);
+    display: flex; flex-direction: column;
+  }
+  .page-no { position: absolute; right: 44px; bottom: 30px; font-size: var(--leo-f-size-page_no, 22px); color: var(--leo-c-muted, #8d8578); }
+  .title {
+    font-size: var(--leo-f-size-title, 52px); font-weight: 700; color: var(--leo-c-primary, #14213d); line-height: 1.25;
+    padding-bottom: 24px; border-bottom: 3px solid var(--leo-c-border, #d8cfbd); margin-bottom: 38px;
+  }
+  .bullets { list-style: none; display: flex; flex-direction: column; gap: 26px; }
+  .bullets li { font-size: var(--leo-f-size-body, 32px); line-height: 1.55; color: var(--leo-c-text, #2c3242); display: flex; gap: 18px; }
+  .bullets li::before { content: "—"; color: var(--leo-c-accent, #b08d57); font-weight: 700; flex: none; }
+  .chart-slot { margin-top: 34px; flex: 1; min-height: 0; display: flex; justify-content: center; }
+  /* 图表槽占据标题+要点之外的剩余高度：svg 受双向 max 约束等比缩放，
+     任意要点条数下图表横轴/数值标签不再被画幅底部裁切（D-CHART-01）。 */
+  .chart-slot svg { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+  html[data-leo-render] *, html[data-leo-render] *::before, html[data-leo-render] *::after {
+    animation: none !important; transition: none !important;
+  }
+</style>
+</head>
+<body>
+  <main class="leo-slide" id="leo-slide">
+    <h1 class="title" data-leo-block="title"></h1>
+    <ul class="bullets" data-leo-block="bullets"></ul>
+    <div class="chart-slot" data-leo-block="chart"></div>
+  </main>
+  <div class="page-no" data-leo-block="page-no"></div>
+<script>
+  if (new URLSearchParams(window.location.search).get("leo_render") === "1") {
+    document.documentElement.dataset.leoRender = "1";
+  }
+  function applyData(data) {
+    data = data || {};
+    document.querySelector('[data-leo-block="title"]').textContent = data.title || "";
+    var list = document.querySelector('[data-leo-block="bullets"]');
+    (data.bullets || []).forEach(function (text) {
+      var item = document.createElement("li");
+      item.setAttribute("data-leo-block-item", "bullet");
+      item.textContent = String(text);
+      list.appendChild(item);
+    });
+    var chart = document.querySelector('[data-leo-block="chart"]');
+    if (typeof data.chart_svg === "string" && data.chart_svg.indexOf("<svg") !== -1) {
+      // Chart SVG is sanitized by the render lane before it reaches the
+      // template. Parse it as XML and append only the resulting SVG node so
+      // arbitrary HTML cannot become executable DOM.
+      var parsed = new DOMParser().parseFromString(data.chart_svg, "image/svg+xml");
+      var svg = parsed.documentElement;
+      if (!svg || svg.nodeName.toLowerCase() !== "svg" || parsed.querySelector("parsererror")) {
+        chart.remove();
+      } else {
+        chart.replaceChildren(document.importNode(svg, true));
+      }
+    } else {
+      chart.remove();
+    }
+    document.querySelector('[data-leo-block="page-no"]').textContent =
+      data.page_no != null ? String(data.page_no) : "";
+  }
+  function applyThemeVariables(theme) {
+    theme = theme || {};
+    var root = document.documentElement;
+    var colors = theme.colors || {};
+    Object.keys(colors).forEach(function (role) {
+      root.style.setProperty("--leo-c-" + role, String(colors[role]));
+    });
+    var fonts = theme.fonts || {};
+    Object.keys(fonts).forEach(function (role) {
+      var def = fonts[role] || {};
+      if (def.family) root.style.setProperty("--leo-f-family-" + role, String(def.family));
+      if (def.weight != null) root.style.setProperty("--leo-f-weight-" + role, String(def.weight));
+      if (def.size != null) root.style.setProperty("--leo-f-size-" + role, def.size + "px");
+      if (def.line_height != null) root.style.setProperty("--leo-f-line-height-" + role, String(def.line_height));
+    });
+    var geometry = theme.geometry || {};
+    // 只消费数值几何（compile_geometry 输出）；column_weights 等数组值
+    // 不是 CSS 变量，由模板自身结构逻辑（colgroup）消费。
+    Object.keys(geometry).forEach(function (key) {
+      if (typeof geometry[key] === "number") {
+        root.style.setProperty("--leo-g-" + key, geometry[key] + "px");
+      }
+    });
+  }
+  applyThemeVariables(window.__LEO_THEME_VARIABLES__);
+  applyData(window.__LEO_SLIDE_DATA__);
+  document.fonts.ready.then(function () {
+    document.documentElement.dataset.leoReady = "1";
+  });
+</script>
+</body>
+</html>

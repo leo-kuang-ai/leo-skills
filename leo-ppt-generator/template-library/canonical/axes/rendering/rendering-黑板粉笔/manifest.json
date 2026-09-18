@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-黑板粉笔",
+  "name": "图片渲染：黑板粉笔（chalkboard）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

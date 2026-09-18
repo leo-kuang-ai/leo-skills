@@ -1,0 +1,2590 @@
+{
+  "schema_version": 2,
+  "shadow_root": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library",
+  "entries": [
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/_INDEX.md",
+      "sha256": "cb27e8fc04e6c33f623c2fedb3ad9ed0e7bf2e380f6432bc21cdd162bce99bee"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/style-extension-template.md",
+      "sha256": "0279d964446bc21d731aebdd9fd9faf8c76a49d9d49e62d56d4e25c17a4b7a14"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/图表样式规范.md",
+      "sha256": "361c39aa0608d4d45a534dba8716951480551c58d431fa71b4d9c9aba14d675e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/构图词汇参考.md",
+      "sha256": "96067bff16fa07b4f89c5ae9efd72dc904248fb45eceff99c8fa99a024441a5c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/版式内容Schema.md",
+      "sha256": "fceef7d701b80421975fa3fbf5ea1c820fb1c9fac43564d3555ec895fdba1ced"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/版心Canon.md",
+      "sha256": "faaa9585fd981f0b6ad4f14dcccb0794dab09b7e622c17180eec8ca7bd259e68"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/视觉风格配对.md",
+      "sha256": "64951fc82f5e63717cba591be200ff7604397f23951eb24672d35b6797a3f8da"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/设计体系.md",
+      "sha256": "24a01c11b64be5d99a0dd64d391305b8848ae60e8953cadb3001053ab463be4c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/调色板行为参考.md",
+      "sha256": "85f43ac03c895965bd689b73c029ad921fd31761fc1d53bbb57f26e2c9c3a8f7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/负面语料参考池.md",
+      "sha256": "3eedcd4e0e846d257d85b699d140cd0976b08aa26e88c84d7f7460e908f23e51"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/通用设计规范.md",
+      "sha256": "46635fc5802c91cc3360ea5a050d3ccfe2d1d178f4606af9f1039407b2f36336"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/authoring/index/风格路由.md",
+      "sha256": "592b572befa90ee2c60c1fd5c2f5159b02c95f78bb774d5bb5af10a56daec8b7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/东方意境插画风/brief.json",
+      "sha256": "c994d9faa1fbe1f5d70a89d60b35e924e9d199e3351b71134b96d8fc2a752559"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/凝脂杨妃风/brief.json",
+      "sha256": "bf4c133221015603ce406492bfb085ce2a5c9b4f8ca641aebb27091af1ba7235"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/国风暖阳风/brief.json",
+      "sha256": "0fd6134999d32fc77f6e68c393ea5b0c5347b3296372a9cb72e68c5efe7fa0d7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/宋韵听雨风/brief.json",
+      "sha256": "19e0bf87da0abfcec550174d3f4bfd7e2d414834f6e95a485f90c34b83414f38"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/故宫墨红风/brief.json",
+      "sha256": "b6db15b9d6767318a57d503eb195578e303eaaf2c539577bad7173d065ae276c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/春日嫩柳风/brief.json",
+      "sha256": "459cb653b6c2ebd548218060290011551d0d5238216398c01877056ad2bdb0bd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/水墨江南风/brief.json",
+      "sha256": "581cc5e063f82661f0c1c0259b339ff1339983fd9f0cc39c4e3591de37ea76ad"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/米白樱粉风/brief.json",
+      "sha256": "71afe038d22427136b564dd87375f55276f05a4549d5c11cf93ee5c3e7d34ee2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/青绿湖蓝风/brief.json",
+      "sha256": "ce0028ea1c8fdbbc9ed18cf9317b902248aa0f26bc2fba05a8011bb2badf7c83"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/青莲碧蓝风/brief.json",
+      "sha256": "d7f51bc86fe43acc64e4e1c8616d611f3bd997eb60bd6419d09b92b4f72dbca8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/中式书卷风/brief.json",
+      "sha256": "5fe1ade4d1dcc48f68cd5bdd8e6bdf7ba4696dbf4c52ded5ccefa2c034cd637d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/宣纸风/brief.json",
+      "sha256": "d7ca53d805f662699f79d5065ddc235a7301dbf66ffd568d75825bcb20b629e1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/竹简风/brief.json",
+      "sha256": "e44de17d60748d698c00ea661ae38e3d69c41077c33b1c724aed926e78bab102"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/中世纪现代风/brief.json",
+      "sha256": "030cd798bd0d1f07502388d16714f297aad70f5ae9e3f4f0a5d043e726e1f892"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/便当格卡片风/brief.json",
+      "sha256": "ee834b5642cdf02b63893103a59461cd451e3965d18beec628bccce0e746c464"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/半扁平风/brief.json",
+      "sha256": "0769cc4d12cae7d693897d5c53b6611cf30487f9e2f4dd67e2755acee1fca4f6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/合成波风/brief.json",
+      "sha256": "d9d0c97b74e172b05106079fb8aa2eb264b8cb1fec13c972189b6acc0342932d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/孟菲斯新潮风/brief.json",
+      "sha256": "cc2f62c9e99c2fb79e2cb6beec4b06cb21b66ae6cd9c0f8c06d6982aa986f52e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/孟菲斯风/brief.json",
+      "sha256": "4a20f4f065404341eb6006cc6ded4c0460c9e320417d8339ab460b84b7ae3f86"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/微立体轻拟态风/brief.json",
+      "sha256": "43533e1b18a49a7700be7305e7e9a163cf82529040a3b04d9370dc51b8691dc8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/扁平风/brief.json",
+      "sha256": "b97a1dcb9d8ba8180ca63a21f3e8b2767d9c1d2cc175e33f139e435d544d13ce"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新拟态风/brief.json",
+      "sha256": "bf06bf496ceb1c3c417e81483beed26609305f46353df3afd5d1febb3fed6a66"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新粗野主义风/brief.json",
+      "sha256": "fd5b07353124fdf16e36cde03e5c2e4bc19a570840ccaf127b0a0e175d69754a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/波普艺术风/brief.json",
+      "sha256": "a89f72932cd5196d9b2ab8f4e4c05f9dfdd22ddd1d2403afe2d67cb56f30dfdf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/胶囊卡波普风/brief.json",
+      "sha256": "0a38f4e0fb069cf031a430664b0dfadbf19f86e74835244d38552e3c259985c7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/蒸汽波风/brief.json",
+      "sha256": "285b4eafcc9c1fb37dfb2e9583b79c157d1f03dbeb35e69a9fc84eaa60955da1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/装饰艺术风/brief.json",
+      "sha256": "9659d1ace7ed46793b0ade6753239052428f22cca4aa5cb7b749e29267443e34"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/星月夜风/brief.json",
+      "sha256": "872205001257e8f1aee5e09f1bff53c2a19edc54dbd48ab9858ffd8eb03a9c9b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/莫奈风/brief.json",
+      "sha256": "35c27852d6a1c15c2990aa73b8fb1ffb81ce548a6d0b5d2ca7b1305f0ca87e55"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/CEO高级商务风/brief.json",
+      "sha256": "b3814f6731e4ea58246856f3a3f4dd74fd3c89ea5916c8f6f0dcdb2f505fab5e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/商务几何风/brief.json",
+      "sha256": "2f68f2329b152feb02d8de07f318986303b04d2be9b2e6053e7e4482c664d28c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/地图战略风/brief.json",
+      "sha256": "87a993b6b5da97796794fbc2534162f5d9e8cff62534284f53c645fc5f412c6d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暗夜奢华风/brief.json",
+      "sha256": "552a06cdc65f18b6a6cde04a46e109769954897b7f56f8b8cbb3e59f70a47c17"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/极简奢侈品牌风/brief.json",
+      "sha256": "7e8bb7a89b6dfa04c1c8ffd7c0716cbd1729b4f1cfb34eeae2f4ae09c9a5bb51"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深色编辑报告风/brief.json",
+      "sha256": "6389008866bf63590cf5a111b0e2e76c8a6feb411d51655e3a6e084b05102864"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深蓝极简工作坊风/brief.json",
+      "sha256": "f5dd53b32297e7da531030223ffddbd0b3b778dd410229a7dc84df194caedcd9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/稳重商务风/brief.json",
+      "sha256": "f9a7929cefacd43716434197a5f6ab5d8d5afc5ed4dd6a734ad3e0dc2149cb8f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/简约商务风/brief.json",
+      "sha256": "6a22a64d6e0a4afbe34a8667d17985315a916864aeab9e146c8e2a6e4fe0a5f1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/色谱图表风/brief.json",
+      "sha256": "29a2a24d9de5199727e0868e9cbe69fc143c97dc6bbeeb9041a49286a5ec8fcc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/金融奢华风/brief.json",
+      "sha256": "d24011b8141c9aed35a6c1061376e58e5078486936e4991b180488f66aae4ef5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/静奢极简风/brief.json",
+      "sha256": "5d56ff97bf3c1a80396eeadd5895be068f2390f64676c0107194696734106ef0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/麦肯锡咨询风/brief.json",
+      "sha256": "14536d922945d5cced4b2ea476d2527b5f3c8d5fe4ab20c11f6e6bb70ce41b01"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/夜间独白风/brief.json",
+      "sha256": "755c04dad24d5dcf6093111632e7f0b9aad0b7ce3e1f12f899b0f07a85a5901d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/星火夜空风/brief.json",
+      "sha256": "ad785d97bc83a092238322925c36b6115d06a25d7069484e2d65b781b0509fc1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/极光风/brief.json",
+      "sha256": "e184a7e9c488dfcb0d4daa7c9a02b27e58d8420dbe5462ee696595beda428626"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/梦幻星河风/brief.json",
+      "sha256": "3309ec7be64dd9e6d160b325ddabb648b144deeb48bac6602ce99900fbfc5499"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深色弥散风/brief.json",
+      "sha256": "197a070cd59c8da3ddc268d7e9236a6179c7cb4895486964b601083877385fe5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/包豪斯风/brief.json",
+      "sha256": "811636eaf8c40b7c7a2b6cb565fa538760dd761bd44ad3037af593cbcc804479"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/和纸柔光风/brief.json",
+      "sha256": "5b6983b0edc21bb0e0a8d67f8aea27662bf90ce0baed5faac21a641968e246f7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/大字报巨型排版风/brief.json",
+      "sha256": "75e2a36a6d7b1fbb3d8125236bab15ac4089a5d21bc18b24847b88a4bbf8634d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/宣言备忘录风/brief.json",
+      "sha256": "7e96e925cb2996188db41727db5242b02804e32c32123a1cabbb294db52c9161"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/日式生活杂志风/brief.json",
+      "sha256": "fbdda8219c4a05d4268dab544287154ce2a471194c39f6e809a9d5fceac38933"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暖调柔形风/brief.json",
+      "sha256": "e5a25dffcd5c0b3ffc55c56ae99b52d0456d6a0de470a428a421b280f86cf007"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/极简风/brief.json",
+      "sha256": "086e8386b7da963b8741abbebfd42abfc813ebe17d1394e1ebbb901fe6de141a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/瑞士网格风/brief.json",
+      "sha256": "eb7b90415680f350c361c5bf3bf5776215f33584a719ff22af196934e78ea917"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/粗野报刊风/brief.json",
+      "sha256": "c6dc9ed15f2a900dafd3205cf027c88c3db4e7a03ea6686024a5625c2b45f6e6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/象牙账本风/brief.json",
+      "sha256": "9c779295a69f42e6c559e7bc52025d652aac94b5988306048c90156d54ff8550"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黑白极简艺术展风/brief.json",
+      "sha256": "9f58bb84e777620ad160ed18bcf06f362502ec0f712d49c4ecdd18497aaf8939"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/人文圆角卡片风/brief.json",
+      "sha256": "397d73e6fb9a385b3560854698fdd88cef5605955323024fce399acd3e100193"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/奶油温柔风/brief.json",
+      "sha256": "0cf22816ca43a6099aa14c6379cd90d60c12a6802e2bccd6bb1b07580002dea4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/小红书白风/brief.json",
+      "sha256": "99f8eb43d185978c41a9cbe3554e398d016d25934290336503333aa0dcbfb059"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/情绪疗愈色卡风/brief.json",
+      "sha256": "eb4f0ea1902bf504f273fb8abb6d04a0b51ae2ae63ce53b3a7a4352e681faeb9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/日落暖风/brief.json",
+      "sha256": "e4020106adddaae87a9754b5fe3260f870bda10211d2acadfd8198173bec48cd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/晴橙落日海风/brief.json",
+      "sha256": "814f925e030c70bef56b293d35821e73e05113be380866ef46938e57d71ab853"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/柔雾甜梦风/brief.json",
+      "sha256": "5edafeb141e4f67599354a28146fa3af324ad5167446d80b9ce901d5acd33629"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/樱粉雾蓝风/brief.json",
+      "sha256": "c47216355c8d6b6f6794b734247b8dc545592090f17e8fddc015efe7846c4c67"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/樱花治愈风/brief.json",
+      "sha256": "824d458a6dab7ba3848599e6470ae96eb7c5cb2bf9f2f87d99fe3af2071e903a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/童趣暖橙风/brief.json",
+      "sha256": "e8752625f50de4fa272a78562e9a27b69253440a40f6ca0fdc73588053ed05be"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Stripe蓝白风/brief.json",
+      "sha256": "79ecf3e5ee8d9e02d434e59d7ffeb04f45e4fd68085a29e7cfa811a87c4f9923"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/代码开发者风/brief.json",
+      "sha256": "73f5a37c26acc94690e112c587bd7012ff3aa059844ccffb6f559a712ae273d8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/全息棱镜科技风/brief.json",
+      "sha256": "425b3bc936c979b8b34b77070839a9196226d208e97f122f636b701793f49b93"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/工程白图风/brief.json",
+      "sha256": "f86430a15cd4f9ab38db12041eaac47ca71f0723bfd71c0de047180ad84616ac"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/工程蓝图风/brief.json",
+      "sha256": "c5bc46a080b402e944b85accd9652735b417cd6f7dabe263879b95984661f98c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暗线终端风/brief.json",
+      "sha256": "de9c73d10dcd89aaf5105826f1736f960413473ef8bfdb2e7f1101b973ae90e9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暗黑科技风/brief.json",
+      "sha256": "602354ddcc319d18dd33ea2324282cea9dba5058dc3653a9b4198ee88ea1ad38"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/未来科技编辑风/brief.json",
+      "sha256": "b90fbf6b725d06ec8be47ed381873fb5dd4c8e36f39ced416ebebca04c961702"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深色科技杂志风/brief.json",
+      "sha256": "a2b62336dcc8dc61b9f9bfb4b375f499f25910749daefb39c2aea569ff6c2b66"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/玻璃拟态风/brief.json",
+      "sha256": "57d70a8e0c547c4b9e8b7b40ab7021ce2a317a6a3b736d5825274757fb591a27"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/科技未来感风/brief.json",
+      "sha256": "2e3e4ec07253c751b401bc349d4c6113a50d490359ab4a7ae429b41bb28c8769"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/粉紫云层诊断风/brief.json",
+      "sha256": "5dc5a2b03ac426647f104e16612f3fd6dcf9f32581fd2a4e1fcf604e5021e56b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/终端命令行风/brief.json",
+      "sha256": "e37bb7d5df6bc2d3070f7cdb2f0b39cf13b3e127572b1dc8ccaee95916f647d1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/荧光高对比科技风/brief.json",
+      "sha256": "f74ecc5e0b8b52625b8b4f2a46ef2a00146be2c28919b7b048af54faa30f0268"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/蓝晒图纸风/brief.json",
+      "sha256": "6f7f1d36c92e5966666c7c1ad5654c00cde9d630a62f5da78f6b4d8a858c1b61"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/蓝焰作战室风/brief.json",
+      "sha256": "01efcecc59bdd01a48ec3d8d67f46b8964f9f04a21a7d0a53607b62d1b9f6ba1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Catppuccin拿铁风/brief.json",
+      "sha256": "4e7ff5023de3a39eba7e339397707ff9c2bd534ed30926562a136fe0acf269f1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Catppuccin摩卡风/brief.json",
+      "sha256": "d8b01efa05c63ab56069e1eeaae9cba31ed04665fbb5af467898fa2e6415487c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Dracula紫风/brief.json",
+      "sha256": "53ec36754541fb0d2fc9073a53154bb336585ab890f392f6c7cceea8d5bd0694"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Gruvbox暗风/brief.json",
+      "sha256": "f76c4168cf57d72b57309d4c7d33ed99d1695f64efd09f0ab18f1f938b72728e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/东京夜风/brief.json",
+      "sha256": "963b5b925625c0b047859f1581570cc0f1d56fc3a063e3b8d2ddb00b2dd8dfce"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/北极冷风/brief.json",
+      "sha256": "b5ca101ce2606051c1c9177acbc182aa7da3fb4b685f3363473aee6adee9629c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/北欧风/brief.json",
+      "sha256": "cf106e669013ecba74d8955bfe6d3413654b152ded6367408e2fa1987634030f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/日光浅风/brief.json",
+      "sha256": "c85484252567bb368023ec38a6c0e38e5256c7e6ee676b1301fdece84bd723a5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/玫瑰松风/brief.json",
+      "sha256": "db5f609ec8a433e632ee728d591c5f68cca63b0a76faedf2ac360b6149217fdf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/3D软体卡通风/brief.json",
+      "sha256": "2854d4f11ac6428e57072687badfde9fbde66ff5b845f7ad9e1aa031b480c9aa"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/传统色叙事风/brief.json",
+      "sha256": "e2c7ff72bf806810fdecdede333e35427289172f6470e30d0375efa18969cae0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/低多边形风/brief.json",
+      "sha256": "283916b4ac76f7cacc9e9ee4e2ad352e981ffd7cd25eba3f8cf914483ccb8774"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/便利贴拼贴风/brief.json",
+      "sha256": "b469e66961cfac23ff904343ba9b56f6d27c3f405e2330dec29a6f72152a9633"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/像素复古风/brief.json",
+      "sha256": "206cc6f42fca13ff7e177760f3e8778fce5d5e49da28e0f46cd1c62112d8865e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/别针手账风/brief.json",
+      "sha256": "356ef0d8ce99c2085c19e00d380721a178d43034e728d6f739dc3ffa621d4cee"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/博物馆纪念风/brief.json",
+      "sha256": "9c58d134c73f0e3632002cef6574cf742c14222a8b942b68f80151c827c6034e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/吉卜力手绘风/brief.json",
+      "sha256": "21d6ab7a471a901aced55af2caaf87027bbcae3bde939ed36c11db6fd9a8b240"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/复古晚宴餐牌风/brief.json",
+      "sha256": "b825551023e21362024f486c956c91f24bdd624cdad42dc24566ad2e8421cc53"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/山野葱郁风/brief.json",
+      "sha256": "2e8a013155499ee5f90568c75d236cec8f9582b470f543c82429d3d55d1b4c3a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/手绘秋日手账风/brief.json",
+      "sha256": "a0b662d478d4e97deded80c689edd0ddd47ac1dc49e57bc2eddb61622d28fd64"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/抽象艺术画册风/brief.json",
+      "sha256": "0442e7f1cd0d20f0871e596f41bfeb1191d91634d3155fc3f16e8d48a33e7b88"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暗夜植物园风/brief.json",
+      "sha256": "8479618bc900fd8197e80f48b66c8d958c6167c002ee67b287c2b7e7cfd797f9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/有机渐变形风/brief.json",
+      "sha256": "08debbda52a1e7ea74934fc015d4086010165d25ffc3eaf16606537149fd19fa"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/松烟画报风/brief.json",
+      "sha256": "7445c612bce72350344b3583ce449dedf2a9c405ac99d39660b93050bf917fb2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/模版印刷标语风/brief.json",
+      "sha256": "355f64d119c3e2c7b41d60e01e2fa0ffb053e031b1309fc317fb78495bb98f04"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/水墨禅意风/brief.json",
+      "sha256": "4c56d28e108f0cfae8dbcb569c377b4b3c53cb5a2559214184a903a50197a1a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/水彩晕染风/brief.json",
+      "sha256": "0810ec0f2d230ffc4aed7fdaa5c24634bab62eea08302d55a8768ef772b21b8b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/现代插画编辑风/brief.json",
+      "sha256": "6f63c9f6c41e30e600048558fa7636913ef627105d7bde18ff0323ed4589a8d7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/立体剪纸风/brief.json",
+      "sha256": "a50fec2d98076f2cf0f1e2b685dc002acbadaa5ae6e64534e93da908ecd67969"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/粉笔黑板风/brief.json",
+      "sha256": "b62983318315026b01c0b8bc74012486bb8eb3690cef63c24ec2b375b51ab2f6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/薄荷清新风/brief.json",
+      "sha256": "4158f29168bd907049f504c6809b190eda1d667ea2f26fa6183278a0a939cf5f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/迷幻国潮风/brief.json",
+      "sha256": "ab6a8a167adc4ad5b173823d75846aca8172ee45eae4517b302adf0d667cc812"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/里索印刷风/brief.json",
+      "sha256": "2850b780c6d2c3920c02c84d737428eaeaa8c1d5117da189214c32a8c0618e28"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黏土定格风/brief.json",
+      "sha256": "fa03fe3c1811536fed412c5ccc842a1af2476fddf6d189672eb4abf460c99455"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Y2K铬金属风/brief.json",
+      "sha256": "f76beb46f4db872159c1ad02ee0e0bb910a65aa66144bc8ac487e646cc390885"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/不羁玩梗流行风/brief.json",
+      "sha256": "9772d58a1bd6ecc5f51207e164b4ce5be7bcdf1547daa7b2fdf306fb8c275a16"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/个人品牌宣言风/brief.json",
+      "sha256": "23410d9a8d6a7372db24f13e3838f6e9f4253a281db5402e171bb865a470baef"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/全幅摄影编辑风/brief.json",
+      "sha256": "58d3e1e07f9b4bb022b44073e2c2450dc26e37bc8b4a9a39480c925b53bf3e36"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/单色满版海报风/brief.json",
+      "sha256": "aaf8e4cadeb8f987a8882900d283652ed043e67884fb1bad482b6cb25f4ae572"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/双年展海报风/brief.json",
+      "sha256": "322939b1ac36db2e60bb3bfc93fd6bcc63717221a04bbf98f30b6ff430e6a5f8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/复古电视风/brief.json",
+      "sha256": "4d103b3de27941868d2d6e7260167e056112177eded44bf6485de387d070fea1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/复古视窗风/brief.json",
+      "sha256": "ca67292221ea77e531937a9ccbbbdfd476befc25e75b74a9545ae3dc100ae32e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/多巴胺活力撞色风/brief.json",
+      "sha256": "3038b5bff940edd49b66b7dd51c9744cceff7d90ec52324c5be8f415ec827d01"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/工具清单风/brief.json",
+      "sha256": "b9ebcdbef3db0878a74a938fef2024e7bf5e7e9d4b4417db0db002739e1c21a8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新闻播报风/brief.json",
+      "sha256": "8601f93e656490bdd8e2a5e9b60ca70620fb32657fa496021db2b5e0f9261465"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/杂志大字风/brief.json",
+      "sha256": "2e1d29d99201f28c53854ed2ca69cf9baa0012c0941f83d12ce620f64c8ac7f7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/杂志衬线风/brief.json",
+      "sha256": "6b11cc22fa623f6fe92a41ec2f1ce8dae03ba061efc139a34907c81eb1431419"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/柔彩衬线编辑风/brief.json",
+      "sha256": "7eb279c31d941d2ac402b7b218953db9482ea5b01581a34aa7f39e38c3269ad0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/樱彩磁带包装风/brief.json",
+      "sha256": "95d7b678b8e7d9a980322e2382f6649ee7d9f029b5b7d29b969c1e6648c0a76f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/活页标签手册风/brief.json",
+      "sha256": "8eca3c8949167353056bbe810ef5584daf05e60b5a5d7082c286716951e39d1c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深蓝红新闻编辑风/brief.json",
+      "sha256": "16536405e1e324c40e5a824e3f60a7705bd82d451caa59c254df810a766139e6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/玩味手绘极简风/brief.json",
+      "sha256": "c3b113d6bba9295244a808febd83ea7c816f525dc6c3693f8ca0481edf97f3a4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/珊瑚紫双色调风/brief.json",
+      "sha256": "81cb65422713d6028167f2b92e0d143980ffb4d9f94be89e4335dc0abefd6c69"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/纸质文件夹拟物风/brief.json",
+      "sha256": "cbd1ef45c7f86c6a0dec0dcee8e28f45037767f4b7852d2a4d586d5444fadde7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/荧光黄商务风/brief.json",
+      "sha256": "b85fa631498e198851154d7f57b597ad64bdc250db365a9dd563c0b6b58b4566"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/行动主义海报风/brief.json",
+      "sha256": "7e37c0c4e03f55241db5ba5dff53463b503cf37c984848ded90378ca7bd3eafe"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/钴蓝网格简报风/brief.json",
+      "sha256": "5b2dc9f9a5cb750b7fe4cb89adfb85702e00be2af03fe575c39236a8ed3b3c68"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/锐利黑白风/brief.json",
+      "sha256": "e80f378b3e5b695e23a5a2694d317d9ec284a39193c16d507bd615d191fcaab7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/高桥流糖果舞台风/brief.json",
+      "sha256": "4dd45515ec4925f46d8b8bb723fe8c1748af3df36a9bd8b7c64b4e2c22b963a3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/高级撞色风/brief.json",
+      "sha256": "7e3aab32ecc4b8ec0a041f7f9fdad6d1e5bf87f0628f278f9f38be6c0acf5bc2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黑白杂志风/brief.json",
+      "sha256": "9cf88032042b2a4c96b970106fb97136663d376de24efdb7394a73451b864994"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/勃艮第红风/brief.json",
+      "sha256": "3b40ca7869964b3ce57ccf127667773a618596289ee1f0be501ccaaeb4cb22d5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/数据新闻编辑风/brief.json",
+      "sha256": "baeead930990d21a4cb61db1ad3e082a036994d4943b201138e62a1499ba2b84"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/林间三色季刊风/brief.json",
+      "sha256": "ad7ba7acbbe38ec11a36dfb63fe4094539c9d4f736650397f54178ef6bfb7956"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/橄榄奶白风/brief.json",
+      "sha256": "ae4ae298af59e9e30ddc34cd0dbe766ef01c3efc041045a0f4e5591f41ea40a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/现代周报风/brief.json",
+      "sha256": "f382c31929e0dbbcf842dd7fe7eb79971b155f87dcb12e8260004e6ea95bd816"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/祖母绿刊头风/brief.json",
+      "sha256": "673a30992fdabd37120949261edd99a9e0902ed0347a2f71d591718810e393e0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/鎏金象牙风/brief.json",
+      "sha256": "e6d966c8ec1283f4f6d218046387edd82ee92a4a90391205db0c6115b2a47f2d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/风投路演风/brief.json",
+      "sha256": "71c3f9ede48ae7f5ca8c2132542710b70c28a63372840745aef6ed2073b040a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黑底数字剧场风/brief.json",
+      "sha256": "b1a6846a60c762480d46f919fae233f6b8ba508001ccc3e94a979140498ab458"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黑金期刊风/brief.json",
+      "sha256": "f340e4b3b1bb4d458081832a184a0c893c9feaabb7620898ac7c5756afb39048"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/SaaS介绍风/brief.json",
+      "sha256": "d3b43d9ec9d3fee0858d3becdf68a17f3b7cae0a20a0957808e5b2382b1465a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/Web3加密风/brief.json",
+      "sha256": "8cebf2394bb4b83f9821303041ecd299fc9144a6e784285216b16d2804722378"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/互联网产品风/brief.json",
+      "sha256": "c842784a5413c7cf66e10da5ec479d2ef6d92ee70d02a979b602958aac3776c1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/人工智能大模型风/brief.json",
+      "sha256": "1a8bd0780c8eadbb9db16b43a7237c44c7593bed6458653d840500509efc049f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/数据智能风/brief.json",
+      "sha256": "b663946437d73af3bbfc64049a3bfc24177c34c606f1fffd79c7c3c88feed946"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/软件发布风/brief.json",
+      "sha256": "76c894e90b86e0c2c8822208e6429a27ecf9d004c5b41b7e9e5de7fb05baebf5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/体育赛事风/brief.json",
+      "sha256": "345ba0d1e0ecc9569b7c2c16eaed31053ec833fae9efe3728e7bb8086d9ee9ca"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/健身训练风/brief.json",
+      "sha256": "b66759801b5dbf9c6a80cf8cf8f196814fddff6f65d779fef0e325adc63aae16"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/户外运动风/brief.json",
+      "sha256": "483c9a05dcf78dfa3ca19762483d0004e074c990cf42340fad2cdab7a2fe8557"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/地产空间风/brief.json",
+      "sha256": "ca6e718753beeef78d3c47801e9399f3a8390f664a000e336e9a2f7ba352f8fd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/工业产品风/brief.json",
+      "sha256": "99a34f102185cedb94745ab4e62d17f195bdc158b367f8b78b71dfca453b7e1f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/建筑工程风/brief.json",
+      "sha256": "a215ce389c8e85c8aaf146831d80154d63b471b61e0a7d009d30c014fc6ae830"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新能源双碳风/brief.json",
+      "sha256": "5934f9c0d8bbffdba91b80b0b54796272702e5b5a4db4fe2d6a740052d55f521"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/智能制造风/brief.json",
+      "sha256": "d4c9dc36fa53c1a44fca1a42ba8c8e88e64b3d884599f106686c55d15717e3bb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/煤炭工业风/brief.json",
+      "sha256": "d2b07737c40099564224c0c7c3a1f8362d267c59fd33a09691660753ed1b4625"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/环保绿动风/brief.json",
+      "sha256": "a86bca68fc45f5d9cd179bf2081f13393c06355717f94f88d1afb45220017165"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/domains/医疗健康/content-rules.md",
+      "sha256": "a277195d0decb93493bc8051d09018e93253301b27a00d649330a60ee6771eaf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/临床试验风/brief.json",
+      "sha256": "b8dea70197135f63e0ebb8b1b9fa90b977f8f9cd01f4d75717e1933badb7518a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/健康科普插画风/brief.json",
+      "sha256": "fba39b4c2056cf5eb77acf6b9e920ae2301286509d0d2f8213c4f45456b0677a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/冷蓝斜切医学风/brief.json",
+      "sha256": "441cbab4dd39c09e53fa73aaa8f0f0e9f97eb1cad5f75cfb91849ace209bcf5b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医养同源水墨风/brief.json",
+      "sha256": "9781fda9c17a80d0178436803dab1bcd08916daf8b8e89d4fa7ef87deadfeec8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医学书卷风/brief.json",
+      "sha256": "283edca925e1d4d5dd14f2695226cc694cb6defbc72b80bc2a1f95e6e4dfee52"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医学手稿答辩风/brief.json",
+      "sha256": "a08a65a6041dcd6da594c1c02cda0bf81f19640ae9ea2033a5c70efb2eeb93aa"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医疗学术风/brief.json",
+      "sha256": "aa2894674a325db9d837339c54713d00324dc9ee6947d0f069bdf7333c7cec1f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医药发布会风/brief.json",
+      "sha256": "4efb147a26068176334d7b024dd2c34b4240b94d1d8dee928c8702f1cd504849"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/医院品牌风/brief.json",
+      "sha256": "20d3841b038b486df9cce6edadb1cb65568db12db468cfde86f26963c9edd0cc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暖陶土医学风/brief.json",
+      "sha256": "31ff097439df2bfab75be9d8064e5e3680c52d3eb8eac8add23ed02c09123c1a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/森林绿临床水彩风/brief.json",
+      "sha256": "dab0487a4f72ea0687fc773fa22503493529c62982b917e54faa664d852c7082"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/浅粉棕医院运营风/brief.json",
+      "sha256": "cd573f900eb039aad93a69041987636973d4d12e9525ed1ff7abcb3e5b742f9a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深海军蓝医学风/brief.json",
+      "sha256": "ee17073311504f82708ff4b28773f38ee270c635525674523684cbf9e671aea0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深蓝灰科研风/brief.json",
+      "sha256": "57ad96b12576f044990276351a8699cae9dd57e864439910e0559608fbe88a16"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/深蓝菱形答辩风/brief.json",
+      "sha256": "6fff40a6cc0e2187b9c018bf6f391e5dee38a9e3d842d8d3b81278becd9f7f75"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/秋叶麦田水彩医学风/brief.json",
+      "sha256": "9e88818c77bb552893fd1d6c5e5ea6736cfbdfc90784608e740a20ef792c7ff0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/雾感鼠尾草风/brief.json",
+      "sha256": "26b529b812d07b33fec4babfb8510b517b3f94694e03a48c6976cf60f09603bc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/青蓝水墨医学风/brief.json",
+      "sha256": "3870ce0e675fec6b41113d0ed23e7fde455f0a52ae4805cf12335b53faae99f3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黑白水墨临床风/brief.json",
+      "sha256": "01efc5e4308ae0faad1feaafc5d31a60f73a98d1b946cc38cf8bfd2910c8957c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/domains/咨询法律/content-rules.md",
+      "sha256": "c55e37139a1c263c7f7996ee8d7dba73a0db8969081f738318f04fba128ce775"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/律所专业风/brief.json",
+      "sha256": "926d376586979ea1194f0bb029ca68a3a8ca38762d91a7028f7150f840bb9505"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/战略咨询风/brief.json",
+      "sha256": "d28938531fb3bbf91efc720474f70c60866eeb039e054e30650922261277b7c8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/顾问报告风/brief.json",
+      "sha256": "fbc0e6e0fd1a0089c6e60e2022e13e9c4a64724b925a82cf43bfe4c89bf6bb7d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/domains/政务公共/content-rules.md",
+      "sha256": "d1439d829e3f0c5fed533b3e47ae578529da2c4492b7de23695756885fb66c6b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/党建活动风/brief.json",
+      "sha256": "86b5daf311510da505a90776f6145b8b55c239e0876821539df01cf2aeda4dcf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/公益组织风/brief.json",
+      "sha256": "77260c11cd0222f710d130524e0af1732b47b59d7a011e33ef52520137c5f76b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/政府工作报告风/brief.json",
+      "sha256": "fc729e1e3287165b6f38eb56ecea4f52a6164bd913a128809efe8cd2e4b146b3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/domains/教育学术/content-rules.md",
+      "sha256": "c51f364adb5acf20fe9a703a7dc683d416818d5317b613e45ec5ef6f3bec8c7f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/中小学课堂风/brief.json",
+      "sha256": "db24997b8615aa2f569737fdd01b0dd445c0bfefac833d09a057c31a881ad9dc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/人文史哲风/brief.json",
+      "sha256": "ccfe3ee53b0c5bb98ce627dfef7c8903321f0212a11d594b5a535799c3953dcf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/在线教育风/brief.json",
+      "sha256": "00d0c8d4f29dc8cd7968ffb1ceda646c65bdd6bbf95ae3cf12c5d60812aa2e67"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/学术期刊风/brief.json",
+      "sha256": "6e0023003d6f8e10cc9e83af92199fcfca3f886b6a8e474ccb0362d8fa1eca3d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/学术论文答辩风/brief.json",
+      "sha256": "7bdafc2e6d41fc4d789a3db7277d608c8552d82df2d7bdf66249b9657ee4fae3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/数学可视化教学风/brief.json",
+      "sha256": "46ed6eba297ccefb2490c2fdcdf7196bba655c7354e3bfda1d5e7915344bcbc8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/文旅目的地风/brief.json",
+      "sha256": "855f6d606909002096b72d4a180f0b4bfbb6d4b07b01d8b59f7766a60e75c0a2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/酒店民宿风/brief.json",
+      "sha256": "cbb86b8f4aa19c742bbac7c3994d623592183f4a0d7b0795c9c8dddf6d2081b1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/餐饮美食风/brief.json",
+      "sha256": "b53fc2748ab58ee85e0851fabb0e1a30738f908b12f46c8921d1c28b67a51379"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/高级料理杂志风/brief.json",
+      "sha256": "a4e0522024007a6ae954b126096b3e978684a01b3e1846a43f7b8b631c34c4eb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/出行服务风/brief.json",
+      "sha256": "40c11d2ef6b3922ba96e14c3e6c941f2aef8e854ac82321eb8e9bdb9d322f7df"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/汽车品牌风/brief.json",
+      "sha256": "829ecb9614ba80aaccc29d7b6b6371d90403b9b62c0b580038ff34ddf781cfa0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/物流供应链风/brief.json",
+      "sha256": "9399dfc578a65ce74dad0a82d0f845431ac0be928b0ba2662b68017ce1f0a6c6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/快消营销风/brief.json",
+      "sha256": "3d3cd43ba182dd1221beefef4c0cc08cabca31793cf492a06b11d0ed46531421"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新消费品牌风/brief.json",
+      "sha256": "fb2c37d12c650d359ea495ac3929c7f24ee36b54b61237890df27290bcfd7424"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/时尚咨询工具包风/brief.json",
+      "sha256": "589fd9d487183eb27de4d6671aef05bdb54ae7769e0400e63ba5d7044191f944"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/时尚品牌风/brief.json",
+      "sha256": "d1dc1b1be13992089babdd0dcf846edeb29d2af14c8875e1e39f663fb98375c0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/电商大促风/brief.json",
+      "sha256": "3b29d39ed0a557bfb2af5d2b7d5931e8ad958f94ff6189b352628ac6ba6b902d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/美妆个护风/brief.json",
+      "sha256": "1ee47b6bd4abc0a0ff3783e6f8c1842d4420881b024cda937a7515da6f143ed1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/达人营销风/brief.json",
+      "sha256": "e64281d6942a67b7f64f06239c15d8a6ebe7d7a3f7305573b9efe093ce789401"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/声波霓虹风/brief.json",
+      "sha256": "a547c724689fb734469653458f90a1a472493e59d329915526091f25ac560880"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/影视宣发风/brief.json",
+      "sha256": "eff5d2433856934cdbbec5fc2b8ab29f4c433c3b6d685ba9e2ff39b396155296"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/游戏攻略风/brief.json",
+      "sha256": "163bfddd8ba8dfe979d5a1c94137be7bc124577f89bad80f8de3d3b4c544be47"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/电竞数据风/brief.json",
+      "sha256": "1caf9193f62764af4022a4091fbb733d2e7566d8b8dc81131a4f6220a968f485"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/domains/金融审计/content-rules.md",
+      "sha256": "c2f9b67763557aabfbf5c2efd816f55477c76287d3288d3c4c07107b117fc37f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/保险品牌风/brief.json",
+      "sha256": "1b8312d3c0d5b2ab6ac418f7c8d0ddd6b28e87fb9c2224cadbe850f40687aad9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/四大审计风/brief.json",
+      "sha256": "07e9e662d68265e63ca3156c0c1f122205b5dd8449cf6e4a55636dea6913cf9c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/投资机构风/brief.json",
+      "sha256": "5a806907069b4344b1661dcf9be5afc8606929146a9d4a9da9e3244954220385"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/财报季报风/brief.json",
+      "sha256": "c059a0af96e52729312121bd712b02d10ade19cbba2078f7cf9fc72f9945a127"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/银行年报风/brief.json",
+      "sha256": "7eff5cf87e8a56847883339771591b14b3f16f606463aea3dd621635e415ebd4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/产品发布会风/brief.json",
+      "sha256": "00fbb352c07c5b0c24cb88981f56374c4b5df8c54000d89456ef7f34a9f8fa9e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/品牌发布会风/brief.json",
+      "sha256": "95b62912051a2df3768519b29fe08eb8ab734b727ea807ac7cf10c9f5a341204"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/展会博览会风/brief.json",
+      "sha256": "eef47e0a2556c8a252120531f82ea6aaed56aa42c80232a76f67b86df0802753"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/招商推介风/brief.json",
+      "sha256": "9c1adc90a3a563f7cafb6fb80ab63e7d2ea796c41914a00a01720915cd624e5f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/新品上市风/brief.json",
+      "sha256": "95c01cc2ab14025750fe903e5c2c48333bc33194969dd3e764e9d8242c6535ec"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/直播带货风/brief.json",
+      "sha256": "329c239aa53457b6f8b23b5c0668967a059c0a37316f3cdbebd175455843c218"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/学术会议风/brief.json",
+      "sha256": "f6f1812a29bf2e893a813620ed4ddd98419e680e0f0e4c7747fe40913ed4c9dc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/毕业答辩风/brief.json",
+      "sha256": "e890e8edd2fa692fe16e08db64642fb7b19d27e359ef91f4cc8706543c8c41b6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/求职作品集风/brief.json",
+      "sha256": "4d13a53fb8fe07ed04bc146d04a240a0bad384b05e882b25e1f047c36b011ddb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/简历自我介绍风/brief.json",
+      "sha256": "1e58c78cb68296b39737363aff242bac0390d92ac7196773517c53a48a3b3e7f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/获奖申报风/brief.json",
+      "sha256": "9ec55fdf015c3b88e420a38823acb87b9b1c2bb5119233064c974f933df81b54"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/课题申请风/brief.json",
+      "sha256": "b94705e10479eac5b44be631f85082a2496819e773a53360ed0e5d6878694a09"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/公益科普风/brief.json",
+      "sha256": "64fbadcb2698627115adb233e075d9395127941e3b5e3fbc0c7bafb839ecadbd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/品牌宣传风/brief.json",
+      "sha256": "04064710dc06cb69daf4d08d8dc33b58e8f34078386f93a50725bbf18ef47a08"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/展览导览风/brief.json",
+      "sha256": "cf6f3c05561246cea0c352c4c9ca65c95390561fedd149b9389df762b3380954"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/旅行指南风/brief.json",
+      "sha256": "e912405b45e405087644d9e5c1799f40c9c376a854c086163a552ff34eeac8de"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/短视频脚本风/brief.json",
+      "sha256": "9f954145de256c579cf714a64b0b88cae764c48ece895bf50749ec16ab6a3476"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/企业内训风/brief.json",
+      "sha256": "a81912a81951ec5c0cb108d6d4c53062eb148d80106f266a4480c2701b9b6c5e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/培训课件风/brief.json",
+      "sha256": "a99db61598f3366011e9703dd33c33b2296eed66fe1840203a4fb1625d03addc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/工作坊风/brief.json",
+      "sha256": "184a9b374b21b4a0c88c09e8b8e639f2078f23f09d1017f8afb6c4babf785a1a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/技术分享风/brief.json",
+      "sha256": "805da76db34fa17e08773bc038a2cbaf074a6bf2acc7ddb2ac7db798f589c5a5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/知识卡片风/brief.json",
+      "sha256": "214ec5cc794619608176e2609fe3bc9832ed995d70e8ca6cee1939d1ad9f54a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/知识科普风/brief.json",
+      "sha256": "c645ad1e9eb139724d339b2ac547fcb300f4a081def1f62b38ad8449af68ca78"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/读书笔记风/brief.json",
+      "sha256": "76864dc1cb23c18ef381401542b2338dfc9049cc44634b7b1e3f469afa688022"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/项目复盘风/brief.json",
+      "sha256": "dd481b29716bddca556711750e3db84250dccca328a15f8d4c5e472b0af6c4f6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/周报月报风/brief.json",
+      "sha256": "1c2ce9a81935015f6450265d474185d7208dd1d9959e6497a379fb5a51854ae4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/年终总结风/brief.json",
+      "sha256": "3f1aed2d70bd95bc4e9ddafa5751111628891fc290382aa7a8666ba9caf29184"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/成果汇报风/brief.json",
+      "sha256": "b4f7db56116da9e4159aecbb21430c58e494ed9dd0afde75623398da2736bf1f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/晋升述职风/brief.json",
+      "sha256": "5c870ff47241dbe3a41eeacc0e91c1fbaa791133d2300b19a71f8b25bd9dd3a8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/高管汇报风/brief.json",
+      "sha256": "b6f2c99fcf3bd0c6656ba4fde09709dbd093fde86223487e8c33fe401500f8f6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/团队建设风/brief.json",
+      "sha256": "c1bc654f7cc7ef78c38959773e4f3a1991a7dbb528483dd0377b8aae61997187"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/年会庆典风/brief.json",
+      "sha256": "501eda3afeec6d707610cefb804829e77ccd44347cf50a262d888ff3d10c3c7a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/摄影展作品集风/brief.json",
+      "sha256": "691739f5c6befa1263ce66530eae312822457ecf79c5a55b6e6484c01c22a6ec"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/节日节气风/brief.json",
+      "sha256": "cc5a1ef14449d0ab1d9f908aec30d866a359aab1590e64331ab45961951068c8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/创业大赛路演风/brief.json",
+      "sha256": "e3d0432a49d5382f1b0c3679016fb6b6f54a27a2657f5617920f77c2fa6a3f64"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/创意提案风/brief.json",
+      "sha256": "2553f86d0bcb72ac1792db80ebe44166ad0dfcd1a9782bb085085687e1734803"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/咨询提案风/brief.json",
+      "sha256": "17bc489281cab2341298831aa7c6953d4dfe433f5c9de64ec8c6bf3c8783b959"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/商业计划书风/brief.json",
+      "sha256": "f3841d840d0719873ae73a8be4d5775ce249a634193bcf5a209c675008ef6afe"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/投标竞标风/brief.json",
+      "sha256": "da06f84b1721f939bc164e27dc76bcd88568336f93ee077668b021e2054d8c2c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/融资路演风/brief.json",
+      "sha256": "ad2883d1d052466d334659ea5517d551dced42fcf0854a4fd3117b9d4bd422c6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/00_README.md",
+      "sha256": "fd924489de78a8366a529bbb1c4f55b70c888fdb72f784068edf606d939ab5de"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/deck结构模板.md",
+      "sha256": "b9e6ffc76fc0f46eb1159d811135de324c48b97ba71c4fd97cbce7b35075bad0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/图文叠放规则.md",
+      "sha256": "17de5136a0f915be1948562eb9f2275e992f6407a0b840f9e059d4e18a6989f2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/地图组件模板.md",
+      "sha256": "e38a103746520aff56c302c76d3425af50c4e2e40987816c4c0dee06cac90ad9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/截图处理模板.md",
+      "sha256": "74c5cae19fa1b202235cc016250f4d2862726853d1f773d8833ec0de67b93606"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/标题压缩模板.md",
+      "sha256": "ec5f59610fdf8528ae31e2614229ea52a158cde64b847fb21a7c0aae323bd319"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/来源_guizang/竖图填充规则.md",
+      "sha256": "ea0d1035c520543e0f112ad497e95921d14cee7d0cef5c94cbd93d1221983412"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/写实摄影风/brief.json",
+      "sha256": "a56763f4f6732c1ae6af5ae95b764f0e619a6f233d3dc2e68909564c795992cc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/历史古风题材风/brief.json",
+      "sha256": "92932cca8b3d19e27d2db830094ccebf4ce3fa98d21fc71d190084652d5c5fb6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/场景叙事分镜风/brief.json",
+      "sha256": "d691f847d44285ec4ace72243e13295a76c374e4c091d73477b992b3f1454633"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/accenture/brand.json",
+      "sha256": "1136ef0f3e25ab70625ab92c857fd90c06f31486c3adac4b9276c16f3a244d6e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/airbnb/brand.json",
+      "sha256": "2327bb2b549ffef1b26ca9b8638ceaf6783a4e45f043cc80aece98f6788dfdca"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/alibaba/brand.json",
+      "sha256": "20a250e3e0ed414e7337cc37a59b63eed5de5fbb9c8c0c4d991d2cab89f9a81d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/anthropic/brand.json",
+      "sha256": "0f736eeb844a8aafdb98b62fe1f1ddd83105e08ca78e680bdf451ffbfd1c306e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/apple/brand.json",
+      "sha256": "acc4775981b922be773a93f19932964883d8004273db71e2935a008a40375aac"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/aws/brand.json",
+      "sha256": "2f78fb77809ba803b86f8fdecd007636be21d25b923750ecb1c1e51a31bc288c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/bain/brand.json",
+      "sha256": "d5a1595398a89ed22958ab11343dc2697e0b0d6ff2ae46ebfec61102359f3ffd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/bcg/brand.json",
+      "sha256": "7a33610b718b33cb4973a50ac66251f9e0432302c4a0c8ef1fbc4250e887b9ad"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/bmw/brand.json",
+      "sha256": "3526cb4498faedaeb2db949e857c80d161af5b51af156e9acbed80a2b22bbd64"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/deloitte/brand.json",
+      "sha256": "0bf2bb74e5465bd32fa57b388ec49f5232215c859b550f3d8aeb46a7af1c918e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/figma/brand.json",
+      "sha256": "58303f8c51c5328e8c23734b3d2c0ccb28e82b7d8c4a359e5b6caba999835dd6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/framer/brand.json",
+      "sha256": "7411abdaf476dab18acc15820e47fbcb951499d8ece805b3a06da07637154cf3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/google/brand.json",
+      "sha256": "b7a70608ebd0ce9e1db7c0c315bede95e1a91ef5a618cfbc34434ab0790867ad"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/huawei/brand.json",
+      "sha256": "9e8ace755f65c199a0884d0472582cef992a1a0597a708e4c5657fde69b7c8bb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/ibm/brand.json",
+      "sha256": "2fe5f7e4eb0ecc6f9f99b546bcaa28d7f4523a76f5f466cbc3e84f9609bb9cc4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/jpmorgan/brand.json",
+      "sha256": "e0f0a0d4e9558acb67bf3e5e07fb023033e40ddb0f8662a98dbe049f6fc14613"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/linear/brand.json",
+      "sha256": "0bab251d7ab7776322d41d37c8682fbb355c99761737850233ce9e0bed1dbab9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/mckinsey/brand.json",
+      "sha256": "d1734fed695aed432fd9a5e8b56d69f51c91db633a3264a43ab32e302d0603c3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/microsoft/brand.json",
+      "sha256": "8637478e40496c574db7b25c0c9c9c65fc5289ff6bc615116d186662942844f1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/notion/brand.json",
+      "sha256": "02c0a39ae6abc7840f4e1f8c9e8b6099266c5740f92fd3c98134a19fb1c35d0e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/nvidia/brand.json",
+      "sha256": "15851e36fd33b2911bbd5f1a480beb6f1db948056ecbb17e6414f1d54b186df1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/pwc/brand.json",
+      "sha256": "c2b69bbbaeb61b4ecb8c7d18bb0042fffcb6e137f6a70e358cdb92cbef1607b1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/shopify/brand.json",
+      "sha256": "6772d7c9b219625dd0b9dc33e6b128c880eee3e798e0c51410d79e5039e8e11e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/spotify/brand.json",
+      "sha256": "1a152c11d517033d95beb3adebf8d66b892c389c36a3142e420793e13c7903dd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/starbucks/brand.json",
+      "sha256": "18cac65c2af5649786050427a24bbdf427d951f6f13f22571045eae50ac0c3d8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/stripe/brand.json",
+      "sha256": "2aa773f16afda9d5fbd890be6cad15288006f543ccfb5ee95cbe46fc4f4bc50e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/supabase/brand.json",
+      "sha256": "7bada593efe2c6b022da46bc8960d58f05c03b618cf862ff1e1d59e41f1384fb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/tencent/brand.json",
+      "sha256": "38432ed29e637af9988e9b46242e3e65601dcac982db011ee4cc294bb36bb18c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/tesla/brand.json",
+      "sha256": "2098cd1affef773a898e58433db3845082c84e22225ababd9eeafc65a654d235"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/vercel/brand.json",
+      "sha256": "6ca2eb3e12ec8e4a449c10f7b6c1fa44790caf5cae4d3c877c09b446e8ed7521"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/xiaomi/brand.json",
+      "sha256": "c8892bf74bfba0483a4bb0928549bbe2838f7ccc3e185e5c42f35dff0912dce8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/中国电信/brand.json",
+      "sha256": "78285e1e338576d79af9da214ddbf27f0d5fbe9206b1cd85f32130eafabf9098"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/中国电建/brand.json",
+      "sha256": "8a781fefc1386f74275e1c610f0ced320671005e704f83eede20a185b4463741"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/中汽研/brand.json",
+      "sha256": "de90cc186b21a05eeb6bc32386abfaf45a9372beb0d5c5e6bfcd6ecdaac06700"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/招商银行/brand.json",
+      "sha256": "c235519100f53ab6080c15286cffbc9330a5bb3d9a8f020a212934436a69310c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/brands/重庆大学/brand.json",
+      "sha256": "6b87336b6972ab6236a624bc141805ceecf534a0e5132a37cca6df43236ea728"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/layouts/00_容量档位参考.md",
+      "sha256": "c9b149112879bc2362edfc6546d78da90b95f1d5e3f043ef59f4d45ee50e5e8f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/layouts/00_选版式P0原则.md",
+      "sha256": "0b546c8d0eee1248aae9141f9d23f672441b558e44c9b44e03e0817318f2d66e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p1-01-cover-layouts/layout.json",
+      "sha256": "b6365c4ac6a02dd5b85155548f0e49c2667c4d176207a2b17ad21eed626ed488"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/layouts/01_常犯错误.md",
+      "sha256": "8b2deae509d15e3d4acd546ce50b0598b8a1d0ed998990bf97a8d14b16d3cbe0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p2-02-vertical-timeline-layouts/layout.json",
+      "sha256": "2161370e027ea68847115ea0a914ff9528cf73bc8e7ead168dcb7f2029a4418c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/layouts/02_关键类清单.md",
+      "sha256": "c52f9912c15a3039fbb88b13b1371adbc95291c2bf533a15c366f9a350950828"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p3-03-statement-layouts/layout.json",
+      "sha256": "6b1908bd7c5bf614872e68ab677051fd530fda3e1a4eb21d688870d10f7c1633"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p4-04-six-cells-layouts/layout.json",
+      "sha256": "c4b28724ae6d0fe011b1075e156b9cffa40d1e508d76a809f609f121b1bddc8b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p5-05-three-sub-cards-layouts/layout.json",
+      "sha256": "129f16ebfafb1f54734949c0a413b18e435a0a058a16ef25f58889126e499754"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p6-06-kpi-tower-layouts/layout.json",
+      "sha256": "3d17dd1610809e3f13f6e94a29d5cd26fc43732f16e899174bbeced45d807ddf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p7-07-h-bar-chart-layouts/layout.json",
+      "sha256": "51b71a7a849621f570be5c09a327ac08b06b818b40b40a14f8e529c1413119fc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p8-08-duo-compare-layouts/layout.json",
+      "sha256": "4276d89ec7cc9f14ab83c915941673f6eb5b5e7df54e99ef6abcc66c35f246e5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p9-09-closing-manifesto-layouts/layout.json",
+      "sha256": "4c1ccf7201ee7fbdbcd6ddce6356e847eae38d93322bd7874f0d32a70ae7afc1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p10-10-dot-matrix-statement-layouts/layout.json",
+      "sha256": "6f18a602b6516d0d2c9fc6df71335a73883e12640a901643f5a8ede332694409"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p11-11-horizontal-timeline-layouts/layout.json",
+      "sha256": "03083510f331db08902a5ae1cc35b7e18dcf78fe867f7a403f366ab18e8a1547"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p12-12-manifesto-ink-banner-layouts/layout.json",
+      "sha256": "977dd42843f134d3d6a6b61aeb4fd1b1a324cf6c9e7b14f8bea4603ee109cd3c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p13-13-three-forces-cards-layouts/layout.json",
+      "sha256": "190abed04a8467ed35a04c7686c0c83932abda19296cb9d1eb362df9e5fa674c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p14-14-loop-diagram-layouts/layout.json",
+      "sha256": "4af5abdcbaa92564daeacdf07be300bf28f2253bfe1711be31d51e17dc59e115"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p15-15-image-matrix-hero-stat-layouts/layout.json",
+      "sha256": "b9dcefee846f589c35a33ab1816cf0c800ec289e9a2bfdbba92dbdaa0ca87f70"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p16-16-multi-card-brief-layouts/layout.json",
+      "sha256": "ed60b6fa63fea5954d9fe1c517f8269c19b54845e5c778fba2d0ae3faff5e691"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p17-17-system-diagram-layouts/layout.json",
+      "sha256": "1f6cd113a4ee4b4319eeac6409c9e0aa65a5abbe1e8ade430d6b306a9dc910d1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p18-18-why-now-layouts/layout.json",
+      "sha256": "7a8147f8f07862878e93bc228427a6a717b276ed0ebbdae4372f66ec5fcfcc73"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p19-19-four-cards-layouts/layout.json",
+      "sha256": "d3ac76ec60aea4e89b43e3922e827ddce8ca91b52fbfef9d199e983bfc22effc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p20-20-stacked-kpi-ledger-layouts/layout.json",
+      "sha256": "33e86f3f75f11edb6277a131672dc9979bf41a6200dbc5b1dc087e3c4e8f8c11"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p21-21-tech-spec-sheet-layouts/layout.json",
+      "sha256": "7a5d35ee00d8809e7982a10cae537105d2316097b0ca7106b2a3da90c1880048"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p22-22-image-hero-layouts/layout.json",
+      "sha256": "9519c20b54ca31757c97dd77f88ec5a1fbb1a99fb3bbf9baf741d9c5f4785c71"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p30-30-swiss-image-split-layouts/layout.json",
+      "sha256": "8f043e2c652af612d07e016bf3957ea19ef5db222d475f5030ccdf1955f0d304"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p31-31-swiss-evidence-grid-layouts/layout.json",
+      "sha256": "ba06d546a1b216bf45d85e1f53fb3da7425f4e216b3b118806db50523b8da26b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p32-32-agenda-layouts/layout.json",
+      "sha256": "2b3f8018a9b6d3943a1d2c0ff9c5a27d3af0825d3928d272fe8d1b4ad27cc167"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p33-33-team-grid-layouts/layout.json",
+      "sha256": "cf2677ec8a6b27017d357fa2339139c54ee3dd17c814f3730746617874c4752a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p34-34-quote-hero-layouts/layout.json",
+      "sha256": "3b9bd61be5d583dbb44908c1654fd16fb4edc2202329ec514f623a9315111298"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p35-35-data-wall-layouts/layout.json",
+      "sha256": "320e93f1845f42bf77959556300c841685f408b3f053a5e283db2d6ebf32c821"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p36-36-ambience-full-bleed-layouts/layout.json",
+      "sha256": "8fbf31f7cb7b25f0f0ffa3216d04670e463ff2e3d519f6a5de36c02930664f7e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p23-p23-section-divider-layouts/layout.json",
+      "sha256": "e68db77eb1ae580f05ecc3073ba581273a7e8f256d61ded0f419b3437b91313e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p24-p24-number-hero-layouts/layout.json",
+      "sha256": "5d4180c77cce99423733b67a013613c13b25773f73e136b2e33c0a41dd843610"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p25-spec-table/layout.json",
+      "sha256": "a8f7c934f105f6917f837d7db9f9e65502a1c09ea5db4023e32c782055db86d8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p25-spec-table/notes.md",
+      "sha256": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p26-p26-reference-list-layouts/layout.json",
+      "sha256": "d651896fd25ff1a052d4b702bf259f80acb540a53ea025d798a16e76201fd7d3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p27-p27-learning-objectives-layouts/layout.json",
+      "sha256": "e0e42d70e0d2787335bbe5a07c62a15860da80d554c0c7ba2e87d2249f02c957"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p28-p28-recap-layouts/layout.json",
+      "sha256": "a2cbc0b9d42fab862895ca7ed4a0c9e3555a57a3ac69093a939634ddd2d1c876"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/layouts/p29-p29-quiz-layouts/layout.json",
+      "sha256": "2667d5ac32aa634345602e8701985f51513c9219a5c31e1e94dc8f64b795c08c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/00_README.md",
+      "sha256": "50155d0d282b8a9d110045034b5d6370ce9c0c6e96fcab64807103f1b93861c7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/朋克深底撞色池.md",
+      "sha256": "609e857ebd1c6beebcb52ce3893028d7fff91212a764eb34f21efcbe574ee34a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/朋克深底撞色池.清单.md",
+      "sha256": "62664696d2f7dfd9c8bfa531f94a866a9c374d5cc4351cc9809984c1f34ac77a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/朋克白底撞色池.md",
+      "sha256": "3bfc733f8bf10b6e199e51d15f5f70981fa11e74d4ada63bbb610a55fbffe7c6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/朋克白底撞色池.清单.md",
+      "sha256": "426f9584ec082a3e1d8af5880df24e47318f8293bfa0151dcdc53f37f131246e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/科技浅底净色池.md",
+      "sha256": "24fecf9d2b9a1d2a63bcc3550707dcdbdc6ef5d0b9bdb2f8b492c5f4720324f5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/科技浅底净色池.清单.md",
+      "sha256": "053da311b35453b575ec8500575dd7e58ad734d5a081749394e3903e573c21ba"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/科技深底霓虹池.md",
+      "sha256": "bbea4341750946d17a894ec81de5b8ee7deb38f51738c77b687130c4d809c98c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/科技深底霓虹池.清单.md",
+      "sha256": "1c78314f2e186e2081db7cb1b5ee66d3b3f19a85dcd567b3669b0a54aa23c0f1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪冷调编辑池.md",
+      "sha256": "78a38fc288f0d7a97952bc1dbc9787909122bf7c7149dc0309997e2c25943e0e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪冷调编辑池.清单.md",
+      "sha256": "040fa233b296f40f70533686be6d36b8eca3ba5486b92008b89d2be8c7786bb1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪暖调编辑池.md",
+      "sha256": "4b5159ed81a0cb767c735fcc13f5c64e895ae49384fa2a9fe7e3d86c3a623d69"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪暖调编辑池.清单.md",
+      "sha256": "cfff754d32f9755960d5305cfb75f9139f14d379759d428f71acfc1c699e7bbd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪深色雕塑池.md",
+      "sha256": "03d9e13fb89b334af1bd711a853f7e5fc2f553ad0e37ac10e4d383aef28d2e23"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/pools/gpt-image2/莫兰迪深色雕塑池.清单.md",
+      "sha256": "383069a064c4e88b8c7ce53cea3db39e5cae413fcf10f8b34656edc81fbddd5a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/大地有机风/brief.json",
+      "sha256": "0cc4ba5c6c10996bf94b25615a543f098dfb62bcdd1e5832baeac72e8bbf0022"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/斜切重工风/brief.json",
+      "sha256": "5e9395fe929b86eeb00734e46862329ed0f3b83d85aa09c33162f5676c7c21ff"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/流光液态风/brief.json",
+      "sha256": "b6102388da9e3c27ab6673d192550bc01c7f6658a767967457f91314eeb1531d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/粉紫编辑风/brief.json",
+      "sha256": "5106df7b366fcfec163925ecbe664c57fa7b1576bb695b0ccbe0fa543e354d2b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/聚光舞台风/brief.json",
+      "sha256": "ec7b0e292265cb702ce606a0cbc9ea0a59864776dc62bfb640ce2a1f6a6479ac"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/色差故障风/brief.json",
+      "sha256": "b7f4901a149adf40302ed61efaff172dfd994025b00e8b07bb89c074f05b5085"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/鼠尾草谷物暗纹风/brief.json",
+      "sha256": "dc2bc6ddf27f1cc0edd51966ee59223ab09b436b18025101d5eb7d77a76500af"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/彩窗马赛克风/brief.json",
+      "sha256": "26524b842211011fa09fb3867d509d4cef5e79068f20f8ad7a58eba0a1acd3a2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/暗黑学院风/brief.json",
+      "sha256": "ef940fa573af404a6ccbd60e4c50a8bf4091fb5024b0b40856fee1a257a5a508"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/BCG展板风/brief.json",
+      "sha256": "14c5d266dbf19cb963660178aef56de3fd16fe1c8ffd3cd7daa455fc09ab35ea"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/MBB幽灵框架风/brief.json",
+      "sha256": "670fac71e54abf61cbff5cac2deeb1b6a711fe73fb05bf7df49e346de9076904"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/全幅极简演讲风/brief.json",
+      "sha256": "02a6360f36ee200a3b77998f1093779405944757ca6e8c4de1953d3d21816bdc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/单色基础设施风/brief.json",
+      "sha256": "c5097b59f75ade8f76b3c5edbdb69ec89e38e5628c6382ac4d6d2bac6872e075"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/卡片新闻财报风/brief.json",
+      "sha256": "2ec953bb6e46045128627dacb3430d036117d9c8d8a12d01a67b9630bdaad6c7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/咨询精密网格风/brief.json",
+      "sha256": "8d5f03ab03423a49acf0bd2af0dd042862d64851d8ffbc6ea6fe52dfc50df3ee"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/图案海报演讲风/brief.json",
+      "sha256": "06404284d81c41bd3dae0d15c94b39fba1d9755f1cf55831df990e81ca81d92e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/战略藏青风/brief.json",
+      "sha256": "253ebbe8825f6abeae440cc385bbe617c7b236762373b223ea333f2773e93ca6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/投行IR编辑风/brief.json",
+      "sha256": "d0768c3e2a337e7ec317e7e0eb2e4c062b5550e912d9bcb603f5939edf137cd0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/政策口号书法风/brief.json",
+      "sha256": "24f98399253d997acb850b221a16ebe0eecfe0fccf8f7444baafdefe40396442"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/数据信息密集风/brief.json",
+      "sha256": "24132c68b84d0c1a9cc0b03c39d519993da17213bc256a68f4d84979e084ec75"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/星幕金字塔风/brief.json",
+      "sha256": "9bdb04dd4780175bdbf1c59408f906a7c9621573592fa72800a4581947047f5e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/极简单色笔记风/brief.json",
+      "sha256": "6b8b27cc060bfaf39524222fff94c4a149167e2360bae05732a41dac71459a90"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/档案索引风/brief.json",
+      "sha256": "677dee28dd1e5e80887fbc2e955af7d246df31a56792b1133b03fc371ad18b2e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/植物有机编辑风/brief.json",
+      "sha256": "db2b952e6c4646f1962fddd362c043763e81778c567caf4c2ca6cc460eeba3ae"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/温暖款待风/brief.json",
+      "sha256": "1f7e3d4e8afc3493064644fd278137ad6b10e4e3fc0743e84bc977a885400781"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/电影感演讲风/brief.json",
+      "sha256": "e125906b20ccafc72bb045bfa6e026072a547d6fbc5653b948fc004c7b950af8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/粗块信息图风/brief.json",
+      "sha256": "76de53d2a53984bb8f75fc1c2f1d507b1cfa5c0da1ba539c257e579b715df23e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/精密金融科技风/brief.json",
+      "sha256": "c151e47fb9f942fd69dbd5d442674093010aa1ccac198aa0e765767a2248a254"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/集团IR克制风/brief.json",
+      "sha256": "3d5a9b0687d259d5e73f65ff9bd88bbe9bd2d528a4d04467f3928d6a308f2a45"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/韩式政府浅蓝风/brief.json",
+      "sha256": "f3b5c69762ee0dfe6913398d531d864d03bd3362fdd1a5ac7f43304a46f760dd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/韩式政策报告风/brief.json",
+      "sha256": "b86727c27fed5ba0039606b72048be479be8e58368202d0111438a94aaa2083c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/黄金网格演讲风/brief.json",
+      "sha256": "620532e7c480f0cde1ab7f047fc48c8fb8fca8e70b28b463e8a2daa0a9f98965"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/official-red-classic/brief.json#bindings.layout_routes",
+      "sha256": "cb1cc02c46dd73fecaa1179f4f57846b1c89b91f50304f4626f335eb89285dcf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/official-red-classic/brief.json",
+      "sha256": "30534bae4b076f3142f2707f194638faecf0f4a648f1fd6147c510554a028176"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/creative-magazine/brief.json#bindings.layout_routes",
+      "sha256": "fc8de93383fd5ea697a3bda6d8448286c3ff2ef3a3ef3c8b9247d229928fb4e4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/creative-magazine/brief.json",
+      "sha256": "3712894ec69ad59686f2729317c3a4ef8125121cdf2b2efc69e5fd5823be53aa"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/retro-flat-illustration/brief.json#bindings.layout_routes",
+      "sha256": "583fd59f40f29b0a58730b12422f41b3c42b57cb1580e7a96859504a17c14b04"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/retro-flat-illustration/brief.json",
+      "sha256": "c98c5e428940d96946858155e6ebf0139dcd60a9de24ec816a6c72f184241e39"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/handdrawn-tech-explainer/brief.json#bindings.layout_routes",
+      "sha256": "07e373715feee54992a78e090a327192388e0841266b6d4cbe30395e2fb6977b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/handdrawn-tech-explainer/brief.json",
+      "sha256": "9b99fb84e22a6a564e6214e15f36643cde8d677b58f5d8f29e578b8178319da0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/handdrawn-whiteboard/brief.json#bindings.layout_routes",
+      "sha256": "f261c6858a327752e2a1a85800190fa23a9997eb640b36c2a68a004d2d0bf74a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/handdrawn-whiteboard/brief.json",
+      "sha256": "e49efbeed647fa199d383f3e89411d47d8d85d541029fb1050721d7e0455f021"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/teaching-courseware/brief.json#bindings.layout_routes",
+      "sha256": "574b33e02aaf6a0f704e06a17c7dfb2db8b52234ff3d442d367b74cc9c167d53"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/teaching-courseware/brief.json",
+      "sha256": "9067df24db9b75eae1f154cf48e900ca120a9314d7e6c96f492ecb011c033d06"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/data-dashboard/brief.json#bindings.layout_routes",
+      "sha256": "02a33a823d09a9b72b9e1acf33f8eace9af25d244c6a3256a0fcc7e7bbf2f6cb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/data-dashboard/brief.json",
+      "sha256": "2abbc5ab3753774a1ff4c4ecdba1f5c151143dc42cb674bce4d83711d27d2aaf"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/clean-professional/brief.json#bindings.layout_routes",
+      "sha256": "0068ad3e58edb39f8394ccb5fa2e15795c2e7569c1301df3879a66e81bb71ae2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/clean-professional/brief.json",
+      "sha256": "752d659234e570002b3ce62f9e3ad8f9fb704af7f2e8c5955a81bd5c4357eb99"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/warm-handcraft/brief.json#bindings.layout_routes",
+      "sha256": "b2f8facf390f8f6a7c75d16586f36a8ff1f19c09db639128169959a33038f079"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/warm-handcraft/brief.json",
+      "sha256": "6eaf51d9a6bc3a8501d05b3f90828e4d7c5ee584e263679c8572fe050c4bdd50"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/eink-magazine/brief.json#bindings.layout_routes",
+      "sha256": "c571aff1a0c1abc83bbec72a2d63eddefe1b801b6902d6deec176c69e6854dfe"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/eink-magazine/brief.json",
+      "sha256": "2c9433c91dc97085f1049b47260e7e5b79ffbe69e0c3ebeba9b3d8cae43178e9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/research-defense/brief.json#bindings.layout_routes",
+      "sha256": "91aa7e2dec1cb66055dc1e3b8061a9addac50066611c851ae16ec61dde72742f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/styles/research-defense/brief.json",
+      "sha256": "45e97e3b140a7480d1a853038000c6a05df8f2ffd93f13ecb6725171b874edd6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/presets/scene-presets/pack.json",
+      "sha256": "c94da5619061bca2ec10f9c997ea672deb47643f1c9ca5cced50b65578a33bb2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/presets/scene-presets/README.md",
+      "sha256": "5bbf5de9398f829b34d1cb8f39a85ddd27b1862d2b36e5fcb11d03b12d8e6387"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/rules/render-lint-rules.json",
+      "sha256": "aeadb70d9d98a828f87b11a8aec5a4aefc6ea206a5780f4a979a2c5cf4deb2c3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/cover-basic/page.html",
+      "sha256": "bea9ecfcc2d2f5071d61680232f3c3189288a60a0ca6e4ec96f9484d5e01471c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/body-basic/page.html",
+      "sha256": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/compare/page.html",
+      "sha256": "0cf5ecbe012b1ea38ddf7d0671a2038b5a4d9292d95f03beab926fe82cded4bd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/timeline/page.html",
+      "sha256": "bf7d70b8ba5dd6764c2e7f1a43e281d92871e9c24b6f6276e114a7d308c220e6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/spec-table/page.html",
+      "sha256": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/pull-quote/page.html",
+      "sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/frame-shot/page.html",
+      "sha256": "100d7ac7c601a0e03b1f4a761cd8effd54787380568a021cf86abef62092c76f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/templates/README.md",
+      "sha256": "37b04103b0adeab9c25b38d0b2dc2bfb860bc8d1abe62610678b229717e1f5ef"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/fonts/noto-sans-sc/NotoSansSC-Regular.otf",
+      "sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/fonts/noto-sans-sc/NotoSansSC-Bold.otf",
+      "sha256": "c6cb5a93abaa9edc8ee7463b7ebb7f42d618d40e6ed2f7a5371c97b0b64767c0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/fonts/noto-sans-sc/LICENSE-OFL.txt",
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/fonts/noto-sans-sc/NOTICE.md",
+      "sha256": "20d78106f51da2d469cae763fc135da40d5439d0c9753e2c8f11e150a665ad6e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/canonical/components/chart-palettes/pool.json",
+      "sha256": "1987882592d166e3140861f775f3d858c5849e389483dcc1bcbc648f86973d89"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/slide-chart.json",
+      "sha256": "491d5944578865fe25f122a844f8a04aca8bce9d88614bdae302d5877afb9094"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/slide-content.json",
+      "sha256": "4254581aa5032edf6a8b883d7543158c62610643fb7a921471c2a1b2ef43e776"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/slide-cover.json",
+      "sha256": "7e5b2f7f5a906a0057bd75ebc435c971950da84688276b1a243ff8f05b1cf026"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/theme.json",
+      "sha256": "7ed83d604949bf405efd85fe95b585e330cd8532a6e0ac5c0328aa5f2aa71b12"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/thumb-chart.png",
+      "sha256": "13eaf09ce57e2950ca57be262f9a5a3b2142d7e79732afe52ad7521a9fe03fc4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/thumb-content.png",
+      "sha256": "2842b9e8ebe7330e9431656e4802f88fc3ce761287020b1f0f69e5d7024c4bfa"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/Dracula紫风/thumb-cover.png",
+      "sha256": "8236253795e964a6112fe8cabfb177dcc9fe07371e987378755b94392221d6f9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/slide-chart.json",
+      "sha256": "6b7e10ef32aced024dd8c3952b51b06b6a9aec9341bb642583839c9b8bf8f119"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/slide-content.json",
+      "sha256": "728b75a6333afc86f15e545238847776b620c8849e60b06c0e2b9a215d99d376"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/slide-cover.json",
+      "sha256": "f145604b39f65f727638d99dd9f3fcbbb20d6c559a855e28b797f4d3addff246"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/theme.json",
+      "sha256": "39145129860f1b39deba86568c27565f0ed6fe6f41db073af3e0b932afba6b45"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/thumb-chart.png",
+      "sha256": "bc339948486529efae25447c43e95ed721a76a0fbd8bdebe96a344c536f1a058"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/thumb-content.png",
+      "sha256": "cc3b11a3f8936d29dd344266ef73c4fc52f56acbb6a18b9834e7785192e8b212"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/中式书卷风/thumb-cover.png",
+      "sha256": "5a4bd03d261c9083f626c1037e33dd78dfd58e9ca5a0028da39dd747ddb2a756"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/slide-chart.json",
+      "sha256": "06380c0f3c81b0b53a4b235557f5698ae01b6bc3fd488592337e1f84141d76fc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/slide-content.json",
+      "sha256": "2e6d36698e9953a0c01d5958106bda1ee5911f3407a1d14a495601ab02c0e322"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/slide-cover.json",
+      "sha256": "118a7270f1f54d5fed401f6369fc6fec2bf2852d2cddbbb0c0bd5c0098f39394"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/theme.json",
+      "sha256": "b77b82f023e7b44cbcc2e211b43474790d901386e032c6c87c4bf254915c7913"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/thumb-chart.png",
+      "sha256": "68506066bd23a1acbf38fdc25268e05122cfdb5fccf52c6d851ee06dbc3eed42"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/thumb-content.png",
+      "sha256": "46ac618efbf2cc37bcadc5af9150da96f8fd66f7f7da36d6b93ab0938710c226"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/党政红风格/thumb-cover.png",
+      "sha256": "7aa4e1d99b06801d764028299ae5d82da68f24b65f82b9be0f1cfa060ceae6c2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/slide-chart.json",
+      "sha256": "54f2a126c07c5e415d68e86a5829d9d6f31d61c059f58fb34ee6dc4e2e922b21"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/slide-content.json",
+      "sha256": "1ecea0bf48827386a87e45bd7c088f15971b6c403368ebccc399b0025603b4ec"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/slide-cover.json",
+      "sha256": "9303aeb4a2bb5019d33da8afa6987fd103d47d49bbb2a556db32600f9301d7d6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/theme.json",
+      "sha256": "b4c660329b008511586520f12c23db71ca85544d6ffa792eebdddb5e16a223ea"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/thumb-chart.png",
+      "sha256": "0ef8994429bd9edd59f3514bf0f2d5d4b88671babc03a0a2995a976435da090d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/thumb-content.png",
+      "sha256": "eca2e68d550af756b23c1a51402a2b7be6a47ad4a4293eb93d027a3383e83d4a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/创意杂志风/thumb-cover.png",
+      "sha256": "cbb1593f772ffda5fd4f0a0ab3764f6a9c500950274b7eb0c48dfc8875025abc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/slide-chart.json",
+      "sha256": "712ca74ae4729cf27cefbce876a016895480d74fe11d10dfed43f6da73912639"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/slide-content.json",
+      "sha256": "efc4bac493b076ef3b92f16b3ba7bbd4ccc530e15f230ab9a222bdabf59259e4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/slide-cover.json",
+      "sha256": "b8150869b10c3e0c8b57a74f4417110d04191deb199262f7149177780c4bfec7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/theme.json",
+      "sha256": "9e087db51752886a450af8a09dbf4d65d4bfa0bb77a69dceb5a8e2102abc46a0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/thumb-chart.png",
+      "sha256": "ed66b2666c0d7b1e4700670a79e072438ed4c4f1d52936f717acbc78430b6f33"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/thumb-content.png",
+      "sha256": "19a0e8c1cc38d734a521ab6d75d3de99175204e069e49b548b9ae6f656738f92"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/地图战略风/thumb-cover.png",
+      "sha256": "b7cd6d1babde4e9488638433f2bc55ef6a6b2d0a68b8083eca5d4b7eb2f6f5bb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/slide-chart.json",
+      "sha256": "9313387f7ccb2d32cbb4d53f29159a1c3e3c498dd62904c3a31d2e84c66f161b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/slide-content.json",
+      "sha256": "b5ac5fc903453a90268525711cbc7bd1dd12254cf3c5e783cc28f72e721c7521"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/slide-cover.json",
+      "sha256": "e5e5075623e7027bad9deb0f9231f35915584a3abcd7f24dc3b8c4d2aeec6951"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/theme.json",
+      "sha256": "1f8b680071c28a2df664b9c220c66e72fba74888766670cb6d35d6728a195479"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/thumb-chart.png",
+      "sha256": "147256792ce9d4f750cc689ee11183536e000507cf000a33fab2fa9939d3e889"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/thumb-content.png",
+      "sha256": "f22a64e51dc32d12558e2bb3cde195934eab3b7d8142dff922a7a4b0674dc4d7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/复古扁平插画风/thumb-cover.png",
+      "sha256": "7ffe6f7afee0d29432d25f86fd1b003c7544e41bf4d1c492d0512a5526d5f6dd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/slide-chart.json",
+      "sha256": "7f89ef5f165cc4f3f064957514292464c53d384a0ec99c753e328afc2530dcd0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/slide-content.json",
+      "sha256": "e5755438c1bf3023ba19595ea2ae34e1e84eb93265bc785ae6cb5dc05c0a80b8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/slide-cover.json",
+      "sha256": "1edb7d74018d56fc20a9543249dc11971dbecace5ad287eb320898820b8f0ed9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/theme.json",
+      "sha256": "05de189864c74bad69e5cd51f2dce7488ee0eb64f7181d58b2281bd8169ba1f5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/thumb-chart.png",
+      "sha256": "5198bcaaad08f5c5053f59ff72998ee46f166b98db94a139cd999debec5906a7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/thumb-content.png",
+      "sha256": "41acdabac869da335f14df2a7f04d68c252d8986b8cdd53b45d4cbefb00d626d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/奶油温柔风/thumb-cover.png",
+      "sha256": "16043291b4166f18ef2800b372dc1b795d740c730a00dacbff25e282b8b497e5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/slide-chart.json",
+      "sha256": "97d3f4836a5ce6695d4c2ecbc2e5959bccc0b45783c67a308b858b5b53c29df1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/slide-content.json",
+      "sha256": "4382946e7c67b6d61743e679bfc727ebe48964eecaef9447e53a3e65958eba79"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/slide-cover.json",
+      "sha256": "1e0390e101318702aa3b6bdecaf31b70f88c0fba7f18a230eb661cc171c75c71"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/theme.json",
+      "sha256": "9bc5a74934d86013dbfce5f1ded4119ce698cd52ffe21c044cd0129880472299"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/thumb-chart.png",
+      "sha256": "19a8d46f862844bf467de4c4f6126bc54008c4205ab5b7fa0ff1eac4a9498d90"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/thumb-content.png",
+      "sha256": "3af0acaf869e208105247eb3ecbb6d3c75580d1b5a1435e466bd7ea1d38f0e80"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘技术解释风/thumb-cover.png",
+      "sha256": "724bb0af96f5f292dd477dbde2a14442980a1018601e2d98025b93dd26ed2ac2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/slide-chart.json",
+      "sha256": "1d704aee620bfb34be9b8b6a58978c8c4a13e6b077a4f2f7f4c896700c9dddb9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/slide-content.json",
+      "sha256": "3fa212878627b96e0c69fe35990fbca0d025fb1a305d15b3e6b03866f76705d2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/slide-cover.json",
+      "sha256": "880aca8e3902d3a37ee1cb7425e0fa350bf34b70804b257d7b9613ebdfdd0273"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/theme.json",
+      "sha256": "700bbeb4455de0979b9290d0a8f4697a2a0154e5522b515affe75900f6da0161"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/thumb-chart.png",
+      "sha256": "c4dda656335067db5558648f3604501be44c1c113dd4c05d204205e1733e6e70"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/thumb-content.png",
+      "sha256": "602d4e1fd1c4aafef42a35d606bc268109774429716a48ad17af51d0500d9db1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/手绘白板风/thumb-cover.png",
+      "sha256": "e5703e30500fb8393cf653e6f73a2734c9843f934f6cd3e858f75d9c6d2403c0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/slide-chart.json",
+      "sha256": "b2d17ee75c4e887517e5aac7356eb186886af8e552d678df7df97439fa51f2ad"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/slide-content.json",
+      "sha256": "ef425e4d5a5af86fbd5ba116d73de00227f65ad511c6a9843eef9155439924cc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/slide-cover.json",
+      "sha256": "fd5b551bef81127a4c0e79fb6a055f1777d2bfed589950ea27f4cc8af7e7f0dc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/theme.json",
+      "sha256": "650063fc2732545a2bebbc329032f6ed94acb39b6e439f56bc58c2ece064c2c2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/thumb-chart.png",
+      "sha256": "b2e93445058aea4c3bbd770a07df863cd18cc952ce202fa3a23c169d8a4ff908"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/thumb-content.png",
+      "sha256": "e0ef852be218160364f4950c8d7b4a012cabb5a64b09b070b5507653fe6cd1f3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/故宫墨红风/thumb-cover.png",
+      "sha256": "f06f3f3224f9678d2020a3fc06e70ae5e963ed79f6d7ca80db3ba883b90dd19d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/slide-chart.json",
+      "sha256": "478f66407ce83fe6755c56a05987c28722bd1700fff8b521e3ecdd05bcb97c32"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/slide-content.json",
+      "sha256": "f63543be9d52c7d95f2948e1b242d8c7d4f5df8d0b9adea0da1a9a70160d529e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/slide-cover.json",
+      "sha256": "0f2899e1617baf3982034362cae2f991fca6ebf15f498b0b9609e0d17a411f0e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/theme.json",
+      "sha256": "d23cf3350484aa43c80c6ada1168ca46bb6c1548cad8bfc8c463ac072955f1f6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/thumb-chart.png",
+      "sha256": "bb040564aaff931a5533748eca372d4c072add99a8be71249072f56793389508"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/thumb-content.png",
+      "sha256": "4f8ed8994eeb103d49a87171c9b5f6e4a7b5e9a78862aaa2ae3c3bc8b2956d7b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/教学课件风/thumb-cover.png",
+      "sha256": "fc489554c9e098865ba88366ecae231f06305456746b7e22af9b2126df20bf67"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/slide-chart.json",
+      "sha256": "854063ae0389a37b2a92990425ad905a58ea41481b16824505c7883e8d062412"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/slide-content.json",
+      "sha256": "b621a03830596c54a61d3c9838ff547d4868ccb6ecf2dd7248e2c5ab847be811"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/slide-cover.json",
+      "sha256": "1c4f4fb6f4831cfae49bb74e0bbe439d5ed870fc489734e97eda3d9e6c07f061"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/theme.json",
+      "sha256": "acc8d396de4b7be1ba1d55340bde0bd57b11b84d193eee560880e250936b7631"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/thumb-chart.png",
+      "sha256": "1cb14e5464fd4f807a86835dc509aee6814b13188b2e1119996be93d1df95ea4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/thumb-content.png",
+      "sha256": "a624dcb1be5f968075446866749cf187fc728f09d4ea95e2a9f46dc31c2f15f0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/数据仪表盘风/thumb-cover.png",
+      "sha256": "5bb77f837c6440fc2c351398628af97a4e43d65672f5ed8a5819511129ba59a1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/slide-chart.json",
+      "sha256": "c865d320561af21474de204b053a0beb29ceec939f9aa61d535d53efec1d821b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/slide-content.json",
+      "sha256": "b3ba02ae17325c07955f7d08fb7224615fbae5efea794ea3196fb29df4b58394"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/slide-cover.json",
+      "sha256": "262cef1e657a227d0af0221101fedcf3a0061c4890757b03b17d1f918493f8e6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/theme.json",
+      "sha256": "398a0a92e31dd4f284fa42af3427de50ddae3c6508c1246efdf013e92879fafe"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/thumb-chart.png",
+      "sha256": "568c7940d39ee2c371aad392925b5176385a03f46d4c3dbfe11909db6e7ba4cb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/thumb-content.png",
+      "sha256": "e8e6afa9e32f3a8c5ac45cce5e650902546c8fea34825bc155b56a4526148e49"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星月夜风/thumb-cover.png",
+      "sha256": "b23c7ff161bf63529320e319c4ba7c394958cb9398abc4152b40fd523362ef1d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/slide-chart.json",
+      "sha256": "f2c474f00c4a69150e756ebe1636f582733fde3f1bed1676a6ed7e43228954f0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/slide-content.json",
+      "sha256": "b85ce7373d9f58d89d23590a94a76be4347a1b9c0e257f4ac7cd5b7c1672508a"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/slide-cover.json",
+      "sha256": "fdcb94dc8c010bcda3f342da0e733a46f7186d240beb8e2989233bcf736acf82"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/theme.json",
+      "sha256": "461db5728e192feefcb1605875129ac110df4f52d6bb1e4a45d3af1f8348a6d9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/thumb-chart.png",
+      "sha256": "4978c89ac05b109b08df24a4fb83a7c5a2b448b82518bbffdcb07da0524ebebc"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/thumb-content.png",
+      "sha256": "d4cf5b0e632c6d7acfe94334db79545cbe06d5f8ffe0074bf3b63a24033c42d9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/星火夜空风/thumb-cover.png",
+      "sha256": "12f556e2703761c43faa48cfdbba40010183f864334684666bad3c587aede134"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/slide-chart.json",
+      "sha256": "30b4ebd9cfa63abd7d257571ce3487b8c8817271cda4e6476fba7f9f0eaf8162"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/slide-content.json",
+      "sha256": "a6291671118addd143fc8c30a1c54bd28cfa0c73a42a8cd68786538c3533ffc2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/slide-cover.json",
+      "sha256": "99ee570ee476b6dcb8397dec10d80796082f1420530e1e873416128c441e1d10"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/theme.json",
+      "sha256": "7333543c9e304a31accba17b5e866356cfbfff65a461e14a468424c7ee368919"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/thumb-chart.png",
+      "sha256": "fbcd3f5bb2769e4005006f0132bf4fc93760bae9533a122d59e84b70ac6ae5e6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/thumb-content.png",
+      "sha256": "80a5d82d2162bce48c2faa93237fa65bd48e2683850e556ac5828018302e779e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/杂志衬线风/thumb-cover.png",
+      "sha256": "db0c08980c1e9ed302bb201a0720062f164aa291f9eb1fa140d0e28879fd0962"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/slide-chart.json",
+      "sha256": "24673d36393d551f1dddbc92d9562fa838876a0474afc4cecaa2695a44359b75"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/slide-content.json",
+      "sha256": "3bad3adf33aea3a0358f8d99e7a42e02d948bfbb1e7bdf07c6efc230943f328e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/slide-cover.json",
+      "sha256": "8253d83780b03ee18bba73ff1b6aa6072c28f8c7ca26caab0a2d833c6afff4d5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/theme.json",
+      "sha256": "7499ee926a8c45e214e9a38c5c48af48f0dac0a08dd91c0a3a8da644c73d8f96"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/thumb-chart.png",
+      "sha256": "a88edb3d6625bfdb45501d64146960ba1a2681a5228bdaaa7b477daddfc7f7d4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/thumb-content.png",
+      "sha256": "e9900df68eec6f7f430bac0949dcdb1acc8ef9e70ce2c3d5a8078398d67bafb1"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/浅粉棕医院运营风/thumb-cover.png",
+      "sha256": "07d890cc49239b8cbcce5cb11e43f9122ed37dddd88ee22aa79300f5b611fb2b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/slide-chart.json",
+      "sha256": "101debe36166531f69829d4e011380545349f229069277a221e8b78f71bbc58b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/slide-content.json",
+      "sha256": "329fe4df876a40f45ab09e75e0daf4d869f5fa8e6a4dad186a2d3718a5aeb4c8"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/slide-cover.json",
+      "sha256": "a005c2e9f4eee913ed5bacf2a6f5d7c3dcb8958e9f511c5bf87a7d6be281e7be"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/theme.json",
+      "sha256": "a9f88fdf7a174288810f5ffef9be1df0c8c5bdf6d6cdb85c43fd9568afb8709d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/thumb-chart.png",
+      "sha256": "1eda1f31a35f1647a4b3c355e1bf596522fc746da2f6d45fcc76c15d60096c53"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/thumb-content.png",
+      "sha256": "7fde027419370d70bbc9e10cb55dd0de2f48533746bbe5a25596917d67332c2f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/清爽专业风/thumb-cover.png",
+      "sha256": "4aa7a0c4990af20327f422fa99c0c2a6ddfbdae781b64e2f47a2db07fde0c7d7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/slide-chart.json",
+      "sha256": "2179b4a1ecb166e6a3f8f77de7a2723b1a08d304da82328a997d2dcadbd7b4ae"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/slide-content.json",
+      "sha256": "9fd3d0920c8ad10e4f9d56baa597dc4735460bb484b173049b1038446b41d163"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/slide-cover.json",
+      "sha256": "eb8ed0dad0e39916e6e19c1273c4caa5925c400e8aab968dff43c825c2ddcc3e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/theme.json",
+      "sha256": "946e7753bdab4e164f942422db9faede934ad791843718780c9d43fde487dc21"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/thumb-chart.png",
+      "sha256": "5567ca414d224514292f36da0dd4ba62f6942e9563c533fb8e5b76f2971055a9"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/thumb-content.png",
+      "sha256": "77ee3a147c0457939975140e60fea93d7ce04f64e7c4326b1b2ef969c3cdae75"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/温暖手工风/thumb-cover.png",
+      "sha256": "d2a8b584ca716004b2b4382f6a2f3d2cdf90773d1a537ea042adf09604c147c0"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/slide-chart.json",
+      "sha256": "1e2222d52faa699a0eb64e264a2bdfae5312342333a3144e987de74cb0c4b0e3"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/slide-content.json",
+      "sha256": "43421aa62465b28a1eec5c5354e76132aa12f6fbdc407583db4b21e87c621e60"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/slide-cover.json",
+      "sha256": "aec32656e9906e727d76976be18b9a659ec108334683b91eb6762d2cb75d8646"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/theme.json",
+      "sha256": "eb704b5d3ca6ee2e4c555490a1ff9acd668f98136872ff05f16b0797943d4d2d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/thumb-chart.png",
+      "sha256": "e9ee6891f84fdd514fbb43419234a2bc82881bb704a7e9bfcbeb2ed2814bed6c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/thumb-content.png",
+      "sha256": "b33d1b408af3da8247213f5e2cd03e4112633d03031e895141786cf41dba9359"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/玩味手绘极简风/thumb-cover.png",
+      "sha256": "7f222f0541291ed99156e8846e7f061e9edb2c34bfef039c447ad3e76cd7bf85"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/slide-chart.json",
+      "sha256": "95e085483ee92316b1722d04c7f5414b6d1306c10ba48049555b32fc8f17f188"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/slide-content.json",
+      "sha256": "6a6ba448f1f726f28e60656bc8c5d25cda76b3f98df3bbb8197527c27c391ae4"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/slide-cover.json",
+      "sha256": "4eb71a223dc613a58bf8721e4aa99895336a95a17803e0887df50c4a1f0e7eec"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/theme.json",
+      "sha256": "04b10ab3d4467af1edacd0dd47e900395c0d6680c797eb8ff7edc8cea8ad3c21"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/thumb-chart.png",
+      "sha256": "0e89f00610fb1995eb3218690d7d14b88bec631ec19be2941b930899a576fdbb"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/thumb-content.png",
+      "sha256": "8e40732c17db21d4b22371fd13b7db622b0ebf88cda29097539d46cc15b46945"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/电子墨水杂志风/thumb-cover.png",
+      "sha256": "2b44cbd95fb3fd5705617e5002dfb790e6dd5e66df96e53e284a60ffedcbc5d6"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/slide-chart.json",
+      "sha256": "be56eb6e78d5d84710cc473f8f1a77181e52300a3c79172860f19a25d458e219"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/slide-content.json",
+      "sha256": "137ca7c240d97e0982a61d9b0a7f2e58739f73829ae8bdf111351f71a3d21777"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/slide-cover.json",
+      "sha256": "6004718b4aa8288d8a5f14324e4dc8c1c067fb7db16a8cc4e0a4efc69aea539f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/theme.json",
+      "sha256": "bf66b75d9a38b26f7ce8b04d40a535ba31af0202d1aa33ff3660d63ad000431d"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/thumb-chart.png",
+      "sha256": "8cb9cba1a35f3b7ce37e48b6f6de5fce6a2221d3bb4f48ea58e52fa4dd1e10fe"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/thumb-content.png",
+      "sha256": "0e4d70e9f780fdbb1b8cddf0a71d80ac8c8faa959c49594a1d46b8663a987261"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/科研答辩风/thumb-cover.png",
+      "sha256": "1d9ccd07b3912779e5d0cc6576596eac03d229cd132ca9fc486db280fac89099"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/chart.mmd",
+      "sha256": "455e240c34bf96417332249f46f6db259c30fa169985f6c44bff4ddddc9ebd4f"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/slide-chart.json",
+      "sha256": "0c3e2c7e99327437af27ae5e24a096fffbf9483c9ef3dfcbf4700b1be7d19bee"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/slide-content.json",
+      "sha256": "ce5893911fb80e38bb67fd6457a7040550eb46d7aed06015e8a6ddad0b804621"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/slide-cover.json",
+      "sha256": "482640088e945333dadd87f0e6c27cf600ae1c889179391e4ea058924bb96a79"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/theme.json",
+      "sha256": "f091d9b1b7731bfcaecfb437b5a14bb7a7f36caf320b1a5458627734df0385e7"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/thumb-chart.png",
+      "sha256": "b3fc3a301caed3aea898057681e1797234185f82bfc64a441e88017b159bbfbd"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/thumb-content.png",
+      "sha256": "7a6a9ad361acc1cbe6e3f8da0d0eea9c982ce2e393d3bac32449277a40679a9e"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/黑金期刊风/thumb-cover.png",
+      "sha256": "2a4f1b3948af491f19fd1fc4a2706ce23f3adb9a363664d0cb6a4a7635bd12ab"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/gorden/README.md",
+      "sha256": "f1f4ce90dcbe79a6af10494c120c1db42b49c9f996f8757b3d1e79828c00be30"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/gorden/mckinsey-style.pptx",
+      "sha256": "4318e0275748feb5bdea2bf81819312f99f97474fc37a88b25f62ca01b143b8c"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/gorden/red-patriot-general.pptx",
+      "sha256": "bab045bca75ab5bd99db2aaafa9641cb9a45c2baa9c1644b79ae5925c7a95295"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/gorden/report-massive-charts.pptx",
+      "sha256": "09be8eaf86127e3619089b4465a8f235159efdb91b4bcc99b7ed0bead65feea2"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/gorden/thesis-formula.pptx",
+      "sha256": "ac149b78583ce751648f096cc07fe358d663d1f94efb365b45957dcfffc02d04"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/officecli/dark__diagonal_cut.pptx",
+      "sha256": "4dd827c78082f20b413a3cad46ae2390425f851582c9d60ee7a3811001592a21"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/officecli/dark__liquid_flow.pptx",
+      "sha256": "22d4c69f1ab02c9232eb3fec1d495ca622db96782ca49043c51662939a466de5"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/officecli/dark__spotlight_stage.pptx",
+      "sha256": "e984d29369b0e995bf5766961a2ea66344ecc830d5b32e7fc35bc98933b0b8ef"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/sources/reference-golden/officecli/warm__earth_organic.pptx",
+      "sha256": "046575db5e3d4ac4029da595dcc0bdb631082174dcb06b3d0387aeae34e51c64"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/style-gallery/index.md",
+      "sha256": "2200a3ab35b550305daf1c8cd42684b342d2989d1ae24e303fbde39948305c49"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/education-content-page.png",
+      "sha256": "99aa2998d50c63849e14834fe9ba3414dd53568bba90445448419822afb849ed"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/finance-data-page.png",
+      "sha256": "f021018efcea7f0755001154eeebc53b07db927324a6c6a4a0ad4b63e2e4ff48"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/reference/historical-gallery/government-cover.png",
+      "sha256": "5d18a4c8adecc94e937b4fc64a8230d247a8e4f0d9923517de5c5c78fff0f103"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/schemas/style-brief-v1.schema.json",
+      "sha256": "2f7cb495bf1746516e89016eba267e5f1c3ec16ca838f3c852257c6558904d51"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/schemas/style-index-v1.schema.json",
+      "sha256": "9060cc3da594a2ad17d2cd1ffceb32daac090bb45321f46f4c3dc521aed1ff7b"
+    },
+    {
+      "path": "/var/folders/0v/f_smd31500113ppkqs66c9yr0000gn/T/leo-template-stage-b_sajtr6/template-library/governance/schemas/layout-bank-v1.schema.json",
+      "sha256": "7e86dd5351d910c35ad411def3c944642f6a7207aad042806ca6fa28c2cce97a"
+    }
+  ]
+}

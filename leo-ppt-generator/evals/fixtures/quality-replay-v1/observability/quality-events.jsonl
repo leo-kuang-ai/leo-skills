@@ -1,0 +1,2 @@
+{"event_id":"tf:local-render-2","kind":"tf","payload":{"complete":true,"generation_method":"render","page":"2","triggers":[]},"phase":"after-authorization","run_id":"4c5cfb7788ae492185b2c9c48248f9e1","schema_version":1,"source":"runtime","window":"local-render"}
+{"event_id":"tf:local-render-1","kind":"tf","payload":{"complete":true,"generation_method":"render","page":"1","triggers":[]},"phase":"after-authorization","run_id":"4c5cfb7788ae492185b2c9c48248f9e1","schema_version":1,"source":"runtime","window":"local-render"}

@@ -53,16 +53,45 @@ function isObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
-function isExplicitAuthority(authority) {
+function hasConfirmedLoadedRootReceipt(authority, targetIdentity) {
+  const receipt = authority.invocation_receipt;
+  if (!isObject(receipt)
+    || typeof receipt.receipt_sha256 !== 'string'
+    || typeof targetIdentity !== 'string'
+    || typeof receipt.target_identity !== 'string') return false;
+  if (receipt.schema_version !== 'host-invocation-receipt/v1'
+    || receipt.producer !== 'skills/spec-runtime-setup/scripts/setup.cjs'
+    || receipt.verification_status !== 'confirmed'
+    || receipt.reason_code !== 'host-authority-loaded-root-bound'
+    || receipt.host !== authority.host
+    || !(receipt.loaded_host === authority.host
+      || (Array.isArray(receipt.surface_hosts) && receipt.surface_hosts.includes(authority.host)))
+    || receipt.canonical_entry_name !== 'spec-runtime-setup'
+    || path.resolve(receipt.target_identity) !== path.resolve(targetIdentity)
+    || receipt.enforcement_status !== 'loaded-root-checked') {
+    return false;
+  }
+  const { receipt_sha256: observedHash, ...unsignedReceipt } = receipt;
+  const expectedHash = crypto.createHash('sha256')
+    .update(JSON.stringify(unsignedReceipt))
+    .digest('hex');
+  return observedHash === expectedHash;
+}
+
+function isExplicitAuthority(authority, targetIdentity) {
   if (!isObject(authority)) return false;
   if (authority.explicit === true) return true;
   if (authority.status === 'ready' && authority.authority_source === 'MCP_SETUP_HOST') return true;
+  if (authority.status === 'ready'
+    && authority.authority_source === 'MCP_SETUP_HOST+loaded-skill-root') {
+    return hasConfirmedLoadedRootReceipt(authority, targetIdentity);
+  }
   return authority.authority_level === 'confirmed'
     && /^(?:runtime-pin|explicit-runtime|host-runtime-pin)$/.test(String(authority.source || ''));
 }
 
-function validateAuthority(authority, host) {
-  if (!isExplicitAuthority(authority)) {
+function validateAuthority(authority, host, targetIdentity) {
+  if (!isExplicitAuthority(authority, targetIdentity)) {
     return { ok: false, reason_code: 'host-authority-not-explicit' };
   }
   if (authority.host !== host) {
@@ -198,7 +227,10 @@ function containmentRootForTarget(rawPath, scope, target, { repoRoot, homeDir, e
   if (/^(?:~|\$HOME|\$\{HOME\})/.test(rawPath) || scope === 'user') {
     return path.resolve(homeDir);
   }
-  if (path.isAbsolute(rawPath)) return path.parse(path.resolve(rawPath)).root;
+  // 绝对路径不再退化为文件系统根(lane finding DR-014:那会使 isPathWithin 恒真,
+  // containment 防线静默失效)。未显式声明 containment_root 的绝对 config_path 一律
+  // 拒绝;确需绝对路径的 target 必须显式申报 containment_root(见函数首分支)。
+  if (path.isAbsolute(rawPath)) return null;
   return path.resolve(repoRoot);
 }
 
@@ -277,10 +309,21 @@ function resolveTargetRecord(scope, target, context) {
   return resolved;
 }
 
+function resolveReadOnlyHostConfigTargets({ entry, repoRoot, homeDir = os.homedir(), env = process.env } = {}) {
+  const hostConfig = hostConfigForEntry(entry);
+  if (!hostConfig || !isObject(hostConfig.targets)) return [];
+  const context = {
+    repoRoot: path.resolve(repoRoot), homeDir: path.resolve(homeDir),
+    env: configPathEnvironment(homeDir, env), defaultFormat: hostConfig.config_format || '', requireWritable: false,
+  };
+  return Object.entries(hostConfig.targets).map(([scope, target]) => resolveTargetRecord(scope, target, context));
+}
+
 function resolveHostConfigTarget(options = {}) {
   const entry = options.entry;
   const host = options.host;
-  const authorityResult = validateAuthority(options.authority, host);
+  const repoRoot = path.resolve(options.repoRoot || process.cwd());
+  const authorityResult = validateAuthority(options.authority, host, repoRoot);
   if (!authorityResult.ok) return authorityResult;
   const hostConfig = hostConfigForEntry(entry);
   const server = buildServerConfig(entry);
@@ -288,7 +331,6 @@ function resolveHostConfigTarget(options = {}) {
   if (!hostConfig || !server || !key || !isObject(hostConfig.targets)) {
     return { ok: false, reason_code: 'host-config-entry-invalid' };
   }
-  const repoRoot = path.resolve(options.repoRoot || process.cwd());
   const homeDir = path.resolve(options.homeDir || os.homedir());
   const context = {
     repoRoot,
@@ -1440,4 +1482,5 @@ module.exports = {
   applyHostConfig,
   inspectHostConfig,
   resolveHostConfigTarget,
+  resolveReadOnlyHostConfigTargets,
 };

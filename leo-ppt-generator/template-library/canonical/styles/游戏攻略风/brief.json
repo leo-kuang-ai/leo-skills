@@ -1,0 +1,164 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:游戏攻略风",
+  "name": "游戏攻略风",
+  "aliases": [
+    "攻略风",
+    "游戏风",
+    "game guide"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/游戏娱乐/游戏攻略风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "game guide aesthetic, key-art atmosphere, tier/equipment ledger, gameplay clarity, immersive mood, community-friendly precision"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "攻略风",
+      "游戏风",
+      "game guide"
+    ],
+    "best_for": "游戏攻略与内容,需要攻略清晰、装备关卡数值与沉浸感",
+    "visual_direction": "game guide aesthetic, key-art atmosphere, tier/equipment ledger, gameplay clarity, immersive mood, community-friendly precision",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark atmospheric ground, immersive",
+      "composition": "key-art hero + tier/equipment ledger",
+      "density": "medium, immersive"
+    },
+    "color_palette": {
+      "primary": "deep navy #0B1220 / charcoal, dark",
+      "secondary": "muted steel #1E293B, glow cyan #22D3EE",
+      "accent": "one game accent (gold #F59E0B or magenta #DB2777)",
+      "neutral": "near-black #0B1220, glow #22D3EE, gray #64748B",
+      "rule": "immersive, dark, precise; avoid flat pastel and clutter"
+    },
+    "typography": {
+      "title": "bold game-title sans (Arial Black / 思源黑体 Heavy), immersive",
+      "body": "clean readable",
+      "labels": "tier/stat tags",
+      "text_quality": "accurate game terms, no fabricated stats"
+    },
+    "layout_patterns": [
+      "key-art cover",
+      "tier list / equipment ledger",
+      "boss / level breakdown",
+      "build / strategy rows"
+    ],
+    "layout_usage_rule": "Immersive game atmosphere with clear tier/equipment/level structure.",
+    "layout_blueprints": [
+      {
+        "name": "攻略页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "游戏名 / 攻略主题"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "tier/装备表"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "提示"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "关卡页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "boss/关卡"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "机制",
+              "装备",
+              "打法"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "key-art, tier tables, equipment rows, stat labels, immersive dark",
+      "avoid": "cartoon casual, flat pastel, clutter, misinfo"
+    },
+    "rendering_constraints": [
+      "Immersive game mood with clear guide structure.",
+      "Tier/equipment/level clarity; precise stats.",
+      "Accurate game terms; disclose copyright risk of key-art.",
+      "For character sheets, keep identity anchors (face/hair/clothing) consistent across poses in an action grid; reduce pose count when crowded. (awesome-gpt-image-2 · character-design-sheet)"
+    ],
+    "reference": "GitHub: guizang category-cookbook (游戏) · 游戏攻略风"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Immersive game mood with clear guide structure.",
+      "Tier/equipment/level clarity; precise stats.",
+      "Accurate game terms; disclose copyright risk of key-art.",
+      "For character sheets, keep identity anchors (face/hair/clothing) consistent across poses in an action grid; reduce pose count when crowded. (awesome-gpt-image-2 · character-design-sheet)"
+    ]
+  }
+}

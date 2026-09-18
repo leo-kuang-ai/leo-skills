@@ -1,0 +1,162 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:极简风",
+  "name": "极简风",
+  "aliases": [
+    "minimalism",
+    "极简主义",
+    "性冷淡风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/极简风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "radical minimalist, extreme whitespace, very few elements, single or monochrome color, huge type scale contrast, content reduced to the purest core concept, editorial restraint"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "minimalism",
+      "极简主义",
+      "性冷淡风"
+    ],
+    "best_for": "以极少元素、极大留白与强烈字号对比把信息压缩到极致",
+    "visual_direction": "radical minimalist, extreme whitespace, very few elements, single or monochrome color, huge type scale contrast, content reduced to the purest core concept, editorial restraint",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white or off-white #FFFFFF, huge margins",
+      "composition": "one dominant statement, tiny supporting elements, radical whitespace",
+      "density": "very low, whitespace-first, minimal chrome"
+    },
+    "color_palette": {
+      "primary": "white / near-white, near-black #111111 type",
+      "secondary": "very light gray #E5E7EB, light hairline #E5E7EB",
+      "accent": "a single restrained accent #6B7280 OR fully monochrome",
+      "neutral": "#111111, #4B5563, #E5E7EB, white",
+      "rule": "extreme restraint, 1-2 colors, avoid saturation"
+    },
+    "typography": {
+      "title": "large clean sans-serif (Helvetica / 思源黑体, or refined serif), huge scale contrast",
+      "body": "small, airy, minimal, high line-height",
+      "labels": "tiny, barely present, uppercase tracking",
+      "text_quality": "exact and sparse; say only what matters"
+    },
+    "layout_patterns": [
+      "monochrome huge-type statement",
+      "one-object composition",
+      "blank with a single spine of text",
+      "asterisk-scale title + fine caption"
+    ],
+    "layout_usage_rule": "Reduce each slide to its single pure core; let scale and whitespace carry everything.",
+    "layout_blueprints": [
+      {
+        "name": "观点首页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "超大核心观点"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "极小辅助说明"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "极简说明页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "小标题"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "单一大字或单一对象"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "小字脚注"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "enormous whitespace, thin rules, scale contrast, one accent, small labels, precise alignment",
+      "avoid": "decoration, gradients, many colors, busy infographic, stock photography, clutter"
+    },
+    "rendering_constraints": [
+      "Radical restraint; whitespace is the design, not emptiness.",
+      "One idea, one accent at most; strong scale hierarchy.",
+      "Statement pages carry at most ~10 words; margins hold >=15% on all four sides; data visuals stay monochrome or grayscale.",
+      "No watermark or invented logo; purely typographic calm."
+    ],
+    "reference": "GitHub: v0id-byte/peg-design-system · 极简风; GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/minimal.md（量化约束词表）"
+  },
+  "recommendation_features": {
+    "density": "very-low",
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Radical restraint; whitespace is the design, not emptiness.",
+      "One idea, one accent at most; strong scale hierarchy.",
+      "Statement pages carry at most ~10 words; margins hold >=15% on all four sides; data visuals stay monochrome or grayscale.",
+      "No watermark or invented logo; purely typographic calm."
+    ]
+  }
+}

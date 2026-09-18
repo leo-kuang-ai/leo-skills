@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:植物有机编辑风",
+  "name": "植物有机编辑风",
+  "aliases": [
+    "보태니컬 오가닉",
+    "botanical organic",
+    "植物手绘"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/植物有机编辑风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "botanical organic editorial, beige terracotta and moss earth-tone canvas with hand-drawn plant illustrations, organic curved dividers and serif display, wellness warmth"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "보태니컬 오가닉",
+      "botanical organic",
+      "植物手绘"
+    ],
+    "best_for": "大地色手绘植物 wellness 编辑风;适合生活方式品牌/康养疗愈/可持续叙事",
+    "visual_direction": "botanical organic editorial, beige terracotta and moss earth-tone canvas with hand-drawn plant illustrations, organic curved dividers and serif display, wellness warmth",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F2EAD9、#E5D9C3(变体锚)",
+      "composition": "米杏底上苔绿/陶土/赭金三色有机曲线分区,手绘植物沿边缘生长",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#F2EAD9(米杏纸底)",
+      "secondary": "#E5D9C3(次级面/纸纹)",
+      "accent": "#B5654A(陶土主强调)",
+      "neutral": "#3A352C(暖墨字)"
+    },
+    "typography": {
+      "title": "Cormorant Garamond 500 48pt(Noto Serif KR 兜底)",
+      "body": "Noto Sans KR 400 24pt,leading 1.5",
+      "labels": "Cormorant Garamond 小标签,赭金点缀"
+    },
+    "layout_patterns": [
+      "米杏底 + 陶土/苔绿/赭金三色有机曲线分区",
+      "手绘植物插画(叶/茎/枝)沿边缘与分栏生长",
+      "衬线大标题 + 无衬线正文",
+      "无直角边框,分区以曲线与色带过渡"
+    ],
+    "layout_usage_rule": "米杏底 + 陶土/苔绿/赭金三色有机曲线分区",
+    "visual_elements": {
+      "allowed": "米杏底上苔绿/陶土/赭金三色有机曲线分区,手绘植物沿边缘生长",
+      "avoid": "不要原色/霓虹/网格渐变等高饱和; 不要纯黑 #000 文字——用暖墨 #3A352C"
+    },
+    "rendering_constraints": [
+      "不要原色/霓虹/网格渐变等高饱和",
+      "不要纯黑 #000 文字——用暖墨 #3A352C",
+      "不要直角边框盒/硬阴影/统一圆角卡",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要原色/霓虹/网格渐变等高饱和",
+      "不要纯黑 #000 文字——用暖墨 #3A352C",
+      "不要直角边框盒/硬阴影/统一圆角卡"
+    ],
+    "paired_illustration": {
+      "family": "hand-drawn",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD13 보태니컬 오가닉"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要原色/霓虹/网格渐变等高饱和",
+      "不要纯黑 #000 文字——用暖墨 #3A352C",
+      "不要直角边框盒/硬阴影/统一圆角卡",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

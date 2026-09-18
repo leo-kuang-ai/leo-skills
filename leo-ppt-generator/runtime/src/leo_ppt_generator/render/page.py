@@ -27,6 +27,7 @@ import json
 import os
 import re
 import time
+from contextlib import ExitStack, contextmanager, nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -34,8 +35,10 @@ from typing import Any
 from ..storage import sha256_file
 from .assets import template_path
 from .errors import RenderError
-from .fonts import RenderAssetServer
+from .fonts import RenderAssetServer, theme_font_assets
 from .readiness import _apply_browsers_path
+from .svg_policy import sanitize_svg
+from ..template_inputs import load_template_json, validate_template_data
 
 LOGICAL_WIDTH = 1280
 LOGICAL_HEIGHT = 720
@@ -54,17 +57,21 @@ _OVERFLOW_CHECK_JS = """
   const tol = 1.0;
   const vw = window.innerWidth, vh = window.innerHeight;
   const violations = [];
-  document.querySelectorAll('[data-leo-block]').forEach((el) => {
-    const v = { block: el.getAttribute('data-leo-block') || el.tagName.toLowerCase() };
+  document.querySelectorAll('[data-leo-block], [data-leo-block-item], [data-leo-region]').forEach((el) => {
+    if (!el.getClientRects().length) return;
+    const v = { block: el.getAttribute('data-leo-block') || el.getAttribute('data-leo-block-item') || el.getAttribute('data-leo-region') };
     const r = el.getBoundingClientRect();
+    const style = getComputedStyle(el);
+    // 自动行盒可露出字体上升部；固定区域与裁剪盒才有内部容量边界。
+    const constrained = el.hasAttribute('data-leo-region') || el.hasAttribute('data-leo-block-item');
     if (r.bottom > vh + tol) v.bottom_px = +(r.bottom - vh).toFixed(1);
     if (r.right > vw + tol) v.right_px = +(r.right - vw).toFixed(1);
     if (r.top < -tol) v.top_px = +(-r.top).toFixed(1);
     if (r.left < -tol) v.left_px = +(-r.left).toFixed(1);
-    if (el.clientWidth > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowX)
+    if (el.clientWidth > 0 && (constrained || ['hidden', 'clip'].includes(style.overflowX))
         && el.scrollWidth > el.clientWidth + tol)
       v.inner_width_px = +(el.scrollWidth - el.clientWidth).toFixed(1);
-    if (el.clientHeight > 0 && ['hidden', 'clip'].includes(getComputedStyle(el).overflowY)
+    if (el.clientHeight > 0 && ((constrained && (el.hasAttribute('data-leo-region') || el.childElementCount > 0)) || ['hidden', 'clip'].includes(style.overflowY))
         && el.scrollHeight > el.clientHeight + tol)
       v.inner_height_px = +(el.scrollHeight - el.clientHeight).toFixed(1);
     if (Object.keys(v).length > 1) violations.push(v);
@@ -124,12 +131,102 @@ def _playwright_version() -> str:
         return "unknown"
 
 
+def _prepare_slide_data(data_text: str) -> Any:
+    """Parse slide data and sanitize an optional chart SVG before browser injection."""
+
+    payload = load_template_json(data_text)
+    if isinstance(payload, dict):
+        chart_svg = payload.get("chart_svg")
+        if isinstance(chart_svg, str) and "<svg" in chart_svg:
+            try:
+                payload = dict(payload)
+                payload["chart_svg"] = sanitize_svg(chart_svg)
+            except Exception as exc:
+                raise RenderError(
+                    "render_data_invalid", f"chart SVG policy rejected output: {exc}"
+                ) from exc
+    return payload
+
+
 def _utc_now() -> str:
     return (
         datetime.now(timezone.utc)
         .isoformat(timespec="milliseconds")
         .replace("+00:00", "Z")
     )
+
+
+class RenderSession:
+    """共享 browser/资产服务，每页独立 context；异常路径统一释放资源。"""
+
+    def __init__(self, *, timeout_ms: int = DEFAULT_TIMEOUT_MS):
+        self.timeout_ms = timeout_ms
+        self._stack = ExitStack()
+        self.browser = None
+        self._servers = {}
+
+    def __enter__(self):
+        if self.browser is not None:
+            raise RenderError("render_session_already_open")
+        _apply_browsers_path()
+        try:
+            from playwright.sync_api import sync_playwright
+            playwright = self._stack.enter_context(sync_playwright())
+            kwargs = {"headless": True, "timeout": self.timeout_ms}
+            executable = os.environ.get("LEO_PPT_RENDER_CHROMIUM")
+            if executable:
+                kwargs["executable_path"] = executable
+            self.browser = playwright.chromium.launch(**kwargs)
+            self._stack.callback(self.browser.close)
+        except Exception as exc:
+            self._stack.close()
+            self.browser = None
+            raise RenderError("render_backend_missing", str(exc)) from exc
+        return self
+
+    def asset_server(self, font_dirs, resolver):
+        if self.browser is None:
+            raise RenderError("render_session_closed")
+        key = (str(getattr(resolver, "builtin_root", "default")),
+               str(getattr(resolver, "user_root", "default")),
+               tuple(str(p) for p in font_dirs))
+        if key not in self._servers:
+            self._servers[key] = self._stack.enter_context(
+                RenderAssetServer(extra_font_dirs=font_dirs, resolver=resolver))
+        return self._servers[key]
+
+    @contextmanager
+    def page_context(self, scale, origin):
+        from urllib.parse import urlsplit
+        if self.browser is None:
+            raise RenderError("render_session_closed")
+        context = self.browser.new_context(
+            viewport={"width": LOGICAL_WIDTH, "height": LOGICAL_HEIGHT},
+            device_scale_factor=scale, locale="zh-CN", timezone_id="Asia/Shanghai",
+            reduced_motion="reduce", service_workers="block", accept_downloads=False)
+        allowed = urlsplit(origin)
+        rejected = []
+
+        def route_request(route):
+            requested = urlsplit(route.request.url)
+            if (requested.scheme, requested.netloc) == (allowed.scheme, allowed.netloc):
+                route.continue_()
+            else:
+                rejected.append(requested.scheme + "://" + requested.netloc)
+                route.abort()
+
+        try:
+            context.route("**/*", route_request)
+            yield context, rejected
+        finally:
+            context.close()
+
+    def __exit__(self, *exc_info):
+        try:
+            self._stack.close()
+        finally:
+            self.browser = None
+            self._servers.clear()
 
 
 def render_page(
@@ -140,74 +237,110 @@ def render_page(
     size: tuple[int, int] = DEFAULT_SIZE,
     timeout_ms: int = DEFAULT_TIMEOUT_MS,
     theme_variables: dict[str, Any] | None = None,
+    resolver=None,
+    binding: dict | None = None,
+    pack_page: dict | None = None,
+    session: RenderSession | None = None,
+    observation_path: str | Path | None = None,
+    probe_proposal: dict | None = None,
 ) -> dict[str, Any]:
     """渲染单页并返回 provenance/度量字段；产物与 sidecar 落盘。"""
 
     scale = _device_scale_factor(size)
-    try:
-        template_file = template_path(template_id)
-    except ValueError as exc:
-        raise RenderError("render_template_not_found", str(exc)) from exc
-    if not template_file.is_file():
-        raise RenderError(
-            "render_template_not_found",
-            f"template '{template_id}' not found under assets/render-templates/",
-        )
+    from ..asset_resolver import AssetResolver
+    resolver = resolver or AssetResolver()
+    with resolver.library_session():
+        proposal = binding.get("proposal") if binding else probe_proposal
+        if probe_proposal is not None:
+            if binding is not None:
+                raise RenderError("proposal_probe_binding_conflict")
+            from ..task_local_layout_proposals import replay_bound_proposal
+            replay_bound_proposal(probe_proposal, resolver=resolver, content=probe_proposal["content"], theme=probe_proposal["theme"])
+            theme_variables = probe_proposal["theme"]
+        if binding is not None:
+            from ..content_projection import verify_effective_binding
+            if pack_page is None or binding.get("template_id") != template_id or binding.get("backend") != "render:html":
+                raise RenderError("effective_binding_template_mismatch")
+            verify_effective_binding(binding, pack_page, resolver=resolver)
+            frozen_theme = binding.get("effective", {}).get("theme")
+            if frozen_theme is not None:
+                if theme_variables is not None and theme_variables != frozen_theme:
+                    raise RenderError("effective_binding_theme_mismatch")
+                theme_variables = frozen_theme
+        try:
+            template_file = template_path(template_id, resolver=resolver)
+        except (ValueError, FileNotFoundError) as exc:
+            raise RenderError("render_template_not_found", str(exc)) from exc
+        if not template_file.is_file():
+            raise RenderError(
+                "render_template_not_found",
+                f"template '{template_id}' not found under template-library/canonical/templates/",
+            )
 
-    data_file = Path(data_path)
-    try:
-        data_text = data_file.read_text(encoding="utf-8")
-        json.loads(data_text)
-    except OSError as exc:
-        raise RenderError("render_data_invalid", f"slide data unreadable: {exc}") from exc
-    except ValueError as exc:
-        raise RenderError("render_data_invalid", f"slide data is not JSON: {exc}") from exc
+        data_file = Path(data_path)
+        try:
+            data_text = data_file.read_text(encoding="utf-8")
+            data_payload = _prepare_slide_data(data_text)
+            if probe_proposal:
+                from ..task_local_layout_proposals import remap_slot_data
+                data_payload = remap_slot_data(data_payload, probe_proposal["slot_mapping"])
+            if binding is not None:
+                from ..content_projection import materialize_html
+                if data_payload != materialize_html(binding, pack_page, resolver=resolver):
+                    raise RenderError("effective_binding_render_data_mismatch")
+            manifest = json.loads(template_file.with_name("template.json").read_text(encoding="utf-8"))
+            errors = validate_template_data(manifest, data_payload)
+            if errors:
+                raise RenderError("render_data_invalid", "; ".join(errors)[:1000])
+        except OSError as exc:
+            raise RenderError("render_data_invalid", f"slide data unreadable: {exc}") from exc
+        except ValueError as exc:
+            raise RenderError("render_data_invalid", f"slide data is not JSON: {exc}") from exc
 
-    out = Path(out_path)
-    out.parent.mkdir(parents=True, exist_ok=True)
+        if (proposal or not (theme_variables or {}).get("geometry")) and manifest.get("layout_profiles"):
+            from ..asset_resolver import AssetResolver
+            from .layout import LayoutProfileError, compile_geometry
 
-    _apply_browsers_path()
-    try:
-        from playwright.sync_api import sync_playwright
-    except Exception as exc:
-        raise RenderError(
-            "render_backend_missing",
-            f"playwright unavailable: {exc}; see references/first-use.md render 节",
-        ) from exc
-
-    executable = os.environ.get("LEO_PPT_RENDER_CHROMIUM") or None
-    warnings: list[str] = []
-    started = time.monotonic()
-
-    with RenderAssetServer() as server:
-        with sync_playwright() as playwright:
-            launch_kwargs: dict[str, Any] = {"headless": True, "timeout": timeout_ms}
-            if executable:
-                launch_kwargs["executable_path"] = executable
             try:
-                browser = playwright.chromium.launch(**launch_kwargs)
-            except Exception as exc:
-                raise RenderError(
-                    "render_backend_missing", f"chromium launch failed: {exc}"
-                ) from exc
-            try:
-                context = browser.new_context(
-                    viewport={"width": LOGICAL_WIDTH, "height": LOGICAL_HEIGHT},
-                    device_scale_factor=scale,
-                    locale="zh-CN",
-                    timezone_id="Asia/Shanghai",
-                    reduced_motion="reduce",
-                )
+                profile_id = binding["layout_id"] if binding else manifest["layout_profiles"][0]
+                profile = proposal["profile"] if proposal else (resolver or AssetResolver()).resolve(profile_id)["data"]
+                theme_variables = dict(theme_variables or {})
+                theme_variables["geometry"] = compile_geometry(
+                    profile, theme_variables,
+                    column_count=len(data_payload["columns"]) if "columns" in data_payload else None)
+                if proposal:
+                    base_geometry = compile_geometry(resolver.resolve(proposal["base_asset"])["data"], theme_variables,
+                        column_count=len(data_payload["columns"]) if "columns" in data_payload else None)
+                    changed = {key for key, value in theme_variables["geometry"].items() if value != base_geometry.get(key)}
+                    html = template_file.read_text()
+                    if any(not re.search(r"var\(\s*--leo-g-" + re.escape(key) + r"\s*[,)]", html) for key in changed):
+                        raise RenderError("proposal_geometry_unconsumed")
+                    if not changed and not proposal["slot_mapping"]:
+                        raise RenderError("proposal_no_effect")
+            except LayoutProfileError as exc:
+                raise RenderError("layout_profile_invalid", str(exc)) from exc
+
+        out = Path(out_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+
+        warnings: list[str] = []
+        started = time.monotonic()
+        font_dirs, font_css = theme_font_assets(theme_variables or {}, resolver=resolver)
+        with (nullcontext(session) if session is not None else RenderSession(timeout_ms=timeout_ms)) as active:
+            server = active.asset_server(font_dirs, resolver)
+            with active.page_context(scale, server.url()) as (context, rejected_requests):
                 # 注入必须在页面脚本执行前完成（add_init_script），否则模板
                 # 内联脚本读到空数据——竞态产物是"干净空页"，只有像素闸门
                 # 能抓住。数据以 JSON 字面量内嵌，"</" 转义防提前闭合。
-                data_literal = json.dumps(json.loads(data_text), ensure_ascii=False).replace("</", "<\\/")
+                data_literal = json.dumps(data_payload, ensure_ascii=False).replace("</", "<\\/")
                 theme_literal = json.dumps(theme_variables or {}, ensure_ascii=False).replace("</", "<\\/")
                 context.add_init_script(
                     f"window.__LEO_SLIDE_DATA__ = {data_literal};"
                     f"window.__LEO_THEME_VARIABLES__ = {theme_literal};"
                 )
                 page = context.new_page()
+                script_errors = []
+                page.on("pageerror", lambda error: script_errors.append(str(error)))
                 page.set_default_timeout(timeout_ms)
                 url = server.url(f"{template_id}.html?leo_render=1")
                 try:
@@ -216,6 +349,40 @@ def render_page(
                     raise RenderError("render_timeout", f"goto/networkidle: {exc}") from exc
 
                 page.evaluate("() => window.__LEO_SLIDE_DATA__")
+                if script_errors:
+                    raise RenderError("render_script_error", "; ".join(script_errors)[:1000])
+                if rejected_requests:
+                    raise RenderError("render_external_request_blocked", ", ".join(rejected_requests))
+                requested_fonts = []
+                if font_css:
+                    page.add_style_tag(content=font_css)
+                    requested_fonts = sorted({
+                        (str(defn.get("family")), int(defn.get("weight", 400)))
+                        for defn in (theme_variables or {}).get("fonts", {}).values()
+                        if isinstance(defn, dict) and defn.get("family")
+                    })
+                    if requested_fonts:
+                        font_probe = page.evaluate(
+                            """async (requests) => {
+                              const result = [];
+                              for (const [family, weight] of requests) {
+                                try {
+                                  const loaded = await document.fonts.load(`${weight} 16px ${JSON.stringify(family)}`);
+                                  result.push({family, weight, loaded: loaded.length > 0,
+                                               check: document.fonts.check(`${weight} 16px ${JSON.stringify(family)}`)});
+                                } catch (error) {
+                                  result.push({family, weight, loaded: false, check: false, error: String(error)});
+                                }
+                              }
+                              return result;
+                            }""",
+                            requested_fonts,
+                        )
+                        if any(not item.get("loaded") or not item.get("check") for item in font_probe):
+                            raise RenderError(
+                                "render_font_missing",
+                                "主题字体未成功加载: " + json.dumps(font_probe, ensure_ascii=False),
+                            )
 
                 ready_signal = "data-leo-ready"
                 try:
@@ -236,6 +403,8 @@ def render_page(
                     raise RenderError("render_timeout", f"fonts.ready: {exc}") from exc
 
                 # 溢出哨兵：截图前确定性断言（warn 模式降级为 sidecar 警告）。
+                if script_errors:
+                    raise RenderError("render_script_error", "; ".join(script_errors)[:1000])
                 overflow_mode = os.environ.get("LEO_PPT_RENDER_OVERFLOW", "enforce").strip().lower()
                 try:
                     overflow_violations = page.evaluate(_OVERFLOW_CHECK_JS) or []
@@ -253,6 +422,8 @@ def render_page(
                     )
                 overflow_check = "warn" if overflow_violations else "pass"
 
+                if rejected_requests:
+                    raise RenderError("render_external_request_blocked", ", ".join(rejected_requests))
                 try:
                     page.screenshot(
                         path=str(out),
@@ -261,49 +432,66 @@ def render_page(
                     )
                 except Exception as exc:
                     raise RenderError("render_timeout", f"screenshot: {exc}") from exc
-                context.close()
-            finally:
-                browser.close()
+                if observation_path is not None:
+                    from ..relation_oracle import DOM_MEASURE_JS
+                    measurement = page.evaluate(DOM_MEASURE_JS)
+                    measurement["browser_version"] = active.browser.version
 
-    try:
-        actual = _png_dimensions(out)
-    except RenderError:
-        out.unlink(missing_ok=True)
-        raise
-    if actual != size:
-        out.unlink(missing_ok=True)
-        raise RenderSizeError(
-            f"PNG header {actual[0]}x{actual[1]} != requested {size[0]}x{size[1]}"
+        try:
+            actual = _png_dimensions(out)
+        except RenderError:
+            out.unlink(missing_ok=True)
+            raise
+        if actual != size:
+            out.unlink(missing_ok=True)
+            raise RenderSizeError(
+                f"PNG header {actual[0]}x{actual[1]} != requested {size[0]}x{size[1]}"
+            )
+
+        render_ms = int((time.monotonic() - started) * 1000)
+        if binding is not None:
+            verify_effective_binding(binding, pack_page, resolver=resolver)
+        renderer = f"{RENDERER_NAME}@{_playwright_version()}"
+        provenance = {
+            "schema_version": 1,
+            "kind": "render_provenance",
+            "backend": "render:html",
+            "template_id": template_id,
+            "template_sha256": sha256_file(template_file),
+            "data_sha256": sha256_file(data_file),
+            "dialect": None,
+            "renderer": renderer,
+            "out": str(out.resolve()),
+            "out_sha256": sha256_file(out),
+            "width": size[0],
+            "height": size[1],
+            "device_scale_factor": scale,
+            "ready_signal": ready_signal,
+            "overflow_check": overflow_check,
+            "render_ms": render_ms,
+            "rendered_at": _utc_now(),
+            "warnings": warnings,
+            "fonts_checked": requested_fonts,
+        }
+        if binding is not None:
+            provenance["expression_binding_digest"] = binding.get("expression_binding_digest")
+            provenance["materialization_binding_digest"] = binding.get("materialization_binding_digest")
+            provenance["content_digest"] = binding["content_digest"]
+        sidecar = out.with_name(out.name + ".render.json")
+        sidecar.write_text(
+            json.dumps(provenance, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
         )
-
-    render_ms = int((time.monotonic() - started) * 1000)
-    renderer = f"{RENDERER_NAME}@{_playwright_version()}"
-    provenance = {
-        "schema_version": 1,
-        "kind": "render_provenance",
-        "backend": "render:html",
-        "template_id": template_id,
-        "template_sha256": sha256_file(template_file),
-        "data_sha256": sha256_file(data_file),
-        "dialect": None,
-        "renderer": renderer,
-        "out": str(out.resolve()),
-        "out_sha256": sha256_file(out),
-        "width": size[0],
-        "height": size[1],
-        "device_scale_factor": scale,
-        "ready_signal": ready_signal,
-        "overflow_check": overflow_check,
-        "render_ms": render_ms,
-        "rendered_at": _utc_now(),
-        "warnings": warnings,
-    }
-    sidecar = out.with_name(out.name + ".render.json")
-    sidecar.write_text(
-        json.dumps(provenance, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    return {
-        **provenance,
-        "sidecar": str(sidecar),
-    }
+        if observation_path is not None:
+            from ..storage import atomic_write_json
+            measurement.update(artifact_sha256=provenance["out_sha256"],
+                               data_sha256=provenance["data_sha256"],
+                               template_sha256=provenance["template_sha256"])
+            if proposal:
+                from ..qualification import digest
+                measurement["proposal_sha256"] = digest(proposal)
+            atomic_write_json(Path(observation_path), measurement)
+        return {
+            **provenance,
+            "sidecar": str(sidecar),
+        }

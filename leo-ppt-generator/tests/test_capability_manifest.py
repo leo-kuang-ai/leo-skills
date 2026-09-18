@@ -9,6 +9,9 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+import capability_manifest as cm  # noqa: E402
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "capability_manifest.py"
 
@@ -22,7 +25,8 @@ def run(*args):
 def make_skill(tmp: Path) -> Path:
     """A minimal but realistic skill tree: styles axes + briefs + scripts."""
     root = tmp / "skill"
-    styles = root / "references" / "styles"
+    import capability_manifest as cm
+    styles = root / cm.STYLES_DIR
     styles.mkdir(parents=True)
     (styles / "清爽专业风.md").write_text("brief A\n", encoding="utf-8")
     (styles / "01_通用母版").mkdir()
@@ -34,7 +38,12 @@ def make_skill(tmp: Path) -> Path:
     (styles / "06_论证模式" / "三段论.md").write_text("axis doc\n", encoding="utf-8")
     (styles / "00_索引").mkdir()
     (styles / "00_索引" / "_INDEX.md").write_text("index\n", encoding="utf-8")
-    (root / "references" / "style-library.md").write_text("lib\n", encoding="utf-8")
+    refs = root / "references"
+    refs.mkdir(exist_ok=True)
+    (refs / "style-library.md").write_text("lib\n", encoding="utf-8")
+    for extra in ("render-contract.md", "layout-dispatch.md", "style-recommendation.md",
+                  "deck-templates.md", "image-deck-workflow.md", "manifest-schema.md"):
+        (refs / extra).write_text("doc\n", encoding="utf-8")
     (root / "scripts").mkdir()
     (root / "scripts" / "visual_qa.py").write_text("# qa\n", encoding="utf-8")
     (root / "scripts" / "leo-bootstrap.sh").write_text("# boot\n", encoding="utf-8")
@@ -63,9 +72,9 @@ class CapabilityManifestTests(unittest.TestCase):
         self.assertEqual(layers["briefs"]["count"], 3)
         self.assertEqual(
             sorted(layers["briefs"]["files"]),
-            ["references/styles/01_通用母版/商务蓝.md",
-             "references/styles/02_行业内容域/金融风.md",
-             "references/styles/清爽专业风.md"])
+            ["template-library/reference/sources/retired-styles-tree/styles/01_通用母版/商务蓝.md",
+             "template-library/reference/sources/retired-styles-tree/styles/02_行业内容域/金融风.md",
+             "template-library/reference/sources/retired-styles-tree/styles/清爽专业风.md"])
         self.assertEqual(layers["styles"]["count"], 6)  # every .md incl rules
         self.assertEqual(layers["references"]["count"], 7)
         self.assertEqual(layers["scripts"]["count"], 2)
@@ -90,7 +99,7 @@ class CapabilityManifestTests(unittest.TestCase):
         old_path = self.tmp / "old.json"
         run("--root", str(self.root), "--out", str(old_path))
         # mutate: add a brief, remove a script, change a reference
-        (self.root / "references" / "styles" / "新风格.md").write_text(
+        (self.root / cm.STYLES_DIR / "新风格.md").write_text(
             "brief N\n", encoding="utf-8")
         (self.root / "scripts" / "leo-bootstrap.sh").unlink()
         (self.root / "references" / "style-library.md").write_text(
@@ -105,7 +114,7 @@ class CapabilityManifestTests(unittest.TestCase):
         briefs = diff["layers"]["briefs"]
         self.assertEqual(briefs["count_delta"], 1)
         self.assertEqual(briefs["added"],
-                         ["references/styles/新风格.md"])
+                         ["template-library/reference/sources/retired-styles-tree/styles/新风格.md"])
         scripts = diff["layers"]["scripts"]
         self.assertEqual(scripts["removed"], ["scripts/leo-bootstrap.sh"])
         self.assertEqual(scripts["count_delta"], -1)
@@ -153,7 +162,82 @@ class CapabilityManifestTests(unittest.TestCase):
         briefs = data["layers"]["briefs"]
         self.assertEqual(briefs["count"], len(briefs["files"]))
         self.assertTrue(all((real / path).is_file() for path in briefs["files"]))
-        self.assertNotIn("references/styles/00_索引/_INDEX.md", briefs["files"])
+        self.assertNotIn("template-library/reference/sources/retired-styles-tree/styles/00_索引/_INDEX.md", briefs["files"])
+
+
+class TemplateCatalogRollbackTests(unittest.TestCase):
+    """U12/R-85b 批次回滚：current 指针原子切回既有 generation。"""
+
+    def _library_with_two_generations(self, root: Path) -> Path:
+        import json
+        import shutil
+
+        from leo_ppt_generator.storage import canonical_json_bytes
+
+        library = root / "template-library"
+        library.mkdir(parents=True)
+        (library / "library.json").write_text("{}", encoding="utf-8")
+        gens = {}
+        for generation in ("gen-old", "gen-new"):
+            target = library / "catalog" / "generations" / generation
+            target.mkdir(parents=True)
+            registry = {"generation": generation, "entities": [], "source_digest": generation}
+            (target / "registry.json").write_bytes(canonical_json_bytes(registry))
+            gens[generation] = registry
+        pointer = {"kind": "template-catalog-pointer", "schema_version": 1,
+                   "generation": "gen-new"}
+        (library / "catalog" / "current.json").write_text(json.dumps(pointer), encoding="utf-8")
+        return library
+
+    def test_rollback_flips_pointer_atomically_and_round_trips(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            result = rollback_template_catalog(library, "gen-old")
+            self.assertTrue(result["rolled_back"])
+            self.assertEqual(result["to"], "gen-old")
+            pointer = json.loads(
+                (library / "catalog" / "current.json").read_text(encoding="utf-8"))
+            self.assertEqual(pointer["generation"], "gen-old")
+            # 再切回 gen-new（双向）。
+            result = rollback_template_catalog(library, "gen-new")
+            self.assertEqual(result["to"], "gen-new")
+
+    def test_rollback_to_current_generation_is_noop(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            result = rollback_template_catalog(library, "gen-new")
+            self.assertFalse(result["rolled_back"])
+            self.assertEqual(result["reason"], "already-current")
+
+    def test_rollback_rejects_missing_or_mismatched_generation(self):
+        import json
+        import tempfile
+
+        from capability_manifest import rollback_template_catalog
+
+        with tempfile.TemporaryDirectory() as tmp:
+            library = self._library_with_two_generations(Path(tmp))
+            with self.assertRaises(ValueError) as ctx:
+                rollback_template_catalog(library, "gen-missing")
+            self.assertIn("rollback_generation_missing", str(ctx.exception))
+            # registry 内容与目录名不符即拒绝。
+            bad = library / "catalog" / "generations" / "gen-bad"
+            bad.mkdir(parents=True)
+            (bad / "registry.json").write_text(
+                json.dumps({"generation": "something-else"}), encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                rollback_template_catalog(library, "gen-bad")
+            self.assertIn("rollback_generation_identity_mismatch", str(ctx.exception))
 
 
 if __name__ == "__main__":

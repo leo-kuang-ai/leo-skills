@@ -1,0 +1,130 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:复古视窗风",
+  "name": "复古视窗风",
+  "aliases": [
+    "Retro Windows",
+    "retro-windows",
+    "复古视窗",
+    "nostalgic",
+    "retro"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/复古视窗风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "复古潮流",
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "Windows 95 desktop chrome aesthetic, beveled 3D gray button-face panels, navy gradient title bars, pixel typography accents, every slide as a software window with group boxes and status bars, nostalgic CRT software deck"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Retro Windows",
+      "retro-windows",
+      "复古视窗",
+      "nostalgic",
+      "retro"
+    ],
+    "best_for": "以 Win95 系统界面语汇——3D 凸起灰面、海军蓝标题栏、像素字——把每页做成一扇运行在 CRT 上的软件窗口;适合retro gaming pitch, Y2K brand, creator portfolio (90s aesthetic), tech-history talk",
+    "visual_direction": "Windows 95 desktop chrome aesthetic, beveled 3D gray button-face panels, navy gradient title bars, pixel typography accents, every slide as a software window with group boxes and status bars, nostalgic CRT software deck",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "Windows 95 system palette: 3D-button gray, navy title bars, pixel-perfect inset/outset borders(主锚 #C0C0C0,light 底)",
+      "composition": "软件窗口即版式:标题栏 + 客户区 + 状态条三段",
+      "density": "medium,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#C0C0C0(3D 按钮灰面与窗口底)",
+      "secondary": "#000080(标题栏海军蓝)",
+      "accent": "#1084D0(活动态高亮蓝)",
+      "neutral": "#000000(文字与硬边)",
+      "rule": "Windows 95 system palette: 3D-button gray, navy title bars, pixel-perfect inset/outset borders, no anti-aliasing aesthetic;锚点 #C0C0C0/#000080/#1084D0/#000000"
+    },
+    "typography": {
+      "title": "Press Start 2P 标题字族;8-bit pixel display + Microsoft system sans + DOS terminal mono",
+      "body": "MS Sans Serif 正文字族,行距宽绰",
+      "labels": "VT323 标签/数据字族"
+    },
+    "layout_patterns": [
+      "每页一扇窗口:海军蓝 #000080 标题栏 + 灰面 #C0C0C0 客户区 + 楼梯状像素边缘的内外凸双边框(stair-stepped pixel edges),内容即窗口部件",
+      "章节页 = 满屏对话框:大标题 + 按钮组导航(短文案按钮 OK / CANCEL / RETRY / SCAN) + 图标位",
+      "数据页 = 窗口内分组框 + 状态条,DOS 绿/砖红/芥末黄仅作状态文字色",
+      "像素字(Press Start 2P/VT323)只做怀旧标点,正文走系统无衬线",
+      "信息块标题写成系统文件名式短文案:PROBLEMS.EXE / METHOD.PNG / FIX_IT.bat 式语义文件名命名每个内容模块"
+    ],
+    "layout_usage_rule": "每页一扇窗口:海军蓝 #000080 标题栏 + 灰面 #C0C0C0 客户区 + 楼梯状像素边缘的内外凸双边框,内容即窗口部件",
+    "negative_prompt": [
+      "Decks that need to read as modern, elegant, or institutionally credible — the Win95 chrome will always read as a costume.",
+      "no frosted translucent glass panels, deep soft drop shadows, or soft 3D bevel effects (neumorphism) — strictly hard-edged Win95 chrome",
+      "no smooth anti-aliased curves; keep chunky pixel edges",
+      "not for institutional finance, healthcare or formal luxury gravitas"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "supportive"
+    },
+    "visual_elements": {
+      "allowed": "章节页 = 满屏对话框:大标题 + 按钮组导航 + 图标位",
+      "avoid": "no frosted translucent glass panels, deep soft drop shadows, or soft 3D bevel effects — strictly hard-edged Win95 chrome; no smooth anti-aliased curves; keep chunky pixel edges"
+    },
+    "rendering_constraints": [
+      "复古视窗风 follows beautiful-html-templates retro-windows system; palette anchors locked.",
+      "no frosted translucent glass panels, deep soft drop shadows, or soft 3D bevel effects — strictly hard-edged Win95 chrome",
+      "no smooth anti-aliased curves; keep chunky pixel edges",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/retro-windows/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "expressive",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "复古视窗风 follows beautiful-html-templates retro-windows system; palette anchors locked.",
+      "no frosted translucent glass panels, deep soft drop shadows, or soft 3D bevel effects — strictly hard-edged Win95 chrome",
+      "no smooth anti-aliased curves; keep chunky pixel edges",
+      "No invented logos or watermarks."
+    ]
+  }
+}

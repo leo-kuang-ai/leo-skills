@@ -1,0 +1,6 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/probe_relation_capabilities.py --library-root template-library --cases evals/fixtures/expression-first-relation-probes.json --out evidence/probes/expression-first-output-v11-table-recipe",
+  "exit_code": 1,
+  "log": "docs/leo-ppt-generator/evidence/u2-table-recipe-live-probes-2026-09-16.log",
+  "log_sha256": "96036f3242b40491b0276d4ed23b0e90c4638a845bb76bd14970939f5ef82d63"
+}

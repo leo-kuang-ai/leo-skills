@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:工程白图风",
+  "name": "工程白图风",
+  "aliases": [
+    "工程白图",
+    "Engineering Whiteprint",
+    "engineering",
+    "工程",
+    "白图",
+    "坐标纸",
+    "engineering-whiteprint"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/工程白图风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "工程蓝图"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "engineering whiteprint, precise blue line work on white drafting grid, mono-spaced technical documentation clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "工程白图",
+      "Engineering Whiteprint",
+      "engineering",
+      "工程",
+      "白图",
+      "坐标纸",
+      "engineering-whiteprint"
+    ],
+    "best_for": "坐标纸上海军墨线勾勒蓝图，工程思维可视化;适合技术分享/商业汇报/产品发布",
+    "visual_direction": "engineering whiteprint, precise blue line work on white drafting grid, mono-spaced technical documentation clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF→#FAFAFA→#F5F5F5",
+      "composition": "网格底纹贯穿每一页，内容沿着网格线排列",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1E3A5F(主色/标题锚)",
+      "secondary": "#374151(辅助色)",
+      "accent": "#1E40AF(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #1E3A5F, #374151, #1E40AF, #2563EB;标题 #1e3a5f 海军蓝、正文 #374151 钢灰，强调色 #1e40af 深蓝与 #2563eb 亮蓝是墨线的两种粗细"
+    },
+    "typography": {
+      "title": "标题可以用稍粗的字重，正文保持等宽的节奏",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "网格底纹贯穿每一页，内容沿着网格线排列",
+      "流程图、架构图、时序图是这个风格的天然元素",
+      "卡片像工程图纸上的标注框，方正规矩"
+    ],
+    "layout_usage_rule": "网格底纹贯穿每一页，内容沿着网格线排列",
+    "visual_elements": {
+      "allowed": "网格底纹贯穿每一页，内容沿着网格线排列",
+      "avoid": "不要使用非等宽字体;不要使用装饰性元素;不要用暖色调或活泼配色"
+    },
+    "rendering_constraints": [
+      "不要使用非等宽字体",
+      "不要使用装饰性元素",
+      "不要用暖色调或活泼配色",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要使用非等宽字体",
+      "不要使用装饰性元素",
+      "不要用暖色调或活泼配色",
+      "不要让网格底纹消失"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/engineering-whiteprint"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要使用非等宽字体",
+      "不要使用装饰性元素",
+      "不要用暖色调或活泼配色",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

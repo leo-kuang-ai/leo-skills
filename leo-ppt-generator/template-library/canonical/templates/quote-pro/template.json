@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:quote-pro",
+  "name": "quote-pro",
+  "lane": "render:html",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "quote",
+      "required": true,
+      "type": "string",
+      "maxLength": 90,
+      "minLength": 1
+    },
+    {
+      "name": "quote_em",
+      "required": false,
+      "type": "string",
+      "maxLength": 90
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string",
+      "maxLength": 60
+    },
+    {
+      "name": "route",
+      "required": false,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 14
+          },
+          "desc": {
+            "type": "string",
+            "maxLength": 36
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "count_min": 0,
+      "count_max": 4
+    },
+    {
+      "name": "bound",
+      "required": false,
+      "type": "string",
+      "maxLength": 70
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "kicker",
+      "selector": "[data-leo-block='kicker']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "quote",
+      "selector": "[data-leo-block='quote']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "source",
+      "selector": "[data-leo-block='source']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "route",
+      "selector": "[data-leo-block='route']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "bound",
+      "selector": "[data-leo-block='bound']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page_no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "primary",
+    "accent",
+    "background",
+    "surface",
+    "text",
+    "muted",
+    "border",
+    "on_primary"
+  ],
+  "layout_profiles": [
+    "builtin:layout:p9-09-closing-manifesto-layouts"
+  ],
+  "dependencies": [
+    "builtin:layout:p9-09-closing-manifesto-layouts"
+  ],
+  "notes": "输入对象形状、数量与 layout 槽位一致；字号来自 effective_theme，几何来自 layout profile。"
+}

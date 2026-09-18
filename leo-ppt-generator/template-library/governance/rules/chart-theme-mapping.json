@@ -1,0 +1,38 @@
+{
+  "kind": "chart-theme-mapping",
+  "schema_version": 1,
+  "description": "theme 语义角色 → Mermaid themeVariables 逐方言映射；缺映射阻断，不默默回落默认",
+  "dialects": {
+    "mermaid-flowchart": {
+      "primaryColor": "primary",
+      "primaryTextColor": "on_primary",
+      "primaryBorderColor": "border",
+      "lineColor": "muted",
+      "secondaryColor": "surface",
+      "tertiaryColor": "surface",
+      "mainBkg": "surface",
+      "fontSize": "chart_label_size"
+    },
+    "mermaid-xychart": {
+      "xyChart": {
+        "backgroundColor": "background",
+        "plotColorPalette": "chart_series_csv",
+        "titleColor": "text",
+        "xAxisTitleColor": "text",
+        "yAxisTitleColor": "text",
+        "dataLabelColor": "text",
+        "legendTextColor": "text",
+        "xAxisLineColor": "muted",
+        "yAxisLineColor": "muted",
+        "xAxisLabelColor": "muted",
+        "yAxisLabelColor": "muted"
+      }
+    }
+  },
+  "chart_series_csv": "chart_palette.series 按 #HEX,#HEX,... 直传",
+  "hard_rules": [
+    "数据语法仍拥有数值/单位/坐标基线与比较尺度，主题不能修改",
+    "禁用 HTML labels（顶层 htmlLabels=false 且 flowchart.htmlLabels=false）",
+    "缺映射即阻断（chart_theme_mapping_missing），不回落 mermaid 默认"
+  ]
+}

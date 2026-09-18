@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """post-publish 判官：双分支结构化解析（2026-08-31，吸收自 claude-blog gate_4
-双轨制与 Deep-Research validate_json 零静默语义，深读报告
-upstream-absorption-workspace/deepread/T3-contract-enforcement.md C2+D1；
+双轨制与 Deep-Research validate_json 零静默语义，T3-contract-enforcement
+深读报告 C2+D1，报告原存 git-ignore 工作区、已清理；
 同日 spec-code-review scr-20260831-164237 修复轮收口围栏绕过 / 多块旁路 /
 重复键 / 跨父键收割 / n=1 子串误伤 / 否定感知六类绕过面；同日第二轮评审
 终修轮收口键名书写变体（粗体 / 等号 / CJK 边界连写）、promoted 条件语境

@@ -1,0 +1,536 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "page_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "reading_task": {
+      "enum": [
+        "independent",
+        "comparison",
+        "process",
+        "causal",
+        "trend",
+        "statement"
+      ]
+    },
+    "focus": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "reading_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      },
+      "minItems": 1,
+      "maxItems": 10000,
+      "uniqueItems": true
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "independent",
+            "comparison",
+            "process",
+            "causal",
+            "trend"
+          ]
+        },
+        "encoding": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "kind",
+        "encoding"
+      ]
+    },
+    "fact_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      },
+      "minItems": 0,
+      "maxItems": 10000,
+      "uniqueItems": true
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      },
+      "minItems": 0,
+      "maxItems": 10000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "page_id",
+    "reading_task",
+    "focus",
+    "reading_order",
+    "relation",
+    "fact_refs",
+    "uncertainty"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/page-expression/v1",
+  "$defs": {
+    "independent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "edges": {
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "item_refs",
+        "edges"
+      ]
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 2,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "dimension_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "item_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "dimension_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "fact_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "unknown": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "item_ref",
+              "dimension_ref",
+              "fact_ref",
+              "unknown"
+            ],
+            "oneOf": [
+              {
+                "properties": {
+                  "unknown": {
+                    "const": true
+                  },
+                  "fact_ref": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "unknown": {
+                    "const": false
+                  },
+                  "fact_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "item_refs",
+        "dimension_refs",
+        "cells"
+      ]
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 2,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        },
+        "parallel_branches": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "minItems": 2,
+            "maxItems": 10000,
+            "uniqueItems": true
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "nodes",
+        "edges",
+        "parallel_branches"
+      ]
+    },
+    "causal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 2,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "meaning_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "support_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "minItems": 1,
+                "maxItems": 10000,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "meaning_ref",
+              "support_refs"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "nodes",
+        "edges"
+      ]
+    },
+    "trend": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "time_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "value_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            },
+            "required": [
+              "time_ref",
+              "value_ref"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 10000
+        },
+        "unit_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "period_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "baseline_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "samples",
+        "unit_ref",
+        "period_ref",
+        "baseline_ref"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "independent"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "independent"
+              },
+              "encoding": {
+                "$ref": "#/$defs/independent"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "comparison"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "comparison"
+              },
+              "encoding": {
+                "$ref": "#/$defs/comparison"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "process"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "process"
+              },
+              "encoding": {
+                "$ref": "#/$defs/process"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "causal"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "causal"
+              },
+              "encoding": {
+                "$ref": "#/$defs/causal"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "trend"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "trend"
+              },
+              "encoding": {
+                "$ref": "#/$defs/trend"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reading_task": {
+            "const": "statement"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "relation": {
+            "properties": {
+              "kind": {
+                "const": "independent"
+              },
+              "encoding": {
+                "$ref": "#/$defs/independent"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

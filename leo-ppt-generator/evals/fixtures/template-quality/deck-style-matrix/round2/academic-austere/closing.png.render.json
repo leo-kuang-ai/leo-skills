@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "7f9596209e35a86c00549fa3047af6268f364f3b5b4d19b838aa244205b72fc5",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/deck-style-matrix/round2/academic-austere/closing.png",
+  "out_sha256": "23c172431b4dde789bbf740e046cdf6baca3ed72f2cc874e08287a22e348e93a",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1245,
+  "rendered_at": "2026-09-08T02:01:12.194Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "pull-quote",
+  "template_sha256": "7e7a8e6d811a519d6338e91045faf150889ad1534c74ed1af8af688cf703a8f0",
+  "warnings": [],
+  "width": 2560
+}

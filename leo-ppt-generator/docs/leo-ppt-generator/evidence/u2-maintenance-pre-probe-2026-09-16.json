@@ -1,0 +1,40 @@
+{
+  "rows": [
+    {
+      "relation": "independent",
+      "status": "rejected",
+      "gaps": [
+        "evidence_environment_stale"
+      ]
+    },
+    {
+      "relation": "comparison",
+      "status": "rejected",
+      "gaps": [
+        "evidence_environment_stale"
+      ]
+    },
+    {
+      "relation": "trend",
+      "status": "rejected",
+      "gaps": [
+        "evidence_environment_stale"
+      ]
+    },
+    {
+      "relation": "process",
+      "status": "rejected",
+      "gaps": [
+        "evidence_environment_stale"
+      ]
+    },
+    {
+      "relation": "causal",
+      "status": "rejected",
+      "gaps": [
+        "evidence_environment_stale"
+      ]
+    }
+  ],
+  "reason": "render/page.py changed; historical receipts are not current proof"
+}

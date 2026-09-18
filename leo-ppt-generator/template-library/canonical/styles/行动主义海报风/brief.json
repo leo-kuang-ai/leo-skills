@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:行动主义海报风",
+  "name": "行动主义海报风",
+  "aliases": [
+    "People's Platform (Block & Bold)",
+    "peoples-platform",
+    "行动主义海报",
+    "activist",
+    "loud"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/行动主义海报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派",
+      "高攻击"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "activist WPA political poster energy, cobalt blue and signal orange flat blocks with red reserved for depth, compressed slab serif all-caps display, handwritten brush interrupts, paper-grain screen-print overlay"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "People's Platform (Block & Bold)",
+      "peoples-platform",
+      "行动主义海报",
+      "activist",
+      "loud"
+    ],
+    "best_for": "以 WPA 式政治海报的三字塔排版与丝网印刷质感,做宣言、公共议题与文化评论的一页一口号;适合cultural commentary, manifesto, community / civic deck, design talk",
+    "visual_direction": "activist WPA political poster energy, cobalt blue and signal orange flat blocks with red reserved for depth, compressed slab serif all-caps display, handwritten brush interrupts, paper-grain screen-print overlay",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "saturated political-poster palette: cobalt blue, signal orange, warning red, on warm cream(主锚 #F4E9D6,light 底)",
+      "composition": "抗议海报式:大字口号 + 平涂色块 + 手写打断",
+      "density": "medium-high,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#F4E9D6(暖奶油纸底)",
+      "secondary": "#2C2CDC(钴蓝平涂大块)",
+      "accent": "#E83A2A(警示红(仅阴影/深度,绝不做面))",
+      "neutral": "#0E0E14(深墨文字)",
+      "rule": "saturated political-poster palette: cobalt blue, signal orange, warning red, on warm cream with deep ink;锚点 #F4E9D6/#2C2CDC/#E83A2A/#0E0E14"
+    },
+    "typography": {
+      "title": "Alfa Slab One 标题字族;heavy slab display + narrow grotesk + brush script + mono; protest-pos",
+      "body": "同族常规字重",
+      "labels": "DM Mono 标签/数据字族"
+    },
+    "layout_patterns": [
+      "三字塔:Alfa Slab 压缩 slab 超大全大写标题 × Caveat Brush 手写打断句 × DM Mono 元数据",
+      "钴蓝 #2C2CDC / 信号橙 #F2A03A 平涂大块对撞,红 #E83A2A 仅作阴影与深度层",
+      "每页纸纹叠层出丝网印刷感,一页一口号",
+      "标语式非对称构图,文字块可整体倾斜 2-3°"
+    ],
+    "layout_usage_rule": "三字塔:Alfa Slab 压缩 slab 超大全大写标题 × Caveat Brush 手写打断句 × DM Mono 元数据",
+    "negative_prompt": [
+      "Contexts where institutional restraint is the actual goal — the saturated political-poster palette commits hard to expressive energy.",
+      "red is shadow/depth only — never a surface fill",
+      "no photographic realism; screen-print poster blocks only",
+      "not when institutional restraint is the actual goal"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "钴蓝 #2C2CDC / 信号橙 #F2A03A 平涂大块对撞,红 #E83A2A 仅作阴影与深度层",
+      "avoid": "red is shadow/depth only — never a surface fill; no photographic realism; screen-print poster blocks only"
+    },
+    "rendering_constraints": [
+      "行动主义海报风 follows beautiful-html-templates peoples-platform system; palette anchors locked.",
+      "red is shadow/depth only — never a surface fill",
+      "no photographic realism; screen-print poster blocks only",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/peoples-platform/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "expressive",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "行动主义海报风 follows beautiful-html-templates peoples-platform system; palette anchors locked.",
+      "red is shadow/depth only — never a surface fill",
+      "no photographic realism; screen-print poster blocks only",
+      "No invented logos or watermarks."
+    ]
+  }
+}

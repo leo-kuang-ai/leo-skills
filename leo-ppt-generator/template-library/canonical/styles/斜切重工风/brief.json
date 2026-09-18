@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:斜切重工风",
+  "name": "斜切重工风",
+  "aliases": [
+    "Diagonal Cut",
+    "斜切工业",
+    "工业斜切"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/15_来源_officecli/斜切重工风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "industrial diagonal cut, near-black ground criss-crossed by 30-45 degree rotated rectangle slashes in orange white and yellow, ultra-thin cut lines and corner circle accents, rugged power"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Diagonal Cut",
+      "斜切工业",
+      "工业斜切"
+    ],
+    "best_for": "工业斜切的力量感深色版面;适合工业制造/工程建设/硬核发布",
+    "visual_direction": "industrial diagonal cut, near-black ground criss-crossed by 30-45 degree rotated rectangle slashes in orange white and yellow, ultra-thin cut lines and corner circle accents, rugged power",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#1A1A1A",
+      "composition": "30-45° 大斜条旋转贯穿 + 超细切割线 + 角部圆点",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#1A1A1A(近黑底)",
+      "secondary": "#FFCC00(警示黄斜条)",
+      "accent": "#FF6600(工业橙主斜条)",
+      "neutral": "#CCCCCC(浅灰副字)"
+    },
+    "typography": {
+      "title": "Segoe UI Black 64-72pt(苹方兜底),白/橙",
+      "body": "Segoe UI 14-24pt(苹方兜底),浅灰 #CCCCCC",
+      "labels": "Segoe UI Black 数据数字 48-64pt(苹方兜底)"
+    },
+    "layout_patterns": [
+      "4 条 30-45° 大斜条旋转贯穿版面(主色 0.85-0.9,辅色 0.15-0.3)",
+      "2 条 0.1-0.15cm 超细切割线横贯全宽",
+      "角落双圆点缀平衡几何",
+      "morph:斜条旋 20-25° + 位移 8-12cm;内容页斜条收拢为近垂直分栏(散→序)"
+    ],
+    "layout_usage_rule": "4 条 30-45° 大斜条旋转贯穿版面(主色 0.85-0.9,辅色 0.15-0.3)",
+    "visual_elements": {
+      "allowed": "30-45° 大斜条旋转贯穿 + 超细切割线 + 角部圆点",
+      "avoid": "不要水平垂直的正交网格——斜切即身份; 不要柔和粉彩——高对比工业色"
+    },
+    "rendering_constraints": [
+      "不要水平垂直的正交网格——斜切即身份",
+      "不要柔和粉彩——高对比工业色",
+      "不要细线密网",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要水平垂直的正交网格——斜切即身份",
+      "不要柔和粉彩——高对比工业色",
+      "不要细线密网"
+    ],
+    "paired_illustration": {
+      "family": "collage",
+      "density": "core"
+    },
+    "reference": "GitHub: OfficeCLI · skills/morph-ppt/reference/styles/dark--diagonal-cut/style.md(MIT)· Rugged, powerful, bold;金样板 samples/reference-golden/officecli/dark__diagonal_cut.pptx(只登记路径不转换)",
+    "token_sidecar": "variant-dimension: dark"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要水平垂直的正交网格——斜切即身份",
+      "不要柔和粉彩——高对比工业色",
+      "不要细线密网",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "command": [
+    "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+    "scripts/probe_relation_capabilities.py",
+    "--library-root",
+    "template-library",
+    "--cases",
+    "evals/fixtures/expression-first-relation-probes.json",
+    "--out",
+    "evidence/probes/expression-first-output-v8-final"
+  ],
+  "exit_code": 1,
+  "image": "not_run: Provider授权及几何观测缺失",
+  "receipt_verification": [
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "independent",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "comparison",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "trend",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "process",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "causal",
+      "status": "provisional"
+    }
+  ],
+  "status": "blocked"
+}

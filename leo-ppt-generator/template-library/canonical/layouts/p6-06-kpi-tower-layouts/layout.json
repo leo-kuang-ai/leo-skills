@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p6-06-kpi-tower-layouts",
+  "name": "KPI Tower",
+  "aliases": [
+    "P6"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "items": {
+      "region": "content",
+      "desc": "KPI 列（图标 + 巨数 + 标签，bar 高度 ∝ 数值）",
+      "count_min": 4,
+      "count_max": 4
+    },
+    "item_label": {
+      "region": "content",
+      "desc": "列标签",
+      "max_chars": 45,
+      "chars_per_line": 19,
+      "max_lines": 2
+    },
+    "big_number": {
+      "region": "content",
+      "desc": "中段巨数（真实数值）",
+      "max_chars": 6,
+      "chars_per_line": 5,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "4 列均分；每列底部一根不同高度的 IKB 蓝矩形（高度由数据决定，6-36vh）+ 顶部图标 + 中段巨数 + 底部标签"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/06_KPI_Tower.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

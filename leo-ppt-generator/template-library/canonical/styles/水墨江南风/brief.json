@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:水墨江南风",
+  "name": "水墨江南风",
+  "aliases": [
+    "水墨江南",
+    "Ink Wash Jiangnan",
+    "水墨",
+    "江南",
+    "ink wash",
+    "jiangnan",
+    "中国风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/东方意蕴/水墨江南风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "东方意蕴",
+      "水墨国风"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "jiangnan ink-wash aesthetic, misty grey-black brushwork with rain-washed negative space, poetic water-town oriental minimalism"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "水墨江南",
+      "Ink Wash Jiangnan",
+      "水墨",
+      "江南",
+      "ink wash",
+      "jiangnan",
+      "中国风"
+    ],
+    "best_for": "水墨意境，江南烟雨的东方诗意;适合传统文化/疗愈冥想/艺术视觉",
+    "visual_direction": "jiangnan ink-wash aesthetic, misty grey-black brushwork with rain-washed negative space, poetic water-town oriental minimalism",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F5F5DC→#FAF7F0→#1A1A1A",
+      "composition": "上下分区或对角留白，主视觉为大幅水墨意境插画",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#F5F5DC(主色/标题锚)",
+      "secondary": "#FAF7F0(辅助色)",
+      "accent": "#1A1A1A(强调色)",
+      "neutral": "#000000(文字与中性锚)",
+      "rule": "锚点 #F5F5DC, #FAF7F0, #1A1A1A, #000000;背景：宣纸米白 `#F5F5DC`、淡雅象牙 `#FAF7F0`"
+    },
+    "typography": {
+      "title": "标题用毛笔书法体或楷书风字体，竖排或大字横排，墨黑色，气势沉稳",
+      "body": "正文用思源宋体，行距宽松，字号适中，营造呼吸感",
+      "labels": "副标题用宋体或仿宋，纤细挺拔"
+    },
+    "layout_patterns": [
+      "上下分区或对角留白，主视觉为大幅水墨意境插画",
+      "文字与插画虚实相生，文字可叠在留白处或墨色淡区",
+      "卡片用淡墨描边或宣纸纹理底，不用硬阴影",
+      "数据/列表用卷轴或简笔框装饰"
+    ],
+    "layout_usage_rule": "上下分区或对角留白，主视觉为大幅水墨意境插画",
+    "visual_elements": {
+      "allowed": "上下分区或对角留白，主视觉为大幅水墨意境插画",
+      "avoid": "不要高饱和荧光色或赛博霓虹;不要金属质感、玻璃拟物、复杂渐变;不要拥挤排版，必须保持留白"
+    },
+    "rendering_constraints": [
+      "不要高饱和荧光色或赛博霓虹",
+      "不要金属质感、玻璃拟物、复杂渐变",
+      "不要拥挤排版，必须保持留白",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和荧光色或赛博霓虹",
+      "不要金属质感、玻璃拟物、复杂渐变",
+      "不要拥挤排版，必须保持留白",
+      "不要现代无衬线粗体字与水墨混搭"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/ink-wash-jiangnan"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和荧光色或赛博霓虹",
+      "不要金属质感、玻璃拟物、复杂渐变",
+      "不要拥挤排版，必须保持留白",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

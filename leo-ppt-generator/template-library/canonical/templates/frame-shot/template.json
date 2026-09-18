@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "entity": "render-template",
+  "asset_id": "builtin:template:frame-shot",
+  "name": "frame-shot",
+  "input_fields": [
+    {
+      "name": "kicker",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "caption",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "ratio",
+      "required": false,
+      "type": "enum",
+      "enum": ["16x10", "16x9", "4x3", "3x2", "1x1", "3x4", "21x9"]
+    },
+    {
+      "name": "corners",
+      "required": false,
+      "type": "enum",
+      "enum": ["sq", "sm", "md"]
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "enum",
+      "enum": ["none", "soft", "ed"]
+    },
+    {
+      "name": "bg",
+      "required": false,
+      "type": "enum",
+      "enum": ["paper", "paper-2", "grey-1", "grid", "dot", "ink"]
+    },
+    {
+      "name": "inset",
+      "required": false,
+      "type": "enum",
+      "enum": ["none", "sub", "bal"]
+    },
+    {
+      "name": "fit",
+      "required": false,
+      "type": "enum",
+      "enum": ["contain", "cover"]
+    },
+    {
+      "name": "device",
+      "required": false,
+      "type": "enum",
+      "enum": ["none", "browser", "phone"]
+    },
+    {
+      "name": "image_src",
+      "required": true,
+      "type": "data-uri"
+    },
+    {
+      "name": "image_alt",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "page_no",
+      "required": false,
+      "type": "string"
+    }
+  ],
+  "slot_bindings": [
+    {
+      "slot": "frame-shot-caption",
+      "selector": "[data-leo-block='frame-shot-caption']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "frame-shot-header",
+      "selector": "[data-leo-block='frame-shot-header']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "frame-shot-stage",
+      "selector": "[data-leo-block='frame-shot-stage']",
+      "binding_kind": "structural"
+    },
+    {
+      "slot": "page-no",
+      "selector": "[data-leo-block='page-no']",
+      "binding_kind": "structural"
+    }
+  ],
+  "theme_roles": [
+    "background",
+    "surface",
+    "text",
+    "primary",
+    "on_primary",
+    "muted",
+    "border",
+    "accent"
+  ],
+  "dependencies": [
+    "builtin:layout:frame-shot"
+  ],
+  "layout_profiles": [
+    "builtin:layout:frame-shot"
+  ],
+  "lane": "render:html",
+  "notes": "机械迁移：HTML 仍含硬编码色/字体，待 U5 切换主题变量"
+}

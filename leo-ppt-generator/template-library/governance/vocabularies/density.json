@@ -1,0 +1,50 @@
+{
+  "kind": "vocabulary",
+  "schema_version": 1,
+  "id": "density",
+  "description": "密度固定档位：U9 盘点现有 brief 自由文本（zen 系）并登记确定映射；禁止'高可扫读'等自由文本直接执行（§8.2）",
+  "tiers": [
+    {
+      "id": "very-low",
+      "label_zh": "极低（禅意留白）"
+    },
+    {
+      "id": "low",
+      "label_zh": "低"
+    },
+    {
+      "id": "low-medium",
+      "label_zh": "中低"
+    },
+    {
+      "id": "balanced",
+      "label_zh": "均衡"
+    },
+    {
+      "id": "medium-high",
+      "label_zh": "中高"
+    },
+    {
+      "id": "high",
+      "label_zh": "高（密集数据）"
+    }
+  ],
+  "legacy_text_mapping": {
+    "very low": "very-low",
+    "very low, meditative": "very-low",
+    "low": "low",
+    "low-to-medium": "low-medium",
+    "low-medium": "low-medium",
+    "medium": "balanced",
+    "balanced": "balanced",
+    "medium-high": "medium-high",
+    "high": "high",
+    "high 扫读": "high",
+    "高可扫读": "high",
+    "低密度": "low",
+    "中低密度": "low-medium",
+    "均衡": "balanced",
+    "高密度": "high"
+  },
+  "mapping_note": "未列出的自由文本不得直接执行；U3 逐项审阅时归档到固定档或明确 adaptation_gaps"
+}

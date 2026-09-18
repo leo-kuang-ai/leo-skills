@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:写实摄影风",
+  "name": "写实摄影风",
+  "aliases": [
+    "photoreal风",
+    "纪实摄影风",
+    "真实照片风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/05_来源_awesome-gpt-image-2/借鉴新增/写实摄影风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "realistic photography, controlled camera/lens/light/film grain, documentary realism, credible imperfection, cinematic feel; street-documentary subset adds specific instant + motion blur + anti-staged authenticity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 6）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "photoreal风",
+      "纪实摄影风",
+      "真实照片风"
+    ],
+    "best_for": "人像、街拍、商品摄影和电影感写实，需要控制机位/镜头/光源/胶片质感；街头纪实强调具体瞬间与反摆拍可信度",
+    "visual_direction": "realistic photography, controlled camera/lens/light/film grain, documentary realism, credible imperfection, cinematic feel; street-documentary subset adds specific instant + motion blur + anti-staged authenticity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "photographic scene / real street",
+      "composition": "机位 + 镜头 + 光源 + 质感 + 具体瞬间",
+      "density": "photographic"
+    },
+    "color_palette": {
+      "primary": "film-tone charcoal #2B2E33 / natural light",
+      "secondary": "muted urban grays #8E9299 / natural tones #B8A98F",
+      "accent": "one subtle warm highlight #C9A36A",
+      "neutral": "near-black #1A1C1F, natural grays #6E7278",
+      "rule": "纪实真实;避免过度磨皮与摆拍"
+    },
+    "typography": {
+      "title": "minimal caption-style (Helvetica / Arial)",
+      "body": "sparse",
+      "labels": "exif/caption/location tags (Courier mono)",
+      "text_quality": "exact, believable"
+    },
+    "layout_patterns": [
+      "人像/街拍",
+      "商品摄影",
+      "胶片质感",
+      "街头纪实",
+      "电影感"
+    ],
+    "layout_usage_rule": "指定机位、镜头、光源、质感、背景和动作;加入可信小瑕疵增强纪实感;商业美妆之外避免过度磨皮。街头纪实:描述具体瞬间、机位高度、运动模糊和街景,加入反摆拍/反棚拍限制,让事件可信。",
+    "layout_blueprints": [
+      {
+        "name": "摄影页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "主体/瞬间"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "机位/时间/地点"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "controlled camera, film grain, documentary realism, specific instant, motion blur",
+      "avoid": "过度磨皮, 摆拍感, 画面过于干净"
+    },
+    "rendering_constraints": [
+      "镜头/光线/胶片控制。",
+      "可信小瑕疵增强纪实。",
+      "街头瞬间具体、反摆拍。"
+    ],
+    "reference": "awesome-gpt-image-2 · realistic-photography + street-accident-moment"
+  },
+  "constraints": {
+    "negative": [
+      "镜头/光线/胶片控制。",
+      "可信小瑕疵增强纪实。",
+      "街头瞬间具体、反摆拍。"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

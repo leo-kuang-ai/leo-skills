@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "entity": "image-recipe",
+  "asset_id": "builtin:recipe:body-basic",
+  "name": "完整表达图片页",
+  "version": 1,
+  "lane": "image",
+  "layout_profiles": [
+    "builtin:layout:body-basic"
+  ],
+  "slot_map": {
+    "bullets": {
+      "content_type": "points",
+      "projection": "items"
+    },
+    "chart": {
+      "content_type": "chart",
+      "projection": "structures"
+    }
+  },
+  "canvas": {
+    "width": 2560,
+    "height": 1440
+  },
+  "provider": {
+    "adapter": "openai-compatible",
+    "capability": "generate"
+  },
+  "required_data_projection": [
+    "claim",
+    "items",
+    "structures",
+    "expression",
+    "numbers",
+    "required_text"
+  ],
+  "prompt_skeleton": "生成一张管理层演示页，16:9。完整保留正文、数字、单位、限定词和不确定性。表达关系与阅读顺序必须可见，禁止用装饰性并排替代关系。\n正文与事实：{content}\n表达合同：{expression}\n统一主题：{theme}\n结构与槽位：{layout}",
+  "probe_evidence_ref": "evidence/capability-receipts.json"
+}

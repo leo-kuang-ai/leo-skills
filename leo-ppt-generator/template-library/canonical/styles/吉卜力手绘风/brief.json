@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:吉卜力手绘风",
+  "name": "吉卜力手绘风",
+  "aliases": [
+    "吉卜力手绘风",
+    "吉卜力",
+    "Ghibli",
+    "宫崎骏",
+    "吉卜力风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/吉卜力手绘风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术手绘",
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "ghibli hand-painted animation scenery, warm nostalgic watercolor fields with teal-green brush titles and sage botanical margins, gentle storybook calm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "吉卜力手绘风",
+      "吉卜力",
+      "Ghibli",
+      "宫崎骏",
+      "吉卜力风"
+    ],
+    "best_for": "温暖治愈的吉卜力动画手绘风格,自然气息与童话感;适合自然教育/儿童内容/治愈叙事",
+    "visual_direction": "ghibli hand-painted animation scenery, warm nostalgic watercolor fields with teal-green brush titles and sage botanical margins, gentle storybook calm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FDFAF3 (吉卜力手绘风底)",
+      "composition": "纸纹底 + 角落手绘植物装饰 + 温暖叙事排版",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#2C5D63(森青标题锚)",
+      "secondary": "#A3B8A1(鼠尾草绿)",
+      "accent": "#8FBC8F(叶绿点缀)",
+      "neutral": "#4A443D(暖褐文字)",
+      "rule": "锚点 #2C5D63, #A3B8A1, #8FBC8F, #4A443D;来源:LandPPT html_template CSS 实测 token;温暖治愈的吉卜力动画手绘风格，充满自然气息和童话感"
+    },
+    "typography": {
+      "title": "标题用 Segoe Print 手写感,森青着色",
+      "body": "正文 Georgia/思源宋体,暖褐色",
+      "labels": "圆润小字,克制用色"
+    },
+    "layout_patterns": [
+      "纸纹底 + 角落植物/星光手绘装饰",
+      "标题手写体青绿色,下衬双线",
+      "内容区卡片奶油底圆角,柔和阴影",
+      "图文以横向场景带编排"
+    ],
+    "layout_usage_rule": "纸纹底 + 角落植物/星光手绘装饰",
+    "visual_elements": {
+      "allowed": "纸纹底 + 角落手绘植物装饰 + 温暖叙事排版",
+      "avoid": "不要锐利科技感线条;不要高饱和荧光色"
+    },
+    "rendering_constraints": [
+      "不要锐利科技感线条",
+      "不要高饱和荧光色",
+      "不要深黑大底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要锐利科技感线条",
+      "不要高饱和荧光色",
+      "不要深黑大底"
+    ],
+    "reference": "GitHub: LandPPT · template_examples/吉卜力风.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要锐利科技感线条",
+      "不要高饱和荧光色",
+      "不要深黑大底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:电影感演讲风",
+  "name": "电影感演讲风",
+  "aliases": [
+    "Cinematic Keynote Deck",
+    "cinematic keynote",
+    "影院演讲"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/电影感演讲风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "cinematic keynote on a pure black stage, one giant key visual per slide with minimal light-weight text, single amber accent, disciplined rhythm closing with a summary slide"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Cinematic Keynote Deck",
+      "cinematic keynote",
+      "影院演讲"
+    ],
+    "best_for": "纯黑影院级一页一巨幕的克制演讲;适合高规格发布会/品牌叙事/年度盛典",
+    "visual_direction": "cinematic keynote on a pure black stage, one giant key visual per slide with minimal light-weight text, single amber accent, disciplined rhythm closing with a summary slide",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#000000、#0E0E0E(变体锚)",
+      "composition": "纯黑舞台一页一大视觉,细字重大字,琥珀一点强调",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#000000(纯黑舞台)",
+      "secondary": "#0E0E0E(次级面板)",
+      "accent": "#E8B341(琥珀唯一强调)",
+      "neutral": "#F5F5F7(主文字白)"
+    },
+    "typography": {
+      "title": "Inter 300 64pt,tracking -0.02em",
+      "body": "Inter 400 20pt 级",
+      "labels": "Inter 400 琥珀小字刻度"
+    },
+    "layout_patterns": [
+      "纯黑 #000000 底,一页一大视觉 + 少量文字",
+      "细字重(300)大号无衬线,文本 ≤3 行",
+      "琥珀 #E8B341 唯一强调(KPI/刻度)",
+      "结尾 summary 页收敛全 deck"
+    ],
+    "layout_usage_rule": "纯黑 #000000 底,一页一大视觉 + 少量文字",
+    "visual_elements": {
+      "allowed": "纯黑舞台一页一大视觉,细字重大字,琥珀一点强调",
+      "avoid": "不要灰/藏青/CSS 渐变底——必须纯黑; 不要项目符号列表填页"
+    },
+    "rendering_constraints": [
+      "不要灰/藏青/CSS 渐变底——必须纯黑",
+      "不要项目符号列表填页",
+      "不要第二强调色或彩色正文",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要灰/藏青/CSS 渐变底——必须纯黑",
+      "不要项目符号列表填页",
+      "不要第二强调色或彩色正文"
+    ],
+    "paired_illustration": {
+      "family": "photographic",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD27 Cinematic Keynote Deck"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要灰/藏青/CSS 渐变底——必须纯黑",
+      "不要项目符号列表填页",
+      "不要第二强调色或彩色正文",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

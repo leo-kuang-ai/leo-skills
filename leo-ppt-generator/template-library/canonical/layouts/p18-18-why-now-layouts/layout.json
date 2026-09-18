@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p18-18-why-now-layouts",
+  "name": "Why Now",
+  "aliases": [
+    "P18"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "points": {
+      "region": "content",
+      "desc": "论点列（标签 + 标题 + 段落 + 底部巨数）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "point_desc": {
+      "region": "content",
+      "desc": "每论点段落",
+      "max_chars": 50,
+      "chars_per_line": 14,
+      "max_lines": 3
+    },
+    "point_stat": {
+      "region": "content",
+      "desc": "每论点底部巨数（末列蓝强调）",
+      "max_chars": 3,
+      "chars_per_line": 3,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部大标题；中段 3 列（t-cat 标签 + 一句标题 + 段落）；列底各一个 8.4vw 巨数（末列 IKB 蓝强调）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/18_Why_Now.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

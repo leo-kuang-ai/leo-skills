@@ -4,8 +4,8 @@
 - 执行:主持人 + 6 个场景 agent(两波×3 并行),全流程真实执行——母版 → `style render
   --materialize` 确定性注入 → 样张对抗式自审 → `image prepare` → 逐页真实 gpt-image-2
   生成(2560×1440)→ `image record` → `image assemble` → PPTX 机检 → 主持人独立读图抽检
-- 产物:`leo-ppt-workspace/eval-6ind-0829/deliveries/` 六份 PPTX(各 6 页 + 6 notes);
-  方案与逐景裁决见同目录 `EVAL-PLAN.md`、`verdicts/`
+- 产物:六份 PPTX(各 6 页 + 6 notes);方案与逐景裁决同存 git-ignored 工作区
+  (该工作区产物已于 2026-09-11 清理)
 - 预算实耗:37 张真实生成(含冒烟),单页 26-90 秒;6 agent 合计约 2.5 小时 wall time
 
 ## 一、总分:76/84(90.5%)
@@ -88,5 +88,5 @@ launcher 会设置;错误信息不提示该因,首次使用者易困。
 
 - 本报告的 D5 视觉结论 = agent 逐页对抗式自审 + 主持人独立抽检(6 封面 + P21/P9 共
   8 张)双重确认;OCR 机检、PowerPoint 桌面打开、投屏与人工审美验收未执行(not-run)。
-- 六份 PPTX 交付于 `leo-ppt-workspace/eval-6ind-0829/deliveries/`(git-ignored 工作区),
+- 六份 PPTX 交付于 git-ignored 工作区(产物已于 2026-09-11 清理),
   结构机检 6×(slides=6, notes=6, media=6)全部通过。

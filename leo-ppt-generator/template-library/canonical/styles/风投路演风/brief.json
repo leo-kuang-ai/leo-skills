@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:风投路演风",
+  "name": "风投路演风",
+  "aliases": [
+    "风投路演",
+    "Pitch Deck Vc",
+    "pitch",
+    "vc",
+    "融资",
+    "路演",
+    "pitch-deck-vc"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/质感专业/风投路演风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业",
+      "质感专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "VC pitch deck white, oversized indigo numerals on clean white, three-line-per-page bold investor storytelling"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "风投路演",
+      "Pitch Deck Vc",
+      "pitch",
+      "vc",
+      "融资",
+      "路演",
+      "pitch-deck-vc"
+    ],
+    "best_for": "蓝紫渐变在白底绽放，每一个数字都在说服投资人;适合融资路演/产品发布/商业汇报",
+    "visual_direction": "VC pitch deck white, oversized indigo numerals on clean white, three-line-per-page bold investor storytelling",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF→#F5F3FF→#EDE9FE",
+      "composition": "大留白是核心——每页只传达一个关键信息",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1E1B4B(主色/标题锚)",
+      "secondary": "#4338CA(辅助色)",
+      "accent": "#7C3AED(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #1E1B4B, #4338CA, #7C3AED, #6366F1;标题 #1e1b4b 深靛、正文 #4338ca 靛蓝，强调色 #7c3aed 紫色与 #6366f1 蓝紫是渐变的灵魂"
+    },
+    "typography": {
+      "title": "思源黑体 Heavy / Inter;现代无衬线字体，大字号，标题直接有力",
+      "body": "正文精练，每页不超过三行文字",
+      "labels": "数字要大、要粗、要一眼看到"
+    },
+    "layout_patterns": [
+      "大留白是核心",
+      "大数字、短标题、清晰图表",
+      "蓝紫渐变只用在标题或分隔线上，不喧宾夺主"
+    ],
+    "layout_usage_rule": "大留白是核心——每页只传达一个关键信息",
+    "visual_elements": {
+      "allowed": "大留白是核心——每页只传达一个关键信息",
+      "avoid": "不要使用密集内容或小字;不要用超过三种颜色;不要让动画分散对数字的注意力"
+    },
+    "rendering_constraints": [
+      "不要使用密集内容或小字",
+      "不要用超过三种颜色",
+      "不要让动画分散对数字的注意力",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要使用密集内容或小字",
+      "不要用超过三种颜色",
+      "不要让动画分散对数字的注意力",
+      "不要用暗色背景，保持白底的通透"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/pitch-deck-vc"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior+lexical (U3)"
+  },
+  "constraints": {
+    "negative": [
+      "不要使用密集内容或小字",
+      "不要用超过三种颜色",
+      "不要让动画分散对数字的注意力",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

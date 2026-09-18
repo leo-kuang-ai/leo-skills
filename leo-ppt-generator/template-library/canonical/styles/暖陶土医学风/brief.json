@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:暖陶土医学风",
+  "name": "暖陶土医学风",
+  "aliases": [
+    "暖陶土医学风",
+    "暖陶土",
+    "暖陶土医学",
+    "terracotta medical"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/暖陶土医学风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "warm terracotta medical academic, ivory-cream ground with clay-brown titles and slate-blue wave accents, gentle cell aesthetics meets rigorous reporting"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "暖陶土医学风",
+      "暖陶土",
+      "暖陶土医学",
+      "terracotta medical"
+    ],
+    "best_for": "暖陶土细胞美学与严谨科研排版结合;适合生物医学/生命科学/临床研究/实验医学汇报",
+    "visual_direction": "warm terracotta medical academic, ivory-cream ground with clay-brown titles and slate-blue wave accents, gentle cell aesthetics meets rigorous reporting",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F0E6→#FBF6EF→#F3E4D4 (暖陶土医学风底)",
+      "composition": "暖色学术 + 柔和细胞美学:象牙白底 + 陶土棕标题 + 大面积留白严格栅格",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#B45A3C(暖陶土棕/标题锚)",
+      "secondary": "#25323B(深蓝灰辅助)",
+      "accent": "#C9825F(铜橙点缀)",
+      "neutral": "#1F292E(近黑蓝灰文字)",
+      "rule": "锚点 #B45A3C, #25323B, #C9825F, #1F292E;来源:源文件色板原文直迁;为 GPT Image 2 提供暖陶土色生命科学医学学术 PPT 的全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "宋体/明朝体 Bold-High 高对比衬线标题,笔画清晰锋利",
+      "body": "思源黑体 Regular,行距舒展",
+      "labels": "窄体无衬线大写英文小号辅助,陶土棕线性图标"
+    },
+    "layout_patterns": [
+      "大面积留白 + 左对齐信息层级 + 严格栅格",
+      "角落暖棕有机曲线色块与深蓝灰波浪色块",
+      "细胞粒子/分子连线/点阵/细弧线轨迹低调装饰",
+      "圆形描边外框医学科研图标,单色线性"
+    ],
+    "layout_usage_rule": "大面积留白 + 左对齐信息层级 + 严格栅格",
+    "visual_elements": {
+      "allowed": "暖色学术 + 柔和细胞美学:象牙白底 + 陶土棕标题 + 大面积留白严格栅格",
+      "avoid": "不要深色背景或霓虹赛博;不要装饰压过证据内容"
+    },
+    "rendering_constraints": [
+      "不要深色背景或霓虹赛博",
+      "不要装饰压过证据内容",
+      "不要过度拥挤的数据区",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要深色背景或霓虹赛博",
+      "不要装饰压过证据内容",
+      "不要过度拥挤的数据区",
+      "不要虚构医院/大学名称或伪参考文献"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/008_暖陶土细胞医学学术PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要深色背景或霓虹赛博",
+      "不要装饰压过证据内容",
+      "不要过度拥挤的数据区",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

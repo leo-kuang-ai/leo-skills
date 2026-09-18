@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:公益组织风",
+  "name": "公益组织风",
+  "aliases": [
+    "公益风",
+    "非营利风",
+    "社会组织风",
+    "NGO风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/政务公共/公益组织风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "human-centered nonprofit style, warm documentary tone, sincere photography-led pages, simple impact infographics, clear calls to action, hopeful and evidence-based"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "公益风",
+      "非营利风",
+      "社会组织风",
+      "NGO风"
+    ],
+    "best_for": "非营利与社会影响内容,需要真诚温暖、证据驱动的行动号召叙事",
+    "visual_direction": "human-centered nonprofit style, warm documentary tone, sincere photography-led pages, simple impact infographics, clear calls to action, hopeful and evidence-based",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FBF7F0 暖米白底,柔和分区,少量留白承载情绪",
+      "composition": "纪实照片 + 影响力数字 + 行动号召三段式",
+      "density": "medium, 一页一个故事或一组数字"
+    },
+    "color_palette": {
+      "primary": "#FBF7F0(暖米白底)配 #33261E(深咖文字锚)",
+      "secondary": "#F0E1D2(陶沙面板)",
+      "accent": "#C75B39(陶土橙红主强调),#3E7C5B(希望绿仅用于正向成果)",
+      "neutral": "#8A7B6E(暖褐灰注释)",
+      "rule": "暖调双语义色:陶土=需求与紧迫,绿=成效与希望;禁冷灰商务模板"
+    },
+    "typography": {
+      "title": "人文衬线(思源宋体/Georgia)标题,真诚不夸张",
+      "body": "思源黑体正文,短句为主",
+      "labels": "受益人数/覆盖地区数据标签(DIN 数字)"
+    },
+    "layout_patterns": [
+      "故事封面页:纪实大图 + 一句主张",
+      "影响力页:大数字 + 受益人故事小卡",
+      "项目进展页:时间线 + 里程碑照片",
+      "行动号召页:捐赠/加入方式 + 透明度承诺"
+    ],
+    "layout_usage_rule": "人物与故事优先,数字服务故事;每页一个情绪落点",
+    "visual_elements": {
+      "allowed": "纪实摄影、手绘小图标、暖色数据卡、时间线、简明信息图",
+      "avoid": "悲情贩卖、摆拍感、冷灰企业模板、夸张煽情字体"
+    },
+    "rendering_constraints": [
+      "纪实感摄影优先,人物呈现有尊严",
+      "暖调双语义色,禁悲情滤镜",
+      "不虚构受益数据与善款流向"
+    ],
+    "negative_prompt": [
+      "不要悲情贩卖或摆拍感人物图",
+      "不要冷灰商务模板腔",
+      "不要虚构影响力数据与善款数字"
+    ],
+    "reference": "GitHub: awesome-ppt-skills · theme-style-prompt-library（Nonprofit/Social Impact,思想级改写）"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "纪实感摄影优先,人物呈现有尊严",
+      "暖调双语义色,禁悲情滤镜",
+      "不虚构受益数据与善款流向"
+    ]
+  }
+}

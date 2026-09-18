@@ -1,0 +1,170 @@
+{
+  "html": [
+    {
+      "artifacts": {
+        "negative": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/independent/negative.png",
+          "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+        },
+        "positive": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/independent/positive.png",
+          "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+        }
+      },
+      "asset_id": "builtin:layout:body-basic",
+      "evidence_set_digest": "a96172f659060b4dfd821346f13829aa214be47ce887ff8aa4375c800b740cf8",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "qualification": "provisional",
+      "relation": "independent"
+    },
+    {
+      "artifacts": {
+        "negative": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/comparison/negative.png",
+          "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+        },
+        "positive": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/comparison/positive.png",
+          "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+        }
+      },
+      "asset_id": "builtin:layout:p25-spec-table",
+      "evidence_set_digest": "b33feae28e13498d67735cdfc2eddfca721b419b5a23267001bb7f63baa0997b",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "qualification": "provisional",
+      "relation": "comparison"
+    },
+    {
+      "artifacts": {
+        "negative": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/trend/negative.png",
+          "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+        },
+        "positive": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/trend/positive.png",
+          "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+        }
+      },
+      "asset_id": "builtin:layout:p25-spec-table",
+      "evidence_set_digest": "63e86b2ad39e1a4efe81cf7502ee9b8d73f8be3a2bed99728043d6761e201424",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "qualification": "provisional",
+      "relation": "trend"
+    },
+    {
+      "artifacts": {
+        "negative": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/process/negative.png",
+          "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+        },
+        "positive": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/process/positive.png",
+          "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+        }
+      },
+      "asset_id": "builtin:layout:body-basic",
+      "evidence_set_digest": "074eaf2baf4d259aa8e0d7fec44393b7f7bb39911876fb92788b7bfa917cf9a2",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "qualification": "provisional",
+      "relation": "process"
+    },
+    {
+      "artifacts": {
+        "negative": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/causal/negative.png",
+          "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+        },
+        "positive": {
+          "path": "evidence/probes/expression-first-output-v11-table-recipe/causal/positive.png",
+          "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+        }
+      },
+      "asset_id": "builtin:layout:body-basic",
+      "evidence_set_digest": "267b65035e242669661172a5b7b9cc128aea7b9512646b115053653a0491349e",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "qualification": "provisional",
+      "relation": "causal"
+    }
+  ],
+  "image": [
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "provider_calls": 0,
+  "publication_admitted": false,
+  "report": "template-library/evidence/probes/expression-first-output-v11-table-recipe/report.json",
+  "status": "blocked"
+}

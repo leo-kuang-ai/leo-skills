@@ -20,6 +20,12 @@ channels:
     group: domestic
     display_name: 乾行AI
     featured: true
+    # gpt-image-1 服务端仅接受 1024x1024 / 1536x1024 / 1024x1536 / auto 枚举档
+    # （无 16:9 档）；用 min/max/multiples 近似框住三档，把 1792x1008 等 16:9
+    # 请求在客户端拦下，避免任务进行到真实生成才被服务端 400（实测教训：
+    # 比例合同要求 16:9，该渠道无法满足）。
+    param_compat:
+      size: {multiples_of: 512, min_edge: 1024, max_edge: 1536, max_pixels: 2359296}
     portal: https://fast.qianxing.us.ci
     key_page: https://fast.qianxing.us.ci
     credential_environment: QIANXING_API_KEY

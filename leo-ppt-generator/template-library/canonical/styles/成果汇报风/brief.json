@@ -1,0 +1,165 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:成果汇报风",
+  "name": "成果汇报风",
+  "aliases": [
+    "周报月报风",
+    "年终总结风",
+    "晋升述职风",
+    "高管汇报风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/汇报述职/成果汇报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "achievement-report style, clear done-value-next arc, evidence-linked, project-credible executive, stage-gate clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "周报月报风",
+      "年终总结风",
+      "晋升述职风",
+      "高管汇报风"
+    ],
+    "variants": [
+      "周报月报风: 同板场景变体，周期进展模板化（done/doing/risks/next）",
+      "年终总结风: 同板场景变体，年度成果回顾、问题与明年规划",
+      "晋升述职风: 同板场景变体，能力、成果、影响与潜力的晋升叙事",
+      "高管汇报风: 同板场景变体，决策导向、战略清晰的高管视角"
+    ],
+    "best_for": "阶段性成果汇报,清晰呈现做完什么、带来什么价值、下一步是什么",
+    "visual_direction": "achievement-report style, clear done-value-next arc, evidence-linked, project-credible executive, stage-gate clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light gray, generous",
+      "composition": "results-first: overview → detail → next step",
+      "density": "medium, structured"
+    },
+    "color_palette": {
+      "primary": "professional blue #2563EB / slate #334155, white",
+      "secondary": "calm teal #14B8A6, light gray #E5E7EB",
+      "accent": "one accent #0D9488 for highlights",
+      "neutral": "near-black #1F2937, slate #64748B, hairline #E5E7EB",
+      "rule": "restrained, evidence-forward; low saturation"
+    },
+    "typography": {
+      "title": "clear authoritative sans (Inter / 思源黑体)",
+      "body": "concise evidence body",
+      "labels": "metric/date tags",
+      "text_quality": "exact figures, formal tone"
+    },
+    "layout_patterns": [
+      "done-what",
+      "value/impact metrics",
+      "blocker & risk",
+      "next milestone"
+    ],
+    "layout_usage_rule": "Done → value → next; evidence-linked and stage-gate clear.",
+    "layout_blueprints": [
+      {
+        "name": "成果页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "项目/阶段"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "已完成",
+              "价值",
+              "里程碑"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "下一步页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 2,
+            "labels": [
+              "风险",
+              "阻塞"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "labels": [
+              "目标",
+              "计划"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "KPI cards, timeline, milestone bars, evidence blocks, progress charts",
+      "avoid": "cartoon, clutter, marketing hype, random stock, over-decoration"
+    },
+    "rendering_constraints": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ],
+    "reference": "GitHub: 成果汇报 · 汇报惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Results-first and structured; evidence over fluff.",
+      "One accent for key results; restrained professional tone.",
+      "Exact figures; no invented metrics, logos or watermarks."
+    ]
+  }
+}

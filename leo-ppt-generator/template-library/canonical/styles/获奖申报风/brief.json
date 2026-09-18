@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:获奖申报风",
+  "name": "获奖申报风",
+  "aliases": [
+    "申报风",
+    "评奖风",
+    "award风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/学术求职/获奖申报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "award-application style, highlight-winning results, credible value claim, reviewable evidence, persuasive-but-measured, impressive documented achievement"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "申报风",
+      "评奖风",
+      "award风"
+    ],
+    "best_for": "获奖申报,需要突出成果亮点、价值与评审依据,可信有力",
+    "visual_direction": "award-application style, highlight-winning results, credible value claim, reviewable evidence, persuasive-but-measured, impressive documented achievement",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "clean / formal-measured",
+      "composition": "成果 → 价值 → 依据 → 佐证",
+      "density": "medium, measured"
+    },
+    "color_palette": {
+      "primary": "navy #1F3A5F / slate, white",
+      "secondary": "cool gray #94A3B8, light blue #93C5FD",
+      "accent": "one gold #C9A227 / teal #14B8A6 accent",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "measured, credible, impressive; not flashy"
+    },
+    "typography": {
+      "title": "clear authoritative sans (Georgia / 思源宋体)",
+      "body": "concise value body",
+      "labels": "award/tag labels",
+      "text_quality": "accurate, no overclaim"
+    },
+    "layout_patterns": [
+      "main achievement",
+      "value & impact",
+      "basis & evidence",
+      "support/endorsement"
+    ],
+    "layout_usage_rule": "Highlight achievement and value with reviewable evidence; measured and credible.",
+    "layout_blueprints": [
+      {
+        "name": "成果页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "申报主题"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "依据页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "价值"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "证据",
+              "影响",
+              "佐证"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "achievement blocks, evidence callouts, value metrics, measured accents",
+      "avoid": "flashy, clutter, exaggeration, unsupported claims"
+    },
+    "rendering_constraints": [
+      "Measured, credible, impressive.",
+      "Achievement, value, evidence, support.",
+      "Accurate; no invented awards or metrics."
+    ],
+    "reference": "GitHub: 获奖申报 · 申报评审惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Measured, credible, impressive.",
+      "Achievement, value, evidence, support.",
+      "Accurate; no invented awards or metrics."
+    ]
+  }
+}

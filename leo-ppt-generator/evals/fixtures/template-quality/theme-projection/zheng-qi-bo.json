@@ -1,0 +1,32 @@
+{
+  "kind": "theme-projection-fixture",
+  "schema_version": 1,
+  "style_name": "蒸汽波风",
+  "brief_ref": "canonical/styles/蒸汽波风/brief.json",
+  "notes": "高饱和霓虹（粉/紫/青）；浅色底不可行——明暗约束与主题角色硬检查直接冲突，只能投影为 dark",
+  "candidate": {
+    "modes": {
+      "dark": {
+        "background": "#12081F",
+        "surface": "#1E1030",
+        "text": "#F1E8FF",
+        "primary": "#C084FC",
+        "on_primary": "#12081F",
+        "muted": "#A99BC4",
+        "border": "#3D2A5C",
+        "accent": "#F472B6",
+        "warn": "#FBBF24"
+      }
+    }
+  },
+  "field_sources": {
+    "background": "inferred:'深紫夜空' → 深紫近黑",
+    "primary": "inferred:霓虹紫主视觉（HEX 锚存在，语义角色化）",
+    "mode": "inferred:高饱和霓虹配色在浅底不成立 → 仅 dark（缺 light 为显式缺口）",
+    "density": "explicit:映射 medium-high"
+  },
+  "adaptation_gaps": [
+    "light_mode_not_projectable",
+    "fonts_missing"
+  ]
+}

@@ -15,7 +15,7 @@ status: active
 
 - **目标**：把已裁决的第二轮上游吸收（file-github 语料、152 仓库漏斗筛选、20 项目深读、44 候选合并）落进 evidence-first-writing：P0 地基层（判官/脚本/测试 8 项）、P1 增补层（references 既有文件增补约 20 项 + 工具登记）、P2 合同层（3 项）+ 全量回归。
 - **推荐路径**：判官先行 → 脚本 → references 增补 → 合同改动 → 一次全量回归；单元按文件所有权分组、批次串行落地。
-- **权威层级**：用户两次裁决（三批全做；合同口径 3+6）为最高输入；深读报告（`upstream-absorption-workspace/deepread/T1-T6`）为机制证据；当前技能源文件为对接面事实源。
+- **权威层级**：用户两次裁决（三批全做；合同口径 3+6）为最高输入；深读报告（原存 git-ignored 工作区，已于 2026-09-11 清理）为机制证据；当前技能源文件为对接面事实源。
 - **决策焦点**：P2 三项合同改动的受控试验设计（post-publish 结构锚对 flash 级模型 0/8 失败的首次干预）与失败回退路径（转脚本裁决）。
 - **验证焦点**：判官收紧的历史响应重放 100% 接受 + 对抗样本 100% 拒绝；每批聚焦评测；P2 收尾全量回归（存量 33 case + 本轮新增 case，通过线口径见 Verification Contract）。
 - **最大风险/边界**：references 膨胀与合同回归。边界：不新建 references 文件、不改 canonical route 语义、数值过线门禁禁入。
@@ -83,7 +83,7 @@ status: active
 
 - 渠道容忍矩阵落地（avoid-ai-writing，实体表已定位其 SKILL.md L665-703）。
 - STORM pip 桥升级评估（deep 档可选执行器）。
-- 卡片池精华：ALwrity claim 三分类、FAROS 证据六态枚举、SurveyX NLI 引用核验、yuwen-publish-precheck 两层门禁、social-account-doctor H1-H8、writing-helper voice 四维度、neuro-book 承诺账本等（完整清单见 `upstream-absorption-workspace/04-phase1-summary.md`）。
+- 卡片池精华：ALwrity claim 三分类、FAROS 证据六态枚举、SurveyX NLI 引用核验、yuwen-publish-precheck 两层门禁、social-account-doctor H1-H8、writing-helper voice 四维度、neuro-book 承诺账本等（完整清单原存 git-ignored 工作区 phase1 汇总，已于 2026-09-11 清理）。
 
 ---
 
@@ -115,7 +115,7 @@ flowchart TB
 
 ### Evidence & Limitations
 
-- **证据源**：机制证据全部来自六份深读报告（`upstream-absorption-workspace/deepread/T1-T6.md`），每条候选带语料内文件路径级证据；深读时已逐一对照技能当前源文件做差集（已吸收边界见 `upstream-absorption-workspace/03-already-absorbed.md`）。语料快照 2026-08-31，152 仓库 commit 清单冻结于 `upstream-absorption-workspace/00-corpus-manifest.md`。
+- **证据源**：机制证据全部来自六份深读报告（原存 git-ignored 工作区，已于 2026-09-11 清理），每条候选带语料内文件路径级证据；深读时已逐一对照技能当前源文件做差集（已吸收边界清单同存该工作区）。语料快照 2026-08-31，152 仓库 commit 清单当时冻结于工作区语料 manifest。
 - **许可证**：可改造文本项均为 MIT/Apache-2.0（gpt-researcher、deep-research、deep-searcher、open_deep_research、node-DeepResearch、AcademicForge、claude-blog、Deep-Research-skills、last30days-skill、writing-agent、shuorenhua、sepia、qu-ai-wei、academic-humanizer、academic-paper-skills、blogger-distiller、xiaoma-durex-copywriter、marketing-os）；AI-Scientist 为非标准许可证只吸收思想（全量重写表达）；观察名单见 `04-phase1-summary.md`。
 - **限制**：评测环境为 GLM flash 代理（非真 Claude），措辞漂移按 known-issues 记档纪律处理（实质在场即不算失败）；sepia 74/18/8 为英文语料测量，迁移须标注来源与局限；R12 是受控试验而非确定性修复——在案结论表明内容追加式强化无效，结构位置式干预未试过，失败则回退脚本路径。
 

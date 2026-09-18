@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "entity": "scene-preset",
+  "asset_id": "builtin:preset:board-review",
+  "id": "board-review",
+  "name_zh": "董事会汇报",
+  "match_signals": {
+    "genre": [
+      "董事会",
+      "经营汇报",
+      "季度汇报",
+      "决算"
+    ]
+  },
+  "composition": {
+    "style": "builtin:style:CEO高级商务风",
+    "layouts": [],
+    "density": "balanced"
+  },
+  "fallbacks": {
+    "style": [
+      "builtin:style:成果汇报风",
+      "builtin:style:clean-professional"
+    ]
+  }
+}

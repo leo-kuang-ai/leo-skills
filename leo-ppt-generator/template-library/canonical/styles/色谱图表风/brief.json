@@ -1,0 +1,118 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:色谱图表风",
+  "name": "色谱图表风",
+  "aliases": [
+    "色谱风",
+    "分类色谱风",
+    "多彩图表风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/商务专业/色谱图表风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "商务专业",
+      "数据图表"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "categorical-spectrum chart language, white editorial ground where a fixed five-step categorical spectrum gives every data series its own color, big conclusion-first numbers, tidy chart grids and source rows"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "色谱风",
+      "分类色谱风",
+      "多彩图表风"
+    ],
+    "best_for": "多系列数据与市场分析内容,需要一套稳定分类色谱让每个系列有专属颜色的报告叙事",
+    "visual_direction": "categorical-spectrum chart language, white editorial ground where a fixed five-step categorical spectrum gives every data series its own color, big conclusion-first numbers, tidy chart grids and source rows",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FFFFFF 白底,#F4F5F7 浅灰面板分区",
+      "composition": "结论先行大字 + 图表主体 + 来源注释行的三段式",
+      "density": "medium-high, 图表优先,注释克制"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(白底)配 #1A1A1A(墨字锚)",
+      "secondary": "#F4F5F7(浅灰面板)",
+      "accent": "五阶分类色谱 #D93B2B/#E8842A/#EFB700/#2E9E58/#2E5FCE,每系列专属一色",
+      "neutral": "#5F6672(灰注释)与 #E6E8EB(分隔线)",
+      "rule": "色谱只给数据系列,不给装饰;同一系列跨页同色,结论字只用墨色"
+    },
+    "typography": {
+      "title": "结论式无衬线标题(MiSans/思源黑体),一句话即结论",
+      "body": "思源黑体正文,图注短句",
+      "labels": "数值/单位/来源(DIN/等宽小注)"
+    },
+    "layout_patterns": [
+      "结论页:大数字 + 一句结论 + 迷你趋势图",
+      "多系列对比页:分类色谱条形/折线 + 图例行",
+      "构成页:色谱堆叠条/环形 + 份额标注",
+      "矩阵页:二轴四象限 + 象限命名"
+    ],
+    "layout_usage_rule": "每页解释数据含义而非只摆数字;色谱语义全 deck 一致",
+    "visual_elements": {
+      "allowed": "分类色谱图表、图例行、大数字、趋势线、来源行",
+      "avoid": "假数据堆叠、财经软件感、图表过密、彩虹渐变装饰"
+    },
+    "rendering_constraints": [
+      "色谱只用于数据系列编码",
+      "每页图表数量 ≤3,图例清晰",
+      "不虚构数据与来源"
+    ],
+    "negative_prompt": [
+      "不要图表过密或假数据堆叠",
+      "不要财经软件截图感",
+      "不要把色谱用于装饰色块"
+    ],
+    "reference": "GitHub: dashi-ppt-skill · theme05（AGPL 思想级借鉴,色板本库自定,C4）"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "色谱只用于数据系列编码",
+      "每页图表数量 ≤3,图例清晰",
+      "不虚构数据与来源"
+    ]
+  }
+}

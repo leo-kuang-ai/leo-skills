@@ -900,6 +900,62 @@ class StaticAssetTests(unittest.TestCase):
         # 渲染纪律：任务视图沿用 textContent（无 innerHTML）。
         self.assertNotIn("innerHTML", js)
 
+    def test_asset_has_runs_ux_anchors(self):
+        # 生成任务视图 UX：状态色彩语义（st-* 徽章 + 行色条 data-status）、
+        # 停滞独立警示（列表 run-stale / 详情 stale-banner）、胶囊 stepper、
+        # created 任务的空网格引导。
+        js = JS_ASSET_PATH.read_text(encoding="utf-8")
+        html = ASSET_PATH.read_text(encoding="utf-8")
+        self.assertIn('"tag st-" + (item.status', js)
+        self.assertIn('"data-status": item.status', js)
+        self.assertIn("run-stale", js)
+        self.assertIn("可能停在确认门", js)
+        self.assertIn("stale-banner", js)
+        self.assertIn("role", js)
+        self.assertIn("flow-step", js)
+        self.assertIn("tag route", js)
+        self.assertIn("尚未进入逐页生成", js)
+        for anchor in (".tag.st-in_progress", ".tag.st-completed", ".tag.st-failed",
+                       ".run-row[data-status=", ".stale-banner", ".flow-arrow",
+                       ".run-stale", "#runs-list .section-head"):
+            self.assertIn(anchor, html)
+        # 卡片/列表双视图：segmented 切换 + localStorage 记忆 + 卡片栅格。
+        self.assertIn("view-toggle", js)
+        self.assertIn("leo-runs-view", js)
+        self.assertIn("run-cards", js)
+        self.assertIn("run-card", js)
+        self.assertIn("data-run-id", js)
+        self.assertIn(".run-cards", html)
+        self.assertIn(".view-toggle", html)
+        self.assertIn(".run-card", html)
+        # 列表视图为 CRM 风专业表格：表头 7 列 + 数据行同网格 + 停滞行淡橙。
+        self.assertIn("runs-table", js)
+        self.assertIn("rt-row", js)
+        self.assertIn("任务", js)
+        self.assertIn(".runs-table", html)
+        self.assertIn(".rt-row", html)
+        self.assertIn(".rt-time.stale", html)
+
+    def test_asset_has_lane_presentation_anchors(self):
+        # lane 只读呈现：页网格徽标区分本地渲染与 AI 渠道；渠道 Tab 声明
+        # render-lane 免渠道可用。枚举与 render/provenance.py RENDER_BACKENDS 对齐。
+        js = JS_ASSET_PATH.read_text(encoding="utf-8")
+        html = ASSET_PATH.read_text(encoding="utf-8")
+        self.assertIn("RENDER_LANE_LABELS", js)
+        for backend in ("render:html", "render:mermaid", "render:echarts"):
+            self.assertIn('"%s"' % backend, js)
+        self.assertIn("pg-lane", js)
+        self.assertIn("lane-render", html)
+        self.assertIn("本地渲染", js)
+        # 渲染页常显徽标；AI 页仅在混排时标渠道（displayName）。
+        self.assertIn("showImageLaneBadge", js)
+        self.assertIn("页本地渲染", js)
+        # 链路表与时间线的 backend 可读化共用映射。
+        self.assertIn("backendLabel", js)
+        # 渠道 Tab 免渠道提示（HTML 静态脚注，不依赖 JS 状态）。
+        self.assertIn("lane-note", html)
+        self.assertIn("免渠道", html)
+
     def test_asset_has_structure_anchors(self):
         text = ASSET_PATH.read_text(encoding="utf-8")
         for anchor in (

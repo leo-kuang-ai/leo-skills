@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:SaaS介绍风",
+  "name": "SaaS介绍风",
+  "aliases": [
+    "SaaS风",
+    "软件服务风",
+    "SaaS pitch"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/互联网科技/SaaS介绍风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "B2B SaaS aesthetic, credible integration value, ROI narrative, enterprise trust, clean product clarity, solution-system credibility"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "SaaS风",
+      "软件服务风",
+      "SaaS pitch"
+    ],
+    "best_for": "SaaS 产品与企业服务,需要信任、整合价值与 ROI 导向的表达",
+    "visual_direction": "B2B SaaS aesthetic, credible integration value, ROI narrative, enterprise trust, clean product clarity, solution-system credibility",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light, enterprise-clean",
+      "composition": "product + integration + value",
+      "density": "medium, enterprise"
+    },
+    "color_palette": {
+      "primary": "enterprise blue #1D4ED8 / navy, white",
+      "secondary": "light gray #E5E7EB, slate #64748B",
+      "accent": "one ROI accent #10B981",
+      "neutral": "near-black #1F2937, gray #6B7280, hairline #E5E7EB",
+      "rule": "enterprise, credible, clean; not hype"
+    },
+    "typography": {
+      "title": "clear professional sans (Inter / 思源黑体)",
+      "body": "concise, benefit-led",
+      "labels": "plan/integration tags",
+      "text_quality": "accurate product terms, no overclaim"
+    },
+    "layout_patterns": [
+      "product value hero",
+      "integration ecosystem",
+      "ROI & TCO comparison",
+      "industry solution",
+      "product UI page: card-based layout with feature/pricing cards, tag and label chips as status labels",
+      "breadcrumb hierarchy strip locating the page inside the product information architecture",
+      "one card lifted in a raised as-if-hovered highlight while the rest stay at rest — static interaction hint, no cursor arrows"
+    ],
+    "layout_usage_rule": "Enterprise trust and ROI; integrations and value over flashy features.",
+    "layout_blueprints": [
+      {
+        "name": "产品页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "产品/方案名"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "集成生态图"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "ROI 一句"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "方案页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 3,
+            "labels": [
+              "行业1",
+              "行业2",
+              "行业3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "integration diagrams, clean UI, ROI badges, enterprise accents",
+      "avoid": "cartoon, clutter, misleading claims, hype"
+    },
+    "rendering_constraints": [
+      "Credible, enterprise, value-forward.",
+      "Integrations and ROI narrative; clean and trustworthy.",
+      "Accurate product terms; no invented logos or metrics."
+    ],
+    "reference": "GitHub: SaaS 介绍 · B2B 惯例; UI 构件词表: GitHub: JimLiu/baoyu-skills(MIT,快照 6b7a2e4 2026-07-03) · baoyu-slide-deck/references/styles/notion.md(词表直引+改写)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Credible, enterprise, value-forward.",
+      "Integrations and ROI narrative; clean and trustworthy.",
+      "Accurate product terms; no invented logos or metrics."
+    ]
+  }
+}

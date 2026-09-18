@@ -1,0 +1,52 @@
+{
+  "claim_ceiling": "真实HTML正反导出；image缺真实Provider及观测，不可发布",
+  "probe_command_exit_code": 1,
+  "probe_report_status": "blocked",
+  "receipt_verification": [
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/independent",
+      "relation": "independent",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/comparison",
+      "relation": "comparison",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/trend",
+      "relation": "trend",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/process",
+      "relation": "process",
+      "status": "provisional"
+    },
+    {
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/causal",
+      "relation": "causal",
+      "status": "provisional"
+    }
+  ]
+}

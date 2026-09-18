@@ -67,15 +67,25 @@ def tool_results(transcript):
 
 
 def index_path(path, directory=False):
+    """点名查询真值源白名单（U10 后新协议，与 SKILL.md 一致）。
+
+    允许：catalog/generations/<gen>/registry.json（点名查询唯一索引真值，
+    SKILL.md「风格库点名查询」条目）与 catalog/current.json（指针）；
+    归档树的 generated 摘要仍可读（历史证据）。旧 references/styles/
+    00_索引/_INDEX.md 已随旧树退役，不再是合法入口。
+    """
     path = str(path)
     if any(part in {"..", "."} for part in path.split("/")) or any(c in path for c in "{}\\"):
         return False
-    suffix = "/references/styles/generated"
+    retired = "/template-library/reference/sources/retired-styles-tree/styles/generated"
     if directory:
-        return path.rstrip("/").endswith(suffix)
-    return path.endswith("/references/styles/00_索引/_INDEX.md") or (
-        suffix + "/" in path
-        and path.endswith(".md"))
+        return path.rstrip("/").endswith(retired)
+    if path.endswith("/template-library/catalog/current.json"):
+        return True
+    if "/template-library/catalog/generations/" in path and path.endswith("/registry.json"):
+        return True
+    return (retired + "/" in path
+            and path.endswith(".md"))
 
 
 def index_shell_read(command):
@@ -83,6 +93,9 @@ def index_shell_read(command):
     command = command.replace("2>/dev/null", "")
     if re.search(r"[$\x60<>\n]", command):
         return None
+    # SKILL.md 认可的终端适配：leo-ppt style list（resolver 只读点名查询）
+    if re.fullmatch(r"leo-ppt style list( +-{2}[\w-]+| +[^\s\"']+)*", command.strip()):
+        return True
     try:
         lexer = shlex.shlex(command, posix=True, punctuation_chars="|&;")
         lexer.whitespace_split = True
@@ -167,14 +180,15 @@ def advise_trace_errors(transcript):
             if allowed:
                 has_index_source_read = True
             else:
-                errors.append("advise 读取了索引 Markdown 白名单外文件")
+                errors.append("advise 读取了点名查询真值源白名单外文件")
         elif lower in {"grep", "search", "search_files"}:
             path = str(args.get("path", ""))
             glob = str(args.get("glob", ""))
-            if index_path(path) or (index_path(path, directory=True) and ".." not in glob.split("/") and glob.endswith(".md") and not any(c in glob for c in "{}\\")):
+            if index_path(path) or "/template-library/catalog/" in path or (
+                    index_path(path, directory=True) and ".." not in glob.split("/") and glob.endswith(".md") and not any(c in glob for c in "{}\\")):
                 has_index_source_read = True
             else:
-                errors.append("advise 搜索未限定生成 Markdown")
+                errors.append("advise 搜索未限定索引范围（catalog/归档摘要）")
         elif lower in {"mcp__codegraph__codegraph_explore", "codegraph_explore"}:
             has_navigation = True
         elif lower in {"bash", "exec_command", "shell", "run_shell_command"}:
@@ -200,27 +214,26 @@ def check(case, text, transcript):
     commands = [json.dumps(args, ensure_ascii=False) for name, args in calls if name.lower() in {"bash", "exec_command", "shell", "run_shell_command"}]
     if case in {"style-index-lookup", "style-index-long-tail", "style-index-fallback", "style-index-prompt-boundary"}:
         errors.extend(advise_trace_errors(transcript))
-        if any("/styles/" in value and "/generated/" not in value and "/00_索引/_INDEX.md" not in value for value in reads):
-            errors.append("advise 读取了索引白名单以外的风格文件")
-        if any("catalog.json" in value for value in reads):
-            errors.append("advise 读取了全量 catalog JSON")
+        if any("/canonical/styles/" in value for value in reads):
+            errors.append("advise 点名查询读取了 canonical 完整 brief（应走 registry 索引）")
         for args in searches:
             path = str(args.get("path", ""))
-            glob = str(args.get("glob", ""))
-            if "styles" in path and not (path.endswith(".md") or ("generated" in path and glob.endswith(".md"))):
-                errors.append("advise 搜索未限定生成 Markdown，可能读取完整 catalog")
+            if "/canonical/styles/" in path:
+                errors.append("advise 搜索未限定索引范围（canonical 全量扫描）")
     if case == "style-index-lookup":
         if not all(name in text for name in ("Gruvbox暗风", "终端命令行风")):
             errors.append("共享别名未报告两个真实命中")
         if not re.search(r"选择|选哪|二选一|消歧|确认|指定", text):
             errors.append("缺少消歧出口")
-        if not any("/generated/" in value for value in reads):
-            errors.append("缺少实际索引读取轨迹")
+        if not any("registry.json" in value for value in reads) \
+                and not any("--filter" in value for value in commands):
+            errors.append("缺少实际索引读取轨迹（registry 或 style list --filter）")
     if case == "style-index-long-tail":
         if "地图战略风" not in text or "流光液态风" not in text:
             errors.append("长尾名称未命中")
-        if not any("/generated/" in value for value in reads):
-            errors.append("缺少真实索引读取")
+        if not any("registry.json" in value for value in reads) \
+                and not any("--filter" in value for value in commands):
+            errors.append("缺少真实索引读取（registry 或 style list --filter）")
     if case == "style-index-fallback":
         if not re.search(r"恢复.*索引|索引.*恢复", text):
             errors.append("索引缺失未给恢复动作")

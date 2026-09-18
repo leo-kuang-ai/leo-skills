@@ -18,7 +18,7 @@
 4. ``render_previews``  渲染预览：``reports/render-preview/**``、
    ``final/render-preview/**``。
 5. ``template_style_sources`` 模板样式源：``input/**`` 中
-   style/deck-spec/theme 命名文件 + run 内 ``assets/render-templates/**``。
+   style/deck-spec/theme 命名文件 + run 内 ``template-library/canonical/templates/**``。
 
 排除项（churn，不属于交付语义）：``logs/**``、``observability/**``、
 ``run.json``、全部点文件/锁文件与符号链接。
@@ -94,12 +94,37 @@ def _iter_regular_files(directory: Path) -> list[Path]:
 
 
 def _fingerprint_map(run_root: Path, files: list[Path]) -> dict[str, str]:
-    return {
-        path.relative_to(run_root).as_posix(): sha256_file(path) for path in files
-    }
+    mapping = {}
+    for path in files:
+        if any(parent.is_symlink() for parent in (path, *path.parents)):
+            raise ReceiptError("delivery_artifact_path_invalid")
+        try:
+            relative = path.relative_to(run_root).as_posix()
+        except ValueError as exc:
+            raise ReceiptError("delivery_artifact_path_invalid") from exc
+        mapping[relative] = sha256_file(path)
+    return mapping
 
 
-def collect_fingerprints(run_root: str | Path) -> dict[str, dict[str, str]]:
+def _used_template_files(committed: dict) -> list[Path]:
+    """仅按冻结 binding 的资产身份收集模板与主题，支持 builtin/user scope。"""
+    from ..asset_resolver import AssetResolver
+    resolver = AssetResolver.from_snapshot(committed["root"] / "asset-snapshot")
+    identities = {pin["asset_id"] for bindings in committed["payload"]["bindings"].values()
+                  for binding in bindings.values() for pin in binding["effective"]["assets"]}
+    files = []
+    for identity in sorted(identities):
+        entity = resolver.resolve(identity)
+        if entity["kind"] not in {"template", "theme", "style"}:
+            continue
+        path = Path(entity["path"])
+        if not path.is_absolute():
+            path = Path(entity["trusted_root"]) / path
+        files.extend(_iter_regular_files(path.parent))
+    return files
+
+
+def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -> dict[str, dict[str, str]]:
     """采集一个 run 目录的五类指纹；缺失类别记显式空清单。"""
 
     root = Path(run_root).resolve()
@@ -116,13 +141,47 @@ def collect_fingerprints(run_root: str | Path) -> dict[str, dict[str, str]]:
         ),
     ]
 
-    input_files = _iter_regular_files(root / "input")
-    style_inputs = [
-        path for path in input_files if _STYLE_SOURCE_RE.search(path.name)
-    ]
-    plain_inputs = [
-        path for path in input_files if not _STYLE_SOURCE_RE.search(path.name)
-    ]
+    from ..application.expression_pipeline import load_committed_input, materialization_paths, ExpressionPipelineError
+    try:
+        committed = load_committed_input(root)
+    except ExpressionPipelineError as exc:
+        raise ReceiptError(exc.reason_code) from exc
+    for lane, bindings in committed["payload"]["bindings"].items():
+        for pid in bindings:
+            for path in materialization_paths(root, lane, pid):
+                if path.is_symlink() or any(parent.is_symlink() for parent in path.parents):
+                    raise ReceiptError("delivery_artifact_path_invalid")
+                if path.is_file():
+                    page_files.append(path)
+                elif not allow_missing:
+                    raise ReceiptError("delivery_materialization_missing")
+            if not allow_missing:
+                from ..content_projection import load_run_binding, verify_binding_reference
+                try:
+                    bound = load_run_binding(root, pid, backend=lane)
+                    artifact, sidecar = materialization_paths(root, lane, pid)
+                    if lane == "render:html":
+                        from .provenance import load_render_receipt, verify_receipt_matches_artifact
+                        rendered = load_render_receipt(sidecar)
+                        verify_receipt_matches_artifact(rendered, artifact)
+                        verify_binding_reference(rendered, bound["binding"])
+                    else:
+                        from ..image_deck.expression_adapter import verify_provider_export
+                        verify_provider_export(json.loads(sidecar.read_text()), root=sidecar.parent, binding=bound["binding"])
+                except (ValueError, OSError) as exc:
+                    raise ReceiptError("delivery_materialization_invalid: " + str(exc)) from exc
+    input_files = [root / "input/current.json", *_iter_regular_files(committed["root"])]
+    # 交付可附带来源及讲稿合同；它们不替代冻结表达，但修改仍须使收据失效。
+    for name in ("sources-manifest.json", "slides.json"):
+        supplemental = root / "input" / name
+        if supplemental.is_symlink():
+            raise ReceiptError("delivery_artifact_path_invalid")
+        if supplemental.is_file():
+            input_files.append(supplemental)
+    template_files = set(_used_template_files(committed))
+    template_files.update(path for path in input_files if _STYLE_SOURCE_RE.search(path.name))
+    plain_inputs = [path for path in input_files if path not in template_files]
+
 
     qa_files = [
         path
@@ -135,21 +194,18 @@ def collect_fingerprints(run_root: str | Path) -> dict[str, dict[str, str]]:
             qa_files.append(candidate)
 
     preview_files = [
+        *(_iter_regular_files(root / "previews")),
         *(_iter_regular_files(root / "reports" / "render-preview")),
         *(_iter_regular_files(root / "final" / "render-preview")),
     ]
 
-    template_files = [
-        *style_inputs,
-        *(_iter_regular_files(root / "assets" / "render-templates")),
-    ]
 
     return {
         "page_artifacts": _fingerprint_map(root, page_files),
         "local_assets": _fingerprint_map(root, plain_inputs),
         "qa_reports": _fingerprint_map(root, qa_files),
         "render_previews": _fingerprint_map(root, preview_files),
-        "template_style_sources": _fingerprint_map(root, template_files),
+        "template_style_sources": _fingerprint_map(root, sorted(template_files)),
     }
 
 
@@ -164,6 +220,51 @@ def _run_identity(run_root: Path) -> dict[str, Any]:
         "run_id": value.get("run_id") if isinstance(value.get("run_id"), str) else None,
         "route": value.get("route") if isinstance(value.get("route"), str) else None,
     }
+
+
+def content_binding_summary(run_root: str | Path) -> dict | None:
+    """只从提交代派生所有 lane 的摘要；不重新选择，不从主 lane 外推其他 lane。"""
+    root = Path(run_root).resolve()
+    from ..application.expression_pipeline import load_committed_input, materialization_paths, ExpressionPipelineError
+    from ..content_projection import verify_binding_reference
+    try:
+        committed = load_committed_input(root)
+        payload = committed["payload"]
+        pack = payload["pack"]
+        summary = {"content_digest": pack["content_digest"], "page_ids": [p["page_id"] for p in pack["pages"]],
+            "page_count": len(pack["pages"]), "input_generation": committed["generation"],
+            "expression_binding_digests": {}, "materialization_binding_digests": {},
+            "selected_layouts": {}, "design_digests": {}, "page_artifact_numbers": {}}
+        for lane, selection in payload["lane_selections"].items():
+            summary["materialization_binding_digests"][lane] = {}
+            summary["selected_layouts"][lane] = {}
+            summary["design_digests"][lane] = payload["designs"][lane]["design_digest"]
+            for pid, entry in selection["selection"].items():
+                verify_binding_reference(entry, entry["binding"])
+                expression = entry["expression_binding_digest"]
+                if summary["expression_binding_digests"].get(pid, expression) != expression:
+                    raise ValueError("expression_binding_cross_lane_mismatch")
+                summary["expression_binding_digests"][pid] = expression
+                summary["materialization_binding_digests"][lane][pid] = entry["materialization_binding_digest"]
+                summary["selected_layouts"][lane][pid] = entry["layout_id"]
+                for path in materialization_paths(root, lane, pid):
+                    summary["page_artifact_numbers"][path.relative_to(root).as_posix()] = entry["binding"]["number"]
+        return summary
+    except ExpressionPipelineError as exc:
+        raise ReceiptError(exc.reason_code) from exc
+    except (KeyError, ValueError, TypeError) as exc:
+        raise ReceiptError("content_binding_invalid: " + str(exc)) from exc
+
+
+def _disclosure_summary(root: Path) -> dict[str, Any] | None:
+    """U14 披露工件摘要（延迟导入，避免收据基础面依赖披露模块）。"""
+
+    try:
+        from ..delivery_disclosure import disclosure_summary
+
+        return disclosure_summary(root)
+    except Exception:  # 披露面任何异常不得阻断收据采集
+        return None
 
 
 def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
@@ -184,6 +285,10 @@ def create_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         "delivery_stage": None,
         "builder_id": None,
         "fingerprints": fingerprints,
+        "content_binding": content_binding_summary(root),
+        # R-79/U14：交付披露摘要为**加性块**，不属于五类指纹——verify 不比对
+        # 本块（披露工件按 not_run 口径缺失即 null），旧收据验证不受影响。
+        "disclosure": _disclosure_summary(root),
         "linked_assets": {
             "sources_manifest": None,
             "beta_sidecars": None,
@@ -225,14 +330,14 @@ def _diff_fingerprints(
     return changed
 
 
-def _infer_impact(changed: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+def _infer_impact(changed: dict[str, list[dict[str, Any]]], page_numbers=None) -> dict[str, Any]:
     """按指纹类别推断波及面：页产物→页号；资产/样式源→全册；QA→仅 QA。"""
 
     impacted_pages: list[int] = []
     page_paths: list[str] = []
     deck_level_drift = False
     for entry in changed.get("page_artifacts", []):
-        number = _page_number(entry["path"])
+        number = (page_numbers or {}).get(entry["path"], _page_number(entry["path"]))
         if number is None:
             deck_level_drift = True
         else:
@@ -298,6 +403,39 @@ def _load_receipt(root: Path) -> dict[str, Any]:
             for digest in items.values()
         ):
             raise ReceiptError("delivery_receipt_invalid")
+    binding = value.get("content_binding")
+    fields = {"content_digest", "page_ids", "page_count", "input_generation",
+              "expression_binding_digests", "materialization_binding_digests",
+              "selected_layouts", "design_digests", "page_artifact_numbers"}
+    if not isinstance(binding, dict) or set(binding) != fields:
+        raise ReceiptError("binding_schema_mismatch")
+    try:
+        pages = binding["page_ids"]
+        if (not isinstance(pages, list) or not pages or any(not isinstance(pid, str) or not pid for pid in pages)
+                or len(set(pages)) != len(pages) or type(binding["page_count"]) is not int
+                or binding["page_count"] != len(pages)
+                or not isinstance(binding["expression_binding_digests"], dict)
+                or set(binding["expression_binding_digests"]) != set(pages)):
+            raise ValueError("page identity")
+        materials = binding["materialization_binding_digests"]
+        if (not isinstance(materials, dict) or not materials or not set(materials).issubset({"render:html", "image"})
+                or set(binding["selected_layouts"]) != set(materials)
+                or set(binding["design_digests"]) != set(materials)):
+            raise ValueError("lane identity")
+        hashes = [binding["content_digest"], binding["input_generation"],
+                  *binding["expression_binding_digests"].values(), *binding["design_digests"].values()]
+        seen_pages = set()
+        for lane, entries in materials.items():
+            if not isinstance(entries, dict) or not entries or not set(entries).issubset(pages):
+                raise ValueError("page identity")
+            if set(entries) != set(binding["selected_layouts"][lane]):
+                raise ValueError("layout identity")
+            hashes.extend(entries.values())
+            seen_pages.update(entries)
+        if seen_pages != set(pages) or any(not isinstance(h, str) or not re.fullmatch(r"[0-9a-f]{64}", h) for h in hashes):
+            raise ValueError("binding digest")
+    except (KeyError, TypeError, ValueError, AttributeError) as exc:
+        raise ReceiptError("binding_schema_mismatch") from exc
     return value
 
 
@@ -321,9 +459,10 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         }
     try:
         receipt = _load_receipt(root)
-    except ReceiptError:
+    except ReceiptError as exc:
         return {
             "status": "invalid",
+            "reason_code": str(exc),
             "run_root": str(root),
             "receipt_path": str(target),
             "fresh": False,
@@ -332,7 +471,15 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         }
 
     recorded: dict[str, dict[str, str]] = receipt["fingerprints"]
-    current = collect_fingerprints(root)
+    try:
+        current = collect_fingerprints(root, allow_missing=True)
+    except ReceiptError as exc:
+        return {
+            "status": "invalid", "run_root": str(root), "receipt_path": str(target),
+            "fresh": False, "reason_code": str(exc), "changed": [],
+            "impact": {"scope": "deck", "impacted_pages": [], "impacted_page_paths": [],
+                       "recommended_actions": ["修复冻结设计与模板源绑定后重新生成收据"]},
+        }
     changed_by_class = {
         name: _diff_fingerprints(recorded[name], current[name])
         for name in FINGERPRINT_CLASSES
@@ -342,7 +489,21 @@ def verify_delivery_receipt(run_root: str | Path) -> dict[str, Any]:
         for name in FINGERPRINT_CLASSES
         for entry in changed_by_class[name]
     ]
-    impact = _infer_impact(changed_by_class)
+    # dashi K7：内容绑定摘要（内容包/整册选择/冻结设计）漂移同样失效收据——
+    # 页身份、页序或选中版式变化不能被指纹类别掩盖。
+    try:
+        current_binding = content_binding_summary(root)
+    except ReceiptError as exc:
+        return {
+            "status": "invalid", "run_root": str(root), "receipt_path": str(target),
+            "fresh": False, "reason_code": str(exc), "changed": [],
+            "impact": {"scope": "deck", "impacted_pages": [], "impacted_page_paths": [],
+                       "recommended_actions": ["修复 run 输入区内容绑定文件后重新生成收据"]},
+        }
+    if receipt.get("content_binding") != current_binding:
+        changed.append({"class": "content_binding", "path": "input/*",
+                        "before": "recorded", "after": "current"})
+    impact = _infer_impact(changed_by_class, (current_binding or {}).get("page_artifact_numbers"))
     return {
         "status": "stale" if changed else "fresh",
         "run_root": str(root),

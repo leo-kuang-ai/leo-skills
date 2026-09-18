@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:银行年报风",
+  "name": "银行年报风",
+  "aliases": [
+    "银行风",
+    "年报风",
+    "bank annual风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/金融审计/银行年报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "金融审计"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "bank annual-report aesthetic, authoritative institutional look, financial-data leadership, compliance and governance implied, crisp charts, restrained premium identity, investor-grade credibility"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 7）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "银行风",
+      "年报风",
+      "bank annual风"
+    ],
+    "best_for": "银行与金融机构年报,需要权威、经营数据、合规与投资者沟通气质",
+    "visual_direction": "bank annual-report aesthetic, authoritative institutional look, financial-data leadership, compliance and governance implied, crisp charts, restrained premium identity, investor-grade credibility",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light gray with navy or gold accents",
+      "composition": "balanced authoritative structure, numbers-led, classical",
+      "density": "professional, disciplined, numbers-forward"
+    },
+    "color_palette": {
+      "primary": "navy #10243E / charcoal, white",
+      "secondary": "slate #5B7A9D, light gray #E5E7EB",
+      "accent": "gold #D4AF37 or a restrained teal",
+      "neutral": "near-black #111827, #6B7280, hairline #E5E7EB",
+      "rule": "institutional, conservative, authoritative; avoid neon and playful"
+    },
+    "typography": {
+      "title": "strong authoritative sans (思源黑体) or refined serif (Georgia / 思源宋体)",
+      "body": "clean, precise, formal",
+      "labels": "small financial tags, units",
+      "text_quality": "exact figures, financial terms, formal"
+    },
+    "layout_patterns": [
+      "chairman message / leadership",
+      "key financial highlights dashboard",
+      "business segment breakdown",
+      "risk & governance summary"
+    ],
+    "layout_usage_rule": "Institutional authority and data leadership; lead with results and governance, restrained palette.",
+    "layout_blueprints": [
+      {
+        "name": "年报封面",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "报告名 / 行名"
+            ]
+          },
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "主视觉 + 年份"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "关键数据一小行"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "业绩页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "主席致辞"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "核心指标",
+              "业务结构",
+              "展望"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "refined charts, currency figures, thin rules, restrained accent, classical structure",
+      "avoid": "cartoon, playful color, clutter, exaggerated marketing, clipart"
+    },
+    "rendering_constraints": [
+      "Institutional, trustworthy financial report feel.",
+      "Numbers-led, classical, restrained; one accent for emphasis.",
+      "Accurate figures; no invented institution logos or seals."
+    ],
+    "reference": "GitHub: 银行年报注释惯例 · 金融报告风"
+  },
+  "constraints": {
+    "negative": [
+      "Institutional, trustworthy financial report feel.",
+      "Numbers-led, classical, restrained; one accent for emphasis.",
+      "Accurate figures; no invented institution logos or seals."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.9,
+    "density": "medium-high",
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

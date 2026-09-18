@@ -8,7 +8,7 @@
 **本地控制台（推荐）**：`leo-ppt config ui` 打开浏览器控制台（仅监听 127.0.0.1，链接
 携带一次性 token）——上半区治理已配置渠道（凭据/验证徽标、启用开关、优先级排序、
 设为当前/修改/删除；自动模式下可直接编辑各渠道**权重**——权重小的优先被自动选用，
-值域 1-1000，也可用 ↑↓ 一键重排），下半区发现可添加渠道（目录卡片直达取 key 页面，推荐渠道排首），
+值域 1-1000，也可用 ↑↓ 一键重排），下半区发现可添加渠道（按国内直连/国际服务/自定义中转分组的紧凑行式列表，每行直达取 key 页面，推荐渠道排组内首位，已配置的行标「已配置 ✓」并可"重新配置"换 Key），
 配置向导内完成模型/端点与凭据：网页一次性录入（掩码输入，直写系统钥匙串，页面与
 接口零回显）、终端安全录入（页面触发、终端 getpass，无 TTY 自动隐藏）、环境变量引用
 或保留现有凭据；CLI 命令等价路径在向导内始终可复制。提示：更新技能/runtime 后需让
@@ -126,7 +126,8 @@ Ideogram `16x9`）。
 1. `providers.yaml` 加一条（id / portal / key_page / credential_environment /
    endpoint_origin / api_path / default_model / models / notes），加载器 fail-closed
    校验（id 冲突、origin-only 端点、默认模型必须在 models 内等）。OpenAI 兼容
-   渠道到目录即通；**非 Open 协议渠道**另需 `native: true` + vendored 原生适配器
+   渠道到目录即通（可选 `group` 声明添加区分组：domestic/global/custom，缺省
+   domestic）；**非 Open 协议渠道**另需 `native: true` + vendored 原生适配器
    （`image_providers/native.py`，经 patches 流程登记 hostname 分发）。
 2. 同步本文件"渠道一览 / 模型与注意事项"。
 3. 同步 `runtime/src/leo_ppt_generator/schemas/` 下 4 个 schema 的 provider enum

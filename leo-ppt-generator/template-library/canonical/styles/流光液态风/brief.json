@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:流光液态风",
+  "name": "流光液态风",
+  "aliases": [
+    "Liquid Light",
+    "液态流光",
+    "liquid flow"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/15_来源_officecli/流光液态风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "fluid light effects, deep purple night ground with overlapping multicolor translucent ellipses mixing like liquid, brand-upgrade avant-garde premium"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Liquid Light",
+      "液态流光",
+      "liquid flow"
+    ],
+    "best_for": "深紫夜底多色液态光斑的前卫品牌质感;适合品牌升级/创意发布/时尚展示",
+    "visual_direction": "fluid light effects, deep purple night ground with overlapping multicolor translucent ellipses mixing like liquid, brand-upgrade avant-garde premium",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#0F0F2D",
+      "composition": "多色大椭圆不同透明度叠压混色,似液体流动",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#0F0F2D(深紫夜底)",
+      "secondary": "#6C63FF(紫罗兰主光斑)",
+      "accent": "#48E5C2(薄荷辅助光斑)",
+      "neutral": "#F5F5FF(标题白)"
+    },
+    "typography": {
+      "title": "Segoe UI(苹方 PingFang 兜底)大标题,白 #F5F5FF",
+      "body": "Segoe UI 正文,淡蓝 #C8C8FF",
+      "labels": "Segoe UI 小字,辅助灰 #8888CC"
+    },
+    "layout_patterns": [
+      "4 大椭圆(12-14cm)+ 3 小滴(3-4cm),多色不同透明度 0.28-0.55,带旋转",
+      "叠色混合造深度,似液体流动",
+      "morph 时光斑大幅位移(10-15cm)+ 旋转变化",
+      "文字置于光心或深底,辅色珊瑚 #FF6B8A/电蓝 #3D5AFE/琥珀 #F5AF19 点缀小滴"
+    ],
+    "layout_usage_rule": "4 大椭圆(12-14cm)+ 3 小滴(3-4cm),多色不同透明度 0.28-0.55,带旋转",
+    "visual_elements": {
+      "allowed": "多色大椭圆不同透明度叠压混色,似液体流动",
+      "avoid": "不要高对比硬边几何——光斑必须柔边; 不要单一颜色光斑——多色混合是身份"
+    },
+    "rendering_constraints": [
+      "不要高对比硬边几何——光斑必须柔边",
+      "不要单一颜色光斑——多色混合是身份",
+      "不要亮底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高对比硬边几何——光斑必须柔边",
+      "不要单一颜色光斑——多色混合是身份",
+      "不要亮底"
+    ],
+    "paired_illustration": {
+      "family": "glass",
+      "density": "core"
+    },
+    "reference": "GitHub: OfficeCLI · skills/morph-ppt/reference/styles/dark--liquid-flow/style.md(MIT)· Fluid, dreamy, avant-garde;金样板 samples/reference-golden/officecli/dark__liquid_flow.pptx(只登记路径不转换)",
+    "token_sidecar": "variant-dimension: dark"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高对比硬边几何——光斑必须柔边",
+      "不要单一颜色光斑——多色混合是身份",
+      "不要亮底",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

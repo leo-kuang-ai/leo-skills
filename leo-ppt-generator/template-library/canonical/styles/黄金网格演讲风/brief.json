@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:黄金网格演讲风",
+  "name": "黄金网格演讲风",
+  "aliases": [
+    "Every 골든 그리드 키노트",
+    "golden grid keynote",
+    "黄金比例"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/16_来源_slides-grab/韩式精密网格/黄金网格演讲风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "精密网格",
+      "韩式咨询"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "golden-ratio keynote, every slide skeleton divided by the 1:1.618 grid governing image blocks text columns whitespace and type scale, monochrome plus one muted gold accent"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Every 골든 그리드 키노트",
+      "golden grid keynote",
+      "黄金比例"
+    ],
+    "best_for": "黄金比例网格统摄的高档 keynote;适合品牌年报/设计演讲/作品集",
+    "visual_direction": "golden-ratio keynote, every slide skeleton divided by the 1:1.618 grid governing image blocks text columns whitespace and type scale, monochrome plus one muted gold accent",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#FAFAF8",
+      "composition": "1:1.618 黄金比例分割统摄版面骨架与字号尺度",
+      "density": "medium, 密而不挤"
+    },
+    "color_palette": {
+      "primary": "#FAFAF8(暖白底)",
+      "secondary": "#161616(墨黑结构)",
+      "accent": "#B5A642(哑金一点)",
+      "neutral": "#6E6E68(灰)"
+    },
+    "typography": {
+      "title": "Inter 600 55pt(Helvetica Neue 兜底),tracking -0.01em",
+      "body": "Inter 400,leading 1.15",
+      "labels": "Inter 500 副题 34pt 级"
+    },
+    "layout_patterns": [
+      "1:1.618 黄金比例分割统摄版面骨架",
+      "图块/文字列/留白/字号全部按黄金尺度",
+      "无彩色 + 哑金 #B5A642 一点强调",
+      "大图块与文字列交替"
+    ],
+    "layout_usage_rule": "1:1.618 黄金比例分割统摄版面骨架",
+    "visual_elements": {
+      "allowed": "1:1.618 黄金比例分割统摄版面骨架与字号尺度",
+      "avoid": "不要违背黄金比例的任意分栏; 不要第二强调色"
+    },
+    "rendering_constraints": [
+      "不要违背黄金比例的任意分栏",
+      "不要第二强调色",
+      "不要高饱和与渐变",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要违背黄金比例的任意分栏",
+      "不要第二强调色",
+      "不要高饱和与渐变"
+    ],
+    "paired_illustration": {
+      "family": "photographic",
+      "density": "core"
+    },
+    "reference": "GitHub: epoko77-ai/design-diversity(via slides-grab design-diversity-data.js,MIT,快照 2026-05-24)· DD44 Every 골든 그리드 키노트"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "reserved",
+    "formality": 0.8,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要违背黄金比例的任意分栏",
+      "不要第二强调色",
+      "不要高饱和与渐变",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

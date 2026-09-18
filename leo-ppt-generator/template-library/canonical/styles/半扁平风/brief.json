@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:半扁平风",
+  "name": "半扁平风",
+  "aliases": [
+    "semi-flat",
+    "准扁平风",
+    "轻度拟物风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/几何装饰/半扁平风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "semi-flat design, flat foundation with subtle shadow, soft gradients, light texture, a touch of depth without breaking cleanliness, modern flexible balance"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "semi-flat",
+      "准扁平风",
+      "轻度拟物风"
+    ],
+    "best_for": "在扁平基础上加入极轻微阴影、柔渐变或浅纹理,增加层次而不破坏简洁",
+    "visual_direction": "semi-flat design, flat foundation with subtle shadow, soft gradients, light texture, a touch of depth without breaking cleanliness, modern flexible balance",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "white / light tint, soft accents",
+      "composition": "flat blocks with gentle lift, refined cards",
+      "density": "medium, clean with depth"
+    },
+    "color_palette": {
+      "primary": "brand color (fallback #3B82F6), light ground #F8FAFC",
+      "secondary": "soft neutral tints #E2E8F0",
+      "accent": "one accent #F59E0B",
+      "neutral": "near-black #111827, light gray #9CA3AF, white",
+      "rule": "mostly flat with subtle depth; avoid glossy/3D excess"
+    },
+    "typography": {
+      "title": "clean sans (Roboto / 思源黑体), modern",
+      "body": "clean",
+      "labels": "soft tag chips",
+      "text_quality": "clear, brand-consistent"
+    },
+    "layout_patterns": [
+      "elevated flat cards",
+      "soft gradient accent bar",
+      "light texture background",
+      "lifted comparison blocks"
+    ],
+    "layout_usage_rule": "Flat first, then a whisper of depth; never let effects steal the simplicity.",
+    "layout_blueprints": [
+      {
+        "name": "产品特性",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "能力1",
+              "能力2",
+              "能力3",
+              "能力4"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "价值句"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "对比页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "方案A"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "labels": [
+              "方案B"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "建议"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "soft shadows, gentle gradients, light texture, flat base, refined cards",
+      "avoid": "heavy glossy 3D, exaggerated shadows, cluttered, garish gradients"
+    },
+    "rendering_constraints": [
+      "Modern, clean, with a hint of depth.",
+      "Keep the flat base; effects must stay subtle.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: 半扁平化趋势 · 常见PPT风格类型"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Modern, clean, with a hint of depth.",
+      "Keep the flat base; effects must stay subtle.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

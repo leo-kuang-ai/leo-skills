@@ -1,0 +1,130 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:场景叙事分镜风",
+  "name": "场景叙事分镜风",
+  "aliases": [
+    "分镜风",
+    "storyboard风",
+    "叙事分镜风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/05_来源_awesome-gpt-image-2/借鉴新增/场景叙事分镜风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "scene storytelling, storyboard, worldview, story scene, defined character/place/time/conflict/mood/camera, scene detail serves story, visible story clue"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 5）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "分镜风",
+      "storyboard风",
+      "叙事分镜风"
+    ],
+    "best_for": "分镜、世界观、直播场景和情绪叙事画面，需要定义人物/地点/时间/冲突/情绪/机位",
+    "visual_direction": "scene storytelling, storyboard, worldview, story scene, defined character/place/time/conflict/mood/camera, scene detail serves story, visible story clue",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "story scene ground",
+      "composition": "人物 + 地点 + 冲突 + 机位",
+      "density": "story-driven"
+    },
+    "color_palette": {
+      "primary": "mood-specific palette, cinematic teal fallback #2E4A4E",
+      "secondary": "story accent, warm cue fallback #C9A36A",
+      "accent": "one accent #D96C3F",
+      "neutral": "near-black #1B1D1F, art grays #7A7E85",
+      "rule": "故事线索可见;场景服务叙事"
+    },
+    "typography": {
+      "title": "story-appropriate type (思源黑体 / Inter)",
+      "body": "minimal",
+      "labels": "scene tags (Courier mono, 剧本标注感)",
+      "text_quality": "exact, story-visible"
+    },
+    "layout_patterns": [
+      "分镜",
+      "世界观",
+      "故事场景",
+      "情绪节奏"
+    ],
+    "layout_usage_rule": "定义人物、地点、时间、冲突、情绪和机位;让场景细节服务故事;避免通用幻想背景;让故事线索在画面里可见。",
+    "layout_blueprints": [
+      {
+        "name": "分镜页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "镜头1",
+              "镜头2",
+              "镜头3"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "storyboard, worldview, scene detail, conflict, camera",
+      "avoid": "通用幻想背景, 线索不可见"
+    },
+    "rendering_constraints": [
+      "故事线索可见。",
+      "场景服务叙事。",
+      "避免通用背景。"
+    ],
+    "reference": "awesome-gpt-image-2 · scene-storytelling"
+  },
+  "constraints": {
+    "negative": [
+      "故事线索可见。",
+      "场景服务叙事。",
+      "避免通用背景。"
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

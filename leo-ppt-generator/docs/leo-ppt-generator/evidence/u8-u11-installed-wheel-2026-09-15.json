@@ -1,0 +1,8 @@
+{
+  "tests": 37,
+  "failures": 0,
+  "errors": 0,
+  "exit_code": 0,
+  "installed_root": ".migration-work/journal-wheel/installed",
+  "claim": "隔离wheel中的文件事务、缓存maintenance与v2 catalog机制；非高层正式迁移/Provider/视觉"
+}

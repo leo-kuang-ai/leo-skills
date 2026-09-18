@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:structure-版式目录补充参考",
+  "name": "版式目录补充参考（来源 html-ppt-skill）",
+  "kind": "structure",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p17-17-system-diagram-layouts",
+  "name": "System Diagram",
+  "aliases": [
+    "P17"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "layers": {
+      "region": "content",
+      "desc": "嵌套层（core/middle/outer 各一段说明）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "layer_desc": {
+      "region": "content",
+      "desc": "每层说明",
+      "max_chars": 52,
+      "chars_per_line": 22,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左半屏标题 + 三段说明；右半屏 SVG 三层同心圆 + 标签外引线"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/17_System_Diagram.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p7-07-h-bar-chart-layouts",
+  "name": "H Bar Chart",
+  "aliases": [
+    "P7"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "data",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "items": {
+      "region": "content",
+      "desc": "条形行（标签 + bar + 末端数值）",
+      "count_min": 5,
+      "count_max": 10
+    },
+    "item_label": {
+      "region": "content",
+      "desc": "每行文字标签",
+      "max_chars": 74,
+      "chars_per_line": 31,
+      "max_lines": 2
+    },
+    "item_value": {
+      "region": "content",
+      "desc": "每行末端数值",
+      "max_chars": 8,
+      "chars_per_line": 7,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "顶部大标题；下半部条形列表：文字标签 + 1px 蓝条 0→target width + 末端数字（scaleX 动画）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/07_H_Bar_Chart.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

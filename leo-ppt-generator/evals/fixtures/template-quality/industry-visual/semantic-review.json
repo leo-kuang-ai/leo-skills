@@ -1,0 +1,44 @@
+{
+  "kind": "industry-visual-semantic-review",
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "reviewer": "维护者（会话内单评审）+ 模型辅助视觉判读（外部视觉通道，3 页抽样）",
+  "calibration": {
+    "report": "calibration-report.json",
+    "pass_samples": 12,
+    "fail_samples": 10,
+    "defect_classes": [
+      "theme_failure(3)",
+      "blank_page(2)",
+      "overflow(2)",
+      "dimensions(2)",
+      "title_nonempty(1)"
+    ],
+    "detection": "5/5 类 100% 检出（合格样本 12/12 六闸全过）",
+    "label_source": "维护者按构造意图标注（单人）；方案要求的两位独立评审不可得"
+  },
+  "sampling": [
+    {
+      "sample": "round2/u02-light/data.png（政务·候选投放方向表）",
+      "verdict": "pass",
+      "note": "政务红表头+暖纸底+页码+四周留白正常；表头约#8B1E24 白字，正文对比约12:1"
+    },
+    {
+      "sample": "round2/u09-light/cover.png（消费时尚·新品提案封面）",
+      "verdict": "pass_with_observation",
+      "note": "珊瑚红主色+米白底成立、标题完整；观察项：单强调色偏简约（非多色创意风）——审美广度观察，非缺陷，登记不扣分"
+    },
+    {
+      "sample": "round2/u15-dark/content.png（航空航天·暗环境要点页）",
+      "verdict": "pass",
+      "note": "真暗色生效（#0B1220 深底），要点对比度约8.2:1、标题13.6:1，无缺陷"
+    }
+  ],
+  "hard_gate_coverage": "264 页全量六闸（含 theme_applied 逐像素主题生效闸）；44 单元×2 轮 88/88 全过",
+  "env_semantics": "暗环境 17 单元为『浅底服务暗环境』（组合主题无已验证深色变体，env_note 逐单元登记，不宣称深色能力）；u01/u08/u15 暗环境为真 dark 模式",
+  "dual_review_gap": "方案 §3.1 要求两位独立评审 80% 一致率——本会话不可得，按未完成登记；不伪造、不以串行自审冒充",
+  "coverage_mapping": {
+    "dedup_with_seed_pages": 0,
+    "note": "44 单元内容/输入/依赖与九方向种子页（deck-style-matrix）均不同，零去重；两轮独立渲染，无同次生成复用"
+  }
+}

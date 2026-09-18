@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "7556f5de9824337d20b8d3007a4303855e121ecca654176e3c1007b77863781b",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/fixtures/render-theme-baseline/outputs/body-basic-typical.png",
+  "out_sha256": "bd5efd04bf97e114c1cc7144d9f3b69cc12de7f848d5310267a3ba291c533794",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1226,
+  "rendered_at": "2026-09-07T19:26:41.403Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "body-basic",
+  "template_sha256": "ebb64f9216648b3eff734966629fc2212d8536d1bc385ef46fea5031772beadf",
+  "warnings": [],
+  "width": 2560
+}

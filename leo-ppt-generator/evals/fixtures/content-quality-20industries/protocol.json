@@ -1,0 +1,111 @@
+{
+  "protocol_id": "content-quality-20industries",
+  "version": "0.3.0-dev",
+  "status": "development",
+  "plan_ref": "docs/plans/2026-09-07-005-leo-ppt-20-industries-content-quality-evaluation-plan.md",
+  "created": "2026-09-08",
+  "gradient_note": {
+    "plan_claim": "G1=02_行业内容域 有专属 content_rules 的 12 行业；G2=无专属规则的 8 行业",
+    "repo_fact_2026_09_08": "仅 5 行业有 _content_rules.md（医疗健康/咨询法律/政务公共/教育学术/金融审计）；G1 其余 7 行业只有风格资产；G2 8 行业无 content_rules，其中建筑工程/物流供应链/公益社会组织存在同域风格文件",
+    "operational_gradient": {
+      "G1-rules": ["u02", "u03", "u04", "u05", "u06"],
+      "G1-styles": ["u01", "u07", "u08", "u09", "u10", "u11", "u12"],
+      "G2": ["u13", "u14", "u15", "u16", "u17", "u18", "u19", "u20"]
+    },
+    "reporting_rule": "G2=8 分母与 L1 通过线（≥7/8）按方案冻结不变；报告中不得把 G1-styles 单元表述为『规则内行业』"
+  },
+  "units": [
+    {"id": "u01", "slug": "internet-tech", "industry": "互联网科技", "gradient": "G1-styles", "task_type": "路演", "audience": "投资人", "material_form": "直出", "difficulty": "事实堆积", "pages": 12, "material_file": "u01-internet-tech.md", "conflict": false, "m0_pilot": true},
+    {"id": "u02", "slug": "gov-public", "industry": "政务公共", "gradient": "G1-rules", "task_type": "汇报", "audience": "合规/公共部门", "material_form": "直出", "difficulty": "决策", "pages": 11, "material_file": "u02-gov-public.md", "conflict": false, "m0_calibration_supplement": true},
+    {"id": "u03", "slug": "medical-health", "industry": "医疗健康", "gradient": "G1-rules", "task_type": "汇报", "audience": "医院管理层", "material_form": "直出", "difficulty": "不确定", "pages": 12, "material_file": "u03-medical-health.md", "conflict": false, "m0_pilot": true},
+    {"id": "u04", "slug": "finance-audit", "industry": "金融审计", "gradient": "G1-rules", "task_type": "汇报", "audience": "监管口径", "material_form": "直出", "difficulty": "冲突", "pages": 10, "material_file": "u04-finance-audit.md", "conflict": true, "m0_calibration_supplement": true},
+    {"id": "u05", "slug": "education-academic", "industry": "教育学术", "gradient": "G1-rules", "task_type": "汇报", "audience": "学术同行（组会）", "material_form": "只给目标", "difficulty": "信号弱", "pages": 10, "material_file": null, "conflict": false},
+    {"id": "u06", "slug": "consulting-law", "industry": "咨询法律", "gradient": "G1-rules", "task_type": "路演", "audience": "客户（项目提案）", "material_form": "直出", "difficulty": "事实堆积", "pages": 12, "material_file": "u06-consulting-law.md", "conflict": false},
+    {"id": "u07", "slug": "manufacturing-energy", "industry": "制造能源", "gradient": "G1-styles", "task_type": "汇报", "audience": "管理层", "material_form": "只给目标", "difficulty": "不确定", "pages": 11, "material_file": null, "conflict": false},
+    {"id": "u08", "slug": "automotive-mobility", "industry": "汽车交通", "gradient": "G1-styles", "task_type": "路演", "audience": "投资人", "material_form": "直出", "difficulty": "决策", "pages": 11, "material_file": "u08-automotive-mobility.md", "conflict": false},
+    {"id": "u09", "slug": "consumer-fashion", "industry": "消费时尚", "gradient": "G1-styles", "task_type": "路演", "audience": "渠道客户", "material_form": "只给目标", "difficulty": "信号弱", "pages": 10, "material_file": null, "conflict": false},
+    {"id": "u10", "slug": "tourism-fnb", "industry": "文旅餐饮", "gradient": "G1-styles", "task_type": "路演", "audience": "投资人", "material_form": "直出", "difficulty": "冲突", "pages": 11, "material_file": "u10-tourism-fnb.md", "conflict": true},
+    {"id": "u11", "slug": "gaming-entertainment", "industry": "游戏娱乐", "gradient": "G1-styles", "task_type": "路演", "audience": "投资人", "material_form": "只给目标", "difficulty": "事实堆积", "pages": 12, "material_file": null, "conflict": false},
+    {"id": "u12", "slug": "sports-fitness", "industry": "体育健身", "gradient": "G1-styles", "task_type": "路演", "audience": "投资人", "material_form": "只给目标", "difficulty": "决策", "pages": 10, "material_file": null, "conflict": false},
+    {"id": "u13", "slug": "agriculture", "industry": "农业", "gradient": "G2", "task_type": "汇报", "audience": "企业管理层", "material_form": "只给目标", "difficulty": "不确定", "pages": 11, "material_file": null, "conflict": false, "m0_pilot": true},
+    {"id": "u14", "slug": "media-publishing", "industry": "传媒出版", "gradient": "G2", "task_type": "路演", "audience": "广告主", "material_form": "只给目标", "difficulty": "信号弱", "pages": 10, "material_file": null, "conflict": false},
+    {"id": "u15", "slug": "aerospace", "industry": "航空航天", "gradient": "G2", "task_type": "汇报", "audience": "技术同行", "material_form": "直出", "difficulty": "事实堆积", "pages": 12, "material_file": "u15-aerospace.md", "conflict": false, "m0_pilot": true},
+    {"id": "u16", "slug": "construction-eng", "industry": "建筑工程", "gradient": "G2", "task_type": "汇报", "audience": "业主/合规", "material_form": "直出", "difficulty": "冲突", "pages": 11, "material_file": "u16-construction-eng.md", "conflict": true},
+    {"id": "u17", "slug": "logistics", "industry": "物流供应链", "gradient": "G2", "task_type": "汇报", "audience": "管理层", "material_form": "直出", "difficulty": "决策", "pages": 12, "material_file": "u17-logistics.md", "conflict": false},
+    {"id": "u18", "slug": "nonprofit", "industry": "公益社会组织", "gradient": "G2", "task_type": "路演", "audience": "捐赠人", "material_form": "只给目标", "difficulty": "信号弱", "pages": 10, "material_file": null, "conflict": false, "m0_pilot": true},
+    {"id": "u19", "slug": "commodities-trading", "industry": "大宗商品贸易", "gradient": "G2", "task_type": "汇报", "audience": "管理层", "material_form": "直出", "difficulty": "不确定", "pages": 11, "material_file": "u19-commodities-trading.md", "conflict": false},
+    {"id": "u20", "slug": "hr-services", "industry": "人力资源服务", "gradient": "G2", "task_type": "路演", "audience": "客户（HR SaaS）", "material_form": "只给目标", "difficulty": "决策", "pages": 11, "material_file": null, "conflict": false}
+  ],
+  "criteria_machine_mapping": {
+    "__m0_calibrations__": [
+      {"date": "2026-09-08", "criterion": "A3.2",
+       "original": "论点页正文合计 ≤80 字为硬 fail（方案 §3.3 原冻结值）",
+       "calibrated": "计数档（论点 ≤3/台账 ≤6）与每条 ≤2 显式行为硬 fail（对齐产品合同 deck-master.md 禅档位）；>80 字降为如实报告的 warning（char_over_80 逐页列出，进报告不进通过线）",
+       "reason": "产品合同为行数制而非页字数制，80 字硬线对 3×2 行的合规证据页系统性误伤；M0 以 U01 实测发现，属 §3.4 授权的 M0 阶段判据校准，非通过率驱动的放宽"},
+      {"date": "2026-09-08", "criterion": "A2.2-coverage / A5.3 projection",
+       "original": "（首版实现）",
+       "calibrated": "要点行=缩进 0 的要点项（视觉行缩进注释排除）；正文行剥离日期期间/P 码/槽位字数注记后取数；登记表键=数值列⊕单位列",
+       "reason": "U01 实测暴露：缩进注释、日期区间、P1/≤8 字注记、数值单位分列造成假阴性/假阳性"}
+    ],
+    "A1.2-pages": {"layer": "L0", "check": "页数一致性：outline 页数 == master 页数 == 简报要求页数；deck-promises 由 check_master_contract ⑨ 承担"},
+    "A1.2-promises": {"layer": "L0", "check": "check_master_contract ⑨（exit 1 → fail）"},
+    "A1.4-structure": {"layer": "L0+L1", "check": "机检：封面/收束页存在（页面角色）；收束页行动项由 ⑫ WARN + judge"},
+    "A2.1-tier-format": {"layer": "L0", "check": "check_master_contract ⑩（四级标注+source_ref/round）"},
+    "A2.2-ledger-structure": {"layer": "L0", "check": "check_number_ledger <master>（结构）"},
+    "A2.2-coverage": {"layer": "L0", "check": "评测侧补测：标题+要点数字归一化后须有同页 ledger 行（年份豁免；估算/示意豁免结构位但登记表仍须含其行——以检查器语义为准）"},
+    "A2.2-diff-retention": {"layer": "L0", "check": "check_number_ledger --diff <旧> <新>（存在真实修订对时）；无修订 → not_applicable"},
+    "A2.3-fact-candidates": {"layer": "L0→L1", "check": "check_content_facts <master> <materials>：差异清单为候选，语义核对归 judge（直出单元）；只给目标单元 not_applicable（理由：无材料文件）"},
+    "A2.4-conflict": {"layer": "L1", "check": "judge 对照 judge-side/adjudication-conflicts.md（u04/u10/u16）"},
+    "A3.1-title": {"layer": "L1", "check": "结论句标题条件化——judge（机检仅查标题段在场，由 ① 承担）"},
+    "A3.2-density": {"layer": "L0", "check": "评测侧补测：功能页豁免；台账页（视觉行含表格/台账信号）要点 ≤6；论点页要点 ≤3、正文合计 ≤80 字（去机器标签与空白后 Unicode 字符数）；每条 ≤2 显式分行"},
+    "A3.3-prose": {"layer": "L0", "check": "check_deck_prose（exit 1 翻案腔 → fail；其余 WARN 保留明细）"},
+    "A3.4-notes": {"layer": "L0", "check": "评测侧补测：备注含 speaker_script 与 engineering 分栏；无占位残留"},
+    "A4.1-term-literal": {"layer": "L0→L1", "check": "机检：术语表误用列「」字面量命中 → candidates（advisory）；语义判定归 judge"},
+    "A4.2-tone": {"layer": "L1", "check": "judge"},
+    "A4.3-instinct": {"layer": "L1", "check": "judge"},
+    "A5.1-style-attribution": {"layer": "L0+L1", "check": "机检：style selection 记录文件在场（selection_fingerprint 字样）；归因句语义归 judge；缺记录 → error"},
+    "A5.2-pcode": {"layer": "L0", "check": "评测侧补测：调度记录/母版中的 P 码 ⊆ canonical layout profiles aliases 全集（42 个）；未调度页 → error"},
+    "A5.3-capacity": {"layer": "L0", "check": "投影 capacity-spec.json（page/layout/points 从母版与调度记录确定性转换）→ check_deck_geometry --capacity：硬超 fail、软超 warning 如实、投影缺页/未知版式 error"},
+    "A5.4-degradation": {"layer": "L1", "check": "DG1–DG4 沿用 50 行业轮判读，judge（G2 附加）"},
+    "A5.5-render-structure": {"layer": "L0", "check": "render 输出文件在场；护栏/白名单关键词结构核对（M0 实测校准关键词集，未命中 → candidates_for_judge 不自动 fail）；缺文件 → error"},
+    "VETO-docs-on-disk": {"layer": "L0", "check": "outline 与 master 落盘存在（缺 → 按 error 记，产物缺失阻断 L1）"},
+    "VETO-no-fabricated-style": {"layer": "L0+L1", "check": "A5.2 的未知 P 码/虚构风格名 → fail"}
+  },
+  "error_classification": {
+    "quality_fail": "内容违例（检查器 exit 1 且非工具/输入问题）",
+    "error_tool": "检查器 exit 2 / 无法执行 / 版式库不可读",
+    "error_tool_contract_mismatch": "check_number_ledger 报『用户确认』不在 VALID_TIERS：保存原始报错、暂停受影响项、不改写事实等级（方案 §3.5 已知兼容性边界）",
+    "error_input": "产物缺失 / 材料文件缺失 / unit 目录不可读——不让 judge 猜测",
+    "warning": "软超、WARN 级明细（⑪⑫）、prose WARN 族——保留明细按冻结映射处理，不升级为 fail",
+    "candidates_for_judge": "机检产出候选（事实差异、术语字面命中、render 结构未命中）——交 L1 语义裁决",
+    "not_applicable": "仅限预定义条件（无修订的 diff、只给目标单元的 A2.3、G1 的 A5.4），必须附理由"
+  },
+  "thresholds": {
+    "L0": "每轮 20/20 单元适用硬断言通过，无工具 error",
+    "L1": "M3 每维度双次通过任务数 ≥18/20；G2 单独 ≥7/8",
+    "L2": "每位 judge 植入检出 ≥5/6；健康对照零误报；与人工一致率 ≥75%",
+    "task_pass": "必需产物齐全 + L0 适用硬断言全过 + A1–A5 全过 + 无否决",
+    "final_claim_template": "本版本在 20 个固定行业任务中，X 个任务的内容层双次达标；未验证未见任务迁移或视觉质量"
+  },
+  "phases": {
+    "M0_pilot_units": ["u01", "u03", "u13", "u15", "u18"],
+    "M0_calibration_supplement_units": ["u02", "u04"],
+    "M0_gate": ["接口负例验证（D2/D3 测试）", "两家族判官真实可用", "同判官重复一致率 ≥80%", "L2 校准闭合（人工抽检）", "协议指纹冻结", "成本上限冻结"],
+    "M1": "20 单元 ×1 全量挖掘",
+    "M2": "由 M1 真实失败清单驱动的最小修复（不得改判据/题目）",
+    "M3": "20 单元 ×2 独立复跑（同快照同判据，禁读另一轮产物）",
+    "M4": "报告与失败案例沉淀"
+  },
+  "models": {
+    "generation": {"family": "GLM", "model": "glm-5.3", "via": "skill-up engine claude_code → claude CLI → open.bigmodel.cn/api/anthropic", "to_be_registered_at_freeze": ["确切版本", "采样配置"]},
+    "judge_family_a": {"family": "GLM", "model": "glm-5.3", "via": "claude -p（非交互）", "note": "与生成同家族，方案允许（另一家族须不同）"},
+    "judge_family_b": {"family": "GPT", "model": "gpt-6-astra", "via": "codex exec --skip-git-repo-check -s read-only（本地 Pioneer 代理）", "note": "与生成家族不同，满足双家族要求"},
+    "pricing_cny_per_m_tokens": {"glm-5.3": {"input": 8, "output": 28, "cache_hit": 2, "source": "bigmodel.cn/pricing 2026-09-08 查证"}, "gpt-6-astra": {"unknown": "本地 Pioneer 代理转发，无公开单价可查证，按 token 用量披露"}}
+  },
+  "cost_cap_m0": {
+    "generation_runs": "≤7（5 试点 + 2 校准补充）+ 最多 2 次失败重试留痕",
+    "judge_calls": "≤260（一致率 100 + 校准 80 + 补充初评 20 + 仲裁/格式重试余量 60）",
+    "list_price_ceiling_cny": 500,
+    "stop_rule": "达到任一上限即停止新增调用并保存状态"
+  }
+}

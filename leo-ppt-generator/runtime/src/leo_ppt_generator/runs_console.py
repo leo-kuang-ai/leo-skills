@@ -1,7 +1,9 @@
 """生成任务（run）只读控制台数据层。
 
-只读 ``${LEO_PPT_HOME}/projects/*/runs/*/`` 下落盘事实并聚合为控制台视图：
-任务列表、详情（流程步骤/页网格/事件时间线/链路聚合/交付卡）与页图沙箱。
+读取 ``${LEO_PPT_HOME}/projects/*/runs/*/`` 与全局 ``runs-registry.jsonl``
+登记的 workspace run（执行合同的正式位置 ``<project-root>/runs/<run-id>``
+在 run create 时登记）并聚合为控制台视图：任务列表、详情（流程步骤/页网格/
+事件时间线/链路聚合/交付卡）与页图沙箱。
 设计约束（docs/plans/2026-09-07-004）：
 
 - 纯标准库、纯读：不写任何文件、不 import config 域与 run_index（写侧）；
@@ -9,6 +11,8 @@
 - 任何解析失败按"缺数据"降级（None/跳过/计数），绝不把坏数据放大成 5xx；
 - 页图沙箱：客户端只提供 run_id + 页码，真实路径取自 slide_jobs entry 的
   ``artifact`` 字段，``resolve()`` 后必须仍在该 run 目录内且后缀在白名单。
+- registry 条目零信任：run_dir 里的 run.json 必须存在且 run_id 与登记行
+  一致才收编；home projects 布局与 registry 重复时 home 优先。
 """
 
 from __future__ import annotations
@@ -203,7 +207,7 @@ class RunScanner:
         try:
             project_dirs = sorted(p for p in projects_dir.iterdir() if p.is_dir())
         except OSError:
-            return index
+            project_dirs = []
         for project_dir in project_dirs:
             runs_dir = project_dir / "runs"
             try:
@@ -232,7 +236,62 @@ class RunScanner:
                     "run_json": document,
                     "mtime": mtime,
                 }
+        for payload in self._registry_entries_locked():
+            run_id = payload.get("run_id")
+            if not isinstance(run_id, str) or not _RUN_ID_RE.match(run_id):
+                continue
+            if run_id in index:
+                continue  # home projects 布局与登记重复时，home 优先不重复收编
+            run_dir = Path(payload["run_dir"])
+            document = _read_json(run_dir / "run.json")
+            # 零信任：run.json 缺失/坏/ run_id 对不上（目录被移动或登记串位）一律跳过
+            if document is None or document.get("run_id") != run_id:
+                continue
+            mtime = _mtime_or_none(run_dir / "run.json")
+            if mtime is None:
+                continue
+            events_mtime = _mtime_or_none(run_dir / "events.ndjson")
+            if events_mtime is not None:
+                mtime = max(mtime, events_mtime)
+            project_root = payload.get("project_root")
+            if isinstance(project_root, str) and project_root.strip():
+                project = Path(project_root).name or "workspace"
+            elif run_dir.parent.name == "runs":
+                project = run_dir.parent.parent.name
+            else:
+                project = run_dir.parent.name
+            index[run_id] = {
+                "project": project,
+                "dir": run_dir,
+                "run_json": document,
+                "mtime": mtime,
+            }
         return index
+
+    def _registry_entries_locked(self) -> list[dict[str, Any]]:
+        """解析 home 的 runs-registry.jsonl：坏行跳过（缺数据降级，不放大）。"""
+
+        try:
+            lines = (self._home / "runs-registry.jsonl").read_text(
+                encoding="utf-8", errors="replace"
+            ).splitlines()
+        except OSError:
+            return []
+        entries: list[dict[str, Any]] = []
+        for line in lines:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            try:
+                payload = json.loads(stripped)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(payload, dict) or not isinstance(payload.get("run_dir"), str):
+                continue
+            if not payload["run_dir"].strip():
+                continue
+            entries.append(payload)
+        return entries
 
     def home_missing(self) -> bool:
         return not (self._home / "projects").is_dir()
@@ -419,8 +478,11 @@ class RunScanner:
                 unit_id = entry.get("slide_id") or entry.get("page_id")
                 status = entry.get("status")
                 failure = timing_pages.get(str(unit_id) if unit_id else "")
+                # 债8 三口径统一：blocked 是独立页态，不并入 pending。
                 state = "recorded" if status == "recorded" else (
-                    "active" if status == "active" else "pending"
+                    "active" if status == "active" else (
+                        "blocked" if status == "blocked" else "pending"
+                    )
                 )
                 if failure and str(failure.get("status")) in _FAILURE_STATUSES:
                     state = "timeout" if failure.get("status") == "timeout" else "failed"
@@ -564,6 +626,29 @@ class RunScanner:
         return entry
 
     # ------------------------------------------------------------- 页图沙箱
+    def diff_puzzle(self, run_id: str, page_id: str) -> "tuple[bytes, str]":
+        """R-78：serve `<run>/diffs/<page_id>.png`（严格包含检查，仅消费文件）。"""
+
+        info = self._find(run_id)
+        run_dir: Path = info["dir"]
+        diffs_root = (run_dir / "diffs").resolve()
+        if not str(page_id).endswith(".png"):
+            page_id += ".png"
+        candidate = diffs_root / Path(page_id).name  # 只取文件名，防目录穿越
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError:
+            raise PreviewLookupError(page_id)
+        if not resolved.is_relative_to(diffs_root) or not resolved.is_file():
+            raise PreviewLookupError(page_id)
+        content_type = _PREVIEW_TYPES.get(resolved.suffix.lower())
+        if content_type is None:
+            raise PreviewLookupError(page_id)
+        try:
+            return resolved.read_bytes(), content_type
+        except OSError:
+            raise PreviewLookupError(page_id)
+
     def page_image(self, run_id: str, number: int) -> tuple[bytes, str]:
         info = self._find(run_id)
         run_dir: Path = info["dir"]

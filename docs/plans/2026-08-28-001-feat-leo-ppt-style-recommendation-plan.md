@@ -138,7 +138,7 @@ title: leo-ppt-generator 模版推荐与用户选择 - Plan
 - `leo-ppt-generator/references/style-library.md` — 136 可加载风格、`style render` 确定性注入、自定义风格保存与同名优先规则（snapshot：本会话 2026-08-28 读取；失效条件：风格库规模或 render 合同变更）。
 - `leo-ppt-generator/references/styles/00_索引/风格路由.md` — 内容→四维组合推荐表与气质速查表（三视图摘要的数据来源）。
 - `leo-ppt-generator/references/image-deck-workflow.md` 步骤 4 — 既有"提供 2–3 个视觉方向，确认一个"确认点（寄生宿主）。
-- `docs/leo-ppt-generator-quality-loop-optimization.md` — 逐页母版工件（推荐发生在母版确认之后的时间锚）。
+- `docs/leo-ppt-generator/reviews/quality-loop-optimization.md` — 逐页母版工件（推荐发生在母版确认之后的时间锚）。
 
 
 ## Planning Contract

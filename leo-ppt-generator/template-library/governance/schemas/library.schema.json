@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/library/v1",
+  "title": "template-library root declaration",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "library_id",
+    "zones",
+    "reserved_directory_names"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "template-library"
+    },
+    "library_id": {
+      "enum": [
+        "builtin",
+        "user"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "protocol": {
+      "type": "object"
+    },
+    "zones": {
+      "type": "object",
+      "minProperties": 5,
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": [
+        "canonical",
+        "reference",
+        "governance",
+        "catalog",
+        "evidence"
+      ]
+    },
+    "reserved_directory_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

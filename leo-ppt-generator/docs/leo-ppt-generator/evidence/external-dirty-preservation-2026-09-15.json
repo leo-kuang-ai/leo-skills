@@ -1,0 +1,41 @@
+{
+  "files": [
+    {
+      "after_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "before_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "owner": "external-tooling-preserve",
+      "path": ".codex/hooks.json.graphify-bak",
+      "unchanged": true
+    },
+    {
+      "after_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "before_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "owner": "external-tooling-preserve",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "unchanged": true
+    },
+    {
+      "after_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "before_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "owner": "external-tooling-preserve",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "unchanged": true
+    },
+    {
+      "after_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "before_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "owner": "external-tooling-preserve",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "unchanged": true
+    },
+    {
+      "after_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "before_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "owner": "external-tooling-preserve",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "unchanged": true
+    }
+  ],
+  "schema_version": 1,
+  "status": "passed"
+}

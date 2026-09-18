@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/qualification-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "asset_id",
+    "asset_generation",
+    "lifecycle_status",
+    "qualification_status",
+    "evidence_set_digest",
+    "lanes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "asset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "asset_generation": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32,64}$"
+    },
+    "lifecycle_status": {
+      "enum": [
+        "unknown",
+        "legacy",
+        "executable",
+        "retired"
+      ]
+    },
+    "qualification_status": {
+      "enum": [
+        "unverified",
+        "provisional",
+        "publication-qualified",
+        "rejected"
+      ]
+    },
+    "evidence_set_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lanes": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "render:html",
+          "image"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "relations"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "unverified",
+              "provisional",
+              "publication-qualified",
+              "rejected"
+            ]
+          },
+          "relations": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "comparison",
+                "trend",
+                "process",
+                "causal",
+                "independent"
+              ]
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "probe_receipts",
+                "gaps",
+                "evidence_set_digest"
+              ],
+              "properties": {
+                "status": {
+                  "enum": [
+                    "unverified",
+                    "provisional",
+                    "publication-qualified",
+                    "rejected"
+                  ]
+                },
+                "probe_receipts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "gaps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "evidence_set_digest": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

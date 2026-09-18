@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/resolved-design/v1",
+  "title": "冻结设计组合（两路线唯一编译输入；U4 组合器产出、U5 消费）",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity",
+    "selection",
+    "effective_theme",
+    "effective_constraints",
+    "pages",
+    "dependencies",
+    "compiler",
+    "design_digest"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "entity": {
+      "const": "resolved-design"
+    },
+    "selection": {
+      "type": "object",
+      "required": [
+        "style"
+      ],
+      "properties": {
+        "style": {
+          "$ref": "#/definitions/id_revision"
+        },
+        "theme": {
+          "$ref": "#/definitions/id_revision"
+        },
+        "mode": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/mode"
+        },
+        "brand": {
+          "type": [
+            "null",
+            "object"
+          ]
+        },
+        "preset": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "source_map": {
+          "type": "object",
+          "description": "每项有效值来源（preset/brand/task/explicit）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "effective_theme": {
+      "type": "object",
+      "description": "实际生效的语义色/字体角色值（含 mode/brand/覆盖后）"
+    },
+    "effective_constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "constraint": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "description": "行业/品牌/布局硬约束按稳定 ID 合取；矛盾即 design_constraint_conflict"
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "page_no",
+          "page_role",
+          "content_ref",
+          "layout_id",
+          "profile_id",
+          "template_id",
+          "slots",
+          "page_id",
+          "recipe_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "page_no": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "page_role": {
+            "type": "string"
+          },
+          "content_ref": {
+            "type": "string",
+            "description": "指向 run 内不可变正文副本"
+          },
+          "layout_id": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+          },
+          "profile_id": {
+            "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+          },
+          "template_id": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "description": "image 路线可为 null"
+          },
+          "slots": {
+            "type": "object"
+          },
+          "page_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recipe_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/dependency_snapshot"
+      }
+    },
+    "compiler": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "design_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "固定键序规范序列化；不含时间、绝对路径及自身"
+    },
+    "authored_digest": {
+      "type": "string",
+      "description": "归因用；不进入视觉投影"
+    },
+    "design_context_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "共用设计上下文摘要（K2）：候选预编译与最终组合器同源快照的锚"
+    }
+  },
+  "definitions": {
+    "id_revision": {
+      "type": "object",
+      "required": [
+        "asset_id",
+        "revision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+        },
+        "revision": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/revision"
+        }
+      }
+    },
+    "dependency_snapshot": {
+      "type": "object",
+      "required": [
+        "asset_id",
+        "revision",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/asset_ref"
+        },
+        "revision": {
+          "$ref": "https://leo-ppt.invalid/schemas/asset-common/v1#/definitions/revision"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

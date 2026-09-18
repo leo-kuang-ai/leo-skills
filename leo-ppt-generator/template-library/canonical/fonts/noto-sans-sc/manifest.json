@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "entity": "font-manifest",
+  "asset_id": "builtin:font:noto-sans-sc",
+  "name": "Noto Sans SC",
+  "family": "Noto Sans SC",
+  "files": [
+    {
+      "path": "NotoSansSC-Regular.otf",
+      "weight": 400,
+      "coverage": "cjk-full"
+    },
+    {
+      "path": "NotoSansSC-Bold.otf",
+      "weight": 700,
+      "coverage": "cjk-full"
+    }
+  ],
+  "license": {
+    "status": "verified-distributable",
+    "type": "OFL-1.1",
+    "file": "LICENSE-OFL.txt"
+  }
+}

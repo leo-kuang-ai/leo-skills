@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:物流供应链风",
+  "name": "物流供应链风",
+  "aliases": [
+    "物流风",
+    "供应链风",
+    "logistics风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/汽车交通/物流供应链风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "logistics & supply chain aesthetic, network/flow diagrams, warehouse ops, route optimization, industrial clarity, reliability, data-driven trust"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 5,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "物流风",
+      "供应链风",
+      "logistics风"
+    ],
+    "best_for": "物流与供应链,需要网络图、仓储运营、路线优化与可靠感",
+    "visual_direction": "logistics & supply chain aesthetic, network/flow diagrams, warehouse ops, route optimization, industrial clarity, reliability, data-driven trust",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "industrial light / blueprint-tint",
+      "composition": "network/flow diagram + ops modules",
+      "density": "medium-high, industrial"
+    },
+    "color_palette": {
+      "primary": "industrial blue #1D4ED8 / slate #334155, white",
+      "secondary": "cool gray, cyan #22D3EE",
+      "accent": "one safety orange #F97316 accent",
+      "neutral": "near-black #1F2937, gray, hairline",
+      "rule": "industrial, data-driven, reliable; no playful, no clutter"
+    },
+    "typography": {
+      "title": "clean technical sans (Roboto / 思源黑体)",
+      "body": "precise data body",
+      "labels": "node/route/tag labels",
+      "text_quality": "accurate logistics terms, no fabricated metrics"
+    },
+    "layout_patterns": [
+      "supply network diagram",
+      "warehouse / node ops",
+      "route optimization map",
+      "timeline & SLA"
+    ],
+    "layout_usage_rule": "Network and flow clarity; data-driven reliability.",
+    "layout_blueprints": [
+      {
+        "name": "网络页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 1,
+            "labels": [
+              "供应链网络图"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "节点",
+              "时效",
+              "成本"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "仓储页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "仓储运营"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "入库",
+              "库存",
+              "出库"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "network diagrams, node callouts, route maps, industrial palette",
+      "avoid": "cartoon, clutter, misleading metrics, decorative"
+    },
+    "rendering_constraints": [
+      "Industrial, data-driven, reliable.",
+      "Network and flow clarity; precise metrics.",
+      "Accurate logistics terms; no invented data."
+    ],
+    "reference": "GitHub: 物流供应链 · 工业风"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Industrial, data-driven, reliable.",
+      "Network and flow clarity; precise metrics.",
+      "Accurate logistics terms; no invented data."
+    ]
+  }
+}

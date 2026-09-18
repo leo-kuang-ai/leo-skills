@@ -1,0 +1,45 @@
+# 版式目录补充参考（来源 html-ppt-skill）
+
+> 外部版式词汇表：摘自 html-ppt-skill 仓库的 layouts.md 版式目录（其
+> references 目录下，47 个 standalone 单页模板，快照 2026-08-31）。本文件是**选版式时的补充
+> 参考**，不是可加载版式骨架——leo 的页级版式真值仍是
+> `template-library/canonical/layouts/*/layout.json`（P1-P36，layout-profile-v1）；当
+> 版式库没有贴合的骨架时，按本表的结构描述组合既有版式或手写
+> layout 骨架（走 `template-library/governance/authoring/index/style-extension-template.md` 合格门）。
+
+## 使用纪律
+
+- 每条只取**结构描述**（分区方式/信息组织），不搬运源 HTML/CSS 实现；
+- 与 leo 既有版式等价的条目已标注对应 P 编号，优先用既有版式；
+- 图表类版式（chart-*）配 `11_图表语法/` 的 mermaid 语法使用；
+- 来源：GitHub html-ppt-skill · templates/single-page/（MIT 口径见源仓库）。
+
+## 版式摘录（15 条）
+
+| 版式名 | 结构描述 | leo 对应 |
+|---|---|---|
+| `cover` | 封面：kicker 小字 + 超大标题 + lede 导语 + pill 徽标行 | P1 Cover |
+| `section-divider` | 章节隔页：巨型章节数字（02 · 主题名），大量留白 | P3 Statement 变体 |
+| `big-quote` | 全幅金句引用页：编辑级衬线大字引文 + 署名，无其他元素 | P9/P12 金句页 |
+| `stat-highlight` | 单指标强调页：一个巨型数字 + 副标题说明（可加趋势动画语义） | P6/P20 KPI 变体 |
+| `kpi-grid` | 4 KPI 一行：每卡指标值 + 环比上下箭头（涨跌语义） | P20 Stacked_KPI_Ledger |
+| `table` | 数据表：悬停行 + 数值列右对齐 + 表头分组 | P21 Tech_Spec_Sheet 近似 |
+| `diff` | 变更对比页：手写 +/- diff 视图，增删行左右分色 | 补充：无直接对应 |
+| `pros-cons` | 利弊页：左右两卡对照（优势/风险），中缝分隔 | P8 Duo_Compare 变体 |
+| `roadmap` | 四列路线图：NOW / NEXT / LATER / VISION 时间桶 | P2/P11 时间线变体 |
+| `gantt` | 甘特图页：12 周横轴 + 5 条并行泳道任务条 | `11_图表语法/甘特图` |
+| `flow-diagram` | 流程管线：5 节点串联 + 箭头 + 单节点高亮断点 | P14 Loop/17 System 变体 |
+| `arch-diagram` | 架构图：三层网格（接入层/服务层/存储层）+ 连接关系 | P17 System_Diagram |
+| `terminal` | 终端窗口拟物：红黄绿信号灯标题栏 + 等宽命令输出 | 补充：终端风配图用 |
+| `image-grid` | Bento 网格：7 格不等宽图片格 + 渐变占位 | P15 Image_Matrix 变体 |
+| `todo-checklist` | 待办清单：勾选/未勾选两种状态行 + 分组标题 | 补充：无直接对应 |
+
+## 选版式启发（源目录的分组法）
+
+开场（cover → toc）→ 章节断（section-divider）→ 核心内容
+（bullets/two-column/three-column）→ 数字（stat-highlight / kpi-grid）→
+图表（chart-bar/line/pie/radar）→ 变更与对比（comparison / diff /
+pros-cons）→ 计划（timeline / roadmap / gantt / process-steps）→
+架构（arch-diagram / flow-diagram / mindmap）→ 代码（code / terminal）→
+收尾（cta → thanks）。与 `template-library/governance/authoring/index/风格路由.md` 的「内容 → 版式」
+路由可互为校验：先查 canonical layout profiles，缺口再回本表找结构原型。

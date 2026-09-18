@@ -1,0 +1,10 @@
+{
+  "phase": "after-authorization",
+  "run_id": "4c5cfb7788ae492185b2c9c48248f9e1",
+  "schema_version": 1,
+  "target_pages": [
+    "1",
+    "2"
+  ],
+  "window": "local-render"
+}

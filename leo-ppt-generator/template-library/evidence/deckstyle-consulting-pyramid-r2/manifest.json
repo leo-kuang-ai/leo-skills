@@ -1,0 +1,85 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-consulting-pyramid-r2",
+  "assets": {
+    "style": "builtin:style:consulting-pyramid",
+    "theme": "builtin:theme:consulting-pyramid-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[consulting-pyramid]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 2"
+  },
+  "outputs": {
+    "cover.png": "b735ee34a9cce4e7ea412df3f2da667eea8f082bd481af99f45425f8c41b8520",
+    "content.png": "29c7cab0c40e3b7e3ceee2318708ef1f694d601cab6d87b582a08f3c78dc1f5e",
+    "evidence.png": "c4a75fdfa24c7a157a6a9256c00911258d78cfa75c6b992492c33fbad23699cb",
+    "closing.png": "0df44ce3eb9a0786ee2d960723acec52ec3ab0a342e66be4aa97326265ca1409"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": [
+    "deckstyle-consulting-pyramid-r1"
+  ]
+}

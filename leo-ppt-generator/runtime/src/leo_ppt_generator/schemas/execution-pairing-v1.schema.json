@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/execution-pairing/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_kind",
+    "scope",
+    "catalog_generation",
+    "lane",
+    "layout_identity",
+    "template_identity",
+    "recipe_identity",
+    "capability_evidence_digest"
+  ],
+  "properties": {
+    "source_kind": {
+      "enum": [
+        "canonical-derived-pairing",
+        "task-local-proposal"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "builtin",
+        "user"
+      ]
+    },
+    "catalog_generation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lane": {
+      "enum": [
+        "render:html",
+        "image"
+      ]
+    },
+    "layout_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "revision"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "template_identity": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "asset_id",
+            "revision"
+          ],
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "recipe_identity": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "asset_id",
+            "revision"
+          ],
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "capability_evidence_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "proposal_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_kind": {
+            "const": "canonical-derived-pairing"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "proposal_digest"
+              ]
+            },
+            {
+              "required": [
+                "run_scope"
+              ]
+            }
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "proposal_digest",
+          "run_scope"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "render:html"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "template_identity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "asset_id",
+              "revision"
+            ],
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "recipe_identity": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "recipe_identity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "asset_id",
+              "revision"
+            ],
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "template_identity": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

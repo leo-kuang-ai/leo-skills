@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:电竞数据风",
+  "name": "电竞数据风",
+  "aliases": [
+    "电竞风",
+    "赛事数据风",
+    "esports风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/游戏娱乐/电竞数据风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "esports data aesthetic, competitive stat dashboard, sharp HUD, match analytics, energetic precise, broadcast polish, high-stakes clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "电竞风",
+      "赛事数据风",
+      "esports风"
+    ],
+    "best_for": "电竞与竞技内容,需要赛事数据、HUD 质感与竞技张力",
+    "visual_direction": "esports data aesthetic, competitive stat dashboard, sharp HUD, match analytics, energetic precise, broadcast polish, high-stakes clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "dark arena ground, high-contrast",
+      "composition": "score dashboard + match data",
+      "density": "medium-high, precise"
+    },
+    "color_palette": {
+      "primary": "near-black #0B0F14 / navy, dark",
+      "secondary": "electric blue #3B82F6, glow cyan #22D3EE",
+      "accent": "one hot accent (red #EF4444 or magenta)",
+      "neutral": "white text #FFFFFF, slate #334155, hairline glow #22D3EE",
+      "rule": "broadcast-grade, sharp, energetic; no soft pastel"
+    },
+    "typography": {
+      "title": "sharp condensed sans (DIN Condensed / 思源黑体), broadcast",
+      "body": "precise data body",
+      "labels": "KDA/score tags",
+      "text_quality": "accurate match data, no fabricated scores"
+    },
+    "layout_patterns": [
+      "score dashboard hero",
+      "KDA / player stats",
+      "match timeline",
+      "team / roster matrix"
+    ],
+    "layout_usage_rule": "Broadcast data clarity; scores and stats with arena tension.",
+    "layout_blueprints": [
+      {
+        "name": "战绩页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "赛事 / 对阵"
+            ]
+          },
+          {
+            "position": "main",
+            "count": 4,
+            "labels": [
+              "比分",
+              "KDA",
+              "经济",
+              "推进"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "选手页",
+        "sections": [
+          {
+            "position": "left",
+            "count": 1,
+            "labels": [
+              "选手"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "labels": [
+              "数据",
+              "英雄",
+              "胜率"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "score dashboard, HUD, stat tables, roster matrix, neon accents",
+      "avoid": "soft pastel, clutter, fabricated scores, cartoon"
+    },
+    "rendering_constraints": [
+      "Broadcast-grade, sharp, precise.",
+      "Scores and stats; arena energy.",
+      "Accurate match data; no invented results."
+    ],
+    "reference": "GitHub: 电竞数据 · 竞技风"
+  },
+  "recommendation_features": {
+    "density": "medium-high",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Broadcast-grade, sharp, precise.",
+      "Scores and stats; arena energy.",
+      "Accurate match data; no invented results."
+    ]
+  }
+}

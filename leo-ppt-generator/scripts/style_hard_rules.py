@@ -3,7 +3,7 @@
 
 对应《Style推荐引擎设计》第三节硬规则层：规则只做两类事——**排除低级
 错配**与**锁定强语境**，全部可被用户显式点名否决（bypass_all）。家族
-粒度以 `references/styles/00_索引/_INDEX.md` 的实际分类为准（通用母版
+粒度以 `template-library/reference/sources/retired-styles-tree/styles/00_索引/_INDEX.md` 的实际分类为准（通用母版
 五组 / 行业内容域十二组 / 场景七组 / 顶层内置 11），家族是标签不是互斥
 分区：一个风格可同时属多系（荧光高对比科技风 ∈ 科技暗色系 + 高攻击系）。
 
@@ -36,8 +36,7 @@ import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
-from leo_ppt_generator.styles import iter_brief_documents, style_asset_inventory, style_reference_problems, validate_style_metadata
+sys.path.insert(0, str(SKILL_DIR / "runtime/src"))
 
 # ---------------------------------------------------------------------------
 # Family vocabulary: keys are rule-facing labels, members reference real style
@@ -339,26 +338,36 @@ RULES: list[dict] = [
 
 
 def current_family_members(styles_root: Path | None = None) -> dict[str, list[str]]:
-    """试点由 authored families 驱动；未迁移成员仍消费旧兼容表。"""
-    schema = json.loads((SKILL_DIR / "runtime/src/leo_ppt_generator/schemas/style-brief-v1.schema.json").read_text())
-    labels = schema["x-legacy-family-labels"]
+    """家族成员视图（U10 后）：template-library brief 的 taxonomy.families
+    为作者真值，未声明家族的成员仍消费 FAMILIES 兼容表。
+
+    ``styles_root`` 指向新库 styles 目录（默认 template-library/canonical/
+    styles）。「未分类」是迁移占位标签，不构成家族；v2 schema 家族词表开放，
+    未见过的标签按新家族桶收录（可见，不静默并入已知家族）。
+    """
+    root = Path(styles_root) if styles_root is not None else \
+        SKILL_DIR / "template-library" / "canonical" / "styles"
     result = {label: list(names) for label, names in FAMILIES.items()}
-    for _, _, brief in iter_brief_documents(styles_root or SKILL_DIR / "references/styles"):
-        taxonomy = brief.get("taxonomy")
-        if not isinstance(taxonomy, dict) or "families" not in taxonomy:
-            continue
-        problems = validate_style_metadata(brief, schema)
-        if problems:
-            raise ValueError("style_metadata_invalid: " + ",".join(problems))
-        families = taxonomy["families"]
-        if any(family not in labels for family in families):
-            raise ValueError("style_family_mapping_unknown")
-        name = brief["style_name"]
-        for names in result.values():
-            if name in names:
-                names.remove(name)
-        for family in families:
-            result.setdefault(labels[family], []).append(name)
+    if root.is_dir():
+        for brief_path in sorted(root.glob("*/brief.json")):
+            try:
+                brief = json.loads(brief_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            name = brief.get("name")
+            taxonomy = brief.get("taxonomy")
+            families = taxonomy.get("families") if isinstance(taxonomy, dict) else None
+            if not isinstance(name, str) or not name.strip() or not isinstance(families, list):
+                continue
+            families = [str(family) for family in families
+                        if isinstance(family, str) and family.strip() and family != "未分类"]
+            if not families:
+                continue
+            for names in result.values():
+                if name in names:
+                    names.remove(name)
+            for family in families:
+                result.setdefault(family, []).append(name)
     return {label: sorted(set(names)) for label, names in result.items()}
 
 
@@ -447,6 +456,28 @@ def evaluate(brief: dict) -> dict:
 # Self-test: positive/negative samples mirroring engine design §7 adversarial
 # cases, plus vocabulary integrity checks against silent rule drift.
 # ---------------------------------------------------------------------------
+def _library_style_names() -> set[str]:
+    """template-library 名称全集（成员存在性检查的真值源）。
+
+    canonical 风格 brief 名称 + reference 参考池实体名（14_参考池 的池代表
+    按账本 migrate-as-is 进 reference/pools，不是 style brief）。
+    """
+    names: set[str] = set()
+    styles_root = SKILL_DIR / "template-library" / "canonical" / "styles"
+    for brief_path in sorted(styles_root.glob("*/brief.json")):
+        try:
+            brief = json.loads(brief_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        name = brief.get("name")
+        if isinstance(name, str) and name.strip():
+            names.add(name)
+    pools_root = SKILL_DIR / "template-library" / "reference" / "pools"
+    if pools_root.is_dir():
+        names.update(path.stem for path in pools_root.rglob("*.md"))
+    return names
+
+
 def _self_test() -> list[str]:
     failures: list[str] = []
 
@@ -454,9 +485,15 @@ def _self_test() -> list[str]:
         if not cond:
             failures.append(message)
 
-    # Vocabulary integrity: rule effects reference declared families only.
-    for problem in style_reference_problems(style_asset_inventory(SKILL_DIR / "references" / "styles"), members=FAMILIES):
-        failures.append(json.dumps(problem, ensure_ascii=False, sort_keys=True))
+    # Vocabulary integrity: rule effects reference declared families only;
+    # every compat-table member must be a real library style (anti-blindness).
+    library_names = _library_style_names()
+    if library_names:
+        for label, members in sorted(FAMILIES.items()):
+            for missing in sorted(set(members) - library_names):
+                failures.append(json.dumps(
+                    {"code": "style_member_missing", "name": missing,
+                     "family": label}, ensure_ascii=False, sort_keys=True))
     known = set(FAMILIES)
     ids = [r["id"] for r in RULES]
     expect(len(ids) == len(set(ids)), "rule ids not unique")

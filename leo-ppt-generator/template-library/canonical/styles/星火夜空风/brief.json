@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:星火夜空风",
+  "name": "星火夜空风",
+  "aliases": [
+    "星火夜空",
+    "Starlight Fireworks",
+    "星河",
+    "烟火",
+    "对角",
+    "dreamy",
+    "duality"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/夜空氛围/星火夜空风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "夜空氛围"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "half starlight half fireworks, deep blue night counterpoint with festive orange-gold bursts"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ],
+    "theme_default": "builtin:theme:spark-night-dark"
+  },
+  "adaptation_gaps": [
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 10,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "星火夜空",
+      "Starlight Fireworks",
+      "星河",
+      "烟火",
+      "对角",
+      "dreamy",
+      "duality"
+    ],
+    "best_for": "海军蓝暖焰橙对角，梦幻诗意二元;适合疗愈冥想/艺术视觉/婚庆浪漫",
+    "visual_direction": "half starlight half fireworks, deep blue night counterpoint with festive orange-gold bursts",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#0A2E5C→#FF8C42→#4A90E2",
+      "composition": "45° 对角线分割：左上深蓝星河，右下暖橙烟火",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#0A2E5C(主色/标题锚)",
+      "secondary": "#FF8C42(辅助色)",
+      "accent": "#4A90E2(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #0A2E5C, #FF8C42, #4A90E2, #000000;主色：深海军蓝 `#0A2E5C`（星河半边）、暖焰橙 `#FF8C42`（烟火半边）"
+    },
+    "typography": {
+      "title": "思源黑体 Light / Inter;标题用衬线体（如 Merriweather / Playfair Display），中粗，星白色",
+      "body": "正文用无衬线 Light，行高 1.9，星白带轻投影",
+      "labels": "副标题用细无衬线，淡金米或浅灰"
+    },
+    "layout_patterns": [
+      "45° 对角线分割：左上深蓝星河，右下暖橙烟火",
+      "两个剪影立于分界线上",
+      "标题置于上方三分之一，跨对角线居中",
+      "充足负空间让色彩与粒子呼吸"
+    ],
+    "layout_usage_rule": "45° 对角线分割：左上深蓝星河，右下暖橙烟火",
+    "visual_elements": {
+      "allowed": "45° 对角线分割：左上深蓝星河，右下暖橙烟火",
+      "avoid": "不要破坏对角双色分割的结构;不要高饱和刺眼、不要办公室商务风;不要卡通可爱"
+    },
+    "rendering_constraints": [
+      "不要破坏对角双色分割的结构",
+      "不要高饱和刺眼、不要办公室商务风",
+      "不要卡通可爱",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要破坏对角双色分割的结构",
+      "不要高饱和刺眼、不要办公室商务风",
+      "不要卡通可爱",
+      "不要用过多第三色，保持二元对立"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/starlight-fireworks"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.4,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要破坏对角双色分割的结构",
+      "不要高饱和刺眼、不要办公室商务风",
+      "不要卡通可爱",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-剖面技术图",
+  "name": "图片渲染：剖面技术图（technical-cutaway）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

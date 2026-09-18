@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "entity": "render-theme",
+  "asset_id": "builtin:theme:tech-dark-mode",
+  "name": "tech dark mode",
+  "default_mode": "dark",
+  "modes": {
+    "dark": {
+      "background": "#0B1220",
+      "surface": "#111A2E",
+      "text": "#E6EDF7",
+      "primary": "#38BDF8",
+      "on_primary": "#0B1220",
+      "muted": "#94A3B8",
+      "border": "#253352",
+      "accent": "#34D399",
+      "warn": "#FBBF24"
+    },
+    "light": {
+      "background": "#F5F8FC",
+      "surface": "#FFFFFF",
+      "text": "#16233A",
+      "primary": "#0369A1",
+      "on_primary": "#FFFFFF",
+      "muted": "#475569",
+      "border": "#C9D6E4",
+      "accent": "#0E7490",
+      "warn": "#B45309"
+    }
+  },
+  "font_roles": {
+    "title": {
+      "family": "Noto Sans SC",
+      "weight": 700,
+      "size": 46,
+      "line_height": 1.25
+    },
+    "body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    },
+    "kicker": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 22,
+      "line_height": 1.4
+    },
+    "table_header": {
+      "family": "Noto Sans SC",
+      "weight": 700,
+      "size": 26,
+      "line_height": 1.3
+    },
+    "table_body": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 25,
+      "line_height": 1.5
+    },
+    "page_no": {
+      "family": "Noto Sans SC",
+      "weight": 400,
+      "size": 22,
+      "line_height": 1.2
+    }
+  },
+  "chart_palette": {
+    "series": [
+      "#38BDF8",
+      "#34D399",
+      "#A78BFA"
+    ],
+    "positive": "#15803D",
+    "negative": "#B4232A"
+  },
+  "ornaments": [],
+  "qa_profile": null,
+  "static_support": {
+    "lanes": [
+      "html",
+      "image"
+    ]
+  },
+  "overrideable_roles": [
+    "accent",
+    "muted",
+    "surface"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-工程分解信息图",
+  "name": "图片渲染：工程分解信息图（engineering-breakdown-grid）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

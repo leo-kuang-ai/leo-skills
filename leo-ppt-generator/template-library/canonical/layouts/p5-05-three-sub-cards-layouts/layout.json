@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p5-05-three-sub-cards-layouts",
+  "name": "Three Sub cards",
+  "aliases": [
+    "P5"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "cards": {
+      "region": "content",
+      "desc": "水平堆叠 sub-card（编号 + 标题 + 1-2 行描述）",
+      "count_min": 3,
+      "count_max": 3
+    },
+    "card_title": {
+      "region": "content",
+      "desc": "每卡标题",
+      "max_chars": 15,
+      "chars_per_line": 13,
+      "max_lines": 1
+    },
+    "card_desc": {
+      "region": "content",
+      "desc": "每卡 1-2 行描述（内容比 P4 略多）",
+      "max_chars": 69,
+      "chars_per_line": 29,
+      "max_lines": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "左侧大标题 + 描述 + 顶部 hairline；右侧 3 张水平堆叠 sub-card（灰底直角）"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/05_Three_Sub_cards.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

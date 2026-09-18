@@ -1,0 +1,121 @@
+{
+  "checks": [
+    "共享目录锁覆盖操作全过程，发布独占锁在 marker 写入前取得",
+    "共享锁和独占锁异常退出都关闭 fd；只读安装不写共享锁文件",
+    "外部漂移/CAS/journal/generation 检查保留，维护 marker 不因进程退出而删除",
+    "生成与渲染保留唯一 owner；冻结任务源库离线时仍可使用快照",
+    "相对可信根已标准化，使用红例重现双前缀问题后修复"
+  ],
+  "coverage": {
+    "cross_model": "not_run",
+    "dispatch_reason_code": "dispatch_authorization_missing",
+    "formal_review_mutation_guard": "not_run",
+    "independent_review": "not_run",
+    "verification_evidence": {
+      "reason_code": "no-targeted-command-executed-during-review",
+      "status": "not-produced"
+    }
+  },
+  "files": [
+    {
+      "baseline_sha256": "6aa4735ca788546dd0b4d6a2c0a28442148a7d73e2918cc85703564d6687bc51",
+      "current_sha256": "74cd196c61c1a04e50f02565adc1a27696c4aa7aeaec9566caac2a2874b0250a",
+      "path": "runtime/src/leo_ppt_generator/application/expression_pipeline.py"
+    },
+    {
+      "baseline_sha256": "a37ab275106067cab88a8bea2f1ea0c44a39013b67fe8c2b73c64d3dac821f38",
+      "current_sha256": "88fd03837e8eacd01cb4be4e258c2c1ce164292f48fd2d13b8b6efa0b18d9c51",
+      "path": "runtime/src/leo_ppt_generator/application/routes.py"
+    },
+    {
+      "baseline_sha256": "171c7436c6af507abce4581512f05c06eaa25e9c55915e326092b2ec407147d7",
+      "current_sha256": "f677411765ed0125f81773d3bf774fb28dfccab57eefc4a1c4632ed360cd14e5",
+      "path": "runtime/src/leo_ppt_generator/asset_resolver.py"
+    },
+    {
+      "baseline_sha256": "6f52023f17425f2941c1ade7290f371e671a1aa787c8c083d99be327c36c876a",
+      "current_sha256": "dc9e1a10b4b8d02798ce5ab5cac7fdb33312b0077d63d2aebfb215346c13c8fb",
+      "path": "runtime/src/leo_ppt_generator/capability_probes.py"
+    },
+    {
+      "baseline_sha256": "b41dfedc53ea02a5d659012b9a4dcc6ee5097e5000e2cf182ae84dd846676817",
+      "current_sha256": "610e65eec2eae21f7d3e388d91bcc3ea8eca9405b5c0db7e24b1a4b1ef251e02",
+      "path": "runtime/src/leo_ppt_generator/library_migration.py"
+    },
+    {
+      "baseline_sha256": "3fe5843ddee10b9c82bf04a6a017b56ae4cd344258ecd494f80cb95e31575e59",
+      "current_sha256": "3163206c2d823d9a9f274a6c7866540953e75cad57b668bf2a487aff8a72357c",
+      "path": "runtime/src/leo_ppt_generator/render/page.py"
+    },
+    {
+      "baseline_sha256": "7064c6d7ab3636af0c3bf44b48b23c45cda68e0ca259b78b9c6761682298cb7c",
+      "current_sha256": "138a115b2642345ce676b629752f8e4503f0bbd47c1ed15da53782eeb0032f5a",
+      "path": "runtime/src/leo_ppt_generator/styles.py"
+    },
+    {
+      "baseline_sha256": "9025c8bae8209ef8d1c4e64b999cb5b86ba7825ba2f311e97e654480b244ed0c",
+      "current_sha256": "355533883f549fa92f2a54875a0fb0749fcdf8a34b45ef89f552ca6f977a790e",
+      "path": "runtime/src/leo_ppt_generator/template_catalog.py"
+    },
+    {
+      "baseline_sha256": "9d5af44b1de28aaf21c84dc0c973ab8c690e1a1479979c432bb7d16ac2bec9b9",
+      "current_sha256": "1fd83c481abc637c4ffa7091c27db109588620e0645616ca890e1fc8dba4854f",
+      "path": "scripts/capability_manifest.py"
+    },
+    {
+      "baseline_sha256": "779179a8dd6395ba15234b605d3db3bc03fd4adb88aa4c042538f7998af8106c",
+      "current_sha256": "bb46487d39f71f94d64258e970ecee0af96c36d96728163760e5732125ba5b30",
+      "path": "scripts/style_pack.py"
+    },
+    {
+      "baseline_sha256": "5384ee84edb1900b6a6e5fc8b14ffb74a801eeeed465794bdf8d2be5d246f6c0",
+      "current_sha256": "230a8ba4d0de01c2859fb2aa5bc3cfe49ec020deb027e883a09fd419ac30175c",
+      "path": "tests/test_expression_pipeline.py"
+    },
+    {
+      "baseline_sha256": "9e6aeb1587c42bc94f7546699b10cad0ea5fc6894e0b15cd25f7a210f7827b58",
+      "current_sha256": "a6237234f63c3db58e5581e38d59bb133208b16e5c3f18402eb749623a751614",
+      "path": "tests/test_migration_transaction.py"
+    },
+    {
+      "baseline_sha256": "d3056be42f941bee9e18573f4b81ee099bb1891b7b67be8cc24a71169dbef96a",
+      "current_sha256": "88523ef40b327b7954f3489a900822a37dca02b5b5746eb2a37be85ad5390ff9",
+      "path": "tests/test_style_pack.py"
+    },
+    {
+      "baseline_sha256": "0f8ec6eaac44ce79518e50ca9f697652f4bdfe3c9ce1db77e7dff0fe3a379c1a",
+      "current_sha256": "789d925b48fcf3e1b2047afbe8f7d0df3be8b2d768898056d0e98b3b82c7ae64",
+      "path": "tests/test_template_catalog_v2.py"
+    }
+  ],
+  "findings": [],
+  "plan": "../docs/plans/2026-09-11-004-feat-leo-ppt-expression-first-plan.md",
+  "residual_risks": [
+    "正式完整迁移的高层中断恢复及所有活动消费者覆盖仍需随 U9 同一次 cutover 验证",
+    "此轮仅在当前 Darwin 环境验证目录 flock",
+    "当前交付仍包含 v1 reader/builder/fallback；已接入入口不代表 consumer closure 归零",
+    "Provider/image、U6-A/B、旧链三册配对视觉、用户收益和正式 publish/cleanup/convergence 均未通过"
+  ],
+  "reviewers": [
+    "inline-fallback"
+  ],
+  "schema_version": 1,
+  "scope": "本轮 U8/U11 消费者互斥与库根修复；只核对当前修改的函数和测试，不代表整分支独立评审",
+  "simplify": {
+    "applied": 0,
+    "lenses": [
+      "reuse",
+      "quality",
+      "efficiency"
+    ],
+    "mode": "inline-serial",
+    "note": "没有为压缩行数删除安全检查；未执行独立 persona",
+    "protected": [
+      "锁持有范围",
+      "双检查关闭 marker 竞态窗口",
+      "fsync/CAS/恢复检查"
+    ]
+  },
+  "status": "degraded",
+  "verdict": "Not ready"
+}

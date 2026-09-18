@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative.png",
+  "out_sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 626,
+  "rendered_at": "2026-09-14T06:23:08.666Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:spec-table",
+  "template_sha256": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+  "warnings": [],
+  "width": 2560
+}

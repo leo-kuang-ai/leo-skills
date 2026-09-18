@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:模版印刷标语风",
+  "name": "模版印刷标语风",
+  "aliases": [
+    "Stencil & Tablet",
+    "stencil-tablet",
+    "模版印刷标语",
+    "archival",
+    "earthy"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/模版印刷标语风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "skate-poster meets municipal stencil signage, bone paper ground, stencil-cut display with ink-break gaps, saturated earth palette flat blocks on rounded tablet cards, oversized numerals, industrial archive mood"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Stencil & Tablet",
+      "stencil-tablet",
+      "模版印刷标语",
+      "archival",
+      "earthy"
+    ],
+    "best_for": "以模版断墨大字、骨纸底与六色大地色平涂石板卡,做滑板海报与考古档案气质的图形宣言;适合museum / cultural institution, art / architecture brand, longform research, heritage / craft brand",
+    "visual_direction": "skate-poster meets municipal stencil signage, bone paper ground, stencil-cut display with ink-break gaps, saturated earth palette flat blocks on rounded tablet cards, oversized numerals, industrial archive mood",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm bone and paper neutrals with a saturated earthy palette (sienna, magenta, orange, tea(主锚 #E2DCC9,light 底)",
+      "composition": "石板卡平涂色块阵列 + 模版大字",
+      "density": "medium,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#E2DCC9(骨纸底)",
+      "secondary": "#A06A3C(赭石平涂块)",
+      "accent": "#C73B7A(洋红强调)",
+      "neutral": "#0A0A0A(纯黑文字)",
+      "rule": "warm bone and paper neutrals with a saturated earthy palette (sienna, magenta, orange, teal, blue, olive) used in stenci;锚点 #E2DCC9/#A06A3C/#C73B7A/#0A0A0A"
+    },
+    "typography": {
+      "title": "Bowlby One 标题字族;ultra-heavy display + stencil + tall condensed + clean body; reads lik",
+      "body": "Inter 正文字族,行距宽绰",
+      "labels": "小字号同族"
+    },
+    "layout_patterns": [
+      "标题 = Stardos Stencil 模版断墨大字,数字可放到 160-540px 量级",
+      "内容卡 = 22-26px 圆角「石板卡」平涂大地色(赭 #A06A3C/洋红 #C73B7A/橙 #EE7A2E/青 #2D7E73/蓝 #3F73B7/橄榄 #6F7A2E)",
+      "元数据 = Barlow Condensed 全大写窄字紧字距",
+      "色块即版式:整版平涂色块分区,无渐变无描边照片"
+    ],
+    "layout_usage_rule": "标题 = Stardos Stencil 模版断墨大字,数字可放到 160-540px 量级",
+    "negative_prompt": [
+      "Contexts that demand digital-native polish or playful pop — the stencil-cut display and earth-tone palette commit to a deliberate analog feel.",
+      "no gradients or glass surfaces — flat spot blocks only",
+      "no thin elegant serifs; display stays heavy stencil-cut",
+      "not for digital-native polish or playful pop"
+    ],
+    "paired_illustration": {
+      "family": "flat",
+      "density": "core"
+    },
+    "visual_elements": {
+      "allowed": "内容卡 = 22-26px 圆角「石板卡」平涂大地色(赭 #A06A3C/洋红 #C73B7A/橙 #EE7A2E/青 #2D7",
+      "avoid": "no gradients or glass surfaces — flat spot blocks only; no thin elegant serifs; display stays heavy stencil-cut"
+    },
+    "rendering_constraints": [
+      "模版印刷标语风 follows beautiful-html-templates stencil-tablet system; palette anchors locked.",
+      "no gradients or glass surfaces — flat spot blocks only",
+      "no thin elegant serifs; display stays heavy stencil-cut",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/stencil-tablet/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "模版印刷标语风 follows beautiful-html-templates stencil-tablet system; palette anchors locked.",
+      "no gradients or glass surfaces — flat spot blocks only",
+      "no thin elegant serifs; display stays heavy stencil-cut",
+      "No invented logos or watermarks."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://leo-ppt.invalid/schemas/render-qa-profile/v1",
+  "title": "QA 档位（theme 引用可用档；档位由校准登记）",
+  "type": "object",
+  "required": [
+    "kind",
+    "schema_version",
+    "profiles"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "render-qa-profiles"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "plan": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "lane",
+          "checks"
+        ],
+        "properties": {
+          "lane": {
+            "enum": [
+              "html",
+              "image"
+            ]
+          },
+          "mode": {
+            "enum": [
+              "light",
+              "dark",
+              "any"
+            ]
+          },
+          "density": {
+            "type": "array"
+          },
+          "checks": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "calibration": {
+      "type": "object"
+    }
+  }
+}

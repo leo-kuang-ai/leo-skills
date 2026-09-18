@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:数据新闻编辑风",
+  "name": "数据新闻编辑风",
+  "aliases": [
+    "data-journalism",
+    "数据新闻风",
+    "Bloomberg 信息图",
+    "Economist 数据版",
+    "财经新闻编辑风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/质感专业/数据新闻编辑风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "数据图表",
+      "质感专业"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "Bloomberg-Economist news infographic deck, dense multi-column grid with inline micro-charts and data tables, editorial sidebars and pull-stats, hairline dividers, hero numbers, running source lines, cool restrained publication field, flat print-grade"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "data-journalism",
+      "数据新闻风",
+      "Bloomberg 信息图",
+      "Economist 数据版",
+      "财经新闻编辑风"
+    ],
+    "best_for": "以多栏网格内联微图表、编辑侧栏、pull-stat 与常驻来源行的出版级密度,做财经/研报/年度数据报告的新闻信息图阅读感;适合市场复盘、行业数据密集汇报、data-driven 解释长文",
+    "visual_direction": "Bloomberg-Economist news infographic deck, dense multi-column grid with inline micro-charts and data tables, editorial sidebars and pull-stats, hairline dividers, hero numbers, running source lines, cool restrained publication field, flat print-grade",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "冷出版纸白 #F8F9FA(浅场,Economist 版;深场可换石墨终端底,行为不变)",
+      "composition": "多栏网格承载大量小图与数据表,密度即外观;侧栏 + pull-stat + 源行常驻",
+      "density": "high,紧而有序——网格挣得密度不挣得杂乱"
+    },
+    "color_palette": {
+      "primary": "#F8F9FA(出版纸白场)",
+      "secondary": "#1E3A5F(深蓝墨:标题/表格线/图表主系列)",
+      "accent": "#D4AF37(关键数字金,语义强调位)",
+      "neutral": "#1E3A5F(发丝线与小注)",
+      "rule": "图表系列只用同族 tints 不用彩虹;数字颜色表义(涨/跌/风险/焦点)不装饰;强调色 <10% 只标风险与关键数字"
+    },
+    "typography": {
+      "title": "衬线大标题/hero 数字(思源宋体 / Georgia 系),权威出版气质",
+      "body": "无衬线正文(Inter / 思源黑体),表格与图表标签可用等宽(JetBrains Mono / IBM Plex Mono)保数字精度",
+      "labels": "小图注 + 紧来源行,小字号克制层级"
+    },
+    "layout_patterns": [
+      "每页 = 结论句标题 + 满版多栏网格(2-4 栏),栏内嵌微图表/数据表,发丝线 #1E3A5F 分栏",
+      "pull-stat 侧栏:一栏窄侧栏放 hero 数字(3-5x 正文)+ 一行结论",
+      "源行常驻:页脚小字数据来源与截止日期,每图必有",
+      "market map 页:logo/文字占位格 Grid 满版 + 单色阶梯高亮焦点格"
+    ],
+    "layout_usage_rule": "信息密度即外观,但每页只有一个结论句标题;网格之外零装饰,图表即视觉",
+    "negative_prompt": [
+      "no rainbow chart palettes — series colors stay in one family's tints",
+      "no decorative glow, shadows or heavy cards; hairline rules carry structure",
+      "no keynote-style hero whitespace; density is the look",
+      "colors never decorate — a colored number must mean up/down/risk/focus"
+    ],
+    "paired_illustration": {
+      "family": "diagram",
+      "density": "core"
+    },
+    "palette_family": "浅场 cool-corporate(克制蓝金)/ 深场 dark-cinematic(Bloomberg 终端);源规格颜色行为分离——HEX 由品牌侧替换,本风格只锁用色纪律",
+    "visual_elements": {
+      "allowed": "内联微图表,数据表,编辑侧栏,发丝分隔线,hero 数字,来源行",
+      "avoid": "装饰性大图;重卡片阴影;彩虹系列色;无源数据图"
+    },
+    "rendering_constraints": [
+      "Publication-grade flat: hairline rules over heavy cards; optional scrim on images.",
+      "Every chart carries a source line; numbers are colored to mean.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: M1n-n9/academic-ppt-master · visual-styles/data-journalism.md + image-palettes/cool-corporate fewshot"
+  },
+  "recommendation_features": {
+    "density": "high",
+    "audience_conservatism": "balanced",
+    "formality": 0.75,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Publication-grade flat: hairline rules over heavy cards; optional scrim on images.",
+      "Every chart carries a source line; numbers are colored to mean.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

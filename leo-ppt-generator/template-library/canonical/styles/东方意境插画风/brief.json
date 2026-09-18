@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:东方意境插画风",
+  "name": "东方意境插画风",
+  "aliases": [
+    "东方意境插画",
+    "Oriental Poetic Illustration",
+    "东方",
+    "禅意",
+    "竹影",
+    "oriental",
+    "zen"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/东方意蕴/东方意境插画风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "东方意蕴",
+      "水墨国风"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "oriental poetic illustration, soft mountain-mist scenery with classical motifs, narrative guofeng imagery"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 11,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "东方意境插画",
+      "Oriental Poetic Illustration",
+      "东方",
+      "禅意",
+      "竹影",
+      "oriental",
+      "zen"
+    ],
+    "best_for": "竹影月色，禅意诗画的东方插画;适合传统文化/疗愈冥想/教学科普",
+    "visual_direction": "oriental poetic illustration, soft mountain-mist scenery with classical motifs, narrative guofeng imagery",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F5F5F5→#E8F5E9→#E3F2FD",
+      "composition": "留白即设计，大量负空间，主体偏居中或左下",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#F5F5F5(主色/标题锚)",
+      "secondary": "#E8F5E9(辅助色)",
+      "accent": "#E3F2FD(强调色)",
+      "neutral": "#1B1B1B(文字与中性锚)",
+      "rule": "锚点 #F5F5F5, #E8F5E9, #E3F2FD, #2E7D32;背景：宣纸白 `#F5F5F5`、竹青淡绿 `#E8F5E9`、月光蓝 `#E3F2FD`"
+    },
+    "typography": {
+      "title": "标题用行楷或瘦金体风字体，竖排或大字横排，墨黑色，笔意流畅",
+      "body": "正文用思源宋体或仿宋，字距宽松，行高 1.8–2.0",
+      "labels": "引文诗句用古风衬线体，斜体或竖排"
+    },
+    "layout_patterns": [
+      "留白即设计，大量负空间，主体偏居中或左下",
+      "左侧或右侧大幅留白配竖排诗句",
+      "卡片用淡色块或细线框，不用硬阴影",
+      "信息层级靠字号与留白区分，不靠边框堆叠"
+    ],
+    "layout_usage_rule": "留白即设计，大量负空间，主体偏居中或左下",
+    "visual_elements": {
+      "allowed": "留白即设计，大量负空间，主体偏居中或左下",
+      "avoid": "不要高饱和、不要荧光色;不要金属质感、复杂渐变、霓虹光;不要拥挤排版，留白是灵魂"
+    },
+    "rendering_constraints": [
+      "不要高饱和、不要荧光色",
+      "不要金属质感、复杂渐变、霓虹光",
+      "不要拥挤排版，留白是灵魂",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要高饱和、不要荧光色",
+      "不要金属质感、复杂渐变、霓虹光",
+      "不要拥挤排版，留白是灵魂",
+      "不要卡通或赛博风混搭"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/oriental-poetic-illustration"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要高饱和、不要荧光色",
+      "不要金属质感、复杂渐变、霓虹光",
+      "不要拥挤排版，留白是灵魂",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

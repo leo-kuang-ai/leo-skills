@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:宣言备忘录风",
+  "name": "宣言备忘录风",
+  "aliases": [
+    "All-Text Manifesto",
+    "纯文字备忘录",
+    "宣言文档风",
+    "silent-read 备忘录",
+    "文字宣言"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/宣言备忘录风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "all-text memo deck, pure white or black field with reading-grade typography, one assertion or prose block per page, single accent color highlighting only key phrases, zero images zero bullets, hand-typeset document dignity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 4,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "All-Text Manifesto",
+      "纯文字备忘录",
+      "宣言文档风",
+      "silent-read 备忘录",
+      "文字宣言"
+    ],
+    "best_for": "以阅读级排印、一页一观点与唯一强调色金句高亮的纯文字纪律,做文化宣言与深度备忘录;零图零 bullet,纯文字是 HTML 最稳的还原",
+    "visual_direction": "all-text memo deck, pure white or black field with reading-grade typography, one assertion or prose block per page, single accent color highlighting only key phrases, zero images zero bullets, hand-typeset document dignity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "纯白文档场 #FFFFFF(纯黑宣言变体允许,行为不变)",
+      "composition": "一页一观点:金句断言大字左对齐层级,或一段散文(max-width 控制行宽);附录用极简 table",
+      "density": "low-to-medium,散文体而非 bullet;行宽 65ch 级阅读舒适"
+    },
+    "color_palette": {
+      "primary": "#FFFFFF(纯白文档底)",
+      "secondary": "#111111(阅读级墨字)",
+      "accent": "#E50914(唯一强调色,示例 Netflix 红;金句关键短语专用)",
+      "neutral": "#6E6E73(次级灰:页眉页脚/日期/编号)",
+      "rule": "底黑字白或底白字黑二元;强调色只做 span 高亮关键短语(<5% 面积);零图片零图标零装饰"
+    },
+    "typography": {
+      "title": "金句断言:Archivo 超粗 / 思源黑体 Heavy 左对齐,或衬线宣言体(Newsreader / 思源宋体)按气质二选一",
+      "body": "阅读级排印(Newsreader / Source Serif / 思源宋体),行宽控制,散文段落",
+      "labels": "页眉页脚与日期用灰级小字;制度名词可全大写 span 高亮"
+    },
+    "layout_patterns": [
+      "金句页 = 满版底 + 一句断言大字(关键短语强调色高亮)",
+      "散文页 = 一段口语化坦诚文字,65ch 行宽,无 bullet 无图",
+      "制度页 = 制度名词高亮(如 Keeper Test)+ 一两行解释",
+      "附录页 = 极简 table(数据/对照),细线表 + 小字注"
+    ],
+    "layout_usage_rule": "一页一观点,零图零 bullet:强调色只高亮关键短语;口语化坦诚,像内部备忘录不像发布会",
+    "negative_prompt": [
+      "no images, icons or decorative shapes — words only",
+      "no bullet lists; prose and assertions carry the argument",
+      "no multi-color highlights; one accent color on key phrases",
+      "no dense walls of small text; one idea per page at reading scale"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "金句断言,散文段,唯一强调色 span,极简 table,灰级页眉页脚",
+      "avoid": "图片;图标;bullet;多彩高亮;装饰形状"
+    },
+    "rendering_constraints": [
+      "Pure typography: assertions at clamp-scale, prose at 65ch measure.",
+      "Single accent color on key phrases only.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: huashu-design · design-styles.md PPT 库「纯文字宣言备忘录」"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Pure typography: assertions at clamp-scale, prose at 65ch measure.",
+      "Single accent color on key phrases only.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

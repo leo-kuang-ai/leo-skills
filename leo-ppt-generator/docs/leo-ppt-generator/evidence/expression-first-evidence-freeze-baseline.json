@@ -1,0 +1,1705 @@
+{
+  "recorded_at": "2026-09-14T06:50:43.422539+00:00",
+  "head": "4036e1391b2da80ef0edecde0640098dbc39aeee",
+  "paths": [
+    {
+      "status": " M",
+      "path": "CHANGELOG.md",
+      "owner": "expression-first-inherited",
+      "sha256": "45a1b6c7f39fd2d38dda54f84ffa13f25ada5049134f2adbf8c71ac7a90c20db"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-completion-matrix.json",
+      "owner": "expression-first-inherited",
+      "sha256": "4fc934c2204b211d33717c2ad605e103e6faa493ac7106a63939b9cb677b2296"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py",
+      "owner": "expression-first-inherited",
+      "sha256": "6b5066be0baed0ef6b7f7334faf7d10d32134f6d166d68af85a50fbc36808fc2"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/routes.py",
+      "owner": "expression-first-inherited",
+      "sha256": "e3e05692ffd9a5c3d79e4450e1d905e72be581891eca79951ceca6bfdb8d88df"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/run_index.py",
+      "owner": "expression-first-inherited",
+      "sha256": "f24f543c5c9643d8d14de283b30eae0fd37153c4a7c8e1e03dbb23661be6d50d"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py",
+      "owner": "expression-first-inherited",
+      "sha256": "cf8377b8d62777924106d91438f1b1696c67ee69c07ec709962164ac9f5b7eca"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/content_preview.py",
+      "owner": "expression-first-inherited",
+      "sha256": "b9be72e7945b6de9952e8b0e88fba4e7e1dcace9dca52b20f12ff7498bf07d93"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py",
+      "owner": "expression-first-inherited",
+      "sha256": "87d71b36b377a67a0769c6d69b46dddbbf3ea0207629fb9b7c425338619915f9"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/layout_selection.py",
+      "owner": "expression-first-inherited",
+      "sha256": "0d25824d279db025d6f695eb3c69485a1ddf988307833813cf979bf164d7e9ed"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/quality_metrics.py",
+      "owner": "expression-first-inherited",
+      "sha256": "2d81648195a39e08443670fcc84888b481a8e1bd2837ea8d7feb4697e343c381"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/page.py",
+      "owner": "expression-first-inherited",
+      "sha256": "6d455470bb1c5d747ece81efc3bd999cf7eb1d13f697d2500e35e3f56fbbe0f5"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/provenance.py",
+      "owner": "expression-first-inherited",
+      "sha256": "2cabb59df5e33bb40f6fd0abec936e79a08dbcda1928e995928bb949b64ddf66"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/receipt.py",
+      "owner": "expression-first-inherited",
+      "sha256": "3f009feb38cd8e8d07adf1b073a2491b679d519fef98c8c429f807e4893cf6a1"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/deck-quality-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "21c6bc156cd6a7645b04d9a706c1a3e6e18f6acb292220cf9ddd2bf4d2e9cbac"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/expression-pipeline-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "bfcea31191b373deba8ca632b007c823d2d0c6bf603aa252a841b903b0631ff2"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/impact-v2.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "7bae6c70ba7b1d17e4aabeca9772c32d623e63ed8cc38430f3afc987f5bb900f"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a9dd3fc2c8cfd4112390f17ae4d9fee0e641376fd0dc75a4d6e2f42c4836a527"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/task_local_layout_proposals.py",
+      "owner": "expression-first-inherited",
+      "sha256": "95653b0a8494e3d7f487ad21d2d5cd81565254cd5b44c86c03393765acfd1eb3"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/template_inputs.py",
+      "owner": "expression-first-inherited",
+      "sha256": "e0c17aaf6b33ee0b8121a8becd3d17e1bde03d3f11b09790cdc7f2af0b774ca9"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py",
+      "owner": "expression-first-inherited",
+      "sha256": "2825c6b740125bbec5fba2350b260ee97778cce869056df7358896bcb540f5aa"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/capability_manifest.py",
+      "owner": "expression-first-inherited",
+      "sha256": "45d5f48b1c5bc6b655bd8a7868d1688b1dd8f09ca0927bc54ff8f80e403b8162"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/compute_impact.py",
+      "owner": "expression-first-inherited",
+      "sha256": "f852eec8c4c22cd6171c85b61754b9fdca54884f9eaa8190474fba29903c5bd6"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/lint_template_contract.py",
+      "owner": "expression-first-inherited",
+      "sha256": "dd53bd641f7357cb55a542f9c56a8da4cd7b9e0ab2fac2845cdb4ab8092a9b2a"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/scripts/run_quality_scorecard.py",
+      "owner": "expression-first-inherited",
+      "sha256": "e53659d934b1fc0676b9fe118a35311fa034b27aed6ba56f640117bb88a57585"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/canonical/layouts/body-basic/layout.json",
+      "owner": "expression-first-inherited",
+      "sha256": "14639d99d75a1183aba0d344da5c9725f74a5160b79e1ba4daaba7707d30c5fe"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/canonical/layouts/p25-spec-table/layout.json",
+      "owner": "expression-first-inherited",
+      "sha256": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/canonical/templates/body-basic/template.json",
+      "owner": "expression-first-inherited",
+      "sha256": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/canonical/templates/spec-table/template.json",
+      "owner": "expression-first-inherited",
+      "sha256": "eec309ab46687888bc803b008fdfa103c1feaf6d6ad4efc4358ade853052bef3"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/catalog/current.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1a0557f57e34b321d1f9c444244b1eb2c0a918536def14f981cc676f1268ef01"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/rules/page-type-regime-v2.json",
+      "owner": "expression-first-inherited",
+      "sha256": "9f193729328b97d6ed206b4bc28440a85ff2c6352a7088f20b09eafd601ac0bd"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/schemas/qualification-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "70a1b72bfa740e865623386329daec788dfc84fe629d41a696e4d25260fd5ed3"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/schemas/resolved-design-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "51aa8e2de1a075feef894be8ab7074f36797a273fe81b58089c7a54e3d298c86"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/template-library/governance/schemas/template-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1cc4cccec3871e6130b5c85e265f747d3fd5455c6a79fbff7f18220dcb9f3129"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_content_preview.py",
+      "owner": "expression-first-inherited",
+      "sha256": "ee9ffaac29ebd20c8601f8fb92b65320d14ea74fc61dfc862abddfaf0010528f"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_content_projection.py",
+      "owner": "expression-first-inherited",
+      "sha256": "d65d14cf2031f4f99f27d0469e90861fce2427b92f20fca39342f54f06900305"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_deck_layout_selection.py",
+      "owner": "expression-first-inherited",
+      "sha256": "f9f2097c6bd524848fee0e7af0471b6f776fee9c2f7a27b1c4c8e76c68e6f00b"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_expression_pipeline.py",
+      "owner": "expression-first-inherited",
+      "sha256": "ea11695b92f70dfcb064448c5fb1f3c5c5d5295df03fe1ff57436bba405f7403"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_layout_capacity_filter.py",
+      "owner": "expression-first-inherited",
+      "sha256": "3e958e9e63fea10e73bd2bf970c593d71edddc28dcc3f9f8734e1211de5088de"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_library_contracts.py",
+      "owner": "expression-first-inherited",
+      "sha256": "24ae4138f34413571727d31a7543d106ff8dccf715fe15fbf153234e4a54450c"
+    },
+    {
+      "status": " M",
+      "path": "leo-ppt-generator/tests/test_templates.py",
+      "owner": "expression-first-inherited",
+      "sha256": "8c18d21b5483bb6fc421ed9481255e4556cd7781c84c17c8ea618d351aa7ab6b"
+    },
+    {
+      "status": "??",
+      "path": ".codex/hooks.json.graphify-bak",
+      "owner": "external-preexisting-protected",
+      "sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "owner": "external-preexisting-protected",
+      "sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "owner": "external-preexisting-protected",
+      "sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "owner": "external-preexisting-protected",
+      "sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d"
+    },
+    {
+      "status": "??",
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "owner": "external-preexisting-protected",
+      "sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-autonomous-work.md",
+      "owner": "expression-first-inherited",
+      "sha256": "a436b5a30533d0acfe5519de7b8122465ca7b4bbe968ed814a6c8f4c0211fbf4"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-continuation-baseline.json",
+      "owner": "expression-first-inherited",
+      "sha256": "27bf881b76b94d2690c4386b94717e06f6950ff748ac1165eafcfb0e3b0baca8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-resume-baseline.json",
+      "owner": "expression-first-inherited",
+      "sha256": "eb9132c21d7a9dc5bccccb4767b73590f896a0857dba13c5f09371bff829d9d8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/full-suite-failure-ledger.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0e309a8580eacc576f51cbf69773cfe0edfaf14a5c23590a1d3022d024c3a411"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/full-suite-integration-audit.json",
+      "owner": "expression-first-inherited",
+      "sha256": "3f1adb28529e57582cce506ec42b3e64ab75c6d9d239ab095d50c4c8d66b7f26"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/legacy-source-recovery-audit.json",
+      "owner": "expression-first-inherited",
+      "sha256": "44adc3f21f4d9f6d4882f848214ce96b6232d22c1ccf9c8e61be34b2672ab515"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u12-oracle-freeze.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ad4f9707ee6e56290497950f242ba95e95f7ccc2528fcd7a1f3c946d5f695e80"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-real-evidence-verification.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5ecc62c1e9706759e9bfa9b68af4f1ba766a9b6b11b6c60f35e71808eba3bb79"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/evals/fixtures/expression-first-relation-probes.json",
+      "owner": "expression-first-inherited",
+      "sha256": "7674b48ac4b7bd6bcaff1c7f95fa973c7f3f4e1d84ebaa86b89316c9f1034fa5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/evals/fixtures/expression-first-validation-master.md",
+      "owner": "expression-first-inherited",
+      "sha256": "6fb9f8de1c340e7d5c72739aa00f81689bbec96c6059e1784717992e0abf9a50"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/execution_pairing.py",
+      "owner": "expression-first-inherited",
+      "sha256": "b48129053cfacf92c226e5b7c49e3226098e515ac5dc29c577d970d4d95ea08d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/qualification.py",
+      "owner": "expression-first-inherited",
+      "sha256": "dad3695c469266d9b05dd7fc903967de2229f2bbf9e1156215c0dd8e8a1910df"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/relation_oracle.py",
+      "owner": "expression-first-inherited",
+      "sha256": "66e1b9812d8663312fb545753e93011b7d16678e3fed175ba1c81f4a86fdb095"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/binding-v2.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a95755e20c27aba0dea90b493fd9309208df1799fb7ddb1409603e96db5123b9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/capability-evidence-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "89ea25609a3cf25738d549dbd6b0c8899859564f43e6bcafdba3c147460ad026"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/execution-pairing-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "69068f00f72f6ddc660604a1cff4c945e3713b1b5c630975ade4a5e8b1e8ce4b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/qualification-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "70a1b72bfa740e865623386329daec788dfc84fe629d41a696e4d25260fd5ed3"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/scripts/probe_relation_capabilities.py",
+      "owner": "expression-first-inherited",
+      "sha256": "542518bd2dfc0d599d952fb53a413d5c674564b7fe81765e70d7c8e17b615916"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/catalog/generations/20b8c56a2821b6fb588b38d4f11fbd30/build-manifest.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cc596bcb5e35de8e7f34340c32668dba9c9b37d3e897bb9285ab9aa8f6941dc9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/catalog/generations/20b8c56a2821b6fb588b38d4f11fbd30/registry.json",
+      "owner": "expression-first-inherited",
+      "sha256": "9bf7c1c798490f66d3784a5c7813dbcdd00b11896ccef5ec3451bec7b2a6834d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/capability-receipts.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ff58c81e55ca41c30ee48b4455d2e1dfb20490dcdf3bd803f3ebca91ab8a5873"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/oracles/relation-output-v1.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v1/cases.json",
+      "owner": "expression-first-inherited",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v1/environment.json",
+      "owner": "expression-first-inherited",
+      "sha256": "05154bd6db91a3877de6f99526429c036a30e2073e1343949af39d05290a8aaf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/capability-receipts.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1d7ad0df2528a08c8bd9980be4e006125dfa1b004e628b5c0462543d07fa1d03"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/cases.json",
+      "owner": "expression-first-inherited",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ab96d36cc6772cd90b0f489eb0c54974a9ac73ce63cbdb8ec5fc8d0258c0d557"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ea31a1d62bbcc2e8525c1550a3989628bb1a8e74741336c8842c9d6eec820e5d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "89fa07a210b129d821a60474ae9e5423fae61409c7c25837c04c449ed50f5927"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "55a7ce45352d3c56143c73a5d17b88fa53b5ce7bf340379d7efb953aad6d9f38"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e5b9d6d308fff47d4be8288c606870b0d787497a7a248565738a5be36fc46868"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "863607ce33ac75ce8c28e70a7bec3230e4f1b7683e66f70e5492b8d097e7a58e"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "965dcea8bb81fd2d2854361960dcce48b55ef478066a7ed79c4ecdce59b28bcf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f532057380695183686ca457561ad603282539059cb08d83ebff5c8ea3e0bd5a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0ba134c7fce13e76572365fbd84425fca3124a26fd2b4c1fc4d58140106c811b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cbfb63bd964931c1ab4f2d811f825dba154495c291b5e37347b72b65fb47e228"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "985fd36389ee05f6b6fcc342ff1f56c46929098b0c199458253208ada4a1757b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "9b096f7198e66713c5f91c1f0330afb4daa6f3e601f3b71b839e4b92679d88b9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "8b6e584371997a033394155ff8f057a271240d57a6f61393ad020275234ac814"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "86686afa9fe88b79e5a684f892084a40eb2312d24aa6ab46a63c591779628558"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/environment.json",
+      "owner": "expression-first-inherited",
+      "sha256": "05154bd6db91a3877de6f99526429c036a30e2073e1343949af39d05290a8aaf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ca270b75f669e93bfefacda1219681c913ad9af9bee347a2be2fa58ea29ece9c"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1f92fdf6de0a7e899fd3bb3e16cbd91280eb7e6ca99c5afb5de4b11e2348200c"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "8647c7c06da9b97749ef8068204b72e7eb11180469d3d5ddebdbe2965b8285bf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "8d3211b51a8b23ceb513efdedf408c877deb841e1fc70029855690ad2f9da525"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "88f925092f4d102a316debbd037c847df5f4a7ac02808c29df4d859f6aac14b0"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5836bb729059445f1dc9ae02c6537ca04e3bc307aaddb55b623354635fb5363e"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "bc5a59e66f4fb860eeff3873b7556de592b1f28c1cd29268c981422524a26d85"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "93673ba0bd0a00080f2e03bfe0292cefd5e21aec009e8af10a264d8d96ac9b84"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5b4b535b52d336a9725c567ea06028e6b8e99610e6e45115ca98e5a7db088d57"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f71530c0bc22b7daffcaca5cc19e4876a893a06d5f4193224314fc0c6748bbb1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "eb79179af36c55c7e0cfda8cc70539a8f83e73067a69d3532993c036ff853534"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "068a6db29e77257b9bd1a160b1add1cc7dc759d99573fb522573d5e9a469816a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "635a87e88b65ed15cf7a2e44a7a221e8ec79e5e21fd61be3446f0366ca71ffbf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1c926dccbc4372dae72437baa754e1793edd343d883954cc909c85e4de589d60"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "05ce313ef8980c1ac2d1f0b06a0fa727c1cda3d07c76b7ac053ae89b5fca6c3f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "99d8e54294f53506c5c2470b417eb71729e35ed27c865f746cdddac62cd6ff6f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/report.json",
+      "owner": "expression-first-inherited",
+      "sha256": "fe6c3fd4f797a860ab3f9b16d139f0b2e2962c057b63bef15d4f0920635ad28e"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "664d89a83504f00e3d88e1b1849cb9b418cc92a511e03032d599dfc389a0135d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "aaaff888abf23ede87574cab6a9c614c3b02f5830404cefecabc1aa1b3e717f6"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "64fa49c860585fe90b0f9147b3566359ecc86a1ad8073a61602d8fc71352a995"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a427decb3526565f7f9782dd6b1068d05491fc88e79a35e27427e8c918373bb3"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a07e136d5ff6335105896907f5f7ab4380fdac38073a43adc6465a8f706b8014"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/capability-receipts.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b250d18776a6ec339868bdc3ceaf24bfeab99b42d50af36a3b8b9c9118dddddd"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/cases.json",
+      "owner": "expression-first-inherited",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ab96d36cc6772cd90b0f489eb0c54974a9ac73ce63cbdb8ec5fc8d0258c0d557"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "11fa3785ad682a904dc97033a8bbc8d19af9344fe067da7643f4ecc2fbb37b62"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "89fa07a210b129d821a60474ae9e5423fae61409c7c25837c04c449ed50f5927"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f71bcf552577e48c5ea3681461011dbcdb4d26798a6dfb6e11014f9e7545f02b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e5b9d6d308fff47d4be8288c606870b0d787497a7a248565738a5be36fc46868"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "65a9dc1661be7d0de4c7f317c9358c184179c1e688781df3584872a0f369009f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "965dcea8bb81fd2d2854361960dcce48b55ef478066a7ed79c4ecdce59b28bcf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "21890c50e1e82ec56870c63e4553f5af3e0aee2abb81fd8a582e20d882576d2f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "16ff4db502fa6b5862b34b0b6528cbfd251618c4d046326ad468c30e6a011772"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "87089396ad4a9048fac2cec6bc0522a4ee2764cc64d8ad1f3f209b887a026284"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "4470ab29d5795ba58ceca67333a233cb3dd77d8559c06fb379e8abd7230f15ac"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5f520027a4839c6c4e6080a8a2560d72ec44f0fc3e2cb22c874bb26fba2e9bc6"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ee535a251033d494e7b081da5f2ca4edce5dac427630272687a59ed8dd6ebd9f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "3b446a0c4d6c53addd0ae3ad1b2b9739bb9db53c55bba2791ecc01826350edb0"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/environment.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c080123c457e7dcbff2564e6549892b70cb3f09cd594f787788e9e0a949211bd"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ca270b75f669e93bfefacda1219681c913ad9af9bee347a2be2fa58ea29ece9c"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c612c5c55103930a6c52dede5790cdea6140ed9c5947961fc81ca2cc098b4a24"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cde170ccad3a99c2339d22241190c4d9006efa42e679e9e5e9d5f9176fa1d619"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "8d3211b51a8b23ceb513efdedf408c877deb841e1fc70029855690ad2f9da525"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "2d294bee2a7c2189fc292aafdd52426afb7e0f01f7344e352120825eaac73928"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "59decea33fc1d5bd63de52eeb72d8f4da788011677d1376d0861ee0f3d459e96"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cbb1f8094c3cb2aa4227242e4d2d8af48a45dfef615a241427a754dbd1049963"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "93673ba0bd0a00080f2e03bfe0292cefd5e21aec009e8af10a264d8d96ac9b84"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "fb758051677a46530a28b879aabe6ecbab718291d8984572a998596ba0443888"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f71530c0bc22b7daffcaca5cc19e4876a893a06d5f4193224314fc0c6748bbb1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "2ebfaa908b3ce07688b9f9ba7ccbed8fd68bb24de1274f4d0f86b8cf673e97b1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "068a6db29e77257b9bd1a160b1add1cc7dc759d99573fb522573d5e9a469816a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "542b8dca0a682c6d33b0a5d87929444ecac609cda351c401bcccc7f618574dcf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1c926dccbc4372dae72437baa754e1793edd343d883954cc909c85e4de589d60"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "48b61d8da1d6ae6083ea7b4d966c72d4091e78d220aa60ea9a22a8c1190476af"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f5f4c5f4296057b02c1ae6ea4b854c7b4e6b9fd53b7aade3c9db4a9a5d1f2e52"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/report.json",
+      "owner": "expression-first-inherited",
+      "sha256": "99c71065cda0bd8825dca83ac930054f701fd5434d05ed981ce85fb31e13ddf4"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "651adb329bc60969f23f56fe783dc72ea720a281590d9aaaf64dc751d251604e"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "206df5515104e0458583b178e744b6f0d82a6ff5e531db33b363405509923cea"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f4e14b917440a491d1bc92be9af94c7a3d303820a89a078058b0fe9bcd400f0b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f8d1207c9a709a9c8a1203a679b438070580e04ed8bd279cde84be16bdab8236"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "3fd7735b766d0050ceee5d960d0b8ca8cb420b6bf739196419f0c184a779002a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/capability-receipts.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ff58c81e55ca41c30ee48b4455d2e1dfb20490dcdf3bd803f3ebca91ab8a5873"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/cases.json",
+      "owner": "expression-first-inherited",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ab96d36cc6772cd90b0f489eb0c54974a9ac73ce63cbdb8ec5fc8d0258c0d557"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "931b25bcc67d8aa457e1ec7c8be200f61fa7e6c8da2c545fec6eb4d218d6a9fc"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "89fa07a210b129d821a60474ae9e5423fae61409c7c25837c04c449ed50f5927"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e0c6850de405b7296fd9dc6af19ae2e4844f42e3fe8b007745307c6d06472401"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e5b9d6d308fff47d4be8288c606870b0d787497a7a248565738a5be36fc46868"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "67a769def8d6f4b1d73007d9300108ab35ee71915f7097ed3d0980499bafdd9e"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "965dcea8bb81fd2d2854361960dcce48b55ef478066a7ed79c4ecdce59b28bcf"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "d506722b389a598ab77cb42bb28a59f82d8fa7a8c5b1db2a885647c2baa88ef0"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "545a48227042c279beccfbbfd3fa111320790c3ab24af66d475a240a398bd8a7"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "aa761ee9c77becbe8239adf98d883ffd73f3509460f3b4ced2f21f57595be6cc"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0e1fb5df382f777c848a05862e864bcf63115c676ff11d7a7d6688947d7201a9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "715f23ab514760f140e6ac05f79ce0490e40a2ad1a292eaa48623880e62cd672"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "14860b8c8ea849e0c5d697c2e243b670d405607a0f8d28ab3304b04409f2a159"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f4a107c24f64eacddc56251f4ec1c5338b125607463fe1531dee406564870650"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/environment.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c080123c457e7dcbff2564e6549892b70cb3f09cd594f787788e9e0a949211bd"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ca270b75f669e93bfefacda1219681c913ad9af9bee347a2be2fa58ea29ece9c"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "9b6462fbcc45984be0af3a20b4385e037ffef5948b7f717babe9990c74015b5f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "a58fc3c5926c93c3b3af4c981088055c0d556d52580dd64d5721612f89bfd49d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "8d3211b51a8b23ceb513efdedf408c877deb841e1fc70029855690ad2f9da525"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "32d16eba4c48cac47814cb5bc9c401062c1877489e1cd9ef44ea0630f4e555c4"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "31dffb4b360b7125439f69da8a41aef1d82d030b11ca592914167aa632cfb4ee"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "abab875b0d1f1d98fa67f07c572c42869cd6a34ac406097772ea2104b5ac99f0"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "93673ba0bd0a00080f2e03bfe0292cefd5e21aec009e8af10a264d8d96ac9b84"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "be31425bb590e8e2b668cd4f4bf97f1f5fd6d16edfdeb092d910163145803d72"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "f71530c0bc22b7daffcaca5cc19e4876a893a06d5f4193224314fc0c6748bbb1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "da5a78357f2c00c6523b36ea745f5066f376e85b3047019f2ec2b9f537bbb8a9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "068a6db29e77257b9bd1a160b1add1cc7dc759d99573fb522573d5e9a469816a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "d269bc8463025bf2ac4a10c727e381b5480f3c5b0f7ef863e5c284722512e5a7"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "1c926dccbc4372dae72437baa754e1793edd343d883954cc909c85e4de589d60"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "fc86987ccd3f875ef42d3bb96cdd27c0320ab214446bce51522a1602cc52d2c1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ec234eb73b1cf94e20deabb36cead3f002f96210f1343f9f2b9dca947f22a97f"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/report.json",
+      "owner": "expression-first-inherited",
+      "sha256": "4e4df77d5d46e29fed73e161b1c83c9147d6da9cacca46105eafc3dc1b571d32"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "f73983dea7f798af1d105ecbc01bef96a686344f920d16cb1ae4a311e80f72d4"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative.png",
+      "owner": "expression-first-inherited",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "45534541440a48162ae8f56fa217f2ad903638e8805b4e987d5ae70e8f370e41"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-fixture.json",
+      "owner": "expression-first-inherited",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-input.json",
+      "owner": "expression-first-inherited",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-measurement.json",
+      "owner": "expression-first-inherited",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-observation.json",
+      "owner": "expression-first-inherited",
+      "sha256": "9ac1f6d1d68175c8943792a6da55f11587ca031aecbc2336aa28a6a35db21203"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive.png",
+      "owner": "expression-first-inherited",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive.png.render.json",
+      "owner": "expression-first-inherited",
+      "sha256": "5ca50fabeb409027143ff4935bb1f8410ddcb6c04801fbf94cb7db40bdab4412"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/receipt.json",
+      "owner": "expression-first-inherited",
+      "sha256": "91fbfae659e40e809786677f9081ad0758b6222bb5d133822204cf8166d72af4"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/template-library/governance/schemas/capability-evidence-v1.schema.json",
+      "owner": "expression-first-inherited",
+      "sha256": "89ea25609a3cf25738d549dbd6b0c8899859564f43e6bcafdba3c147460ad026"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_binding_v2.py",
+      "owner": "expression-first-inherited",
+      "sha256": "72368f2d4c4f415c5e6682124ff5cdd131407042e936424c6a6a3044c29b7833"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_execution_pairing.py",
+      "owner": "expression-first-inherited",
+      "sha256": "6a46b161b82317b0802d8249b66aece594645a725b9d73456df86cabab2310a9"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_expression_quality_channels.py",
+      "owner": "expression-first-inherited",
+      "sha256": "d35ad077bce2b562ca11ca800e4dc3197edf3fa1b7634cd2b22d5cadf7c61c3a"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_qualification_evidence.py",
+      "owner": "expression-first-inherited",
+      "sha256": "255df8c0eb885e0074693a2cf48a574f960b72e109f24b585995d162edf2090b"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_relation_oracle.py",
+      "owner": "expression-first-inherited",
+      "sha256": "ca23437d6fdd06a26bf8107da600c327154c6750c61e81014193fbcc4758d1e6"
+    },
+    {
+      "status": "??",
+      "path": "leo-ppt-generator/tests/test_task_local_expression_proposals.py",
+      "owner": "expression-first-inherited",
+      "sha256": "08d23b51629d3477bdad6d15a8011b697b23d3fcec939ed6529f9a3daf404b2f"
+    }
+  ],
+  "raw_status": " M CHANGELOG.md\n M leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-completion-matrix.json\n M leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/application/routes.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/application/run_index.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/content_preview.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/layout_selection.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/quality_metrics.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/render/page.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/render/provenance.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/render/receipt.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/deck-quality-v1.schema.json\n M leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/expression-pipeline-v1.schema.json\n M leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/impact-v2.schema.json\n M leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/task-local-layout-proposal-v1.schema.json\n M leo-ppt-generator/runtime/src/leo_ppt_generator/task_local_layout_proposals.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/template_inputs.py\n M leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\n M leo-ppt-generator/scripts/capability_manifest.py\n M leo-ppt-generator/scripts/compute_impact.py\n M leo-ppt-generator/scripts/lint_template_contract.py\n M leo-ppt-generator/scripts/run_quality_scorecard.py\n M leo-ppt-generator/template-library/canonical/layouts/body-basic/layout.json\n M leo-ppt-generator/template-library/canonical/layouts/p25-spec-table/layout.json\n M leo-ppt-generator/template-library/canonical/templates/body-basic/template.json\n M leo-ppt-generator/template-library/canonical/templates/spec-table/template.json\n M leo-ppt-generator/template-library/catalog/current.json\n M leo-ppt-generator/template-library/governance/rules/page-type-regime-v2.json\n M leo-ppt-generator/template-library/governance/schemas/qualification-v1.schema.json\n M leo-ppt-generator/template-library/governance/schemas/resolved-design-v1.schema.json\n M leo-ppt-generator/template-library/governance/schemas/template-v1.schema.json\n M leo-ppt-generator/tests/test_content_preview.py\n M leo-ppt-generator/tests/test_content_projection.py\n M leo-ppt-generator/tests/test_deck_layout_selection.py\n M leo-ppt-generator/tests/test_expression_pipeline.py\n M leo-ppt-generator/tests/test_layout_capacity_filter.py\n M leo-ppt-generator/tests/test_library_contracts.py\n M leo-ppt-generator/tests/test_templates.py\n?? .codex/hooks.json.graphify-bak\n?? .spec-first/cache/mcp-warmup/codex/macos/context7.json\n?? .spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json\n?? .spec-first/cache/mcp-warmup/zcode/macos/context7.json\n?? .spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-autonomous-work.md\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-continuation-baseline.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-first-resume-baseline.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/full-suite-failure-ledger.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/full-suite-integration-audit.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/legacy-source-recovery-audit.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/u12-oracle-freeze.json\n?? leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-real-evidence-verification.json\n?? leo-ppt-generator/evals/fixtures/expression-first-relation-probes.json\n?? leo-ppt-generator/evals/fixtures/expression-first-validation-master.md\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/execution_pairing.py\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/qualification.py\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/relation_oracle.py\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/binding-v2.schema.json\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/capability-evidence-v1.schema.json\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/execution-pairing-v1.schema.json\n?? leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/qualification-v1.schema.json\n?? leo-ppt-generator/scripts/probe_relation_capabilities.py\n?? leo-ppt-generator/template-library/catalog/generations/20b8c56a2821b6fb588b38d4f11fbd30/build-manifest.json\n?? leo-ppt-generator/template-library/catalog/generations/20b8c56a2821b6fb588b38d4f11fbd30/registry.json\n?? leo-ppt-generator/template-library/evidence/capability-receipts.json\n?? leo-ppt-generator/template-library/evidence/oracles/relation-output-v1.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v1/cases.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v1/environment.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/capability-receipts.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/cases.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/comparison/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/environment.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/independent/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/process/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/report.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/trend/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/capability-receipts.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/cases.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/causal/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/comparison/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/environment.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/independent/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/report.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/trend/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/capability-receipts.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/cases.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/causal/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/comparison/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/environment.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/independent/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/process/receipt.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/report.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/negative.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-fixture.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-input.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-measurement.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive-observation.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive.png\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/positive.png.render.json\n?? leo-ppt-generator/template-library/evidence/probes/expression-first-output-v4/trend/receipt.json\n?? leo-ppt-generator/template-library/governance/schemas/capability-evidence-v1.schema.json\n?? leo-ppt-generator/tests/test_binding_v2.py\n?? leo-ppt-generator/tests/test_execution_pairing.py\n?? leo-ppt-generator/tests/test_expression_quality_channels.py\n?? leo-ppt-generator/tests/test_qualification_evidence.py\n?? leo-ppt-generator/tests/test_relation_oracle.py\n?? leo-ppt-generator/tests/test_task_local_expression_proposals.py\n"
+}

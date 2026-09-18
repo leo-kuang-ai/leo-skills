@@ -1,0 +1,611 @@
+{
+  "schema_version": 2,
+  "regime_id": "page-type-regime-v2",
+  "page_types": {
+    "cover": {
+      "semantic_requirements": [
+        "opening",
+        "single-message"
+      ],
+      "preferred_layouts": [
+        "P1",
+        "cover-basic"
+      ],
+      "fallback_layouts": [
+        "P3"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "title"
+      ],
+      "forbidden_shapes": [
+        "dense-table",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "封面"
+      ],
+      "layout_page_types": [
+        "cover"
+      ]
+    },
+    "agenda": {
+      "semantic_requirements": [
+        "navigation",
+        "ordered-sections"
+      ],
+      "preferred_layouts": [
+        "P32"
+      ],
+      "fallback_layouts": [
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "items"
+      ],
+      "forbidden_shapes": [
+        "single-kpi",
+        "dense-table"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "拆解·目录"
+      ],
+      "layout_page_types": [
+        "agenda"
+      ]
+    },
+    "section": {
+      "semantic_requirements": [
+        "transition",
+        "one-message"
+      ],
+      "preferred_layouts": [
+        "P23",
+        "P10",
+        "P12"
+      ],
+      "fallback_layouts": [
+        "P3"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "title"
+      ],
+      "forbidden_shapes": [
+        "dense-table",
+        "multi-card"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "分隔·过渡"
+      ],
+      "layout_page_types": [
+        "section"
+      ]
+    },
+    "statement": {
+      "semantic_requirements": [
+        "claim",
+        "high-emphasis"
+      ],
+      "preferred_layouts": [
+        "P24",
+        "P10",
+        "pull-quote"
+      ],
+      "fallback_layouts": [
+        "P3"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "title"
+      ],
+      "forbidden_shapes": [
+        "dense-table",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "陈述·金句",
+        "氛围页"
+      ],
+      "layout_page_types": [
+        "section",
+        "content"
+      ]
+    },
+    "kpi": {
+      "semantic_requirements": [
+        "numeric",
+        "single-period-or-baseline"
+      ],
+      "preferred_layouts": [
+        "P20",
+        "P6",
+        "P24"
+      ],
+      "fallback_layouts": [
+        "P7",
+        "P35"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "kpis"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "unpaired-sides"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "指标·计分榜",
+        "结论·数字海报"
+      ],
+      "layout_page_types": [
+        "data"
+      ]
+    },
+    "comparison": {
+      "semantic_requirements": [
+        "two-sided",
+        "same-dimension"
+      ],
+      "preferred_layouts": [
+        "P8",
+        "compare"
+      ],
+      "fallback_layouts": [
+        "P16",
+        "P21"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "left",
+        "right"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "single-kpi"
+      ],
+      "relation_kind": "comparison",
+      "minimum_encoding": [
+        "item_refs",
+        "dimension_refs",
+        "cells"
+      ],
+      "role_aliases": [
+        "对比·多维"
+      ],
+      "layout_page_types": [
+        "content",
+        "data"
+      ]
+    },
+    "trend": {
+      "semantic_requirements": [
+        "temporal",
+        "ordered-change"
+      ],
+      "preferred_layouts": [
+        "P2",
+        "P11",
+        "timeline"
+      ],
+      "fallback_layouts": [
+        "P35",
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "steps-or-chart"
+      ],
+      "forbidden_shapes": [
+        "unrelated-cards",
+        "plain-bullets"
+      ],
+      "relation_kind": "trend",
+      "minimum_encoding": [
+        "samples",
+        "unit_ref",
+        "period_ref",
+        "baseline_ref"
+      ],
+      "role_aliases": [
+        "趋势·时间线"
+      ],
+      "layout_page_types": [
+        "content",
+        "data"
+      ]
+    },
+    "process": {
+      "semantic_requirements": [
+        "ordered-steps",
+        "action-flow"
+      ],
+      "preferred_layouts": [
+        "P11",
+        "P2",
+        "P14"
+      ],
+      "fallback_layouts": [
+        "timeline"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "steps"
+      ],
+      "forbidden_shapes": [
+        "single-kpi",
+        "dense-table"
+      ],
+      "relation_kind": "process",
+      "minimum_encoding": [
+        "nodes",
+        "edges",
+        "parallel_branches"
+      ],
+      "role_aliases": [
+        "流程·路径",
+        "落地·下一步"
+      ],
+      "layout_page_types": [
+        "content"
+      ]
+    },
+    "system": {
+      "semantic_requirements": [
+        "nodes-and-relations",
+        "mechanism"
+      ],
+      "preferred_layouts": [
+        "P17",
+        "P14",
+        "P13"
+      ],
+      "fallback_layouts": [
+        "P16",
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "nodes-or-relations"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "single-kpi"
+      ],
+      "relation_kind": "causal",
+      "minimum_encoding": [
+        "nodes",
+        "edges"
+      ],
+      "role_aliases": [
+        "关系·网络"
+      ],
+      "layout_page_types": [
+        "content"
+      ]
+    },
+    "evidence": {
+      "semantic_requirements": [
+        "source-backed",
+        "artifact-or-proof"
+      ],
+      "preferred_layouts": [
+        "frame-shot",
+        "P31",
+        "P21"
+      ],
+      "fallback_layouts": [
+        "P25"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "evidence"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "single-kpi"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "分布·漏斗",
+        "证据·实拍"
+      ],
+      "layout_page_types": [
+        "evidence",
+        "content",
+        "data"
+      ]
+    },
+    "table": {
+      "semantic_requirements": [
+        "categorical",
+        "same-schema-rows"
+      ],
+      "preferred_layouts": [
+        "P25",
+        "P21"
+      ],
+      "fallback_layouts": [
+        "P35"
+      ],
+      "allowed_lanes": [
+        "render:html"
+      ],
+      "required_slots": [
+        "columns",
+        "rows"
+      ],
+      "forbidden_shapes": [
+        "image-hero",
+        "single-kpi"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "参考·文献"
+      ],
+      "layout_page_types": [
+        "content",
+        "data"
+      ]
+    },
+    "text_list": {
+      "semantic_requirements": [
+        "qualitative",
+        "enumerated-points"
+      ],
+      "preferred_layouts": [
+        "P4",
+        "P5",
+        "P27"
+      ],
+      "fallback_layouts": [
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "points"
+      ],
+      "forbidden_shapes": [
+        "single-kpi",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ]
+    },
+    "closing": {
+      "semantic_requirements": [
+        "synthesis",
+        "next-action-or-final-message"
+      ],
+      "preferred_layouts": [
+        "P9",
+        "P36"
+      ],
+      "fallback_layouts": [
+        "P3"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "title"
+      ],
+      "forbidden_shapes": [
+        "dense-table",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "结尾",
+        "小结·回顾"
+      ],
+      "layout_page_types": [
+        "closing",
+        "content"
+      ]
+    },
+    "causal": {
+      "semantic_requirements": [
+        "nodes-and-relations",
+        "mechanism"
+      ],
+      "preferred_layouts": [
+        "P17",
+        "P14",
+        "P13"
+      ],
+      "fallback_layouts": [
+        "P16",
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "nodes-or-relations"
+      ],
+      "forbidden_shapes": [
+        "plain-bullets",
+        "single-kpi"
+      ],
+      "relation_kind": "causal",
+      "minimum_encoding": [
+        "nodes",
+        "edges"
+      ],
+      "layout_page_types": [
+        "content"
+      ],
+      "role_aliases": [
+        "因果·论证"
+      ]
+    },
+    "independent": {
+      "semantic_requirements": [
+        "qualitative",
+        "enumerated-points"
+      ],
+      "preferred_layouts": [
+        "P4",
+        "P5",
+        "P27"
+      ],
+      "fallback_layouts": [
+        "body-basic"
+      ],
+      "allowed_lanes": [
+        "image",
+        "render:html"
+      ],
+      "required_slots": [
+        "points"
+      ],
+      "forbidden_shapes": [
+        "single-kpi",
+        "multi-series-chart"
+      ],
+      "relation_kind": "independent",
+      "minimum_encoding": [
+        "item_refs",
+        "edges"
+      ],
+      "role_aliases": [
+        "并列·事项"
+      ],
+      "layout_page_types": [
+        "content"
+      ]
+    }
+  },
+  "relations": {
+    "independent": {
+      "required_encoding_fields": [
+        "item_refs",
+        "edges"
+      ]
+    },
+    "comparison": {
+      "required_encoding_fields": [
+        "item_refs",
+        "dimension_refs",
+        "cells"
+      ]
+    },
+    "process": {
+      "required_encoding_fields": [
+        "nodes",
+        "edges",
+        "parallel_branches"
+      ]
+    },
+    "causal": {
+      "required_encoding_fields": [
+        "nodes",
+        "edges"
+      ]
+    },
+    "trend": {
+      "required_encoding_fields": [
+        "samples",
+        "unit_ref",
+        "period_ref",
+        "baseline_ref"
+      ]
+    }
+  },
+  "reading_task_relations": {
+    "independent": "independent",
+    "comparison": "comparison",
+    "process": "process",
+    "causal": "causal",
+    "trend": "trend",
+    "statement": "independent"
+  },
+  "shape_aliases": {
+    "list": "text_list",
+    "text": "text_list",
+    "bullets": "text_list",
+    "kpi-stat": "kpi",
+    "chart": "trend",
+    "timeline": "trend",
+    "system-diagram": "system",
+    "evidence-grid": "evidence",
+    "image-hero": "statement"
+  }
+}

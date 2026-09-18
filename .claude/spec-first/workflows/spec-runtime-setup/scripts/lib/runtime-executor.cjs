@@ -27,6 +27,10 @@ const {
   commandSucceeded,
 } = require('./process-runner.cjs');
 const {
+  buildRuntimeInitRemediation,
+  clearRuntimeInitRemediation,
+} = require('./runtime-remediation.cjs');
+const {
   inspectProjectConfig,
 } = require('./project-config.cjs');
 const {
@@ -50,14 +54,28 @@ const {
   providerLimitation,
   providerResult,
 } = require('../providers/common.cjs');
+const { runBoundedRepairLoop } = require('./repair-loop.cjs');
 
 function runVerificationOrMutation(context, repoRoot) {
-  const selectedIds = context.actionPlan.selected_ids;
-  const applyInstallMutation = ['only', 'graphify-refresh'].includes(context.actionPlan.mode);
+  const selectedIds = context.actionPlan.selected_ids.filter((id) => providers[id]);
+  const applyInstallMutation = ['bare', 'only', 'graphify-refresh'].includes(context.actionPlan.mode);
   const applyHostConfigMutation = applyInstallMutation || context.actionPlan.mode === 'host-config-repair';
   let installResults = new Map();
   let helperInstallResults = new Map();
   if (applyInstallMutation) {
+    // Provider 自有的路径/计划约束必须早于任何 baseline、host 或证据写入。
+    for (const id of selectedIds) {
+      const plan = providers[id].plan(providerContext(context, repoRoot, id, {
+        selected: true,
+        probeDependency: false,
+        refresh: context.actionPlan.mode === 'graphify-refresh',
+      }));
+      if (plan.blocked) {
+        const error = new Error(plan.reason_code || `${id}-provider-plan-blocked`);
+        error.reason_code = plan.reason_code || `${id}-provider-plan-blocked`;
+        throw error;
+      }
+    }
     requireCapability(context, 'install-tools');
     installResults = installBaselineTools(context, repoRoot, selectedIds);
     helperInstallResults = installBaselineHelpers(context, repoRoot);
@@ -92,6 +110,20 @@ function runVerificationOrMutation(context, repoRoot) {
       );
     } else {
       providerResults = applySelectedProviders(context, repoRoot, selectedIds);
+      // 首次 mutation 后对已知可修复的 Graphify provenance 漂移自动刷新并复探针。
+      const graphify = providerResults.find((entry) => entry.provider === 'graphify');
+      const graphifyReason = graphify && providerFailureReason(graphify);
+      if (graphify && graphifyReason === 'graphify-scope-provenance-artifact-mismatch'
+        && selectedIds.includes('graphify')) {
+        const refreshContext = {
+          ...context,
+          actionPlan: { ...context.actionPlan, mode: 'graphify-refresh' },
+        };
+        const refreshed = applySelectedProviders(refreshContext, repoRoot, ['graphify']);
+        providerResults = providerResults.map((entry) => entry.provider === 'graphify'
+          ? (refreshed.find((candidate) => candidate.provider === 'graphify') || entry)
+          : entry);
+      }
     }
   }
   for (const readiness of providerResults) {
@@ -100,7 +132,7 @@ function runVerificationOrMutation(context, repoRoot) {
   reconcileProviderHostConfig(providerResults, hostConfigResults);
   const probes = probeRegistry(context, repoRoot, { selectedIds });
   for (const result of probes.toolResults) {
-    const installResult = installResults.get(result.id);
+    const installResult = installResults.get(result.id) || providerDependencyResults.get(result.id);
     if (installResult && installResult.status !== 'ready') Object.assign(result, installResult);
     else {
       applyInstallProvenance(result, installResult);
@@ -127,9 +159,13 @@ function runVerificationOrMutation(context, repoRoot) {
   const factsNow = new Date();
   const baseFactInputs = {
     repoRoot,
+    skillRoot: context.skillRoot,
+    homeDir: context.homeDir,
+    env: context.env,
     host: context.host,
     platform: context.platform,
     registry: context.effectiveRegistry,
+    sourceRegistry: context.registry,
     toolResults: probes.toolResults,
     helperResults: probes.helperResults,
     providerResults: providerResults.map((readiness) => ({
@@ -140,9 +176,13 @@ function runVerificationOrMutation(context, repoRoot) {
     generatedRuntimeManifest,
     directEvidence: {
       ripgrep: commandSucceeded(ripgrepProbe),
+      git_diff: context.target && context.target.repo_status === 'git-repo',
     },
     projectConfigStatus: projectStatus,
     target: context.target,
+    repoStatus: context.target && context.target.repo_status
+      ? context.target.repo_status
+      : 'not-git-repo',
     now: factsNow,
   };
   const preliminaryBundle = collectSetupFacts(baseFactInputs);
@@ -193,8 +233,9 @@ function runVerificationOrMutation(context, repoRoot) {
   if (hostLedgerPreparation) {
     hostLedgerPreparation.hostLedger.scenario_fingerprint_setup = scenarioFingerprintSetup;
   }
+  let scenarioLedgerWrite = null;
   if (writeResult.status === 'ready') {
-    const scenarioLedgerWrite = writeSetupFacts({ repoRoot, ...bundle, writer: context.factsWriter });
+    scenarioLedgerWrite = writeSetupFacts({ repoRoot, ...bundle, writer: context.factsWriter });
     if (scenarioLedgerWrite.status !== 'ready') {
       const ledgerFailure = scenarioFingerprintFailure(
         'scenario-fingerprint-ledger-update-failed',
@@ -212,16 +253,19 @@ function runVerificationOrMutation(context, repoRoot) {
       });
     }
   }
-  const writeFailure = writeResult.status === 'ready'
+  const finalFactsWriteResult = scenarioLedgerWrite || writeResult;
+  const writeFailure = finalFactsWriteResult.status === 'ready'
     ? null
-    : { reason_code: writeResult.reason_code || 'setup-facts-write-failed' };
+    : { reason_code: scenarioLedgerWrite
+      ? 'scenario-fingerprint-ledger-update-failed'
+      : finalFactsWriteResult.reason_code || 'setup-facts-write-failed' };
   const hostLedgerFailure = hostLedgerWriteResult && hostLedgerWriteResult.status !== 'ready'
     ? { reason_code: hostLedgerWriteResult.reason_code || 'host-readiness-ledger-write-failed' }
     : null;
   const failedOutcome = hostLedgerFailure || executionOutcome || writeFailure;
   const effectiveWriteResult = hostLedgerFailure
-    ? { ...writeResult, complete: false }
-    : writeResult;
+    ? { ...finalFactsWriteResult, complete: false }
+    : finalFactsWriteResult;
   const executionSummary = buildExecutionSummary({ context, failedOutcome });
   return {
     exit_code: failedOutcome ? 1 : 0,
@@ -256,8 +300,9 @@ function buildExecutionSummary({ context, failedOutcome } = {}) {
     : [];
   const mode = context && context.actionPlan ? context.actionPlan.mode : 'unknown';
   const coversRequiredProviders = requiredProviderIds.every((id) => selectedIds.includes(id));
-  const partialScope = ['only', 'graphify-refresh', 'host-config-repair'].includes(mode)
-    && !coversRequiredProviders;
+  const installationOnly = context && context.actionPlan && context.actionPlan.args.installationOnly === true;
+  const partialScope = installationOnly || (['only', 'verify', 'graphify-refresh', 'host-config-repair'].includes(mode)
+    && !coversRequiredProviders);
   const overallStatus = failedOutcome
     ? 'action-required'
     : (partialScope ? 'partial' : 'ready');
@@ -266,7 +311,7 @@ function buildExecutionSummary({ context, failedOutcome } = {}) {
     reason_code: failedOutcome && failedOutcome.reason_code
       ? failedOutcome.reason_code
       : (partialScope ? 'subset-setup-complete' : 'setup-ready'),
-    scope: partialScope ? 'subset' : 'full',
+    scope: installationOnly ? 'installation' : (partialScope ? 'subset' : 'full'),
     selected_ids: selectedIds,
     required_provider_ids: requiredProviderIds,
   };
@@ -283,7 +328,7 @@ function reduceExecutionOutcome({
 }) {
   const tools = new Map((probes.toolResults || []).map((entry) => [entry.id, entry]));
   const helpers = new Map((probes.helperResults || []).map((entry) => [entry.id, entry]));
-  const selectedIds = context.actionPlan.selected_ids || [];
+  const selectedIds = (context.actionPlan.selected_ids || []).filter((id) => providers[id]);
 
   for (const entry of context.effectiveRegistry.tools || []) {
     if (!isBaselineBlocking(entry)) continue;
@@ -321,6 +366,7 @@ function reduceExecutionOutcome({
   }
 
   const selectedProviderFailure = firstSelectedProviderFailure(providerResults, selectedIds, {
+    installationOnly: context.actionPlan.args.installationOnly === true,
     requireConfigured: false,
   });
   if (selectedProviderFailure) return selectedProviderFailure;
@@ -373,7 +419,7 @@ function firstSelectedProviderFailure(providerResults, selectedIds, options = {}
       && ['failed', 'blocked'].includes(readiness.first_generation.status)) {
       return failureOutcome(providerFailureReason(readiness, 'first-generation'));
     }
-    for (const field of ['installed', 'initialized', 'indexed', 'artifact_exists']) {
+    for (const field of (options.installationOnly ? ['installed'] : ['installed', 'initialized', 'indexed', 'artifact_exists'])) {
       if (lifecycle[field] !== true) {
         return failureOutcome(providerFailureReason(readiness, field));
       }
@@ -387,6 +433,14 @@ function firstSelectedProviderFailure(providerResults, selectedIds, options = {}
 
 function providerFailureReason(readiness, failedField = '') {
   if (readiness && readiness.reason_code) return readiness.reason_code;
+  const scopeProvenance = readiness
+    && readiness.first_generation
+    && readiness.first_generation.scope_provenance;
+  if (scopeProvenance
+    && ['mismatch', 'invalid'].includes(scopeProvenance.status)
+    && scopeProvenance.reason_code) {
+    return scopeProvenance.reason_code;
+  }
   const hook = readiness && readiness.steady_state ? readiness.steady_state : {};
   if (hook.hook_skipped_reason && ['failed', 'blocked'].includes(hook.hook_status)) {
     return hook.hook_skipped_reason;
@@ -411,6 +465,12 @@ function providerFailureReason(readiness, failedField = '') {
 
 function failureOutcome(reasonCode, fallback = 'setup-action-required') {
   return { reason_code: reasonCode || fallback };
+}
+
+// 暴露给宿主/测试的统一 repair seam；具体 Provider action 必须由 registry
+// 显式提供，未知 reason 不得由模型即兴执行命令。
+function runProviderRepairLoop(options = {}) {
+  return runBoundedRepairLoop(options);
 }
 
 function hostConfigPrecedenceBlocked(reasonCode) {
@@ -583,21 +643,9 @@ function buildHostConfigReceipt(hostConfigResults) {
   }));
 }
 
+// 单一实现抽取至 lib/host-config-repair-command.cjs(lane finding DR-015)。
 function hostConfigRepairCommand(context) {
-  const args = ['spec-runtime-setup'];
-  if (context.actionPlan.selected_ids.length > 0) {
-    args.push('--only', context.actionPlan.selected_ids.join(','));
-  }
-  if (context.actionPlan.mode === 'graphify-refresh' || context.actionPlan.args.refresh) args.push('--refresh');
-  if (context.actionPlan.args.repo) args.push('--repo', context.actionPlan.args.repo);
-  if (context.actionPlan.args.folder) args.push('--folder', context.actionPlan.args.folder);
-  if (context.actionPlan.args.allRepos) args.push('--all-repos');
-  if (context.actionPlan.args.userScope) args.push('--user-scope');
-  if (context.actionPlan.args.requirementWorkspace) {
-    args.push('--requirement-workspace', context.actionPlan.args.requirementWorkspace);
-  }
-  args.push('--repair-host-config');
-  return args.join(' ');
+  return require('./host-config-repair-command.cjs').hostConfigRepairCommand(context);
 }
 
 function installSelectedProviderDependencies(context, repoRoot, selectedIds) {
@@ -621,15 +669,19 @@ function installSelectedProviderDependencies(context, repoRoot, selectedIds) {
     let failedReason = null;
     const actionResults = [];
     for (const action of dependencyActions) {
-      const result = executeInstallWithMirror(context, action.command, action.args, {
+      const executeInstall = (command, args, options) => executeInstallWithMirror(context, command, args, {
         cwd: repoRoot,
         timeoutMs: 120000,
         env: action.env,
         inheritEnv: action.inheritEnv,
+        ...options,
       });
+      const result = typeof module.installDependency === 'function'
+        ? module.installDependency(providerCtx, action, executeInstall)
+        : executeInstall(action.command, action.args);
       actionResults.push(result);
       if (!commandSucceeded(result)) {
-        failedReason = `${id}-install-failed`;
+        failedReason = result.reason_code || `${id}-install-failed`;
         break;
       }
     }
@@ -697,7 +749,7 @@ function blockedSelectedProviders(context, repoRoot, selectedIds, reasonCode) {
   const selectedSet = new Set(selectedIds);
   for (const entry of context.effectiveRegistry.providers || []) {
     if (!selectedSet.has(entry.id) && providers[entry.id]) {
-      selected.push(providers[entry.id].verify(providerContext(context, repoRoot, entry.id, { selected: false })));
+      selected.push(providers[entry.id].verify(providerContext(context, repoRoot, entry.id, { selected: false, installationOnly: true })));
     }
   }
   return selected;
@@ -727,6 +779,7 @@ function verifyProviders(context, repoRoot, selectedIds) {
     if (!module) continue;
     results.push(module.verify(providerContext(context, repoRoot, id, {
       selected: selectedIds.includes(id),
+      installationOnly: context.actionPlan.args.installationOnly === true || !selectedIds.includes(id),
     })));
   }
   return results;
@@ -756,7 +809,7 @@ function applySelectedProviders(context, repoRoot, selectedIds) {
   }
   for (const entry of context.effectiveRegistry.providers || []) {
     if (!selectedIds.includes(entry.id) && providers[entry.id]) {
-      results.push(providers[entry.id].verify(providerContext(context, repoRoot, entry.id, { selected: false })));
+      results.push(providers[entry.id].verify(providerContext(context, repoRoot, entry.id, { selected: false, installationOnly: true })));
     }
   }
   return results;
@@ -793,7 +846,9 @@ function providerContext(context, repoRoot, id, extra = {}) {
     registryEntry: entry,
     dependency: dependencyFor(context, dependencyRef),
     probeDependency: true,
+    installationOnly: context.actionPlan.args.installationOnly === true,
     requirementWorkspace: context.actionPlan.args.requirementWorkspace || '',
+    targetKind: context.target && context.target.target_kind ? context.target.target_kind : '',
     ...extra,
   };
 }
@@ -806,16 +861,26 @@ function requireCapability(context, capability) {
 }
 
 function computeGeneratedRuntimeManifestHealth(context, repoRoot) {
-  const statePath = runtimeStatePath(context.host, repoRoot);
+  const executionRoot = path.resolve(repoRoot);
+  const target = context && context.target ? context.target : null;
+  const runtimeProjectionRoot = target
+    && target.mode !== 'workspace-all-repos'
+    && target.target_root
+    && path.resolve(target.target_root) === executionRoot
+    && target.runtime_projection_root
+    ? path.resolve(target.runtime_projection_root)
+    : executionRoot;
+  const statePath = runtimeStatePath(context.host, runtimeProjectionRoot);
   const result = {
     status: 'unknown',
     reason_code: 'unknown-runtime-manifest-health',
     host: context.host,
+    runtime_projection_root: runtimeProjectionRoot,
     state_path: statePath,
     recorded_manifest_version: null,
     bundled_manifest_version: context.bundledVersion || null,
     evidence_basis: '比较 state.manifestVersion 与 bundled manifest.version',
-    next_action: `spec-first init --${context.host} -y`,
+    ...buildRuntimeInitRemediation({ host: context.host, cwd: runtimeProjectionRoot }),
   };
   if (!context.host || !statePath) {
     result.reason_code = 'missing-host-or-target-root';
@@ -837,7 +902,7 @@ function computeGeneratedRuntimeManifestHealth(context, repoRoot) {
     } else if (result.recorded_manifest_version === result.bundled_manifest_version) {
       result.status = 'current';
       result.reason_code = null;
-      result.next_action = null;
+      clearRuntimeInitRemediation(result);
     } else {
       result.status = 'stale';
       result.reason_code = 'runtime-manifest-version-stale';
@@ -856,6 +921,8 @@ function runtimeStatePath(host, repoRoot) {
     kiro: '.kiro/spec-first/state.json',
     opencode: '.opencode/spec-first/state.json',
     qoder: '.qoder/spec-first/state.json',
+    zcode: '.zcode/spec-first/state.json',
+    pi: '.pi/spec-first/state.json',
   };
   return roots[host] ? path.join(repoRoot, roots[host]) : null;
 }
@@ -894,5 +961,6 @@ module.exports = {
   requireCapability,
   resolveBundledVersion,
   runVerificationOrMutation,
+  runProviderRepairLoop,
   verifyProviders,
 };

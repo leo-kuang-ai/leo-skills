@@ -127,13 +127,16 @@ class DeliveryPreflightTests(unittest.TestCase):
         (self.run_dir / "content" / "deck-master-v1.md").write_text(
             master, encoding="utf-8")
 
+    def _seed_content_binding(self):
+        """dashi K7：全绿 run 携带内容包 + 整册选择（projection 门 through）。"""
+        from tests.expression_test_support import copy_real_html_run
+        copy_real_html_run(self.run_dir.resolve())
+
     def seed_receipt(self):
-        sys.path.insert(0, str(Path(SCRIPT).parents[0].parent / "runtime" / "src"))
-        try:
-            from leo_ppt_generator.render.receipt import create_delivery_receipt
-        except Exception:
-            self.skipTest("runtime receipt module not importable")
-        create_delivery_receipt(self.run_dir)
+        from leo_ppt_generator.render.receipt import create_delivery_receipt
+        if not (self.run_dir / "input/current.json").is_file():
+            self._seed_content_binding()
+        create_delivery_receipt(self.run_dir.resolve())
 
     def gates(self):
         return {g["gate"]: g for g in json.loads(
@@ -141,6 +144,7 @@ class DeliveryPreflightTests(unittest.TestCase):
 
     def test_all_gates_pass_single_report(self):
         self.seed()
+        self._seed_content_binding()
         self.seed_receipt()
         proc = run(str(self.run_dir))
         self.assertEqual(proc.returncode, 0, proc.stderr)
@@ -148,7 +152,7 @@ class DeliveryPreflightTests(unittest.TestCase):
         self.assertEqual(report["kind"], "delivery-preflight")
         self.assertEqual([g["gate"] for g in report["gates"]],
                          ["deck_geometry", "sources_manifest",
-                          "sensitive_text", "delivery_receipt"])
+                          "sensitive_text", "delivery_receipt", "projection"])
         self.assertTrue(all(g["status"] == "passed" for g in report["gates"]))
         self.assertFalse(report["blocked"])
         self.assertEqual(report["not_run"], [])
@@ -202,7 +206,7 @@ class DeliveryPreflightTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, "not_run 是披露不是失败")
         report = json.loads(self.out.read_text(encoding="utf-8"))
         self.assertEqual(report["not_run"], ["deck_geometry", "sources_manifest",
-                                             "sensitive_text", "delivery_receipt"])
+                                             "sensitive_text", "delivery_receipt", "projection"])
         self.assertEqual(len(report["warnings"]), 4)
         self.assertFalse(report["blocked"])
 

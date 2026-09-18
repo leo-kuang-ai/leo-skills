@@ -58,6 +58,12 @@ def load_render_receipt(path: str | Path) -> dict[str, Any]:
     missing = [field for field in REQUIRED_FIELDS if field not in value]
     if missing:
         raise RenderError("render_receipt_invalid", f"missing fields: {missing}")
+    if any(key in value for key in ("binding_digest", "expression_binding_digest", "materialization_binding_digest", "content_digest")):
+        from ..content_projection import ProjectionError, verify_binding_reference
+        try:
+            verify_binding_reference(value)
+        except ProjectionError as exc:
+            raise RenderError(str(exc)) from exc
     return value
 
 

@@ -49,7 +49,7 @@ class JudgeTest(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
 
     def test_shell_scope_is_proven_for_every_operand(self):
-        root = "/skill/references/styles/generated"
+        root = "/skill/template-library/reference/sources/retired-styles-tree/styles/generated"
         for command in (
             f"cat {root}/catalog.json",
             f"cat {root}/names-001.md /tmp/other.md",
@@ -77,10 +77,10 @@ class JudgeTest(unittest.TestCase):
     def test_advise_trace_rejects_explorers_and_placeholder_shell(self):
         self.assertEqual(judge.advise_trace_errors(trace("Bash", {"command": "echo skip"})), [])
         self.assertTrue(judge.advise_trace_errors(trace("Read", {"file_path": "/skill/references/style-library.md"})))
-        navigation = trace("mcp__codegraph__codegraph_explore", {"query": "风格"}) + "\n" + trace("Read", {"file_path": "/skill/references/styles/generated/names-001.md"})
+        navigation = trace("mcp__codegraph__codegraph_explore", {"query": "风格"}) + "\n" + trace("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"})
         self.assertEqual(judge.advise_trace_errors(navigation), [])
         self.assertTrue(judge.advise_trace_errors(trace("mcp__codegraph__codegraph_explore", {"query": "风格"})))
-        for name, arguments in (("Read", {"file_path": "/skill/references/styles/generated/names-001.md"}), ("Grep", {"path": "/skill/references/styles/generated", "glob": "names-*.md"}), ("Bash", {"command": "grep -n 风格 /skill/references/styles/generated/names-001.md"})):
+        for name, arguments in (("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"}), ("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "glob": "names-*.md"}), ("Bash", {"command": "grep -n 风格 /skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"})):
             self.assertEqual(judge.advise_trace_errors(trace(name, arguments)), [])
 
     def test_quoted_authorization_is_not_narrative_execution(self):
@@ -256,17 +256,19 @@ class JudgeTest(unittest.TestCase):
 
     def test_advise_negation_is_healthy(self):
         text = "Gruvbox暗风 与 终端命令行风，请选择。未读取所有模板，不运行脚本。"
-        transcript = trace("Read", {"file_path": "/skill/references/styles/generated/names-001.md"})
+        # 新协议点名查询真值源：catalog registry（generated 归档摘要亦可，
+        # 但轨迹闸要求 registry 读取或 leo-ppt style list --filter 证据）
+        transcript = trace("Read", {"file_path": "/skill/template-library/catalog/generations/g1/registry.json"})
         self.assertEqual(judge.check("style-index-lookup", text, transcript), [])
 
     def test_full_brief_read_is_rejected_even_if_reply_denies_it(self):
-        transcript = trace("Read", {"file_path": "/skill/references/styles/清爽专业风.md"})
+        transcript = trace("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/清爽专业风.md"})
         self.assertTrue(judge.check("style-index-prompt-boundary", "not-run，需样张，未读取全文", transcript))
 
     def test_generated_search_cannot_include_catalog(self):
-        transcript = trace("Grep", {"path": "/skill/references/styles/generated", "pattern": "地图"})
+        transcript = trace("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "pattern": "地图"})
         self.assertTrue(judge.check("style-index-prompt-boundary", "not-run，需样张", transcript))
-        transcript = trace("Grep", {"path": "/skill/references/styles/generated", "pattern": "地图", "glob": "*.md"})
+        transcript = trace("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "pattern": "地图", "glob": "*.md"})
         self.assertEqual(judge.check("style-index-prompt-boundary", "not-run，需样张", transcript), [])
 
     def test_capacity_requires_both_real_commands(self):

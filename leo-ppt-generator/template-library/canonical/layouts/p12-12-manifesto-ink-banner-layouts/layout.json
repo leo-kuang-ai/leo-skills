@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p12-12-manifesto-ink-banner-layouts",
+  "name": "Manifesto Ink Banner",
+  "aliases": [
+    "P12"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "section",
+  "layout_type": "fixed-regions",
+  "slots": {
+    "manifesto": {
+      "region": "content",
+      "desc": "上半屏大字宣言",
+      "max_chars": 78,
+      "chars_per_line": 13,
+      "max_lines": 5
+    },
+    "explainer": {
+      "region": "content",
+      "desc": "上半屏右侧简短说明",
+      "max_chars": 50,
+      "chars_per_line": 14,
+      "max_lines": 3
+    },
+    "banner_line": {
+      "region": "content",
+      "desc": "下半屏 ink 通栏反白短句",
+      "max_chars": 52,
+      "chars_per_line": 44,
+      "max_lines": 1
+    }
+  },
+  "renderer_support": {
+    "render:html": null,
+    "image": "上半屏左侧 t-cat + 大字宣言 + 右侧短段说明；下半屏 ink 通栏（负 margin 全出血）+ 反白短句 + 图标矩阵"
+  },
+  "notes": "机械迁移自 references/styles/12_版式库/12_Manifesto_Ink_Banner.layouts.json；几何 regions 未声明，待 U5 按 renderer 绑定深化",
+  "reuse_friendly": true
+}

@@ -1,0 +1,33 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive.png",
+    "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "dependency_edges": true,
+    "focus_visible": true,
+    "no_overflow": true,
+    "nodes_visible": true,
+    "parallel_branches": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "aa1d1764418035b840f959d41d2cad6a5a9ceaae0beb5cb6a8274e64703d41b4",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-fixture.json",
+    "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-measurement.json",
+    "sha256": "b05eb9ad1d9541805ac7410c6936c01fdfcacd711bfd2ef16b1abdb8527ff382"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "process",
+  "render_input": {
+    "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-input.json",
+    "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "relation-output-oracle",
+  "owner": "004-U12-product-contract",
+  "version": "relation-output-v1",
+  "source_contract": "2026-09-11-004/R1-R9/AE1-AE8",
+  "common": ["all_required_text", "all_facts", "focus_visible", "reading_order", "within_canvas", "no_overflow"],
+  "lanes": {
+    "render:html": {"artifact_kind": "png", "requires_visual_review": true},
+    "image": {"artifact_kind": "png", "requires_visual_review": true, "requires_provider_receipt": true}
+  },
+  "relations": {
+    "comparison": {
+      "required_checks": ["same_dimensions", "complete_grid", "aligned_cells", "unknown_preserved"],
+      "negative_check": "aligned_cells",
+      "negative_description": "渲染成功，但同维度比较变成无对齐卡片，必须判为不合格。"
+    },
+    "trend": {
+      "required_checks": ["ordered_samples", "numeric_values", "unit_visible", "period_visible", "baseline_preserved"],
+      "negative_check": "ordered_samples",
+      "negative_description": "渲染成功，但没有时间依据却生成趋势箭头，必须判为不合格。"
+    },
+    "process": {
+      "required_checks": ["nodes_visible", "dependency_edges", "parallel_branches"],
+      "negative_check": "dependency_edges",
+      "negative_description": "渲染成功，但依赖步骤只呈现为无连线并列项，必须判为不合格。"
+    },
+    "causal": {
+      "required_checks": ["directed_edges", "edge_meaning", "source_support", "causal_uncertainty"],
+      "negative_check": "causal_uncertainty",
+      "negative_description": "渲染成功，但把相关性标为确定因果，必须判为不合格。"
+    },
+    "independent": {
+      "required_checks": ["item_set", "no_directed_edges"],
+      "negative_check": "no_directed_edges",
+      "negative_description": "渲染成功，但为并列事项添加了有向边，必须判为不合格。"
+    }
+  }
+}

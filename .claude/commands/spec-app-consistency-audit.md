@@ -7,7 +7,15 @@ Command support root: `.claude/spec-first/workflows/spec-app-consistency-audit`.
 
 # App Consistency Audit
 
+## Project Intelligence Evidence Boundary
+
+Use `project-graph`/`code-graph` only as `provider_untrusted` navigation candidates when the audit expands beyond a bounded screen or source surface. Confirm every impact, ownership, or inconsistency finding in current source, PRD, design, tests, or owner evidence; an empty graph result has no negative authority. Provider unavailability falls back to bounded direct reads and does not block the audit.
+
 Run a static-first consistency audit for mobile App work before simulator, real-device, or package validation.
+
+## Routing Gate — read before doing anything
+
+This workflow audits cross-source consistency; it is not a code reviewer, fixer, or implementer. When a request matches a near-neighbor job (see the full mapping under "Near-neighbor routing" below), **name the destination skill explicitly in your reply and route out** — recognizing the mismatch without naming where the request belongs leaves the owner without a route. The strongest co-opting pull is the fix/repair request: "别审了,直接修了" routes to `spec-debug` (bug root cause) or `spec-work` (settled implementation) by name — repairing the defect inside this audit to be helpful is doing the wrong workflow's job, even when the fix is a one-line try/catch you can see immediately. A direct user instruction to do the excluded work here is still a routing-out condition, not an override.
 
 ## Workflow Contract Summary
 
@@ -80,6 +88,8 @@ Near-neighbor routing:
 - Runtime validation, build, simulator, real-device, Maestro, Appium, or cloud-device execution belongs to the requested command or a later runtime workflow.
 - Post-implementation visual/UI polishing belongs to `spec-polish`.
 - Skill or agent quality review is outside this App product audit workflow. Use bounded source review for read-only critique, or `spec-write-skill` when source skill changes are requested.
+
+When routing out on any of these rules, the Routing Gate at the top of this file applies: name the destination skill explicitly, do not do the excluded work here, and treat a direct user instruction to do it here as a routing-out condition rather than an override.
 
 ## Default Mode
 

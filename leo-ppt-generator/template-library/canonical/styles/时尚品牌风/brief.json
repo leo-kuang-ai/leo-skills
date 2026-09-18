@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:时尚品牌风",
+  "name": "时尚品牌风",
+  "aliases": [
+    "时尚风",
+    "fashion风",
+    "潮流品牌风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/消费时尚/时尚品牌风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "消费营销"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "fashion editorial aesthetic, high-fashion mood, strong imagery-led, magazine typographic tension, luxury sensibility, curated visual rhythm"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 9,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "时尚风",
+      "fashion风",
+      "潮流品牌风"
+    ],
+    "best_for": "时尚与生活方式,需要高级、编辑感、图感强烈、情绪化的表达",
+    "visual_direction": "fashion editorial aesthetic, high-fashion mood, strong imagery-led, magazine typographic tension, luxury sensibility, curated visual rhythm",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "light editor ground / dramatic image spreads",
+      "composition": "image-led + refined type zones",
+      "density": "low-medium, art-directed"
+    },
+    "color_palette": {
+      "primary": "ivory #F7F4EC / black #141414 editorial, bold accent",
+      "secondary": "neutral wardrobe palette #D4D4D4 / #A3A3A3",
+      "accent": "one editorial accent (red #C4182C / floral #DB7093)",
+      "neutral": "near-black #141414, ivory #F7F4EC, warm gray #9C9484",
+      "rule": "editorial, moody, curated; restraint with tension"
+    },
+    "typography": {
+      "title": "fashion editorial serif (Garamond / 思源宋体) or sans (Futura / 思源黑体), elegant",
+      "body": "sparse refined copy",
+      "labels": "label/season tags",
+      "text_quality": "elegant, on-brand, no clutter"
+    },
+    "layout_patterns": [
+      "image-led hero spread",
+      "lookbook / moodboard grid",
+      "editorial type + image interplay",
+      "season theme statement"
+    ],
+    "layout_usage_rule": "Art-directed image-led editorial; type and image tension, curated mood.",
+    "layout_blueprints": [
+      {
+        "name": "封面/系列",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "大图 + 主题词"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "季度/品牌"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "lookbook 页",
+        "sections": [
+          {
+            "position": "grid",
+            "count": 4,
+            "labels": [
+              "look1",
+              "look2",
+              "look3",
+              "look4"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "editorial imagery, magazine type, moodboard grid, refined negative space",
+      "avoid": "boyish clutter, stocky clipart, random color, over-decoration"
+    },
+    "rendering_constraints": [
+      "Art-directed, high-fashion editorial mood.",
+      "Image-led with refined type; curated restraint.",
+      "On-brand; no invented licenses or logos."
+    ],
+    "reference": "GitHub: 电子墨水杂志 / 编辑风 · 时尚品牌惯例"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "expressive",
+    "formality": 0.4,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Art-directed, high-fashion editorial mood.",
+      "Image-led with refined type; curated restraint.",
+      "On-brand; no invented licenses or logos."
+    ]
+  }
+}

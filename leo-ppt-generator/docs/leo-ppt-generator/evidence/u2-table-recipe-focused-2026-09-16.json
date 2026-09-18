@@ -1,0 +1,6 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_image_expression_adapter.ImageRecipeTests tests.test_image_expression_adapter.TableImageRecipeTests",
+  "exit_code": 0,
+  "log": "docs/leo-ppt-generator/evidence/u2-table-recipe-focused-2026-09-16.log",
+  "log_sha256": "0e69d588fb242a440a418a9737ce2d627f68015250e6a92655501e7f71f516cf"
+}

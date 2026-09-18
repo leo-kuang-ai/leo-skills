@@ -1,0 +1,59 @@
+{
+  "asset_generation": "0ee25b4afcefb99ee4eb6bc655adf989756287b393ca694e12499b5b1a29089d",
+  "asset_id": "builtin:layout:p25-spec-table",
+  "dependency_hashes": {
+    "canonical/layouts/p25-spec-table/layout.json": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36",
+    "canonical/layouts/p25-spec-table/notes.md": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2",
+    "canonical/templates/spec-table/page.html": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+    "canonical/templates/spec-table/template.json": "eec309ab46687888bc803b008fdfa103c1feaf6d6ad4efc4358ade853052bef3"
+  },
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v3/environment.json",
+    "sha256": "c080123c457e7dcbff2564e6549892b70cb3f09cd594f787788e9e0a949211bd"
+  },
+  "evidence_digest": "f42762bfa20aaceb5548f0e79d8fe7139f09afc00cceddc04738a63fc6845e4b",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v3/trend/negative.png",
+        "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v3/trend/negative-fixture.json",
+        "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v3/trend/negative-observation.json",
+        "sha256": "651adb329bc60969f23f56fe783dc72ea720a281590d9aaaf64dc751d251604e"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v3/trend/positive.png",
+        "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v3/trend/positive-fixture.json",
+        "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v3/trend/positive-observation.json",
+        "sha256": "f4e14b917440a491d1bc92be9af94c7a3d303820a89a078058b0fe9bcd400f0b"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "35c0c5e99ce4de3a35614140d3b49c8e1fe0490e5495ef325a7758568244b06e/trend",
+  "relation": "trend",
+  "schema_version": 1,
+  "visual_review": null
+}

@@ -1,7 +1,8 @@
 # Backend 选择
 
-除内置四类 backend 外，OpenAI 兼容图片渠道（智谱 / 百炼 / 方舟 / 千帆 / 混元 /
-魔搭）以 checked-in 目录注册：条目见
+除内置四类 backend 外，图片渠道以 checked-in 目录注册（15 家：国内直连、国际服务
+与自定义中转分组，其中 Gemini/MiniMax/Ideogram 为原生协议渠道——执行面由原生
+适配器转换协议，配置与其他渠道一致）：条目见
 [`provider-catalog.md`](provider-catalog.md)，数据源为
 `runtime/src/leo_ppt_generator/config/providers.yaml`。渠道能力固定为
 generate-only；`backend create --provider <channel>` 时端点 origin 与默认模型由
@@ -23,7 +24,7 @@ capability 过滤，再按凭据状态和用户既有确认排序。需要 mask 
 OpenAI 与 AtlasCloud 是图片 Provider 的选择关系；OCR 不参与图片 Provider 选择。
 数据密度是路线与 backend 推荐的输入（与 `image-deck-workflow.md` 3a 步联动）：
 数据版式页 ≥6 个数据点或含估算序列的 deck，默认推荐 direct-editable / hybrid——
-图片路线的 stylized 图表不承载精确数值标注（`styles/00_索引/图表样式规范.md` §五）；
+图片路线的 stylized 图表不承载精确数值标注（`../template-library/governance/authoring/index/图表样式规范.md` §五）；
 ≤4 个巨数的数据海报页是图片路线最强项。
 普通图片式生成不披露 PaddleOCR。只有 editable 阶段明确需要文字 hints 时，setup
 才把 PaddleOCR 作为非必需在线增强列出；凭据缺失时使用本地 `builtin-ink`，不得阻断
@@ -117,7 +118,7 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
 ```
 
 - **有历史**：`--stats` 指向含 token 记录的 `backend_stats.jsonl`（或 run 目录）时，
-  按"均值 tokens/attempt × 均值 attempts/页"估每页型成本，band 上界 ×1.5 重试余量。
+  按记录的累计 tokens 均值估每页型用量，不再乘 attempts；band 上界 ×1.5 作为估算不确定性余量，费用估算不代表实测账单。
 - **无历史或 `not-recorded`**：退保守假设区间（chart 9000 / text-heavy 7000 /
   image 5000 / 未分型 6000 tokens 每页，上界 ×2），输出 `basis` 字段如实标注
   `assumed-default`；混合时标 `mixed`。假设区间不得说成测量值。
@@ -132,7 +133,7 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
 
 - **提议条件**（满足其一，派发前提议）：
   1. 页型命中数据密度路由的"≥6 数据点或含估算序列"档
-     （`styles/00_索引/图表样式规范.md` §五）——图表/表格/文字密集页的
+     （`../template-library/governance/authoring/index/图表样式规范.md` §五）——图表/表格/文字密集页的
      数值逐字保真由确定性渲染承担；
   2. `backend report` 显示某页型在当前图像 backend 一次通过率持续低
      （既有"换 backend 或改走 direct-editable"提示的第三选项）。
@@ -150,3 +151,13 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
   render 页派发走 `prompts/render-worker.md`（与 slide-worker 平行）。
 - **质检**：render 页与图像页同走 `references/visual-qa.md` 2.5 步像素闸门
   （render-worker 单页自查 + 父 Agent 批量复跑）。
+
+### 成本读数与口径分离（R-74 追加）
+
+- `image record --backend` **无缺省值**（R-74：backend 生产记录去
+  `"fixture"` 缺省）——未显式声明 backend 的生产记录直接被拒，防 fixture
+  静默污染 lane 成本聚合。
+- `backend report` 的 `tokens_total` 仅在该桶完全没有 token 记录时标
+  `not-recorded`；`0` 是合法观测值（确定性渲染/免单调用），如实显示。
+- lane 成本对比读数见 [`layout-dispatch.md`](layout-dispatch.md)
+  「lane 成本读数」节：真实账单、氛围保护、冻结不切换三口径。

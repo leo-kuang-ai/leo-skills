@@ -1,0 +1,427 @@
+{
+  "asset_generation": "7e95f9c38f3cc113aea1f85f0b91860e14f4ca8177811673951ab071761455fc",
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v7-raster/environment.json",
+    "sha256": "6fca8084346646dacd9bbfa6e9783a060fd8fb30249abec4d6b000bb243f5b84"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/capability-receipts.json",
+      "sha256": "097385458b79270802dead0fea5aa3e3f13daa7697600dc77dc81e686c29541e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/cases.json",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative-fixture.json",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative-input.json",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative-measurement.json",
+      "sha256": "b6bf47f67448523ae6f455a88d44cc5e725d0281dbbe2a9d7300db33e46fd05b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative-observation.json",
+      "sha256": "815260148fada10620d97a9f568f997db806e68559b15299fc4cd48d09eddab1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/negative.png.render.json",
+      "sha256": "068f5ad08c604da14081fa745d69e36f632f2859f64ca661b1dfb8afa71c9a13"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive-fixture.json",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive-input.json",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive-measurement.json",
+      "sha256": "50b4addaf9e3c8bbebc551107ea485ca0de02ad43ea916491062fb6e192a2461"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive-observation.json",
+      "sha256": "aa11f9ea59f2c8cc20fb0fa2a6f601c28656b75087451d452b0dc3c3887ea112"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/positive.png.render.json",
+      "sha256": "203425b3865ebdba61dd90614a7ee905aae3b482106adee59d6a07d700113ab7"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/causal/receipt.json",
+      "sha256": "ef4fa91dc8d92542771de427936b0a3aa67a5611af4cebe4d4eb9e9816764bc8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-fixture.json",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-input.json",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-measurement.json",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-observation.json",
+      "sha256": "3ff529d25379229407f32176b9c1efdbb8b5a58dbe9020ff2aa755c79334274d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative.png.render.json",
+      "sha256": "4ca363f2784e479f1378e0adc069fb7f0aceb25684e46ce295c30d57cdae923d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-fixture.json",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-input.json",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-measurement.json",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-observation.json",
+      "sha256": "a5e4d02c0d3c2564355f3b2ece472d8bfe689a10810b381e5587a1f3e809067f"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive.png.render.json",
+      "sha256": "ea8986e37d80ac623e4ac6e7496de097df75d907389e294830a61c985d059c9c"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/comparison/receipt.json",
+      "sha256": "39df8279159f89d2ac622e847e6b85d4db55af2a65bcebb476d0f8ce3d8a065a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/environment.json",
+      "sha256": "6fca8084346646dacd9bbfa6e9783a060fd8fb30249abec4d6b000bb243f5b84"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative-fixture.json",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative-input.json",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative-measurement.json",
+      "sha256": "e69c860775af04856974612da8d4074c1cd5ccaf1c8aa6542a9644d78678b92e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative-observation.json",
+      "sha256": "7300b6518046945d8a22e42b2e6a6e21870fbd54243fd19ff2ace310d2d44f31"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/negative.png.render.json",
+      "sha256": "1dd310a6c2d0ce0238794546595219348cb6fb2f2f37e67e687c5a7ab3875ac3"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive-fixture.json",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive-input.json",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive-measurement.json",
+      "sha256": "a8433fdbcb7e0918b9fad29665a0090a2e1e233e203f50349dfdf3aa56666f09"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive-observation.json",
+      "sha256": "4b8688ccedb4f128a0c32700d80ff76bc2580a4e2e77ecd4d3ace5b7bec1d3d8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/positive.png.render.json",
+      "sha256": "f9e989a47967ed62b7bc963f1b7feebc87c414882a1437d3e5cd1a7ec43fb482"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/independent/receipt.json",
+      "sha256": "04f2e8492492c9218f3e66ab9c06ed709249281ec700d7bff445cb3d793a74cb"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative-fixture.json",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative-input.json",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative-measurement.json",
+      "sha256": "59358d7b70f8059d2b6856a9eb63b19ed0254c3e5533dc24d0d8a2fced49d165"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative-observation.json",
+      "sha256": "62a0e6d56a5e5e8075eea2cf9258915e088c28fe757c51cc40806e01ad2d74cc"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/negative.png.render.json",
+      "sha256": "8bc08309600d1d6d3a938fb14cdbdafe21f4e579c2af51a728bc0a21529bc0c4"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive-fixture.json",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive-input.json",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive-measurement.json",
+      "sha256": "b05eb9ad1d9541805ac7410c6936c01fdfcacd711bfd2ef16b1abdb8527ff382"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive-observation.json",
+      "sha256": "875f74f7e7476781e028e6f528a86de3a06628fd87d0d71602a80abf103b5e36"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/positive.png.render.json",
+      "sha256": "23e9e677b8e5195a5007c8aeab23ac1a7df40db2ec3c9fbd688e4df1671f9a77"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/process/receipt.json",
+      "sha256": "60714678352a8e9375db7862455db792b7cca515b88f98b1ea56c3109950b70d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative-fixture.json",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative-input.json",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative-measurement.json",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative-observation.json",
+      "sha256": "d6353a35b5bda17dc26658faade314f355263750e3c10b5d8b958474c05d290f"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/negative.png.render.json",
+      "sha256": "590da1a32694c13d3e3d73a47d404c54c4f566adf16f50a8a1c9bc77b077c0ec"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive-fixture.json",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive-input.json",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive-measurement.json",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive-observation.json",
+      "sha256": "1bfe622fcbc66de353dde3fefe06d804e9b8194950a89c2986524121a22320fe"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/positive.png.render.json",
+      "sha256": "8bca3c5377ec3849c7ee4bcca316f4747e9d7636f0cd9b839aec18e60ff638f1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v7-raster/trend/receipt.json",
+      "sha256": "e285ba50b72fcaf251bd900102b284634cb14219f5f83b37d0614e25017b09cc"
+    }
+  ],
+  "input_digest": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v7-raster/independent/receipt.json",
+        "sha256": "04f2e8492492c9218f3e66ab9c06ed709249281ec700d7bff445cb3d793a74cb"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/receipt.json",
+        "sha256": "39df8279159f89d2ac622e847e6b85d4db55af2a65bcebb476d0f8ce3d8a065a"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v7-raster/trend/receipt.json",
+        "sha256": "e285ba50b72fcaf251bd900102b284634cb14219f5f83b37d0614e25017b09cc"
+      },
+      "relation": "trend",
+      "status": "passed"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v7-raster/process/receipt.json",
+        "sha256": "60714678352a8e9375db7862455db792b7cca515b88f98b1ea56c3109950b70d"
+      },
+      "relation": "process",
+      "status": "passed"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v7-raster/causal/receipt.json",
+        "sha256": "ef4fa91dc8d92542771de427936b0a3aa67a5611af4cebe4d4eb9e9816764bc8"
+      },
+      "relation": "causal",
+      "status": "passed"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

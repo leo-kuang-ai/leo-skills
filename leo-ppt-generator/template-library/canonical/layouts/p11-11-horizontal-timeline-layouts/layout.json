@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p11-11-horizontal-timeline-layouts",
+  "name": "Horizontal Timeline",
+  "aliases": [
+    "P11"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "step_cards": {
+      "x": 64,
+      "y": 180,
+      "width": 1152,
+      "height": 402
+    },
+    "bottom_band": {
+      "x": 64,
+      "y": 610,
+      "width": 1152,
+      "height": 76
+    }
+  },
+  "slots": {
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
+    },
+    "title": {
+      "region": "header",
+      "max_chars": 24
+    },
+    "steps": {
+      "region": "step_cards",
+      "count_min": 3,
+      "count_max": 5
+    },
+    "bottom": {
+      "region": "bottom_band",
+      "count_min": 0,
+      "count_max": 2
+    }
+  },
+  "renderer_support": {
+    "render:html": "builtin:template:timeline-pro",
+    "image": "横向阶段顺序，逐阶段名称、说明与验收备注"
+  },
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "steps",
+      "bottom"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "step_cards",
+        "members": [
+          "steps"
+        ],
+        "relation": "sequence"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bottom"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "steps",
+        "kind": "sequence"
+      },
+      {
+        "slot": "bottom",
+        "kind": "sequence"
+      }
+    ]
+  }
+}

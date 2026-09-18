@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "replay_id": "quality-replay-v1",
+  "evidence_level": "local-runtime-replay",
+  "synthetic_content": true,
+  "user_outcome_verified": false,
+  "sha256": {
+    "README.md": "3c38d11f22c971f732de4d4b2c77274130e024e2ff0c9fd18f1031478f2b796c",
+    "content-pack.json": "e7f21813be300dfc23822c86685a6959e8b7017af96c73617185510dfdfc1fba",
+    "expected-scorecard.json": "059b1a59407b78ea78e2898ad829472e38d095cc8c5fe48f36625564365b88a9",
+    "master.md": "f2509a67122564901e6744c620d6841ee659f7ae953fc49dc88405f546c77e80",
+    "observability/quality-closure.json": "c1320022b32690682e860b92d318db4425a5e14232d2866b709023044d4e0464",
+    "observability/quality-events.jsonl": "4668662804d0a872681b88df6bafe089cb91d7e4f0b43d8983550ed0c63e2ab0",
+    "observability/quality-window.json": "24a0e187aead3ad5ebc23220f05d97e7689bb98b70a1b6cf606db8e33acc9df2",
+    "page-1.json": "fb175fe6457352c8515360a699f5c8dab90daeeb657fa1b62e53438d9eb4b98b",
+    "page-1.png": "e6a444b6126b9d593a987e1d9369201cc32118c3d78ce60474114e2a212cf93b",
+    "page-1.render-provenance.json": "2b5da2f3e1767ef9fe5552a211d78954a144a1a2af7f64721adcfc0d6a28c8b9",
+    "page-2.json": "29713bf77b63bbfcdb984fffe8e6d4447e9fe13493a4b23a1068f2e08e0134ba",
+    "page-2.png": "d39136c913d65deb4cce07fd7fd03a296e4613b8530b2f74f6508c50c035e1e5",
+    "page-2.render-provenance.json": "304e9a2dad303e88c41a76d9218efde5d7aa3cc0484b1528804d1cf66fa9dc76"
+  }
+}

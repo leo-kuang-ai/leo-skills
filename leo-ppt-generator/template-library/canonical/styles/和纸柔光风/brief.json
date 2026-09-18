@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:和纸柔光风",
+  "name": "和纸柔光风",
+  "aliases": [
+    "washi soft glow",
+    "和纸风",
+    "日式极简风",
+    "Muji 风",
+    "washi paper"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/极简排版/和纸柔光风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "极简排版"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "calm Japanese washi-paper editorial, subtle paper fiber texture with low-opacity dots, generous whitespace, thin horizontal and vertical rules, open rectangular frames, small indigo dots at line endpoints, asymmetric columns, one restrained pale-indigo soft wash behind a hero word, cropped product and craft photos with negative space, Muji-like restraint, no text"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "washi soft glow",
+      "和纸风",
+      "日式极简风",
+      "Muji 风",
+      "washi paper"
+    ],
+    "best_for": "以和纸纹理底、靛蓝唯一强调、细规则与开放框表达日式沉静、有触感、高级克制的编辑气质",
+    "visual_direction": "calm Japanese washi-paper editorial, subtle paper fiber texture with low-opacity dots, generous whitespace, thin horizontal and vertical rules, open rectangular frames, small indigo dots at line endpoints, asymmetric columns, one restrained pale-indigo soft wash behind a hero word, cropped product and craft photos with negative space, Muji-like restraint, no text",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "paper white #F5F5F5 with subtle washi fiber grain",
+      "composition": "asymmetric columns, thin rules, open frames, spacious grids",
+      "density": "low, reflective and airy"
+    },
+    "color_palette": {
+      "primary": "paper base #F5F5F5, charcoal text #333333",
+      "secondary": "secondary text gray #6B6B6B, divider gray #D8D6D0",
+      "accent": "indigo #2C3E50 — the only active accent (rules, emphasis, diagram nodes)",
+      "neutral": "mist lavender #D5D0DB and wisteria gray #B3AFCB as rare soft fields",
+      "rule": "keep most pages to paper + charcoal + gray + indigo; palette reserves only as translucent single-page mood accents"
+    },
+    "typography": {
+      "title": "serif title (Georgia / 思源宋体), editorial warmth",
+      "body": "clean sans body (Microsoft YaHei 微软雅黑 / 思源黑体), calm leading",
+      "labels": "monospace sparingly for section labels / folios / source notes (Consolas / 等宽)",
+      "text_quality": "quiet, reflective, readable against subtle texture"
+    },
+    "layout_patterns": [
+      "open-frame column: asymmetric columns divided by thin rules, no heavy cards",
+      "hero-word soft wash: a pale indigo/lavender low-opacity field behind one hero word or diagram node",
+      "thin-rule captioned photo: cropped photo in a geometric frame with a thin caption rule",
+      "cover = washi ground + serif title + one indigo endpoint dot and hairline"
+    ],
+    "layout_usage_rule": "Use #2C3E50 as the only active accent; soft glow only as a restrained local wash, never glowing UI.",
+    "negative_prompt": [
+      "no bokeh, orbs, neon glow or glass panels",
+      "no heavy card grids, thick borders or filled icon badges",
+      "no strong drop shadows or glossy gradients",
+      "no repeated centered title + bullets layout"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "washi fiber texture, thin rules, open frames, small indigo dots, outline icons (max 1-3/page)",
+      "avoid": "heavy cards, thick borders, blobs, emoji, dark stock photos"
+    },
+    "rendering_constraints": [
+      "Subtle paper texture that never fights body text.",
+      "Indigo as the single active accent; reserves stay rare.",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: Awesome-PPT-Design-Skills · japanese-style style-system (Washi Paper & Soft Glow)"
+  },
+  "recommendation_features": {
+    "density": "low",
+    "audience_conservatism": "balanced",
+    "formality": 0.6,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Subtle paper texture that never fights body text.",
+      "Indigo as the single active accent; reserves stay rare.",
+      "No invented logos or watermarks."
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "entity": "layout-profile",
+  "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+  "name": "Duo Compare",
+  "aliases": [
+    "P8"
+  ],
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "units": "logical-px"
+  },
+  "page_role": "content",
+  "layout_type": "fixed-regions",
+  "regions": {
+    "header": {
+      "x": 64,
+      "y": 40,
+      "width": 1152,
+      "height": 124
+    },
+    "side_a": {
+      "x": 64,
+      "y": 180,
+      "width": 548,
+      "height": 420
+    },
+    "side_b": {
+      "x": 668,
+      "y": 180,
+      "width": 548,
+      "height": 420
+    },
+    "bottom_band": {
+      "x": 64,
+      "y": 626,
+      "width": 1152,
+      "height": 60
+    }
+  },
+  "slots": {
+    "kicker": {
+      "region": "header",
+      "max_chars": 60
+    },
+    "title": {
+      "region": "header",
+      "max_chars": 24
+    },
+    "sides": {
+      "region": "side_a",
+      "count_min": 2,
+      "count_max": 2
+    },
+    "bottom": {
+      "region": "bottom_band",
+      "max_chars": 56
+    }
+  },
+  "renderer_support": {
+    "render:html": "builtin:template:compare-pro",
+    "image": "两侧同维度比较，结论放底部"
+  },
+  "notes": "HTML 几何与模板输入已对齐；计数为预检上限，最终文字换行与容量由渲染哨兵验证。",
+  "reuse_friendly": true,
+  "padding": {
+    "gap": 16,
+    "block": 14,
+    "inline": 18
+  },
+  "font_size_refs": {
+    "title": "title",
+    "body": "body",
+    "kicker": "kicker",
+    "page_no": "page_no"
+  },
+  "structure": {
+    "reading_order": [
+      "kicker",
+      "title",
+      "sides",
+      "bottom"
+    ],
+    "groups": [
+      {
+        "name": "header",
+        "members": [
+          "kicker",
+          "title"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "side_a",
+        "members": [
+          "sides"
+        ],
+        "relation": "group"
+      },
+      {
+        "name": "bottom_band",
+        "members": [
+          "bottom"
+        ],
+        "relation": "group"
+      }
+    ],
+    "encodings": [
+      {
+        "slot": "sides",
+        "kind": "comparison"
+      }
+    ]
+  }
+}

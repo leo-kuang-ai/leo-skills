@@ -1,0 +1,821 @@
+{
+  "echarts/azul": {
+    "background": null,
+    "colors": [
+      "#f2385a",
+      "#f5a503",
+      "#4ad9d9",
+      "#f7879c",
+      "#c1d7a8",
+      "#4dffd2",
+      "#fccfd7",
+      "#d5f6f6"
+    ],
+    "source": "echarts/theme/azul.js"
+  },
+  "echarts/bee-inspired": {
+    "background": null,
+    "colors": [
+      "#001727",
+      "#805500",
+      "#ffff00",
+      "#ffd11a",
+      "#f2d71f",
+      "#f2be19",
+      "#f3a81a",
+      "#fff5cc"
+    ],
+    "source": "echarts/theme/bee-inspired.js"
+  },
+  "echarts/blue": {
+    "background": null,
+    "colors": [
+      "#1790cf",
+      "#1bb2d8",
+      "#99d2dd",
+      "#88b0bb",
+      "#1c7099",
+      "#038cc4",
+      "#75abd0",
+      "#afd6dd"
+    ],
+    "source": "echarts/theme/blue.js"
+  },
+  "echarts/caravan": {
+    "background": null,
+    "colors": [
+      "#fad089",
+      "#ff9c5b",
+      "#f5634a",
+      "#ed303c",
+      "#3b8183",
+      "#f7826e",
+      "#faac9e",
+      "#fcd5cf"
+    ],
+    "source": "echarts/theme/caravan.js"
+  },
+  "echarts/carp": {
+    "background": null,
+    "colors": [
+      "#f0d8A8",
+      "#3d1c00",
+      "#86b8b1",
+      "#f2d694",
+      "#fa2a00",
+      "#ff8066",
+      "#ffd5cc",
+      "#f9edd2"
+    ],
+    "source": "echarts/theme/carp.js"
+  },
+  "echarts/cool": {
+    "background": null,
+    "colors": [
+      "#b21ab4",
+      "#6f0099",
+      "#2a2073",
+      "#0b5ea8",
+      "#17aecc",
+      "#b3b3ff",
+      "#eb99ff",
+      "#fae6ff",
+      "#e6f2ff",
+      "#eeeeee"
+    ],
+    "source": "echarts/theme/cool.js"
+  },
+  "echarts/dark": {
+    "background": "#100C2A",
+    "colors": [
+      "#4992ff",
+      "#7cffb2",
+      "#fddd60",
+      "#ff6e76",
+      "#58d9f9",
+      "#05c091",
+      "#ff8a45",
+      "#8d48e3",
+      "#dd79ff"
+    ],
+    "source": "echarts/theme/dark.js"
+  },
+  "echarts/dark-blue": {
+    "background": "#333",
+    "colors": [
+      "#00305a",
+      "#004b8d",
+      "#0074d9",
+      "#4192d9",
+      "#7abaf2",
+      "#99cce6",
+      "#d6ebf5",
+      "#eeeeee"
+    ],
+    "source": "echarts/theme/dark-blue.js"
+  },
+  "echarts/dark-bold": {
+    "background": "#333",
+    "colors": [
+      "#458c6b",
+      "#f2da87",
+      "#d9a86c",
+      "#d94436",
+      "#a62424",
+      "#76bc9b",
+      "#cce6da",
+      "#eeeeee"
+    ],
+    "source": "echarts/theme/dark-bold.js"
+  },
+  "echarts/dark-digerati": {
+    "background": "#333",
+    "colors": [
+      "#52656b",
+      "#ff3b77",
+      "#a3cc00",
+      "#ffffff",
+      "#b8b89f",
+      "#ffccdb",
+      "#e5ff80",
+      "#f4f4f0"
+    ],
+    "source": "echarts/theme/dark-digerati.js"
+  },
+  "echarts/dark-fresh-cut": {
+    "background": "#333",
+    "colors": [
+      "#00a8c6",
+      "#40c0cb",
+      "#ebd3ad",
+      "#aee239",
+      "#8fbe00",
+      "#33e0ff",
+      "#b3f4ff",
+      "#e6ff99"
+    ],
+    "source": "echarts/theme/dark-fresh-cut.js"
+  },
+  "echarts/dark-mushroom": {
+    "background": "#333",
+    "colors": [
+      "#cc0e00",
+      "#ff1a0a",
+      "#ff8880",
+      "#ffc180",
+      "#ffc2b0",
+      "#ffffff",
+      "#ffe6e6"
+    ],
+    "source": "echarts/theme/dark-mushroom.js"
+  },
+  "echarts/eduardo": {
+    "background": null,
+    "colors": [
+      "#59535e",
+      "#e7dcef",
+      "#f1baf3",
+      "#5d4970",
+      "#372049",
+      "#c0b2cd",
+      "#ffccff",
+      "#f2f0f5"
+    ],
+    "source": "echarts/theme/eduardo.js"
+  },
+  "echarts/forest": {
+    "background": null,
+    "colors": [
+      "#313b23",
+      "#494f2b",
+      "#606233",
+      "#d6b77b",
+      "#0e0e0e",
+      "#076278",
+      "#808080",
+      "#e7d5b1"
+    ],
+    "source": "echarts/theme/forest.js"
+  },
+  "echarts/fresh-cut": {
+    "background": null,
+    "colors": [
+      "#00a8c6",
+      "#40c0cb",
+      "#f0dec2",
+      "#aee239",
+      "#8fbe00",
+      "#33e0ff",
+      "#b3f4ff",
+      "#e6ff99"
+    ],
+    "source": "echarts/theme/fresh-cut.js"
+  },
+  "echarts/fruit": {
+    "background": null,
+    "colors": [
+      "#ffcb6a",
+      "#ffa850",
+      "#ffe2c4",
+      "#e5834e",
+      "#ffb081",
+      "#f7826e",
+      "#faac9e",
+      "#fcd5cf"
+    ],
+    "source": "echarts/theme/fruit.js"
+  },
+  "echarts/gray": {
+    "background": null,
+    "colors": [
+      "#757575",
+      "#c7c7c7",
+      "#dadada",
+      "#8b8b8b",
+      "#b5b5b5",
+      "#e9e9e9"
+    ],
+    "source": "echarts/theme/gray.js"
+  },
+  "echarts/green": {
+    "background": null,
+    "colors": [
+      "#408829",
+      "#68a54a",
+      "#a9cba2",
+      "#86b379",
+      "#397b29",
+      "#8abb6f",
+      "#759c6a",
+      "#bfd3b7"
+    ],
+    "source": "echarts/theme/green.js"
+  },
+  "echarts/helianthus": {
+    "background": null,
+    "colors": [
+      "#44B7D3",
+      "#E42B6D",
+      "#F4E24E",
+      "#FE9616",
+      "#8AED35",
+      "#ff69b4",
+      "#ba55d3",
+      "#cd5c5c",
+      "#ffa500",
+      "#40e0d0",
+      "#E95569",
+      "#ff6347",
+      "#7b68ee",
+      "#00fa9a",
+      "#ffd700",
+      "#6699FF",
+      "#ff6666",
+      "#3cb371",
+      "#b8860b",
+      "#30e0e0"
+    ],
+    "source": "echarts/theme/helianthus.js"
+  },
+  "echarts/infographic": {
+    "background": null,
+    "colors": [
+      "#C1232B",
+      "#27727B",
+      "#FCCE10",
+      "#E87C25",
+      "#B5C334",
+      "#FE8463",
+      "#9BCA63",
+      "#FAD860",
+      "#F3A43B",
+      "#60C0DD",
+      "#D7504B",
+      "#C6E579",
+      "#F4E001",
+      "#F0805A",
+      "#26C0C0"
+    ],
+    "source": "echarts/theme/infographic.js"
+  },
+  "echarts/inspired": {
+    "background": null,
+    "colors": [
+      "#cc0000",
+      "#002266",
+      "#ff9900",
+      "#006600",
+      "#8a150f",
+      "#076278",
+      "#808080",
+      "#f07b75"
+    ],
+    "source": "echarts/theme/inspired.js"
+  },
+  "echarts/jazz": {
+    "background": null,
+    "colors": [
+      "#e9e0d1",
+      "#91a398",
+      "#33605a",
+      "#070001",
+      "#68462b",
+      "#58a79c",
+      "#abd3ce",
+      "#eef6f5"
+    ],
+    "source": "echarts/theme/jazz.js"
+  },
+  "echarts/london": {
+    "background": null,
+    "colors": [
+      "#02151a",
+      "#043a47",
+      "#087891",
+      "#c8c8c8",
+      "#b31d14",
+      "#0b9cc1",
+      "#f2f2f2",
+      "#f07b75"
+    ],
+    "source": "echarts/theme/london.js"
+  },
+  "echarts/macarons": {
+    "background": null,
+    "colors": [
+      "#2ec7c9",
+      "#b6a2de",
+      "#5ab1ef",
+      "#ffb980",
+      "#d87a80",
+      "#8d98b3",
+      "#e5cf0d",
+      "#97b552",
+      "#95706d",
+      "#dc69aa",
+      "#07a2a4",
+      "#9a7fd1",
+      "#588dd5",
+      "#f5994e",
+      "#c05050",
+      "#59678c",
+      "#c9ab00",
+      "#7eb00a",
+      "#6f5553",
+      "#c14089"
+    ],
+    "source": "echarts/theme/macarons.js"
+  },
+  "echarts/macarons2": {
+    "background": null,
+    "colors": [
+      "#ed9678",
+      "#e7dac9",
+      "#cb8e85",
+      "#f3f39d",
+      "#c8e49c",
+      "#f16d7a",
+      "#f3d999",
+      "#d3758f",
+      "#dcc392",
+      "#2e4783",
+      "#82b6e9",
+      "#ff6347",
+      "#a092f1",
+      "#0a915d",
+      "#eaf889",
+      "#6699FF",
+      "#ff6666",
+      "#3cb371",
+      "#d5b158",
+      "#38b6b6"
+    ],
+    "source": "echarts/theme/macarons2.js"
+  },
+  "echarts/mint": {
+    "background": null,
+    "colors": [
+      "#8aedd5",
+      "#93bc9e",
+      "#cef1db",
+      "#7fe579",
+      "#a6d7c2",
+      "#bef0bb",
+      "#94f8a8",
+      "#7de5b8",
+      "#4dfb70"
+    ],
+    "source": "echarts/theme/mint.js"
+  },
+  "echarts/rainbow": {
+    "background": null,
+    "colors": [
+      "#37A2DA",
+      "#32C5E9",
+      "#67E0E3",
+      "#9FE6B8",
+      "#FFDB5C",
+      "#ff9f7f",
+      "#fb7293",
+      "#E062AE",
+      "#E690D1",
+      "#e7bcf3",
+      "#9d96f5",
+      "#8378EA",
+      "#96BFFF"
+    ],
+    "source": "echarts/theme/rainbow.js"
+  },
+  "echarts/red": {
+    "background": null,
+    "colors": [
+      "#d8361b",
+      "#f16b4c",
+      "#f7b4a9",
+      "#d26666",
+      "#99311c",
+      "#c42703",
+      "#d07e75"
+    ],
+    "source": "echarts/theme/red.js"
+  },
+  "echarts/red-velvet": {
+    "background": null,
+    "colors": [
+      "#8b1a2d",
+      "#a7314b",
+      "#e6004c",
+      "#ff8066",
+      "#8e5c4e",
+      "#ff1a66",
+      "#d6c582",
+      "#f0d4af"
+    ],
+    "source": "echarts/theme/red-velvet.js"
+  },
+  "echarts/roma": {
+    "background": null,
+    "colors": [
+      "#E01F54",
+      "#001852",
+      "#f5e8c8",
+      "#b8d2c7",
+      "#c6b38e",
+      "#a4d8c2",
+      "#f3d999",
+      "#d3758f",
+      "#dcc392",
+      "#2e4783",
+      "#82b6e9",
+      "#ff6347",
+      "#a092f1",
+      "#0a915d",
+      "#eaf889",
+      "#6699FF",
+      "#ff6666",
+      "#3cb371",
+      "#d5b158",
+      "#38b6b6"
+    ],
+    "source": "echarts/theme/roma.js"
+  },
+  "echarts/royal": {
+    "background": null,
+    "colors": [
+      "#3f7ea6",
+      "#993366",
+      "#408000",
+      "#8c6f56",
+      "#a65149",
+      "#731f17",
+      "#adc2eb",
+      "#d9c3b0"
+    ],
+    "source": "echarts/theme/royal.js"
+  },
+  "echarts/sakura": {
+    "background": null,
+    "colors": [
+      "#e52c3c",
+      "#f7b1ab",
+      "#fa506c",
+      "#f59288",
+      "#f8c4d8",
+      "#e54f5c",
+      "#f06d5c",
+      "#e54f80",
+      "#f29c9f",
+      "#eeb5b7"
+    ],
+    "source": "echarts/theme/sakura.js"
+  },
+  "echarts/shine": {
+    "background": null,
+    "colors": [
+      "#c12e34",
+      "#e6b600",
+      "#0098d9",
+      "#2b821d",
+      "#005eaa",
+      "#339ca8",
+      "#cda819",
+      "#32a487"
+    ],
+    "source": "echarts/theme/shine.js"
+  },
+  "echarts/tech-blue": {
+    "background": null,
+    "colors": [
+      "#4d4d4d",
+      "#3a5897",
+      "#007bb6",
+      "#7094db",
+      "#0080ff",
+      "#b3b3ff",
+      "#00bdec",
+      "#33ccff",
+      "#ccddff",
+      "#eeeeee"
+    ],
+    "source": "echarts/theme/tech-blue.js"
+  },
+  "echarts/v5": {
+    "background": null,
+    "colors": [
+      "#5470c6",
+      "#91cc75",
+      "#fac858",
+      "#ee6666",
+      "#73c0de",
+      "#3ba272",
+      "#fc8452",
+      "#9a60b4",
+      "#ea7ccc"
+    ],
+    "source": "echarts/theme/v5.js"
+  },
+  "echarts/vintage": {
+    "background": "#fef8ef",
+    "colors": [
+      "#d87c7c",
+      "#919e8b",
+      "#d7ab82",
+      "#6e7074",
+      "#61a0a8",
+      "#efa18d",
+      "#787464",
+      "#cc7e63",
+      "#724e58",
+      "#4b565b"
+    ],
+    "source": "echarts/theme/vintage.js"
+  },
+  "office_mcp/corporate_gray": {
+    "background": "#F2F2F2",
+    "colors": [
+      "#444444",
+      "#595959",
+      "#D9D9D9",
+      "#0078D7",
+      "#333333"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/elegant_green": {
+    "background": "#EEECE1",
+    "colors": [
+      "#468847",
+      "#92D050",
+      "#70AD47",
+      "#FFFFFF",
+      "#595959"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/modern_blue": {
+    "background": "#F7F7F7",
+    "colors": [
+      "#0078D7",
+      "#00B0F0",
+      "#FFC000",
+      "#282828",
+      "#444444"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "office_mcp/warm_red": {
+    "background": "#FDFDFD",
+    "colors": [
+      "#C0504D",
+      "#E67E22",
+      "#F1C40F",
+      "#444444",
+      "#2C3E50"
+    ],
+    "source": "Office-PowerPoint-MCP-Server/utils/design_utils.py#PROFESSIONAL_COLOR_SCHEMES"
+  },
+  "ppt_mcp/chakra": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#2C5282",
+      "#9B2C2C",
+      "#276749",
+      "#553C9A",
+      "#9C4221",
+      "#285E61"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/consulting": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#003A70",
+      "#00796B",
+      "#6A1B9A",
+      "#B71C1C",
+      "#2E5090",
+      "#455A64"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/corporate_blue": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#2B579A",
+      "#BF4B28",
+      "#2E7D32",
+      "#7B3FA0",
+      "#C4652A",
+      "#1A7A8A"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/executive": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#2F4858",
+      "#6B3A3A",
+      "#4A6741",
+      "#5B4A6E",
+      "#7A5C3E",
+      "#3A5F6F"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/forest": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#2E7D32",
+      "#5D4037",
+      "#1B5E20",
+      "#795548",
+      "#827717",
+      "#4E342E"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/neon_safe": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#0055CC",
+      "#CC0066",
+      "#008844",
+      "#7700BB",
+      "#CC5500",
+      "#007788"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/nord_light": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#3868A6",
+      "#A3394B",
+      "#6B5DAD",
+      "#2C7A5D",
+      "#B06D2F",
+      "#2E6C8F"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/ocean": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#0D47A1",
+      "#006064",
+      "#01579B",
+      "#0277BD",
+      "#00695C",
+      "#1A237E"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/open_color": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#1864AB",
+      "#C92A2A",
+      "#2F9E44",
+      "#6741D9",
+      "#E8590C",
+      "#099268"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/pastel_deep": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#5B72A8",
+      "#A85B6E",
+      "#6B8F5E",
+      "#8B6BA8",
+      "#B07D4F",
+      "#4F8F8B"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/radix": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#006ADC",
+      "#D31E66",
+      "#18794E",
+      "#793AAF",
+      "#BD4B00",
+      "#067A6F"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/rainbow": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#C62828",
+      "#C45000",
+      "#2E7D32",
+      "#1565C0",
+      "#6A1B9A",
+      "#AD1457"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/sage": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#558B2F",
+      "#6D4C41",
+      "#33691E",
+      "#4E6B45",
+      "#8D6E63",
+      "#5D6B3C"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/sunset": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#C62828",
+      "#BF360C",
+      "#AD1457",
+      "#880E4F",
+      "#6A1B9A",
+      "#B71C1C"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/swiss": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#CC0000",
+      "#000000",
+      "#004F9E",
+      "#6B6B6B",
+      "#8B0000",
+      "#2B5B2B"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/tailwind": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#1D4ED8",
+      "#B91C1C",
+      "#15803D",
+      "#7E22CE",
+      "#B45309",
+      "#0F766E"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  },
+  "ppt_mcp/vivid": {
+    "background": "#FFFFFF",
+    "colors": [
+      "#0050D0",
+      "#C60040",
+      "#007A33",
+      "#7B00B5",
+      "#B85000",
+      "#00787C"
+    ],
+    "source": "ppt-mcp/src/ppt_com/themes.py#PRESET_PALETTES"
+  }
+}

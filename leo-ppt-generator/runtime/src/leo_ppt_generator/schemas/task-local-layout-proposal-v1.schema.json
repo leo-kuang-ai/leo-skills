@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/task-local-layout-proposal/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_scope",
+    "base_asset",
+    "base_generation",
+    "base_asset_digest",
+    "candidates",
+    "proposal_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_asset": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_generation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_asset_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "lane",
+          "ops"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,128}$"
+          },
+          "lane": {
+            "enum": [
+              "render:html",
+              "image"
+            ]
+          },
+          "ops": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "op",
+                    "target",
+                    "base_asset",
+                    "lane",
+                    "value"
+                  ],
+                  "properties": {
+                    "op": {
+                      "const": "set_region_assignment"
+                    },
+                    "target": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "base_asset": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "lane": {
+                      "enum": [
+                        "render:html",
+                        "image"
+                      ]
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "op",
+                    "target",
+                    "base_asset",
+                    "lane",
+                    "value",
+                    "anchor"
+                  ],
+                  "properties": {
+                    "op": {
+                      "const": "set_anchor_gap"
+                    },
+                    "target": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "base_asset": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "lane": {
+                      "enum": [
+                        "render:html",
+                        "image"
+                      ]
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 4096
+                    },
+                    "anchor": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "op",
+                    "target",
+                    "base_asset",
+                    "lane",
+                    "value"
+                  ],
+                  "properties": {
+                    "op": {
+                      "const": "set_span"
+                    },
+                    "target": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "base_asset": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "lane": {
+                      "enum": [
+                        "render:html",
+                        "image"
+                      ]
+                    },
+                    "value": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "width",
+                        "height"
+                      ],
+                      "properties": {
+                        "width": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 8192
+                        },
+                        "height": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 8192
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "op",
+                    "target",
+                    "base_asset",
+                    "lane",
+                    "value"
+                  ],
+                  "properties": {
+                    "op": {
+                      "const": "set_slot_mapping"
+                    },
+                    "target": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "base_asset": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "lane": {
+                      "enum": [
+                        "render:html",
+                        "image"
+                      ]
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "proposal_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

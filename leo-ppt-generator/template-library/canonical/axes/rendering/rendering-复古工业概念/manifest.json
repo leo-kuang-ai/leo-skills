@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:rendering-复古工业概念",
+  "name": "图片渲染：复古工业概念（retro-industrial-concept）",
+  "kind": "rendering",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

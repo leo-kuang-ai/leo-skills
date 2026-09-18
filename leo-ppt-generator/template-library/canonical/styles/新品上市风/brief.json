@@ -1,0 +1,133 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:新品上市风",
+  "name": "新品上市风",
+  "aliases": [],
+  "variant_of": "产品发布会风",
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/03_场景用途结构/发布营销/新品上市风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "未分类"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "launch-campaign style, market-go rhythm, benefit-led, audience resonance, promotional momentum, launch cadence clarity"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "merged",
+    "reviewer_note": "变体：并入主风格家族（variant_of 声明），不单独晋升",
+    "evidence": {
+      "hex_anchors": 7,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "variant_of": "产品发布会风",
+    "best_for": "新品上市,需要人群定位与利益点并举、有上市节奏",
+    "visual_direction": "launch-campaign style, market-go rhythm, benefit-led, audience resonance, promotional momentum, launch cadence clarity",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "bright energetic ground",
+      "composition": "audience → benefit → campaign",
+      "density": "medium, energetic"
+    },
+    "color_palette": {
+      "primary": "bold brand color (fallback #2563EB) / deep tech #0F172A, white",
+      "secondary": "supporting accents #3B82F6 / #22D3EE",
+      "accent": "one signature accent #F59E0B",
+      "neutral": "near-black/white #111827, gray #6B7280",
+      "rule": "stage-ready, punchy, brand-consistent"
+    },
+    "typography": {
+      "title": "bold showy sans (Arial Black / 思源黑体 Heavy), dramatic scale",
+      "body": "short punchy body",
+      "labels": "feature tags",
+      "text_quality": "clear brand claims, no overclaim"
+    },
+    "layout_patterns": [
+      "target audience & insight",
+      "hero benefit",
+      "campaign channels",
+      "launch momentum"
+    ],
+    "layout_usage_rule": "Audience, benefit and campaign cadence; energy with clear launch rhythm.",
+    "layout_blueprints": [
+      {
+        "name": "人群页",
+        "sections": [
+          {
+            "position": "top",
+            "count": 1,
+            "labels": [
+              "目标人群 + 洞察"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "战役页",
+        "sections": [
+          {
+            "position": "main",
+            "count": 3,
+            "labels": [
+              "渠道",
+              "内容",
+              "节奏"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "energetic imagery, benefit badges, campaign blocks, launch rhythm",
+      "avoid": "clutter, misleading claims, over-saturation"
+    },
+    "rendering_constraints": [
+      "Market-go, benefit-led energy.",
+      "Audience, benefit and cadence; launch momentum.",
+      "Accurate; no invented appeal or results."
+    ],
+    "reference": "GitHub: 新品上市 · 营销发布惯例"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Market-go, benefit-led energy.",
+      "Audience, benefit and cadence; launch momentum.",
+      "Accurate; no invented appeal or results."
+    ]
+  }
+}

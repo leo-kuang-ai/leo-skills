@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:有机渐变形风",
+  "name": "有机渐变形风",
+  "aliases": [
+    "有机渐变形",
+    "渐变有机植物风",
+    "flowery"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/艺术表现/有机渐变形风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "艺术表现"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "vibrant organic blob gradients, oversized overlapping botanical shapes over deep purple ground, balanced by stark white geometric content panels, energetic creative coverage"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "有机渐变形",
+      "渐变有机植物风",
+      "flowery"
+    ],
+    "best_for": "A vibrant, energetic presentation style featuring oversized…;适合Creative agency pitches and portfolios./Design and art presentations./Modern edu",
+    "visual_direction": "vibrant organic blob gradients, oversized overlapping botanical shapes over deep purple ground, balanced by stark white geometric content panels, energetic creative coverage",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "以 primary/neutral 锚定",
+      "composition": "Background fully covered by overlapping, vibrant gradient organic shapes on a deep navy base. A …",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#1A0B40(主色/标题锚)",
+      "secondary": "#E83A59(辅助色)",
+      "accent": "#FFB347(强调色)",
+      "neutral": "#FFFFFF(文字与中性锚)",
+      "rule": "锚点 #1A0B40, #E83A59, #FFB347, #48C9B0;A vibrant, energetic presentation style featuring oversi…"
+    },
+    "typography": {
+      "title": "思源黑体 / Futura;Condensed bold sans-serif for display, elegant serif for body.",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "Asymmetrical organic background with a large white rectangular text container anchored to on",
+      "Asymmetrical organic background with a large white rectangular text container anchored to on"
+    ],
+    "layout_usage_rule": "版式骨架 cover/agenda/section/content/data/quote/closing;按版式骨架排布,同 deck 内封面/收尾构图呼应",
+    "visual_elements": {
+      "allowed": "cover: Centered white square on full-bleed organic backgroun…",
+      "avoid": "Realistic photography of plants or leaves.;Drop shadows, bevels, or 3D effects on shapes and text.;Placing dark or thin text directly over the busy gradient backgrounds without a container."
+    },
+    "rendering_constraints": [
+      "Realistic photography of plants or leaves.",
+      "Drop shadows, bevels, or 3D effects on shapes and text.",
+      "Placing dark or thin text directly over the busy gradient backgrounds without a container.",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "Realistic photography of plants or leaves.",
+      "Drop shadows, bevels, or 3D effects on shapes and text.",
+      "Placing dark or thin text directly over the busy gradient backgrounds without a container.",
+      "Muted, pastel, or desaturated color palettes.",
+      "Specific leaf or plant illustrations."
+    ],
+    "reference": "gpt-image2-ppt-skills · styles/featured/flowery.md"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "Realistic photography of plants or leaves.",
+      "Drop shadows, bevels, or 3D effects on shapes and text.",
+      "Placing dark or thin text directly over the busy gradient backgrounds without a container.",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

@@ -17,6 +17,7 @@
 退出码：0 正常（含零受影响页）；2 用法或解析失败。
 """
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -272,12 +273,20 @@ def compute_impact(old_text, new_text):
     }
 
 
+def compute_impact_v2(before, after):
+    """v2 只比较编译后的双层 bindings，以稳定 page_id 和 lane 为连接键。"""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime/src"))
+    from leo_ppt_generator.content_projection import binding_impact
+    return binding_impact(before, after)
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="从两个母版版本的 diff 确定性推导受影响页清单")
     ap.add_argument("old", help="旧母版 markdown 路径")
     ap.add_argument("new", help="新母版 markdown 路径")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
+    ap.add_argument("--v2", action="store_true", help="输出 impact-v2 page-level invalidation contract")
     args = ap.parse_args()
 
     texts = []
@@ -289,12 +298,13 @@ def main():
             print(f"FAIL: 无法读取 {raw}: {exc}", file=sys.stderr)
             return 2
     try:
-        result = compute_impact(texts[0], texts[1])
-    except ParseError as exc:
+        result = (compute_impact_v2(json.loads(texts[0]), json.loads(texts[1]))
+                  if args.v2 else compute_impact(texts[0], texts[1]))
+    except (ParseError, ValueError, TypeError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 2
 
-    if args.json:
+    if args.json or args.v2:
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
         return 0
     affected = result["affected_pages"]

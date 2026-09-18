@@ -1,0 +1,53 @@
+{
+  "kind": "vocabulary",
+  "schema_version": 1,
+  "id": "formality",
+  "description": "正式度 0–1 连续值；规则阈值沿用 style_hard_rules 既有口径（0.8 汇报硬规则 / 0.3 轻分享）",
+  "scale": {
+    "min": 0,
+    "max": 1
+  },
+  "anchor_points": [
+    {
+      "value": 0.9,
+      "label_zh": "机构正式",
+      "examples": [
+        "董事会",
+        "基金委验收",
+        "政府工作汇报"
+      ]
+    },
+    {
+      "value": 0.7,
+      "label_zh": "专业正式",
+      "examples": [
+        "技术评审",
+        "方案评审"
+      ]
+    },
+    {
+      "value": 0.5,
+      "label_zh": "专业日常",
+      "examples": [
+        "开发者大会",
+        "组会"
+      ]
+    },
+    {
+      "value": 0.3,
+      "label_zh": "轻分享",
+      "examples": [
+        "科普讲座",
+        "工作坊"
+      ]
+    },
+    {
+      "value": 0.2,
+      "label_zh": "亲和娱乐",
+      "examples": [
+        "儿童课堂",
+        "快闪展示"
+      ]
+    }
+  ]
+}

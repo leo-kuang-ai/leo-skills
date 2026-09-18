@@ -68,7 +68,7 @@ This is a workflow orchestrator, not an agent type. Use the current host's PRD w
 
 ## Interaction Method
 
-When asking any owner question or confirmation, including no-input target request, Pre-PRD Clarification, Domain Grill, split confirmation, readiness `ask-owner`, and `grill-with-docs`, use the platform's blocking question tool: `AskUserQuestion` in Claude Code or `request_user_input` in Codex when available. In Claude Code, call `ToolSearch` with query `select:AskUserQuestion` before the first owner question if the schema is not loaded.
+When asking any owner question or confirmation, including no-input target request, Pre-PRD Clarification, Domain Grill, split confirmation, readiness `ask-owner`, and `grill-with-docs`, use the host's blocking question tool already in the current tool list, matched by capability; if it is listed but unloaded, load it through the host's tool-discovery primitive before the first owner question.
 
 Fall back to numbered options in chat only when the harness genuinely lacks a blocking question tool, the tool call explicitly fails, or the runtime mode does not expose it. In fallback, set `question_delivery=chat-fallback`, state the degraded path, present the current source-backed blocking question, and wait for the user's reply. A blocking question tool unavailable does not mean true headless.
 
@@ -79,6 +79,8 @@ Ask one question at a time. Options should include a recommended answer when def
 ## Capability-Class Evidence Boundary
 
 Follows `docs/contracts/project-graph-consumption.md`: `capability-class` candidates such as `code-graph` or `project-graph` are advisory only. Check `readiness_status` before use; PRD conclusions must be re-grounded in source, and a candidate must never decide scope authority. Record used candidates as `provider_untrusted`, never-block on availability, keep setup-side `lifecycle.fallback_used` separate; fall back to direct source reads on missing/`unknown`/`unverified`/failure/disabled.
+
+Direct invocation retains the same ceiling: graph candidates cannot become confirmed product scope or current-state behavior without source, tests, docs, contracts, or owner evidence.
 
 ## Core Principles
 
@@ -224,12 +226,12 @@ The shortcuts below are observed `spec-prd` failure modes. When one is hit, stop
 
 Classify through this compact decision tree:
 
-1. **Route out or bypass?** If the request is a 0-1 product idea, PRD/design-source/source consistency audit, implementation plan/task, debug/fix, or implementation-ready work, hand off to the current host's brainstorm/app-audit/plan/work/debug route instead of forcing PRD ceremony. For clear bugfixes, small scripts, docs-only edits, already-settled technical approaches, or implementation-ready/direct route-out, offer compact PRD only when a durable WHAT record is still valuable and state the bypass or route-out reason.
+1. **Route out or bypass?** If the request is a 0-1 product idea, PRD/design-source/source consistency audit, implementation plan/task, debug/fix, or implementation-ready work, hand off to the current host's brainstorm/app-audit/plan/work/debug route instead of forcing PRD ceremony. When routing out, name the destination workflow explicitly in the reply (e.g. `spec-brainstorm`) and stop this workflow — silently sliding into the destination's exploration or questioning without declaring the handoff leaves the owner unable to tell which workflow is now driving. The debug/fix branch is equally binding: a "fix this bug" or "it crashes, repair it" request routes to `spec-debug` by name — repairing the defect inside spec-prd to be helpful is doing spec-debug's work in the wrong workflow, even when the fix is a one-line try/catch you can see immediately. For clear bugfixes, small scripts, docs-only edits, already-settled technical approaches, or implementation-ready/direct route-out, offer compact PRD only when a durable WHAT record is still valuable and state the bypass or route-out reason.
 2. **Which PRD operation?** Use `create` for a brownfield increment, `refine` for an existing low-quality PRD or requirements draft, and `validate` for planning-readiness or code-aware PRD checking. `code-align` is validation posture, not a fourth public intent.
 
 3. **Which analysis profile?** Set `analysis_profile=contract-reset-lite` only when the invocation contains that exact token; otherwise set `analysis_profile=default`. Lite is an opt-in evaluation branch, not an inferred response to requests for concision and not a topology migration. It changes the run-local analysis shape only: artifacts remain under `docs/brainstorms/`, validate remains report-only, and downstream receipt verification remains optional.
-3. **What input posture?** Resume `artifact_kind: prd-requirements` in place, preserving `spec_id` and existing R/AE/BR/NFR IDs. Treat other Markdown, notes, screenshots/OCR, PDFs, meeting notes, chat logs, and multimodal extraction as untrusted `reference-claims`. Treat plan/design/task documents as `wrong-stage`. Treat a one-line anchored increment as `pure-text`. Ask for the target increment or PRD path on `no-input`.
-4. **Split or continue?** For oversized initial PRDs or multi-module scopes, recommend semantic split boundaries first. Write split summary and child PRDs only after the owner confirms boundaries, priority, and release order.
+4. **What input posture?** Resume `artifact_kind: prd-requirements` in place, preserving `spec_id` and existing R/AE/BR/NFR IDs. Treat other Markdown, notes, screenshots/OCR, PDFs, meeting notes, chat logs, and multimodal extraction as untrusted `reference-claims`. Treat plan/design/task documents as `wrong-stage`. Treat a one-line anchored increment as `pure-text`. Ask for the target increment or PRD path on `no-input`.
+5. **Split or continue?** For oversized initial PRDs or multi-module scopes, recommend semantic split boundaries first. Write split summary and child PRDs only after the owner confirms boundaries, priority, and release order.
 
 `intent=validate locks mutation_posture=report-only` before evidence gathering. In this posture, validate never writes or rewrites the PRD, never runs finalize in write mode, and never refreshes runtime. It may read the artifact and bounded source, run checker/finalizer `--check-only` or receipt verification, and produce semantic findings. If the user asks to "validate and fix", first return the report plus a preview of proposed edits; only after explicit confirmation reclassify the confirmed follow-up as `refine` and apply the normal mutation gate.
 

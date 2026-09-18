@@ -5,7 +5,7 @@
 版式（P1/P9/P23/P24/P34/P36）断言出现次数 ≤ ``max_per_deck``（sidecar 顶层
 声明，缺省 1；P36 = 2）。超用即列出版式与页号，exit 1 阻断定稿。
 
-版式真值：``references/styles/12_版式库/*.layouts.json``（layout-bank-v1）。
+版式真值：``template-library/canonical/layouts/*/layout.json``（layout-profile-v1）。
 
 输入形态（slides[].layout 兼容两种）::
 
@@ -25,26 +25,28 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-LAYOUT_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "references" / "styles" / "12_版式库"
-)
+RUNTIME_SRC = Path(__file__).resolve().parents[1] / "runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
+
+from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
+
 _P_CODE_RE = re.compile(r"\bP([1-9]|[1-2][0-9]|3[0-6])\b")
 
 
-def load_reuse_rules() -> dict[str, int]:
-    """读全部 sidecar，返回 {P 码: max_per_deck}（仅 reuse_friendly=false）。"""
+def load_reuse_rules(*, home: Path | None = None) -> dict[str, int]:
+    """从 canonical profiles 返回 {P 码: max_per_deck}。"""
     rules: dict[str, int] = {}
-    for path in sorted(LAYOUT_DIR.glob("*.layouts.json")):
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-            print(f"[ERROR] sidecar 不可解析: {path.name} ({exc})", file=sys.stderr)
-            raise SystemExit(2)
-        if not isinstance(data, dict) or data.get("entity") != "layout":
+    resolver = AssetResolver(home=home)
+    for entity in resolver.entities:
+        if entity.get("kind") != "layout":
             continue
+        data = resolver.resolve(entity["asset_id"])["data"]
         if data.get("reuse_friendly") is False:
-            rules[str(data.get("layout_id"))] = int(data.get("max_per_deck", 1))
+            code = next((str(a) for a in data.get("aliases", [])
+                         if _P_CODE_RE.fullmatch(str(a))), None)
+            if code:
+                rules[code] = int(data.get("max_per_deck", 1))
     return rules
 
 
@@ -65,10 +67,12 @@ def _p_code(layout_value: object) -> str | None:
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 2:
-        print("用法: check_layout_reuse.py <deck_spec.json|master.json>", file=sys.stderr)
+    if len(argv) not in (2, 4) or (len(argv) == 4 and argv[2] != "--home"):
+        print("用法: check_layout_reuse.py <deck_spec.json|master.json> [--home <dir>]",
+              file=sys.stderr)
         return 2
     path = Path(argv[1])
+    home = Path(argv[3]).expanduser().resolve() if len(argv) == 4 else None
     if not path.is_file():
         print(f"[ERROR] {path}: 文件不存在", file=sys.stderr)
         return 2
@@ -85,7 +89,11 @@ def main(argv: list[str]) -> int:
         print(f"[ERROR] {path}: 缺 slides 数组", file=sys.stderr)
         return 2
 
-    rules = load_reuse_rules()
+    try:
+        rules = load_reuse_rules(home=home)
+    except ResolverError as exc:
+        print(f"[ERROR] canonical 版式目录不可用（{exc.reason_code}）", file=sys.stderr)
+        return 2
     usage: dict[str, list[int]] = {}
     saw_layout_field = False
     for slide in slides:

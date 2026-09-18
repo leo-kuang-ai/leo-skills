@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:双年展海报风",
+  "name": "双年展海报风",
+  "aliases": [
+    "Biennale Yellow",
+    "biennale-yellow",
+    "双年展海报",
+    "editorial",
+    "atmospheric"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/设计流派/双年展海报风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "设计流派"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "art-biennale poster on warm parchment, solar yellow radial blooms from corners, single deep indigo ink with high-contrast serif display, hairline rules, atmospheric restrained cultural-institution deck"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "Biennale Yellow",
+      "biennale-yellow",
+      "双年展海报",
+      "editorial",
+      "atmospheric"
+    ],
+    "best_for": "以暖羊皮纸上的太阳黄光晕与深靛蓝衬线,做艺术双年展画册与机构年展的安静海报系统;适合exhibition or biennale, arts institution programme, design or typography conference, literary or curatorial publication",
+    "visual_direction": "art-biennale poster on warm parchment, solar yellow radial blooms from corners, single deep indigo ink with high-contrast serif display, hairline rules, atmospheric restrained cultural-institution deck",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "warm parchment ground with a signature solar-yellow accent, deep indigo navy ink, and a so(主锚 #E9E5DB,light 底)",
+      "composition": "海报式居中/非对称构图,光晕做氛围底",
+      "density": "medium,保持源模板信息节奏"
+    },
+    "color_palette": {
+      "primary": "#E9E5DB(暖羊皮纸底)",
+      "secondary": "#F1EE2E(太阳黄光晕)",
+      "accent": "#E26B4A(余烬橙边光)",
+      "neutral": "#1B2566(深靛蓝墨(唯一文字色))",
+      "rule": "warm parchment ground with a signature solar-yellow accent, deep indigo navy ink, and a soft peach/ember edge that bleed;锚点 #E9E5DB/#F1EE2E/#E26B4A/#1B2566"
+    },
+    "typography": {
+      "title": "Instrument Serif 标题字族;transitional Didone-flavored display serif paired with a clean grotesk",
+      "body": "Archivo 正文字族,行距宽绰",
+      "labels": "JetBrains Mono 标签/数据字族"
+    },
+    "layout_patterns": [
+      "暖羊皮纸底 #E9E5DB + 太阳黄 #F1EE2E 径向光晕自画面角落漫出",
+      "深靛蓝 #1B2566 单一墨色:衬线大标题 + 1px 发丝规则线,结构只靠线与字级",
+      "封面 = 展览海报:黄光晕 + 大衬线标题 + 展讯元数据行",
+      "禁圆角、投影、描边卡——纸墨承诺"
+    ],
+    "layout_usage_rule": "暖羊皮纸底 #E9E5DB + 太阳黄 #F1EE2E 径向光晕自画面角落漫出",
+    "negative_prompt": [
+      "Decks that need visual punch or saturated multi-color energy — the warm-paper canvas and one-yellow palette are intentionally quiet and atmospheric.",
+      "no rounded corners, drop shadows or bordered cards — hairline rules only",
+      "no multi-hue palettes; one yellow plus indigo ink",
+      "not when saturated multi-color punch is the goal"
+    ],
+    "paired_illustration": {
+      "family": "editorial",
+      "density": "sparse"
+    },
+    "visual_elements": {
+      "allowed": "深靛蓝 #1B2566 单一墨色:衬线大标题 + 1px 发丝规则线,结构只靠线与字级",
+      "avoid": "no rounded corners, drop shadows or bordered cards — hairline rules only; no multi-hue palettes; one yellow plus indigo ink"
+    },
+    "rendering_constraints": [
+      "双年展海报风 follows beautiful-html-templates biennale-yellow system; palette anchors locked.",
+      "no rounded corners, drop shadows or bordered cards — hairline rules only",
+      "no multi-hue palettes; one yellow plus indigo ink",
+      "No invented logos or watermarks."
+    ],
+    "reference": "GitHub: zarazhangrui/beautiful-html-templates · templates/biennale-yellow/(design.md + template.html 快照 2026-09-01,MIT)"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "双年展海报风 follows beautiful-html-templates biennale-yellow system; palette anchors locked.",
+      "no rounded corners, drop shadows or bordered cards — hairline rules only",
+      "no multi-hue palettes; one yellow plus indigo ink",
+      "No invented logos or watermarks."
+    ]
+  }
+}

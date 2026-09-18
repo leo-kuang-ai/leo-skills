@@ -1,0 +1,19 @@
+{
+  "sides": [
+    {
+      "label": "方案 A",
+      "title": "自建",
+      "points": [
+        "周期长"
+      ]
+    },
+    {
+      "label": "方案 B",
+      "title": "外购",
+      "points": [
+        "周期短"
+      ]
+    }
+  ],
+  "page_no": 7
+}

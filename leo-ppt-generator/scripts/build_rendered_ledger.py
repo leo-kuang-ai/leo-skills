@@ -135,7 +135,9 @@ def _slide_number(page: dict) -> int | None:
     return None
 
 
-def find_ocr_text(run_dir: Path, number: int) -> str | None:
+def find_ocr_text(run_dir: Path, number: int) -> tuple[str | None, Path | None]:
+    """返回 (文本, 文件路径)；路径供对齐 sidecar（R-73）同目录定位。"""
+
     for rel in OCR_DIRS:
         base = run_dir / rel
         if not base.is_dir():
@@ -143,8 +145,31 @@ def find_ocr_text(run_dir: Path, number: int) -> str | None:
         for pattern in PAGE_TXT_RES:
             candidate = base / pattern.format(n=number)
             if candidate.is_file():
-                return candidate.read_text(encoding="utf-8")
-    return None
+                return candidate.read_text(encoding="utf-8"), candidate
+    return None, None
+
+
+def find_alignment(run_dir: Path, number: int, ocr_path: Path | None) -> dict | None:
+    """OCR 文本旁的 R-73 对齐判定 sidecar（page_<N>.align.json）；无则 None。"""
+
+    if ocr_path is None:
+        return None
+    sidecar = ocr_path.parent / f"page_{number:03d}.align.json"
+    if not sidecar.is_file():
+        sidecar = ocr_path.parent / f"page_{number}.align.json"
+    if not sidecar.is_file():
+        return None
+    try:
+        report = json.loads(sidecar.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(report, dict):
+        return None
+    return {
+        "status": report.get("status"),
+        "ratio": report.get("ratio"),
+        "mode": report.get("mode"),
+    }
 
 
 def build_ledger(run_dir: Path, head_chars: int, top_k: int) -> dict:
@@ -153,7 +178,8 @@ def build_ledger(run_dir: Path, head_chars: int, top_k: int) -> dict:
     missing_ocr = 0
     for page in pages:
         number = _slide_number(page)
-        ocr_text = find_ocr_text(run_dir, number) if number is not None else None
+        ocr_text, ocr_path = find_ocr_text(run_dir, number) if number is not None else (None, None)
+        alignment = find_alignment(run_dir, number, ocr_path) if number is not None else None
         notes = page.get("notes")
         notes_text = fold_ws(str(notes)) if notes else ""
         if ocr_text is not None:
@@ -168,6 +194,8 @@ def build_ledger(run_dir: Path, head_chars: int, top_k: int) -> dict:
                 "chart_count": chart_count(folded),
                 "notes_head": notes_text[:head_chars] or None,
             }
+            if alignment is not None:
+                entry["alignment"] = alignment
         else:
             missing_ocr += 1
             entry = {

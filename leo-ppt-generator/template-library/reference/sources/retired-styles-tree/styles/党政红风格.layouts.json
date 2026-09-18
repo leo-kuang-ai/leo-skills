@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "entity": "style-layout-bank",
+  "style_id": "党政红风格",
+  "capacity_factor": {
+    "text": 1.0,
+    "note": "中性折减：庄重排版按版式默认容量"
+  },
+  "routing": [
+    {
+      "page_type": "cover",
+      "preferred": [
+        "P1"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    },
+    {
+      "page_type": "agenda",
+      "preferred": [
+        "P32"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "section",
+      "preferred": [
+        "P23",
+        "P12"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "content",
+      "preferred": [
+        "P4",
+        "P5",
+        "P11"
+      ],
+      "discouraged": [
+        "P34"
+      ]
+    },
+    {
+      "page_type": "data",
+      "preferred": [
+        "P20",
+        "P35",
+        "P25"
+      ],
+      "discouraged": []
+    },
+    {
+      "page_type": "closing",
+      "preferred": [
+        "P9"
+      ],
+      "discouraged": [
+        "P36"
+      ]
+    }
+  ]
+}

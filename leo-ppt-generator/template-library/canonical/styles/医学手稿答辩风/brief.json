@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:医学手稿答辩风",
+  "name": "医学手稿答辩风",
+  "aliases": [
+    "医学手稿答辩风",
+    "医学手稿",
+    "手稿答辩",
+    "medical manuscript defense"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/医疗健康/医学手稿答辩风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "医疗健康"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "biomedical manuscript defense, ivory manuscript paper with navy ink annotations and sage lab-sketch margins, vintage scholarly handwriting temper"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 8,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "医学手稿答辩风",
+      "医学手稿",
+      "手稿答辩",
+      "medical manuscript defense"
+    ],
+    "best_for": "象牙纸医学手稿+海军蓝标注+实验室素描边纹;适合论文答辩/实验流程汇报/机制探索/科研结果展示",
+    "visual_direction": "biomedical manuscript defense, ivory manuscript paper with navy ink annotations and sage lab-sketch margins, vintage scholarly handwriting temper",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#F7F4EC (医学手稿答辩风底)",
+      "composition": "象牙纸医学研究手稿 + 蓝色科研标注 + 实验室素描边纹",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#0B2344(深海军蓝/标题锚)",
+      "secondary": "#5F86A9(灰蓝批注)",
+      "accent": "#C9BFA8(暖灰米框线)",
+      "neutral": "#14223A(深蓝黑正文)",
+      "rule": "锚点 #0B2344, #5F86A9, #C9BFA8, #14223A;来源:源文件色板原文直迁;为 GPT Image 2 提供生物医学论文答辩与科研汇报 PPT 生图的全局风格、连续性、科研插图、原图嵌入和负面约束提示词。"
+    },
+    "typography": {
+      "title": "Georgia/Cormorant Garamond Bold 英文 + 思源宋体加粗中文",
+      "body": "思源黑体/Inter Regular,行距宽松",
+      "labels": "灰蓝小标签,图表标注与目录条目低调"
+    },
+    "layout_patterns": [
+      "细窄浅米色外框 + 充足内部留白",
+      "深海军蓝页眉页脚编号,灰蓝手写批注与编号圆点",
+      "淡蓝色医学手绘草图背景纹理(DNA/细胞/神经元/实验器材)",
+      "象牙纸面 + 蓝色科研标注的答辩叙事结构"
+    ],
+    "layout_usage_rule": "细窄浅米色外框 + 充足内部留白",
+    "visual_elements": {
+      "allowed": "象牙纸医学研究手稿 + 蓝色科研标注 + 实验室素描边纹",
+      "avoid": "不要纯白无质感的普通办公模板;不要过度复古泛黄或把科研插图改成铜版画风"
+    },
+    "rendering_constraints": [
+      "不要纯白无质感的普通办公模板",
+      "不要过度复古泛黄或把科研插图改成铜版画风",
+      "不要元素随机摆放或没有对齐关系",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要纯白无质感的普通办公模板",
+      "不要过度复古泛黄或把科研插图改成铜版画风",
+      "不要元素随机摆放或没有对齐关系",
+      "不要虚构医院/大学名称或伪参考文献"
+    ],
+    "reference": "GitHub: yixueAIganhuo-PPT · references/007_生物医学手稿论文答辩PPT风格提示词.json"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "reserved",
+    "formality": 0.7,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要纯白无质感的普通办公模板",
+      "不要过度复古泛黄或把科研插图改成铜版画风",
+      "不要元素随机摆放或没有对齐关系",
+      "不要虚构医院/大学名称或伪参考文献",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

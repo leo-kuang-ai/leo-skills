@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "run_id", "kind", "window", "phase", "source", "payload"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["tf", "call", "rework"]},
+    "window": {"type": "string", "minLength": 1},
+    "phase": {"enum": ["before-authorization", "after-authorization", "development"]},
+    "source": {"enum": ["runtime", "provider-receipt", "user-feedback", "synthetic"]},
+    "payload": {"type": "object"}
+  },
+  "$defs": {
+    "pages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "tf": {
+      "type": "object", "additionalProperties": false,
+      "required": ["page", "triggers", "complete", "generation_method"],
+      "properties": {
+        "page": {"type": "string", "minLength": 1},
+        "triggers": {"type": "array", "uniqueItems": true, "items": {"enum": ["TF-1", "TF-2"]}},
+        "complete": {"type": "boolean"},
+        "generation_method": {"enum": ["image", "render", "composite"]}
+      }
+    },
+    "call": {
+      "type": "object", "additionalProperties": false,
+      "required": ["call_id", "pages", "amount", "currency", "price_version", "outcome"],
+      "properties": {
+        "call_id": {"type": "string", "minLength": 1},
+        "pages": {"$ref": "#/$defs/pages"},
+        "amount": {"type": ["string", "null"], "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+        "currency": {"type": ["string", "null"], "pattern": "^[A-Z]{3}$"},
+        "price_version": {"type": ["string", "null"], "minLength": 1},
+        "outcome": {"enum": ["succeeded", "failed", "cancelled", "unknown"]},
+        "tokens": {"type": ["integer", "null"], "minimum": 0},
+        "attempts": {"type": "integer", "minimum": 1}
+      }
+    },
+    "rework": {
+      "type": "object", "additionalProperties": false,
+      "required": ["feedback_id", "pages", "reason", "actor", "state"],
+      "properties": {
+        "feedback_id": {"type": "string", "minLength": 1},
+        "pages": {"$ref": "#/$defs/pages"},
+        "reason": {"enum": ["content", "style", "layout", "text", "other"]},
+        "actor": {"enum": ["user", "automatic", "model-review"]},
+        "state": {"enum": ["received", "revised", "presented", "cancelled"]}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "tf"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/tf"}}}},
+    {"if": {"properties": {"kind": {"const": "call"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/call"}}}},
+    {"if": {"properties": {"kind": {"const": "rework"}}}, "then": {"properties": {"payload": {"$ref": "#/$defs/rework"}}}}
+  ]
+}

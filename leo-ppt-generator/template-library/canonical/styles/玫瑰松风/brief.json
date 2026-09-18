@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:玫瑰松风",
+  "name": "玫瑰松风",
+  "aliases": [
+    "玫瑰松",
+    "Rose Pine",
+    "rose",
+    "pine",
+    "玫瑰",
+    "柔和暗色",
+    "rose-pine"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/终端配色/玫瑰松风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "终端配色"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "Rosé Pine dawn-forest terminal palette, muted rose gold and pine accents on soft dark base, gentle natural dev theme"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 12,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "玫瑰松",
+      "Rose Pine",
+      "rose",
+      "pine",
+      "玫瑰",
+      "柔和暗色",
+      "rose-pine"
+    ],
+    "best_for": "暗紫森林里玫瑰静默绽放，设计感与代码温柔共存;适合技术分享/艺术视觉/教学科普",
+    "visual_direction": "Rosé Pine dawn-forest terminal palette, muted rose gold and pine accents on soft dark base, gentle natural dev theme",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#191724→#1F1D2E→#26233A",
+      "composition": "柔和的暗色布局，卡片边缘不锐利，留白是暗色的呼吸",
+      "density": "low-to-medium, 保持风格留白节奏"
+    },
+    "color_palette": {
+      "primary": "#E0DEF4(主色/标题锚)",
+      "secondary": "#908CAA(辅助色)",
+      "accent": "#EB6F92(强调色)",
+      "neutral": "#0F1117(文字与中性锚)",
+      "rule": "锚点 #E0DEF4, #908CAA, #EB6F92, #31748F;标题 #e0def4 薰衣草白、正文 #908caa 柔灰紫，强调色 #eb6f92 玫瑰粉与 #31748f 松青是暗色中的两抹温柔"
+    },
+    "typography": {
+      "title": "JetBrains Mono / 思源黑体 Mono 等宽;标题字号优雅但不夸张，正文行距宽松",
+      "body": "同族常规字重,行高 1.6-1.9",
+      "labels": "小字号同族,适度字距,克制用色"
+    },
+    "layout_patterns": [
+      "柔和的暗色布局，卡片边缘不锐利，留白是暗色的呼吸",
+      "内容与装饰的边界模糊而优雅，玫瑰粉的点缀只出现在最需要的地方"
+    ],
+    "layout_usage_rule": "柔和的暗色布局，卡片边缘不锐利，留白是暗色的呼吸",
+    "visual_elements": {
+      "allowed": "柔和的暗色布局，卡片边缘不锐利，留白是暗色的呼吸",
+      "avoid": "不要使用硬边框或霓虹色;不要使用过于锐利的几何形状;不要让暗色变得压抑或沉重"
+    },
+    "rendering_constraints": [
+      "不要使用硬边框或霓虹色",
+      "不要使用过于锐利的几何形状",
+      "不要让暗色变得压抑或沉重",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ],
+    "negative_prompt": [
+      "不要使用硬边框或霓虹色",
+      "不要使用过于锐利的几何形状",
+      "不要让暗色变得压抑或沉重",
+      "不要用纯黑替代暗紫，保持紫调"
+    ],
+    "reference": "GitHub: arcsin1/oh-my-ppt · styles/rose-pine"
+  },
+  "recommendation_features": {
+    "density": "low-medium",
+    "audience_conservatism": "balanced",
+    "formality": 0.5,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)：机械默认按家族语义先验替换，来源记录在案"
+  },
+  "constraints": {
+    "negative": [
+      "不要使用硬边框或霓虹色",
+      "不要使用过于锐利的几何形状",
+      "不要让暗色变得压抑或沉重",
+      "色板锚点以 brief HEX 为准,不漂移;文案准确,不虚构标识"
+    ]
+  }
+}

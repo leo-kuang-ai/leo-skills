@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/expression-first-output-v3/process/positive.png",
+  "out_sha256": "1c926dccbc4372dae72437baa754e1793edd343d883954cc909c85e4de589d60",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 678,
+  "rendered_at": "2026-09-14T06:29:19.579Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:body-basic",
+  "template_sha256": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852",
+  "warnings": [],
+  "width": 2560
+}

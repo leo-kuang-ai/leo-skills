@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "template-library",
+  "library_id": "builtin",
+  "name": "leo-ppt-generator 内置模板库",
+  "protocol": {
+    "asset_id_pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):[a-z0-9\\-\\u4e00-\\u9fff]+$",
+    "resolver": "asset_resolver/v1",
+    "builder": "capability_manifest/template-registry/v1",
+    "catalog_pointer": "catalog/current.json",
+    "logical_canvas": {"width": 1280, "height": 720, "units": "logical-px", "export_sampling": 2}
+  },
+  "zones": {
+    "canonical": "作者真值（纯 JSON 合同 + 模板/字体实体文件）",
+    "reference": "上游/未转化资料与历史证据（sources/candidates/pools/historical-gallery）",
+    "governance": "schema/词表/规则/作者指引/精选政策/迁移账本",
+    "catalog": "自动生成的 registry/catalog/views（可完整重建，generations + current 指针）",
+    "evidence": "不可变验证包与撤销记录（validation-id 目录 + revocations）"
+  },
+  "reserved_directory_names": ["generated", "generations", "staging", "revocations"],
+  "note": "五区结构见 docs/plans/2026-09-08-001 §3。本文件声明库身份与分区，不手填成员表。"
+}

@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/expression-first-output-v9-admission/independent/negative.png",
+  "out_sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 665,
+  "rendered_at": "2026-09-15T06:57:40.595Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:body-basic",
+  "template_sha256": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+  "warnings": [],
+  "width": 2560
+}

@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:荧光高对比科技风",
+  "name": "荧光高对比科技风",
+  "aliases": [
+    "荧光科技风",
+    "高对比暗色风",
+    "neon tech"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/01_通用母版/科技数字/荧光高对比科技风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "科技暗色",
+      "高攻击"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "neon high-contrast tech style, matte black ground, vibrant lime / electric blue accents, grayscale imagery, sharp geometric lines, bold technical type, punchy high-energy pitch look"
+  },
+  "bindings": {
+    "modes_supported": [
+      "light"
+    ]
+  },
+  "adaptation_gaps": [
+    "density_free_text_unmapped",
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "draft",
+    "reviewer_note": "部分完整（约束=True，密度映射=False，HEX 锚 6）：保持 draft，缺口已记录不猜值",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": false,
+      "gaps": [
+        "density_free_text_unmapped",
+        "theme_not_extracted",
+        "recommendation_features_not_extracted"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "荧光科技风",
+      "高对比暗色风",
+      "neon tech"
+    ],
+    "best_for": "以黑底与高饱和荧光对冲制造高能量、锐利的科技舞台冲击力",
+    "visual_direction": "neon high-contrast tech style, matte black ground, vibrant lime / electric blue accents, grayscale imagery, sharp geometric lines, bold technical type, punchy high-energy pitch look",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "matte black #050505",
+      "composition": "bold neon focal, grayscale imagery, sharp geometry",
+      "density": "low-high controlled; single focal, punchy"
+    },
+    "color_palette": {
+      "primary": "matte black #050505, stark white type",
+      "secondary": "graphite #1E293B, grayscale imagery",
+      "accent": "neon lime #C0FF00 / electric blue #3B82F6",
+      "neutral": "white, gray #9CA3AF, hairline #333333",
+      "rule": "high-contrast, punchy, one neon accent; avoid pastel and warm gold"
+    },
+    "typography": {
+      "title": "bold condensed technical (DIN Condensed / 思源黑体), high impact",
+      "body": "sharp, minimal on dark",
+      "labels": "glowing tags",
+      "text_quality": "accurate technical claims"
+    },
+    "layout_patterns": [
+      "black hero with neon focal",
+      "grayscale image + neon headline",
+      "big-number impact slide",
+      "tech stats with glow"
+    ],
+    "layout_usage_rule": "Maximum contrast, one neon accent, grayscale content; let the accent do the talking.",
+    "layout_blueprints": [
+      {
+        "name": "路演封面",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "项目名荧光强调"
+            ]
+          },
+          {
+            "position": "bottom",
+            "count": 1,
+            "labels": [
+              "一句话卖点"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "大数字页",
+        "sections": [
+          {
+            "position": "center",
+            "count": 1,
+            "labels": [
+              "巨型霓虹数字"
+            ]
+          },
+          {
+            "position": "side",
+            "count": 2,
+            "labels": [
+              "佐证",
+              "结论"
+            ]
+          }
+        ]
+      }
+    ],
+    "visual_elements": {
+      "allowed": "neon accent, grayscale imagery, sharp geometry, punchy type, black ground",
+      "avoid": "multicolor neon chaos, pastel, warm gold, dense infographic"
+    },
+    "rendering_constraints": [
+      "High-energy, sharp, premium stage feel.",
+      "One neon accent on black; content grayscale, punchy but clean.",
+      "Accurate claims; no invented logos or watermarks."
+    ],
+    "reference": "GitHub: 荧光高对比科技路演 · Tech Pitch 风格"
+  },
+  "constraints": {
+    "negative": [
+      "High-energy, sharp, premium stage feel.",
+      "One neon accent on black; content grayscale, punchy but clean.",
+      "Accurate claims; no invented logos or watermarks."
+    ]
+  },
+  "recommendation_features": {
+    "audience_conservatism": "expressive",
+    "formality": 0.5,
+    "density": null,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior (U3)"
+  }
+}

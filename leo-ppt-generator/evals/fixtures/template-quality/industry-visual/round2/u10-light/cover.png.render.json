@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "7ba3fb13289408a9d631eb25a6bb8247dda769e84a9d66b8aef5af85460640d3",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/industry-visual/round2/u10-light/cover.png",
+  "out_sha256": "6ea86b377186823bf236c67137cd0966e1a05217d4d43cd36cb7e43547432ea4",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1234,
+  "rendered_at": "2026-09-08T02:44:33.842Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "cover-basic",
+  "template_sha256": "bea9ecfcc2d2f5071d61680232f3c3189288a60a0ca6e4ec96f9484d5e01471c",
+  "warnings": [],
+  "width": 2560
+}

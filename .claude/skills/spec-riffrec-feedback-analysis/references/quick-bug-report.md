@@ -4,14 +4,7 @@ Use this path when the input is a short recording (under ~60 seconds), the user 
 
 ## Workflow
 
-1. Run the analyzer to a temp directory so nothing pollutes the repo (`SKILL_DIR` is the directory containing the `spec-riffrec-feedback-analysis` SKILL.md; set it in the same command — shell state does not persist between Bash calls):
-
-   ```bash
-   SKILL_DIR="<absolute path of the directory containing the spec-riffrec-feedback-analysis SKILL.md>"
-   bash "$SKILL_DIR/scripts/run-python.sh" "$SKILL_DIR/scripts/analyze_riffrec_zip.py" /path/to/input --output-dir "$(mktemp -d -t riffrec-quick-XXXXXX)"
-   ```
-
-   Capture the printed output directory; later steps read from it.
+1. Read [Shared analyzer](analyzer.md) and run its quick command with a temporary output directory. Use `--no-transcribe` unless explicit provider egress authority permits `--transcribe`. Capture the printed directory and receipt for subsequent reads.
 
 2. Read only `analysis.md` from the temp output. Skip `problem-analysis.md`, `review-prompt.md`, `requirements-kickoff.md`, and `source-materials.md` — they are designed for the extensive path.
 
@@ -42,4 +35,6 @@ If the workspace is the product source code AND the broken surface is named clea
 
 ## Escalation
 
-If, while reading the transcript, the recording turns out to contain multiple distinct issues, requirements, or a workflow walkthrough, stop and tell the user: "This recording has more than one issue — switching to the extensive path." Then load `references/extensive-analysis.md` and re-run the analyzer with a non-temp output directory.
+If the transcript turns out to contain multiple distinct issues, requirements, or a workflow walkthrough, keep the requested quick result bounded: report the primary bug, list the additional signals without expanding them, and return an `extensive-analysis-available` handoff that explains the durable artifacts and likely extra work.
+
+Do not load the extensive reference, rerun the analyzer, create `docs/brainstorms/...`, or invoke `spec-brainstorm` from this discovery alone. Continue only when the current user explicitly selects extensive analysis; that new choice authorizes the extensive path but still does not authorize the downstream public workflow. Until then, leave the temp evidence ephemeral and disclose that it may need to be re-extracted after confirmation.

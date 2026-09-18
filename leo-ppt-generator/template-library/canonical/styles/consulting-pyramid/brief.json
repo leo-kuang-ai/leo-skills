@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:consulting-pyramid",
+  "name": "咨询金字塔风",
+  "aliases": [
+    "咨询",
+    "consulting-pyramid"
+  ],
+  "variant_of": null,
+  "lifecycle": "active",
+  "source": {
+    "origin": "authored",
+    "upstream": "v4 §8.1 九方向种子（行业皮肤方案八类 + 管理方向）"
+  },
+  "taxonomy": {
+    "families": [
+      "咨询方向"
+    ],
+    "industries": [
+      "咨询"
+    ],
+    "scenarios": []
+  },
+  "recommendation_features": {
+    "audience_conservatism": "reserved",
+    "formality": 0.85,
+    "density": "medium-high",
+    "environments": [
+      "meeting-room-projector",
+      "desktop-review"
+    ],
+    "components": [
+      "结论标题",
+      "矩阵",
+      "瀑布/替代对照"
+    ],
+    "counter_indications": []
+  },
+  "visual_language": {
+    "direction": "浅暖底 + 分组线 + 严格脚注层级的咨询语法；结论先行标题行（action title）",
+    "features": [
+      "浅暖底 + 分组线 + 严格脚注层级的咨询语法",
+      "结论先行标题行（action title）",
+      "矩阵/瀑布等比较结构优先"
+    ],
+    "continuity": {
+      "cover": "方向主视觉 + 标题",
+      "content": "结构化层级",
+      "data": "规格表/图表优先",
+      "closing": "要点回顾"
+    }
+  },
+  "constraints": {
+    "negative": [
+      "禁止页面无结论标题",
+      "脚注与正文结论不得脱节",
+      "禁止装饰渐变背景"
+    ]
+  },
+  "bindings": {
+    "theme_default": "builtin:theme:consulting-pyramid-light",
+    "modes_supported": [
+      "light"
+    ],
+    "layout_routes": [
+      {
+        "page_type": "cover",
+        "preferred": [
+          "builtin:layout:p1-01-cover-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "agenda",
+        "preferred": [
+          "builtin:layout:p32-32-agenda-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "content",
+        "preferred": [
+          "builtin:layout:p5-05-three-sub-cards-layouts",
+          "builtin:layout:p8-08-duo-compare-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "data",
+        "preferred": [
+          "builtin:layout:p25-spec-table",
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "evidence",
+        "preferred": [
+          "builtin:layout:p31-31-swiss-evidence-grid-layouts",
+          "builtin:layout:p25-spec-table"
+        ],
+        "discouraged": []
+      },
+      {
+        "page_type": "closing",
+        "preferred": [
+          "builtin:layout:p9-09-closing-manifesto-layouts"
+        ],
+        "discouraged": []
+      }
+    ]
+  },
+  "industry_sample_checks": "结论与脚注对应、分组和比较尺度一致",
+  "content_review": {
+    "reviewed": true,
+    "disposition": "keep",
+    "reviewer_note": "U3 种子按 §8.1 表逐项落地"
+  },
+  "token_sidecar": {
+    "palette": {
+      "primary": "#31435C",
+      "accent": "#8A6D3B",
+      "background": "#FAFAF7",
+      "surface": "#FFFFFF",
+      "text": "#26282B",
+      "muted": "#5D6672",
+      "line": "#D8DAD3",
+      "on_primary": "#FFFFFF",
+      "accent_on": "#D9C39A",
+      "accent_soft": "#F3EBDD"
+    },
+    "typography": {
+      "title": "Noto Sans SC Bold；action title 38-40px/700，左对齐，2px accent 下划线",
+      "body": "Noto Sans SC Regular；正文 30-32px/400，行高 1.5",
+      "labels": "Noto Sans SC；kicker 16px/700 字距 2px，标签 15-16px，注脚 13px",
+      "kpi_value": "Noto Sans SC Bold；44px/700"
+    },
+    "density": "medium-high；卡片化分区（白卡+1px line 边+3px primary/accent 顶边条），区块间 16-24px，留白集中于区块内而非页面级",
+    "layout": {
+      "grid": "12 列 × 1280×720 逻辑画幅（2560×1440 交付，dsf=2）",
+      "safe_margin": "56px 64px 48px",
+      "page_no": "右下 right:44px bottom:26px，13px muted",
+      "corner_radius": "0px（直角，咨询语法）",
+      "line_weight": "1px 分组线 + 2px 标题强调线 + 3px 卡片顶边条"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:argument-事故复盘",
+  "name": "叙事方法论：事故复盘（incident-postmortem）",
+  "kind": "argument",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

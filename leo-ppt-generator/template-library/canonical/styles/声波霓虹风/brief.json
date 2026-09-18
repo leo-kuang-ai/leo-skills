@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "entity": "style-brief",
+  "asset_id": "builtin:style:声波霓虹风",
+  "name": "声波霓虹风",
+  "aliases": [
+    "声波风",
+    "霓虹声波风",
+    "音乐现场风",
+    "音浪风"
+  ],
+  "variant_of": null,
+  "lifecycle": "draft",
+  "source": {
+    "origin": "legacy-migrated",
+    "upstream": "references/styles/02_行业内容域/游戏娱乐/声波霓虹风.md"
+  },
+  "taxonomy": {
+    "families": [
+      "游戏娱乐"
+    ],
+    "industries": [],
+    "scenarios": []
+  },
+  "visual_language": {
+    "direction": "sonic neon style, midnight ground with waveform spectrum bars and glow edges, neon pink and cyan accents over deep gray panels, masthead-like condensed type, energetic but disciplined"
+  },
+  "bindings": {
+    "modes_supported": [
+      "dark"
+    ]
+  },
+  "adaptation_gaps": [
+    "theme_not_extracted",
+    "recommendation_features_not_extracted",
+    "formality_from_family_prior"
+  ],
+  "content_review": {
+    "reviewed": true,
+    "disposition": "revise-candidate",
+    "reviewer_note": "结构完整（负面约束+密度映射在案）：候选晋升，需 U3 语义审阅补主题绑定与特征后转 active",
+    "evidence": {
+      "hex_anchors": 6,
+      "has_negative_constraints": true,
+      "density_mapped": true,
+      "gaps": [
+        "theme_not_extracted",
+        "recommendation_features_not_extracted",
+        "recommendation_features_defaults_pending_u3"
+      ]
+    }
+  },
+  "legacy_payload": {
+    "aliases": [
+      "声波风",
+      "霓虹声波风",
+      "音乐现场风",
+      "音浪风"
+    ],
+    "best_for": "音乐娱乐与潮流活动内容,需要声波谱线与霓虹光效承载的高能年轻叙事",
+    "visual_direction": "sonic neon style, midnight ground with waveform spectrum bars and glow edges, neon pink and cyan accents over deep gray panels, masthead-like condensed type, energetic but disciplined",
+    "canvas": {
+      "aspect_ratio": "16:9",
+      "background": "#0E0E12 午夜黑底,#191922 深灰面板,底部声波谱线延展",
+      "composition": "刊头式大标题 + 声波/频谱主视觉 + 信息面板",
+      "density": "medium, 高能但有序"
+    },
+    "color_palette": {
+      "primary": "#0E0E12(午夜黑底)配 #F2F2F6(白文字锚)",
+      "secondary": "#191922(深灰面板)",
+      "accent": "#FF4D8F(霓虹粉)与 #00E5C7(声波青)双色对位",
+      "neutral": "#7A7A8C(霓灰注释)",
+      "rule": "午夜底 + 粉/青双色霓虹;霓虹只用于谱线与关键词,不铺满"
+    },
+    "typography": {
+      "title": "粗窄压缩无衬线(HarmonyOS Sans/MiSans Heavy)刊头式大标题",
+      "body": "思源黑体正文,短句",
+      "labels": "BPM/场次/平台等小注(等宽 JetBrains Mono)"
+    },
+    "layout_patterns": [
+      "活动封面:刊头大标题 + 声波谱线 + 场次信息",
+      "阵容页:艺人/嘉宾卡列 + 霓虹描边",
+      "流程页:时间轴即声波形 + 节点标注",
+      "传播页:平台矩阵 + 数据小卡"
+    ],
+    "layout_usage_rule": "声波谱线为统一视觉母题;霓虹双色对位,每页一个高能焦点",
+    "visual_elements": {
+      "allowed": "频谱条、声波线、霓虹描边、辉光边缘、场次标签",
+      "avoid": "廉价霓虹堆砌、乱码故障感、刺眼高频闪烁感、低质海报字"
+    },
+    "rendering_constraints": [
+      "霓虹只描谱线与关键词",
+      "文字保持高可读,不做故障风畸变",
+      "不虚构阵容、票价与票房数据"
+    ],
+    "negative_prompt": [
+      "不要廉价霓虹铺满或乱码故障效果",
+      "不要低质演出海报字",
+      "不要虚构阵容与票房数据"
+    ],
+    "reference": "GitHub: dashi-ppt-skill · theme12（AGPL 思想级借鉴,色板本库自定,C4）"
+  },
+  "recommendation_features": {
+    "density": "balanced",
+    "audience_conservatism": "balanced",
+    "formality": 0.45,
+    "environments": [
+      "desktop-review"
+    ],
+    "feature_defaults_basis": "family-prior+lexical (U3)"
+  },
+  "constraints": {
+    "negative": [
+      "霓虹只描谱线与关键词",
+      "文字保持高可读,不做故障风畸变",
+      "不虚构阵容、票价与票房数据"
+    ]
+  }
+}

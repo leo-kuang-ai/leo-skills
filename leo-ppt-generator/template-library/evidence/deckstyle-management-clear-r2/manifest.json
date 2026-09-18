@@ -1,0 +1,85 @@
+{
+  "kind": "style-validation",
+  "schema_version": 1,
+  "validation_id": "deckstyle-management-clear-r2",
+  "assets": {
+    "style": "builtin:style:management-clear",
+    "theme": "builtin:theme:management-clear-light",
+    "layout": "builtin:layout:spec-table"
+  },
+  "lane": "html",
+  "mode": "light",
+  "locale": "zh-CN",
+  "page_roles": [
+    "cover",
+    "content",
+    "evidence",
+    "closing"
+  ],
+  "fixture": "scripts/verify_deck_style_matrix.py CONTENT[management-clear]",
+  "backend": "playwright-chromium",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "overflow",
+      "version": "render_page-sentinel",
+      "result": "pass"
+    },
+    {
+      "id": "dimensions",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "blank",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "ready_signal",
+      "version": "1",
+      "result": "pass"
+    },
+    {
+      "id": "title_nonempty",
+      "version": "1",
+      "result": "pass"
+    }
+  ],
+  "review": {
+    "source": "human",
+    "reviewer": "维护者（会话内单评审）",
+    "result": "pass",
+    "rubric": "硬检查全过 + 结构证据；逐页双人独立语义评审未执行（见 verification 登记）",
+    "notes": "round 2"
+  },
+  "outputs": {
+    "cover.png": "98a1c5df646b4d2908b914075716f93885671ac267a96a8570def435c35fda0d",
+    "content.png": "35ff7ef1e40171a429241e7003d805c28532a0cf4a5751bfd1e96c3eb769edeb",
+    "evidence.png": "d3cfad934ee5439f1ca54d92ff77e53945f087bda5e98a8a8ce195b737bb8992",
+    "closing.png": "b70f7edc86f65c5071ea3d81c3aece2997253a7cac6092af0128a2334871de50"
+  },
+  "compiler": {
+    "name": "verify_deck_style_matrix",
+    "version": "1"
+  },
+  "run_ref": null,
+  "supersedes": [
+    "deckstyle-management-clear-r1"
+  ]
+}

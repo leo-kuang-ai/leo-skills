@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "entity": "axis-manifest",
+  "asset_id": "builtin:axis:argument-教学分解",
+  "name": "论证模式：教学分解",
+  "kind": "argument",
+  "body_ref": "body.md",
+  "applicability_limits": []
+}

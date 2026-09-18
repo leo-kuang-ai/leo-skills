@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
-COMPOSITION_DOC = SKILL_DIR / "references" / "styles" / "00_索引" / "构图词汇参考.md"
+COMPOSITION_DOC = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "00_索引" / "构图词汇参考.md"
 POOL_JSON = SKILL_DIR / "scripts" / "chart-palette-pool.json"
 POOL_SCRIPT = SKILL_DIR / "scripts" / "chart_palette_pool.py"
 
@@ -81,13 +81,13 @@ class OfficeMcpPalettePool(unittest.TestCase):
 
 class HanddrawnVocabularyIncrement(unittest.TestCase):
     def test_whiteboard_brief_gains_torn_tape_sticky_note(self):
-        raw = (SKILL_DIR / "references" / "styles" / "手绘白板风.md").read_text(
+        raw = (SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "手绘白板风.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("torn-tape", raw)
 
     def test_tech_explainer_brief_gains_callout_bubble(self):
-        raw = (SKILL_DIR / "references" / "styles" / "手绘技术解释风.md").read_text(
+        raw = (SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "手绘技术解释风.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("callout bubbles", raw)

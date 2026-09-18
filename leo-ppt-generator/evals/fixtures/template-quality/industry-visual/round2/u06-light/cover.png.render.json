@@ -1,0 +1,20 @@
+{
+  "backend": "render:html",
+  "data_sha256": "c11d845fa6d4177b8afe4a90da8f4edf9adcc768adf5d8afeb3f434ddc0cf641",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/evals/fixtures/template-quality/industry-visual/round2/u06-light/cover.png",
+  "out_sha256": "11f63665578aa5b47322e0c70a07165e6d4bbf570014ca6401c37c8f6d803550",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 1266,
+  "rendered_at": "2026-09-08T02:44:03.383Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "cover-basic",
+  "template_sha256": "bea9ecfcc2d2f5071d61680232f3c3189288a60a0ca6e4ec96f9484d5e01471c",
+  "warnings": [],
+  "width": 2560
+}

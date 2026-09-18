@@ -1,0 +1,29 @@
+# 图片渲染：工程分解信息图（engineering-breakdown-grid）
+
+**分类:** canonical/axes/rendering · 现代商业
+
+**配对视觉风格:** —（本批新增渲染,无固定 01 配对;可直接点名,默认使用场景见 `template-library/governance/authoring/index/视觉风格配对.md` 末节）
+
+**定位:** 超密工程信息图——锐利分割线成格,每格 photoreal 剖切/爆炸视图/尺寸线/色码箭头,Apple ID 文档级「产品解剖」
+
+## 1. 风格段落（paste-ready，可直接用于图片生成）
+
+> An ultra-detailed engineering infographic: a clean ground split by sharp separator lines into a precise grid, each cell holding a photoreal 3D render with transparent cutaways, exploded views, dimension lines, callout boxes, and color-coded engineering arrows. Apple-style industrial-design documentation, dense with precise technical labels. Rigorous, high-end, and authoritative — the definitive 'anatomy of the product' layout. Rendering guardrails: no text, no lettering, no numbers, no logos, no watermarks inside the image — any typography is applied later by the page layout, never by the image model. Compose for a 16:9 widescreen canvas (2560×1440): wide horizontal frame, not a poster column.
+
+## 2. 线条 · 纹理 · 深度
+
+| 维度 | 处理 |
+|---|---|
+| 线条质量 | Dimension lines, callout stems, sharp cell separators |
+| 纹理 | Photoreal component renders inside a clean gridded ground |
+| 深度 | In-cell 3D cutaway depth; grid discipline across the page |
+| 材质 | Industrial-design documentation plates |
+| 情绪 | Rigorous, high-end, authoritative, dense |
+
+> 渲染画法不写死 HEX;源卡参考色板 `#2563EB / #FFFFFF / #111111 / #EA580C（首色为 accent）` 与信息密度 `high` 仅作 deck `colors` 锚点缺省时的默认建议。适用场景（源自卡 tags）：产品解剖页 / 研发汇报 / 工程总览 / 硬核技术页。
+
+## 3. 来源与许可
+
+- 源卡: `nb-engineering-blueprint-grid` · author: ⁠ luciaAI · YouMind Awesome Nano Banana Pro Prompts
+- 案例页: https://x.com/luciaverseai/status/2062938095109255382
+- 许可: CC BY 4.0 — https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts/blob/main/LICENSE（经 codex-slides `src/lib/community.ts` 快照 2026-08-31 映射;S2b 吸收）

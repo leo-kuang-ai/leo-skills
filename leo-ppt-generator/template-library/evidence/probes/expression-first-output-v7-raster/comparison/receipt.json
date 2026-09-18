@@ -1,0 +1,59 @@
+{
+  "asset_generation": "7e95f9c38f3cc113aea1f85f0b91860e14f4ca8177811673951ab071761455fc",
+  "asset_id": "builtin:layout:p25-spec-table",
+  "dependency_hashes": {
+    "canonical/layouts/p25-spec-table/layout.json": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36",
+    "canonical/layouts/p25-spec-table/notes.md": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2",
+    "canonical/templates/spec-table/page.html": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+    "canonical/templates/spec-table/template.json": "eec309ab46687888bc803b008fdfa103c1feaf6d6ad4efc4358ade853052bef3"
+  },
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v7-raster/environment.json",
+    "sha256": "6fca8084346646dacd9bbfa6e9783a060fd8fb30249abec4d6b000bb243f5b84"
+  },
+  "evidence_digest": "10c9859dc52b837f272bcc08dd22e1238d1b919d5b2a800d1719c5828730c5b4",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative.png",
+        "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-fixture.json",
+        "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/negative-observation.json",
+        "sha256": "3ff529d25379229407f32176b9c1efdbb8b5a58dbe9020ff2aa755c79334274d"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive.png",
+        "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-fixture.json",
+        "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v7-raster/comparison/positive-observation.json",
+        "sha256": "a5e4d02c0d3c2564355f3b2ece472d8bfe689a10810b381e5587a1f3e809067f"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "c4678ea1b1ffdb05bb88edb5a4dd02c132d4f18bc5bc9750c7a9f17bf51b8281/comparison",
+  "relation": "comparison",
+  "schema_version": 1,
+  "visual_review": null
+}

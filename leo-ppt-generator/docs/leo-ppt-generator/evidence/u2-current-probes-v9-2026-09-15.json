@@ -1,0 +1,126 @@
+{
+  "active_receipts": {
+    "path": "evidence/capability-receipts.json",
+    "sha256": "a7d44b6c8bb7f5fea9bdfb665ce82d59001e3b359c19db9c43e64930d18a5853"
+  },
+  "image": [
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "probe_command_exit_code": 1,
+  "probe_report": {
+    "path": "evidence/probes/expression-first-output-v9-admission/report.json",
+    "sha256": "3c8d783a20961603c60511b768421a22a2e8f58bf00b0070ba6230a9d0f183c3"
+  },
+  "provider_calls": 0,
+  "status": "blocked",
+  "verification": [
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "independent",
+      "status": "provisional"
+    },
+    {
+      "asset_id": "builtin:layout:p25-spec-table",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "comparison",
+      "status": "provisional"
+    },
+    {
+      "asset_id": "builtin:layout:p25-spec-table",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "trend",
+      "status": "provisional"
+    },
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "process",
+      "status": "provisional"
+    },
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "gaps": [
+        "visual_review_not_run"
+      ],
+      "lane": "render:html",
+      "relation": "causal",
+      "status": "provisional"
+    }
+  ]
+}

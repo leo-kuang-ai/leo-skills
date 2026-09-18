@@ -1,0 +1,75 @@
+{
+  "rows": [
+    {
+      "relation": "independent",
+      "probe": "positive",
+      "before_sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "after_sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "bytes_equal": true
+    },
+    {
+      "relation": "independent",
+      "probe": "negative",
+      "before_sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "after_sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "bytes_equal": true
+    },
+    {
+      "relation": "comparison",
+      "probe": "positive",
+      "before_sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "after_sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "bytes_equal": true
+    },
+    {
+      "relation": "comparison",
+      "probe": "negative",
+      "before_sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "after_sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "bytes_equal": true
+    },
+    {
+      "relation": "trend",
+      "probe": "positive",
+      "before_sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "after_sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "bytes_equal": true
+    },
+    {
+      "relation": "trend",
+      "probe": "negative",
+      "before_sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "after_sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "bytes_equal": true
+    },
+    {
+      "relation": "process",
+      "probe": "positive",
+      "before_sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "after_sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "bytes_equal": true
+    },
+    {
+      "relation": "process",
+      "probe": "negative",
+      "before_sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "after_sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "bytes_equal": true
+    },
+    {
+      "relation": "causal",
+      "probe": "positive",
+      "before_sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "after_sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "bytes_equal": true
+    },
+    {
+      "relation": "causal",
+      "probe": "negative",
+      "before_sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "after_sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "bytes_equal": true
+    }
+  ],
+  "claim": "同用例 HTML PNG 字节回归；不是 U6 三册视觉对照或用户收益"
+}

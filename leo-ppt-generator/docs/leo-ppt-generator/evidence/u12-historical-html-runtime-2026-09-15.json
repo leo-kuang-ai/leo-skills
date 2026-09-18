@@ -1,0 +1,41 @@
+{
+  "artifact": {
+    "path": ".migration-work/2026-09-15-u12-historical/old-html/page.png",
+    "sha256": "3d07ae03bf703d4be2d6535862d91aac9d10a8911174a0e8336a1accb94ab733"
+  },
+  "capture_mode": "reconstructed-historical",
+  "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python ../../replay_old_html.py",
+  "cwd": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/2026-09-15-u12-historical/source/leo-ppt-generator",
+  "dimensions": [
+    2560,
+    1440
+  ],
+  "exit_code": 0,
+  "image": "not_run",
+  "log": {
+    "path": ".migration-work/2026-09-15-u12-historical/old-html-export-retry.log",
+    "sha256": "73af994af8a970e049509466b539d5ecc47fa5a3a973a7b6376c03584655bb53"
+  },
+  "material_origin": "historical-test-fixture",
+  "paired_visual_baseline": "not_run",
+  "qualification": "旧协议历史产物，仅 U12 来源重建证据；不得用旧 binding 晋升当前资格",
+  "r85": "not_run",
+  "receipt": {
+    "path": ".migration-work/2026-09-15-u12-historical/old-html/page.png.render.json",
+    "sha256": "59d5237a35e308c4a445448115e0e3df84fcb412743628a3bc2945823369645a"
+  },
+  "runner": {
+    "path": ".migration-work/2026-09-15-u12-historical/replay_old_html.py",
+    "sha256": "28c1e65238a0eeda81a7ab76fc5c7bce79b70c655ff503a81801ef2179f75e3d"
+  },
+  "runtime": "historical-source-html",
+  "schema_version": 1,
+  "source_files": 4290,
+  "source_manifest": {
+    "path": ".migration-work/2026-09-15-u12-historical/source-manifest.json",
+    "sha256": "f0fd77af20a69b3af383125781108792c7f88b5263b499096124bc054778deef"
+  },
+  "source_revision": "710846e20a900e02bd5349629015d6e3bd441510",
+  "source_stable": true,
+  "user_outcome": "not_run"
+}

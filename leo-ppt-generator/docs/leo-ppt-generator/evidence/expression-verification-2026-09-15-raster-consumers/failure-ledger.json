@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "source_stable": true,
+  "steps": [
+    {
+      "exit_code": 0,
+      "log": "compileall.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "step": "compileall",
+      "unittest": null
+    },
+    {
+      "exit_code": 1,
+      "log": "schemas.log",
+      "log_sha256": "c837ea99f8cf878ab867a0eb57f0c7e7d6e720feb43104c69ea26d3360b65f20",
+      "step": "schemas",
+      "unittest": {
+        "errors": 1,
+        "failures": 0,
+        "issues": [
+          {
+            "kind": "ERROR",
+            "label": "test_real_png_receipt_and_complete_execution_source_freeze_idempotently (tests.test_quality_replay.LegacyBaselineByteTests.test_real_png_receipt_and_complete_execution_source_freeze_idempotently)"
+          }
+        ],
+        "reported_seconds": 17.709,
+        "terminal_summary": "FAILED (errors=1)",
+        "tests": 54
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "regime-lint.log",
+      "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18",
+      "step": "regime-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "layout-lint.log",
+      "log_sha256": "62db6b6ce6733aa5d9517df07c0258f628636515a13c4cd6e87f1a7f64b9e1cd",
+      "step": "layout-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "template-lint.log",
+      "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f",
+      "step": "template-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "expression-consumers.log",
+      "log_sha256": "59cc0807f2045f2bc763a82b579dc306228f65e016b8e0ffd1abec36387d97f4",
+      "step": "expression-consumers",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 195.449,
+        "terminal_summary": "OK",
+        "tests": 133
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "migration.log",
+      "log_sha256": "f4a56f77547f1b56e2af116c173db80426f81d655885691eb2ad3d2b69ce6802",
+      "step": "migration",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 43.392,
+        "terminal_summary": "OK",
+        "tests": 60
+      }
+    },
+    {
+      "exit_code": 1,
+      "log": "quality.log",
+      "log_sha256": "6d93251cda2e433f4c69ec5d9d62108e17194d307a504bc23f642078b69aa027",
+      "step": "quality",
+      "unittest": {
+        "errors": 1,
+        "failures": 0,
+        "issues": [
+          {
+            "kind": "ERROR",
+            "label": "test_real_png_receipt_and_complete_execution_source_freeze_idempotently (tests.test_quality_replay.LegacyBaselineByteTests.test_real_png_receipt_and_complete_execution_source_freeze_idempotently)"
+          }
+        ],
+        "reported_seconds": 16.596,
+        "terminal_summary": "FAILED (errors=1)",
+        "tests": 103
+      }
+    },
+    {
+      "exit_code": 1,
+      "log": "full-suite.log",
+      "log_sha256": "54daeda268694a1649999d314feb287b44ae216abf848e33a490b70a5699713e",
+      "step": "full-suite",
+      "unittest": {
+        "errors": 5,
+        "failures": 0,
+        "issues": [
+          {
+            "kind": "ERROR",
+            "label": "test_composite_and_render_scopes_skip_gate (test_ocr_alignment.RecordGateIntegrationTest.test_composite_and_render_scopes_skip_gate)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_enforce_mode_blocks_misaligned_record (test_ocr_alignment.RecordGateIntegrationTest.test_enforce_mode_blocks_misaligned_record)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_not_run_disclosed_without_ocr_text (test_ocr_alignment.RecordGateIntegrationTest.test_not_run_disclosed_without_ocr_text)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_warn_mode_reports_failure_without_blocking (test_ocr_alignment.RecordGateIntegrationTest.test_warn_mode_reports_failure_without_blocking)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_real_png_receipt_and_complete_execution_source_freeze_idempotently (test_quality_replay.LegacyBaselineByteTests.test_real_png_receipt_and_complete_execution_source_freeze_idempotently)"
+          }
+        ],
+        "reported_seconds": 642.351,
+        "terminal_summary": "FAILED (errors=5)",
+        "tests": 2192
+      }
+    }
+  ],
+  "verification": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-raster-consumers/verification.json"
+}

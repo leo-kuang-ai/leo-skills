@@ -1,0 +1,76 @@
+{
+  "active_index": {
+    "path": "template-library/evidence/capability-receipts.json",
+    "sha256": "10d2f65675b7302f671ac81814dc38d2d953b8901adc7ebb76fb15b1caba7b8d"
+  },
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/probe_relation_capabilities.py --library-root template-library --cases evals/fixtures/expression-first-relation-probes.json --out evidence/probes/expression-first-output-v6-current",
+  "exit_code": 1,
+  "html": [
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "lane": "render:html",
+      "relation": "independent",
+      "result": {
+        "gaps": [
+          "visual_review_not_run"
+        ],
+        "status": "provisional"
+      }
+    },
+    {
+      "asset_id": "builtin:layout:p25-spec-table",
+      "lane": "render:html",
+      "relation": "comparison",
+      "result": {
+        "gaps": [
+          "visual_review_not_run"
+        ],
+        "status": "provisional"
+      }
+    },
+    {
+      "asset_id": "builtin:layout:p25-spec-table",
+      "lane": "render:html",
+      "relation": "trend",
+      "result": {
+        "gaps": [
+          "visual_review_not_run"
+        ],
+        "status": "provisional"
+      }
+    },
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "lane": "render:html",
+      "relation": "process",
+      "result": {
+        "gaps": [
+          "visual_review_not_run"
+        ],
+        "status": "provisional"
+      }
+    },
+    {
+      "asset_id": "builtin:layout:body-basic",
+      "lane": "render:html",
+      "relation": "causal",
+      "result": {
+        "gaps": [
+          "visual_review_not_run"
+        ],
+        "status": "provisional"
+      }
+    }
+  ],
+  "html_negative_exports": 5,
+  "html_positive_exports": 5,
+  "log": "docs/leo-ppt-generator/evidence/u2-current-probes-2026-09-15.log",
+  "overall_status": "blocked",
+  "publication_qualified": 0,
+  "reason": "image_recipe_provider_output_oracle_required",
+  "report": {
+    "path": "template-library/evidence/probes/expression-first-output-v6-current/report.json",
+    "sha256": "97e121ad9908a495d804a0c253e7c8812b45de1c8e6fadc5c7f3cbdb4462b764"
+  },
+  "schema_version": 1
+}

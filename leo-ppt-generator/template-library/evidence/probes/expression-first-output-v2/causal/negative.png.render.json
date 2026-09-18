@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/expression-first-output-v2/causal/negative.png",
+  "out_sha256": "89fa07a210b129d821a60474ae9e5423fae61409c7c25837c04c449ed50f5927",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 680,
+  "rendered_at": "2026-09-14T06:23:12.661Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:body-basic",
+  "template_sha256": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852",
+  "warnings": [],
+  "width": 2560
+}

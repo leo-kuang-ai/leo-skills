@@ -1,0 +1,23 @@
+{
+  "command": [
+    "spec-first",
+    "internal",
+    "verification-profile",
+    "load",
+    "--target-repo",
+    "/Users/kuang/knowledge/leo-skills/leo-ppt-generator",
+    "--json"
+  ],
+  "exit_code": 1,
+  "response": {
+    "status": "rejected",
+    "reason_code": "target-repo-not-found",
+    "errors": [
+      "target repo must be a Git repository root"
+    ],
+    "profile_source": "missing",
+    "checks": []
+  },
+  "stderr": "",
+  "limitation": "指定包不是 Git repository root；正式 helper 将证据写入 Git 根 .spec-first，超出本次仅包内及 CHANGELOG 的写入边界。保留项目原生验证 manifest；不签发替代 formal closeout。"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "scope": "isolated-real-library-build-not-delivery-publication",
+  "mapped_files": 2155,
+  "catalog_generation": "a435d3a039eb4b8ede868dda069d593c9134b19bc29e530ff06a9b22b48a92ea",
+  "entities": 442,
+  "references": 124,
+  "qualified_pairings": 0
+}

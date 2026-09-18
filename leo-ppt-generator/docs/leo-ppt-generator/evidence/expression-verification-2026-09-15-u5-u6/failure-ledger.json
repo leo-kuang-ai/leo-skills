@@ -1,0 +1,661 @@
+{
+  "verification": "verification.json",
+  "source_stable": true,
+  "steps": [
+    {
+      "step": "compileall",
+      "exit_code": 0,
+      "summary": [],
+      "failures": [],
+      "log": "compileall.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": "schemas",
+      "exit_code": 0,
+      "summary": [
+        "Ran 40 tests in 11.456s",
+        "OK"
+      ],
+      "failures": [],
+      "log": "schemas.log",
+      "log_sha256": "e82e4c37137d08dd93c468694f4bb1e4b6936782b9d7ab79cfe3e16c3a2e1c83"
+    },
+    {
+      "step": "regime-lint",
+      "exit_code": 0,
+      "summary": [],
+      "failures": [],
+      "log": "regime-lint.log",
+      "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18"
+    },
+    {
+      "step": "layout-lint",
+      "exit_code": 0,
+      "summary": [],
+      "failures": [],
+      "log": "layout-lint.log",
+      "log_sha256": "62db6b6ce6733aa5d9517df07c0258f628636515a13c4cd6e87f1a7f64b9e1cd"
+    },
+    {
+      "step": "template-lint",
+      "exit_code": 0,
+      "summary": [],
+      "failures": [],
+      "log": "template-lint.log",
+      "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f"
+    },
+    {
+      "step": "expression-consumers",
+      "exit_code": 1,
+      "summary": [
+        "Ran 126 tests in 96.027s",
+        "FAILED (failures=12, errors=6)"
+      ],
+      "failures": [
+        {
+          "kind": "ERROR",
+          "test": "test_compare_materialization_carries_sides (tests.test_content_projection.MaterializationTests.test_compare_materialization_carries_sides)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 279, in test_compare_materialization_carries_sides\n    data = materialize_html(binding, page_of(self.pack, \"pg-22222222\"))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_html_materialization_uses_bound_values (tests.test_content_projection.MaterializationTests.test_html_materialization_uses_bound_values)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 267, in test_html_materialization_uses_bound_values\n    data = materialize_html(binding, page_of(self.pack, \"pg-33333333\"))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_image_prompt_is_precheck_not_fidelity (tests.test_content_projection.MaterializationTests.test_image_prompt_is_precheck_not_fidelity)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 309, in test_image_prompt_is_precheck_not_fidelity\n    design = templates.compose_design(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_materialize_page_dispatches_by_backend (tests.test_content_projection.MaterializationTests.test_materialize_page_dispatches_by_backend)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 329, in test_materialize_page_dispatches_by_backend\n    out = materialize_page(binding, page_of(self.pack, \"pg-33333333\"))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 826, in materialize_page\n    \"data\": materialize_html(binding, pack_page, media=media, resolver=resolver)}\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_font_override_changes_context_and_binding_digest (tests.test_content_projection.PrecompileEligibilityTests.test_font_override_changes_context_and_binding_digest)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 234, in test_font_override_changes_context_and_binding_digest\n    self.assertNotEqual(base[\"binding_digest\"], variant[\"binding_digest\"])\n                        ~~~~^^^^^^^^^^^^^^^^^^\nKeyError: 'binding_digest'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_multi_figure_media_materializes_by_index (tests.test_content_projection.ReviewFixRegressionTests.test_multi_figure_media_materializes_by_index)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 380, in test_multi_figure_media_materializes_by_index\n    from leo_ppt_generator.content_projection import compute_binding_digest\nImportError: cannot import name 'compute_binding_digest' from 'leo_ppt_generator.content_projection' (/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py)"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_media_value_required_at_execution (tests.test_content_projection.MaterializationTests.test_media_value_required_at_execution)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 300, in test_media_value_required_at_execution\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_body_basic_bullets_qualified_and_deterministic (tests.test_content_projection.PrecompileEligibilityTests.test_body_basic_bullets_qualified_and_deterministic)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 125, in test_body_basic_bullets_qualified_and_deterministic\n    self.assertTrue(first[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_compare_sides_two_qualified_one_and_three_rejected (tests.test_content_projection.PrecompileEligibilityTests.test_compare_sides_two_qualified_one_and_three_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 171, in test_compare_sides_two_qualified_one_and_three_rejected\n    self.assertTrue(two[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_page_reorder_keeps_item_binding_stable (tests.test_content_projection.PrecompileEligibilityTests.test_page_reorder_keeps_item_binding_stable)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 250, in test_page_reorder_keeps_item_binding_stable\n    self.assertTrue(binding2[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_numbers_only_in_table_cells_keep_spec_table_qualified (tests.test_content_projection.ReviewFixRegressionTests.test_numbers_only_in_table_cells_keep_spec_table_qualified)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 372, in test_numbers_only_in_table_cells_keep_spec_table_qualified\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : [\"structured_field_invalid: rows: [['营收', '1.24 亿元', '1.10 亿元'], ['净利率', '12%', '10%']] is too short\", 'required_item_unmapped: 必填字段 rows 无内容来源', \"number_coverage_missing: 数值未出现在任何绑定显示文本 ['num-4a1fbdd6c7(1.24 亿元)', 'num-84951649b7(12%)']\", 'expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_allocation_deterministic_and_ordered (tests.test_deck_layout_selection.DeckAllocationTests.test_allocation_deterministic_and_ordered)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 189, in test_allocation_deterministic_and_ordered\n    self.assertEqual(first[\"status\"], \"complete\", first[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-33333333': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backtracking_reassigns_when_second_page_loses_top_choice (tests.test_deck_layout_selection.DeckAllocationTests.test_backtracking_reassigns_when_second_page_loses_top_choice)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 248, in test_backtracking_reassigns_when_second_page_loses_top_choice\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_budget_exhausted_distinct_from_no_candidates (tests.test_deck_layout_selection.DeckAllocationTests.test_budget_exhausted_distinct_from_no_candidates)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 218, in test_budget_exhausted_distinct_from_no_candidates\n    self.assertEqual(result[\"status\"], \"budget_exhausted\")\nAssertionError: 'no_candidates' != 'budget_exhausted'\n- no_candidates\n+ budget_exhausted"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_explicit_choice_still_goes_through_qualification (tests.test_deck_layout_selection.DeckAllocationTests.test_explicit_choice_still_goes_through_qualification)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 231, in test_explicit_choice_still_goes_through_qualification\n    self.assertEqual(result_ok[\"status\"], \"complete\")\nAssertionError: 'explicit_unqualified' != 'complete'\n- explicit_unqualified\n+ complete"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_max_per_deck_two_allows_reuse (tests.test_deck_layout_selection.DeckAllocationTests.test_max_per_deck_two_allows_reuse)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 264, in test_max_per_deck_two_allows_reuse\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'explicit_unqualified' != 'complete'\n- explicit_unqualified\n+ complete\n : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_reuse_limited_layout_respected_and_third_candidate_solves (tests.test_deck_layout_selection.DeckAllocationTests.test_reuse_limited_layout_respected_and_third_candidate_solves)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 205, in test_reuse_limited_layout_respected_and_third_candidate_solves\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_top2_is_human_summary_full_pool_lives_behind (tests.test_deck_layout_selection.DeckAllocationTests.test_top2_is_human_summary_full_pool_lives_behind)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 279, in test_top2_is_human_summary_full_pool_lives_behind\n    self.assertEqual(qualified_ids, {\"builtin:layout:bullets-a\",\nAssertionError: Items in the second set but not the first:\n'builtin:layout:bullets-b'\n'builtin:layout:bullets-a'"
+        }
+      ],
+      "log": "expression-consumers.log",
+      "log_sha256": "6fe0166f1741e8f9d901164683680965fa4c6c334bb1841460b6235acedf8190"
+    },
+    {
+      "step": "migration",
+      "exit_code": 1,
+      "summary": [
+        "Ran 35 tests in 3.546s",
+        "FAILED (failures=1, errors=2)"
+      ],
+      "failures": [
+        {
+          "kind": "ERROR",
+          "test": "test_fresh_design_resumes (tests.test_library_bundle.DesignFreshnessResumeTest.test_fresh_design_resumes)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_library_bundle.py\", line 121, in test_fresh_design_resumes\n    report = verify_design_freshness(self._compose_in(SKILL / \"template-library\"))\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_library_bundle.py\", line 118, in _compose_in\n    return compose_design(\"finance-navy\", pages=self.PAGES, resolver=resolver)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        }
+      ],
+      "log": "migration.log",
+      "log_sha256": "b0f1a3447caa4741ea18ca017215beca582364283dbdd7d97e39b5e8e50cd771"
+    },
+    {
+      "step": "quality",
+      "exit_code": 0,
+      "summary": [
+        "Ran 99 tests in 15.484s",
+        "OK"
+      ],
+      "failures": [],
+      "log": "quality.log",
+      "log_sha256": "348ba2abaabbbe1ca9ee108c0dbbe200ebe53b270918c505103ca4e78ac3764f"
+    },
+    {
+      "step": "full-suite",
+      "exit_code": 1,
+      "summary": [
+        "Ran 2148 tests in 418.135s",
+        "FAILED (failures=59, errors=38)"
+      ],
+      "failures": [
+        {
+          "kind": "ERROR",
+          "test": "test_normal_pages_pass_sentinel (render.test_overflow_sentinel.OverflowSentinelTest.test_normal_pages_pass_sentinel) (template='spec-table')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/render/page.py\", line 291, in render_page\n    raise RenderError(\"render_data_invalid\", \"; \".join(errors)[:1000])\nleo_ppt_generator.render.errors.RenderError: rows: [['a', '1', 'x'], ['b', '2', 'y']] is too short\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_overflow_sentinel.py\", line 87, in test_normal_pages_pass_sentinel\n    result = render_page(template, data, out)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/render/page.py\", line 295, in render_page\n    raise RenderError(\"render_data_invalid\", f\"slide data is not JSON: {exc}\") from exc\nleo_ppt_generator.render.errors.RenderError: slide data is not JSON: rows: [['a', '1', 'x'], ['b', '2', 'y']] is too short"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_with_flag_rework_replaces_recorded_page (test_cli_rework_flag.CliReworkFlagTest.test_with_flag_rework_replaces_recorded_page)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_cli_rework_flag.py\", line 59, in test_with_flag_rework_replaces_recorded_page\n    result = _record_cli(self.run_root, 1, self.png, rework=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_cli_rework_flag.py\", line 29, in _record_cli\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2922, in _dispatch_impl\n    bound_page = load_run_binding(run_path, number, backend=args.backend)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 205, in load_run_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_without_flag_late_record_rejected (test_cli_rework_flag.CliReworkFlagTest.test_without_flag_late_record_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_cli_rework_flag.py\", line 55, in test_without_flag_late_record_rejected\n    _record_cli(self.run_root, 1, self.png, rework=False)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_cli_rework_flag.py\", line 29, in _record_cli\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2922, in _dispatch_impl\n    bound_page = load_run_binding(run_path, number, backend=args.backend)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 205, in load_run_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_compare_materialization_carries_sides (test_content_projection.MaterializationTests.test_compare_materialization_carries_sides)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 279, in test_compare_materialization_carries_sides\n    data = materialize_html(binding, page_of(self.pack, \"pg-22222222\"))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_html_materialization_uses_bound_values (test_content_projection.MaterializationTests.test_html_materialization_uses_bound_values)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 267, in test_html_materialization_uses_bound_values\n    data = materialize_html(binding, page_of(self.pack, \"pg-33333333\"))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_image_prompt_is_precheck_not_fidelity (test_content_projection.MaterializationTests.test_image_prompt_is_precheck_not_fidelity)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 309, in test_image_prompt_is_precheck_not_fidelity\n    design = templates.compose_design(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_materialize_page_dispatches_by_backend (test_content_projection.MaterializationTests.test_materialize_page_dispatches_by_backend)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 329, in test_materialize_page_dispatches_by_backend\n    out = materialize_page(binding, page_of(self.pack, \"pg-33333333\"))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 826, in materialize_page\n    \"data\": materialize_html(binding, pack_page, media=media, resolver=resolver)}\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_font_override_changes_context_and_binding_digest (test_content_projection.PrecompileEligibilityTests.test_font_override_changes_context_and_binding_digest)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 234, in test_font_override_changes_context_and_binding_digest\n    self.assertNotEqual(base[\"binding_digest\"], variant[\"binding_digest\"])\n                        ~~~~^^^^^^^^^^^^^^^^^^\nKeyError: 'binding_digest'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_multi_figure_media_materializes_by_index (test_content_projection.ReviewFixRegressionTests.test_multi_figure_media_materializes_by_index)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 380, in test_multi_figure_media_materializes_by_index\n    from leo_ppt_generator.content_projection import compute_binding_digest\nImportError: cannot import name 'compute_binding_digest' from 'leo_ppt_generator.content_projection' (/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py)"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_reskin_keeps_business_content_and_structure (test_dashi_integration_fixtures.ThemeIndependenceTests.test_reskin_keeps_business_content_and_structure)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 193, in verify_effective_binding\n    relation=pack_page[\"expression\"][\"relation\"][\"kind\"], lane=binding[\"backend\"],\n             ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'expression'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_dashi_integration_fixtures.py\", line 138, in test_reskin_keeps_business_content_and_structure\n    d1 = materialize_html(b1, page)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 728, in materialize_html\n    verify_effective_binding(binding, pack_page, resolver=resolver)\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 196, in verify_effective_binding\n    raise ProjectionError(str(exc)) from exc\nleo_ppt_generator.content_projection.ProjectionError: 'expression'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "setUpClass (test_design_execution_binding.DesignExecutionBindingTests)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_execution_binding.py\", line 56, in setUpClass\n    assert cls.binding[\"eligibility\"][\"qualified\"], cls.binding[\"eligibility\"]\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\nAssertionError: {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:body-basic'}, 'points': {'count': 2, 'count_min': 2, 'count_max': 6}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_digest_helpers_are_lane_split (test_design_execution_binding.DualBindingDigestTests.test_digest_helpers_are_lane_split)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_execution_binding.py\", line 107, in test_digest_helpers_are_lane_split\n    e = compute_expression_binding_digest(binding)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/content_projection.py\", line 86, in compute_expression_binding_digest\n    return _sha({\"page_id\": binding[\"page_id\"], \"page_content_digest\": binding[\"page_content_digest\"],\n                                                                       ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'page_content_digest'"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_governance_values_do_not_leak_into_projection (test_design_projection.DesignProjectionTest.test_governance_values_do_not_leak_into_projection)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 73, in test_governance_values_do_not_leak_into_projection\n    design = _design()\n             ^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 32, in _design\n    return compose_design(\"金融藏青风\", pages=PAGES)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_page_outside_design_rejected (test_design_projection.DesignProjectionTest.test_page_outside_design_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 88, in test_page_outside_design_rejected\n    project_design_to_prompt(_design(), {\"page_no\": 99})\n                             ^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 32, in _design\n    return compose_design(\"金融藏青风\", pages=PAGES)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_projection_carries_only_effective_values_not_prose (test_design_projection.DesignProjectionTest.test_projection_carries_only_effective_values_not_prose)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 64, in test_projection_carries_only_effective_values_not_prose\n    prompt = project_design_to_prompt(_design(), {\"page_no\": 9})\n                                      ^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 32, in _design\n    return compose_design(\"金融藏青风\", pages=PAGES)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_projection_is_deterministic (test_design_projection.DesignProjectionTest.test_projection_is_deterministic)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 55, in test_projection_is_deterministic\n    design = _design()\n             ^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 32, in _design\n    return compose_design(\"金融藏青风\", pages=PAGES)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_two_lanes_consume_same_frozen_design_digest (test_design_projection.DesignProjectionTest.test_two_lanes_consume_same_frozen_design_digest)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 37, in test_two_lanes_consume_same_frozen_design_digest\n    design = _design()\n             ^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_design_projection.py\", line 32, in _design\n    return compose_design(\"金融藏青风\", pages=PAGES)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_fresh_design_resumes (test_library_bundle.DesignFreshnessResumeTest.test_fresh_design_resumes)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_library_bundle.py\", line 121, in test_fresh_design_resumes\n    report = verify_design_freshness(self._compose_in(SKILL / \"template-library\"))\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_library_bundle.py\", line 118, in _compose_in\n    return compose_design(\"finance-navy\", pages=self.PAGES, resolver=resolver)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_composite_and_render_scopes_skip_gate (test_ocr_alignment.RecordGateIntegrationTest.test_composite_and_render_scopes_skip_gate)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 357, in setUp\n    prepared = _dispatch([\"image\", \"prepare\", str(self.run),\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 41, in _dispatch\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_enforce_mode_blocks_misaligned_record (test_ocr_alignment.RecordGateIntegrationTest.test_enforce_mode_blocks_misaligned_record)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 357, in setUp\n    prepared = _dispatch([\"image\", \"prepare\", str(self.run),\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 41, in _dispatch\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_not_run_disclosed_without_ocr_text (test_ocr_alignment.RecordGateIntegrationTest.test_not_run_disclosed_without_ocr_text)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 357, in setUp\n    prepared = _dispatch([\"image\", \"prepare\", str(self.run),\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 41, in _dispatch\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_warn_mode_reports_failure_without_blocking (test_ocr_alignment.RecordGateIntegrationTest.test_warn_mode_reports_failure_without_blocking)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 357, in setUp\n    prepared = _dispatch([\"image\", \"prepare\", str(self.run),\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_ocr_alignment.py\", line 41, in _dispatch\n    return dispatch(build_parser().parse_args(argv))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_design_digest_deterministic_and_input_sensitive (test_render_theme_capacity.ComposeDesignPipelineTest.test_design_digest_deterministic_and_input_sensitive)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 120, in test_design_digest_deterministic_and_input_sensitive\n    first = compose_design(\"清爽专业风\", pages=pages)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_image_only_canonical_layout_composes_without_regions (test_render_theme_capacity.ComposeDesignPipelineTest.test_image_only_canonical_layout_composes_without_regions)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 100, in test_image_only_canonical_layout_composes_without_regions\n    design = compose_design(\"清爽专业风\", pages=[{\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_locked_brand_role_rejects_task_override (test_render_theme_capacity.ComposeDesignPipelineTest.test_locked_brand_role_rejects_task_override)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 144, in test_locked_brand_role_rejects_task_override\n    design = compose_design(\"清爽专业风\", brand_data=brand, pages=[\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_style_resolves_by_chinese_name_to_stable_id (test_render_theme_capacity.ComposeDesignPipelineTest.test_style_resolves_by_chinese_name_to_stable_id)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 85, in test_style_resolves_by_chinese_name_to_stable_id\n    design = compose_design(\"清爽专业风\", pages=[\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_baseline_weights_30_45_25_drive_dom (test_render_theme_capacity.RenderGeometryDomTest.test_baseline_weights_30_45_25_drive_dom)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 176, in test_baseline_weights_30_45_25_drive_dom\n    profile, design = self._profile()\n                      ^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 168, in _profile\n    resolver_pages = compose_design(\"清爽专业风\", pages=[\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_json_change_25_50_25_padding_12_drives_dom_html_untouched (test_render_theme_capacity.RenderGeometryDomTest.test_json_change_25_50_25_padding_12_drives_dom_html_untouched)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 189, in test_json_change_25_50_25_padding_12_drives_dom_html_untouched\n    profile, design = self._profile()\n                      ^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 168, in _profile\n    resolver_pages = compose_design(\"清爽专业风\", pages=[\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_render_page_produces_png_with_theme_variables (test_render_theme_capacity.RenderGeometryDomTest.test_render_page_produces_png_with_theme_variables)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 211, in test_render_page_produces_png_with_theme_variables\n    profile, design = self._profile()\n                      ^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 168, in _profile\n    resolver_pages = compose_design(\"清爽专业风\", pages=[\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\", line 1062, in compose_design\n    raise DesignCompositionError(\"selection_frozen_mismatch\")\nleo_ppt_generator.templates.DesignCompositionError: selection_frozen_mismatch"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_assemble_rechecks_frozen_slides_even_if_original_is_unchanged (test_sample_decisions.SampleDecisions.test_assemble_rechecks_frozen_slides_even_if_original_is_unchanged)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 231, in test_assemble_rechecks_frozen_slides_even_if_original_is_unchanged\n    self.prepare()\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 64, in prepare\n    return dispatch(build_parser().parse_args(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_assemble_rechecks_sample_after_prepare (test_sample_decisions.SampleDecisions.test_assemble_rechecks_sample_after_prepare)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 220, in test_assemble_rechecks_sample_after_prepare\n    self.prepare()\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 64, in prepare\n    return dispatch(build_parser().parse_args(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_enabled_run_missing_receipt_never_falls_back_to_legacy (test_sample_decisions.SampleDecisions.test_enabled_run_missing_receipt_never_falls_back_to_legacy)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 173, in test_enabled_run_missing_receipt_never_falls_back_to_legacy\n    self.prepare()\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 64, in prepare\n    return dispatch(build_parser().parse_args(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_explicit_redecision_preserves_previous_receipt (test_sample_decisions.SampleDecisions.test_explicit_redecision_preserves_previous_receipt)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 148, in test_explicit_redecision_preserves_previous_receipt\n    self.assertEqual(self.prepare()[\"sample_decision\"][\"status\"], \"verified\")\n                     ^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 64, in prepare\n    return dispatch(build_parser().parse_args(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_same_binding_restores_and_json_formatting_does_not_invalidate (test_sample_decisions.SampleDecisions.test_same_binding_restores_and_json_formatting_does_not_invalidate)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 72, in test_same_binding_restores_and_json_formatting_does_not_invalidate\n    self.assertEqual(self.prepare()[\"sample_decision\"][\"decision_source\"], \"user-delegated\")\n                     ^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 64, in prepare\n    return dispatch(build_parser().parse_args(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_cli_conflicting_sources_rejected (test_sources_freeze.CliPrepareSourcesTest.test_cli_conflicting_sources_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sources_freeze.py\", line 235, in test_cli_conflicting_sources_rejected\n    self._dispatch(\"--sources\", str(self.manifest_path))\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sources_freeze.py\", line 220, in _dispatch\n    return dispatch(args)\n           ^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "ERROR",
+          "test": "test_cli_freezes_sources_into_run_input (test_sources_freeze.CliPrepareSourcesTest.test_cli_freezes_sources_into_run_input)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sources_freeze.py\", line 223, in test_cli_freezes_sources_into_run_input\n    result = self._dispatch(\"--sources\", str(self.manifest_path))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sources_freeze.py\", line 220, in _dispatch\n    return dispatch(args)\n           ^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 3795, in dispatch\n    result = _dispatch_impl(args)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 2815, in _dispatch_impl\n    content_binding = _read_content_binding(run_path, slides_path)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 562, in _read_content_binding\n    raise ContractError(str(exc)) from exc\nleo_ppt_generator.contracts.ContractError: input_root_invalid"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_spec_table_two_columns_are_rejected_by_geometry_contract (render.test_overflow_sentinel.OverflowSentinelTest.test_spec_table_two_columns_are_rejected_by_geometry_contract)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_overflow_sentinel.py\", line 97, in test_spec_table_two_columns_are_rejected_by_geometry_contract\n    self.assertEqual(ctx.exception.reason_code, \"layout_profile_invalid\")\nAssertionError: 'render_data_invalid' != 'layout_profile_invalid'\n- render_data_invalid\n+ layout_profile_invalid"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cover-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 40, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:chain-flow'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:compare-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:quote-pro'}, 'text_capacity': {'quote': {'used': 7, 'limit': 90, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:timeline-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cards-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='finance-navy-light')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:table-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cover-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 40, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:chain-flow'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:compare-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:quote-pro'}, 'text_capacity': {'quote': {'used': 7, 'limit': 90, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:timeline-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:cards-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='tech-dark-mode')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/render/test_pro_templates.py\", line 73, in test_eight_templates_preserve_content_and_consume_theme_geometry\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:table-pro'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_media_value_required_at_execution (test_content_projection.MaterializationTests.test_media_value_required_at_execution)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 300, in test_media_value_required_at_execution\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_body_basic_bullets_qualified_and_deterministic (test_content_projection.PrecompileEligibilityTests.test_body_basic_bullets_qualified_and_deterministic)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 125, in test_body_basic_bullets_qualified_and_deterministic\n    self.assertTrue(first[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_compare_sides_two_qualified_one_and_three_rejected (test_content_projection.PrecompileEligibilityTests.test_compare_sides_two_qualified_one_and_three_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 171, in test_compare_sides_two_qualified_one_and_three_rejected\n    self.assertTrue(two[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_page_reorder_keeps_item_binding_stable (test_content_projection.PrecompileEligibilityTests.test_page_reorder_keeps_item_binding_stable)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 250, in test_page_reorder_keeps_item_binding_stable\n    self.assertTrue(binding2[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_numbers_only_in_table_cells_keep_spec_table_qualified (test_content_projection.ReviewFixRegressionTests.test_numbers_only_in_table_cells_keep_spec_table_qualified)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_content_projection.py\", line 372, in test_numbers_only_in_table_cells_keep_spec_table_qualified\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : [\"structured_field_invalid: rows: [['营收', '1.24 亿元', '1.10 亿元'], ['净利率', '12%', '10%']] is too short\", 'required_item_unmapped: 必填字段 rows 无内容来源', \"number_coverage_missing: 数值未出现在任何绑定显示文本 ['num-4a1fbdd6c7(1.24 亿元)', 'num-84951649b7(12%)']\", 'expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_compare_carries_two_sides (test_dashi_integration_fixtures.DecisionMatrixTests.test_compare_carries_two_sides)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_dashi_integration_fixtures.py\", line 96, in test_compare_carries_two_sides\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_spec_table_carries_columns_rows (test_dashi_integration_fixtures.MetricBaselineTests.test_spec_table_carries_columns_rows)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_dashi_integration_fixtures.py\", line 54, in test_spec_table_carries_columns_rows\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : [\"structured_field_invalid: columns: ['指标', '本季 2026Q3', '上季 2026Q2', '年度基准'] is too long\", 'required_item_unmapped: 必填字段 columns 无内容来源', 'expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_body_basic_carries_stage_points (test_dashi_integration_fixtures.ProcessOwnershipTests.test_body_basic_carries_stage_points)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_dashi_integration_fixtures.py\", line 117, in test_body_basic_carries_stage_points\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_timeline_carries_steps_from_points (test_dashi_integration_fixtures.TrendEventsTests.test_timeline_carries_steps_from_points)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_dashi_integration_fixtures.py\", line 85, in test_timeline_carries_steps_from_points\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"],\nAssertionError: False is not true : ['expression_incomplete: page expression required']"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_allocation_deterministic_and_ordered (test_deck_layout_selection.DeckAllocationTests.test_allocation_deterministic_and_ordered)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 189, in test_allocation_deterministic_and_ordered\n    self.assertEqual(first[\"status\"], \"complete\", first[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-44bfbc60c0', 'it-d7264a937e']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-33333333': {'status': 'no_candidates', 'reasons': [[\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「流程·路径」→ ['content']，候选 layout 为 cover\", \"required_item_unmapped: 必需内容项无槽位落点 ['it-72b2f1402d', 'it-ce2ab5c055']\", 'expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backtracking_reassigns_when_second_page_loses_top_choice (test_deck_layout_selection.DeckAllocationTests.test_backtracking_reassigns_when_second_page_loses_top_choice)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 248, in test_backtracking_reassigns_when_second_page_loses_top_choice\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_budget_exhausted_distinct_from_no_candidates (test_deck_layout_selection.DeckAllocationTests.test_budget_exhausted_distinct_from_no_candidates)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 218, in test_budget_exhausted_distinct_from_no_candidates\n    self.assertEqual(result[\"status\"], \"budget_exhausted\")\nAssertionError: 'no_candidates' != 'budget_exhausted'\n- no_candidates\n+ budget_exhausted"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_explicit_choice_still_goes_through_qualification (test_deck_layout_selection.DeckAllocationTests.test_explicit_choice_still_goes_through_qualification)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 231, in test_explicit_choice_still_goes_through_qualification\n    self.assertEqual(result_ok[\"status\"], \"complete\")\nAssertionError: 'explicit_unqualified' != 'complete'\n- explicit_unqualified\n+ complete"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_max_per_deck_two_allows_reuse (test_deck_layout_selection.DeckAllocationTests.test_max_per_deck_two_allows_reuse)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 264, in test_max_per_deck_two_allows_reuse\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'explicit_unqualified' != 'complete'\n- explicit_unqualified\n+ complete\n : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_reuse_limited_layout_respected_and_third_candidate_solves (test_deck_layout_selection.DeckAllocationTests.test_reuse_limited_layout_respected_and_third_candidate_solves)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 205, in test_reuse_limited_layout_respected_and_third_candidate_solves\n    self.assertEqual(result[\"status\"], \"complete\", result[\"page_status\"])\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete\n : {'pg-11111111': {'status': 'explicit_unqualified', 'reason': '显式指定 hero 未通过硬资格检查，显式选择不能绕过资格入口'}, 'pg-22222222': {'status': 'no_candidates', 'reasons': [['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], ['expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required'], [\"role_mismatch: 页面角色「封面」→ ['cover']，候选 layout 为 content\", 'points_below_min: 要点 1 < 声明下限 2', 'expression_incomplete: page expression required']], 'proposal_attempts': []}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_top2_is_human_summary_full_pool_lives_behind (test_deck_layout_selection.DeckAllocationTests.test_top2_is_human_summary_full_pool_lives_behind)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_deck_layout_selection.py\", line 279, in test_top2_is_human_summary_full_pool_lives_behind\n    self.assertEqual(qualified_ids, {\"builtin:layout:bullets-a\",\nAssertionError: Items in the second set but not the first:\n'builtin:layout:bullets-a'\n'builtin:layout:bullets-b'"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_actual_html_mutation_is_rejected_with_unchanged_manifest (test_effective_binding.EffectiveBindingTests.test_actual_html_mutation_is_rejected_with_unchanged_manifest)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_bound_render_rejects_unbound_data_before_browser_launch (test_effective_binding.EffectiveBindingTests.test_bound_render_rejects_unbound_data_before_browser_launch)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_eligibility_and_slot_tampering_are_rejected (test_effective_binding.EffectiveBindingTests.test_eligibility_and_slot_tampering_are_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_materialize_preserves_binding_and_actual_text (test_effective_binding.EffectiveBindingTests.test_materialize_preserves_binding_and_actual_text)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_missing_template_file_is_rejected (test_effective_binding.EffectiveBindingTests.test_missing_template_file_is_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_page_mutation_is_rejected_even_with_same_item_ids (test_effective_binding.EffectiveBindingTests.test_page_mutation_is_rejected_even_with_same_item_ids)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_snapshot_survives_live_asset_replacement_and_rejects_snapshot_tamper (test_effective_binding.EffectiveBindingTests.test_snapshot_survives_live_asset_replacement_and_rejects_snapshot_tamper)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_unrelated_asset_change_does_not_invalidate_binding (test_effective_binding.EffectiveBindingTests.test_unrelated_asset_change_does_not_invalidate_binding)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_effective_binding.py\", line 34, in setUp\n    self.assertTrue(self.binding['eligibility']['qualified'])\nAssertionError: False is not true"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_check_passes_when_up_to_date (test_generate_style_gallery.GalleryTest.test_check_passes_when_up_to_date)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_generate_style_gallery.py\", line 114, in test_check_passes_when_up_to_date\n    self.assertEqual(result.returncode, 0, result.stderr)\nAssertionError: 1 != 0 : STALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/医疗洁净风/thumb-chart.png (committed e593fa15d8a0 != fresh 0deff3e41144)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/咨询金字塔风/thumb-chart.png (committed d1b6784eb982 != fresh 3ab2409d5172)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/品牌创意风/thumb-chart.png (committed da3211322767 != fresh 73b8a90c2837)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/学术克制风/thumb-chart.png (committed f1ab54b353fd != fresh 1a37cbbda03b)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/政务庄重风/thumb-chart.png (committed 2f2f29d2cc7e != fresh 5d6b6ed02841)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/教育明快风/thumb-chart.png (committed df54819ae3e1 != fresh 272e3e80dab5)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/清爽专业风/thumb-chart.png (committed 1eda1f31a35f != fresh 3985ed959e1f)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/科技暗色风/thumb-chart.png (committed b8c8d6024957 != fresh dd925086533f)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/管理清晰风/thumb-chart.png (committed 44f37fe896a7 != fresh cddde35dfa39)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/金融藏青风/thumb-chart.png (committed c7451fc7ee7b != fresh c22c6d8b234a)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/Dracula紫风/thumb-chart.png (committed 13eaf09ce57e != fresh 58220c417395)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/杂志衬线风/thumb-chart.png (committed fbcd3f5bb276 != fresh edd8d90f6ea7)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/故宫墨红风/thumb-chart.png (committed b2e93445058a != fresh eaf1e9f109c6)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/奶油温柔风/thumb-chart.png (committed 5198bcaaad08 != fresh 7a311c72cbd8)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/星火夜空风/thumb-chart.png (committed 4978c89ac05b != fresh 121e25bf7e6c)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/黑金期刊风/thumb-chart.png (committed b3fc3a301cae != fresh c71a997b5f78)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/中式书卷风/thumb-chart.png (committed bc3399484865 != fresh 633a6828ba9e)\nSTALE: golden thumbnail drifted /Users/kuang/knowledge/leo-skills/leo-ppt-generator/samples/style-gallery/星月夜风/thumb-chart.png (committed 568c7940d39e != fresh f665fe643a8b)\nSTALE: golden sample regression found 18 drift(s); re-run --render-golden and review"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_kpi_fields_preserve_objects_and_display_values (test_pro_template_contracts.StructuredTemplateTests.test_kpi_fields_preserve_objects_and_display_values)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_pro_template_contracts.py\", line 49, in test_kpi_fields_preserve_objects_and_display_values\n    self.assertTrue(binding[\"eligibility\"][\"qualified\"], binding[\"eligibility\"])\nAssertionError: False is not true : {'qualified': False, 'hard_failures': ['expression_incomplete: page expression required'], 'checks': {'role': {'result': 'ok'}, 'backend': {'result': 'ok', 'template_id': 'builtin:template:kpi-stat'}, 'text_capacity': {'title': {'used': 7, 'limit': 24, 'level': 'ok'}}, 'qualification': {'status': 'rejected', 'gaps': ['expression_incomplete: page expression required']}}}"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_frozen_local_render_replay_hashes_and_results (test_quality_observation.ObservationTests.test_frozen_local_render_replay_hashes_and_results)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_quality_observation.py\", line 143, in test_frozen_local_render_replay_hashes_and_results\n    self.assertEqual(actual, expected)\nAssertionError: {'schema_version': 1, 'run_id': '4c5cfb7788[2279 chars]lse}} != {'cost': {'caliber_version': 'cost-caliber-[1727 chars]der'}\nDiff is 4716 characters long. Set self.maxDiff to None to see it."
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_hard_overflow_rejected_at_composition (test_render_theme_capacity.ComposeDesignPipelineTest.test_hard_overflow_rejected_at_composition)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 133, in test_hard_overflow_rejected_at_composition\n    self.assertIn(\"layout_capacity_exceeded\", str(ctx.exception))\nAssertionError: 'layout_capacity_exceeded' not found in 'selection_frozen_mismatch'"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_non_overrideable_role_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_non_overrideable_role_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 157, in test_non_overrideable_role_rejected\n    self.assertIn(\"不可覆盖\", str(ctx.exception))\nAssertionError: '不可覆盖' not found in 'selection_frozen_mismatch'"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_unknown_mode_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_unknown_mode_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_render_theme_capacity.py\", line 139, in test_unknown_mode_rejected\n    self.assertIn(\"theme_invalid\", str(ctx.exception))\nAssertionError: 'theme_invalid' not found in 'selection_frozen_mismatch'"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='backend')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 94, in test_backend_dimensions_method_and_visual_changes_block\n    with self.assertRaisesRegex(ContractError, reason):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_backend_mismatch\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='width')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 94, in test_backend_dimensions_method_and_visual_changes_block\n    with self.assertRaisesRegex(ContractError, reason):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_dimensions_mismatch\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='generation_method')",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 94, in test_backend_dimensions_method_and_visual_changes_block\n    with self.assertRaisesRegex(ContractError, reason):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_stale\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 99, in test_backend_dimensions_method_and_visual_changes_block\n    with self.assertRaisesRegex(ContractError, \"sample_decision_stale\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_stale\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_frozen_backend_contract_drift_is_detected (test_sample_decisions.SampleDecisions.test_frozen_backend_contract_drift_is_detected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 202, in test_frozen_backend_contract_drift_is_detected\n    with self.assertRaisesRegex(ContractError, \"sample_decision_stale\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_stale\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_image_and_content_changes_block_prepare_without_flag (test_sample_decisions.SampleDecisions.test_image_and_content_changes_block_prepare_without_flag)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 77, in test_image_and_content_changes_block_prepare_without_flag\n    with self.assertRaisesRegex(ContractError, \"sample_decision_stale\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_stale\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_input_changed_during_freeze_cannot_reach_jobs (test_sample_decisions.SampleDecisions.test_input_changed_during_freeze_cannot_reach_jobs)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 214, in test_input_changed_during_freeze_cannot_reach_jobs\n    with self.assertRaisesRegex(ContractError, \"sample_decision_stale\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_stale\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_missing_corrupt_receipt_and_legacy_are_distinct (test_sample_decisions.SampleDecisions.test_missing_corrupt_receipt_and_legacy_are_distinct)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py\", line 552, in _read_content_binding\n    committed = load_committed_input(run_path)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 250, in load_committed_input\n    root = _safe_root(run_root)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py\", line 154, in _safe_root\n    raise ExpressionPipelineError(\"input_root_invalid\", phase=\"freeze\")\nleo_ppt_generator.application.expression_pipeline.ExpressionPipelineError: input_root_invalid\n\nThe above exception was the direct cause of the following exception:\n\nleo_ppt_generator.contracts.ContractError: input_root_invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sample_decisions.py\", line 103, in test_missing_corrupt_receipt_and_legacy_are_distinct\n    with self.assertRaisesRegex(ContractError, \"sample_decision_required\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"sample_decision_required\" does not match \"input_root_invalid\""
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_cli_invalid_manifest_rejected (test_sources_freeze.CliPrepareSourcesTest.test_cli_invalid_manifest_rejected)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_sources_freeze.py\", line 252, in test_cli_invalid_manifest_rejected\n    self.assertEqual(str(caught.exception), \"sources_manifest_invalid\")\nAssertionError: 'input_root_invalid' != 'sources_manifest_invalid'\n- input_root_invalid\n+ sources_manifest_invalid"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_constrained_infeasible_is_not_budget_exhausted (test_unified_recommendation.UnifiedRecommendationTests.test_constrained_infeasible_is_not_budget_exhausted)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_unified_recommendation.py\", line 40, in test_constrained_infeasible_is_not_budget_exhausted\n    self.assertEqual(result[\"status\"], \"constraints_unsatisfied\")\nAssertionError: 'no_candidates' != 'constraints_unsatisfied'\n- no_candidates\n+ constraints_unsatisfied"
+        },
+        {
+          "kind": "FAIL",
+          "test": "test_full_pool_top_summary_and_choice_preserve_semantic_preference (test_unified_recommendation.UnifiedRecommendationTests.test_full_pool_top_summary_and_choice_preserve_semantic_preference)",
+          "detail": "Traceback (most recent call last):\n  File \"/Users/kuang/knowledge/leo-skills/leo-ppt-generator/tests/test_unified_recommendation.py\", line 31, in test_full_pool_top_summary_and_choice_preserve_semantic_preference\n    self.assertEqual(result[\"status\"], \"complete\")\nAssertionError: 'no_candidates' != 'complete'\n- no_candidates\n+ complete"
+        }
+      ],
+      "log": "full-suite.log",
+      "log_sha256": "e2491ce216814d7cf2997e964632cbbc8a6aee4976f4324631be22d5c5ed1fa8"
+    }
+  ]
+}

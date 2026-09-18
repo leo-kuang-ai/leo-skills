@@ -1,0 +1,35 @@
+{
+  "case_id": "independent",
+  "data": {
+    "bullets": [
+      "统一口径",
+      "统一口径 → 收集证据",
+      "复核结果"
+    ],
+    "title": "三项工作分别推进"
+  },
+  "expected": {
+    "facts": [],
+    "focus": "三项工作分别推进",
+    "reading_order": [
+      "统一口径",
+      "收集证据",
+      "复核结果"
+    ],
+    "required_text": [
+      "三项工作分别推进",
+      "统一口径",
+      "收集证据",
+      "复核结果"
+    ],
+    "structure": {
+      "edges": [],
+      "items": [
+        "统一口径",
+        "收集证据",
+        "复核结果"
+      ]
+    }
+  },
+  "probe": "negative"
+}

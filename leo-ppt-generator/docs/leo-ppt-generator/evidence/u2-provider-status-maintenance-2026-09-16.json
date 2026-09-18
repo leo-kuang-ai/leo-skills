@@ -1,0 +1,11 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m leo_ppt_generator config status --json",
+  "exit_code": 0,
+  "status": "configured_unverified",
+  "reason_code": "provider_verification_not_run",
+  "selected_provider": "qianxing",
+  "mode": "fixed",
+  "live_provider_calls_this_continuation": 0,
+  "claim": "只读配置状态；不代表 Provider HTTP 或图片导出验证",
+  "authorization": "既有 6 次探针收费授权问题仍未收到明确答复"
+}

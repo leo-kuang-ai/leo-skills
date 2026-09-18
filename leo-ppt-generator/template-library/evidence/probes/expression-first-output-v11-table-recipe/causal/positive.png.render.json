@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/expression-first-output-v11-table-recipe/causal/positive.png",
+  "out_sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 650,
+  "rendered_at": "2026-09-16T07:52:13.970Z",
+  "renderer": "playwright-chromium@1.62.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:body-basic",
+  "template_sha256": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+  "warnings": [],
+  "width": 2560
+}

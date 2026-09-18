@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "wheel": ".migration-work/raster-wheel/leo_ppt_generator_runtime-0.1.1-py3-none-any.whl",
+  "wheel_sha256": "0be40ec8c4da6dd32ff19f2f9a3bb9f5973ee25ed2a61e6a59857a5b50c5a439",
+  "installed_module": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/raster-wheel-installed/leo_ppt_generator/raster_oracle.py",
+  "swift_sha256": "7356a8e25c2d38772b77e9f80488b14b1aefb8aa03c9d21da49101ef8e76d112",
+  "source": "apple-vision-revision-3",
+  "artifact": "template-library/evidence/probes/expression-first-output-v7-raster/comparison/positive.png",
+  "artifact_sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+  "recognized_lines": 13,
+  "claim_ceiling": "wheel中真实OCR执行；非Provider导出或发布资格"
+}

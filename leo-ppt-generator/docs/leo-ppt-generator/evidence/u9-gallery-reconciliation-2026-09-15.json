@@ -1,0 +1,198 @@
+{
+  "created_at": "2026-09-15T05:41:04.044196+00:00",
+  "render_log": "docs/leo-ppt-generator/evidence/u9-gallery-render-2026-09-15.log",
+  "changed": [
+    {
+      "path": "samples/style-gallery/Dracula紫风/thumb-chart.png",
+      "before_sha256": "13eaf09ce57e2950ca57be262f9a5a3b2142d7e79732afe52ad7521a9fe03fc4",
+      "after_sha256": "58220c417395ed28945bc5ee06ff6b5ab3acc77f9402a60d4c44fcc873864d7f",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/Dracula紫风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/中式书卷风/thumb-chart.png",
+      "before_sha256": "bc339948486529efae25447c43e95ed721a76a0fbd8bdebe96a344c536f1a058",
+      "after_sha256": "633a6828ba9e7c09695a4974dbe6f779dcfc4bcb9999f63a8eef4236ad711084",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/中式书卷风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/医疗洁净风/thumb-chart.png",
+      "before_sha256": "e593fa15d8a01b4ce5ddb0d6719d5f382595e10d7ea31340b152769eceb3f650",
+      "after_sha256": "0deff3e411442688b45a9b70087fda513bfcdae4649b21a86baf4e3dec04bd9a",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/医疗洁净风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/咨询金字塔风/thumb-chart.png",
+      "before_sha256": "d1b6784eb982299686b9bb809f51b20e274142ec3e0c58ff02ecea9048ce1093",
+      "after_sha256": "3ab2409d517257535636a9dfc4184b561692701ce0b13837440ef9fd88c56d37",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/咨询金字塔风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/品牌创意风/thumb-chart.png",
+      "before_sha256": "da32113227677c0b18a7d13decb72bc5ac78f9de9c039ebaadd0f26222dc8cce",
+      "after_sha256": "73b8a90c283782e0e7ada0acfa6c407471a795a8208fa8b27351ccd764e40d1e",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/品牌创意风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/奶油温柔风/thumb-chart.png",
+      "before_sha256": "5198bcaaad08f5c5053f59ff72998ee46f166b98db94a139cd999debec5906a7",
+      "after_sha256": "7a311c72cbd89bb80998d9f13653017f506c7c244b2460bef59658b0b315c079",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/奶油温柔风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/学术克制风/thumb-chart.png",
+      "before_sha256": "f1ab54b353fd26bc1c6c1d7a4aea6ffefff538a08b5bd73fd94525633db5b386",
+      "after_sha256": "1a37cbbda03be3278c78f6b33aac16dc998f073816ca06979dad24ff1e571554",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/学术克制风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/政务庄重风/thumb-chart.png",
+      "before_sha256": "2f2f29d2cc7e95c592157d1a4cee7efe66b6c9054d8ea26d10559927ae9bdb4e",
+      "after_sha256": "5d6b6ed028415e2f5f56b63cb318736c8e0bde82c11404edd512138db45e7a39",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/政务庄重风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/故宫墨红风/thumb-chart.png",
+      "before_sha256": "b2e93445058aea4c3bbd770a07df863cd18cc952ce202fa3a23c169d8a4ff908",
+      "after_sha256": "eaf1e9f109c6fcd73b4bc233e0d469f1937a2a576445ef0a932793deea98717d",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/故宫墨红风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/教育明快风/thumb-chart.png",
+      "before_sha256": "df54819ae3e15ce38f4c357c3cd88661f3350883929f72ea85810f6cab6916e5",
+      "after_sha256": "272e3e80dab5da308ada8deb3111b547b201c657d27a0596cdd19a9e0c364b3e",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/教育明快风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/星月夜风/thumb-chart.png",
+      "before_sha256": "568c7940d39ee2c371aad392925b5176385a03f46d4c3dbfe11909db6e7ba4cb",
+      "after_sha256": "f665fe643a8b085aec15e6e023bdcde9c74a30ed2065d47a4e1dccb6c0a64f83",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/星月夜风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/星火夜空风/thumb-chart.png",
+      "before_sha256": "4978c89ac05b109b08df24a4fb83a7c5a2b448b82518bbffdcb07da0524ebebc",
+      "after_sha256": "121e25bf7e6c4404611cfd50feaf9fd21145284b5c966106550ea4a207517820",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/星火夜空风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/杂志衬线风/thumb-chart.png",
+      "before_sha256": "fbcd3f5bb2769e4005006f0132bf4fc93760bae9533a122d59e84b70ac6ae5e6",
+      "after_sha256": "edd8d90f6ea7bc91f073c8f305b5c0b1911049d5eff249a7f81269e0980b1873",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/杂志衬线风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/清爽专业风/thumb-chart.png",
+      "before_sha256": "1eda1f31a35f1647a4b3c355e1bf596522fc746da2f6d45fcc76c15d60096c53",
+      "after_sha256": "3985ed959e1f02dd3bc39849cbf0a13a81c63ef34ef3e8f75b07707f3774135a",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/清爽专业风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/科技暗色风/thumb-chart.png",
+      "before_sha256": "b8c8d6024957193b4536bbae07ca8dd38f89d2db1270c0b1d0d2155a6039b0af",
+      "after_sha256": "dd925086533f91fa3c75749b2b222b721e0e25bf505c19f1ca9a635aa80f9254",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/科技暗色风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/管理清晰风/thumb-chart.png",
+      "before_sha256": "44f37fe896a71abb0bb816e2beedba9c70b1726bd488693fcd394522a736ceec",
+      "after_sha256": "cddde35dfa39ba2440e4078202911f6a759eeb88bd0c90a3fe771e86acd0c8d4",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/管理清晰风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/金融藏青风/thumb-chart.png",
+      "before_sha256": "c7451fc7ee7bcf14c8aaafd085aea84e1d76a44af0da1a30341138f98f5d2e0e",
+      "after_sha256": "c22c6d8b234a6520957ef5ec01fc4ffe0113134d1a6334bbacd648e4e8f8dc0e",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/金融藏青风/thumb-chart.png"
+    },
+    {
+      "path": "samples/style-gallery/黑金期刊风/thumb-chart.png",
+      "before_sha256": "b3fc3a301caed3aea898057681e1797234185f82bfc64a441e88017b159bbfbd",
+      "after_sha256": "c71a997b5f78f293a315ce16422d9c5e7d1bcf5a849136ec5e5007b782f97f8a",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "backup": ".migration-work/gallery-current-2026-09-15/previous/黑金期刊风/thumb-chart.png"
+    }
+  ],
+  "unchanged_files": 126,
+  "review": {
+    "reviewer": "codex-model",
+    "source": "preceding-continuation visual inspection",
+    "artifacts": [
+      ".migration-work/gallery-current-2026-09-15/comparison-1.png",
+      ".migration-work/gallery-current-2026-09-15/comparison-2.png",
+      ".migration-work/gallery-current-2026-09-15/comparison-3.png"
+    ],
+    "observations": "已查看18组before/after联系表；标题、Q1-Q4、柱形顺序和配色保留，未发现明显裁切。当前小字可读性未作四维正式裁决。",
+    "claim_ceiling": "画廊渲染基线校准；不构成U6-A配对视觉或用户收益"
+  }
+}

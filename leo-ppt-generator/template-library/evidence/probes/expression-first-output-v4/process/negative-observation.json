@@ -1,0 +1,33 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v4/process/negative.png",
+    "sha256": "f71530c0bc22b7daffcaca5cc19e4876a893a06d5f4193224314fc0c6748bbb1"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "dependency_edges": false,
+    "focus_visible": true,
+    "no_overflow": true,
+    "nodes_visible": true,
+    "parallel_branches": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "c080123c457e7dcbff2564e6549892b70cb3f09cd594f787788e9e0a949211bd",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v4/process/negative-fixture.json",
+    "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v4/process/negative-measurement.json",
+    "sha256": "93673ba0bd0a00080f2e03bfe0292cefd5e21aec009e8af10a264d8d96ac9b84"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "process",
+  "render_input": {
+    "path": "evidence/probes/expression-first-output-v4/process/negative-input.json",
+    "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+  }
+}

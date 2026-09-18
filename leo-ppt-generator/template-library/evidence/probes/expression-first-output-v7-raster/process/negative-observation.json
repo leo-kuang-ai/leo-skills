@@ -1,0 +1,33 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v7-raster/process/negative.png",
+    "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "dependency_edges": false,
+    "focus_visible": true,
+    "no_overflow": true,
+    "nodes_visible": true,
+    "parallel_branches": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "6fca8084346646dacd9bbfa6e9783a060fd8fb30249abec4d6b000bb243f5b84",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v7-raster/process/negative-fixture.json",
+    "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v7-raster/process/negative-measurement.json",
+    "sha256": "59358d7b70f8059d2b6856a9eb63b19ed0254c3e5533dc24d0d8a2fced49d165"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "process",
+  "render_input": {
+    "path": "evidence/probes/expression-first-output-v7-raster/process/negative-input.json",
+    "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+  }
+}

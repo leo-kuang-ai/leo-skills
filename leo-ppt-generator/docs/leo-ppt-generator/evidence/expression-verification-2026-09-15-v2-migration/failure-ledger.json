@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "source_stable": true,
+  "steps": [
+    {
+      "exit_code": 0,
+      "log": "compileall.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "step": "compileall",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "schemas.log",
+      "log_sha256": "2094a20dbcb19818b145e4609563bc0a16d9e466ea352fee50f1bf90976269f7",
+      "step": "schemas",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 17.043,
+        "terminal_summary": "OK",
+        "tests": 51
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "regime-lint.log",
+      "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18",
+      "step": "regime-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "layout-lint.log",
+      "log_sha256": "62db6b6ce6733aa5d9517df07c0258f628636515a13c4cd6e87f1a7f64b9e1cd",
+      "step": "layout-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "template-lint.log",
+      "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f",
+      "step": "template-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 1,
+      "log": "expression-consumers.log",
+      "log_sha256": "4dc1dcfe459481b49e8b11dda3e4e578e16ae4658d85df08d107249860056ea8",
+      "step": "expression-consumers",
+      "unittest": {
+        "errors": 6,
+        "failures": 12,
+        "issues": [
+          {
+            "kind": "ERROR",
+            "label": "test_compare_materialization_carries_sides (tests.test_content_projection.MaterializationTests.test_compare_materialization_carries_sides)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_html_materialization_uses_bound_values (tests.test_content_projection.MaterializationTests.test_html_materialization_uses_bound_values)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_image_prompt_is_precheck_not_fidelity (tests.test_content_projection.MaterializationTests.test_image_prompt_is_precheck_not_fidelity)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_materialize_page_dispatches_by_backend (tests.test_content_projection.MaterializationTests.test_materialize_page_dispatches_by_backend)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_font_override_changes_context_and_binding_digest (tests.test_content_projection.PrecompileEligibilityTests.test_font_override_changes_context_and_binding_digest)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_multi_figure_media_materializes_by_index (tests.test_content_projection.ReviewFixRegressionTests.test_multi_figure_media_materializes_by_index)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_media_value_required_at_execution (tests.test_content_projection.MaterializationTests.test_media_value_required_at_execution)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_body_basic_bullets_qualified_and_deterministic (tests.test_content_projection.PrecompileEligibilityTests.test_body_basic_bullets_qualified_and_deterministic)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_compare_sides_two_qualified_one_and_three_rejected (tests.test_content_projection.PrecompileEligibilityTests.test_compare_sides_two_qualified_one_and_three_rejected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_page_reorder_keeps_item_binding_stable (tests.test_content_projection.PrecompileEligibilityTests.test_page_reorder_keeps_item_binding_stable)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_numbers_only_in_table_cells_keep_spec_table_qualified (tests.test_content_projection.ReviewFixRegressionTests.test_numbers_only_in_table_cells_keep_spec_table_qualified)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_allocation_deterministic_and_ordered (tests.test_deck_layout_selection.DeckAllocationTests.test_allocation_deterministic_and_ordered)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backtracking_reassigns_when_second_page_loses_top_choice (tests.test_deck_layout_selection.DeckAllocationTests.test_backtracking_reassigns_when_second_page_loses_top_choice)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_budget_exhausted_distinct_from_no_candidates (tests.test_deck_layout_selection.DeckAllocationTests.test_budget_exhausted_distinct_from_no_candidates)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_explicit_choice_still_goes_through_qualification (tests.test_deck_layout_selection.DeckAllocationTests.test_explicit_choice_still_goes_through_qualification)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_max_per_deck_two_allows_reuse (tests.test_deck_layout_selection.DeckAllocationTests.test_max_per_deck_two_allows_reuse)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_reuse_limited_layout_respected_and_third_candidate_solves (tests.test_deck_layout_selection.DeckAllocationTests.test_reuse_limited_layout_respected_and_third_candidate_solves)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_top2_is_human_summary_full_pool_lives_behind (tests.test_deck_layout_selection.DeckAllocationTests.test_top2_is_human_summary_full_pool_lives_behind)"
+          }
+        ],
+        "reported_seconds": 98.845,
+        "terminal_summary": "FAILED (failures=12, errors=6)",
+        "tests": 126
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "migration.log",
+      "log_sha256": "f9fca006a1bec4d868dae00b664b61cba8c248adcea287361488e63c132680cc",
+      "step": "migration",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 44.858,
+        "terminal_summary": "OK",
+        "tests": 56
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "quality.log",
+      "log_sha256": "c162396ef2089032627a2072b7e692ef87c3a254f6eb9274f4453649463650ca",
+      "step": "quality",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 17.746,
+        "terminal_summary": "OK",
+        "tests": 103
+      }
+    },
+    {
+      "exit_code": 1,
+      "log": "full-suite.log",
+      "log_sha256": "6a309ff9ab8f93a96a943f750561b4a9c14fa3e757a8c74b3b412dd53f472a00",
+      "step": "full-suite",
+      "unittest": {
+        "errors": 28,
+        "failures": 50,
+        "issues": [
+          {
+            "kind": "ERROR",
+            "label": "test_normal_pages_pass_sentinel (render.test_overflow_sentinel.OverflowSentinelTest.test_normal_pages_pass_sentinel) (template='spec-table')"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_with_flag_rework_replaces_recorded_page (test_cli_rework_flag.CliReworkFlagTest.test_with_flag_rework_replaces_recorded_page)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_without_flag_late_record_rejected (test_cli_rework_flag.CliReworkFlagTest.test_without_flag_late_record_rejected)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_compare_materialization_carries_sides (test_content_projection.MaterializationTests.test_compare_materialization_carries_sides)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_html_materialization_uses_bound_values (test_content_projection.MaterializationTests.test_html_materialization_uses_bound_values)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_image_prompt_is_precheck_not_fidelity (test_content_projection.MaterializationTests.test_image_prompt_is_precheck_not_fidelity)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_materialize_page_dispatches_by_backend (test_content_projection.MaterializationTests.test_materialize_page_dispatches_by_backend)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_font_override_changes_context_and_binding_digest (test_content_projection.PrecompileEligibilityTests.test_font_override_changes_context_and_binding_digest)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_multi_figure_media_materializes_by_index (test_content_projection.ReviewFixRegressionTests.test_multi_figure_media_materializes_by_index)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_reskin_keeps_business_content_and_structure (test_dashi_integration_fixtures.ThemeIndependenceTests.test_reskin_keeps_business_content_and_structure)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_composite_and_render_scopes_skip_gate (test_ocr_alignment.RecordGateIntegrationTest.test_composite_and_render_scopes_skip_gate)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_enforce_mode_blocks_misaligned_record (test_ocr_alignment.RecordGateIntegrationTest.test_enforce_mode_blocks_misaligned_record)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_not_run_disclosed_without_ocr_text (test_ocr_alignment.RecordGateIntegrationTest.test_not_run_disclosed_without_ocr_text)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_warn_mode_reports_failure_without_blocking (test_ocr_alignment.RecordGateIntegrationTest.test_warn_mode_reports_failure_without_blocking)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_design_digest_deterministic_and_input_sensitive (test_render_theme_capacity.ComposeDesignPipelineTest.test_design_digest_deterministic_and_input_sensitive)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_image_only_canonical_layout_composes_without_regions (test_render_theme_capacity.ComposeDesignPipelineTest.test_image_only_canonical_layout_composes_without_regions)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_locked_brand_role_rejects_task_override (test_render_theme_capacity.ComposeDesignPipelineTest.test_locked_brand_role_rejects_task_override)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_style_resolves_by_chinese_name_to_stable_id (test_render_theme_capacity.ComposeDesignPipelineTest.test_style_resolves_by_chinese_name_to_stable_id)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_baseline_weights_30_45_25_drive_dom (test_render_theme_capacity.RenderGeometryDomTest.test_baseline_weights_30_45_25_drive_dom)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_json_change_25_50_25_padding_12_drives_dom_html_untouched (test_render_theme_capacity.RenderGeometryDomTest.test_json_change_25_50_25_padding_12_drives_dom_html_untouched)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_render_page_produces_png_with_theme_variables (test_render_theme_capacity.RenderGeometryDomTest.test_render_page_produces_png_with_theme_variables)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_assemble_rechecks_frozen_slides_even_if_original_is_unchanged (test_sample_decisions.SampleDecisions.test_assemble_rechecks_frozen_slides_even_if_original_is_unchanged)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_assemble_rechecks_sample_after_prepare (test_sample_decisions.SampleDecisions.test_assemble_rechecks_sample_after_prepare)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_enabled_run_missing_receipt_never_falls_back_to_legacy (test_sample_decisions.SampleDecisions.test_enabled_run_missing_receipt_never_falls_back_to_legacy)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_explicit_redecision_preserves_previous_receipt (test_sample_decisions.SampleDecisions.test_explicit_redecision_preserves_previous_receipt)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_same_binding_restores_and_json_formatting_does_not_invalidate (test_sample_decisions.SampleDecisions.test_same_binding_restores_and_json_formatting_does_not_invalidate)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_cli_conflicting_sources_rejected (test_sources_freeze.CliPrepareSourcesTest.test_cli_conflicting_sources_rejected)"
+          },
+          {
+            "kind": "ERROR",
+            "label": "test_cli_freezes_sources_into_run_input (test_sources_freeze.CliPrepareSourcesTest.test_cli_freezes_sources_into_run_input)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_spec_table_two_columns_are_rejected_by_geometry_contract (render.test_overflow_sentinel.OverflowSentinelTest.test_spec_table_two_columns_are_rejected_by_geometry_contract)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='finance-navy-light')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cover-pro', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='chain-flow', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='compare-pro', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='quote-pro', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='cards-stat', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='kpi-stat', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='table-pro', theme='tech-dark-mode')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_media_value_required_at_execution (test_content_projection.MaterializationTests.test_media_value_required_at_execution)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_body_basic_bullets_qualified_and_deterministic (test_content_projection.PrecompileEligibilityTests.test_body_basic_bullets_qualified_and_deterministic)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_compare_sides_two_qualified_one_and_three_rejected (test_content_projection.PrecompileEligibilityTests.test_compare_sides_two_qualified_one_and_three_rejected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_page_reorder_keeps_item_binding_stable (test_content_projection.PrecompileEligibilityTests.test_page_reorder_keeps_item_binding_stable)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_numbers_only_in_table_cells_keep_spec_table_qualified (test_content_projection.ReviewFixRegressionTests.test_numbers_only_in_table_cells_keep_spec_table_qualified)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_compare_carries_two_sides (test_dashi_integration_fixtures.DecisionMatrixTests.test_compare_carries_two_sides)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_spec_table_carries_columns_rows (test_dashi_integration_fixtures.MetricBaselineTests.test_spec_table_carries_columns_rows)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_body_basic_carries_stage_points (test_dashi_integration_fixtures.ProcessOwnershipTests.test_body_basic_carries_stage_points)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_timeline_carries_steps_from_points (test_dashi_integration_fixtures.TrendEventsTests.test_timeline_carries_steps_from_points)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_allocation_deterministic_and_ordered (test_deck_layout_selection.DeckAllocationTests.test_allocation_deterministic_and_ordered)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backtracking_reassigns_when_second_page_loses_top_choice (test_deck_layout_selection.DeckAllocationTests.test_backtracking_reassigns_when_second_page_loses_top_choice)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_budget_exhausted_distinct_from_no_candidates (test_deck_layout_selection.DeckAllocationTests.test_budget_exhausted_distinct_from_no_candidates)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_explicit_choice_still_goes_through_qualification (test_deck_layout_selection.DeckAllocationTests.test_explicit_choice_still_goes_through_qualification)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_max_per_deck_two_allows_reuse (test_deck_layout_selection.DeckAllocationTests.test_max_per_deck_two_allows_reuse)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_reuse_limited_layout_respected_and_third_candidate_solves (test_deck_layout_selection.DeckAllocationTests.test_reuse_limited_layout_respected_and_third_candidate_solves)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_top2_is_human_summary_full_pool_lives_behind (test_deck_layout_selection.DeckAllocationTests.test_top2_is_human_summary_full_pool_lives_behind)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_check_passes_when_up_to_date (test_generate_style_gallery.GalleryTest.test_check_passes_when_up_to_date)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_kpi_fields_preserve_objects_and_display_values (test_pro_template_contracts.StructuredTemplateTests.test_kpi_fields_preserve_objects_and_display_values)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_frozen_local_render_replay_hashes_and_results (test_quality_observation.ObservationTests.test_frozen_local_render_replay_hashes_and_results)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_hard_overflow_rejected_at_composition (test_render_theme_capacity.ComposeDesignPipelineTest.test_hard_overflow_rejected_at_composition)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_non_overrideable_role_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_non_overrideable_role_rejected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_unknown_mode_rejected (test_render_theme_capacity.ComposeDesignPipelineTest.test_unknown_mode_rejected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='backend')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='width')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block) (key='generation_method')"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_backend_dimensions_method_and_visual_changes_block (test_sample_decisions.SampleDecisions.test_backend_dimensions_method_and_visual_changes_block)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_frozen_backend_contract_drift_is_detected (test_sample_decisions.SampleDecisions.test_frozen_backend_contract_drift_is_detected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_image_and_content_changes_block_prepare_without_flag (test_sample_decisions.SampleDecisions.test_image_and_content_changes_block_prepare_without_flag)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_input_changed_during_freeze_cannot_reach_jobs (test_sample_decisions.SampleDecisions.test_input_changed_during_freeze_cannot_reach_jobs)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_missing_corrupt_receipt_and_legacy_are_distinct (test_sample_decisions.SampleDecisions.test_missing_corrupt_receipt_and_legacy_are_distinct)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_cli_invalid_manifest_rejected (test_sources_freeze.CliPrepareSourcesTest.test_cli_invalid_manifest_rejected)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_constrained_infeasible_is_not_budget_exhausted (test_unified_recommendation.UnifiedRecommendationTests.test_constrained_infeasible_is_not_budget_exhausted)"
+          },
+          {
+            "kind": "FAIL",
+            "label": "test_full_pool_top_summary_and_choice_preserve_semantic_preference (test_unified_recommendation.UnifiedRecommendationTests.test_full_pool_top_summary_and_choice_preserve_semantic_preference)"
+          }
+        ],
+        "reported_seconds": 470.095,
+        "terminal_summary": "FAILED (failures=50, errors=28)",
+        "tests": 2177
+      }
+    }
+  ],
+  "verification": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-v2-migration/verification.json"
+}

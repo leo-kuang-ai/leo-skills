@@ -1,0 +1,894 @@
+{
+  "status": "passed",
+  "stage": "final-closeout",
+  "checked_at": "2026-09-16T06:58:38.756736+00:00",
+  "baseline": "docs/leo-ppt-generator/evidence/continuation-2026-09-16-maintenance-baseline.json",
+  "head_before": "176b6f3b6c924ab28ce83d09fd34149dae2e1c33",
+  "head_after": "176b6f3b6c924ab28ce83d09fd34149dae2e1c33",
+  "dirty_count": 836,
+  "tracked_dirty": 109,
+  "untracked_dirty": 727,
+  "protected": [
+    {
+      "path": ".codex/hooks.json.graphify-bak",
+      "type": "file",
+      "owner": "external-protected",
+      "before_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "after_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "type": "file",
+      "owner": "external-protected",
+      "before_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "after_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "type": "file",
+      "owner": "external-protected",
+      "before_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "after_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "type": "file",
+      "owner": "external-protected",
+      "before_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "after_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "type": "file",
+      "owner": "external-protected",
+      "before_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "after_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "unchanged": true
+    }
+  ],
+  "new_dirty_paths_outside_scope": [],
+  "new_dirty_paths": [
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/styles.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "138a115b2642345ce676b629752f8e4503f0bbd47c1ed15da53782eeb0032f5a",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/scripts/style_pack.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "bb46487d39f71f94d64258e970ecee0af96c36d96728163760e5732125ba5b30",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_style_pack.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "88523ef40b327b7954f3489a900822a37dca02b5b5746eb2a37be85ad5390ff9",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/consumer-closure-maintenance-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "fd1c92d88326d9428b04c41711a4851f3764e00aad31134e51ded99c8586c273",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/continuation-2026-09-16-maintenance-baseline.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "e754bc8a19f6478eea1742063c17df77db89f4cbe1737c753187013f49f7832c",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-maintenance-final/failure-ledger.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "3761b321bf0d076fb7f4ade70eeaab85535b5008db6d0e3a92edd5c994d91c4d",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-maintenance-final/verification.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "60da3ad3ff8f446ca12f82339ae35fd026b857df93fa7f9833f57068eaab450e",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/legacy-source-maintenance-reverified-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "ceaf2a896c1ba8e3c320909a9288588644b81a044fef4b135cb8c24550deef26",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/maintenance-scope-audit-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "e9b5efee4b1f9dd1e96d73f4c50bf23b0339afa1bf4534434f3b97f91a889e0b",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/maintenance-workflow-boundary-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "cbfa2507bfc56e85c5f97e2ec995199ba7f8bd016ae60e6dddb4376661379dcb",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u11-maintenance-inline-review-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "a092eea31245586802e3839fffbec8df31d6d104058245f1624117771f9d1076",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-current-probes-maintenance-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "39d79ef9b182d3e7517601d79d199f8e9aad5e118cd075a0c66c105c11bdd7fb",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-image-prepared-inputs-v5-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "9ff3c83545e5ffea170bfaa1863339e881b0277cb4a20cad2d350dd2444f6a8a",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-maintenance-pre-probe-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "2df912188be46c2278e7c9f8708c95e058cf2c75735ad977cb061cf2219ed22d",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u2-provider-status-maintenance-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "9f1eba53208dd2a03bcc28bfd44c64145c89a1c0e9a7e6a02fccc6cd475fb8cf",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u7-maintenance-live-preview-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "435acfe3b79ca5cf444473b0c74132bc05d270fe2857c271c1304afe4cbb33e9",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u8-maintenance-wheel-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "4d29be71d0f59bc75be5f6b5f8f6ea83720a0772cbb7c2af4b3d8a6dd3d1ee2a",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/u8-u11-maintenance-installed-wheel-2026-09-16.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b7c84dd7c23fa2869508e3e440703c5b44de49228cae74b510dedb822ea4a4f2",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/capability-receipts.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "03140d9096bf4a1b3fc6927af8406c4ae77155b4e7140fd8c5edf5704b40f805",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/cases.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b6bf47f67448523ae6f455a88d44cc5e725d0281dbbe2a9d7300db33e46fd05b",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "be018166b85cdf126c09a5245f3e6d2bc23923663aeb5dfed12afe46c3d04b1f",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/negative.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "9fe29ebedbcd753aeba61f4ed2727de4cdb8d9dee365017a4fc031faa55d5ec6",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "50b4addaf9e3c8bbebc551107ea485ca0de02ad43ea916491062fb6e192a2461",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "8857bcf1e7d6d5000d8e5ce7e4795e5c72b135e3ba4b241c6900ab0bf7b3234e",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/positive.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "9b793878e87b262a9e9221c4842fe3ece4f839e4c50274c9721536546b051f38",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/causal/receipt.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "df83af5ea175dc9ebdaccb2aef10b8e05f4b093eaad658bb8e092b7732eea712",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "84de4adaf025ac467053b7fc8e383222e040992f61cb9d871ffc67cbe632f197",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/negative.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "c36f962793ced9f31d4401974a5579b376c55b89c58981e72524114aa29bfa34",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "d8c675223394050cc72c1f0e9ec4f4a8d1bb5fadb17817c9a7342fa742a32098",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/positive.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "5210a66beaeb086c7c9bcb76b66002c8c059e406db50291691559a0e8d545bf1",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/comparison/receipt.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "2dedafee755cf5b496da722ef2fc413842f50891169562a6404ae6c14fd00177",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/environment.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "aa1d1764418035b840f959d41d2cad6a5a9ceaae0beb5cb6a8274e64703d41b4",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "e69c860775af04856974612da8d4074c1cd5ccaf1c8aa6542a9644d78678b92e",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "e9057fd5e21f1edeb3842185dbeb001d927f8a8aad6f8342f877e656ab90a49a",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/negative.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "f8f38b733be7dacfffc4e7d453e34fc12f7be0ce4d555a978b7975cd91a11187",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "a8433fdbcb7e0918b9fad29665a0090a2e1e233e203f50349dfdf3aa56666f09",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "3e711aabb2bda96ac3707db42337f90ca0c597f030d29c428c72e5001db14717",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/positive.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "00205a6fabaa168102c7d5d1a62d9adb8879082736d371ad1a0bac2a255b45d1",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/independent/receipt.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "08fe4e95ae813bb7cc1ad3263267d0cd52901f8f36c55912668316dc056c7def",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "59358d7b70f8059d2b6856a9eb63b19ed0254c3e5533dc24d0d8a2fced49d165",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "04896d81afe30235d7caac8f4d6f02ec1f735d505ac36b14ea207671bcc12a76",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/negative.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b8d77acc81bf27db0402ff275987a23339630410e3a739ea7215b06624936eea",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b05eb9ad1d9541805ac7410c6936c01fdfcacd711bfd2ef16b1abdb8527ff382",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b8ec7781070882a93da0b22a40eec3bd83c9006596f31f7e08a98e0e15f3db02",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/positive.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "d15502f2df49142fc6fad4e04e7b66dc8a90e96dd0d735e578313f1569f7fb56",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/process/receipt.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b38479e7c383f853e4e39f691de5b67a9d8722d87dee805e1fcbee4f432cd05c",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/report.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "b4487888461176091256691cec4a7ba9819de254ce6c1f3d6061c586ecf4e6c0",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "6ee24af6354fa2202cbc38bcb421b0a8015482a3d225aa2f61fa8424cd7e8749",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/negative.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "fc89db739ec40f735aa22dc743f95ff03b0eca2dde9b8c2e32031b21ab929218",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive-fixture.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive-input.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive-measurement.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive-observation.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "15dd4b3ab54c14dc20aaa139505f4eb67777362e1f146c01f53dba837ee9dd73",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive.png",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/positive.png.render.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "eb0e300eb7a03e89d5ee43193e757d8a5563d5c0a406698fd351252a7c3bc665",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/expression-first-output-v10-maintenance/trend/receipt.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-continuation",
+      "type": "file",
+      "sha256": "52473e897da7043bf8c5db48d707a945f09e28f23abebb4f31057d5cd3a3bef9",
+      "mode": 384
+    }
+  ],
+  "source_matches_final_verification": true,
+  "verification_manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-maintenance-final/verification.json",
+  "verification_manifest_sha256": "60da3ad3ff8f446ca12f82339ae35fd026b857df93fa7f9833f57068eaab450e",
+  "review_source_hashes_match": true,
+  "diff_check": {
+    "command": "git diff --check -- . ../CHANGELOG.md",
+    "exit_code": 0,
+    "log": "docs/leo-ppt-generator/evidence/maintenance-final-diff-check-2026-09-16.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "previous_audit": {
+    "dirty_count": 829,
+    "head_after": "176b6f3b6c924ab28ce83d09fd34149dae2e1c33",
+    "head_before": "176b6f3b6c924ab28ce83d09fd34149dae2e1c33",
+    "new_dirty_paths_outside_scope": [],
+    "protected": [
+      {
+        "after_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+        "before_sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+        "path": ".codex/hooks.json.graphify-bak",
+        "type": "file",
+        "unchanged": true
+      },
+      {
+        "after_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+        "before_sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+        "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+        "type": "file",
+        "unchanged": true
+      },
+      {
+        "after_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+        "before_sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+        "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+        "type": "file",
+        "unchanged": true
+      },
+      {
+        "after_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+        "before_sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+        "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+        "type": "file",
+        "unchanged": true
+      },
+      {
+        "after_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+        "before_sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+        "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+        "type": "file",
+        "unchanged": true
+      }
+    ],
+    "stage": "during-final-verification",
+    "status": "passed"
+  }
+}

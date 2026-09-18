@@ -1,0 +1,35 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v3/trend/negative.png",
+    "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "baseline_preserved": true,
+    "focus_visible": true,
+    "no_overflow": true,
+    "numeric_values": true,
+    "ordered_samples": false,
+    "period_visible": true,
+    "reading_order": false,
+    "unit_visible": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "c080123c457e7dcbff2564e6549892b70cb3f09cd594f787788e9e0a949211bd",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v3/trend/negative-fixture.json",
+    "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v3/trend/negative-measurement.json",
+    "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "trend",
+  "render_input": {
+    "path": "evidence/probes/expression-first-output-v3/trend/negative-input.json",
+    "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+  }
+}

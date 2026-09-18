@@ -1,0 +1,30 @@
+{
+  "artifact": {
+    "path": "evidence/probes/expression-first-output-v2/causal/negative.png",
+    "sha256": "89fa07a210b129d821a60474ae9e5423fae61409c7c25837c04c449ed50f5927"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "causal_uncertainty": false,
+    "directed_edges": true,
+    "edge_meaning": true,
+    "focus_visible": true,
+    "no_overflow": true,
+    "reading_order": true,
+    "source_support": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "05154bd6db91a3877de6f99526429c036a30e2073e1343949af39d05290a8aaf",
+  "fixture": {
+    "path": "evidence/probes/expression-first-output-v2/causal/negative-fixture.json",
+    "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/expression-first-output-v2/causal/negative-measurement.json",
+    "sha256": "ab96d36cc6772cd90b0f489eb0c54974a9ac73ce63cbdb8ec5fc8d0258c0d557"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "causal"
+}

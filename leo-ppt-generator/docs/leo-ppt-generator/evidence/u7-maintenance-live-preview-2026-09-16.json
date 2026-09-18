@@ -1,0 +1,56 @@
+{
+  "status": "blocked",
+  "commands": [
+    {
+      "phase": "preview",
+      "argv": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "scripts/migrate_template_library.py",
+        "preview",
+        "--source-root",
+        "..",
+        "--out-plan",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/maintenance-preview-2026-09-16/migration-plan.json"
+      ],
+      "exit_code": 0,
+      "log": ".migration-work/maintenance-preview-2026-09-16/preview.log",
+      "log_sha256": "ab3b884f3c0cf547d9de9f28caf91b598a51128ed3d4a0608742114125eb0fdd",
+      "output": {
+        "phase": "preview",
+        "gate": "U7-A",
+        "gaps": [
+          "migration_pre_value_gate_missing"
+        ],
+        "plan_digest": "02eef3ae6268b61352c8d1ead62fca0d4d3fefcdef0dbdec1921d2db8842670c"
+      }
+    },
+    {
+      "phase": "stage",
+      "argv": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "scripts/migrate_template_library.py",
+        "stage",
+        "--plan",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/maintenance-preview-2026-09-16/migration-plan.json",
+        "--staging-root",
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/.migration-work/maintenance-preview-2026-09-16/shadow"
+      ],
+      "exit_code": 2,
+      "log": ".migration-work/maintenance-preview-2026-09-16/stage.log",
+      "log_sha256": "f6750251ad3af856d862b8c017a93d73411652d42a4c69b079ac8636bfb18ba4",
+      "output": {
+        "phase": "stage",
+        "status": "blocked",
+        "reason": "migration_execution_plan_required"
+      }
+    }
+  ],
+  "plan": ".migration-work/maintenance-preview-2026-09-16/migration-plan.json",
+  "plan_digest": "02eef3ae6268b61352c8d1ead62fca0d4d3fefcdef0dbdec1921d2db8842670c",
+  "gate": "U7-A",
+  "source_paths": 5841,
+  "target_paths": 4995,
+  "delete_allowlist_paths": 846,
+  "shadow_created": false,
+  "claim": "当前真实工作树 U7-A preview 与缺价值门的实际 CLI 拒绝；后续审计文档改变 dirty 时须重新 preview，不能作为 U7-B 执行快照"
+}

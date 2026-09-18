@@ -1,0 +1,25 @@
+{
+  "browser_binaries": {
+    "chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell": "7687bff7cb2db075f250e6d5848bbc8838cac3802ac3952a899c574f8eccab45"
+  },
+  "execution_source_digest": "8436b33bca07d896ceaf4d3e7a88608f54ff0c7834cfe2acdfcfbf72b817c0fc",
+  "font_files": {
+    "0/NotoSansSC-Bold.otf": "c6cb5a93abaa9edc8ee7463b7ebb7f42d618d40e6ed2f7a5371c97b0b64767c0",
+    "0/NotoSansSC-Regular.otf": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9"
+  },
+  "implementation": "cpython",
+  "machine": "arm64",
+  "packages": {
+    "Pillow": "12.3.0",
+    "jsonschema": "4.26.0",
+    "playwright": "1.62.0",
+    "python-pptx": "1.0.2"
+  },
+  "python": "3.12.13",
+  "release": "25.5.0",
+  "system": "Darwin",
+  "vendor_files": {
+    "mermaid/NOTICE.md": "9fc88125cb0caa25d1291b75572ad11365ba57560f0d99e86c5578412e6cfa00",
+    "mermaid/mermaid.min.js": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "asset_generation": "e948216ae800bb4e169c1cb2ed7d2054ae359fde68a65d7645a16745d661895d",
+  "asset_id": "builtin:layout:body-basic",
+  "dependency_hashes": {
+    "canonical/layouts/body-basic/layout.json": "bf90b0405ade2f9375afe2f32db77b7f7a94ba66c0cdd42361fbc2b73153bac4",
+    "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+    "canonical/templates/body-basic/page.html": "572930acb275ee76ac1c0366ef959dcac7fcc5a48dd155a7c1a0b334175e3852",
+    "canonical/templates/body-basic/template.json": "5d81e9580435f5109510fa445f8d4011dccb446d69636ee4498f3d2c4c3c2f18"
+  },
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v2/environment.json",
+    "sha256": "05154bd6db91a3877de6f99526429c036a30e2073e1343949af39d05290a8aaf"
+  },
+  "evidence_digest": "b53747e69de9ac38ce867a047933f0df44d79139b8d50184ff22caf84774960a",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v2/process/negative.png",
+        "sha256": "f71530c0bc22b7daffcaca5cc19e4876a893a06d5f4193224314fc0c6748bbb1"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v2/process/negative-fixture.json",
+        "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v2/process/negative-observation.json",
+        "sha256": "5b4b535b52d336a9725c567ea06028e6b8e99610e6e45115ca98e5a7db088d57"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v2/process/positive.png",
+        "sha256": "1c926dccbc4372dae72437baa754e1793edd343d883954cc909c85e4de589d60"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v2/process/positive-fixture.json",
+        "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v2/process/positive-observation.json",
+        "sha256": "635a87e88b65ed15cf7a2e44a7a221e8ec79e5e21fd61be3446f0366ca71ffbf"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "14cc2011bc8d5ab3846fde5c0a1453903a3513c94e2c12d9e29252aaa16c7d7d/process",
+  "relation": "process",
+  "schema_version": 1,
+  "visual_review": null
+}

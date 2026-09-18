@@ -1,0 +1,8 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p test_*.py",
+  "exit_code": 1,
+  "elapsed_seconds": 310.726,
+  "log": "docs/leo-ppt-generator/evidence/full-suite-integration-audit.log",
+  "log_sha256": "cede9604c8d6609eba744c67ef9867f256d4f769ebc22b5fd68e7e186a1f7c38",
+  "scope": "中途集成审计，仍有未开发项，不作为最终验收"
+}

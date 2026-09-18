@@ -1,0 +1,59 @@
+{
+  "asset_generation": "7e95f9c38f3cc113aea1f85f0b91860e14f4ca8177811673951ab071761455fc",
+  "asset_id": "builtin:layout:body-basic",
+  "dependency_hashes": {
+    "canonical/layouts/body-basic/layout.json": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
+    "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+    "canonical/templates/body-basic/page.html": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+    "canonical/templates/body-basic/template.json": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+  },
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v9-admission/environment.json",
+    "sha256": "1da5479c06689de33ec2fea06b6d95672f044a3bd7949d90637174ba5f7d6aaa"
+  },
+  "evidence_digest": "d82442c61ae69530cfdcaf1b6833ba576ca5df5a90f9302929812999b2e6bafb",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/negative.png",
+        "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/negative-fixture.json",
+        "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/negative-observation.json",
+        "sha256": "46773f5924bc1bb774c03883a01d4af8125072b905f350065f5aa2ed300f7e0f"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/positive.png",
+        "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+      },
+      "fixture": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/positive-fixture.json",
+        "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+      },
+      "observation": {
+        "path": "evidence/probes/expression-first-output-v9-admission/independent/positive-observation.json",
+        "sha256": "9fd90bbe55bdca3c8ba1f78cc874977e478ccd5b94f38bf09f5f96258013c66d"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "52364f774b1401e2aca094da50a2014eba331c233540eacbe85f04eb50d29ad0/independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

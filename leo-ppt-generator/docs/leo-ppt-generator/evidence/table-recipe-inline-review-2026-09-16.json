@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "status": "degraded",
+  "verdict": "Not ready",
+  "scope": "本轮表格 image recipe、结构容量门及安装态 regime 消费者；不代表整个分支或正式迁移",
+  "reviewers": [
+    "inline-fallback"
+  ],
+  "coverage": {
+    "independent_review": "not_run",
+    "cross_model": "not_run",
+    "formal_review_mutation_guard": "not_run",
+    "dispatch_reason_code": "dispatch_authorization_missing"
+  },
+  "files": [
+    {
+      "path": "runtime/src/leo_ppt_generator/page_intent.py",
+      "baseline_sha256": "0f5f292204afc0396e86c3c5211908f6a7c2a52faa23353f8ca7f3fbeaa6896c",
+      "current_sha256": "0eb6ea78d4f5a746243800e87f1ff7af37b67b6b94610697a6af596ac54af6b4"
+    },
+    {
+      "path": "runtime/src/leo_ppt_generator/image_deck/recipe.py",
+      "baseline_sha256": "0b7eeb59320bf35600ecb56151a4fbafbbd79b2ded48c58047e2c0ccf81704b0",
+      "current_sha256": "e9fd4ac60c749d97e0e169c624d949627c9d5643d555f8aeaa720d41bdcfdb0c"
+    },
+    {
+      "path": "runtime/src/leo_ppt_generator/content_projection.py",
+      "baseline_sha256": "524ade632f5b213eb7fe8531a5017b8b83c67f96e5c33f6e72218721a3842a52",
+      "current_sha256": "a0f35fc66f56b64d4d0d2fe0204e9df8cce110505a4da0fe2f88f35563fbb1d5"
+    },
+    {
+      "path": "runtime/src/leo_ppt_generator/schemas/image-recipe-v1.schema.json",
+      "baseline_sha256": "ba9d411589d34c4d787440eccbbeface29eb6251ea5384f4ff1fe33351365046",
+      "current_sha256": "55e18dcc8ecb160f5567e5f4a9ebe12c84b3dca989eddf9d7188b6eea069ecad"
+    },
+    {
+      "path": "template-library/governance/schemas/image-recipe-v1.schema.json",
+      "baseline_sha256": "ba9d411589d34c4d787440eccbbeface29eb6251ea5384f4ff1fe33351365046",
+      "current_sha256": "55e18dcc8ecb160f5567e5f4a9ebe12c84b3dca989eddf9d7188b6eea069ecad"
+    },
+    {
+      "path": "template-library/canonical/layouts/p25-spec-table/layout.json",
+      "baseline_sha256": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36",
+      "current_sha256": "0adb49302a99a8a90484fc7853ef7c9e724d82730c79390cdf346ca188e7fe43"
+    },
+    {
+      "path": "template-library/canonical/layouts/manifest.json",
+      "baseline_sha256": "2a55a58dee2c2fa261988baa5f8828f77bf2fde57437e56ffdaa47ad3760f6b1",
+      "current_sha256": "ae2882a45e6caaac39371ebf4ac326bc7251e868c6abd12a4b202e8ee65c397f"
+    },
+    {
+      "path": "template-library/canonical/executable/recipes/p25-spec-table/recipe.json",
+      "baseline_sha256": null,
+      "current_sha256": "22cbcfea91c265ae82465fb63e0e056b00ebdef7d7f4f3a6e680aa4fe55e41c4"
+    },
+    {
+      "path": "tests/test_image_expression_adapter.py",
+      "baseline_sha256": "2b212e96220cd0d7ea1a6fd4bb7cca572eaa2f6e2ff6a9bf3810286ffbd6099a",
+      "current_sha256": "0008727e193e85d818ae8f6fd267ba5dcfb336b79573c9701c11efc595ce2deb"
+    },
+    {
+      "path": "tests/test_library_bundle.py",
+      "baseline_sha256": "2f12e5f1ad7b347d1acaeda56a57fad8a08e728d9b1cf4bf9b1cd93172244c90",
+      "current_sha256": "b3f5f3712ec1ff4a89a57c6edbe336f1e73b896890281d7b8e8623ae91adbb30"
+    },
+    {
+      "path": "tests/test_page_intent_routing.py",
+      "baseline_sha256": "d3fef641b65d6868b4071706a2e091ce0b54a47321f7168773a66c3af71d2685",
+      "current_sha256": "92cad5388590c407a398b08450dc1471af4a2b54e3c44f947bf588c905acda06"
+    }
+  ],
+  "checks": [
+    "recipe 输入路径使用封闭枚举，不执行任意路径或 CSS",
+    "表格字段类型、行列形状、来源冲突与容量由 production owner 重核",
+    "容量只读取 layout，不在 recipe 复制或放宽声明",
+    "候选预编译与最终投影都调用同一容量校验器",
+    "标题容量不误用单元格槽位；输入、事实与未知值保持不变",
+    "regime 定位复用 bundle owner，缓存以字节为键，每次读取仍持库共享锁",
+    "返回 regime 深拷贝，调用方修改不会污染解析缓存",
+    "新增资产在 v2 复制安装和链接安装都可解析，schema 随 wheel 逐字节携带"
+  ],
+  "findings": [],
+  "fixed_findings": [
+    {
+      "finding": "layout manifest 摘要未随 canonical 修改更新",
+      "evidence": "expression-verification-2026-09-16-table-recipe-final/layout-lint.log",
+      "fix": "更新同一 manifest 的 layout_sha256/revision；lint 已退出 0"
+    },
+    {
+      "finding": "bundle 回归固定实体数未包含新增 recipe",
+      "evidence": "expression-verification-2026-09-16-table-recipe-final-v2/migration.log",
+      "fix": "实体数更新到443，同时在两类安装中验证实际 recipe"
+    },
+    {
+      "finding": "wheel 内 regime loader 使用源目录层级，缓存不能感知库切换",
+      "evidence": "u2-table-recipe-installed-tests-2026-09-16.log",
+      "fix": "正式 bundle 定位+逐次字节/维护重核，最新安装后7项回归通过"
+    }
+  ],
+  "simplify": {
+    "mode": "inline-serial",
+    "lenses": [
+      "reuse",
+      "quality",
+      "efficiency"
+    ],
+    "applied": 0,
+    "protected": [
+      "容量门与类型拒绝",
+      "字节缓存前库维护锁",
+      "真实证据与资格分层"
+    ],
+    "note": "未发现需要为复用或减行数调整的新增抽象；解析缓存有固定4项上限"
+  },
+  "residual_risks": [
+    "真实 Provider image 正反导出和独立输出观察未运行",
+    "U6-A/B、三册旧链配对视觉、真实任务与用户差页收益未验证",
+    "U9 活动消费者完整切换与 U11 正式高层发布尚未闭环"
+  ],
+  "recorded_at": "2026-09-16T08:04:25.840158+00:00"
+}

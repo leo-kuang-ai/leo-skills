@@ -1,0 +1,427 @@
+{
+  "asset_generation": "7e95f9c38f3cc113aea1f85f0b91860e14f4ca8177811673951ab071761455fc",
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v8-final/environment.json",
+    "sha256": "cc014e5a2831bfdc4d61abd99124697d160340f7b6e5b2314a0e7dd54510fe63"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/capability-receipts.json",
+      "sha256": "5038acb017a25ee329e70906a161a6db6e947933a6228ba9b4a542e8b67fdc8f"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/cases.json",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative-fixture.json",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative-input.json",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative-measurement.json",
+      "sha256": "b6bf47f67448523ae6f455a88d44cc5e725d0281dbbe2a9d7300db33e46fd05b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative-observation.json",
+      "sha256": "d59941cb6699316a4e5845c0105e2d5a5c98cdba80dc4b23263862edcd7c87bc"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/negative.png.render.json",
+      "sha256": "3467346d80c5b4caacefe4d7a95e7ef7f5f66a39476ccad69ffc839628bd28ce"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive-fixture.json",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive-input.json",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive-measurement.json",
+      "sha256": "50b4addaf9e3c8bbebc551107ea485ca0de02ad43ea916491062fb6e192a2461"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive-observation.json",
+      "sha256": "1da7f4b9e5bb5b09297f94e594d644dd8c991c5f33276f58cf7632ebdb029065"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/positive.png.render.json",
+      "sha256": "b2b08f352458aa40c67afb266e5a230db5f4291240324eea165967afece49272"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/causal/receipt.json",
+      "sha256": "d68d23ed6d6adab78d95e8391b13b2c28101ada610855a166c849a9a11e9936e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative-fixture.json",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative-input.json",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative-measurement.json",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative-observation.json",
+      "sha256": "d48e27371a4083c72cf22dda0d64bb605ca4b00146e486ce812637cf710c6b82"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/negative.png.render.json",
+      "sha256": "4c59498eea51b61d8133b9b6ec4c73db1a55880f8d00f0f8a8ac0f74dc40468a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive-fixture.json",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive-input.json",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive-measurement.json",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive-observation.json",
+      "sha256": "d9660a93e7df0e61596f148f8eaa5ca45cf75e3fdf13f8422c68fcd399d9fd45"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/positive.png.render.json",
+      "sha256": "2f3362a1b134fb5dd3efd53836d3862016d442acfd6f7d765d50a4132232879e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/comparison/receipt.json",
+      "sha256": "1f18221e0b9e3b4cf33a1902111a1fa7981626ca80df1f7f4ca50256acb75c70"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/environment.json",
+      "sha256": "cc014e5a2831bfdc4d61abd99124697d160340f7b6e5b2314a0e7dd54510fe63"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative-fixture.json",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative-input.json",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative-measurement.json",
+      "sha256": "e69c860775af04856974612da8d4074c1cd5ccaf1c8aa6542a9644d78678b92e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative-observation.json",
+      "sha256": "9a23b1a045ac2fb255eaeadf52094f1ad57df1f2dc2514fc12687f4895050597"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/negative.png.render.json",
+      "sha256": "48a477c635667f0edf426ffaad6293e34dff1394cbc93d0a3d41de82d7841af4"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive-fixture.json",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive-input.json",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive-measurement.json",
+      "sha256": "a8433fdbcb7e0918b9fad29665a0090a2e1e233e203f50349dfdf3aa56666f09"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive-observation.json",
+      "sha256": "3686696c34d901570e33472a8ed6f1700a69fab0c4c40e6f97182e321704468a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/positive.png.render.json",
+      "sha256": "dd69d986414d2fa71f4385dfd7d2132feeb538410452d0c5ca3fdab54bd8d854"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/independent/receipt.json",
+      "sha256": "57a9f4cc6eada3c7786607ac8db74da8bdd2b50a2ac8cfe7ce325b1d37e1203c"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative-fixture.json",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative-input.json",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative-measurement.json",
+      "sha256": "59358d7b70f8059d2b6856a9eb63b19ed0254c3e5533dc24d0d8a2fced49d165"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative-observation.json",
+      "sha256": "467755c6dfe2042b09eb32672059985482fe498d2c563afc94b16a5659aa11fd"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/negative.png.render.json",
+      "sha256": "3c1853c77e7016d0d0314fb77ce5bc43a04bb4e1789b0d6a7f8aaadbe4e3847c"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive-fixture.json",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive-input.json",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive-measurement.json",
+      "sha256": "b05eb9ad1d9541805ac7410c6936c01fdfcacd711bfd2ef16b1abdb8527ff382"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive-observation.json",
+      "sha256": "df16a06c24fdf23411d5789bf9a076135783847646f08da8b0e4cfcf46f9faa3"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/positive.png.render.json",
+      "sha256": "d72aca29f02ad1d8d5b693dc9eb46df70dd527df3f6c3b49246c63692ca0d9a2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/process/receipt.json",
+      "sha256": "b7a533c96954a779bc59962c8b2344920f6e8c073fd5b30d1af2641d68c93e2d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative-fixture.json",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative-input.json",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative-measurement.json",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative-observation.json",
+      "sha256": "565c2b5c27fc63a48ba1cc9de2e2fc311e781a3ea1794a2c2132cf058c8db8c5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/negative.png.render.json",
+      "sha256": "4c40f39a4ec56643c02a91330dada8088aa202c88df5c193a08cabee200be3aa"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive-fixture.json",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive-input.json",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive-measurement.json",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive-observation.json",
+      "sha256": "c7f5e8cf292fe6baafd1fc9f7ee011700e38b623c7d992d9518d13e45ecee7d3"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/positive.png.render.json",
+      "sha256": "a72681081301bc8864255d8cd1c299d7a89c03170b4e8697767e53018aff29d4"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v8-final/trend/receipt.json",
+      "sha256": "dcdd17a53caec19d533f020c5192d8a3719c73bf34b6505e5655b8ff56fbd360"
+    }
+  ],
+  "input_digest": "a9e314a1e23f207f6e10d7993fe583d9a0b16278b2ec9307acc381ff68abd2a8",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v8-final/independent/receipt.json",
+        "sha256": "57a9f4cc6eada3c7786607ac8db74da8bdd2b50a2ac8cfe7ce325b1d37e1203c"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v8-final/comparison/receipt.json",
+        "sha256": "1f18221e0b9e3b4cf33a1902111a1fa7981626ca80df1f7f4ca50256acb75c70"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v8-final/trend/receipt.json",
+        "sha256": "dcdd17a53caec19d533f020c5192d8a3719c73bf34b6505e5655b8ff56fbd360"
+      },
+      "relation": "trend",
+      "status": "passed"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v8-final/process/receipt.json",
+        "sha256": "b7a533c96954a779bc59962c8b2344920f6e8c073fd5b30d1af2641d68c93e2d"
+      },
+      "relation": "process",
+      "status": "passed"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v8-final/causal/receipt.json",
+        "sha256": "d68d23ed6d6adab78d95e8391b13b2c28101ada610855a166c849a9a11e9936e"
+      },
+      "relation": "causal",
+      "status": "passed"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

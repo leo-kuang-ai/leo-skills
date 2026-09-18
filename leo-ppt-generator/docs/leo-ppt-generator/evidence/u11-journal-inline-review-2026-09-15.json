@@ -1,0 +1,95 @@
+{
+  "status": "degraded",
+  "verdict": "Not ready",
+  "mutation_policy": "report-only",
+  "reviewers": [
+    "inline-fallback"
+  ],
+  "scope": {
+    "base": "176b6f3b6c924ab28ce83d09fd34149dae2e1c33",
+    "files": [
+      "runtime/src/leo_ppt_generator/library_migration.py",
+      "tests/test_migration_transaction.py",
+      "runtime/src/leo_ppt_generator/asset_resolver.py"
+    ],
+    "files_changed": 3,
+    "source_hashes": {
+      "runtime/src/leo_ppt_generator/library_migration.py": "154a2eebd4ed2f5a18ea5fd74aa4b561645830180a6c8d171241ecc9873d72d7",
+      "tests/test_migration_transaction.py": "6a04bae349f859233fbf89d51008c84b14dbf8407809aeff6d386e0db6ec7e64",
+      "runtime/src/leo_ppt_generator/asset_resolver.py": "aa0594738832bdccd7a24fe43ef043f53dba30e84decfc90dc9b59207727d653"
+    }
+  },
+  "findings": [
+    {
+      "#": 1,
+      "title": "已缓存 resolver 在 maintenance 中继续公开资产索引",
+      "severity": "P1",
+      "file": "runtime/src/leo_ppt_generator/asset_resolver.py",
+      "line": 278,
+      "confidence": 1.0,
+      "autofix_class": "gated_auto",
+      "owner": "downstream-resolver",
+      "requires_verification": true,
+      "pre_existing": true,
+      "suggested_fix": "在缓存公开入口重核 builtin/user 库 maintenance，并覆盖预热 resolver 的读、查询、摘要和冻结入口",
+      "first_evidence": "docs/leo-ppt-generator/evidence/u8-maintenance-cache-red-2026-09-15.log",
+      "why_it_matters": "发布过程可能读到旧缓存与已替换字节的混合状态",
+      "evidence": [
+        "当前 entities/generation/registry_source 仅在首次 _load 时检查",
+        "真实 v2 catalog 预热后 marker 生效，仍返回 4 个实体，探针 exit 1"
+      ],
+      "reviewers": [
+        "inline-fallback"
+      ]
+    }
+  ],
+  "actionable_findings": [
+    {
+      "#": 1,
+      "title": "已缓存 resolver 在 maintenance 中继续公开资产索引",
+      "severity": "P1",
+      "file": "runtime/src/leo_ppt_generator/asset_resolver.py",
+      "line": 278,
+      "confidence": 1.0,
+      "autofix_class": "gated_auto",
+      "owner": "downstream-resolver",
+      "requires_verification": true,
+      "pre_existing": true,
+      "suggested_fix": "在缓存公开入口重核 builtin/user 库 maintenance，并覆盖预热 resolver 的读、查询、摘要和冻结入口",
+      "first_evidence": "docs/leo-ppt-generator/evidence/u8-maintenance-cache-red-2026-09-15.log",
+      "why_it_matters": "发布过程可能读到旧缓存与已替换字节的混合状态",
+      "evidence": [
+        "当前 entities/generation/registry_source 仅在首次 _load 时检查",
+        "真实 v2 catalog 预热后 marker 生效，仍返回 4 个实体，探针 exit 1"
+      ],
+      "reviewers": [
+        "inline-fallback"
+      ]
+    }
+  ],
+  "coverage": {
+    "dispatch_reason_code": "dispatch_authorization_missing",
+    "scenario_capability": "bounded",
+    "independent_review": "not_run",
+    "mutation_guard": "未运行正式 review-scope helper，不声明完整正式评审通过",
+    "verification_evidence": {
+      "status": "degraded",
+      "reason_code": "bounded_current_source_review",
+      "checks": [
+        "u11-journal-identity-2026-09-15.log: 35 tests / exit 0",
+        "u8-maintenance-cache-red-2026-09-15.log: exit 1"
+      ],
+      "limitations": [
+        "高层五阶段正向链未运行",
+        "U6-A / Provider 前置缺失",
+        "仅检查当前事务变更及实际命中的缓存消费者"
+      ]
+    }
+  },
+  "simplification": {
+    "reuse": "保留同一迁移 owner；strict fsync 不可替换为吞错辅助函数",
+    "quality": "身份/确认/恢复由同一 owner 校验；安全检查保留",
+    "efficiency": "文件顺序与 fsync 为合同约束，保持串行",
+    "applied": 0
+  }
+}

@@ -1,0 +1,423 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "environment": {
+    "path": "evidence/probes/expression-first-output-v12-table-recipe/environment.json",
+    "sha256": "aa1d1764418035b840f959d41d2cad6a5a9ceaae0beb5cb6a8274e64703d41b4"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/capability-receipts.json",
+      "sha256": "8d637294e388cd57f07d9cdaf25dc8c8b46ee60bd5677227e24b363c9cc2c0e5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/cases.json",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative-fixture.json",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative-input.json",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative-measurement.json",
+      "sha256": "b6bf47f67448523ae6f455a88d44cc5e725d0281dbbe2a9d7300db33e46fd05b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative-observation.json",
+      "sha256": "6f515dad2d0fdf66b76ae442d0bb974b2addacf725bdf94b362aad0ddbd8e3f1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/negative.png.render.json",
+      "sha256": "860902b601e307fcee6f95741579b9c52d93a677c88f8bbc42bef573ff8225e7"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive-fixture.json",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive-input.json",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive-measurement.json",
+      "sha256": "50b4addaf9e3c8bbebc551107ea485ca0de02ad43ea916491062fb6e192a2461"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive-observation.json",
+      "sha256": "c12e6d2eff969df4d6bf85a174baa780f668f598e88277c531241797799a3133"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/positive.png.render.json",
+      "sha256": "ad1df2e33c924b6e5491d726f4ffad9ace3fb28080d15f2a9e0f3d752e773255"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/receipt.json",
+      "sha256": "a96753e7622155e3bda0db945fda6b587553061fe28f35f89589a7049dc76704"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative-fixture.json",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative-input.json",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative-measurement.json",
+      "sha256": "c146e6c54d02106822165f2542d179a1665e757c9ee509bd600683ce126dc249"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative-observation.json",
+      "sha256": "57b52036938b7f29e732c253c5c95e635c315403b132b4a4e526aeb0239ecae8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/negative.png.render.json",
+      "sha256": "629010eb0b3f4d0d0c9b5d9bb0debc44003cd9b53fca8116e2e2477a2e39b6e2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive-fixture.json",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive-input.json",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive-measurement.json",
+      "sha256": "a87ec225c5613a65dbacbd17cbf4562f6f746b83da3de246140dda419e642c00"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive-observation.json",
+      "sha256": "5d2f0289623f2d715c69541137df0e554e1affd34f3007249d4be4deca34687e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/positive.png.render.json",
+      "sha256": "4829c7ae17c83ca759c10328a8c6aeab530e5129a77b1d7b0e4f109e2b1ab63e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/receipt.json",
+      "sha256": "9b60b6615c1759a777739aebc534d25cbfdf9e0aa577cf08c97d3ebdfa9aeb99"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/environment.json",
+      "sha256": "aa1d1764418035b840f959d41d2cad6a5a9ceaae0beb5cb6a8274e64703d41b4"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative-fixture.json",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative-input.json",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative-measurement.json",
+      "sha256": "e69c860775af04856974612da8d4074c1cd5ccaf1c8aa6542a9644d78678b92e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative-observation.json",
+      "sha256": "c80cf4312b12352ef07107adb8d39a7842d6d9890b4981b1e371229ae655807d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/negative.png.render.json",
+      "sha256": "c2291c67b38e0b2fceec54871c00f0cc51914b1ea468f3ddcd5af814505a4617"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive-fixture.json",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive-input.json",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive-measurement.json",
+      "sha256": "a8433fdbcb7e0918b9fad29665a0090a2e1e233e203f50349dfdf3aa56666f09"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive-observation.json",
+      "sha256": "d336e676b74be6ad0ded44f8d8ef3383402e54732a6b10b905e112d92c1e5b86"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/positive.png.render.json",
+      "sha256": "9a88690775bb45914c5a8c274708e017a184b0acec5cab2f4f42d7aadee93f86"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/receipt.json",
+      "sha256": "6df657802fc7dc1306cd5f768b360207c3ef74efcd5b6e5c97a626650621fc9e"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative-fixture.json",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative-input.json",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative-measurement.json",
+      "sha256": "59358d7b70f8059d2b6856a9eb63b19ed0254c3e5533dc24d0d8a2fced49d165"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative-observation.json",
+      "sha256": "db942634f5267796861a701ca9f11b0d9e998ee7564a5fa5d39e3241f209d771"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/negative.png.render.json",
+      "sha256": "b6c1fc2e5743408ef0c38450a7f87b82a99d472e2ae9b89e9964869c35f85e45"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-fixture.json",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-input.json",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-measurement.json",
+      "sha256": "b05eb9ad1d9541805ac7410c6936c01fdfcacd711bfd2ef16b1abdb8527ff382"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive-observation.json",
+      "sha256": "01b6f7e98af2ace022abbe25f135e1d8efdbfdce8e17a9708132c830e400d4bc"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/positive.png.render.json",
+      "sha256": "7e5b6138b2cd5d22d4b97f6c6ae0aa9d4421c8376c120a29d26533012cecba6d"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/process/receipt.json",
+      "sha256": "d53a65e1542858a0676e1ca78926ff8d4c9d3dfdaf4d3b7993fc77a27d8a06ca"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative-fixture.json",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative-input.json",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative-measurement.json",
+      "sha256": "ef7473ce719099a05589e38089a40f6b95dff96ff379b17f7d0f3de574908906"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative-observation.json",
+      "sha256": "344c819d1f082e9e5d08fb616c39f6632b444806b4f52a3b6c120e873549e799"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/negative.png.render.json",
+      "sha256": "c7ec1ae49e0af8d10f759acaa70724d44253ec0b02502fdf240b91676ad0736f"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive-fixture.json",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive-input.json",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive-measurement.json",
+      "sha256": "68ec7b6febce8cb5f571927ad21fdded04f9d51287f9217e3569689fef305518"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive-observation.json",
+      "sha256": "17a99814040f28d579fef946f5758f49fe8b574dc0e9621921bbf72b06c37bb9"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/positive.png.render.json",
+      "sha256": "a1590dcab5519ace7bbdd25c500418c7356aee4cc2dc1f8dcdfd5d11fffb2f06"
+    },
+    {
+      "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/receipt.json",
+      "sha256": "9cdc039041235f7fcb0b0f361feb270d50e85ce834d686fd970bc01e34509e3f"
+    }
+  ],
+  "input_digest": "5baa147511c15ddd3e78b3e2648475d7c3bac29fefab9c0a598f523195431634",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v12-table-recipe/independent/receipt.json",
+        "sha256": "6df657802fc7dc1306cd5f768b360207c3ef74efcd5b6e5c97a626650621fc9e"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v12-table-recipe/comparison/receipt.json",
+        "sha256": "9b60b6615c1759a777739aebc534d25cbfdf9e0aa577cf08c97d3ebdfa9aeb99"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v12-table-recipe/trend/receipt.json",
+        "sha256": "9cdc039041235f7fcb0b0f361feb270d50e85ce834d686fd970bc01e34509e3f"
+      },
+      "relation": "trend",
+      "status": "passed"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v12-table-recipe/process/receipt.json",
+        "sha256": "d53a65e1542858a0676e1ca78926ff8d4c9d3dfdaf4d3b7993fc77a27d8a06ca"
+      },
+      "relation": "process",
+      "status": "passed"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-output-v12-table-recipe/causal/receipt.json",
+        "sha256": "a96753e7622155e3bda0db945fda6b587553061fe28f35f89589a7049dc76704"
+      },
+      "relation": "causal",
+      "status": "passed"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

@@ -181,8 +181,8 @@
       "profile": "p25-spec-table/layout.json",
       "asset_id": "builtin:layout:p25-spec-table",
       "notes": "p25-spec-table/notes.md",
-      "revision": "2acd760c9fc51f5e",
-      "layout_sha256": "2acd760c9fc51f5e328e3a0ec4b0a3897a4b719e301b0f189f1dea647c9aeb36",
+      "revision": "0adb49302a99a8a9",
+      "layout_sha256": "0adb49302a99a8a90484fc7853ef7c9e724d82730c79390cdf346ca188e7fe43",
       "notes_sha256": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2"
     },
     {

@@ -219,9 +219,10 @@ def gate_projection(run_dir: Path) -> tuple[dict, list[str]]:
 
     row = {"gate": "projection", "status": "not_run", "detail": None}
     warnings: list[str] = []
-    pack_path = run_dir / "input" / "page-content-pack.json"
-    if not pack_path.is_file():
-        row["detail"] = "run 无内容包（legacy/非母版流程），本门跳过"
+    pointer = run_dir / "input/current.json"
+    run_index = run_dir / "run.json"
+    if not pointer.exists() and not run_index.exists() and not (run_dir / "input/page-content-pack.json").exists():
+        row["detail"] = "没有表达链输入，尚未验证内容绑定"
         return row, warnings
     try:
         summary = content_binding_summary(run_dir)
@@ -231,19 +232,16 @@ def gate_projection(run_dir: Path) -> tuple[dict, list[str]]:
         return row, warnings
     page_count = summary.get("page_count")
     selected = summary.get("selected_layouts") or {}
-    if summary.get("selection_status") not in (None, "complete"):
-        row["status"] = "failed"
-        row["detail"] = f"layout selection status = {summary.get('selection_status')}"
-        return row, warnings
     page_ids = set(summary.get("page_ids") or [])
-    if selected and page_ids and set(selected) != page_ids:
+    selected_pages = {pid for lane in selected.values() for pid in lane}
+    if not selected or not page_ids or selected_pages != page_ids:
         row["status"] = "failed"
-        row["detail"] = (f"selection pages {sorted(set(selected) ^ page_ids)} "
+        row["detail"] = (f"selection pages {sorted(selected_pages ^ page_ids)} "
                          "not matching pack page ids")
         return row, warnings
-    if selected and page_count is not None and len(selected) != page_count:
+    if len(selected_pages) != page_count:
         row["status"] = "failed"
-        row["detail"] = f"selection covers {len(selected)} pages, pack has {page_count}"
+        row["detail"] = f"selection covers {len(selected_pages)} pages, pack has {page_count}"
         return row, warnings
     row["status"] = "passed"
     row["detail"] = {"page_count": page_count,

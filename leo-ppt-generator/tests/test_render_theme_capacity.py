@@ -21,17 +21,57 @@ from tests.render.helpers import browser_test_case
 
 from leo_ppt_generator.render.layout import compile_geometry
 from leo_ppt_generator.render.assets import template_path
-from leo_ppt_generator.templates import DesignCompositionError, compose_design
+from leo_ppt_generator.templates import DesignCompositionError, compose_design as _compose_design, resolve_design_context
 
 DATA_3COL = {
     "title": "重点区域三季度经营指标",
-    "columns": ["区域", "收入", "完成率"],
+    "columns": ["指标", "华东", "华南"],
     "column_align": ["left", "right", "right"],
-    "rows": [["华东大区", "128.6", "103.2%"],
-             ["华南大区", "96.4", "98.7%"],
-             ["华北大区", "74.9", "95.4%"]],
+    "rows": [["收入", "128.6", "96.4"],
+             ["完成率", "103.2%", "98.7%"],
+             ["同比", "12%", "10%"]],
     "page_no": 9,
 }
+
+
+def compose_design(style, *, pages, **options):
+    """测试前端走真实资格与冻结 selection；不在生产 compose 内重新路由。"""
+    from copy import deepcopy
+    from leo_ppt_generator.content_pack import compile_content_pack
+    from leo_ppt_generator.content_projection import materialize_html
+    from leo_ppt_generator.layout_selection import allocate_deck
+    from leo_ppt_generator.application.expression_pipeline import selection_digest
+    from tests.expression_test_support import real_allocation_inputs
+    resolver, _ = real_allocation_inputs()
+    context = resolve_design_context(style, resolver=resolver, **options)
+    data = deepcopy(pages[0]["slots"])
+    items = [f"/structures/table/columns/{i}" for i in range(1, len(data["columns"]))]
+    dims = [f"/structures/table/rows/{i}/0" for i in range(len(data["rows"]))]
+    cells = [{"item_ref": item, "dimension_ref": dimension,
+              "fact_ref": f"/structures/table/rows/{row}/{column}", "unknown": False}
+             for row, dimension in enumerate(dims) for column, item in enumerate(items, 1)]
+    model = {"schema_version": 2, "main_claim": "比较同口径指标", "main_style": style,
+             "brand_constraints": [], "narrative_order": ["ch-test"], "chapters": [
+                 {"chapter_id": "ch-test", "task": "核对指标", "conclusion": "保留表格数据",
+                  "evidence_refs": [], "previous": None, "next": None}]}
+    expression = {"chapter_id": "ch-test", "semantic_structure": "undecided", "media_role": "none",
+        "evidence_refs": [], "basis": [], "expression": {"reading_task": "comparison", "focus": "claim",
+        "reading_order": ["claim", *items, *dims, *[c["fact_ref"] for c in cells]], "fact_refs": [], "uncertainty": [],
+        "relation_encoding": {"item_refs": items, "dimension_refs": dims, "cells": cells}}}
+    master = "# 母版\ncontent_model: " + json.dumps(model, ensure_ascii=False) + "\n\n## S1 指标\npage_id: pg-1234abcd\n角色：指标·计分榜\n"
+    master += "page_expression: " + json.dumps(expression, ensure_ascii=False) + "\n- 标题：" + data.get("title", DATA_3COL["title"]) + "\n"
+    master += "表列: " + ",".join(data["columns"]) + "\n" + "\n".join("表行: " + "｜".join(row) for row in data["rows"])
+    pack = compile_content_pack(master, master_path="table-test.md")
+    result = allocate_deck(pack, context, resolver=resolver, qualification_purpose="validation",
+                           candidates=["builtin:layout:p25-spec-table"])
+    if result["status"] != "complete":
+        raise DesignCompositionError(str(result["page_status"]))
+    result.update(selection_frozen=True, selection_digest=selection_digest(result["selection"]))
+    page = pack["pages"][0]
+    selected = result["selection"][page["page_id"]]
+    composed = [{"page_id": page["page_id"], "page_no": page["number"], "page_role": "data",
+                 "layout": selected["layout_id"], "slots": materialize_html(selected["binding"], page, resolver=resolver)}]
+    return _compose_design(style, pages=composed, selection=result, design_context=context, resolver=resolver)
 
 
 def _theme_variables(design: dict, profile: dict, effective_theme: dict) -> dict:
@@ -94,26 +134,10 @@ class ComposeDesignPipelineTest(unittest.TestCase):
                          "builtin:template:spec-table")
         self.assertTrue(design["capacity_reports"][0]["fits"])
 
-    def test_image_only_canonical_layout_composes_without_regions(self) -> None:
-        # P1 已绑定 cover-pro（2026-09 pro-family 扩容）；image-only 的
-        # template_id=None 行为改由未绑定 render:html 的版式（P4 six-cells）验证。
-        design = compose_design("清爽专业风", pages=[{
-            "page_no": 1,
-            "page_role": "cover",
-            "layout": "builtin:layout:p1-01-cover-layouts",
-            "slots": {},
-        }])
-        self.assertEqual(design["pages"][0]["layout_id"],
-                         "builtin:layout:p1-01-cover-layouts")
-        self.assertEqual(design["pages"][0]["template_id"],
-                         "builtin:template:cover-pro")
-        image_only = compose_design("清爽专业风", pages=[{
-            "page_no": 2,
-            "page_role": "content",
-            "layout": "builtin:layout:p4-04-six-cells-layouts",
-            "slots": {},
-        }])
-        self.assertIsNone(image_only["pages"][0]["template_id"])
+    def test_unverified_explicit_layout_cannot_compose_without_selection(self) -> None:
+        for layout in ("builtin:layout:p1-01-cover-layouts", "builtin:layout:p4-04-six-cells-layouts"):
+            with self.subTest(layout=layout), self.assertRaisesRegex(DesignCompositionError, "selection_frozen_mismatch"):
+                _compose_design("清爽专业风", pages=[{"page_no": 1, "page_role": "cover", "layout": layout, "slots": {}}])
 
     def test_design_digest_deterministic_and_input_sensitive(self) -> None:
         pages = [{"page_no": 9, "page_role": "data", "slots": DATA_3COL}]
@@ -130,7 +154,7 @@ class ComposeDesignPipelineTest(unittest.TestCase):
             compose_design("清爽专业风", pages=[
                 {"page_no": 9, "page_role": "data",
                  "slots": {"columns": DATA_3COL["columns"], "rows": rows}}])
-        self.assertIn("layout_capacity_exceeded", str(ctx.exception))
+        self.assertIn("structured_field_invalid", str(ctx.exception))
 
     def test_unknown_mode_rejected(self) -> None:
         with self.assertRaises(DesignCompositionError) as ctx:

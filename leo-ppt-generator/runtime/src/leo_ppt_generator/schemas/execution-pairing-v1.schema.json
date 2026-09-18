@@ -16,7 +16,7 @@
   "properties": {
     "source_kind": {
       "enum": [
-        "canonical",
+        "canonical-derived-pairing",
         "task-local-proposal"
       ]
     },
@@ -122,7 +122,7 @@
       "if": {
         "properties": {
           "source_kind": {
-            "const": "canonical"
+            "const": "canonical-derived-pairing"
           }
         }
       },

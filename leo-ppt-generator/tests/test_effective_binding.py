@@ -17,26 +17,22 @@ class EffectiveBindingTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
-        source = Path(__file__).parents[1] / 'template-library'
+        self.root = Path(self.tmp.name).resolve()
+        from tests.expression_test_support import real_validation_inputs
+        pack, resolver, _ = real_validation_inputs()
         self.library = self.root / 'template-library'
-        self.library.mkdir()
-        shutil.copyfile(source / 'library.json', self.library / 'library.json')
-        shutil.copytree(source / 'canonical', self.library / 'canonical')
+        shutil.copytree(resolver.builtin_root, self.library)
         self.resolver = AssetResolver(library=self.library, home=self.root / 'empty-home')
-        self.context = resolve_design_context('finance-navy', resolver=self.resolver)
-        self.page = {'page_id': 'pg-example', 'number': 1, 'narrative_role': '小结·回顾',
-                     'claim': '持续改进', 'items': [
-                         {'item_id': 'p1', 'kind': 'point', 'text': '固定资产'},
-                         {'item_id': 'p2', 'kind': 'point', 'text': '校验内容'}]}
+        self.context = resolve_design_context('clean-professional', resolver=self.resolver)
+        self.page = deepcopy(pack['pages'][0])
         self.binding = precompile_binding(self.page, self.context, 'body-basic',
-                                          content_digest='deck-digest', resolver=self.resolver)
+            content_digest=pack['content_digest'], numbers=pack['numbers'], resolver=self.resolver, qualification_purpose='validation')
         self.assertTrue(self.binding['eligibility']['qualified'])
 
     def test_materialize_preserves_binding_and_actual_text(self):
         before = deepcopy(self.binding)
         data = materialize_html(self.binding, self.page, resolver=self.resolver)
-        self.assertEqual(data['bullets'], ['固定资产', '校验内容'])
+        self.assertEqual(data['bullets'], [item['text'] for item in self.page['items'] if item['kind'] == 'point'])
         self.assertEqual(self.binding, before)
         self.assertEqual(self.binding['schema_version'], 2)
         pins = self.binding['effective']['assets']
@@ -64,8 +60,9 @@ class EffectiveBindingTests(unittest.TestCase):
 
     def test_unrelated_asset_change_does_not_invalidate_binding(self):
         pinned = {f for pin in self.binding['effective']['assets'] for f in pin['files']}
-        unrelated = next(p for p in self.library.glob('canonical/templates/*/page.html')
-                         if p.relative_to(self.library).as_posix() not in pinned)
+        unrelated = self.library / 'canonical/templates/unselected-proof/page.html'
+        unrelated.parent.mkdir(parents=True)
+        unrelated.write_text('<div>Unselected asset</div>')
         unrelated.write_bytes(unrelated.read_bytes() + b'\n<!-- changed -->')
         verify_effective_binding(self.binding, self.page, resolver=self.resolver)
 
@@ -77,6 +74,9 @@ class EffectiveBindingTests(unittest.TestCase):
     def test_snapshot_survives_live_asset_replacement_and_rejects_snapshot_tamper(self):
         snapshot = self.root / 'run/input/asset-snapshot'
         frozen = self.resolver.freeze_assets(snapshot, self.binding['effective']['assets'])
+        from leo_ppt_generator.qualification import freeze_qualification_evidence
+        freeze_qualification_evidence(self.binding['eligibility']['checks']['qualification'],
+            source_root=self.library, target_root=frozen.builtin_root)
         html = self.library / 'canonical/templates/body-basic/page.html'
         html.write_bytes(b'new generation')
         data = materialize_html(self.binding, self.page, resolver=frozen)

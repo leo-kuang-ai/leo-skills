@@ -25,18 +25,21 @@
   "slots": {
     "rows": {
       "region": "content",
+      "content_type": "table",
       "count_min": 3,
       "count_max": 8,
       "desc": "数据行"
     },
     "columns": {
       "region": "content",
+      "content_type": "table",
       "count_min": 2,
       "count_max": 3,
       "desc": "列（行列表头 schema 必填）"
     },
     "cell": {
       "region": "content",
+      "content_type": "text",
       "max_chars": 40,
       "max_lines": 1,
       "desc": "单元格文本"
@@ -62,6 +65,7 @@
     "render:html": "builtin:template:spec-table",
     "image": "表头行（角色区分底色）+ 斑马纹数据行 + 单位列右对齐；最小字号 24px（2560 画布）"
   },
+  "image_recipe": "builtin:recipe:p25-spec-table",
   "notes": "几何真值唯一源：列宽/边距/区域在此文件；HTML 不再拥有列宽真值。行数 >8 → 强制 direct-editable 原生表格。",
   "reuse_friendly": true,
   "structure": {

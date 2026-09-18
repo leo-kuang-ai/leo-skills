@@ -76,6 +76,14 @@
               "structures",
               "claim"
             ]
+          },
+          "input_path": {
+            "enum": [
+              "rows",
+              "columns",
+              "rows.*.*"
+            ],
+            "description": "结构化表格槽位的封闭输入路径；只允许从 page.structures.table 或 fields 派生"
           }
         }
       }

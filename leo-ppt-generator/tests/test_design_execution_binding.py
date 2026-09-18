@@ -46,55 +46,34 @@ STYLE = "finance-navy"
 class DesignExecutionBindingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.pack = compile_content_pack(MASTER, master_path="content/deck-master-v1.md")
+        from tests.test_expression_pipeline import transaction_inputs
+        cls.payload, cls.resolver, cls.context, cls.pages = transaction_inputs()
+        cls.pack = cls.payload["pack"]
         cls.page = cls.pack["pages"][0]
-        cls.context = templates.resolve_design_context(STYLE)
-        cls.binding = precompile_binding(
-            cls.page, cls.context, "body-basic",
-            content_digest=cls.pack["content_digest"],
-            numbers=cls.pack["numbers"])
-        assert cls.binding["eligibility"]["qualified"], cls.binding["eligibility"]
+        cls.binding = cls.payload["bindings"]["render:html"][cls.page["page_id"]]
 
-    def test_frozen_design_carries_context_digest(self):
-        design = templates.compose_design(
-            STYLE, pages=[{"page_no": 1, "page_role": "content",
-                          "layout": "body-basic", "slots": {}}])
-        self.assertEqual(design["design_context_digest"],
-                         self.context["context_digest"])
-        self.assertEqual(design["pages"][0]["template_id"],
-                         "builtin:template:body-basic")
+    def design(self):
+        return templates.compose_design(self.context["style"]["asset_id"], pages=self.pages,
+            selection=self.payload["lane_selections"]["render:html"], design_context=self.context, resolver=self.resolver)
 
-    def test_binding_and_design_share_context(self):
-        design = templates.compose_design(
-            STYLE, pages=[{"page_no": 1, "page_role": "content",
-                          "layout": "body-basic", "slots": {}}])
-        self.assertEqual(self.binding["context_digest"],
-                         design["design_context_digest"])
+    def test_frozen_design_carries_context_and_template(self):
+        design = self.design()
+        self.assertEqual(design["design_context_digest"], self.binding["context_digest"])
+        self.assertEqual(design["pages"][0]["template_id"], self.binding["template_id"])
 
-    def test_binding_digest_stable_across_recompile(self):
-        again = templates.resolve_design_context(STYLE)
-        rebound = precompile_binding(
-            self.page, again, "body-basic",
-            content_digest=self.pack["content_digest"],
-            numbers=self.pack["numbers"])
-        self.assertEqual(self.binding["binding_digest"], rebound["binding_digest"])
+    def test_binding_digests_stable_across_recompile(self):
+        rebound = precompile_binding(self.page, self.context, self.binding["layout_id"],
+            content_digest=self.pack["content_digest"], numbers=self.pack["numbers"], resolver=self.resolver, qualification_purpose="validation")
+        for key in ("expression_binding_digest", "materialization_binding_digest"):
+            self.assertEqual(self.binding[key], rebound[key])
 
-    def test_design_digest_changes_only_with_real_inputs(self):
-        kwargs = {"pages": [{"page_no": 1, "page_role": "content",
-                             "layout": "body-basic", "slots": {}}]}
-        design = templates.compose_design(STYLE, **kwargs)
-        same = templates.compose_design(STYLE, **kwargs)
-        self.assertEqual(design["design_digest"], same["design_digest"])
-        variant = templates.compose_design(
-            STYLE, font_overrides={"body.size": 20}, **kwargs)
-        self.assertNotEqual(design["design_digest"], variant["design_digest"])
+    def test_compose_is_deterministic_and_refuses_missing_selection(self):
+        self.assertEqual(self.design(), self.design())
+        with self.assertRaises(ValueError):
+            templates.compose_design(self.context["style"]["asset_id"], pages=self.pages, resolver=self.resolver)
 
-    def test_freshness_verification_still_owned_by_composer(self):
-        design = templates.compose_design(
-            STYLE, pages=[{"page_no": 1, "page_role": "content",
-                          "layout": "body-basic", "slots": {}}])
-        report = templates.verify_design_freshness(design)
-        self.assertIn(report.get("status"), {"fresh", "stale"})
+    def test_freshness_verification_is_exact_for_frozen_inputs(self):
+        self.assertEqual(templates.verify_design_freshness(self.design(), self.resolver)["status"], "fresh")
 
 
 if __name__ == "__main__":
@@ -103,7 +82,10 @@ if __name__ == "__main__":
 class DualBindingDigestTests(unittest.TestCase):
     def test_digest_helpers_are_lane_split(self):
         from leo_ppt_generator.content_projection import compute_expression_binding_digest, compute_materialization_binding_digest
-        binding = {"page_id":"p", "item_ids":["i"], "content_digest":"c", "compiler":"x", "layout_id":"l", "template_id":"t", "backend":"render:html", "slot_map":{}, "context_digest":"ctx"}
+        from copy import deepcopy
+        from tests.test_expression_pipeline import transaction_inputs
+        payload, _, _, _ = transaction_inputs()
+        binding = deepcopy(next(iter(payload["bindings"]["render:html"].values())))
         e = compute_expression_binding_digest(binding)
         binding["backend"] = "image"
         self.assertEqual(e, compute_expression_binding_digest(binding))

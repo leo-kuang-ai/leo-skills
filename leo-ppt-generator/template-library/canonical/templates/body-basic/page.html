@@ -24,7 +24,12 @@
     font-family: var(--leo-f-family-body, "Noto Sans SC"), "Noto Sans SC", sans-serif;
     background: var(--leo-c-background, #f7f5f0); color: var(--leo-c-text, #1f2430); position: relative;
   }
-  .leo-slide { width: 1280px; height: 720px; padding: 76px 96px 64px; display: flex; flex-direction: column; }
+  .leo-slide {
+    position: absolute;
+    left: var(--leo-g-content-x, 96px); top: var(--leo-g-content-y, 76px);
+    width: var(--leo-g-content-width, 1088px); height: var(--leo-g-content-height, 568px);
+    display: flex; flex-direction: column;
+  }
   .page-no { position: absolute; right: 44px; bottom: 30px; font-size: var(--leo-f-size-page_no, 22px); color: var(--leo-c-muted, #8d8578); }
   .title {
     font-size: var(--leo-f-size-title, 52px); font-weight: 700; color: var(--leo-c-primary, #14213d); line-height: 1.25;

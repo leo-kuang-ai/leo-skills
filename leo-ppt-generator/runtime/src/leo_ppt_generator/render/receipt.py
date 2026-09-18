@@ -171,6 +171,13 @@ def collect_fingerprints(run_root: str | Path, *, allow_missing: bool = False) -
                 except (ValueError, OSError) as exc:
                     raise ReceiptError("delivery_materialization_invalid: " + str(exc)) from exc
     input_files = [root / "input/current.json", *_iter_regular_files(committed["root"])]
+    # 交付可附带来源及讲稿合同；它们不替代冻结表达，但修改仍须使收据失效。
+    for name in ("sources-manifest.json", "slides.json"):
+        supplemental = root / "input" / name
+        if supplemental.is_symlink():
+            raise ReceiptError("delivery_artifact_path_invalid")
+        if supplemental.is_file():
+            input_files.append(supplemental)
     template_files = set(_used_template_files(committed))
     template_files.update(path for path in input_files if _STYLE_SOURCE_RE.search(path.name))
     plain_inputs = [path for path in input_files if path not in template_files]

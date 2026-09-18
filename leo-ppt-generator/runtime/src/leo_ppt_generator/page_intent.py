@@ -7,18 +7,9 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
-
-
-REGIME_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "template-library"
-    / "governance"
-    / "rules"
-    / "page-type-regime-v2.json"
-)
 
 _KEYWORDS = {
     "comparison": ("对比", "比较", "差异", "优劣", "之前", "之后", "vs", " versus "),
@@ -41,17 +32,28 @@ def _role_shape(role: str, regime: dict[str, Any]) -> str | None:
     return None
 
 
-@lru_cache(maxsize=1)
-def load_page_type_regime() -> dict[str, Any]:
-    """读取版本化页型真值源；缺失或非法时快速失败。"""
-    try:
-        document = json.loads(REGIME_PATH.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeError(f"page_type_regime_unavailable: {REGIME_PATH}") from exc
+@lru_cache(maxsize=4)
+def _parse_page_type_regime(body: bytes) -> dict[str, Any]:
+    document = json.loads(body)
     if (document.get("schema_version") != 2 or document.get("regime_id") != "page-type-regime-v2"
             or not isinstance(document.get("page_types"), dict) or not document.get("relations")):
         raise RuntimeError("page_type_regime_invalid")
     return document
+
+
+def load_page_type_regime() -> dict[str, Any]:
+    """使用同一 bundle 定位器；缓存解析结果不能绕过库切换、字节或维护重核。"""
+    from .asset_resolver import builtin_library_root
+    from .library_migration import library_operation
+    from .qualification import read_evidence_bytes
+    root = builtin_library_root()
+    path = "governance/rules/page-type-regime-v2.json"
+    with library_operation(root):
+        try:
+            body = read_evidence_bytes(root, path)
+            return deepcopy(_parse_page_type_regime(body))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"page_type_regime_unavailable: {root / path}") from exc
 
 
 def _text(page: dict[str, Any]) -> str:

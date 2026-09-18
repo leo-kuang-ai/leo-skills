@@ -3,8 +3,7 @@
 
 覆盖：
   1. content pack / stamp-page-ids CLI 通道（编译、校验、legacy 拒绝）；
-  2. image prepare --content-pack/--design：输入冻结、RunIndex 登记、
-     篡改拒绝、页序不匹配拒绝、内容改版 fingerprint 冲突（须建新 run）；
+  2. image prepare 消费 committed generation：旧参数、缺 pointer、篡改与错页拒绝；
   3. upgrade import-baseline：source_binding 关联（源 run/交付 SHA/内容与
      设计快照复制）、幂等重放、源目录移走后 load_baseline 仍可恢复、
      复制失败不暴露半份基线。
@@ -117,89 +116,67 @@ class ContentPackCliTests(unittest.TestCase):
 
 class PrepareContentBindingTests(unittest.TestCase):
     def setUp(self):
+        from tests.expression_test_support import copy_real_html_run
+        from leo_ppt_generator.application.expression_pipeline import load_committed_input
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
-        self.run_root = Path(self._tmp.name) / "run"
-        (self.run_root / "input").mkdir(parents=True)
-        (self.run_root / "run.json").write_text(json.dumps({
-            "schema_version": 1, "run_id": "r1", "route": "generate",
-            "revision": 0, "supplemental_inputs": {},
-        }), encoding="utf-8")
-        self.master = self._tmp_path("deck-master-v1.md")
-        self.master.write_text(MASTER, encoding="utf-8")
-        self.pack_path = self._tmp_path("page-content-pack.json")
-        _dispatch(["content", "pack", "--master", str(self.master),
-                   "--out", str(self.pack_path)])
-        self.design_path = self._tmp_path("resolved-design.json")
-        self.design_path.write_text(json.dumps({
-            "entity": "resolved-design",
-            "pages": [{"page_no": 1}, {"page_no": 2}],
-            "design_digest": "a" * 64,
-            "design_context_digest": "b" * 64,
-        }), encoding="utf-8")
-        self.slides_path = self._tmp_path("slides.json")
-        self.slides_path.write_text(json.dumps(SLIDES), encoding="utf-8")
+        self.root = Path(self._tmp.name).resolve()
+        self.run_root = self.root / "run"
+        copy_real_html_run(self.run_root)
+        committed = load_committed_input(self.run_root)
+        self.inputs = committed["root"]
+        self.pack = committed["payload"]["pack"]
+        self.slides_path = self.root / "slides.json"
+        self.slides = [{"page_id": page["page_id"], "number": page["number"], "notes": ""}
+                       for page in self.pack["pages"]]
+        self.slides_path.write_text(json.dumps(self.slides))
 
-    def _tmp_path(self, name: str) -> Path:
-        return Path(self._tmp.name) / name
+    def _prepare(self):
+        return _dispatch(["image", "prepare", str(self.run_root), "--slides", str(self.slides_path)])
 
-    def _prepare(self, *extra: str):
-        return _dispatch([
-            "image", "prepare", str(self.run_root),
-            "--slides", str(self.slides_path), *extra])
-
-    def test_prepare_freezes_binding_and_records_supplemental(self):
-        result = self._prepare("--content-pack", str(self.pack_path),
-                               "--design", str(self.design_path))
+    def test_prepare_consumes_committed_binding_and_only_freezes_supplemental_slides(self):
+        before = (self.run_root / "input/current.json").read_bytes()
+        result = self._prepare()
         self.assertEqual(result["status"], "ready")
-        binding = result["content_binding"]
-        self.assertEqual(len(binding["page_ids"]), 2)
-        self.assertTrue((self.run_root / "input/page-content-pack.json").is_file())
-        self.assertTrue((self.run_root / "input/resolved-design.json").is_file())
-        index = json.loads((self.run_root / "run.json").read_text(encoding="utf-8"))
-        self.assertIn("content_pack", index["supplemental_inputs"])
-        self.assertIn("resolved_design", index["supplemental_inputs"])
+        self.assertEqual(result["content_binding"]["page_ids"], [page["page_id"] for page in self.pack["pages"]])
+        self.assertEqual((self.run_root / "input/current.json").read_bytes(), before)
+        self.assertFalse((self.run_root / "input/page-content-pack.json").exists())
+        self.assertTrue((self.run_root / "input/slides.json").is_file())
 
-    def test_prepare_replay_with_same_binding_is_idempotent(self):
-        first = self._prepare("--content-pack", str(self.pack_path))
-        second = self._prepare("--content-pack", str(self.pack_path))
+    def test_prepare_replay_is_idempotent(self):
+        first, second = self._prepare(), self._prepare()
         self.assertEqual(first["content_binding"], second["content_binding"])
         self.assertEqual(second["idempotency_status"], "replayed")
 
-    def test_tampered_pack_rejected(self):
-        pack = json.loads(self.pack_path.read_text(encoding="utf-8"))
-        pack["pages"][0]["claim"] = "手改标题"
-        self.pack_path.write_text(json.dumps(pack, ensure_ascii=False), encoding="utf-8")
-        with self.assertRaises(ContractError) as caught:
-            self._prepare("--content-pack", str(self.pack_path))
-        self.assertEqual(str(caught.exception), "content_pack_invalid")
+    def test_tampered_pack_rejected_before_supplemental_freeze(self):
+        (self.inputs / "page-content-pack.json").write_text('{"pages":[]}')
+        with self.assertRaisesRegex(ContractError, "input_generation_invalid"):
+            self._prepare()
+        self.assertFalse((self.run_root / "input/slides.json").exists())
 
-    def test_page_mismatch_rejected(self):
-        slides2 = [dict(SLIDES[0], number=9), SLIDES[1]]
-        self.slides_path.write_text(json.dumps(slides2), encoding="utf-8")
-        with self.assertRaises(ContractError) as caught:
-            self._prepare("--content-pack", str(self.pack_path))
-        self.assertEqual(str(caught.exception), "content_pack_page_mismatch")
+    def test_stable_page_id_is_required_even_if_page_numbers_match(self):
+        self.slides[0]["page_id"] = "pg-99999999"
+        self.slides_path.write_text(json.dumps(self.slides))
+        with self.assertRaisesRegex(ContractError, "content_pack_page_mismatch"):
+            self._prepare()
+        self.assertFalse((self.run_root / "input/slides.json").exists())
 
-    def test_content_revision_after_prepare_requires_new_run(self):
-        self._prepare("--content-pack", str(self.pack_path))
-        revised = MASTER.replace("- 标题：增长质量", "- 标题：增长质量（修订）")
-        master2 = self._tmp_path("deck-master-v2.md")
-        master2.write_text(revised, encoding="utf-8")
-        pack2 = self._tmp_path("page-content-pack-v2.json")
-        _dispatch(["content", "pack", "--master", str(master2), "--out", str(pack2)])
-        with self.assertRaises(ContractError) as caught:
-            self._prepare("--content-pack", str(pack2))
-        self.assertEqual(str(caught.exception), "page-content-pack_fingerprint_conflict")
+    def test_missing_pointer_and_partial_selection_fail_closed(self):
+        (self.inputs / "layout-selection.json").write_text('{"selection":{}}')
+        with self.assertRaisesRegex(ContractError, "input_generation_invalid"):
+            self._prepare()
+        (self.run_root / "input/current.json").unlink()
+        with self.assertRaisesRegex(ContractError, "input_pointer_missing"):
+            self._prepare()
 
-    def test_design_page_mismatch_rejected(self):
-        design = json.loads(self.design_path.read_text(encoding="utf-8"))
-        design["pages"] = [{"page_no": 1}, {"page_no": 3}]
-        self.design_path.write_text(json.dumps(design), encoding="utf-8")
-        with self.assertRaises(ContractError) as caught:
-            self._prepare("--content-pack", str(self.pack_path),
-                          "--design", str(self.design_path))
-        self.assertEqual(str(caught.exception), "design_page_mismatch")
+    def test_old_three_file_freeze_flags_are_not_a_second_production_entry(self):
+        from contextlib import redirect_stderr
+        import io
+        for flag in ("--content-pack", "--design", "--layout-selection"):
+            with self.subTest(flag=flag), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as caught:
+                _dispatch(["image", "prepare", str(self.run_root), "--slides", str(self.slides_path), flag, "legacy.json"])
+            self.assertEqual(caught.exception.code, 2)
+        self.assertFalse((self.run_root / "input/slides.json").exists())
 
 
 def _make_source_run(root: Path, *, pack: dict | None, design: dict | None) -> Path:
@@ -359,32 +336,16 @@ class ReviewCoverageTests(unittest.TestCase):
         slides.write_text(json.dumps(SLIDES), encoding="utf-8")
         return root, run_root, pack_path, design_path, slides
 
-    def test_design_revision_after_prepare_conflicts(self):
+    def test_loose_design_and_selection_cannot_be_frozen_by_prepare(self):
+        from contextlib import redirect_stderr
+        import io
         _root, run_root, pack_path, design_path, slides = self._setup()
-        _dispatch(["image", "prepare", str(run_root), "--slides", str(slides),
-                   "--content-pack", str(pack_path), "--design", str(design_path)])
-        drifted = json.loads(design_path.read_text(encoding="utf-8"))
-        drifted["design_digest"] = "c" * 64
-        design_path.write_text(json.dumps(drifted), encoding="utf-8")
-        with self.assertRaises(ContractError) as caught:
-            _dispatch(["image", "prepare", str(run_root), "--slides", str(slides),
-                       "--content-pack", str(pack_path), "--design", str(design_path)])
-        self.assertEqual(str(caught.exception), "resolved-design_fingerprint_conflict")
-
-    def test_selection_without_pack_currently_freezes_without_cross_check(self):
-        # 表征测试（现状语义）：无内容包时选择独立冻结、跳过摘要/覆盖核对。
-        # 该缺口由独立审查 finding（selection-without-pack skips checks，
-        # adversarial P2/75）作为 residual 跟踪；修复后此测试应改为断言拒绝。
-        _root, run_root, pack_path, design_path, slides = self._setup()
-        selection = _root / "layout-selection.json"
-        selection.write_text(json.dumps({
-            "schema_version": 1, "kind": "deck-layout-selection",
-            "policy_version": "1", "status": "complete",
-            "content_digest": "0" * 64, "selection": {}}), encoding="utf-8")
-        result = _dispatch(["image", "prepare", str(run_root), "--slides", str(slides),
-                            "--layout-selection", str(selection)])
-        self.assertEqual(result["status"], "ready")
-        self.assertTrue((run_root / "input/layout-selection.json").is_file())
+        for flag, path in (("--design", design_path), ("--layout-selection", pack_path)):
+            with self.subTest(flag=flag), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as caught:
+                _dispatch(["image", "prepare", str(run_root), "--slides", str(slides), flag, str(path)])
+            self.assertEqual(caught.exception.code, 2)
+        self.assertFalse((run_root / "input/layout-selection.json").exists())
+        self.assertFalse((run_root / "input/resolved-design.json").exists())
 
     def test_linked_snapshot_tamper_fail_closed(self):
         root = Path(tempfile.mkdtemp())

@@ -232,45 +232,49 @@ def save_style(
 ) -> dict:
     """保存用户风格：接受含 ```json brief 的内容（旧输入离线转换语义）或纯 JSON。"""
     home = home or default_home()
-    _ensure_user_library(home)
-    target = user_style_path(rename or name, home=home)
-    if target.exists() and not overwrite:
-        raise StyleStoreError("style_name_conflict")
-    body = _sanitize(content)
-    parsed = parse_style_document(body)
-    brief = parsed["brief"]
-    if brief is None:
-        try:
-            brief = json.loads(body)
-        except ValueError as exc:
-            raise StyleStoreError("style_content_not_brief") from exc
-    brief_name = _validate_name(str(brief.get("style_name") or (rename or name)))
-    slug = _slugify(brief_name)
-    document = {
-        "schema_version": 2,
-        "entity": "style-brief",
-        "asset_id": f"user:style:{slug}",
-        "name": brief_name,
-        "aliases": brief.get("aliases") or [],
-        "variant_of": None,
-        "lifecycle": "draft",
-        "source": {"origin": "user-imported"},
-        "taxonomy": {"families": ["未分类"]},
-        "visual_language": {"direction": (str(brief.get("visual_direction") or "imported-style-pending-review")[:400])},
-        "bindings": {},
-        "adaptation_gaps": ["theme_not_extracted", "user_import_pending_review"],
-        "content_review": {"reviewed": False, "disposition": "draft"},
-        "legacy_payload": {k: v for k, v in brief.items() if k not in {"style_name", "type"}},
-    }
-    payload = json.dumps(document, ensure_ascii=False, indent=2).encode("utf-8")
-    atomic_write_bytes(target, payload)
-    return {
-        "name": brief_name,
-        "source": "user",
-        "path": str(target),
-        "sha256": hashlib.sha256(payload).hexdigest(),
-        "asset_id": document["asset_id"],
-    }
+    from .library_migration import library_operation
+    library = home / "template-library"
+    library.mkdir(parents=True, exist_ok=True)
+    with library_operation(library):
+        _ensure_user_library(home)
+        target = user_style_path(rename or name, home=home)
+        if target.exists() and not overwrite:
+            raise StyleStoreError("style_name_conflict")
+        body = _sanitize(content)
+        parsed = parse_style_document(body)
+        brief = parsed["brief"]
+        if brief is None:
+            try:
+                brief = json.loads(body)
+            except ValueError as exc:
+                raise StyleStoreError("style_content_not_brief") from exc
+        brief_name = _validate_name(str(brief.get("style_name") or (rename or name)))
+        slug = _slugify(brief_name)
+        document = {
+            "schema_version": 2,
+            "entity": "style-brief",
+            "asset_id": f"user:style:{slug}",
+            "name": brief_name,
+            "aliases": brief.get("aliases") or [],
+            "variant_of": None,
+            "lifecycle": "draft",
+            "source": {"origin": "user-imported"},
+            "taxonomy": {"families": ["未分类"]},
+            "visual_language": {"direction": (str(brief.get("visual_direction") or "imported-style-pending-review")[:400])},
+            "bindings": {},
+            "adaptation_gaps": ["theme_not_extracted", "user_import_pending_review"],
+            "content_review": {"reviewed": False, "disposition": "draft"},
+            "legacy_payload": {k: v for k, v in brief.items() if k not in {"style_name", "type"}},
+        }
+        payload = json.dumps(document, ensure_ascii=False, indent=2).encode("utf-8")
+        atomic_write_bytes(target, payload)
+        return {
+            "name": brief_name,
+            "source": "user",
+            "path": str(target),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "asset_id": document["asset_id"],
+        }
 
 
 def style_display(brief: dict) -> dict:

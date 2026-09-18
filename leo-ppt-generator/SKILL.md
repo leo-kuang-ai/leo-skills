@@ -138,8 +138,10 @@ page/chart 确定性渲染 lane）；逐页版式匹配进母版前读 `referenc
 generate 使用带稳定身份母版（`page_id: pg-<hex>`）时，prepare 前先
 `leo-ppt content pack --master <母版> --out <page-content-pack.json>` 编译内容包
 （legacy 母版先 `content stamp-page-ids` 一次性补齐身份并重新确认；对照页须在
-母版声明 `对照侧:` 标记），`image prepare --content-pack` 冻结绑定——摘要手改即
-拒、改版须建新 run（dashi 集成 K4，合同细则见 execution-contract.md）。
+母版声明 `对照侧:` 标记），将内容包、设计上下文和逐页 lane 写入正式
+`PipelineRequest`，通过 `leo-ppt generate --request <request.json>` 冻结并物化。
+`image prepare` 只读取该 run 已提交的输入代并核对补充讲稿与来源；摘要手改即拒，
+改版须建新 run（合同细则见 execution-contract.md）。
 generate 全出血封面/大图井（文字压图）页读 `references/image-text-composition.md`
 （四步事前构图协议）；素材入库/检索读 `references/library-schema.md`（经
 `scripts/library_catalog.py` 登记 sha256 出处），点名市场/行业数据读

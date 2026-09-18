@@ -183,11 +183,14 @@ class ImageDeckAdapter:
         lease: str | None = None,
         generation: int | None = None,
         rework: bool = False,
+        provenance: dict[str, Any] | None = None,
     ) -> PageArtifact:
         self._assert_run_mutable()
         source = Path(image).resolve()
         if not source.is_file():
             raise ContractError("missing_page_artifact")
+        if provenance is not None and provenance.get("out_sha256") != sha256_file(source):
+            raise ContractError("page_provenance_artifact_mismatch")
         jobs = self._jobs()
         # 已 recorded 页的终态保护（D-DEF-04）：仅幂等重放或显式 rework 可再写；
         # 防止绕过 CLI 包装层的迟到/冲突调用静默覆盖已完成页产物。
@@ -208,6 +211,7 @@ class ImageDeckAdapter:
                     "expected_state_hash": expected_state_hash,
                     "lease": lease,
                     "generation": generation,
+                    **({"provenance_sha256": sha256_bytes(canonical_json(provenance).encode())} if provenance is not None else {}),
                 }
             ).encode()
         )
@@ -248,6 +252,8 @@ class ImageDeckAdapter:
                     "agent_id": agent_id,
                 }
             )
+            if provenance is not None:
+                slide["provenance"] = dict(provenance)
             jobs["operations"][operation_id] = {
                 "fingerprint": fingerprint,
                 "status": "completed",

@@ -21,7 +21,7 @@ class QualificationEvidenceTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         (self.root / ORACLE_PATH).parent.mkdir(parents=True)
         shutil.copyfile(ROOT / "template-library" / ORACLE_PATH, self.root / ORACLE_PATH)
         self.oracle = json.loads((self.root / ORACLE_PATH).read_text())
@@ -97,7 +97,8 @@ class QualificationEvidenceTests(unittest.TestCase):
 
     def test_positive_negative_evidence_is_specific_to_one_relation_and_lane(self):
         result = self.derive()
-        self.assertEqual(self.lane(result)["status"], "publication-qualified")
+        self.assertEqual(self.lane(result)["status"], "provisional")
+        self.assertEqual(self.lane(result)["gaps"], ["u6a_required"])
         self.assertEqual(self.lane(result, "image")["status"], "unverified")
         self.assertEqual(self.lane(result, relation="independent")["status"], "unverified")
         self.assertEqual(result["qualification_status"], "unverified")
@@ -178,10 +179,44 @@ class QualificationEvidenceTests(unittest.TestCase):
         self.asset["lifecycle_status"] = "retired"
         self.assertEqual(self.lane(self.derive())["status"], "rejected")
 
+    def test_local_visual_review_cannot_replace_full_u6a(self):
+        from leo_ppt_generator.qualification import qualification_admits
+        selected = self.lane(self.derive())
+        self.assertFalse(qualification_admits(selected, purpose="publication"))
+        self.assertTrue(qualification_admits(selected, purpose="validation"))
+        review = json.loads((self.root / self.receipt["visual_review"]["path"]).read_text())
+        review["u6a"] = {"status": "passed", "publication_ready": True}
+        self.receipt["visual_review"] = self.write("one/review.json", review)
+        self.receipt["evidence_digest"] = evidence_digest(self.receipt)
+        self.assertEqual(self.lane(self.derive())["status"], "rejected")
+
+    def test_u6a_bundle_rejects_missing_drifted_and_forged_passed_evidence(self):
+        from leo_ppt_generator.quality_replay import capability_publication_files, verify_capability_publication
+        from leo_ppt_generator.qualification import digest
+        prefix = "evidence/replays/controlled-negative"
+        report = {"kind": "quality-replay-receipt", "phase": "U6-A", "status": "passed",
+                  "publication_ready": True, "plan": {"path": "missing-plan.json", "sha256": "b" * 64}}
+        report["receipt_digest"] = digest(report)
+        reference = self.write(prefix + "/receipt.json", report)
+        bundle = {"root": prefix, "receipt": {**reference, "path": "receipt.json"},
+                  "files": [{**reference, "path": "receipt.json"}]}
+        self.assertEqual(len(capability_publication_files(self.root, bundle)), 1)
+        with self.assertRaisesRegex(ValueError, "capability_u6a_not_passed_or_stale"):
+            verify_capability_publication(self.root, self.receipt, bundle)
+        self.write(prefix + "/unlisted.json", {"scope": "test"})
+        with self.assertRaisesRegex(ValueError, "capability_u6a_file_set_mismatch"):
+            capability_publication_files(self.root, bundle)
+        for invalid in ("../outside", "/absolute", "one"):
+            with self.subTest(root=invalid), self.assertRaises(ValueError):
+                capability_publication_files(self.root, {**bundle, "root": invalid})
+        (self.root / prefix / "receipt.json").write_text("changed")
+        with self.assertRaisesRegex(ValueError, "evidence_stale"):
+            capability_publication_files(self.root, bundle)
+
     def test_image_needs_its_own_provider_file_bound_to_output(self):
         image = self.make_receipt(lane="image", name="image")
         self.assertEqual(self.lane(self.derive([image]), "image")["status"], "rejected")
-        self.assertIn("image_output_oracle_unavailable", self.lane(self.derive([image]), "image")["gaps"])
+        self.assertIn("image_output_evidence_invalid: provider_receipt_invalid", self.lane(self.derive([image]), "image")["gaps"])
         del image["probes"]["positive"]["provider_receipt"]
         image["evidence_digest"] = evidence_digest(image)
         self.assertEqual(self.lane(self.derive([image]), "image")["status"], "rejected")

@@ -77,6 +77,7 @@ def qualified_pool(
     resolver=None,
     qualification_purpose="publication",
     provider_contract=None,
+    proposal_factory=None,
 ) -> dict:
     """完整合格候选池（K5）：全部候选跑硬资格；不合格带原因保留在
     ``excluded``，供「无合格候选返回原因」与准入报告使用。
@@ -91,16 +92,30 @@ def qualified_pool(
     pool: list[dict] = []
     excluded: list[dict] = []
     seen = set()
-    for query in candidates:
+    proposal_attempts = []
+
+    def candidate_sources():
+        for query in candidates:
+            yield query, None
+        if not pool and proposal_factory is not None:
+            for proposal in proposal_factory(pack_page, backend):
+                if proposal.get("status") == "failed":
+                    proposal_attempts.append(proposal)
+                else:
+                    yield proposal["base_asset"], proposal
+
+    for query, proposal in candidate_sources():
         try:
             binding = precompile_binding(
                 pack_page, design_context, query, backend=backend,
                 content_digest=content_digest, numbers=numbers, resolver=resolver,
-                qualification_purpose=qualification_purpose, provider_contract=provider_contract)
+                qualification_purpose=qualification_purpose, provider_contract=provider_contract, proposal=proposal)
         except (AssetNotFoundError, DependencyMissingError, ProjectionError) as exc:
             if isinstance(exc, ProjectionError) and not isinstance(exc.__cause__, (AssetNotFoundError, DependencyMissingError)):
                 raise
             excluded.append({"layout_id": query, "hard_failures": ["lane_dependency_missing: " + str(exc)]})
+            if proposal:
+                proposal_attempts.append({"candidate_id": proposal["candidate_id"], "status": "failed", "gap": str(exc)})
             continue
         entry = {
             "layout_id": binding["layout_id"],
@@ -114,18 +129,26 @@ def qualified_pool(
             view = derive_execution_pairings([resolver.resolve(binding["layout_id"])],
                 [resolver.resolve(binding["template_id"] if backend == "render:html" else binding["recipe_id"])],
                 {binding["layout_id"]: {"lanes": {backend: {"relations": {relation: qualification}}}}},
-                catalog_generation=resolver.generation, qualification_purpose=qualification_purpose)
+                catalog_generation=resolver.generation, qualification_purpose=qualification_purpose, proposal=proposal)
             if not any(candidate["identity_digest"] == identity_digest for candidate in view["candidates"]):
                 excluded.append({**entry, "hard_failures": ["execution_pairing_not_admitted"], "pairing_gaps": view["gaps"]})
+                if proposal:
+                    proposal_attempts.append({"candidate_id": proposal["candidate_id"], "status": "failed", "gap": "execution_pairing_not_admitted"})
                 continue
             if identity_digest in seen:
                 continue
             seen.add(identity_digest)
             entry["identity_digest"] = identity_digest
             pool.append(entry)
+            if proposal:
+                proposal_attempts.append({"candidate_id": proposal["candidate_id"], "status": "qualified",
+                                          "identity_digest": identity_digest, "visual_status": "not_run"})
         else:
             excluded.append({**entry,
                              "hard_failures": binding["eligibility"]["hard_failures"]})
+            if proposal:
+                proposal_attempts.append({"candidate_id": proposal["candidate_id"], "status": "failed",
+                                          "gap": binding["eligibility"]["hard_failures"]})
     signals = page_rank_signals(pack_page)
     bank = {}
     for entry in pool:
@@ -144,7 +167,7 @@ def qualified_pool(
             for candidate in ranked["candidates"]
             for entry in sorted(pool, key=lambda row: row["identity_digest"])
             if entry["layout_id"] == candidate["layout"]]
-    return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"]}
+    return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"], "proposal_attempts": proposal_attempts}
 
 
 def _canonical_layouts() -> dict[str, dict]:
@@ -181,6 +204,7 @@ def allocate_deck(
     resolver=None,
     qualification_purpose="publication",
     provider_contract=None,
+    proposal_factory=None,
 ) -> dict:
     """整册分配：确定性有界搜索，返回选中绑定 + 摘要 + 报告。
 
@@ -205,7 +229,7 @@ def allocate_deck(
             page, design_context, content_digest=pack["content_digest"],
             numbers=pack.get("numbers"), backend=backend,
             candidates=candidates, resolver=resolver, qualification_purpose=qualification_purpose,
-            provider_contract=provider_contract)
+            provider_contract=provider_contract, proposal_factory=proposal_factory)
         pools[pid] = page_pool
         explicit_query = explicit.get(pid)
         if explicit_query:
@@ -225,6 +249,7 @@ def allocate_deck(
             page_status[pid] = {
                 "status": "no_candidates",
                 "reasons": [e["hard_failures"] for e in page_pool["excluded"][:5]],
+                "proposal_attempts": page_pool["proposal_attempts"],
             }
 
     if any(s["status"] == "no_candidates" for s in page_status.values()):
@@ -247,6 +272,7 @@ def allocate_deck(
 
     def page_candidates(pid: str) -> list[dict]:
         ranked = pools[pid]["qualified"]
+        local_order = {entry["identity_digest"]: index for index, entry in enumerate(ranked)}
         # 相邻重复与结构族频率惩罚：重排（稳定键保持确定性）。
         prev = selection.get(_prev_pid(order, pid))
         prev_layout = prev["layout_id"] if prev else None
@@ -260,7 +286,8 @@ def allocate_deck(
             return (-rank["raw_score"] + adjacent * 0.06 + family_freq * 0.015,
                     -rank["semantic_score"])
 
-        return sorted(ranked, key=lambda e: (*penalty(e), e["layout_id"]))
+        # 同分且无全局惩罚时保留统一资格池的顺序，不能按另一摘要再次翻转 Top-N。
+        return sorted(ranked, key=lambda e: (*penalty(e), local_order[e["identity_digest"]]))
 
     def search(index: int) -> bool:
         if index >= len(order):
@@ -341,7 +368,10 @@ def _selection_result(pack: dict, pools: dict, selection: dict,
         "status": status,
         "selection": chosen,
         "top2": top2,
+        "top3": {pid: [{"identity": entry["binding"]["execution_pairing_identity"], "identity_digest": entry["identity_digest"]}
+                       for entry in pool["qualified"][:3]] for pid, pool in pools.items()},
         "page_status": page_status,
+        "proposal_attempts": {pid: pool.get("proposal_attempts", []) for pid, pool in pools.items()},
         "content_digest": pack.get("content_digest"),
     }
 

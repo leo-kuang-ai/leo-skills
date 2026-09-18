@@ -129,13 +129,14 @@ leo-ppt image sample-verify <run> --slides <slides.json> --binding <binding.json
 leo-ppt image prepare <run> --slides <slides.json> --sample-binding <binding.json> --sources <sources-manifest.json>
 ```
 
-**内容冻结绑定（dashi 集成 K4）**：带稳定身份母版的 generate run 在 prepare
-时追加 `--content-pack <page-content-pack.json>`（可选 `--design
-<resolved-design.json>`）——内容包/冻结设计 CAS 冻结进 `<run>/input/` 并登记
-RunIndex `supplemental_inputs`；prepare 校验内容包 `content_digest`（手改即拒
-`content_pack_invalid`）与 slides 页序对账（`content_pack_page_mismatch`）。
-已 prepare 后内容或设计改版必须**建立新 run**：同 run 再注入不同摘要以
-`*_fingerprint_conflict` 显式拒绝。内容包经 `leo-ppt content pack --master
+**内容冻结绑定（表达 pipeline）**：带稳定身份母版的 generate run 使用正式
+`PipelineRequest`，通过 `leo-ppt generate --request <request.json>` 调用唯一生产链。
+内容包、selection、design、binding、资产及资格证据一并封存到
+`<run>/input/generations/<generation>/`，原子切换 `input/current.json` 后登记 RunIndex。
+`image prepare` 仅读取已提交代，核对 slides 的 `page_id` 与 `number` 后登记补充讲稿
+和来源；不再接受独立 `--content-pack`、`--design` 或 `--layout-selection` 参数。
+缺 pointer、半份冻结或错页均拒绝；内容或设计改版必须**建立新 run**，同 run 的不同
+输入以 `input_generation_conflict` 拒绝。内容包经 `leo-ppt content pack --master
 <母版> --out <包>` 编译，legacy 母版先 `leo-ppt content stamp-page-ids`
 一次性补齐页身份并重新确认。可编辑目标走 `generate → upgrade
 import-baseline` 两段关联 run：baseline 冻结源交付、页图、notes 与内容/设计

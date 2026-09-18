@@ -8,6 +8,55 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Added
+- **leo-ppt-generator：修复安装态 regime 消费路径与缓存**：`page_intent` 复用正式 bundle/library 定位器，读取当前库 v2 regime；只缓存字节解析，库切换、文件更新与维护状态每次重核，返回值隔离防止调用方污染真值。隔离 wheel 已复现旧源码层级路径失效，补上真实文件回归。 (user-visible)
+- **leo-ppt-generator：补齐 comparison/trend 图片 recipe 与结构容量门**：规格表声明正式 recipe、类型与封闭表格输入路径；图片预编译和最终投影共用 layout 的行列、字数和行数限制，拒绝错形表格、冲突来源和越界输入。五关系正反输入均可准备；缺真实 Provider/视觉 evidence 仍为 unverified，不授予发布资格。 (user-visible)
+- **leo-ppt-generator：统一显式库根的绝对路径**：resolver 接受相对 library/home 时固定绝对可信根，避免能力准入把库前缀拼接两次而无法定位 owner；路径归属与维护锁使用同一根。 (user-visible)
+- **leo-ppt-generator：补齐迁移与库消费者的操作期互斥**：生成/渲染、catalog 构建/读取/current 发布、resolver 查询/依赖解析/快照、关系探针、风格保存/导入/采用及 final receipt 复核在完整操作期间持共享目录锁；迁移先取得同根独占锁再创建 maintenance，避免入口检查之后发生交错写入。只读安装不需创建锁文件；进程退出释放互斥，持久 maintenance 继续阻断未恢复事务。 (user-visible)
+- **leo-ppt-generator：在签发迁移收据前重核交付字节**：current 确认后再次核对 touched 文件状态和范围外 dirty；期间出现外部改写时不签发收据，不覆盖外部内容。 (user-visible)
+- **leo-ppt-generator：阻断维护期间的 resolver 缓存旁路**：已预热的 entities、generation、来源、查询、解析、摘要及冻结入口都重核 builtin/user 库 maintenance；维护标记生效后不再返回缓存索引或写快照。真实 v2 库回归覆盖恢复后读取及未产生冻结副作用。 (user-visible)
+- **leo-ppt-generator：绑定发布事务身份与两阶段确认**：journal 和发布/清理凭证绑定 transaction id、base revision 及递增 generation；原字节备份与 prepared 标记持久化后才写入，current 持久化且确认后才签发分代收据。恢复会使旧收据 stale，根收据通过 CAS 更新，保留历史代及外部字节；目录 fsync 失败不能降级为成功。该机制不替代真实 U6-A 或正式发布验证。 (user-visible)
+- **leo-ppt-generator：验证迁移文件事务的进程硬退出恢复**：真实子进程在普通文件或 current 切换后直接退出，保留 maintenance 与持久 journal；重试恢复本批字节，外部漂移仍拒绝覆盖。staging 删除复用 cleanup 的逐文件 CAS 和目录 fsync；这些测试不签发高层发布或视觉收据。
+- **leo-ppt-generator：纳入迁移强制 CHANGELOG 边界**：preview、固定 closure、stage/publish 清单和最终摘要收敛覆盖根 CHANGELOG.md；该文件按既有字节保留，兄弟技能仍被排除，cleanup 不得删除根变更记录。 (user-visible)
+- **leo-ppt-generator：原子记录双 lane 页面与 provenance**：HTML 和 image 共用页事务一次保存已验证收据，HTML 不再追加第二次 jobs revision；CLI provenance 摘要返回双层 binding，实际冻结 HTML 回归核对页图、收据和单次 revision。 (user-visible)
+- **leo-ppt-generator：修复 OCR 判域被可选输入豁免**：已核验 image lane 优先于来源清单和生成方式；CLI 从冻结页面读取必现文字，复用 OCR owner 在页事务前执行 WARN/enforce 门。保留门到页文件写入的机制集成，并增加真实冻结 HTML 的完整 CLI 正例；没有将这些测试宣称为真实 image Provider 验证。 (user-visible)
+- **leo-ppt-generator：将能力晋升绑定正式 U6-A 回放**：局部视觉评审仅保持 provisional；发布资格重算完整 U6-A 收据、封闭附件树和使用同一探针证据的对应页，拒绝缺件、漂移、循环引用和无关能力借证。该准入工具尚无真实双 lane 正向发布证据。 (user-visible)
+- **leo-ppt-generator：把 image 资格绑定本次 Provider 合同**：正反探针须使用同一 Provider、模型和合同；候选选型与冻结重验核对实际请求的合同摘要，缺摘要、跨合同和本地协议测试证据不能进入 image 执行池。 (user-visible)
+- **leo-ppt-generator：拒绝输出中的反向关系冲突**：实际SVG额外添加反向箭头的流程/因果负例已复现；输出oracle同时检查必需连线与未声明的反向边，不能因正确方向仍存在就接受误导的双向关系。 (user-visible)
+- **leo-ppt-generator：分离CLI记录的lane与Provider身份**：Provider名称解析到冻结image lane，并通过独立`--provider-receipt`核对当前Provider、run、input generation、双层摘要及实际图片；HTML与Provider收据不可混用。image provenance与记录原子写入，HTML OCR豁免只使用已核验收据。真实image正向集成仍待Provider证据。 (user-visible)
+- **leo-ppt-generator：统一执行环境与基线封存的源码集合**：封存器与环境指纹共用成员规则，覆盖新增Swift OCR及图片执行源码；漏封任何必需执行文件均拒绝。修正图片探针准备入口的相对库路径解析，并明确旧fixture回归只验证字段投影。
+- **leo-ppt-generator：接入 image 输出检测与证据导入**：新增本机 Apple Vision 从PNG重算文字和位置，封闭的具名视觉观测补充连线与裁切几何；资格链重核recipe输入、真实Provider响应、OCR测量与图片对应。本地HTTP测试不能获得真实Provider资格，缺观测或依赖继续阻断。探针CLI可预生成待授权输入并导入正反真实收据，不自动调用付费渠道。 (user-visible)
+- **leo-ppt-generator：拒绝扫描范围不完整的零命中 closure**：十个固定扫描根必须存在且类型正确；verify、publish 前复核、cleanup 与最终收敛共用同一门禁，传入包根、漏目录或用普通文件冒充目录均不得获得发布资格。 (user-visible)
+- **leo-ppt-generator：重核 Provider 响应与最终图片对应**：校验真实响应身份、请求模型、原始 base64 图片、固定留边转换与最终像素；重算摘要不能放行替换的原图或导出图。没有下载传输证据的 URL-only 响应明确拒绝，语义与视觉仍单独验收。 (user-visible)
+- **leo-ppt-generator：修复封面标题实际字体溢出**：扩大标题行框以容纳离线 CJK 字形，真实浏览器分别验证单行和两行标题；保留原溢出探针门槛。 (user-visible)
+- **leo-ppt-generator：校准当前画廊图表基线**：真实重渲染18种风格并复核差异，只更新18张图表缩略图；记录新旧摘要和恢复备份，其余126份输入与样图字节保持一致。该检查不代替U6正式配对视觉验收。 (user-visible)
+- **leo-ppt-generator：校正 consumer closure 的历史文档归属**：依据显式历史 frontmatter、定期评测标题、冻结记录和技术方案性质分类，所有命中仍保留在账本；仅有旧日期或历史字样的活动代码、当前指南仍计入待迁移，不修改范围外历史文档。
+- **leo-ppt-generator：迁移 compose 与返工入口回归**：真实 v2 表格资格先生成冻结 selection 再调用 compose；无 selection 的显式模板不能重路由。CLI 返工测试使用真实 HTML PNG 与绑定收据，验证首次记录、重复拒绝、显式返工与幂等重放。
+- **leo-ppt-generator：迁移样张与模板回归消费者**：样张测试消费真实 HTML pipeline 的 committed input、PNG 和当前 slides；旧 dashi/pro-template 测试保留全部字段与浏览器文字、几何断言，同时明确缺表达输入不具备生产资格。四列表格使用支持该容量的真实 table-pro 布局。
+- **leo-ppt-generator：迁移 CLI 来源冻结测试**：测试通过真实 `routes.generate(PipelineRequest)` 创建 committed input 和 HTML 导出，再从冻结页面派生 slides，验证 `image prepare --sources` 的幂等与漂移拒绝；不再用缺少 generation 的手写 RunIndex 充当生产输入。
+- **leo-ppt-generator：补齐并列事项的正式 authoring schema**：`page-content-pack-v2` 接受 regime v2 已定义的 `independent` 语义结构，带可追溯证据的显式声明可通过实际编译与选型；缺证据仍保持 undecided。 (user-visible)
+- **leo-ppt-generator：统一同分候选的摘要与实际选择**：整册搜索在全局惩罚相同时沿用资格池顺序，避免再次按 identity hash 排序导致 Top-N 与实际选择翻转；真实 v2 资格回归分别验证显式语义偏好和 undecided 同分行为。 (user-visible)
+- **leo-ppt-generator：区分字段投影与生产物化测试**：旧内容字段回归继续检查全部角色、容量、媒体和数值门，但缺表达的绑定必须拒绝生产物化；正向物化改用实际浏览器证据和双层摘要，并验证 provisional 不能升级为发布资格。
+- **leo-ppt-generator：校准旧渲染与质量回放消费者**：规格表正例遵守当前最小行数，非法输入要求在渲染前拒绝且无文件；历史观测账本继续逐字段重放，同时断言缺少 committed input 的新版质量通道保持 `blocked/not_run`。
+- **leo-ppt-generator：迁移整册分配测试到真实资格链**：受控布局由真实模板复制，每组声明均重新执行浏览器正反探针，页面使用正式表达合同并明确 `validation` 用途；覆盖复用限制、回溯、预算耗尽和显式选择，保留无证据拒绝门。
+- **leo-ppt-generator：补齐迁移全文件收敛校验**：preview、stage、cleanup 和最终验证检查相同的完整交付文件集合、类型、权限与摘要；计划外文件、库内被忽略的附属字节、符号链接及外部漂移均拒绝，不再只比较目标清单的子集。新增真实文件负例，不代表正式发布已完成。
+- **leo-ppt-generator：重采当前资产的五关系 HTML 证据**：comparison/trend/process/causal/independent 各保存真实正反 PNG、测量和 receipt，当前 verifier 逐条重核后更新活动证据索引；五组均仅为缺视觉裁决的 provisional，image 仍 blocked，不能进入 publication-qualified。补充五阶段迁移与回放合同文档。
+- **leo-ppt-generator：保存完整验证失败账本**：有序验证器从完整 unittest 日志提取全部失败与错误标签，包括 subTest；退出码、终结汇总、日志摘要与源码稳定性一并保存，避免复杂测试名称导致漏账。
+- **leo-ppt-generator：补充正式迁移计划 schema**：preview 及执行入口共用 `migration-plan-v2`，封闭文件状态与操作字段，核对固定 closure roots、来源清单、目标映射和 normalize/derived 范围；发布和最终验证重核迁移 owner 与真实价值前置收据。
+- **leo-ppt-generator：验证 v2 bundle 与探针启动顺序**：隔离安装测试真实转换整库并构建 v2 catalog，模板解析使用显式 resolver；capability CLI 与 runtime 共享 bundle 根选择。探针在写新证据前固定既有 catalog，避免 v2 自身证据写入造成启动 stale；冻结设计回归消费真实新位置探针和 selection。
+- **leo-ppt-generator：修正 cleanup 的恢复与维护时序**：最终收据持久化后才解除 maintenance，中断重试先重核收据；cleanup 回滚通过原字节 journal 恢复后可重放同批发布，外部漂移继续拒绝覆盖。最终验证重跑正式 verify/U6-A 门并核对完整 v2 views 与当前策略摘要；完整真实发布仍待前置证据。
+- **leo-ppt-generator：迁移设计与有效绑定消费者回归**：用真实浏览器取得的非发布资格和冻结 selection 校验设计投影、双层摘要、离线快照与篡改拒绝，移除无表达/无证据 fixture 默认合格的旧断言；这些回归不代表真实 image 或视觉收益通过。
+- **leo-ppt-generator：替换旧迁移 CLI 为五阶段事务接口**：唯一计划冻结 source/dirty/映射/目标摘要与删除清单，stage 使用独立 worktree；verify 汇集结构和 U6-A 门，publish 维护锁、逐文件 CAS、备份和 current 最后切换，cleanup 逐项重核并校验 staging/delivery 收敛。外部漂移保留，缺价值/视觉证据禁止正式 stage 或发布；新增工具仍须完整回归和真实发布验证。 (user-visible)
+- **leo-ppt-generator：增加 v2 shadow catalog 与迁移事务基础**：位置合同覆盖 semantic/visual/executable/collections，参考指南与 QA 规则不进入执行实体；显式 LibraryContext 区分 execution 与 diagnostic，v2 catalog 依资产、证据和 owner 策略摘要派生，完整一代写入后切 current，同代冲突拒绝。迁移 CAS、持久 maintenance、最终收据链与 delivery hash 重核已增加；旧 delivery 尚未发布切换。 (user-visible)
+- **leo-ppt-generator：修正 delivery 回放与拒答证据**：U6-A 保持固定 R-85 全集，U6-B 使用独立执行前缀与双 lane 代表集，并继承重核 A 的结论；拒答保存请求、源码、库、环境与日志摘要，离线复核重新运行同一资格计算，拒绝篡改后重签摘要的失败收据。代表集不升级为全册逐页视觉验收。 (user-visible)
+- **leo-ppt-generator：增加固定基线与 R-85 回放工具**：旧链基线核对源/dirty/输入/模板/导出字节，U6 回放固定 30 格、60 页和独立 deck 分母，真实调用唯一 generate 链并读取候选、绑定、导出与逐页裁决。scorecard 不再接收手填汇总分数作为视觉通过证据；缺基线、Provider、裁决或 delivery/user replay 时失败关闭。 (user-visible)
+- **leo-ppt-generator：统一执行配对来源判别值**：canonical 分支只接受方案规定的 `canonical-derived-pairing`，旧判别值失败，不保留别名；task-local 分支继续绑定 run scope 与 patch 摘要。 (user-visible)
+- **leo-ppt-generator：正文模板消费实际区域几何**：body-basic 的正文矩形改为读取 layout 编译的数值变量，使 region/span 提案真实影响导出；新字节使原能力证据失效，须重新运行探针。 (user-visible)
+- **leo-ppt-generator：接入任务内 proposal 资格与物化**：有限 patch 在隔离任务库中取得自身探针证据，重回统一候选池、冻结输入和 HTML/image 投影；共享资产保持不变，内容、主题、run scope 与 patch 均重验，失败候选和 curation 保留具体原因，缺 image/视觉证据保持未准入。 (user-visible)
+- **leo-ppt-generator：同步表达链 authoring 文档**：入口与 image workflow 使用正式 PipelineRequest 和 committed generation，移除 prepare 独立冻结参数及旧 run 兼容说明，明确补充输入与表达真值的消费关系。 (user-visible)
+- **leo-ppt-generator：移除 CLI prepare 的第二冻结入口**：删除独立 pack/design/selection 冻结参数和旧 policy 分支；prepare 只消费 pipeline 已提交输入，并按稳定 page_id 与展示页序校验讲稿。缺 pointer、半份 selection 或错页在写补充输入前拒绝。 (user-visible)
+- **leo-ppt-generator：修复预览缓存的 lane 校验**：预览页记录实际 backend，避免有效缓存因缺 lane 被重复渲染；内容修订建立新 run 后可复用未变化页像素，并更新收据中的实际路径。交付收据同时固定补充来源和讲稿合同，来源变动不能继续沿用旧收据。 (user-visible)
+- **leo-ppt-generator：交付预检读取 committed generation**：移除平铺内容包存在才检查的旧条件，按 lane 核对选中页集合；缺 pointer 或输入代损坏不能跳过投影门，预览也返回可诊断的同源错误。 (user-visible)
+- **leo-ppt-generator：原子公开 HTML 单页产物**：页输入、PNG 与双层 binding 收据在不可见 staging 完整核验后一并公开；中断可从冻结输入重试，已公开页只读复核，输入篡改、缺收据与符号链接均失败。增加真实 Chromium 中断恢复回归。 (user-visible)
 - **leo-ppt-generator：迁移交付收据回归到真实冻结输入**：使用当前浏览器导出的 HTML 页及不可变输入代验证收据；缺 pointer、损坏输入与页图篡改均拒绝，收据新鲜度不替代视觉验收。 (user-visible)
 - **leo-ppt-generator：增加串行验证执行器**：按 compileall、schema、lint、表达消费者、迁移、quality、全量 unittest 顺序运行，每条命令保留 PID、完整日志、退出码和 hash，并对照验证前后源码快照；观察超时或源码漂移不能算通过。同步刷新已修改 layout 的规范 manifest 摘要。 (user-visible)
 - **leo-ppt-generator：保留 image Provider 原始响应证据**：OpenAI compatible adapter 保留真实 request ID、HTTP 状态和响应字节；图片导出保存原图、等比留边转换与双层 binding 收据，缺响应身份不编造，语义与视觉始终另行验收。禁用 SDK 隐式重试，响应未知时阻止自动重复付费请求。 (user-visible)

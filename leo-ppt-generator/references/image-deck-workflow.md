@@ -191,10 +191,9 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    通道获取，来源 URL+抓取时间戳入 manifest，抓不到如实标 unknown 求证（R-05）。
    按执行合同先 `image sample-record` 保存有依据的样张决策；以下 prepare 调用还必须
    带 `--sample-binding <binding.json>`（六字段定义见执行合同），再调用顶层
-   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json> [--content-pack <page-content-pack.json>] [--design <resolved-design.json>]`（dashi K4：内容包/冻结设计 CAS 冻结并校验摘要与页序，改版须建新 run，详见 execution-contract.md「内容冻结绑定」）——
+   `"$LEO_PPT" image prepare <run> --slides <slides.json> --sources <sources-manifest.json>`。该 run 必须已通过 `leo-ppt generate --request <request.json>` 提交完整表达输入代；prepare 只核对页身份、页序并登记补充输入，改版须建新 run，详见 execution-contract.md「内容冻结绑定」。
    runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
-   `contents_sha256` 并入 `prepare_fingerprint`（不带 `--sources` 时 fingerprint 保持
-   旧算法，旧 run 恢复兼容）；这一步创建唯一 `image-deck/slide_jobs.json` canonical
+   `contents_sha256` 并入 `prepare_fingerprint`；这一步创建唯一 `image-deck/slide_jobs.json` canonical
    state。vendor prompt 工具只能作为无状态能力被 bridge 调用，不直接拥有 run 真值。
 8. 多页时按 `prompts/slide-worker.md` 派发 worker（前提：样张门已过——用户认可或
    显式豁免记录在案），并为每次执行使用顶层 run lease。
@@ -202,7 +201,12 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    不默认新增页、图片调用或用户确认。实际 provider 验证和成本估算随业务样张更新。
    派发前 `python3 scripts/check_worker_brief.py <deck 目录|slides.json>` 过 worker
    简报四块完备阶梯（R-46，合同与豁免口径见执行合同 Worker 节）。
-9. worker 返回后调用顶层 `"$LEO_PPT" image record <run>`；失败保留在同一
+9. worker 返回后调用顶层 `"$LEO_PPT" image record <run>`；image lane 使用冻结合同中的
+   Provider 名作为 `--backend`，同时传入该页的 `--provider-receipt`。CLI 从 `image`
+   lane 读取绑定，重核 Provider、run、input generation、双层摘要和页图字节，
+   provenance 随页记录原子写入。HTML lane 则使用 `--backend render:html` 和
+   `--render-receipt`，两类收据不能混用，均在同一次页事务保存。image 的 OCR 门读取
+   冻结内容包的必现文字，缺少可选来源清单或 overlay 标记不会豁免该门。失败保留在同一
    canonical state。聊天回复不改变状态，取消后的迟到 lease 会被拒绝。
 10. 对每页分别关闭文字准确性、可读性/对比度、遮挡/截断、required asset、
     图表数据/单位/标签/排序和样张风格继承；任一失败都阻止该页 accepted，其他检查

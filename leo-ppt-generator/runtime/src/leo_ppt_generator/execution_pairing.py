@@ -22,7 +22,7 @@ def pairing_identity(*, layout, executable, lane, catalog_generation, evidence_d
     if executable.get("kind") != kind or executable["data"].get("lane") != lane:
         raise PairingError("execution_pairing_lane_mismatch")
     scope = layout["asset_id"].split(":", 1)[0]
-    identity = {"source_kind": "canonical", "scope": scope,
+    identity = {"source_kind": "canonical-derived-pairing", "scope": scope,
         "catalog_generation": catalog_generation, "lane": lane,
         "layout_identity": _identity(layout),
         "template_identity": _identity(executable) if kind == "template" else None,
@@ -75,7 +75,7 @@ def validate_candidate_view(view):
 
 
 def derive_execution_pairings(layouts, executables, qualifications, *, catalog_generation,
-                             qualification_purpose="publication"):
+                             qualification_purpose="publication", proposal=None):
     """owner 双向引用、输入槽位与当前关系证据的交集；无物理路径或排名。"""
     executable_by_id = {record["asset_id"]: record for record in executables}
     if len(executable_by_id) != len(executables):
@@ -105,7 +105,7 @@ def derive_execution_pairings(layouts, executables, qualifications, *, catalog_g
                 if not qualification_admits(evidence, purpose=qualification_purpose):
                     continue
                 identity = pairing_identity(layout=layout, executable=executable, lane=lane,
-                    catalog_generation=catalog_generation, evidence_digest=evidence["evidence_set_digest"])
+                    catalog_generation=catalog_generation, evidence_digest=evidence["evidence_set_digest"], proposal=proposal)
                 key = pairing_key(identity)
                 entry = result.setdefault(key, {"identity": identity, "identity_digest": key, "relations": {}})
                 if relation in entry["relations"] and entry["relations"][relation] != evidence:

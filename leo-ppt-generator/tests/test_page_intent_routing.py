@@ -228,14 +228,37 @@ class PageIntentRegimeV2ContractTest(unittest.TestCase):
         from unittest.mock import patch
         import leo_ppt_generator.page_intent as owner
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "regime.json"
+            library = Path(directory) / "template-library"
+            path = library / "governance/rules/page-type-regime-v2.json"
+            path.parent.mkdir(parents=True)
+            (library / "library.json").write_text("{}")
             path.write_text(json.dumps({"schema_version": 1, "page_types": {}}))
-            owner.load_page_type_regime.cache_clear()
-            try:
-                with patch.object(owner, "REGIME_PATH", path), self.assertRaisesRegex(RuntimeError, "page_type_regime_invalid"):
-                    owner.load_page_type_regime()
-            finally:
-                owner.load_page_type_regime.cache_clear()
+            with patch.dict("os.environ", {"LEO_PPT_BUNDLE": directory}), self.assertRaisesRegex(RuntimeError, "page_type_regime_invalid"):
+                owner.load_page_type_regime()
+
+    def test_regime_uses_selected_bundle_and_rechecks_bytes_and_maintenance(self):
+        import tempfile
+        from unittest.mock import patch
+        baseline = json.loads((ROOT / "template-library/governance/rules/page-type-regime-v2.json").read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            for name in ("first", "second"):
+                library = Path(directory) / name / "template-library"
+                path = library / "governance/rules/page-type-regime-v2.json"
+                path.parent.mkdir(parents=True)
+                (library / "library.json").write_text("{}")
+                baseline["bundle_test_marker"] = name
+                path.write_text(json.dumps(baseline))
+                with patch.dict("os.environ", {"LEO_PPT_BUNDLE": str(library.parent)}):
+                    self.assertEqual(load_page_type_regime()["bundle_test_marker"], name)
+                    baseline["bundle_test_marker"] = name + "-changed"
+                    path.write_text(json.dumps(baseline))
+                    self.assertEqual(load_page_type_regime()["bundle_test_marker"], name + "-changed")
+                    local = load_page_type_regime()
+                    local["page_types"].clear()
+                    self.assertTrue(load_page_type_regime()["page_types"])
+                    (library / ".maintenance.json").write_text("{}")
+                    with self.assertRaisesRegex(ValueError, "library_in_maintenance"):
+                        load_page_type_regime()
 
     def test_relation_minimum_encoding_is_declared(self) -> None:
         regime = load_page_type_regime()

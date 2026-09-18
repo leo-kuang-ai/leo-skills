@@ -5,11 +5,11 @@
   "definitions": {
     "asset_id": {
       "type": "string",
-      "pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):[A-Za-z0-9\\-\\u4e00-\\u9fff]+$"
+      "pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament):[A-Za-z0-9\\-\\u4e00-\\u9fff]+$"
     },
     "asset_ref": {
       "type": "string",
-      "pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):[A-Za-z0-9\\-\\u4e00-\\u9fff]+$"
+      "pattern": "^(builtin|user):(style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament):[A-Za-z0-9\\-\\u4e00-\\u9fff]+$"
     },
     "lifecycle": {
       "enum": [

@@ -172,4 +172,13 @@ def generate(request, *, resolver=None):
     from .expression_pipeline import PipelineRequest, run_expression_pipeline
     if not isinstance(request, PipelineRequest):
         raise RouteContractError("expression_request_invalid")
-    return run_expression_pipeline(request, resolver=resolver)
+    from contextlib import ExitStack
+    from ..library_migration import library_operation, require_available
+    with ExitStack() as libraries:
+        if request.library_root:
+            require_available(request.library_root)
+            if Path(request.library_root).is_dir():
+                libraries.enter_context(library_operation(request.library_root))
+        if resolver is not None:
+            libraries.enter_context(resolver.library_session())
+        return run_expression_pipeline(request, resolver=resolver)

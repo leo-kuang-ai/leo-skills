@@ -150,7 +150,7 @@ def evaluate_output(expected, measurement, *, relation, oracle):
     validate_expectation(expected, relation)
     if (not isinstance(measurement, dict) or measurement.get("schema_version") != 1
             or measurement.get("kind") != "render-measurement"
-            or measurement.get("source") != "browser-dom"):
+            or measurement.get("source") not in {"browser-dom", "raster-ocr-reviewed"}):
         raise OracleError("oracle_measurement_missing")
     width, height = measurement["viewport"]
     if (width, height) != (1280, 720):
@@ -181,17 +181,34 @@ def evaluate_output(expected, measurement, *, relation, oracle):
         positions = [next((i for i, t in enumerate(texts) if _normal(v) in _normal(t["text"])), -1) for v in values]
         return all(p >= 0 for p in positions) and positions == sorted(positions)
 
+    def near(point, box):
+        x, y, w, h = box
+        return math.hypot(max(x-point[0], 0, point[0]-x-w), max(y-point[1], 0, point[1]-y-h)) <= 48
+
     def connected(edge, *, directed=False):
-        def near(point, box):
-            x, y, w, h = box
-            return math.hypot(max(x-point[0], 0, point[0]-x-w), max(y-point[1], 0, point[1]-y-h)) <= 48
         for segment in measurement["edges"]:
-            if directed and not segment["directed"]:
-                continue
-            if any(near(segment["start"], a["box"]) and near(segment["end"], b["box"])
-                   for a in matches(edge["from"]) for b in matches(edge["to"])):
-                return True
+            directions = [(segment["start"], segment["end"])] if not directed or segment["directed"] else []
+            if segment.get("reverse"):
+                directions.append((segment["end"], segment["start"]))
+            for start, end in directions:
+                if any(near(start, a["box"]) and near(end, b["box"])
+                       for a in matches(edge["from"]) for b in matches(edge["to"])):
+                    return True
         return False
+
+    def no_conflicting_edges(structure):
+        allowed = {(edge["from"], edge["to"]) for edge in structure["edges"]}
+        for segment in measurement["edges"]:
+            starts = [node for node in structure["nodes"] if any(near(segment["start"], t["box"]) for t in matches(node))]
+            ends = [node for node in structure["nodes"] if any(near(segment["end"], t["box"]) for t in matches(node))]
+            for start in starts:
+                for end in ends:
+                    if start == end:
+                        continue
+                    if ((segment["directed"] and (start, end) not in allowed)
+                            or (segment.get("reverse") and (end, start) not in allowed)):
+                        return False
+        return True
 
     def contained(box):
         x,y,w,h = _box(box)
@@ -238,9 +255,9 @@ def evaluate_output(expected, measurement, *, relation, oracle):
             boxes = [matches(n) for n in branch]
             parallel &= bool(all(boxes) and max(b[0]["box"][1] for b in boxes)-min(b[0]["box"][1] for b in boxes) <= 8)
         checks.update(nodes_visible=all_present(s["nodes"]),
-            dependency_edges=all(connected(e) for e in s["edges"]), parallel_branches=bool(parallel))
+            dependency_edges=all(connected(e) for e in s["edges"]) and no_conflicting_edges(s), parallel_branches=bool(parallel))
     elif relation == "causal":
-        checks.update(directed_edges=all(connected(e, directed=True) for e in s["edges"]),
+        checks.update(directed_edges=all(connected(e, directed=True) for e in s["edges"]) and no_conflicting_edges(s),
             edge_meaning=all_present([e["meaning"] for e in s["edges"]]),
             source_support=all_present([e["support"] for e in s["edges"]]),
             causal_uncertainty=all_present(s["uncertainty"]))

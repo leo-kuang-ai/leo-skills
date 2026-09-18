@@ -96,8 +96,11 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
     """整册总览保持完整页集；pages 只指定此次允许重渲的页，其余有效缓存可复用。"""
     root = Path(run_path).resolve()
     destination = _safe_destination(root, output_dir)
-    from .application.expression_pipeline import committed_input_root
-    input_root = committed_input_root(root)
+    from .application.expression_pipeline import committed_input_root, ExpressionPipelineError
+    try:
+        input_root = committed_input_root(root)
+    except ExpressionPipelineError as exc:
+        raise PreviewError(exc.reason_code) from exc
     pack_path = input_root / "page-content-pack.json"
     if not pack_path.is_file():
         raise PreviewError("preview_content_pack_missing")
@@ -123,6 +126,7 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
         report = {"schema_version": PREVIEW_VERSION, "kind": "content-preview", "status": "partial",
                   "content_digest": pack["content_digest"], "design_digest": None,
                   "pages": [{"page_id": p["page_id"], "number": p["number"], "title": p.get("claim"),
+                             "backend": "render:html",
                              "status": "pending", "cached": False} for p in pack["pages"]],
                   "external_calls": 0, "output_dir": str(destination)}
         design = input_root / "resolved-design.json"
@@ -161,7 +165,8 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                         item.update({k: old[k] for k in ("artifact", "artifact_sha256", "sidecar", "sidecar_sha256")})
                         receipt_path = destination / item["sidecar"]
                         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-                        if receipt.get("content_digest") != binding.get("content_digest"):
+                        if (receipt.get("content_digest") != binding.get("content_digest")
+                                or receipt.get("out") != str(destination / item["artifact"])):
                             # 像素不变但整册绑定已变；保留首次渲染身份，明确这是缓存复用。
                             receipt.setdefault("preview_cache", {
                                 "rendered_expression_binding_digest": receipt.get("expression_binding_digest"),
@@ -171,7 +176,8 @@ def render_run_preview(run_path: str | Path, *, output_dir: str | Path | None = 
                             })
                             receipt.update(expression_binding_digest=binding.get("expression_binding_digest"),
                                            materialization_binding_digest=binding.get("materialization_binding_digest"),
-                                           content_digest=binding["content_digest"])
+                                           content_digest=binding["content_digest"],
+                                           out=str(destination / item["artifact"]), sidecar=str(receipt_path))
                             atomic_write_json(receipt_path, receipt)
                             item["sidecar_sha256"] = sha256_file(receipt_path)
                         item.update(status="ready", cached=True)

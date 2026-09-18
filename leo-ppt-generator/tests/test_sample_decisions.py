@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from unittest.mock import patch
+import shutil
 
 from PIL import Image
 
@@ -27,27 +27,30 @@ class SampleDecisions(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         self.run = self.root / "run"
-        source = self.root / "source.md"
-        source.write_text("材料", encoding="utf-8")
-        backend = self.root / "backend.json"
-        backend.write_text(json.dumps(BackendRegistry.default().create_contract("fixture", mode="generate")))
-        RunIndex.create_from_request(self.run, route="generate", input_path=source,
-                                    backend_contract_path=backend, runtime_identity="test")
+        from tests.expression_test_support import copy_real_html_run, slides_for_run
+        result = copy_real_html_run(self.run, request_index=True)
+        page = result["receipt_refs"]["render:html"]["pg-11111111"]
         self.sample = self.root / "sample.png"
-        Image.new("RGB", (160, 90), "white").save(self.sample)
+        shutil.copyfile(self.run / page["artifact"], self.sample)
+        self.original_sample = self.sample.read_bytes()
         self.slides = self.root / "slides.json"
-        self.slides.write_text(json.dumps([{"number": 1, "title": "标题"}], ensure_ascii=False), encoding="utf-8")
+        self.slides.write_text(json.dumps(slides_for_run(self.run), ensure_ascii=False), encoding="utf-8")
         self.style = self.root / "visual.md"
         self.style.write_text("白底黑字", encoding="utf-8")
         self.binding = self.root / "binding.json"
-        self.binding_data = {"backend": "fixture", "width": 160, "height": 90,
+        self.binding_data = {"backend": "render:html", "width": 2560, "height": 1440,
                              "generation_method": "full-image", "style_visual_path": str(self.style),
                              "layout_binding_path": None}
         self.write_binding()
         self.authorization = self.root / "request.md"
         self.authorization.write_text("样张选择委托你决定。", encoding="utf-8")
+
+    def change_slides(self, title):
+        slides = json.loads(self.slides.read_text())
+        slides[0]["title"] = title
+        self.slides.write_text(json.dumps(slides))
 
     def write_binding(self):
         self.binding.write_text(json.dumps(self.binding_data), encoding="utf-8")
@@ -73,11 +76,11 @@ class SampleDecisions(unittest.TestCase):
 
     def test_image_and_content_changes_block_prepare_without_flag(self):
         self.record()
-        Image.new("RGB", (160, 90), "black").save(self.sample)
+        Image.new("RGB", (2560, 1440), "black").save(self.sample)
         with self.assertRaisesRegex(ContractError, "sample_decision_stale"):
             self.prepare()
-        Image.new("RGB", (160, 90), "white").save(self.sample)
-        self.slides.write_text('[{"number":1,"title":"changed"}]')
+        self.sample.write_bytes(self.original_sample)
+        self.change_slides("changed")
         with self.assertRaisesRegex(ContractError, "sample_decision_stale"):
             self.prepare()
         self.assertFalse((self.run / "input/slides.json").exists())
@@ -85,7 +88,7 @@ class SampleDecisions(unittest.TestCase):
     def test_backend_dimensions_method_and_visual_changes_block(self):
         self.record()
         for key, changed, reason in (("backend", "other", "sample_backend_mismatch"),
-                                     ("width", 161, "sample_dimensions_mismatch"),
+                                     ("width", 2561, "sample_dimensions_mismatch"),
                                      ("generation_method", "overlay", "sample_decision_stale")):
             with self.subTest(key=key):
                 old = self.binding_data[key]
@@ -137,7 +140,7 @@ class SampleDecisions(unittest.TestCase):
         receipt.write_text(json.dumps(json.loads(receipt.read_text()), indent=4), encoding="utf-8")
         old_bytes = receipt.read_bytes()
         old_digest = sha256_file(self.run / RECEIPT_PATH)
-        self.slides.write_text('[{"number":1,"title":"revised"}]')
+        self.change_slides("revised")
         with self.assertRaisesRegex(ContractError, "sample_decision_conflict"):
             self.record()
         record_sample_decision(self.run, sample=self.sample, slides=self.slides, binding=self.binding,
@@ -207,7 +210,7 @@ class SampleDecisions(unittest.TestCase):
         freeze = cli._freeze_slides_contract
 
         def change_then_freeze(run_path, source_path):
-            Path(source_path).write_text('[{"number":1,"title":"concurrent change"}]')
+            self.change_slides("concurrent change")
             return freeze(run_path, source_path)
 
         with patch.object(cli, "_freeze_slides_contract", side_effect=change_then_freeze):

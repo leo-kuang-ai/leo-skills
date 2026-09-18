@@ -180,10 +180,19 @@ def verify_effective_binding(binding: dict, pack_page: dict, *, resolver=None,
             raise ProjectionError(f"effective_binding_asset_changed: {pin['asset_id']}")
     from .qualification import QualificationError, verify_bound_qualification
     try:
+        if binding.get("proposal"):
+            from .task_local_layout_proposals import replay_bound_proposal
+            replay_bound_proposal(binding["proposal"], resolver=resolver, content=pack_page, theme=effective["theme"])
+            identity = binding["execution_pairing_identity"]
+            if (identity["source_kind"] != "task-local-proposal"
+                    or identity["proposal_digest"] != binding["proposal"]["proposal_digest"]
+                    or identity["run_scope"] != binding["proposal"]["run_scope"]):
+                raise ProjectionError("proposal_identity_collision")
         verify_bound_qualification(binding["eligibility"]["checks"].get("qualification", {}),
             layout_entity=resolver.resolve(binding["layout_id"]), resolver=resolver,
             relation=pack_page["expression"]["relation"]["kind"], lane=binding["backend"],
-            purpose=binding["qualification_purpose"])
+            purpose=binding["qualification_purpose"], proposal=binding.get("proposal"),
+            provider_contract_sha256=effective.get("provider_contract_sha256"))
     except (QualificationError, KeyError, TypeError) as exc:
         raise ProjectionError(str(exc)) from exc
 
@@ -252,6 +261,7 @@ def precompile_binding(
     resolver=None,
     qualification_purpose="publication",
     provider_contract=None,
+    proposal=None,
 ) -> dict:
     """候选绑定预编译：硬资格检查 + 只读映射；不合格也返回（带原因）。
 
@@ -281,6 +291,16 @@ def precompile_binding(
         else:
             layout_entity = resolver.require(layout_query, kind="layout")
         profile = layout_entity["data"]
+        if proposal is not None:
+            from .task_local_layout_proposals import replay_bound_proposal
+            theme = {key: deepcopy(design_context.get("effective", {}).get(key, {}))
+                     for key in ("colors", "fonts", "chart_palette")}
+            replay_bound_proposal(proposal, resolver=resolver, content=pack_page, theme=theme)
+            if proposal["base_asset"] != layout_entity["asset_id"] or proposal["lane"] != backend:
+                raise ProjectionError("proposal_candidate_scope_mismatch")
+            profile = deepcopy(proposal["profile"])
+            for source, target in proposal["slot_mapping"].items():
+                profile["slots"][source] = deepcopy(proposal["profile"]["slots"][target])
         validate_profile(profile)
     except ResolverError as exc:
         raise ProjectionError(f"content_projection_invalid: {exc}") from exc
@@ -317,6 +337,12 @@ def precompile_binding(
         try:
             template_entity = resolver.resolve(template_id)
             template_manifest = template_entity["data"]
+            if proposal and proposal["slot_mapping"]:
+                template_manifest = deepcopy(template_manifest)
+                fields_by_name = {field["name"]: field for field in template_entity["data"]["input_fields"]}
+                template_manifest["input_fields"] = [
+                    {**deepcopy(fields_by_name[proposal["slot_mapping"].get(field["name"], field["name"])]), "name": field["name"]}
+                    for field in template_manifest["input_fields"]]
         except ResolverError as exc:
             raise ProjectionError(
                 f"content_projection_invalid: 模板解析失败 {template_id}: {exc}") from exc
@@ -371,8 +397,9 @@ def precompile_binding(
         for idx, point in enumerate(points):
             slot_map[f"points[{idx}]"] = {"source": "point", "item_id": point["item_id"]}
             mapped_item_ids.add(point["item_id"])
-        text_slot = next((s for s in declared_slots.values()
-                          if s.get("content_type") == "text"), None)
+        text_slot = next((s for name, s in declared_slots.items()
+                          if s.get("content_type") == "text"
+                          and (recipe is None or recipe["data"]["slot_map"][name]["projection"] == "claim")), None)
         if claim and text_slot is not None and text_slot.get("max_chars"):
             level = capacity_level(len(claim), text_slot["max_chars"])
             checks.setdefault("text_capacity", {})["claim"] = {
@@ -398,6 +425,11 @@ def precompile_binding(
         if claim:
             slot_map["claim"] = {"source": "claim"}
         if recipe is not None:
+            from .image_deck.recipe import validate_recipe_content, ImageRecipeError
+            try:
+                checks["image_slots"] = validate_recipe_content(recipe["data"], page=pack_page, layout=profile)
+            except ImageRecipeError as exc:
+                hard_failures.append(str(exc))
             # recipe 完整携带结构数据；只有独立输出 oracle 能证明成图保真。
             def collect_values(value):
                 if isinstance(value, dict):
@@ -588,6 +620,10 @@ def precompile_binding(
             hard_failures.append(
                 f"number_coverage_missing: 数值未出现在任何绑定显示文本 {missing_numbers}")
 
+    if proposal and proposal["slot_mapping"]:
+        mapping = proposal["slot_mapping"]
+        slot_map = {mapping.get(key.split("[")[0], key.split("[")[0]) + key[len(key.split("[")[0]):]: value
+                    for key, value in slot_map.items()}
     binding = {
         "schema_version": 2,
         "kind": "candidate-binding",
@@ -616,6 +652,8 @@ def precompile_binding(
             "checks": checks,
         },
     }
+    if proposal is not None:
+        binding["proposal"] = deepcopy(proposal)
     if hasattr(resolver, "fingerprint"):
         asset_ids = {layout_entity["asset_id"]}
         if template_manifest is not None:
@@ -647,7 +685,7 @@ def precompile_binding(
             refs = set((pack_page.get("expression") or {}).get("fact_refs", []))
             binding["effective"]["number_facts"] = [deepcopy(n) for n in numbers if n["item_id"] in refs]
     if template_manifest is not None and not hard_failures and not figures:
-        errors = validate_template_data(template_manifest, _materialize_html_data(binding, pack_page))
+        errors = validate_template_data(template_entity["data"], _materialize_html_data(binding, pack_page))
         if errors:
             hard_failures.extend(f"template_input_invalid: {e}" for e in errors)
     # 投影/容量验证完成后统一核验证据；explicit 与自动候选没有旁路。
@@ -664,15 +702,19 @@ def precompile_binding(
         if compiled != expression:
             raise ContentPackError("expression_declaration_conflict")
         qualification = qualify_layout(layout_entity, resolver=resolver,
-            relation=expression["relation"]["kind"], lane=backend)
+            relation=expression["relation"]["kind"], lane=backend, proposal=proposal)
         checks["qualification"] = qualification
         admitted = qualification_admits(qualification, purpose=qualification_purpose)
         if admitted:
+            if backend == "image":
+                from .qualification import verify_provider_qualification
+                verify_provider_qualification(qualification, library_root=layout_entity["trusted_root"],
+                    contract_sha256=binding["effective"].get("provider_contract_sha256"))
             from .execution_pairing import pairing_identity
             executable = resolver.resolve(template_id if backend == "render:html" else profile["image_recipe"])
             binding["execution_pairing_identity"] = pairing_identity(layout=layout_entity, executable=executable,
                 lane=backend, catalog_generation=resolver.generation,
-                evidence_digest=qualification["evidence_set_digest"])
+                evidence_digest=qualification["evidence_set_digest"], proposal=proposal)
             if requested_pairing is not None and requested_pairing != binding["execution_pairing_identity"]:
                 hard_failures.append("execution_pairing_stale")
         if not admitted:
@@ -776,9 +818,10 @@ def materialize_image_prompt(binding: dict, pack_page: dict,
             f"({binding['eligibility']['hard_failures'][:3]})")
     from .asset_resolver import AssetResolver
     from .image_deck.recipe import project_recipe
+    from .task_local_layout_proposals import effective_layout_profile
     resolver = resolver or AssetResolver()
     prompt_inputs = project_recipe(resolver.resolve(binding["recipe_id"])["data"], page=pack_page,
-        layout=resolver.resolve(binding["layout_id"])["data"], theme=binding["effective"]["theme"],
+        layout=effective_layout_profile(binding, resolver=resolver), theme=binding["effective"]["theme"],
         numbers=binding["effective"]["number_facts"])
     for name in ("content_digest", "expression_binding_digest", "materialization_binding_digest"):
         prompt_inputs[name] = binding[name]

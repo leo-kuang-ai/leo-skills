@@ -74,6 +74,13 @@
             "object",
             "null"
           ]
+        },
+        "proposals": {
+          "type": "object",
+          "additionalProperties": {"type": "object"}
+        },
+        "proposal_probe_cases": {
+          "type": ["object", "null"]
         }
       }
     },

@@ -424,6 +424,7 @@
           "semantic_structure": {
             "enum": [
               "undecided",
+              "independent",
               "comparison",
               "trend",
               "causal",

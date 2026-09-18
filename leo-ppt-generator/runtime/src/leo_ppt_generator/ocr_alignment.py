@@ -178,6 +178,8 @@ def page_gate_applies(
 ) -> tuple[bool, str]:
     """判域：仅图像 lane 整页生成页；事实来源＝provenance sidecar/冻结清单。"""
 
+    if slide_provenance and slide_provenance.get("lane") == "image":
+        return True, "image-generated-page"
     if generation_method == "composite":
         return False, "composite-constructive"
     if slide_provenance and str(slide_provenance.get("backend", "")).startswith("render:"):
@@ -260,6 +262,28 @@ def gate_for_page(
         **verdict,
     })
     return verdict
+
+
+def record_alignment(run_dir, number, required_text, *, verified_provenance):
+    """CLI 已重验收据后调用；读取冻结页面文字，OCR 失败在页文件写入前拦截。"""
+    if not isinstance(verified_provenance, dict) or not (
+            verified_provenance.get("lane") == "image"
+            or str(verified_provenance.get("backend", "")).startswith("render:")):
+        raise OcrAlignmentError("ocr_record_provenance_missing")
+    applies, _ = page_gate_applies(None, number, slide_provenance=verified_provenance)
+    if not applies or not required_text:
+        return None, []
+    config = load_alignment_config(run_dir)
+    mode = resolve_gate_mode(config, run_dir)
+    verdict = gate_for_page(run_dir, number, required_text, config={**config, "mode": mode})
+    warnings = []
+    if verdict["status"] == "fail":
+        if mode == "enforce":
+            raise OcrAlignmentError("ocr_alignment_failed", f"页 {number} OCR 对齐失败：{verdict.get('missing')}")
+        warnings.append(f"ocr_alignment_warned: 页 {number} 缺失 {verdict.get('missing')}（WARN 期，校准通过前不阻断）")
+    elif verdict["status"] == "not_run":
+        warnings.append(f"ocr_alignment_not_run: {verdict.get('reason_code')}；门未执行，不构成通过")
+    return verdict, warnings
 
 
 def required_text_for_page(slides_contract: list[dict[str, Any]], number: int) -> list[str]:

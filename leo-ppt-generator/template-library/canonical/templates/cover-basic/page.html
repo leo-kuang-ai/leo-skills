@@ -34,7 +34,8 @@
     margin-bottom: 34px; font-weight: 400;
   }
   .title {
-    font-size: var(--leo-f-size-title, 92px); line-height: 1.16; font-weight: 700; color: var(--leo-c-primary, #14213d);
+    /* 离线 CJK 字体的字形高于紧行框，保留完整字形并允许两行标题。 */
+    font-size: var(--leo-f-size-title, 92px); line-height: 1.5; font-weight: 700; color: var(--leo-c-primary, #14213d);
     max-width: 1040px;
   }
   .subtitle {

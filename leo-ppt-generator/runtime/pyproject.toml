@@ -39,7 +39,7 @@ where = ["src"]
 include-package-data = false
 
 [tool.setuptools.package-data]
-leo_ppt_generator = ["schemas/*.json", "config/assets/*"]
+leo_ppt_generator = ["schemas/*.json", "config/assets/*", "raster_text.swift"]
 "leo_ppt_generator.config" = ["*.yaml"]
 
 [tool.setuptools.exclude-package-data]

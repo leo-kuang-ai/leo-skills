@@ -94,6 +94,24 @@ class ExportBehavior(unittest.TestCase):
 
 
 class ImportBehavior(unittest.TestCase):
+    def test_import_rejects_maintenance_before_writing_any_pack_bytes(self):
+        from leo_ppt_generator.library_migration import locked_publication
+        from leo_ppt_generator.library_migration import MigrationError
+        from leo_ppt_generator.styles import save_style
+        with tempfile.TemporaryDirectory() as tmp:
+            delivery = Path(tmp).resolve()
+            home = delivery / "leo-ppt-generator"
+            pack = make_pack(delivery)
+            library = home / "template-library"
+            with locked_publication(delivery, plan_digest="a" * 64):
+                before = {p.relative_to(library).as_posix(): p.read_bytes() for p in library.rglob("*") if p.is_file()}
+                result = run_cli("import", str(pack), "--home", str(home))
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("library_in_maintenance", result.stderr)
+                with self.assertRaisesRegex(MigrationError, "library_in_maintenance"):
+                    save_style("测试", '{"visual_direction": "test"}', home=home)
+                self.assertEqual({p.relative_to(library).as_posix(): p.read_bytes() for p in library.rglob("*") if p.is_file()}, before)
+
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
         self.base = Path(self._tmp.name)

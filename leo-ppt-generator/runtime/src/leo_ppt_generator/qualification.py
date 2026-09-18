@@ -27,7 +27,8 @@ def qualification_admits(qualification, *, purpose="publication"):
         return True
     return (purpose == "validation" and qualification.get("status") == "provisional"
             and qualification.get("probe_receipts") and qualification.get("evidence_set_digest")
-            and set(qualification.get("gaps", [])) == {"visual_review_not_run"}) is True
+            and bool(qualification.get("gaps"))
+            and set(qualification["gaps"]).issubset({"visual_review_not_run", "u6a_required"})) is True
 
 
 class QualificationError(ValueError):
@@ -101,6 +102,12 @@ def _fingerprint_file(path):
                                   metadata.st_ctime_ns, metadata.st_ino)
 
 
+def is_execution_source(relative):
+    """环境指纹和旧链封存共用同一执行源码成员规则。"""
+    return (relative in {"relation_oracle.py", "raster_oracle.py", "raster_text.swift", "image_deck/expression_adapter.py"}
+            or relative.endswith(".py") and relative.startswith(("render/", "providers/")))
+
+
 def environment_fingerprint():
     """不输出凭据、主目录或主机名；执行源码变化也使旧 receipt 失效。"""
     package = Path(__file__).parent
@@ -110,11 +117,9 @@ def environment_fingerprint():
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:
             versions[name] = None
-    source = {}
-    for subdir in ("render", "providers"):
-        for path in sorted((package / subdir).glob("**/*.py")):
-            source[path.relative_to(package).as_posix()] = _fingerprint_file(path)
-    source["relation_oracle.py"] = _fingerprint_file(package / "relation_oracle.py")
+    source = {path.relative_to(package).as_posix(): _fingerprint_file(path)
+              for path in sorted(package.rglob("*")) if path.is_file()
+              and is_execution_source(path.relative_to(package).as_posix())}
     from .render.assets import font_dirs, vendor_dir
     from .render.readiness import _apply_browsers_path, _default_playwright_cache
     browser_root = _apply_browsers_path() or _default_playwright_cache()
@@ -182,6 +187,7 @@ def verify_capability_evidence(receipt, *, library_root, asset_generation,
         raise QualificationError("evidence_environment_stale")
     required_checks = set(oracle["common"] + rule["required_checks"])
     artifacts = []
+    provider_identities = set()
     for name, accepted in (("positive", True), ("negative", False)):
         probe = receipt["probes"][name]
         fixture = json.loads(verify_reference(library_root, probe["fixture"]))
@@ -213,23 +219,43 @@ def verify_capability_evidence(receipt, *, library_root, asset_generation,
         measurement = json.loads(verify_reference(library_root, observation["measurement"]))
         if measurement.get("artifact_sha256") != probe["artifact"]["sha256"]:
             raise QualificationError("evidence_output_measurement_mismatch")
+        proposal_refs = [path for path in expected_dependencies if path.startswith("evidence/proposals/") and path.endswith("/proposal.json")]
+        if proposal_refs:
+            if len(proposal_refs) != 1:
+                raise QualificationError("proposal_evidence_snapshot_mismatch")
+            proposal = json.loads(read_evidence_bytes(library_root, proposal_refs[0]))
+            if measurement.get("proposal_sha256") != digest(proposal):
+                raise QualificationError("proposal_evidence_output_mismatch")
         render_input = observation.get("render_input")
-        if (not render_input or measurement.get("data_sha256") != render_input["sha256"]
-                or json.loads(verify_reference(library_root, render_input)) != fixture.get("data")
-                or measurement.get("template_sha256") not in {
-                    h for p, h in expected_dependencies.items() if p.endswith("/page.html")}):
-            raise QualificationError("evidence_output_source_mismatch")
         if lane == "image":
-            # DOM 不能证明 Provider 图片中的事实；独立 image 检测未接入时不晋升。
-            raise QualificationError("image_output_oracle_unavailable")
-        computed = evaluate_output(fixture.get("expected"), measurement, relation=relation, oracle=oracle)
+            from .raster_oracle import evaluate_raster_output, verify_image_probe_source
+            try:
+                provider = verify_image_probe_source(root=library_root, fixture=fixture, relation=relation,
+                    artifact=probe["artifact"], render_input=render_input,
+                    provider_reference=probe.get("provider_receipt"), dependencies=expected_dependencies)
+                provider_identities.add((provider["provider"], provider["model"], provider["contract_sha256"]))
+                review = json.loads(verify_reference(library_root, observation["raster_review"]))
+                evaluated = evaluate_raster_output(fixture.get("expected"), artifact_body, review,
+                    relation=relation, oracle=oracle, environment_sha256=receipt["environment"]["sha256"])
+                if evaluated["measurement"] != measurement:
+                    raise QualificationError("image_output_measurement_mismatch")
+                computed = evaluated["checks"]
+            except (ValueError, KeyError, TypeError) as exc:
+                raise QualificationError("image_output_evidence_invalid: " + str(exc)) from exc
+        else:
+            if (not render_input or measurement.get("data_sha256") != render_input["sha256"]
+                    or json.loads(verify_reference(library_root, render_input)) != fixture.get("data")
+                    or measurement.get("template_sha256") not in {
+                        h for p, h in expected_dependencies.items() if p.endswith("/page.html")}):
+                raise QualificationError("evidence_output_source_mismatch")
+            computed = evaluate_output(fixture.get("expected"), measurement, relation=relation, oracle=oracle)
         if computed != checks:
             raise QualificationError("evidence_output_check_mismatch")
         observed_accepted = all(checks.values())
         if (probe["status"] != "passed" or observed_accepted != accepted
                 or (not accepted and checks[rule["negative_check"]] is not False)):
             raise QualificationError("evidence_probe_failed: " + name)
-        if lane_rule.get("requires_provider_receipt"):
+        if lane_rule.get("requires_provider_receipt") and lane != "image":
             provider = probe.get("provider_receipt")
             if not provider:
                 raise QualificationError("evidence_provider_receipt_missing")
@@ -242,6 +268,8 @@ def verify_capability_evidence(receipt, *, library_root, asset_generation,
     if (receipt["probes"]["positive"]["fixture"] == receipt["probes"]["negative"]["fixture"]
             or artifacts[0] == artifacts[1]):
         raise QualificationError("evidence_probe_not_independent")
+    if lane == "image" and len(provider_identities) != 1:
+        raise QualificationError("evidence_provider_contract_conflict")
     review = receipt.get("visual_review")
     if lane_rule.get("requires_visual_review"):
         if review is None:
@@ -252,7 +280,33 @@ def verify_capability_evidence(receipt, *, library_root, asset_generation,
             raise QualificationError("evidence_visual_review_stale")
         if reviewed.get("status") != "passed" or reviewed.get("severe_defects") != 0 or not reviewed.get("reviewer"):
             raise QualificationError("evidence_visual_review_failed")
+        if not reviewed.get("u6a"):
+            return {"status": "provisional", "gaps": ["u6a_required"]}
+        from .quality_replay import verify_capability_publication
+        verify_capability_publication(library_root, receipt, reviewed["u6a"])
     return {"status": "publication-qualified", "gaps": []}
+
+
+def verify_provider_qualification(qualification, *, library_root, contract_sha256):
+    """候选和冻结消费共用同一 Provider 合同门，不能借用其他模型的探针资格。"""
+    import re
+    if not isinstance(contract_sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", contract_sha256):
+        raise QualificationError("evidence_provider_contract_missing")
+    receipts = qualification.get("receipt_payloads")
+    if not receipts:
+        raise QualificationError("binding_qualification_evidence_missing")
+    from .image_deck.expression_adapter import verify_provider_export
+    for capability in receipts:
+        if capability.get("lane") != "image":
+            raise QualificationError("evidence_provider_lane_mismatch")
+        for name in ("positive", "negative"):
+            reference = capability["probes"][name]["provider_receipt"]
+            provider = json.loads(verify_reference(library_root, reference))
+            if provider.get("contract_sha256") != contract_sha256:
+                raise QualificationError("evidence_provider_contract_mismatch")
+            verify_provider_export(provider, root=Path(library_root) / PurePosixPath(reference["path"]).parent)
+            if provider.get("evidence_source") != "provider-http" or provider.get("purpose") != "capability-probe":
+                raise QualificationError("image_real_provider_evidence_required")
 
 
 def _aggregate(statuses):
@@ -330,9 +384,9 @@ def asset_generation(library_root):
     return digest({"policy": POLICY, "sources": sources})
 
 
-def layout_capability_contract(layout_entity, *, resolver, lane=None):
+def layout_capability_contract(layout_entity, *, resolver, lane=None, proposal=None):
     """只从现有 structure/slots/输入/双向 renderer 引用提取待验证能力。"""
-    profile = layout_entity["data"]
+    profile = proposal["profile"] if proposal else layout_entity["data"]
     structure = profile.get("structure") or {}
     encodings = {entry.get("kind") for entry in structure.get("encodings", [])}
     group_relations = {entry.get("relation") for entry in structure.get("groups", [])}
@@ -400,17 +454,32 @@ def layout_capability_contract(layout_entity, *, resolver, lane=None):
         except (ValueError, OSError) as exc:
             raise QualificationError("owner_root_or_file_invalid") from exc
     lifecycle = profile.get("lifecycle_status", "unknown")
+    if proposal is not None:
+        from .task_local_layout_proposals import proposal_reference
+        relative = proposal_reference(proposal)
+        if json.loads(read_evidence_bytes(root, relative)) != proposal:
+            raise QualificationError("proposal_evidence_snapshot_mismatch")
+        dependencies[relative] = file_reference(root, relative)["sha256"]
     return {"asset_id": profile["asset_id"], "lifecycle_status": lifecycle,
             "lanes": sorted(lanes), "relations": sorted(relations), "gaps": gaps}, dependencies
 
 
-def qualify_layout(layout_entity, *, resolver, relation, lane):
+def qualify_layout(layout_entity, *, resolver, relation, lane, proposal=None):
     root = layout_entity["trusted_root"]
-    contract, dependencies = layout_capability_contract(layout_entity, resolver=resolver, lane=lane)
+    contract, dependencies = layout_capability_contract(layout_entity, resolver=resolver, lane=lane, proposal=proposal)
     if relation not in contract["relations"] or lane not in contract["lanes"]:
         return {"status": "rejected", "gaps": ["relation_lane_not_declared"], "probe_receipts": []}
     generation = asset_generation(root)
-    receipts = [r for r in load_receipts(root) if r.get("asset_id") == contract["asset_id"]
+    if proposal:
+        from .task_local_layout_proposals import proposal_probe_output
+        path = proposal_probe_output(proposal) + "/capability-receipts.json"
+        try:
+            available = json.loads(read_evidence_bytes(root, path))["receipts"]
+        except (ValueError, OSError, KeyError) as exc:
+            raise QualificationError("proposal_evidence_missing") from exc
+    else:
+        available = load_receipts(root)
+    receipts = [r for r in available if r.get("asset_id") == contract["asset_id"]
                 and r.get("lane") == lane and r.get("relation") == relation]
     result = derive_qualification(contract, asset_generation=generation, library_root=root,
         expected_dependencies=dependencies, environment=environment_fingerprint(), evidence_receipts=receipts)
@@ -437,8 +506,17 @@ def evidence_closure(root, receipts):
         return body
 
     for receipt in receipts:
+        for path, sha in receipt["dependency_hashes"].items():
+            if path.startswith("evidence/proposals/"):
+                include({"path": path, "sha256": sha})
         for key in ("oracle", "environment", "visual_review"):
             include(receipt.get(key))
+        if receipt.get("visual_review"):
+            review = json.loads(verify_reference(root, receipt["visual_review"]))
+            if review.get("u6a"):
+                from .quality_replay import capability_publication_files
+                for reference in capability_publication_files(root, review["u6a"]):
+                    include(reference)
         for probe in receipt["probes"].values():
             for key in ("fixture", "artifact"):
                 include(probe.get(key))
@@ -450,7 +528,7 @@ def evidence_closure(root, receipts):
                         reference = provider[key]
                         include({**reference, "path": (prefix / reference["path"]).as_posix()})
             observation = json.loads(include(probe["observation"]))
-            for key in ("measurement", "render_input"):
+            for key in ("measurement", "render_input", "raster_review"):
                 include(observation.get(key))
     return [refs[path] for path in sorted(refs)]
 
@@ -475,15 +553,18 @@ def freeze_qualification_evidence(qualification, *, source_root, target_root):
             atomic_write_bytes(target, body)
 
 
-def verify_bound_qualification(qualification, *, layout_entity, resolver, relation, lane, purpose):
+def verify_bound_qualification(qualification, *, layout_entity, resolver, relation, lane, purpose, proposal=None,
+                               provider_contract_sha256=None):
     """冻结后只依赖当前执行资产与封存证据；不重新发现共享库或重新选型。"""
     receipts = qualification.get("receipt_payloads")
     if not receipts or not qualification.get("evidence_files"):
         raise QualificationError("binding_qualification_evidence_missing")
     root = layout_entity["trusted_root"]
+    if lane == "image":
+        verify_provider_qualification(qualification, library_root=root, contract_sha256=provider_contract_sha256)
     if evidence_closure(root, receipts) != qualification["evidence_files"]:
         raise QualificationError("binding_qualification_evidence_changed")
-    contract, dependencies = layout_capability_contract(layout_entity, resolver=resolver, lane=lane)
+    contract, dependencies = layout_capability_contract(layout_entity, resolver=resolver, lane=lane, proposal=proposal)
     result = derive_qualification(contract, asset_generation=qualification["asset_generation"],
         library_root=root, expected_dependencies=dependencies, environment=environment_fingerprint(), evidence_receipts=receipts)
     selected = result["lanes"].get(lane, {}).get("relations", {}).get(relation, {})

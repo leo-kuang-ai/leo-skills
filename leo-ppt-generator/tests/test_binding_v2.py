@@ -101,6 +101,9 @@ class PairingIdentityTests(unittest.TestCase):
         layout = {"asset_id": "builtin:layout:l", "revision": "a"}
         template = {"asset_id": "builtin:template:t", "revision": "b", "kind": "template", "data": {"lane": "render:html"}}
         identity = pairing_identity(layout=layout, executable=template, lane="render:html", catalog_generation="g", evidence_digest="a" * 64)
+        self.assertEqual(identity["source_kind"], "canonical-derived-pairing")
+        with self.assertRaises(PairingError):
+            pairing_key({**identity, "source_kind": "canonical"})
         key = pairing_key(identity)
         self.assertEqual(pairing_key(deepcopy(identity)), key)
         for field, value in (("catalog_generation", "g2"), ("capability_evidence_digest", "b" * 64),
@@ -111,5 +114,5 @@ class PairingIdentityTests(unittest.TestCase):
         self.assertNotEqual(pairing_key(proposal), key)
         self.assertNotEqual(pairing_key({**proposal, "run_scope": "r2"}), pairing_key(proposal))
         for malformed in ({**identity, "run_scope": "r1"}, {**identity, "template_identity": None},
-                          {**proposal, "source_kind": "canonical"}):
+                          {**proposal, "source_kind": "canonical-derived-pairing"}):
             with self.assertRaises(PairingError): pairing_key(malformed)

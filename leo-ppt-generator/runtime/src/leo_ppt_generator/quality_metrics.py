@@ -272,6 +272,13 @@ def _export_evidence(root, payload, generation):
                             or receipt.get("template_id") != binding["template_id"]
                             or receipt.get("overflow_check") != "pass" or not receipt.get("renderer")):
                         raise MetricEventError("html_export_receipt_invalid")
+                    template_hashes = {sha for pin in binding["effective"]["assets"] if pin["asset_id"] == binding["template_id"]
+                                       for path, sha in pin["files"].items() if path.endswith("/page.html")}
+                    data = read_evidence_bytes(root, (Path(artifact_path).parent / "data.json").as_posix())
+                    if (receipt.get("template_sha256") not in template_hashes
+                            or receipt.get("data_sha256") != hashlib.sha256(data).hexdigest()
+                            or receipt.get("content_digest") != payload["pack"]["content_digest"]):
+                        raise MetricEventError("html_export_input_or_template_stale")
                 else:
                     from .image_deck.expression_adapter import verify_provider_export
                     verify_provider_export(receipt, root=(root / receipt_path).parent, binding=binding)
@@ -292,35 +299,49 @@ def _export_evidence(root, payload, generation):
 
 
 def _visual_evidence(root, generation, exports):
-    from .qualification import read_evidence_bytes, environment_fingerprint
+    from .qualification import read_evidence_bytes, digest, verify_reference
+    from .quality_replay import evaluate_quality_replay
     try:
         receipt = json.loads(read_evidence_bytes(root, "qa/visual-replay.json"))
-    except (ValueError, OSError):
-        return {"status": "not_run", "blocker": "visual_replay_receipt_missing"}
-    try:
-        if receipt["input_generation"] != generation:
-            return {"status": "stale", "blocker": "visual_generation_stale"}
-        actual = {row["artifact"]: row["artifact_sha256"] for lane in exports.values()
-                  for row in lane["pages"].values() if row["status"] == "passed"}
-        if not actual or receipt["artifact_hashes"] != actual:
-            return {"status": "stale", "blocker": "visual_artifact_set_stale"}
-        if receipt["environment"] != environment_fingerprint() or receipt["baseline_environment"] != receipt["environment"]:
-            return {"status": "blocked", "blocker": "paired_environment_mismatch"}
-        if receipt.get("status") != "passed":
-            return {"status": receipt["status"] if receipt.get("status") in EVIDENCE_STATES else "error", "blocker": "visual_replay_not_passed"}
-        dimensions = {"fidelity", "relation", "readability", "focus"}
-        if (set(receipt["scores"]) != dimensions or set(receipt["baseline_scores"]) != dimensions
-                or not receipt.get("reviewer") or receipt.get("severe_defects") != 0
-                or any(type(score) not in (int, float) or not 4 <= score <= 5 for score in receipt["scores"].values())
-                or sum(receipt["scores"][key] > receipt["baseline_scores"][key] for key in dimensions) < 2
-                or any(receipt["baseline_scores"][key] >= 4 and receipt["scores"][key] < receipt["baseline_scores"][key] for key in dimensions)):
-            return {"status": "failed", "blocker": "paired_visual_threshold_not_met"}
-        return {"status": "passed", "receipt": "qa/visual-replay.json"}
-    except (KeyError, ValueError, TypeError) as exc:
+    except (ValueError, OSError) as exc:
+        if isinstance(exc, FileNotFoundError) or isinstance(exc.__cause__, FileNotFoundError):
+            return {"status": "not_run", "blocker": "visual_replay_receipt_missing"}
+        return {"status": "error", "blocker": "visual_replay_receipt_invalid"}
+    evidence_root, run_relative = root, ""
+    if receipt.get("kind") == "quality-replay-attachment":
+        from .quality_replay import _safe_directory
+        try:
+            evidence_root = Path(receipt["evidence_root"]).absolute()
+            if (not evidence_root.is_absolute() or _safe_directory(evidence_root, receipt["run"]) != root
+                    or any(path.is_symlink() for path in (evidence_root, *evidence_root.parents))):
+                raise ValueError("visual_attachment_root_mismatch")
+            run_relative = receipt["run"]
+            receipt = json.loads(verify_reference(evidence_root, receipt["receipt"]))
+        except (ValueError, OSError, KeyError, TypeError):
+            return {"status": "stale", "blocker": "visual_attachment_invalid"}
+    if receipt.get("kind") != "quality-replay-receipt" or not receipt.get("plan"):
         return {"status": "error", "blocker": "visual_receipt_schema_mismatch"}
+    if receipt.get("receipt_digest") != digest({key: value for key, value in receipt.items() if key != "receipt_digest"}):
+        return {"status": "stale", "blocker": "visual_receipt_digest_mismatch"}
+    current = evaluate_quality_replay(evidence_root, receipt["plan"])
+    if current["status"] != "passed":
+        return {"status": current["status"], "blocker": ";".join(current["gaps"])}
+    if current != receipt:
+        return {"status": "stale", "blocker": "visual_replay_inputs_changed"}
+    actual = {(run_relative + "/" if run_relative else "") + row["artifact"]: row["artifact_sha256"] for lane in exports.values()
+              for row in lane["pages"].values() if row["status"] == "passed"}
+    reviewed = {row["artifact"]["path"]: row["artifact"]["sha256"] for row in current["cases"]
+                if row.get("input_generation") == generation and row["status"] == "passed" and row.get("run", "") == run_relative}
+    if not actual or not reviewed or any(actual.get(path) != sha for path, sha in reviewed.items()):
+        return {"status": "stale", "blocker": "visual_artifact_set_stale"}
+    return {"status": "passed", "phase": current["phase"], "receipt": "qa/visual-replay.json",
+            "coverage": "all-exported-pages" if actual == reviewed else "representative-pages",
+            "reviewed_pages": len(reviewed), "exported_pages": len(actual),
+            "user_benefit": current.get("user_benefit", {"status": "not_run", "blocker": "user_outcome_data_missing"}),
+            "user_replay": current.get("user_replay", {"status": "not_run", "blocker": "user_defect_replay_required"})}
 
 
-def deck_quality_for_run(run_path, report=None):
+def deck_quality_for_run(run_path, report=None, *, include_visual=True):
     """当前输入、事实投影、双层绑定与真实导出四通道；观测事件不授予质量。"""
     from .application.expression_pipeline import load_committed_input, ExpressionPipelineError
     from .asset_resolver import AssetResolver
@@ -376,18 +397,20 @@ def deck_quality_for_run(run_path, report=None):
             evidence.append({"channel": "binding", "status": channels["binding"], "blocker": str(exc)})
         lanes = _export_evidence(root, payload, committed["generation"])
         channels["export"] = _evidence_status([lanes[lane]["status"] for lane in payload["bindings"]])
-        visual = _visual_evidence(root, committed["generation"], lanes)
+        if include_visual:
+            visual = _visual_evidence(root, committed["generation"], lanes)
     states = set(channels.values())
     if visual["status"] in {"failed", "stale", "error"}:
         states.add(visual["status"])
     overall = _evidence_status(states)
     if overall == "passed":
-        overall = ("visual_validated" if visual["status"] == "passed" else
+        overall = ("visual_validated" if visual["status"] == "passed" and visual.get("phase") == "U6-B" and visual.get("coverage") == "all-exported-pages" else
                    "image_validated" if lanes["image"]["status"] == "passed" else
                    "html_validated" if lanes["render:html"]["status"] == "passed" else "implementation_complete")
     return {"schema_version": 1, "overall_status": overall, "channels": channels, "evidence": evidence,
             "lanes": lanes, "visual": visual,
-            "user_replay": {"status": "not_run", "blocker": "user_defect_replay_required"},
+            "user_replay": visual.get("user_replay", {"status": "not_run", "blocker": "user_defect_replay_required"}),
+            "user_benefit": visual.get("user_benefit", {"status": "not_run", "blocker": "user_outcome_data_missing"}),
             "publication_ready": False}
 
 

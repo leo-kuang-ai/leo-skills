@@ -140,7 +140,13 @@ class ObservationTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256((fixture / path).read_bytes()).hexdigest(), digest, path)
         actual = metrics.scorecard_for_run(fixture)
         expected = json.loads((fixture / "expected-scorecard.json").read_text())
+        # 历史事件账本保持逐字段相同；新版附加的生产门不得继承旧 fixture 的成功。
+        quality = actual.pop("deck_quality")
         self.assertEqual(actual, expected)
+        self.assertEqual(quality["channels"], {"schema": "not_run", "facts": "not_run",
+                                              "binding": "not_run", "export": "blocked"})
+        self.assertEqual(quality["visual"]["status"], "not_run")
+        self.assertFalse(quality["publication_ready"])
         self.assertEqual(actual["tf"]["N"], 2)
         self.assertEqual(actual["cost"]["status"], "blocked")
 

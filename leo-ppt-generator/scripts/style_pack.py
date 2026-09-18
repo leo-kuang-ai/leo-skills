@@ -72,26 +72,29 @@ def cmd_import(pack_dir: Path, home: Path | None) -> int:
               "builtin 身份不可由导入包冒充", file=sys.stderr)
         return 2
     library = _user_library(home)
-    for name, expected in sorted((manifest.get("files") or {}).items()):
-        source = pack_dir / name
-        if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
-            print(f"usage: 文件缺失或 hash 不符：{name}", file=sys.stderr)
-            return 2
-        if source.suffix.lower() in EXECUTABLE_SUFFIXES:
-            target = library / "reference" / "candidates" / manifest["name"] / name
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(source.read_bytes())
-            print(json.dumps({"quarantined": name,
-                              "to": str(target.relative_to(library)),
-                              "reason": "executable_content_default_isolated"}, ensure_ascii=False))
-            continue
-        brief = json.loads(source.read_text(encoding="utf-8"))
-        slug = str(brief.get("asset_id", "")).split(":", 2)[-1] or manifest["name"]
-        brief["asset_id"] = f"user:style:{slug}"
-        brief.setdefault("source", {})["origin"] = "user-imported"
-        _write_json(library / "canonical" / "styles" / slug / "brief.json", brief)
-        print(json.dumps({"imported": brief["asset_id"]}, ensure_ascii=False))
-    return 0
+    from leo_ppt_generator.library_migration import library_operation
+    library.mkdir(parents=True, exist_ok=True)
+    with library_operation(library):
+        for name, expected in sorted((manifest.get("files") or {}).items()):
+            source = pack_dir / name
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+                print(f"usage: 文件缺失或 hash 不符：{name}", file=sys.stderr)
+                return 2
+            if source.suffix.lower() in EXECUTABLE_SUFFIXES:
+                target = library / "reference" / "candidates" / manifest["name"] / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(source.read_bytes())
+                print(json.dumps({"quarantined": name,
+                                  "to": str(target.relative_to(library)),
+                                  "reason": "executable_content_default_isolated"}, ensure_ascii=False))
+                continue
+            brief = json.loads(source.read_text(encoding="utf-8"))
+            slug = str(brief.get("asset_id", "")).split(":", 2)[-1] or manifest["name"]
+            brief["asset_id"] = f"user:style:{slug}"
+            brief.setdefault("source", {})["origin"] = "user-imported"
+            _write_json(library / "canonical" / "styles" / slug / "brief.json", brief)
+            print(json.dumps({"imported": brief["asset_id"]}, ensure_ascii=False))
+        return 0
 
 
 def cmd_adopt(pack_dir: Path, reviewed_by: str, basis: str, home: Path | None) -> int:
@@ -101,26 +104,28 @@ def cmd_adopt(pack_dir: Path, reviewed_by: str, basis: str, home: Path | None) -
     if not candidates.is_dir():
         print("usage: 隔离区为空，先 import", file=sys.stderr)
         return 2
-    code_digests: dict[str, str] = {}
-    for path in sorted(candidates.rglob("*")):
-        if path.is_file() and path.suffix.lower() in EXECUTABLE_SUFFIXES:
-            code_digests[path.relative_to(candidates).as_posix()] = \
-                hashlib.sha256(path.read_bytes()).hexdigest()
-    if not code_digests:
-        print("usage: 无可执行内容可采用", file=sys.stderr)
-        return 2
-    adoption = {
-        "kind": "executable-adoption", "schema_version": 1,
-        "adoption_id": f"adopt-{hashlib.sha256(json.dumps(code_digests, sort_keys=True).encode()).hexdigest()[:12]}",
-        "template_asset_id": pack_dir.name, "scope": "user",
-        "code_digests": code_digests,
-        "review": {"reviewed_by": reviewed_by, "basis": basis},
-        "adopted_from": str(pack_dir),
-    }
-    _write_json(adoption_dir / f"{adoption['adoption_id']}.json", adoption)
-    print(json.dumps({"adopted": adoption["adoption_id"],
-                      "bound_files": len(code_digests)}, ensure_ascii=False))
-    return 0
+    from leo_ppt_generator.library_migration import library_operation
+    with library_operation(library):
+        code_digests: dict[str, str] = {}
+        for path in sorted(candidates.rglob("*")):
+            if path.is_file() and path.suffix.lower() in EXECUTABLE_SUFFIXES:
+                code_digests[path.relative_to(candidates).as_posix()] = \
+                    hashlib.sha256(path.read_bytes()).hexdigest()
+        if not code_digests:
+            print("usage: 无可执行内容可采用", file=sys.stderr)
+            return 2
+        adoption = {
+            "kind": "executable-adoption", "schema_version": 1,
+            "adoption_id": f"adopt-{hashlib.sha256(json.dumps(code_digests, sort_keys=True).encode()).hexdigest()[:12]}",
+            "template_asset_id": pack_dir.name, "scope": "user",
+            "code_digests": code_digests,
+            "review": {"reviewed_by": reviewed_by, "basis": basis},
+            "adopted_from": str(pack_dir),
+        }
+        _write_json(adoption_dir / f"{adoption['adoption_id']}.json", adoption)
+        print(json.dumps({"adopted": adoption["adoption_id"],
+                          "bound_files": len(code_digests)}, ensure_ascii=False))
+        return 0
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -19,6 +19,7 @@ from leo_ppt_generator.content_pack import (  # noqa: E402
 )
 from leo_ppt_generator.content_projection import (  # noqa: E402
     ProjectionError,
+    _materialize_html_data,
     materialize_html,
     materialize_image_prompt,
     materialize_page,
@@ -88,6 +89,12 @@ def page_of(pack, page_id):
     return next(p for p in pack["pages"] if p["page_id"] == page_id)
 
 
+def assert_legacy_projection(test, binding):
+    test.assertFalse(binding["eligibility"]["qualified"])
+    test.assertEqual(binding["eligibility"]["hard_failures"], ["expression_incomplete: page expression required"])
+    test.assertNotIn("binding_digest", binding)
+
+
 class RoleNormalizationTests(unittest.TestCase):
     def test_known_role_maps_to_page_types(self):
         self.assertEqual(normalize_page_role("封面"), ["cover"])
@@ -119,12 +126,11 @@ class PrecompileEligibilityTests(unittest.TestCase):
                                   content_digest=self.pack["content_digest"],
                                   numbers=self.pack["numbers"], **kwargs)
 
-    def test_body_basic_bullets_qualified_and_deterministic(self):
+    def test_legacy_body_fields_are_deterministic_but_not_qualified(self):
         first = self.precompile("pg-33333333", "body-basic")
         second = self.precompile("pg-33333333", "body-basic")
-        self.assertTrue(first["eligibility"]["qualified"],
-                        first["eligibility"]["hard_failures"])
-        self.assertEqual(first["binding_digest"], second["binding_digest"])
+        assert_legacy_projection(self, first)
+        self.assertEqual(first["expression_binding_digest"], second["expression_binding_digest"])
         self.assertEqual(first["context_digest"], self.context["context_digest"])
         self.assertEqual(first["layout_id"], "builtin:layout:body-basic")
         self.assertEqual(first["template_id"], "builtin:template:body-basic")
@@ -166,10 +172,9 @@ class PrecompileEligibilityTests(unittest.TestCase):
         self.assertTrue(any("role_unknown" in f
                             for f in binding["eligibility"]["hard_failures"]))
 
-    def test_compare_sides_two_qualified_one_and_three_rejected(self):
+    def test_compare_side_projection_two_valid_one_and_three_rejected(self):
         two = self.precompile("pg-22222222", "compare")
-        self.assertTrue(two["eligibility"]["qualified"],
-                        two["eligibility"]["hard_failures"])
+        assert_legacy_projection(self, two)
         for count in (1, 3):
             with self.subTest(sides=count):
                 markers = {
@@ -221,7 +226,7 @@ class PrecompileEligibilityTests(unittest.TestCase):
         self.assertTrue(any("number_coverage_missing" in f
                             for f in binding["eligibility"]["hard_failures"]))
 
-    def test_font_override_changes_context_and_binding_digest(self):
+    def test_font_override_changes_context_and_materialization_digest(self):
         # K2：品牌/字体覆盖改变 → 上下文摘要与绑定摘要一致变化（同一快照）。
         branded = templates.resolve_design_context(
             STYLE_QUERY, font_overrides={"body.size": 20})
@@ -231,7 +236,7 @@ class PrecompileEligibilityTests(unittest.TestCase):
                                      "body-basic",
                                      content_digest=self.pack["content_digest"],
                                      numbers=self.pack["numbers"])
-        self.assertNotEqual(base["binding_digest"], variant["binding_digest"])
+        self.assertNotEqual(base["materialization_binding_digest"], variant["materialization_binding_digest"])
         self.assertEqual(variant["context_digest"], branded["context_digest"])
 
     def test_page_reorder_keeps_item_binding_stable(self):
@@ -247,8 +252,7 @@ class PrecompileEligibilityTests(unittest.TestCase):
             page_of(pack2, "pg-33333333"), self.context, "body-basic",
             content_digest=pack2["content_digest"], numbers=pack2["numbers"])
         base = self.precompile("pg-33333333", "body-basic")
-        self.assertTrue(binding2["eligibility"]["qualified"],
-                        binding2["eligibility"]["hard_failures"])
+        assert_legacy_projection(self, binding2)
         self.assertEqual(base["item_ids"], binding2["item_ids"])
         self.assertEqual(binding2["number"], 1)  # 展示顺序随换序更新
 
@@ -264,7 +268,7 @@ class MaterializationTests(unittest.TestCase):
                                      self.context, "body-basic",
                                      content_digest=self.pack["content_digest"],
                                      numbers=self.pack["numbers"])
-        data = materialize_html(binding, page_of(self.pack, "pg-33333333"))
+        data = _materialize_html_data(binding, page_of(self.pack, "pg-33333333"))
         self.assertEqual(data["title"], "核心指标 1.24 亿元")
         self.assertEqual(data["bullets"], ["营收 1.24 亿元，环比 +18%",
                                            "净利率 12%",
@@ -276,7 +280,7 @@ class MaterializationTests(unittest.TestCase):
                                      self.context, "compare",
                                      content_digest=self.pack["content_digest"],
                                      numbers=self.pack["numbers"])
-        data = materialize_html(binding, page_of(self.pack, "pg-22222222"))
+        data = _materialize_html_data(binding, page_of(self.pack, "pg-22222222"))
         self.assertEqual(len(data["sides"]), 2)
         self.assertEqual(data["sides"][0]["label"], "甲路线")
         self.assertEqual(data["sides"][1]["title"], "部署 1 周")
@@ -297,38 +301,29 @@ class MaterializationTests(unittest.TestCase):
                                      self.context, "frame-shot",
                                      content_digest=self.pack["content_digest"],
                                      numbers=self.pack["numbers"])
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
+        assert_legacy_projection(self, binding)
         with self.assertRaisesRegex(ProjectionError, "媒体内容缺失"):
-            materialize_html(binding, page_of(self.pack, "pg-44444444"))
-        data = materialize_html(binding, page_of(self.pack, "pg-44444444"),
+            _materialize_html_data(binding, page_of(self.pack, "pg-44444444"))
+        data = _materialize_html_data(binding, page_of(self.pack, "pg-44444444"),
                                 media={"F1": "data:image/png;base64,QUJD"})
         self.assertEqual(data["image_src"], "data:image/png;base64,QUJD")
 
-    def test_image_prompt_is_precheck_not_fidelity(self):
-        design = templates.compose_design(
-            STYLE_QUERY, pages=[{"page_no": 3, "page_role": "data",
-                                 "layout": "body-basic", "slots": {}}])
+    def test_image_without_provider_and_evidence_cannot_materialize(self):
         binding = precompile_binding(page_of(self.pack, "pg-33333333"),
                                      self.context, "body-basic", backend="image",
-                                     content_digest=self.pack["content_digest"],
-                                     numbers=self.pack["numbers"])
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        result = materialize_image_prompt(binding, page_of(self.pack, "pg-33333333"),
-                                          design)
-        self.assertIn("营收 1.24 亿元，环比 +18%", result["required_text"])
-        # required_text 是生成合同输入，报告口径不宣称最终图片文字保真。
-        self.assertNotIn("verified", result)
+                                     content_digest=self.pack["content_digest"], numbers=self.pack["numbers"])
+        self.assertFalse(binding["eligibility"]["qualified"])
+        self.assertTrue(any("provider_contract_missing" in gap for gap in binding["eligibility"]["hard_failures"]))
+        with self.assertRaises(ProjectionError):
+            materialize_image_prompt(binding, page_of(self.pack, "pg-33333333"))
 
-    def test_materialize_page_dispatches_by_backend(self):
+    def test_legacy_materialize_page_cannot_bypass_expression(self):
         binding = precompile_binding(page_of(self.pack, "pg-33333333"),
                                      self.context, "body-basic",
                                      content_digest=self.pack["content_digest"],
                                      numbers=self.pack["numbers"])
-        out = materialize_page(binding, page_of(self.pack, "pg-33333333"))
-        self.assertEqual(out["backend"], "render:html")
-        self.assertIn("bullets", out["data"])
+        with self.assertRaises(ProjectionError):
+            materialize_page(binding, page_of(self.pack, "pg-33333333"))
 
 
 if __name__ == "__main__":
@@ -350,6 +345,7 @@ argument_role: 数据
 表列: 指标,本季,基准
 表行: 营收｜1.24 亿元｜1.10 亿元
 表行: 净利率｜12%｜10%
+表行: 留存率｜90%｜85%
 视觉行：要点1→表格
 - 备注：口播
 
@@ -360,7 +356,7 @@ argument_role: 数据
 | 12% | S1 | Q3 财报 | 净利率 | 2026Q3 | 百分点 | 引用 | yes | 2026-10-28 |
 """
 
-    def test_numbers_only_in_table_cells_keep_spec_table_qualified(self):
+    def test_numbers_only_in_table_cells_satisfy_field_coverage(self):
         from leo_ppt_generator.layout_selection import qualified_pool
         pack = compile_content_pack(self.MASTER_TABLE,
                                     master_path="content/deck-master-v1.md")
@@ -369,15 +365,13 @@ argument_role: 数据
                                      "p25-spec-table",
                                      content_digest=pack["content_digest"],
                                      numbers=pack["numbers"])
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        data = materialize_html(binding, page_of(pack, "pg-aaaa1111"))
+        assert_legacy_projection(self, binding)
+        data = _materialize_html_data(binding, page_of(pack, "pg-aaaa1111"))
         self.assertEqual(data["rows"][0], ["营收", "1.24 亿元", "1.10 亿元"])
 
     def test_multi_figure_media_materializes_by_index(self):
         # 双图页：媒体字段 count_max≥2 时按索引填充不越界（frame-shot 单图
         # 之外的场景用伪造双图绑定的 slot_map 直接验证物化路径）。
-        from leo_ppt_generator.content_projection import compute_binding_digest
         pack = compile_content_pack(
             self.MASTER_TABLE.replace(
                 "- 要点 1：三行指标对基准",
@@ -395,17 +389,10 @@ argument_role: 数据
         binding["slot_map"] = {**binding["slot_map"],
                                "images[0]": {"source": "figure", "item_id": "F1"},
                                "images[1]": {"source": "figure", "item_id": "F2"}}
-        # 回归目标仅物化路径：媒体槽为伪造注入，资格按已覆盖论通过。
-        binding["eligibility"] = {**binding["eligibility"],
-                                  "qualified": True, "hard_failures": []}
-        binding["binding_digest"] = compute_binding_digest(binding)
-        from leo_ppt_generator.content_projection import (
-            compute_expression_binding_digest, compute_materialization_binding_digest)
+        # 注入多媒体槽仅验证纯字段投影，不可重新签名后冒充资产具备该能力。
         with self.assertRaisesRegex(ProjectionError, "materialization_binding_digest_mismatch"):
             materialize_html(binding, page)
-        binding["expression_binding_digest"] = compute_expression_binding_digest(binding)
-        binding["materialization_binding_digest"] = compute_materialization_binding_digest(binding)
-        data = materialize_html(binding, page,
+        data = _materialize_html_data(binding, page,
                                 media={"F1": "data:image/png;base64,QQ==",
                                        "F2": "data:image/png;base64,Qg=="})
         self.assertEqual(data["images"], ["data:image/png;base64,QQ==",
@@ -449,3 +436,29 @@ class EligibilityBranchTests(unittest.TestCase):
             content_digest=pack["content_digest"], numbers=pack["numbers"])
         self.assertTrue(any("media_over_capacity" in f
                             for f in binding["eligibility"]["hard_failures"]))
+
+
+class CurrentExpressionMaterializationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from tests.expression_test_support import real_validation_inputs
+        cls.pack, cls.resolver, cls.context = real_validation_inputs()
+
+    def test_real_evidence_binding_materializes_exact_frozen_content(self):
+        page = self.pack["pages"][0]
+        binding = precompile_binding(page, self.context, "body-basic", resolver=self.resolver,
+            content_digest=self.pack["content_digest"], numbers=self.pack["numbers"], qualification_purpose="validation")
+        self.assertTrue(binding["eligibility"]["qualified"], binding["eligibility"])
+        result = materialize_page(binding, page, resolver=self.resolver)
+        self.assertEqual(result["backend"], "render:html")
+        self.assertEqual(result["data"]["title"], page["claim"])
+        self.assertEqual(result["data"]["bullets"], [i["text"] for i in page["items"] if i["kind"] == "point"])
+        self.assertNotIn("binding_digest", binding)
+
+    def test_same_real_evidence_is_not_publication_qualification(self):
+        page = self.pack["pages"][0]
+        binding = precompile_binding(page, self.context, "body-basic", resolver=self.resolver,
+            content_digest=self.pack["content_digest"], numbers=self.pack["numbers"])
+        self.assertFalse(binding["eligibility"]["qualified"])
+        with self.assertRaises(ProjectionError):
+            materialize_html(binding, page, resolver=self.resolver)

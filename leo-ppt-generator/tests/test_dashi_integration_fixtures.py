@@ -3,8 +3,8 @@
 
 指标及基准差异（spec-table 表列/表行）/ 趋势及事件注释（timeline steps）/
 决策矩阵（compare 对照侧）/ 流程及责任分工（body-basic bullets）——每类：
-母版 fixture → 内容包 → 硬资格 → 物化真实模板 data；负例：缺结构标记回
-母版、表行列数不对齐编译拒绝、换主题不改业务内容与结构身份。
+母版 fixture → 内容包 → 字段投影；这些旧输入缺表达合同，必须拒绝生产资格。
+负例：缺结构标记回母版、表行列数不对齐编译拒绝；换主题保留业务内容与结构身份。
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ from leo_ppt_generator.content_pack import (  # noqa: E402
     compile_content_pack,
 )
 from leo_ppt_generator.content_projection import (  # noqa: E402
-    materialize_html,
+    _materialize_html_data,
     precompile_binding,
 )
 from leo_ppt_generator.layout_selection import structure_fingerprint  # noqa: E402
@@ -47,13 +47,18 @@ def _bind(pack: dict, page_id: str, layout: str, context=None):
                               numbers=pack["numbers"]), page
 
 
+def _project(test, binding, page, **kwargs):
+    test.assertFalse(binding["eligibility"]["qualified"])
+    test.assertEqual(binding["eligibility"]["hard_failures"],
+                     ["expression_incomplete: page expression required"])
+    return _materialize_html_data(binding, page, **kwargs)
+
+
 class MetricBaselineTests(unittest.TestCase):
     def test_spec_table_carries_columns_rows(self):
         pack = _compile("metrics-baseline-master.md")
-        binding, page = _bind(pack, "pg-a1b2c3d4", "p25-spec-table")
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        data = materialize_html(binding, page)
+        binding, page = _bind(pack, "pg-a1b2c3d4", "builtin:layout:p21-21-tech-spec-sheet-layouts")
+        data = _project(self, binding, page)
         self.assertEqual(data["columns"],
                          ["指标", "本季 2026Q3", "上季 2026Q2", "年度基准"])
         self.assertEqual(len(data["rows"]), 3)
@@ -82,9 +87,7 @@ class TrendEventsTests(unittest.TestCase):
     def test_timeline_carries_steps_from_points(self):
         pack = _compile("trend-events-master.md")
         binding, page = _bind(pack, "pg-b1b2c3d4", "timeline")
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        data = materialize_html(binding, page)
+        data = _project(self, binding, page)
         self.assertEqual(data["steps"][:2], ["2026Q1 六周", "2026Q2 四周"])
         self.assertEqual(data["title"], "交付周期连续三季缩短")
 
@@ -93,9 +96,7 @@ class DecisionMatrixTests(unittest.TestCase):
     def test_compare_carries_two_sides(self):
         pack = _compile("decision-matrix-master.md")
         binding, page = _bind(pack, "pg-c1b2c3d4", "compare")
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        data = materialize_html(binding, page)
+        data = _project(self, binding, page)
         self.assertEqual([s["label"] for s in data["sides"]],
                          ["自建路线", "采购路线"])
 
@@ -114,9 +115,7 @@ class ProcessOwnershipTests(unittest.TestCase):
     def test_body_basic_carries_stage_points(self):
         pack = _compile("process-ownership-master.md")
         binding, page = _bind(pack, "pg-d1b2c3d4", "body-basic")
-        self.assertTrue(binding["eligibility"]["qualified"],
-                        binding["eligibility"]["hard_failures"])
-        data = materialize_html(binding, page)
+        data = _project(self, binding, page)
         self.assertEqual(len(data["bullets"]), 3)
         self.assertIn("平台组", data["bullets"][0])
 
@@ -135,8 +134,8 @@ class ThemeIndependenceTests(unittest.TestCase):
                                 numbers=pack["numbers"])
         self.assertEqual(b1["slot_map"], b2["slot_map"])
         self.assertEqual(b1["item_ids"], b2["item_ids"])
-        d1 = materialize_html(b1, page)
-        d2 = materialize_html(b2, page)
+        d1 = _project(self, b1, page)
+        d2 = _project(self, b2, page)
         self.assertEqual(d1, d2)  # 业务内容与结构不随主题漂移
         # 结构指纹与主题无关（声明级，来自 canonical layout profile）。
         from leo_ppt_generator.asset_resolver import AssetResolver

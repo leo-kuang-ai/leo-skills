@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import json
 from pathlib import Path
 
 from leo_ppt_generator.cli import build_parser, dispatch  # noqa: E402
@@ -15,37 +16,36 @@ SLIDES = [
 ]
 
 
-def _record_cli(run_root: Path, number: int, png: Path, rework: bool):
+def _record_cli(run_root: Path, number: int, png: Path, rework: bool, operation_id=None):
     argv = [
         "image", "record", str(run_root),
         "--number", str(number),
         "--image", str(png),
         "--backend", "render:html",
+        "--render-receipt", str(png.with_name(png.name + ".render.json")),
         "--page-type", "text-heavy",
         "--agent-id", "cli-rework-test",
     ]
     if rework:
         argv.append("--rework")
+    if operation_id:
+        argv.extend(["--operation-id", operation_id])
     return dispatch(build_parser().parse_args(argv))
 
 
 class CliReworkFlagTest(unittest.TestCase):
     def setUp(self):
-        from PIL import Image
-
         self._tmp = tempfile.TemporaryDirectory(prefix="leo-p2c1-")
-        run_root = Path(self._tmp.name) / "run-001"
-        # 无 run.json 时 CLI 的 domain 路径即 run 根本身——adapter 同址。
-        self.adapter = ImageDeckAdapter(run_root)
-        self.adapter.prepare([dict(s) for s in SLIDES])
-        self.png = Path(self._tmp.name) / "page.png"
-        Image.new("RGB", (1600, 900), "#ffffff").save(self.png)
+        run_root = Path(self._tmp.name).resolve() / "run-001"
+        from tests.expression_test_support import copy_real_html_run, slides_for_run
+        result = copy_real_html_run(run_root, request_index=True)
+        slides = run_root / "work/slides.json"
+        slides.write_text(json.dumps(slides_for_run(run_root)))
+        dispatch(build_parser().parse_args(["image", "prepare", str(run_root), "--slides", str(slides)]))
+        self.adapter = ImageDeckAdapter(run_root / "image-deck")
+        self.png = run_root / result["receipt_refs"]["render:html"]["pg-11111111"]["artifact"]
         self.run_root = run_root
-        # 初始录制第 1 页
-        jobs = self.adapter._jobs()
-        self.adapter.record(1, self.png, backend="render:html",
-                            expected_revision=jobs["revision"],
-                            operation_id="op-initial")
+        _record_cli(run_root, 1, self.png, rework=False, operation_id="op-initial")
 
     def tearDown(self):
         self._tmp.cleanup()
@@ -59,13 +59,33 @@ class CliReworkFlagTest(unittest.TestCase):
         result = _record_cli(self.run_root, 1, self.png, rework=True)
         self.assertIn(result.get("status"), ("ready", "completed"))
         # 幂等重放不需要 rework 旗标
-        replay = dispatch(build_parser().parse_args([
-            "image", "record", str(self.run_root),
-            "--number", "1", "--image", str(self.png),
-            "--backend", "render:html",
-            "--operation-id", "op-initial",
-        ]))
+        replay = _record_cli(self.run_root, 1, self.png, rework=False, operation_id="op-initial")
         self.assertIn(replay.get("status"), ("ready", "completed"))
+
+    def test_html_lane_rejects_provider_receipt_without_changing_page_jobs(self):
+        before = self.adapter.jobs_path.read_bytes()
+        with self.assertRaisesRegex(ContractError, "effective_binding_receipt_lane_mismatch"):
+            dispatch(build_parser().parse_args(["image", "record", str(self.run_root),
+                "--number", "1", "--image", str(self.png), "--backend", "render:html",
+                "--provider-receipt", str(self.png) + ".provider.json", "--operation-id", "wrong-lane"]))
+        self.assertEqual(self.adapter.jobs_path.read_bytes(), before)
+
+    def test_page_and_provenance_are_recorded_together_and_bound_on_retry(self):
+        # 使用实际HTML导出验证通用文件事务，不冒充Provider正向集成。
+        receipt = json.loads(self.png.with_name(self.png.name + ".render.json").read_text())
+        self.adapter.record(1, self.png, backend="render:html", expected_revision=self.adapter._jobs()["revision"],
+                            operation_id="with-provenance", rework=True, provenance=receipt)
+        jobs = self.adapter._jobs()
+        self.assertEqual(jobs["slides"][0]["provenance"], receipt)
+        self.assertEqual(jobs["slides"][0]["sha256"], receipt["out_sha256"])
+        before = self.adapter.jobs_path.read_bytes()
+        with self.assertRaisesRegex(ContractError, "idempotency_conflict"):
+            self.adapter.record(1, self.png, backend="render:html", expected_revision=jobs["revision"],
+                                operation_id="with-provenance", provenance={**receipt, "revision": "changed"})
+        with self.assertRaisesRegex(ContractError, "page_provenance_artifact_mismatch"):
+            self.adapter.record(1, self.png, backend="render:html", expected_revision=jobs["revision"],
+                                operation_id="bad-provenance", rework=True, provenance={**receipt, "out_sha256": "f" * 64})
+        self.assertEqual(self.adapter.jobs_path.read_bytes(), before)
 
 
 if __name__ == "__main__":

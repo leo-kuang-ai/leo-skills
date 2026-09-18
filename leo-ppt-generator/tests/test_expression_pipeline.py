@@ -100,6 +100,33 @@ class InputGenerationTests(unittest.TestCase):
     def write(self, checkpoint=None):
         return write_atomic_input_generation(self.root, self.value, generation=_digest(self.value), resolver=self.resolver, checkpoint=checkpoint)
 
+    def test_real_pipeline_holds_source_lease_through_freeze_and_materialization(self):
+        import shutil
+        from leo_ppt_generator.library_migration import MigrationError, locked_publication, maintenance_path
+        delivery = self.root.parent / "delivery"
+        library = delivery / "leo-ppt-generator/template-library"
+        shutil.copytree(self.resolver.builtin_root, library)
+        resolver = AssetResolver(library=library, home=self.root.parent / "empty-user")
+        request = PipelineRequest(self.value["pack"], self.context, resolver.generation,
+            self.value["request"]["lane_matrix"], str(self.root), "maintenance-pipeline", str(library), purpose="validation")
+        visited = []
+
+        def attempt_publication(phase):
+            visited.append(phase)
+            with self.assertRaisesRegex(MigrationError, "migration_maintenance_lock_busy"):
+                with locked_publication(delivery, plan_digest="a" * 64):
+                    pass
+            self.assertFalse(maintenance_path(delivery).exists())
+
+        result = run_expression_pipeline(request, resolver=resolver, checkpoint=attempt_publication)
+        self.assertEqual(result["status"], "html_validated")
+        for phase in ("before_generation", "after_pointer", "after_run_index"):
+            self.assertIn(phase, visited)
+        for page in result["receipt_refs"]["render:html"].values():
+            self.assertTrue(Path(page["artifact"]).is_file())
+        with locked_publication(delivery, plan_digest="a" * 64):
+            self.assertTrue(maintenance_path(delivery).exists())
+
     def test_staging_is_invisible_and_retry_is_idempotent_at_every_boundary(self):
         for phase in ("after_documents", "after_evidence", "before_generation", "before_pointer", "after_pointer"):
             with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
@@ -181,6 +208,45 @@ class InputGenerationTests(unittest.TestCase):
             incomplete.pop(key)
             with self.subTest(key=key), self.assertRaises(ExpressionPipelineError):
                 write_atomic_input_generation(self.root, incomplete, generation=_digest(incomplete), resolver=self.resolver)
+
+    def test_html_page_publication_recovers_at_render_and_publish_boundaries(self):
+        from leo_ppt_generator.application.routes import generate
+        from leo_ppt_generator.application.expression_pipeline import materialization_paths
+        from leo_ppt_generator.render.receipt import create_delivery_receipt, verify_delivery_receipt
+        for boundary in ("after_page_render", "after_page_publish"):
+            with self.subTest(boundary=boundary), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve() / "run"
+                request = PipelineRequest(self.value["pack"], self.context, self.resolver.generation,
+                    self.value["request"]["lane_matrix"], str(root), "page-recovery",
+                    str(self.resolver.builtin_root), purpose="validation")
+                def stop(phase):
+                    if phase == boundary:
+                        raise InterruptedError(phase)
+                with self.assertRaises(InterruptedError):
+                    run_expression_pipeline(request, resolver=self.resolver, checkpoint=stop)
+                artifact, sidecar = materialization_paths(root, "render:html", self.value["pack"]["pages"][0]["page_id"])
+                self.assertEqual(artifact.exists(), boundary == "after_page_publish")
+                self.assertEqual(sidecar.exists(), artifact.exists())
+                before = artifact.stat().st_mtime_ns if artifact.exists() else None
+                result = generate(request, resolver=self.resolver)
+                self.assertEqual(result["status"], "html_validated")
+                if before is not None:
+                    self.assertEqual(artifact.stat().st_mtime_ns, before)
+                create_delivery_receipt(root)
+                self.assertTrue(verify_delivery_receipt(root)["fresh"])
+
+    def test_committed_page_input_tamper_is_not_hidden_by_valid_pixels(self):
+        from leo_ppt_generator.application.routes import generate
+        from leo_ppt_generator.application.expression_pipeline import materialization_paths
+        request = PipelineRequest(self.value["pack"], self.context, self.resolver.generation,
+            self.value["request"]["lane_matrix"], str(self.root), "data-integrity",
+            str(self.resolver.builtin_root), purpose="validation")
+        generate(request, resolver=self.resolver)
+        artifact, _ = materialization_paths(self.root, "render:html", self.value["pack"]["pages"][0]["page_id"])
+        data = artifact.with_name("data.json")
+        data.write_text('{"title":"altered"}')
+        with self.assertRaisesRegex(ExpressionPipelineError, "materialization_input_mismatch"):
+            generate(request, resolver=self.resolver)
 
     def test_pointer_missing_or_manifest_byte_drift_never_uses_loose_input_files(self):
         target = self.write()

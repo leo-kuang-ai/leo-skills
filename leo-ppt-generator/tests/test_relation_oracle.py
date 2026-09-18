@@ -14,6 +14,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RelationOracleTests(unittest.TestCase):
+    def test_cover_title_glyphs_fit_their_block_without_relaxing_overflow_oracle(self):
+        resolver = AssetResolver(library=ROOT / "template-library")
+        with tempfile.TemporaryDirectory() as temporary, RenderSession() as session:
+            root = Path(temporary)
+            for title in ("封面结论", "用表达优先重构解决页面关系"):
+                with self.subTest(title=title):
+                    source = root / "data.json"
+                    source.write_text(json.dumps({"title": title, "subtitle": "工作独立推进"}, ensure_ascii=False))
+                    render_page("cover-basic", source, root / "page.png", resolver=resolver,
+                                session=session, observation_path=root / "measurement.json")
+                    measured = json.loads((root / "measurement.json").read_text())
+                    self.assertFalse(any(b["overflow"] for b in measured["blocks"]), measured["blocks"])
+                    title_text = next(t for t in measured["texts"] if t["text"] == title)
+                    block = measured["blocks"][0]["box"]
+                    x, y, width, height = title_text["box"]
+                    self.assertGreaterEqual(y, block[1] - 1)
+                    self.assertLessEqual(y + height, block[1] + block[3] + 1)
+
     def test_unknown_fields_and_incomplete_grid_are_rejected(self):
         cases = json.loads((ROOT / "evals/fixtures/expression-first-relation-probes.json").read_text())["cases"]
         expected = deepcopy(cases[1]["expected"])
@@ -24,6 +42,26 @@ class RelationOracleTests(unittest.TestCase):
         expected["checks"] = {"all_passed": True}
         with self.assertRaises(OracleError):
             validate_expectation(expected, "independent")
+
+    def test_real_reverse_arrows_cannot_add_an_undeclared_dependency(self):
+        cases = json.loads((ROOT / "evals/fixtures/expression-first-relation-probes.json").read_text())["cases"]
+        oracle = json.loads((ROOT / "template-library" / ORACLE_PATH).read_text())
+        resolver = AssetResolver(library=ROOT / "template-library")
+        with tempfile.TemporaryDirectory() as temporary, RenderSession() as session:
+            root = Path(temporary)
+            for case in (c for c in cases if c["relation"] in {"process", "causal"}):
+                with self.subTest(relation=case["relation"]):
+                    data = deepcopy(case["positive"])
+                    data["chart_svg"] = data["chart_svg"].replace('marker-end="url(#arrow)"',
+                        'marker-start="url(#arrow)" marker-end="url(#arrow)"')
+                    (root / "data.json").write_text(json.dumps(data, ensure_ascii=False))
+                    render_page("body-basic", root / "data.json", root / "page.png", resolver=resolver,
+                                session=session, observation_path=root / "measurement.json")
+                    measured = json.loads((root / "measurement.json").read_text())
+                    self.assertTrue(any(edge["reverse"] for edge in measured["edges"]))
+                    checks = evaluate_output(case["expected"], measured, relation=case["relation"], oracle=oracle)
+                    key = "dependency_edges" if case["relation"] == "process" else "directed_edges"
+                    self.assertFalse(checks[key], checks)
 
     def test_real_rendered_positive_and_semantically_wrong_negative_for_every_relation(self):
         # 本测试有意不 skip：浏览器不可运行时，必要的真实输出验证不能算通过。

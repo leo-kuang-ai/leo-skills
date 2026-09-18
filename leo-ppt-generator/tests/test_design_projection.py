@@ -29,11 +29,14 @@ PAGES = [{"page_no": 9, "page_role": "data", "layout": "P25",
 
 
 def _design():
-    return compose_design("金融藏青风", pages=PAGES)
+    from copy import deepcopy
+    from tests.test_expression_pipeline import transaction_inputs
+    payload, _, _, _ = transaction_inputs()
+    return deepcopy(payload["designs"]["render:html"])
 
 
 class DesignProjectionTest(unittest.TestCase):
-    def test_two_lanes_consume_same_frozen_design_digest(self) -> None:
+    def test_geometry_and_prompt_consume_same_frozen_design_digest(self) -> None:
         design = _design()
         # HTML 路线：layout 编译几何；image 路线：prompt 投影。
         geometry = compile_geometry(
@@ -45,35 +48,39 @@ class DesignProjectionTest(unittest.TestCase):
              "name": "规格参数表", "page_role": "data",
              "slots": {}, "font_size_refs": {}, "padding": {"block": 15, "inline": 18}},
             design["effective_theme"], column_count=3)
-        prompt = project_design_to_prompt(design, {"page_no": 9})
+        prompt = project_design_to_prompt(design, {"page_no": 1})
         self.assertEqual(prompt["design_digest"], design["design_digest"])
         self.assertEqual(geometry["column_weights"], [30.0, 45.0, 25.0])
         # 两条路线的有效值同源：prompt 颜色来自 effective_theme。
-        self.assertIn("primary=#1E3A8A", prompt["colors"])
+        self.assertIn("primary=" + design["effective_theme"]["colors"]["primary"], prompt["colors"])
 
     def test_projection_is_deterministic(self) -> None:
         design = _design()
-        first = project_design_to_prompt(design, {"page_no": 9})
+        first = project_design_to_prompt(design, {"page_no": 1})
         second = project_design_to_prompt(
-            compose_design("金融藏青风", pages=PAGES), {"page_no": 9})
+            _design(), {"page_no": 1})
         self.assertEqual(
             json.dumps(first, sort_keys=True, ensure_ascii=False),
             json.dumps(second, sort_keys=True, ensure_ascii=False))
 
     def test_projection_carries_only_effective_values_not_prose(self) -> None:
-        prompt = project_design_to_prompt(_design(), {"page_no": 9})
+        design = _design()
+        prompt = project_design_to_prompt(design, {"page_no": 1})
         encoded = json.dumps(prompt, ensure_ascii=False)
         # 有效值是编译后的 HEX 指令，不是 brief 里的散文色板。
         self.assertIn("=#", encoded)
         self.assertNotIn("professional blue", encoded)
         # 负面约束完整传递（关键约束不丢）。
-        self.assertTrue(any("来源" in c for c in prompt["negative_constraints"]))
+        expected = [row["constraint"] for row in design["effective_constraints"]
+                    if row.get("source") == "style"]
+        self.assertTrue(expected)
+        self.assertEqual(prompt["negative_constraints"], expected)
 
     def test_governance_values_do_not_leak_into_projection(self) -> None:
         design = _design()
         design["selection"]["source_map"] = {"primary": "theme"}
         design["authored_digest"] = "deadbeef" * 8
-        prompt = project_design_to_prompt(design, {"page_no": 9})
+        prompt = project_design_to_prompt(design, {"page_no": 1})
         encoded = json.dumps(prompt, ensure_ascii=False)
         for forbidden in ("source_map", "authored_digest", "curation",
                           "evidence", "verified", "license", "reviewer"):
@@ -93,7 +100,7 @@ class DesignProjectionTest(unittest.TestCase):
 
         design = _design()
         frozen = json.loads(json.dumps(design, ensure_ascii=False))
-        prompt = project_design_to_prompt(frozen, {"page_no": 9})
+        prompt = project_design_to_prompt(frozen, {"page_no": 1})
         self.assertTrue(prompt["design_digest"])
 
 

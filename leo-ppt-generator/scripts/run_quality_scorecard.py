@@ -58,9 +58,36 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run")
     parser.add_argument("--out", help="仅允许 run/scorecard/quality-scorecard.json")
+    parser.add_argument("--replay-plan", help="任务根内固定回放计划；写入 qa/visual-replay.json")
+    parser.add_argument("--execute-replay", action="store_true", help="按计划调用真实 generate；未指定时只重新核验")
+    parser.add_argument("--library-root", type=Path, help="真实回放显式使用的库根")
+    parser.add_argument("--freeze-baseline", help="任务根内旧链导出描述；只封存已有真实字节")
     args = parser.parse_args(argv)
     try:
         root = Path(args.run).expanduser().resolve()
+        if args.freeze_baseline:
+            if args.replay_plan or args.execute_replay:
+                raise MetricEventError("baseline capture and replay are separate operations")
+            from leo_ppt_generator.quality_replay import freeze_legacy_baseline
+            from leo_ppt_generator.qualification import file_reference
+            reference = freeze_legacy_baseline(root, file_reference(root, args.freeze_baseline), "qa/legacy-baseline.json")
+            print(json.dumps({"baseline": reference}, ensure_ascii=False))
+            return 0
+        if args.replay_plan:
+            from leo_ppt_generator.quality_replay import evaluate_quality_replay, attach_replay_receipt
+            from leo_ppt_generator.qualification import file_reference
+            from leo_ppt_generator.storage import atomic_write_json
+            result = evaluate_quality_replay(root, file_reference(root, args.replay_plan),
+                execute=args.execute_replay, library_root=args.library_root)
+            target = root / "qa/visual-replay.json"
+            if target.is_symlink() or target.parent.is_symlink():
+                raise MetricEventError("replay output must not be a symlink")
+            atomic_write_json(target, result)
+            attach_replay_receipt(root, file_reference(root, "qa/visual-replay.json"))
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0 if result["status"] == "passed" else 1
+        if args.execute_replay or args.library_root:
+            raise MetricEventError("replay-plan required")
         result = scorecard_for_run(root)
         payload = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
         if args.out:

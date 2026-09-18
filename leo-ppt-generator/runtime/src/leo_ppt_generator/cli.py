@@ -59,7 +59,7 @@ from .render.chart import render_chart
 from .render.composite import compose_page, verify_composite, verify_binding_theme
 from .render.errors import RenderError
 from .render.page import parse_size, render_page
-from .render.provenance import attach_provenance_to_slide, load_render_receipt
+from .render.provenance import load_render_receipt
 from .render.raster import rasterize_svg
 from .render.readiness import probe_fast as render_probe_fast
 from .render.readiness import render_ready as _render_readiness_report
@@ -544,164 +544,22 @@ def _require_prepare_input(run_path: str | Path) -> None:
         raise ContractError("input_file_missing")
 
 
-def _freeze_input_snapshot(run_path: str | Path, name: str, source_path: str | Path,
-                           *, max_bytes: int) -> tuple[Path, dict]:
-    """CAS 冻结一份 run 输入快照；已冻结内容与来源不一致即冲突。"""
-    root = Path(run_path).resolve()
-    if not (root / "run.json").is_file():
-        return Path(source_path), {"path": str(source_path)}
+def _read_content_binding(run_path: str | Path, slides_path: str | Path) -> dict:
+    """prepare 只验证已经提交的表达输入，不能成为第二套输入冻结入口。"""
+    from .application.expression_pipeline import load_committed_input, ExpressionPipelineError
+    from .render.receipt import content_binding_summary, ReceiptError
     try:
-        source_identity = inspect_regular_file(Path(source_path), max_bytes=max_bytes)
-    except ValueError as exc:
-        raise ContractError(f"{name}_invalid") from exc
-    target = root / "input" / f"{name}.json"
-    try:
-        if target.is_file() or target.is_symlink():
-            frozen_identity = inspect_regular_file(target, max_bytes=max_bytes)
-            if frozen_identity["sha256"] != source_identity["sha256"]:
-                raise ContractError(f"{name}_fingerprint_conflict")
-        else:
-            durable_copy_file(source_identity["path"], target, max_bytes=max_bytes)
-    except ContractError:
-        raise
-    except ValueError as exc:
-        raise ContractError(f"{name}_invalid") from exc
-    return target, {
-        "path": f"input/{name}.json",
-        "size": source_identity["size"],
-        "sha256": source_identity["sha256"],
-    }
-
-
-def _record_supplemental_input(run_path: str | Path, key: str, metadata: dict) -> None:
-    """把一份输入快照登记进 RunIndex supplemental_inputs（CAS 复核）。"""
-    index = RunIndex(Path(run_path))
-    snapshot = index.snapshot()
-    supplemental = snapshot.get("supplemental_inputs", {})
-    if not isinstance(supplemental, dict):
-        raise ContractError("run_index_invalid")
-    existing = supplemental.get(key)
-    if existing is not None and existing != metadata:
-        raise ContractError(f"{key}_fingerprint_conflict")
-    if existing is None:
-        supplemental = dict(supplemental)
-        supplemental[key] = metadata
-        index.update(
-            expected_revision=snapshot["revision"],
-            changes={"supplemental_inputs": supplemental},
-        )
-
-
-def _freeze_content_binding(run_path: str | Path, slides_path: str | Path,
-                            *, content_pack: str | None, design: str | None,
-                            layout_selection: str | None = None) -> dict | None:
-    """dashi K4：generate 消费冻结绑定——内容包 + 冻结设计 + 整册选择入 run input。
-
-    内容包经 content_digest 自校验（手改拒绝）；slides 页集合与包页序核对；
-    设计快照摘要与包/页数一致后才放行 prepare；整册选择（K3/K5）核对内容
-    摘要与页覆盖。已 prepare 后内容或设计改版必须建立新 run：此处任何 sha
-    不一致都以 fingerprint 冲突显式拒绝。
-    """
-    from .content_pack import ContentPackError, verify_content_pack
-
-    root = Path(run_path).resolve()
-    pack_source = content_pack or (
-        str(root / "input/page-content-pack.json")
-        if (root / "input/page-content-pack.json").is_file() else None)
-    design_source = design or (
-        str(root / "input/resolved-design.json")
-        if (root / "input/resolved-design.json").is_file() else None)
-    selection_source = layout_selection or (
-        str(root / "input/layout-selection.json")
-        if (root / "input/layout-selection.json").is_file() else None)
-    if pack_source is None and design_source is None and selection_source is None:
-        return None
-    binding: dict = {}
-    slides = _json_file(slides_path)
-    if pack_source is not None:
-        pack_path, metadata = _freeze_input_snapshot(
-            run_path, "page-content-pack", pack_source, max_bytes=MAX_SLIDES_CONTRACT_BYTES)
-        try:
-            pack = json.loads(pack_path.read_text(encoding="utf-8"))
-            verify_content_pack(pack)
-        except (OSError, ValueError, ContentPackError) as exc:
-            raise ContractError("content_pack_invalid") from exc
-        _record_supplemental_input(run_path, "content_pack", metadata)
-        page_numbers = [page.get("number") for page in pack.get("pages", [])]
-        slide_numbers = [
-            slide.get("number") if isinstance(slide, dict) else None
-            for slide in (slides if isinstance(slides, list) else [])]
-        if page_numbers != slide_numbers:
+        committed = load_committed_input(run_path)
+        slides = _json_file(slides_path)
+        pages = committed["payload"]["pack"]["pages"]
+        if (not isinstance(slides, list) or len(slides) != len(pages)
+                or any(not isinstance(slide, dict) for slide in slides)
+                or [(slide.get("page_id"), slide.get("number")) for slide in slides]
+                != [(page["page_id"], page["number"]) for page in pages]):
             raise ContractError("content_pack_page_mismatch")
-        binding["content_digest"] = pack.get("content_digest")
-        binding["page_ids"] = [page.get("page_id") for page in pack.get("pages", [])]
-    if design_source is not None:
-        design_path, metadata = _freeze_input_snapshot(
-            run_path, "resolved-design", design_source, max_bytes=MAX_SLIDES_CONTRACT_BYTES)
-        try:
-            resolved = json.loads(design_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError) as exc:
-            raise ContractError("resolved_design_invalid") from exc
-        if not isinstance(resolved, dict) or resolved.get("entity") != "resolved-design":
-            raise ContractError("resolved_design_invalid")
-        design_pages = [page.get("page_no") for page in resolved.get("pages", [])]
-        if pack_source is not None and design_pages != [
-                page.get("number") for page in pack.get("pages", [])]:
-            raise ContractError("design_page_mismatch")
-        _record_supplemental_input(run_path, "resolved_design", metadata)
-        binding["design_digest"] = resolved.get("design_digest")
-        binding["design_context_digest"] = resolved.get("design_context_digest")
-    if selection_source is not None:
-        selection_path, metadata = _freeze_input_snapshot(
-            run_path, "layout-selection", selection_source,
-            max_bytes=MAX_SLIDES_CONTRACT_BYTES)
-        try:
-            selection = json.loads(selection_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError) as exc:
-            raise ContractError("layout_selection_invalid") from exc
-        if (not isinstance(selection, dict)
-                or selection.get("kind") != "deck-layout-selection"):
-            raise ContractError("layout_selection_invalid")
-        if pack_source is not None:
-            if selection.get("content_digest") != pack.get("content_digest"):
-                raise ContractError("layout_selection_content_mismatch")
-            selected_pages = set(selection.get("selection") or {})
-            pack_pages = {page.get("page_id") for page in pack.get("pages", [])}
-            if selected_pages != pack_pages:
-                raise ContractError("layout_selection_page_mismatch")
-        if str(selection.get("policy_version", "1")) == "2":
-            from .asset_resolver import AssetResolver, ResolverError
-            from .content_projection import ProjectionError, verify_effective_binding
-            if pack_source is None or selection.get("status") != "complete":
-                raise ContractError("effective_binding_required")
-            selected = selection.get("selection") or {}
-            pins = []
-            for page in pack["pages"]:
-                entry = selected[page["page_id"]]
-                effective = entry.get("binding") or {}
-                if (effective.get("schema_version") != 2
-                        or not effective.get("expression_binding_digest")
-                        or not effective.get("materialization_binding_digest")
-                        or effective.get("layout_id") != entry.get("layout_id")
-                        or effective.get("content_digest") != pack["content_digest"]
-                        or not effective.get("effective", {}).get("assets")):
-                    raise ContractError("effective_binding_required")
-                pins.extend(effective["effective"]["assets"])
-            try:
-                snapshot = root / "input/asset-snapshot"
-                source_resolver = (AssetResolver.from_snapshot(snapshot)
-                                   if snapshot.exists() else AssetResolver())
-                resolver = source_resolver.freeze_assets(snapshot, pins)
-                for page in pack["pages"]:
-                    verify_effective_binding(selected[page["page_id"]]["binding"], page,
-                                             resolver=resolver,
-                                             frozen_design=resolved if design_source is not None else None)
-            except (ResolverError, ProjectionError, OSError) as exc:
-                raise ContractError("effective_binding_invalid") from exc
-        _record_supplemental_input(run_path, "layout_selection", metadata)
-        binding["selection_policy"] = selection.get("policy_version")
-        binding["selection_status"] = selection.get("status")
-    return binding or None
+        return content_binding_summary(run_path)
+    except (ExpressionPipelineError, ReceiptError) as exc:
+        raise ContractError(str(exc)) from exc
 
 
 def _run_input_sources(run_path: str | Path, *, pages: set[int] | None = None) -> list[str]:
@@ -1500,18 +1358,6 @@ def build_parser() -> argparse.ArgumentParser:
         "--sources",
         help="视觉来源清单（content/sources-manifest.json）；冻结进 run input 并入 prepare_fingerprint",
     )
-    prepare.add_argument(
-        "--content-pack",
-        help="母版内容包（page-content-pack.json）；dashi K4 冻结绑定，prepare 校验摘要与页序",
-    )
-    prepare.add_argument(
-        "--design",
-        help="冻结设计（resolved-design.json）；与内容包同批冻结并交叉核对页序",
-    )
-    prepare.add_argument(
-        "--layout-selection",
-        help="整册版式选择（layout-selection.json，K3/K5）；随绑定冻结并核对覆盖",
-    )
     for sample_command in ("sample-record", "sample-verify"):
         sample_parser = image_commands.add_parser(sample_command)
         sample_parser.add_argument("run_path", nargs="?")
@@ -1559,6 +1405,7 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--render-receipt",
                         help="render provenance sidecar（<png>.render.json）路径；"
                              "校验 out_sha256 一致后并入该页 slide entry 的 provenance 字段")
+    record.add_argument("--provider-receipt", help="image lane 的真实Provider sidecar；必须对应本run的冻结输入与页图")
     record.add_argument("--worker-duration-seconds", type=_duration_seconds)
     record.add_argument("--backend-duration-seconds", type=_duration_seconds)
     image_sweep = image_commands.add_parser(
@@ -2966,13 +2813,9 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 slides_path = next((str(path) for path in candidates if path.is_file()), None)
             if not slides_path:
                 raise ContractError("slides_required")
+            content_binding = _read_content_binding(run_path, slides_path)
             verify_sample_decision(run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True)
             slides_path = str(_freeze_slides_contract(run_path, slides_path))
-            content_binding = _freeze_content_binding(
-                run_path, slides_path,
-                content_pack=getattr(args, "content_pack", None),
-                design=getattr(args, "design", None),
-                layout_selection=getattr(args, "layout_selection", None))
             sample_decision = verify_sample_decision(
                 run_path, slides=slides_path, binding=args.sample_binding, allow_legacy=True,
             )
@@ -3077,12 +2920,18 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 requested_generation=args.generation,
             )
             from .content_projection import load_run_binding
-            bound_page = load_run_binding(run_path, number, backend=args.backend)
+            lane = args.backend if args.backend.startswith("render:") else "image"
+            bound_page = load_run_binding(run_path, number, backend=lane)
+            if not bound_page:
+                raise ContractError("binding_schema_mismatch")
+            validated_provenance = None
             if bound_page is not None:
                 expected = bound_page["binding"]
-                if args.backend != expected["backend"]:
+                if lane != expected["backend"]:
                     raise ContractError("effective_binding_backend_mismatch")
-                if args.backend == "render:html":
+                if lane == "render:html":
+                    if getattr(args, "provider_receipt", None):
+                        raise ContractError("effective_binding_receipt_lane_mismatch")
                     if not getattr(args, "render_receipt", None):
                         raise ContractError("effective_binding_render_receipt_required")
                     receipt = load_render_receipt(args.render_receipt)
@@ -3096,55 +2945,36 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                         verify_binding_reference(receipt, expected)
                     except ProjectionError as exc:
                         raise ContractError(str(exc)) from exc
-            # R-73 对齐门：图像 lane 整页生成页在 record 前机械拦截。
-            # 判域只看冻结 provenance 事实（composite/render 豁免）；无 OCR
-            # 文本 = not_run 披露，不冒充通过；WARN 期失败只披露不阻断。
-            alignment_verdict = None
-            alignment_warnings: list[str] = []
-            slides_contract_path = Path(run_path) / "input/slides.json"
-            if slides_contract_path.is_file():
-                from .ocr_alignment import (
-                    gate_for_page,
-                    load_alignment_config,
-                    page_gate_applies,
-                    required_text_for_page,
-                    resolve_gate_mode,
-                )
-                slides_contract = _json_file(str(slides_contract_path))
-                page_required = required_text_for_page(slides_contract, number)
-                if page_required:
-                    sources_manifest = None
-                    sources_path = Path(run_path) / "input/sources-manifest.json"
-                    if sources_path.is_file():
-                        sources_manifest = _json_file(str(sources_path))
-                    slide_entry = next(
-                        (item for item in jobs["slides"] if item["number"] == number), None)
-                    gate_applies, gate_scope = page_gate_applies(
-                        sources_manifest,
-                        number,
-                        generation_method=getattr(args, "generation_method", None),
-                        slide_provenance=(slide_entry or {}).get("provenance"),
-                    )
-                    if gate_applies:
-                        alignment_config = load_alignment_config(run_path)
-                        gate_mode = resolve_gate_mode(alignment_config, run_path)
-                        alignment_verdict = gate_for_page(
-                            run_path, number, page_required,
-                            config={**alignment_config, "mode": gate_mode})
-                        if alignment_verdict["status"] == "fail":
-                            if gate_mode == "enforce":
-                                from .ocr_alignment import OcrAlignmentError
-                                raise OcrAlignmentError(
-                                    "ocr_alignment_failed",
-                                    f"页 {number} OCR 对齐失败："
-                                    f"{alignment_verdict.get('missing')}")
-                            alignment_warnings.append(
-                                f"ocr_alignment_warned: 页 {number} 缺失 "
-                                f"{alignment_verdict.get('missing')}（WARN 期，校准通过前不阻断）")
-                        elif alignment_verdict["status"] == "not_run":
-                            alignment_warnings.append(
-                                f"ocr_alignment_not_run: {alignment_verdict.get('reason_code')}"
-                                "；门未执行，不构成通过")
+                    validated_provenance = receipt
+                elif lane == "image":
+                    if getattr(args, "render_receipt", None):
+                        raise ContractError("effective_binding_receipt_lane_mismatch")
+                    if not getattr(args, "provider_receipt", None):
+                        raise ContractError("effective_binding_provider_receipt_required")
+                    if getattr(args, "generation_method", None) in {"render", "composite"}:
+                        raise ContractError("effective_binding_generation_method_mismatch")
+                    from .application.expression_pipeline import load_committed_input
+                    from .image_deck.expression_adapter import verify_provider_export
+                    from .qualification import read_evidence_bytes
+                    committed = load_committed_input(run_path)
+                    provider_contract = committed["payload"]["request"]["provider_contract"]
+                    if args.backend != provider_contract["provider"]:
+                        raise ContractError("effective_binding_provider_mismatch")
+                    receipt_path = Path(args.provider_receipt).absolute()
+                    receipt = json.loads(read_evidence_bytes(receipt_path.parent, receipt_path.name))
+                    verify_provider_export(receipt, root=receipt_path.parent, binding=expected)
+                    from .storage import sha256_file
+                    if (receipt.get("evidence_source") != "provider-http" or receipt.get("provider") != args.backend
+                            or receipt.get("run_id") != committed["payload"]["request"]["run_id"]
+                            or receipt.get("input_generation") != committed["generation"]
+                            or receipt.get("out_sha256") != sha256_file(Path(image_path))):
+                        raise ContractError("effective_binding_provider_receipt_mismatch")
+                    validated_provenance = receipt
+            # 收据已在上方核验；可选讲稿或来源清单不能改写冻结页面的 OCR 范围。
+            from .ocr_alignment import record_alignment
+            alignment_verdict, alignment_warnings = record_alignment(
+                run_path, number, bound_page["pack_page"]["required_text"],
+                verified_provenance=validated_provenance)
             artifact = adapter.record(
                 number,
                 image_path,
@@ -3156,13 +2986,12 @@ def _dispatch_impl(args: argparse.Namespace) -> dict[str, Any]:
                 lease=lease,
                 generation=generation,
                 rework=bool(getattr(args, "rework", False)),
+                provenance=validated_provenance,
             )
-            provenance_summary = None
-            if getattr(args, "render_receipt", None):
-                receipt = load_render_receipt(args.render_receipt)
-                provenance_summary = attach_provenance_to_slide(
-                    adapter.run_dir, number, receipt, backend=args.backend
-                )
+            provenance_summary = {key: validated_provenance[key] for key in
+                ("lane", "provider", "model", "backend", "template_id", "data_sha256", "renderer",
+                 "expression_binding_digest", "materialization_binding_digest", "out_sha256")
+                if key in validated_provenance}
             _complete_worker_operation(
                 run_path,
                 operation_id,

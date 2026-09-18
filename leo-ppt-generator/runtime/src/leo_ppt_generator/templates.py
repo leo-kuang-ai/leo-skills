@@ -1103,7 +1103,7 @@ def compose_design(
                               resolver.resolve(layout_query))
         except _ResolverError as exc:
             raise DesignCompositionError(f"design_composition_invalid: {exc}") from exc
-        profile = layout_entity["data"]
+        profile = (selection[page["page_id"]]["binding"].get("proposal") or {}).get("profile", layout_entity["data"])
         try:
             validate_profile(profile)
         except _ResolverError as exc:

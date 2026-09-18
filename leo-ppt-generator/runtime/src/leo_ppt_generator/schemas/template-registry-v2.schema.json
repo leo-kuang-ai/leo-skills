@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/template-registry/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schema_version",
+    "catalog_generation",
+    "asset_generation",
+    "evidence_set_digest",
+    "policy_digest",
+    "entities",
+    "references"
+  ],
+  "properties": {
+    "kind": {
+      "const": "template-registry"
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "catalog_generation": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "asset_generation": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_set_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "kind",
+          "path",
+          "revision",
+          "catalog_status",
+          "dependencies"
+        ]
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_id",
+          "kind",
+          "path",
+          "catalog_status"
+        ],
+        "properties": {
+          "catalog_status": {
+            "const": "reference-only"
+          }
+        }
+      }
+    }
+  }
+}

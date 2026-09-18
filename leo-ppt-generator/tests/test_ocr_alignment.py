@@ -31,6 +31,7 @@ from leo_ppt_generator.ocr_alignment import (  # noqa: E402
     load_alignment_config,
     page_gate_applies,
     required_text_for_page,
+    record_alignment,
     resolve_gate_mode,
     run_page_ocr,
 )
@@ -126,6 +127,14 @@ class GateScopeTest(unittest.TestCase):
     def test_missing_manifest_not_applicable(self):
         applies, scope = page_gate_applies(None, 1)
         self.assertFalse(applies)
+
+    def test_verified_image_lane_cannot_be_exempted_by_optional_manifest_or_method(self):
+        provenance = {"lane": "image"}
+        for manifest, method in ((None, None), (None, "composite"),
+                                 (self._manifest("deterministic-overlay"), None)):
+            with self.subTest(manifest=manifest, method=method):
+                self.assertEqual(page_gate_applies(manifest, 1, generation_method=method,
+                                 slide_provenance=provenance), (True, "image-generated-page"))
 
 
 class GateForPageTest(unittest.TestCase):
@@ -324,7 +333,7 @@ class RequiredTextContractTest(unittest.TestCase):
 
 
 class RecordGateIntegrationTest(unittest.TestCase):
-    """record 前置门端到端：WARN 披露 / not_run 不冒充 / enforce 拦截。"""
+    """OCR 门到页事务的机制集成；Provider 收据准入由 CLI 单独验证，不伪造 run。"""
 
     REQUIRED_1 = ["季度经营复盘", "要点一"]
     REQUIRED_2 = ["财务页标题", "毛利率 38.2%（估算）"]
@@ -334,10 +343,6 @@ class RecordGateIntegrationTest(unittest.TestCase):
         self.addCleanup(self._tmp.cleanup)
         self.run = Path(self._tmp.name) / "run"
         (self.run / "input").mkdir(parents=True)
-        (self.run / "run.json").write_text(json.dumps({
-            "schema_version": 1, "run_id": "r1", "route": "generate",
-            "revision": 0, "supplemental_inputs": {},
-        }), encoding="utf-8")
         slides = [
             {"number": 1, "title": "经营", "required_text": self.REQUIRED_1},
             {"number": 2, "title": "财务", "required_text": self.REQUIRED_2},
@@ -354,9 +359,9 @@ class RecordGateIntegrationTest(unittest.TestCase):
             path = Path(self._tmp.name) / f"page-{number}.png"
             Image.new("RGB", (1280, 720), (240, 240, 236)).save(path, format="PNG")
             self.images[number] = path
-        prepared = _dispatch(["image", "prepare", str(self.run),
-                              "--slides", str(self.run / "input/slides.json")])
-        self.assertEqual(prepared["status"], "ready")
+        from leo_ppt_generator.image_deck.adapter import ImageDeckAdapter
+        self.adapter = ImageDeckAdapter(self.run / "image-deck")
+        self.adapter.prepare(slides, sources_manifest=manifest)
 
     def _sources_manifest(self):
         pages = []
@@ -389,11 +394,13 @@ class RecordGateIntegrationTest(unittest.TestCase):
         return manifest
 
     def _record(self, number, operation_id):
-        return _dispatch([
-            "image", "record", str(self.run),
-            "--number", str(number), "--image", str(self.images[number]),
-            "--backend", "zhipu", "--operation-id", operation_id,
-        ])
+        # 仅提供门的判域输入，不构造或声称真实 Provider receipt。
+        alignment, warnings = record_alignment(self.run, number,
+            self.REQUIRED_1 if number == 1 else self.REQUIRED_2,
+            verified_provenance={"lane": "image"})
+        artifact = self.adapter.record(number, self.images[number], backend="image",
+            expected_revision=self.adapter._jobs()["revision"], operation_id=operation_id)
+        return {"status": "ready", "alignment": alignment, "warnings": warnings, "artifact": artifact}
 
     def test_not_run_disclosed_without_ocr_text(self):
         result = self._record(1, "op-notrun")
@@ -410,6 +417,7 @@ class RecordGateIntegrationTest(unittest.TestCase):
         self.assertEqual(result["alignment"]["status"], "fail")
         self.assertTrue(any("ocr_alignment_warned" in w for w in result["warnings"]))
         self.assertFalse((self.run / "image-deck").exists() is False)
+        self.assertEqual(self.adapter._jobs()["slides"][1]["status"], "recorded")
 
     def test_enforce_mode_blocks_misaligned_record(self):
         self._record(1, "op-base")
@@ -428,19 +436,44 @@ class RecordGateIntegrationTest(unittest.TestCase):
         with self.assertRaises(OcrAlignmentError) as ctx:
             self._record(2, "op-enforce")
         self.assertEqual(ctx.exception.reason_code, "ocr_alignment_failed")
+        self.assertEqual(self.adapter._jobs()["slides"][1]["status"], "pending")
+        self.assertFalse((self.adapter.images_dir / "slide_02.png").exists())
 
     def test_composite_and_render_scopes_skip_gate(self):
         ocr_dir = self.run / "image-deck/ocr"
         ocr_dir.mkdir(parents=True, exist_ok=True)
         (ocr_dir / "page_1.txt").write_text("完全无关的 OCR 文本", encoding="utf-8")
-        result = _dispatch([
-            "image", "record", str(self.run),
-            "--number", "1", "--image", str(self.images[1]),
-            "--backend", "render:html", "--generation-method", "composite",
-            "--operation-id", "op-composite",
-        ])
-        self.assertEqual(result["status"], "ready")
-        self.assertIsNone(result.get("alignment"))
+        alignment, warnings = record_alignment(self.run, 1, self.REQUIRED_1,
+            verified_provenance={"backend": "render:html"})
+        self.assertIsNone(alignment)
+        self.assertEqual(warnings, [])
+
+
+class CliAlignmentIntegrationTest(unittest.TestCase):
+    """完整 CLI 正例使用真实冻结 HTML；image 正例仍需真实 Provider 授权与证据。"""
+
+    def test_real_frozen_html_record_skips_ocr_and_keeps_receipt(self):
+        from tests.expression_test_support import copy_real_html_run, slides_for_run
+        with tempfile.TemporaryDirectory() as temporary:
+            run = Path(temporary).resolve() / "run"
+            result = copy_real_html_run(run, request_index=True)
+            slides = run / "work/slides.json"
+            slides.write_text(json.dumps(slides_for_run(run)))
+            _dispatch(["image", "prepare", str(run), "--slides", str(slides)])
+            ocr = run / "image-deck/ocr"
+            ocr.mkdir()
+            (ocr / "page_1.txt").write_text("与页面完全无关的文字")
+            row = result["receipt_refs"]["render:html"]["pg-11111111"]
+            recorded = _dispatch(["image", "record", str(run), "--number", "1", "--image", str(run / row["artifact"]),
+                "--backend", "render:html", "--render-receipt", str(run / row["receipt"]), "--operation-id", "real-html"])
+            self.assertEqual(recorded["status"], "ready")
+            self.assertIsNone(recorded["alignment"])
+            self.assertTrue(recorded["provenance"]["materialization_binding_digest"])
+            self.assertFalse((ocr / "page_001.align.json").exists())
+            jobs = json.loads((run / "image-deck/slide_jobs.json").read_text())
+            self.assertEqual(jobs["revision"], 1)
+            self.assertEqual(jobs["slides"][0]["provenance"]["materialization_binding_digest"],
+                             recorded["provenance"]["materialization_binding_digest"])
 
 
 if __name__ == "__main__":

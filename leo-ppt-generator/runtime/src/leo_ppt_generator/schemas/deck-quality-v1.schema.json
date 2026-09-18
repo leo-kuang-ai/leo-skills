@@ -163,6 +163,12 @@
     },
     "publication_ready": {
       "type": "boolean"
+    },
+    "user_benefit": {
+      "type": "object",
+      "required": [
+        "status"
+      ]
     }
   }
 }

@@ -31,101 +31,34 @@ from leo_ppt_generator.layout_selection import (  # noqa: E402
 STYLE = "finance-navy"
 
 
-class _FakeResolver:
-    """受控候选集合：三封面版式（hero 禁复用）+ 两内容版式。"""
-
-    def __init__(self):
-        def layout(name, page_role, *, reuse=None, max_per_deck=None,
-                   structure=None, slots=None):
-            profile = {
-                "schema_version": 1, "entity": "layout-profile",
-                "asset_id": f"builtin:layout:{name}", "name": name,
-                "canvas": {"width": 1280, "height": 720, "units": "logical-px"},
-                "page_role": page_role, "layout_type": "fixed-regions",
-                "regions": {"content": {"x": 80, "y": 60, "width": 1120, "height": 600}},
-                "slots": slots or {}, "renderer_support": {
-                    "render:html": f"builtin:template:{name}"},
-            }
-            if reuse is False:
-                profile["reuse_friendly"] = False
-                profile["max_per_deck"] = max_per_deck or 1
-            if structure:
-                profile["structure"] = structure
-            return profile
-
-        def template(name, fields):
-            return {"schema_version": 1, "entity": "render-template",
-                    "asset_id": f"builtin:template:{name}", "name": name,
-                    "input_fields": fields, "slot_bindings": [], "theme_roles": [],
-                    "dependencies": []}
-
-        text_slot = {"title": {"region": "content", "max_chars": 60,
-                                "content_type": "text"}}
-        bullets_slot = {"bullets": {"region": "content", "count_min": 2,
-                                     "count_max": 6, "content_type": "points"},
-                         "title": {"region": "content", "max_chars": 60,
-                                    "content_type": "text"}}
-        self.layouts = {
-            "hero": layout("hero", "cover", reuse=False, max_per_deck=1,
-                           slots=text_slot,
-                           structure={"reading_order": ["title"]}),
-            "cover-alt": layout("cover-alt", "cover", slots=text_slot,
-                                 structure={"reading_order": ["title"]}),
-            "cover-third": layout("cover-third", "cover", slots=text_slot,
-                                   structure={"reading_order": ["title"]}),
-            "bullets-a": layout("bullets-a", "content", slots=bullets_slot,
-                                 structure={"reading_order": ["title", "bullets"]}),
-            "bullets-b": layout("bullets-b", "content", slots=bullets_slot,
-                                 structure={"reading_order": ["bullets", "title"]}),
-        }
-        self.templates = {
-            "hero": template("hero", [
-                {"name": "title", "required": True, "type": "string"},
-                {"name": "subtitle", "required": False, "type": "string"}]),
-            "cover-alt": template("cover-alt", [
-                {"name": "title", "required": True, "type": "string"},
-                {"name": "subtitle", "required": False, "type": "string"}]),
-            "cover-third": template("cover-third", [
-                {"name": "title", "required": True, "type": "string"},
-                {"name": "subtitle", "required": False, "type": "string"}]),
-            "bullets-a": template("bullets-a", [
-                {"name": "title", "required": True, "type": "string"},
-                {"name": "bullets", "required": True, "type": "array"}]),
-            "bullets-b": template("bullets-b", [
-                {"name": "title", "required": True, "type": "string"},
-                {"name": "bullets", "required": True, "type": "array"}]),
-        }
-
-    def require(self, query, kind=None, scope="any"):
-        return self._entity(f"builtin:layout:{query}", self.layouts[query])
-
-    def resolve(self, asset_id, context=None):
-        if asset_id.startswith("builtin:layout:"):
-            name = asset_id.rsplit(":", 1)[-1]
-            return self._entity(asset_id, self.layouts[name])
-        if asset_id.startswith("builtin:template:"):
-            name = asset_id.rsplit(":", 1)[-1]
-            return self._entity(asset_id, self.templates[name])
-        raise KeyError(asset_id)
-
-    @staticmethod
-    def _entity(asset_id, data):
-        return {"asset_id": asset_id, "revision": "r1", "path": "/dev/null",
-                "data": data}
+def allocation_inputs(*, hero_limit=1, alt_limit=0, prefer_b=False):
+    """真实资产变体经正反浏览器探针后供算法测试使用，不授予发布资格。"""
+    from tests.expression_test_support import real_allocation_inputs
+    return real_allocation_inputs(hero_limit, alt_limit, prefer_b)
 
 
-def _pack_for(pages_spec: str) -> dict:
+def _pack_for(pages_spec: list, *, decided=False) -> dict:
     """pages_spec: list of (page_id, 角色, 标题, [要点])。"""
     blocks = []
-    ledger = []
+    model = {"schema_version": 2, "main_claim": "验证选型约束", "main_style": "清爽专业风",
+             "brand_constraints": [], "narrative_order": ["ch-test"], "chapters": [
+                 {"chapter_id": "ch-test", "task": "比较候选", "conclusion": "保留所有事实",
+                  "evidence_refs": [], "previous": None, "next": None}]}
     for pid, role, title, points in pages_spec:
         lines = [f"## S{pid[3:]} P", f"page_id: {pid}", f"角色：{role}",
                  "argument_role: 论据", f"- 标题：{title}"]
-        lines += [f"- 要点 {i + 1}：{text}" for i, text in enumerate(points)]
+        lines += [f"- 要点 {i + 1}：{text}" + ("【引用|src:测试材料】" if decided else "")
+                  for i, text in enumerate(points)]
+        refs = [f"point:{i + 1}" for i in range(len(points))]
+        expression = {"chapter_id": "ch-test", "semantic_structure": "independent" if decided else "undecided", "media_role": "none",
+                      "evidence_refs": ["测试材料"] if decided else [], "basis": ["材料列明相互独立的事项"] if decided else [], "expression": {"reading_task": "independent",
+                      "focus": "claim", "reading_order": ["claim", *refs], "fact_refs": [], "uncertainty": [],
+                      "relation_encoding": {"item_refs": refs, "edges": []}}}
+        lines.append("page_expression: " + json.dumps(expression, ensure_ascii=False))
         lines.append("视觉行：要点1→容器")
         lines.append("- 备注：口播")
         blocks.append("\n".join(lines))
-    master = ("# 母版 v1\nconfirmation: confirmed\n\n"
+    master = ("# 母版 v2\ndecision_source: user-delegated\ncontent_model: " + json.dumps(model, ensure_ascii=False) + "\n\n"
               + "\n\n".join(blocks)
               + "\n\n## 数字登记表\n| 数值 | 页 | 来源 | 口径 | 期间 | 单位 | 证据等级 | verified? | as-of |\n"
                 "| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n")
@@ -133,7 +66,7 @@ def _pack_for(pages_spec: str) -> dict:
 
 
 def _context():
-    return templates.resolve_design_context(STYLE)
+    return allocation_inputs()[1]
 
 
 class StructureFingerprintTests(unittest.TestCase):
@@ -169,14 +102,13 @@ class StructureFingerprintTests(unittest.TestCase):
 class DeckAllocationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.resolver = _FakeResolver()
-        cls.context = _context()
+        cls.resolver, cls.context = allocation_inputs()
         cls.candidates = ["hero", "cover-alt", "cover-third", "bullets-a", "bullets-b"]
 
     def allocate(self, pages_spec, **kwargs):
         pack = _pack_for(pages_spec)
         return allocate_deck(pack, self.context, resolver=self.resolver,
-                             candidates=self.candidates, **kwargs), pack
+                             candidates=self.candidates, qualification_purpose="validation", **kwargs), pack
 
     def test_allocation_deterministic_and_ordered(self):
         pages = [
@@ -188,11 +120,10 @@ class DeckAllocationTests(unittest.TestCase):
         second, _ = self.allocate(pages)
         self.assertEqual(first["status"], "complete", first["page_status"])
         self.assertEqual(first["selection"], second["selection"])
-        # 普通内容版式可复用（不误套一次限制）；相邻重复被惩罚 → a/b 交替。
-        self.assertEqual(first["selection"]["pg-22222222"]["layout_id"],
-                         "builtin:layout:bullets-a")
-        self.assertEqual(first["selection"]["pg-33333333"]["layout_id"],
-                         "builtin:layout:bullets-b")
+        # 普通内容版式可复用；二者是真实同结构变体，不能伪造不同结构强迫交替。
+        for page_id in ("pg-22222222", "pg-33333333"):
+            self.assertIn(first["selection"][page_id]["layout_id"],
+                          {"builtin:layout:bullets-a", "builtin:layout:bullets-b"})
 
     def test_reuse_limited_layout_respected_and_third_candidate_solves(self):
         # AE5：hero（reuse_friendly=false, max_per_deck=1）显式用于第一页后，
@@ -234,32 +165,27 @@ class DeckAllocationTests(unittest.TestCase):
 
     def test_backtracking_reassigns_when_second_page_loses_top_choice(self):
         # 两个禁复用封面版式各限一次：回溯撤销重选，两页均得解（AE5 深化）。
-        resolver = _FakeResolver()
-        resolver.layouts["cover-alt"]["reuse_friendly"] = False
-        resolver.layouts["cover-alt"]["max_per_deck"] = 1
-        context = _context()
+        resolver, context = allocation_inputs(alt_limit=1)
         pages = [
             ("pg-11111111", "封面", "封面一", ["要点一"]),
             ("pg-22222222", "封面", "封面二", ["要点一"]),
         ]
         pack = _pack_for(pages)
         result = allocate_deck(pack, context, resolver=resolver,
-                               candidates=["hero", "cover-alt", "cover-third"])
+                               qualification_purpose="validation", candidates=["hero", "cover-alt", "cover-third"])
         self.assertEqual(result["status"], "complete", result["page_status"])
         chosen = {p: v["layout_id"] for p, v in result["selection"].items()}
         self.assertNotEqual(chosen["pg-11111111"], chosen["pg-22222222"])
 
     def test_max_per_deck_two_allows_reuse(self):
-        resolver = _FakeResolver()
-        resolver.layouts["hero"]["max_per_deck"] = 2
-        context = _context()
+        resolver, context = allocation_inputs(hero_limit=2)
         pages = [
             ("pg-11111111", "封面", "封面一", ["要点一"]),
             ("pg-22222222", "封面", "封面二", ["要点一"]),
         ]
         pack = _pack_for(pages)
         result = allocate_deck(pack, context, resolver=resolver,
-                               candidates=["hero", "cover-alt", "cover-third"],
+                               qualification_purpose="validation", candidates=["hero", "cover-alt", "cover-third"],
                                explicit={"pg-11111111": "hero", "pg-22222222": "hero"})
         self.assertEqual(result["status"], "complete", result["page_status"])
         chosen = {p: v["layout_id"] for p, v in result["selection"].items()}
@@ -273,14 +199,14 @@ class DeckAllocationTests(unittest.TestCase):
         pool = qualified_pool(pack["pages"][0], self.context,
                               content_digest=pack["content_digest"],
                               numbers=pack["numbers"],
-                              candidates=self.candidates, resolver=self.resolver)
+                              candidates=self.candidates, resolver=self.resolver, qualification_purpose="validation")
         qualified_ids = {e["layout_id"] for e in pool["qualified"]}
         excluded_ids = {e["layout_id"] for e in pool["excluded"]}
         self.assertEqual(qualified_ids, {"builtin:layout:bullets-a",
                                           "builtin:layout:bullets-b"})
         self.assertIn("builtin:layout:hero", excluded_ids)  # 角色不符仍留在排除清单
         result = allocate_deck(pack, self.context, resolver=self.resolver,
-                               candidates=self.candidates)
+                               candidates=self.candidates, qualification_purpose="validation")
         self.assertLessEqual(len(result["top2"]["pg-11111111"]), 2)
 
 

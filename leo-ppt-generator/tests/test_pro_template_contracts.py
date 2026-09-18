@@ -1,4 +1,4 @@
-"""增强模板的内容合同与真实渲染回归。"""
+"""增强模板的字段合同回归；缺表达的旧输入不可获得生产资格。"""
 import copy
 import json
 import sys
@@ -10,7 +10,7 @@ sys.path.insert(0, str(SKILL / "runtime" / "src"))
 
 from leo_ppt_generator import templates
 from leo_ppt_generator.content_pack import ContentPackError, compile_content_pack
-from leo_ppt_generator.content_projection import materialize_html, precompile_binding
+from leo_ppt_generator.content_projection import _materialize_html_data, precompile_binding
 
 
 def master(fields, role="指标·计分榜"):
@@ -46,8 +46,9 @@ class StructuredTemplateTests(unittest.TestCase):
 
     def test_kpi_fields_preserve_objects_and_display_values(self):
         page, binding = self.binding(KPI_DATA)
-        self.assertTrue(binding["eligibility"]["qualified"], binding["eligibility"])
-        data = materialize_html(binding, page)
+        self.assertFalse(binding["eligibility"]["qualified"])
+        self.assertEqual(binding["eligibility"]["hard_failures"], ["expression_incomplete: page expression required"])
+        data = _materialize_html_data(binding, page)
         for key, value in KPI_DATA.items():
             self.assertEqual(data[key], value)
         data["kpis"][0]["value"] = "changed"

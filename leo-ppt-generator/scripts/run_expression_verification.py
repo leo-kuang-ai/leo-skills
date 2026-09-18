@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -35,18 +36,32 @@ def commands():
         return [python, "-m", "unittest", *["tests." + name for name in names]]
     return [
         ("compileall", [python, "-m", "compileall", "-q", "runtime/src", "scripts", "tests"]),
-        ("schemas", tests("test_library_contracts", "test_page_expression_contract", "test_execution_pairing", "test_image_expression_adapter")),
+        ("schemas", tests("test_library_contracts", "test_page_expression_contract", "test_execution_pairing", "test_image_expression_adapter", "test_quality_replay", "test_migration_phases")),
         ("regime-lint", [python, "scripts/lint_page_type_regime.py"]),
         ("layout-lint", [python, "scripts/lint_layout_grid.py"]),
         ("template-lint", [python, "scripts/lint_template_contract.py"]),
         ("expression-consumers", tests("test_content_pack", "test_content_projection", "test_content_preview",
             "test_binding_v2", "test_deck_layout_selection", "test_expression_pipeline", "test_deck_projection_view",
-            "test_task_local_expression_proposals", "test_qualification_evidence", "test_relation_oracle")),
-        ("migration", tests("test_migration_phases", "test_library_catalog", "test_library_bundle", "test_style_aliases_migration")),
-        ("quality", tests("test_expression_quality_channels", "test_quality_scorecard", "test_quality_metrics",
+            "test_task_local_expression_proposals", "test_qualification_evidence", "test_relation_oracle", "test_raster_oracle")),
+        ("migration", tests("test_migration_phases", "test_migration_transaction", "test_template_catalog_v2", "test_library_catalog", "test_library_bundle", "test_style_aliases_migration")),
+        ("quality", tests("test_quality_replay", "test_expression_quality_channels", "test_quality_scorecard", "test_quality_metrics",
                            "test_compute_impact", "test_visual_measure_rules", "test_visual_qa")),
         ("full-suite", [python, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"]),
     ]
+
+
+def unittest_summary(output):
+    """保存原始失败标签（含 subTest），不以复杂测试名正则漏掉错误。"""
+    runs = re.findall(r"^Ran (\d+) tests? in ([0-9.]+)s$", output, re.M)
+    if not runs:
+        return None
+    issues = [{"kind": kind, "label": label}
+              for kind, label in re.findall(r"^(FAIL|ERROR): (.+)$", output, re.M)]
+    return {"tests": int(runs[-1][0]), "reported_seconds": float(runs[-1][1]),
+            "failures": sum(row["kind"] == "FAIL" for row in issues),
+            "errors": sum(row["kind"] == "ERROR" for row in issues), "issues": issues,
+            "terminal_summary": next((line for line in reversed(output.splitlines())
+                if re.match(r"^(OK|FAILED|INTERRUPTED)(?:\s|\(|$)", line)), None)}
 
 
 def main(argv=None):
@@ -85,6 +100,9 @@ def main(argv=None):
                 raise
         row.update(exit_code=code, status="passed" if code == 0 else "failed", duration_seconds=round(time.monotonic() - started, 3),
                    log_sha256=hashlib.sha256((out / row["log"]).read_bytes()).hexdigest())
+        summary = unittest_summary((out / row["log"]).read_text(errors="replace"))
+        if summary is not None:
+            row["unittest"] = summary
         atomic_write_json(manifest, report)
         print(json.dumps({key: row[key] for key in ("step", "exit_code", "duration_seconds", "log")}), flush=True)
     report["source_after"] = source_snapshot()
@@ -92,6 +110,11 @@ def main(argv=None):
     report["status"] = "passed" if report["source_stable"] and all(row["exit_code"] == 0 for row in report["commands"]) else "failed"
     report["finished_at"] = datetime.now(timezone.utc).isoformat()
     atomic_write_json(manifest, report)
+    atomic_write_json(out / "failure-ledger.json", {"schema_version": 1,
+        "verification": str(manifest), "source_stable": report["source_stable"],
+        "steps": [{"step": row["step"], "exit_code": row["exit_code"], "log": row["log"],
+                   "log_sha256": row["log_sha256"], "unittest": row.get("unittest")}
+                  for row in report["commands"]]})
     print(json.dumps({"manifest": str(manifest), "status": report["status"], "source_stable": report["source_stable"]}), flush=True)
     return 0 if report["status"] == "passed" else 1
 

@@ -15,22 +15,24 @@ from tests.render.helpers import browser_test_case
 
 
 def make_preview_run(root, count=2, *, title='固定内容，再选择表达', first_title=None, bind=True):
-    (root / 'input').mkdir(parents=True, exist_ok=True)
-    master = '# 工程验证母版\ndecision_source: user-delegated\n'
-    for n in range(1, count + 1):
-        page_title = first_title if n == 1 and first_title is not None else title
-        master += (f'\n## S{n} 预览\npage_id: pg-{n:08x}\n页面角色: 流程·路径\n'
-                   f'- 标题：{page_title}\n- 要点 1：页级绑定保持一致\n- 要点 2：缺失证据显式报告\n')
+    from tests.expression_test_support import real_validation_inputs, ROOT
+    from leo_ppt_generator.application.expression_pipeline import PipelineRequest
+    from leo_ppt_generator.application.routes import generate
+    root = Path(root).resolve()
+    assert count == 2
+    master = (ROOT / 'evals/fixtures/expression-first-validation-master.md').read_text()
+    master = master.replace('- 标题：先统一口径', '- 标题：' + (first_title or title))
+    master = master.replace('- 标题：保留可复核证据', '- 标题：' + title)
     pack = compile_content_pack(master, master_path='fixture/master.md')
-    atomic_write_json(root / 'input/page-content-pack.json', pack)
     if bind:
-        resolver = AssetResolver()
-        context = resolve_design_context('finance-navy', resolver=resolver)
-        selection = allocate_deck(pack, context, candidates=['body-basic'], resolver=resolver)
-        assert selection['status'] == 'complete', selection
-        atomic_write_json(root / 'input/layout-selection.json', selection)
-        pins = [pin for entry in selection['selection'].values() for pin in entry['binding']['effective']['assets']]
-        resolver.freeze_assets(root / 'input/asset-snapshot', pins)
+        _, resolver, context = real_validation_inputs()
+        result = generate(PipelineRequest(pack, context, resolver.generation,
+            {page['page_id']: ['render:html'] for page in pack['pages']}, str(root),
+            'preview-test', str(resolver.builtin_root), purpose='validation'), resolver=resolver)
+        assert result['status'] == 'html_validated', result
+    else:
+        (root / 'input').mkdir(parents=True, exist_ok=True)
+        atomic_write_json(root / 'input/page-content-pack.json', pack)
     return pack
 
 
@@ -41,18 +43,18 @@ class PreviewContractTests(unittest.TestCase):
         self.root = Path(self.tmp.name)
 
     def test_missing_pack_fails_before_output_creation(self):
-        with self.assertRaisesRegex(PreviewError, 'content_pack_missing'):
+        with self.assertRaisesRegex(PreviewError, 'input_pointer_missing'):
             render_run_preview(self.root)
         self.assertFalse((self.root / 'previews').exists())
 
-    def test_missing_binding_is_page_failure(self):
+    def test_uncommitted_binding_fails_before_output_creation(self):
         make_preview_run(self.root, bind=False)
-        result = render_run_preview(self.root)
-        self.assertEqual(result['status'], 'partial')
-        self.assertTrue(all(p['reason_code'] == 'preview_binding_missing' for p in result['pages']))
+        with self.assertRaisesRegex(PreviewError, 'input_pointer_missing'):
+            render_run_preview(self.root)
+        self.assertFalse((self.root / 'previews').exists())
 
     def test_unknown_filter_does_not_silently_shrink_page_set(self):
-        make_preview_run(self.root, bind=False)
+        make_preview_run(self.root)
         with self.assertRaisesRegex(PreviewError, 'page_selection_invalid'):
             render_run_preview(self.root, pages=['missing'])
 
@@ -65,7 +67,7 @@ class PreviewContractTests(unittest.TestCase):
             render_run_preview(self.root)
 
     def test_titles_are_escaped_in_single_file_overview(self):
-        make_preview_run(self.root, bind=False, title='<script>alert(1)</script>')
+        make_preview_run(self.root, title='<script>alert(1)</script>')
         render_run_preview(self.root)
         html = (self.root / 'previews/index.html').read_text()
         self.assertNotIn('<script>', html)
@@ -78,8 +80,8 @@ class PreviewContractTests(unittest.TestCase):
 
     def test_cli_preserves_partial_pages_and_output_link(self):
         from leo_ppt_generator.cli import build_parser, dispatch
-        make_preview_run(self.root, bind=False)
-        result = dispatch(build_parser().parse_args(['content', 'preview', str(self.root)]))
+        pack = make_preview_run(self.root)
+        result = dispatch(build_parser().parse_args(['content', 'preview', str(self.root), '--page', pack['pages'][0]['page_id']]))
         self.assertEqual(result['status'], 'blocked')
         self.assertEqual(len(result['preview']['pages']), 2)
         self.assertTrue(Path(result['artifact_refs'][0]).is_file())
@@ -93,7 +95,11 @@ class PreviewBrowserTests(browser_test_case()):
             first = render_run_preview(root)
             self.assertEqual(first['status'], 'ready', first)
             original = json.loads((root / 'previews' / first['pages'][1]['sidecar']).read_text())
+            import shutil
+            previous_root = root
+            root = root / 'revised-run'
             make_preview_run(root, first_title='先检查证据，再推进决策')
+            shutil.copytree(previous_root / 'previews', root / 'previews')
             current = render_run_preview(root)
             self.assertEqual(current['status'], 'ready', current)
             self.assertFalse(current['pages'][0]['cached'])
@@ -114,12 +120,18 @@ class PreviewBrowserTests(browser_test_case()):
             before = collect_fingerprints(root)
             first = render_run_preview(root)
             self.assertEqual(first['status'], 'ready', first)
-            self.assertEqual(before, collect_fingerprints(root))
+            after = collect_fingerprints(root)
+            for channel in ('page_artifacts', 'template_style_sources', 'local_assets', 'qa_reports'):
+                self.assertEqual(before[channel], after[channel])
+            self.assertTrue(after['render_previews'])
             with patch('leo_ppt_generator.content_preview.render_page', side_effect=AssertionError('unexpected rerender')):
                 second = render_run_preview(root, pages=[pack['pages'][0]['page_id']])
             self.assertEqual(len(second['pages']), 2)
             self.assertTrue(all(p['cached'] for p in second['pages']))
-            self.assertEqual(before, collect_fingerprints(root))
+            after = collect_fingerprints(root)
+            for channel in ('page_artifacts', 'template_style_sources', 'local_assets', 'qa_reports'):
+                self.assertEqual(before[channel], after[channel])
+            self.assertTrue(after['render_previews'])
             (root / 'previews' / first['pages'][0]['artifact']).write_bytes(b'broken png')
             third = render_run_preview(root)
             self.assertFalse(third['pages'][0]['cached'])

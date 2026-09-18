@@ -129,31 +129,14 @@ class DeliveryPreflightTests(unittest.TestCase):
 
     def _seed_content_binding(self):
         """dashi K7：全绿 run 携带内容包 + 整册选择（projection 门 through）。"""
-        from leo_ppt_generator.cli import build_parser, dispatch
-        master = self.run_dir / "content" / "deck-master-v1.md"
-        pack = self.run_dir / "input" / "page-content-pack.json"
-        stamped = self.run_dir / "content" / "deck-master-v2.md"
-        dispatch(build_parser().parse_args([
-            "content", "stamp-page-ids", "--master", str(master), "--out", str(stamped)]))
-        dispatch(build_parser().parse_args([
-            "content", "pack", "--master", str(stamped), "--out", str(pack)]))
-        digest = json.loads(pack.read_text(encoding="utf-8"))["content_digest"]
-        page_ids = [p["page_id"] for p in json.loads(
-            pack.read_text(encoding="utf-8"))["pages"]]
-        (self.run_dir / "input" / "layout-selection.json").write_text(json.dumps({
-            "schema_version": 1, "kind": "deck-layout-selection",
-            "policy_version": "1", "status": "complete", "content_digest": digest,
-            "selection": {pid: {"layout_id": "builtin:layout:body-basic",
-                                 "binding_digest": "0" * 64} for pid in page_ids},
-        }), encoding="utf-8")
+        from tests.expression_test_support import copy_real_html_run
+        copy_real_html_run(self.run_dir.resolve())
 
     def seed_receipt(self):
-        sys.path.insert(0, str(Path(SCRIPT).parents[0].parent / "runtime" / "src"))
-        try:
-            from leo_ppt_generator.render.receipt import create_delivery_receipt
-        except Exception:
-            self.skipTest("runtime receipt module not importable")
-        create_delivery_receipt(self.run_dir)
+        from leo_ppt_generator.render.receipt import create_delivery_receipt
+        if not (self.run_dir / "input/current.json").is_file():
+            self._seed_content_binding()
+        create_delivery_receipt(self.run_dir.resolve())
 
     def gates(self):
         return {g["gate"]: g for g in json.loads(

@@ -15,6 +15,8 @@ current）；current 缺失时可从 canonical 只读重建内存视图（execut
 
 from __future__ import annotations
 
+from contextlib import contextmanager, ExitStack
+from functools import wraps
 import hashlib
 import json
 import os
@@ -22,7 +24,7 @@ import re
 from pathlib import Path
 
 ASSET_ID_RE = re.compile(
-    r"^(?P<scope>builtin|user):(?P<kind>style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament|qa-profile):(?P<slug>[A-Za-z0-9\-\u4e00-\u9fff]+)$")
+    r"^(?P<scope>builtin|user):(?P<kind>style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament):(?P<slug>[A-Za-z0-9\-\u4e00-\u9fff]+)$")
 KIND_ENTITY_FILE = {
     "style": "brief.json",
     "theme": "theme.json",
@@ -35,7 +37,6 @@ KIND_ENTITY_FILE = {
     "ornament": "manifest.json",
     "axis": "manifest.json",
     "component": "component.json",
-    "qa-profile": "profile.json",
 }
 # canonical/<目录> 与 kind 的对应；qa-profile 属治理区规则。
 KIND_CANONICAL_DIR = {
@@ -245,9 +246,6 @@ def _declared_dependencies(data: dict) -> list[str]:
                         values = route.get(key)
                         if isinstance(values, list):
                             deps.update(v for v in values if isinstance(v, str))
-    qa = data.get("qa_profile")
-    if isinstance(qa, str):
-        deps.add(qa)
 
     ornaments = data.get("ornaments")
     if isinstance(ornaments, list):
@@ -255,27 +253,89 @@ def _declared_dependencies(data: dict) -> list[str]:
     return sorted(deps)
 
 
+def _library_read(method):
+    @wraps(method)
+    def guarded(self, *args, **kwargs):
+        with self.library_session():
+            return method(self, *args, **kwargs)
+    return guarded
+
+
 class AssetResolver:
     """统一 resolver：一次绑定库根集合（builtin + 可选 user overlay）。"""
 
-    def __init__(self, *, home: Path | None = None, library: Path | None = None):
-        self.builtin_root = Path(library) if library is not None else builtin_library_root()
-        _validate_library_declaration(self.builtin_root)
-        self.user_root = user_library_root(home)
-        self._entities: list[dict] | None = None
-        self._by_id: dict[str, dict] | None = None
-        self._registry_source: str | None = None
-        self._generation: str | None = None
+    def __init__(self, *, home: Path | None = None, library: Path | None = None, context=None):
+        from .template_catalog import LibraryContext
+        if context is not None and (not isinstance(context, LibraryContext) or library is not None or home is not None):
+            raise ResolverError("library_context_invalid")
+        self.builtin_root = (context.root if context else Path(library) if library is not None else builtin_library_root()).absolute()
+        from .library_migration import require_available
+        require_available(self.builtin_root)
+        if not self.builtin_root.is_dir():
+            raise LibraryMissingError("library_missing: 库目录不存在")
+        from .library_migration import library_operation
+        with library_operation(self.builtin_root):
+            declaration = _validate_library_declaration(self.builtin_root)
+            if context is None and declaration.get("schema_version") == 2:
+                context = LibraryContext(self.builtin_root, user_root=user_library_root(home))
+            self.context = context
+            self.execution_allowed = context is None or context.mode == "execution"
+            self.user_root = context.user_root if context else user_library_root(home)
+            if self.user_root is not None:
+                self.user_root = Path(self.user_root).absolute()
+            self._require_available()
+            self._entities: list[dict] | None = None
+            self._by_id: dict[str, dict] | None = None
+            self._registry_source: str | None = None
+            self._generation: str | None = None
 
     # -- 实体索引 ---------------------------------------------------------- #
 
+    @contextmanager
+    def library_session(self):
+        """固定一次完整操作涉及的库根，包含用户库与任务内可信根。"""
+        from .library_migration import library_operation
+        roots = {self.builtin_root, self.user_root}
+        roots.update(row["trusted_root"] for row in (self._entities or []))
+        with ExitStack() as stack:
+            for root in sorted({Path(root).absolute() for root in roots if root is not None}):
+                stack.enter_context(library_operation(root))
+            yield
+
+    def _require_available(self) -> None:
+        from .library_migration import require_available
+        require_available(self.builtin_root)
+        if self.user_root is not None:
+            require_available(self.user_root)
+
     @property
+    @_library_read
     def entities(self) -> list[dict]:
+        self._require_available()
         if self._entities is None:
             self._load()
         return list(self._entities)
 
+    @_library_read
     def _load(self) -> None:
+        self._require_available()
+        if self.context is not None:
+            from .template_catalog import LibraryContext, read_catalog
+            registry = read_catalog(self.context)
+            combined = [{**row, "origin_scope": "builtin", "trusted_root": str(self.builtin_root)} for row in registry["entities"]]
+            if self.user_root is not None:
+                user = read_catalog(LibraryContext(self.user_root, mode=self.context.mode))
+                combined.extend({**row, "origin_scope": "user", "trusted_root": str(self.user_root)} for row in user["entities"])
+            for row in combined:
+                if row["asset_id"].split(":")[0] != row["origin_scope"]:
+                    raise ScopeViolationError("scope_violation: catalog scope 不符")
+            if len({row["asset_id"] for row in combined}) != len(combined):
+                raise DuplicateIdError("duplicate_id")
+            self._entities = combined
+            self._by_id = {row["asset_id"]: row for row in combined}
+            self._generation = registry["catalog_generation"]
+            self._registry_source = "diagnostic" if registry.get("diagnostic") else "catalog"
+            return
         builtin_registry = _load_registry_from_catalog(self.builtin_root)
         self._generation = (builtin_registry or {}).get("generation")
         combined: list[dict] = []
@@ -321,11 +381,14 @@ class AssetResolver:
         self._generation = None
 
     @property
+    @_library_read
     def generation(self) -> str | None:
+        self._require_available()
         if self._entities is None:
             self._load()
         return self._generation
 
+    @_library_read
     def fingerprint(self, asset_id: str) -> dict:
         """固定实际消费字节；模板除 manifest 外还覆盖整个同目录资源。"""
         entity = self.resolve(asset_id)
@@ -351,10 +414,45 @@ class AssetResolver:
     @classmethod
     def from_snapshot(cls, snapshot: Path) -> "AssetResolver":
         """仅使用 run 的固定资产；缺失快照绝不回退安装库或用户活动库。"""
+        marker = Path(snapshot) / "asset-snapshot.json"
+        if marker.exists() or marker.is_symlink():
+            from .qualification import read_evidence_bytes, digest
+            from .template_catalog import LibraryContext
+            body = json.loads(read_evidence_bytes(snapshot, "asset-snapshot.json"))
+            if (set(body) != {"schema_version", "kind", "catalog_generation", "scopes", "pins", "snapshot_digest"}
+                    or body["schema_version"] != 2 or body["kind"] != "asset-snapshot"
+                    or body["snapshot_digest"] != digest({k: v for k, v in body.items() if k != "snapshot_digest"})):
+                raise StaleCatalogError("asset_snapshot_schema_mismatch")
+            frozen = cls(context=LibraryContext(Path(snapshot) / "builtin"))
+            entities = []
+            for scope, records in body["scopes"].items():
+                if scope not in {"builtin", "user"}:
+                    raise ScopeViolationError("scope_violation: snapshot scope")
+                root = Path(snapshot) / ("builtin" if scope == "builtin" else "user/template-library")
+                for row in records:
+                    if row["asset_id"].split(":")[0] != scope:
+                        raise ScopeViolationError("scope_violation: snapshot identity")
+                    entities.append({**row, "trusted_root": str(root), "origin_scope": scope})
+            if len({row["asset_id"] for row in entities}) != len(entities):
+                raise DuplicateIdError("duplicate_id: snapshot")
+            frozen._entities = entities
+            frozen._by_id = {row["asset_id"]: row for row in entities}
+            frozen._generation = body["catalog_generation"]
+            frozen._registry_source = "catalog"
+            if {row["asset_id"] for row in entities} != {pin["asset_id"] for pin in body["pins"]}:
+                raise StaleCatalogError("asset_snapshot_pin_set_mismatch")
+            for pin in body["pins"]:
+                if frozen.fingerprint(pin["asset_id"]) != pin:
+                    raise StaleCatalogError("asset_snapshot_pin_mismatch")
+            return frozen
         return cls(library=Path(snapshot) / "builtin", home=Path(snapshot) / "user")
 
+    @_library_read
     def freeze_assets(self, snapshot: Path, pins: list[dict]) -> "AssetResolver":
         """原子写入选中资产字节。已有快照只校验，不能静默覆盖。"""
+        self._require_available()
+        if not self.execution_allowed:
+            raise ResolverError("diagnostic_resolver_not_executable")
         import shutil
         import tempfile
 
@@ -409,6 +507,15 @@ class AssetResolver:
                     continue
                 directory = stage / ("builtin" if scope == "builtin" else "user/template-library")
                 directory.mkdir(parents=True, exist_ok=True)
+                if self.context is not None:
+                    from .storage import atomic_write_json
+                    atomic_write_json(directory / "library.json", {"kind": "template-library", "schema_version": 2,
+                        "library_id": scope, "protocol": {"resolver": "asset_resolver/v2", "builder": "capability_manifest/template-registry/v2",
+                                                           "asset_id_pattern": ASSET_ID_RE.pattern}})
+                    for entity in entities:
+                        entity.pop("trusted_root", None)
+                        entity.pop("origin_scope", None)
+                    continue
                 (directory / "library.json").write_text(json.dumps({"kind": "template-library", "schema_version": 1}))
                 # builtin registry 保留原 generation；user 仍由其 canonical 文件解析。
                 if scope == "builtin":
@@ -421,6 +528,12 @@ class AssetResolver:
                         entity.pop("origin_scope", None)
                     (registry_dir / "registry.json").write_text(json.dumps({"generation": generation, "entities": entities}))
                     (catalog / "current.json").write_text(json.dumps({"generation": generation}))
+            if self.context is not None:
+                from .qualification import digest
+                marker = {"schema_version": 2, "kind": "asset-snapshot", "catalog_generation": self.generation,
+                          "scopes": scope_entities, "pins": list(by_id.values())}
+                marker["snapshot_digest"] = digest(marker)
+                atomic_write_json(stage / "asset-snapshot.json", marker)
             checked(stage)
             try:
                 stage.rename(snapshot)
@@ -434,13 +547,16 @@ class AssetResolver:
                 shutil.rmtree(stage)
 
     @property
+    @_library_read
     def registry_source(self) -> str:
+        self._require_available()
         if self._entities is None:
             self._load()
         return self._registry_source or "empty"
 
     # -- lookup / resolve -------------------------------------------------- #
 
+    @_library_read
     def lookup(self, query: str, *, scope: str = "any", kind: str | None = None) -> list[dict]:
         """名称/别名/完整 ID 查询：返回全部命中与消歧信息（不自动挑第一个）。"""
         query = query.strip()
@@ -484,8 +600,11 @@ class AssetResolver:
                 hits = user_hits or name_hits
         return hits
 
+    @_library_read
     def resolve(self, asset_id: str, *, context: dict | None = None) -> dict:
         """返回实际 ID、可信根、类型、相对路径、revision、依赖与资格。"""
+        from .library_migration import require_available
+        self._require_available()
         if self._by_id is None:
             self._load()
         match = ASSET_ID_RE.fullmatch(asset_id)
@@ -495,6 +614,7 @@ class AssetResolver:
         if entity is None:
             raise AssetNotFoundError(f"asset_not_found: {asset_id}")
         root = Path(entity["trusted_root"])
+        require_available(root)
         path = root / entity["path"]
         resolved = path.resolve()
         if not resolved.is_relative_to(root.resolve()):
@@ -529,6 +649,7 @@ class AssetResolver:
             "data": data,
         }
 
+    @_library_read
     def resolve_dependencies(self, asset_id: str) -> list[dict]:
         """依赖闭包（含自身），循环依赖拒绝。"""
         resolved_all: dict[str, dict] = {}
@@ -555,6 +676,7 @@ class AssetResolver:
         walk(asset_id)
         return list(resolved_all.values())
 
+    @_library_read
     def require(self, query: str, *, kind: str | None = None, scope: str = "any") -> dict:
         """lookup + 唯一性检查 + resolve 的便捷入口；歧义报 ambiguous_name。"""
         hits = self.lookup(query, scope=scope, kind=kind)

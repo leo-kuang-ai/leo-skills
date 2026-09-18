@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/quality-replay/v1",
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "phase",
+    "dataset",
+    "baseline",
+    "reviews",
+    "stage_receipt",
+    "delivery_convergence",
+    "user_defect",
+    "plan_digest",
+    "run_prefix",
+    "representatives",
+    "observations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "quality-replay-plan"
+    },
+    "phase": {
+      "enum": [
+        "U6-A",
+        "U6-B"
+      ]
+    },
+    "dataset": {
+      "$ref": "#/$defs/reference"
+    },
+    "baseline": {
+      "$ref": "#/$defs/reference"
+    },
+    "reviews": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "stage_receipt": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "delivery_convergence": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "user_defect": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_prefix": {
+      "type": "string",
+      "minLength": 1
+    },
+    "representatives": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "observations": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "U6-A"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "representatives": {
+            "type": "null"
+          },
+          "stage_receipt": {
+            "type": "null"
+          },
+          "delivery_convergence": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "representatives": {
+            "type": "array"
+          },
+          "stage_receipt": {
+            "$ref": "#/$defs/reference"
+          },
+          "delivery_convergence": {
+            "$ref": "#/$defs/reference"
+          }
+        }
+      }
+    }
+  ]
+}

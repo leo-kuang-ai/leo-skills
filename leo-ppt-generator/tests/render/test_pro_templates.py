@@ -1,4 +1,4 @@
-"""八个增强模板：冻结内容、主题、几何到浏览器的端到端回归。"""
+"""八个增强模板的字段、主题与几何浏览器回归；不授予表达资格。"""
 import copy
 import json
 import os
@@ -10,7 +10,7 @@ from tests.render.helpers import browser_test_case
 from leo_ppt_generator import templates
 from leo_ppt_generator.asset_resolver import AssetResolver
 from leo_ppt_generator.content_pack import compile_content_pack
-from leo_ppt_generator.content_projection import precompile_binding, materialize_html
+from leo_ppt_generator.content_projection import precompile_binding, _materialize_html_data
 from leo_ppt_generator.render.fonts import RenderAssetServer
 from leo_ppt_generator.render.layout import compile_geometry
 from leo_ppt_generator.render.page import render_page, _OVERFLOW_CHECK_JS
@@ -70,8 +70,9 @@ class ProTemplateRenderingTests(browser_test_case()):
                         pack = compile_content_pack(master(fields, role), master_path="fixture.md")
                         page_data = pack["pages"][0]
                         binding = precompile_binding(page_data, context, layout, content_digest=pack["content_digest"])
-                        self.assertTrue(binding["eligibility"]["qualified"], binding["eligibility"])
-                        data = materialize_html(binding, page_data)
+                        self.assertFalse(binding["eligibility"]["qualified"])
+                        self.assertEqual(binding["eligibility"]["hard_failures"], ["expression_incomplete: page expression required"])
+                        data = _materialize_html_data(binding, page_data)
                         profile = resolver.require(layout, kind="layout")["data"]
                         variables = {**theme, "geometry": compile_geometry(profile, theme)}
                         first_region = next(iter(profile["regions"]))

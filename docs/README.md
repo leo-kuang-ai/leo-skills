@@ -10,8 +10,15 @@
 PPT 生成技能相关文档
 
 - **architecture/** - 架构设计与流程图
-  - `flow.md` - 执行流程图（Gate 0-5 + 四路由）
+  - `flow.md` - 执行流程图（Gate 0 + 四路由 + generate 十二步主线，2026-09-18 同步）
   - `style-library-target-architecture.md` - 风格库目标架构
+
+- **流程与验收文档**（持续更新，不带日期）
+  - `execution-workflow.md` - 详细执行流程（入口 / generate 主线 / 风格库链路 / 可编辑与升级 / 交付门 / 恢复）
+  - `workflow-optimization-verification.md` - 流程优化与验证记录（2026-09-06 批次）
+  - `style-index-implementation-verification.md` - 风格索引实施验收
+  - `capability-improvement-assessment.md` - 能力提升评估
+  - `template-rebuild-baseline.md` / `template-rebuild-verification.md` - 模板库重建基线与验证
   
 - **evals/** - 评测报告（按日期排序）
   - `2026-08-29-docgates.md` - 文档门禁评测

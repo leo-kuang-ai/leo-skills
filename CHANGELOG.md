@@ -212,6 +212,8 @@ adheres to a loose semantic-versioning convention.
 - **leo-ppt-generator：spec-table 几何真值外置后执行器传空几何导致表格错位**：矩阵执行器改按 layout profile `compile_geometry` 编译几何注入（F4 合同：版式 JSON 实际驱动几何），`column_weights` 按模板合同以 `theme.column_weights` 顶层传递；7 模板 `applyThemeVariables` 改为仅消费数值几何变量（数组值不拼接为 CSS 变量）；evidence fixture 收敛至 p25-spec-table 声明的 3 列（容量合同：未声明列数不得硬套比例）。
 
 ### Changed
+- **docs：同步 leo-ppt-generator 流程文档到当前执行链**：`docs/leo-ppt-generator/architecture/flow.md` 与 `execution-workflow.md` 按当前 `SKILL.md`、references 与 CLI 重写流程图与主线，补充表达冻结链（content pack → PipelineRequest → `generate --request` → 不可变输入代）、模板库 v2 的 current 指针与 registry 发现、worker 逐页三层容错、SAMPLE-GATE / PARTIAL-GATE / DELIVERY-GATE 边界，以及尺寸预算、交付 preflight 等新增交付门；未完成项（U1–U13 partial、publication-qualified=0、v2 库未切换、真实 Provider 与视觉证据 not_run）如实保留，docs/README.md 补流程文档导航。(user-visible)
+
 - **leo-ppt-generator：Dashi 集成方案 v3 补齐执行归属与前后绑定**：明确冻结前候选预编译、共用设计上下文、generate 到关联 upgrade-full 的两阶段交付、稳定页身份与不可变升级基线；补充结构声明准入、完整合格候选池和配对视觉评审及两阶段成本验收。本次仅更新方案，未实施或运行新增能力的质量验证。 (user-visible)
 - **leo-ppt-generator：Dashi 集成方案 v2 按当前源码复核收敛**：将 content-pack 明确为 confirmed 母版的派生投影，复用既有角色映射、Top-2、RunIndex 和 delivery receipt；补齐容量/媒体硬资格、可见内容覆盖、正式生成与恢复入口绑定、整册版式分配和精选页面结构，拆分 U1–U7 的文件落点、依赖、失败语义与真实质量/成本验收。本次仅更新方案，未实现或验证新增能力。 (user-visible)
 - **leo-ppt-generator：U10 消费者切换测试收尾批（113 处失败清零，template-rebuild）**：全量 `unittest` 由 failures=35/errors=78 修至全绿（1613 tests OK），负例全部保持为负例（reason code 按新协议更新）——

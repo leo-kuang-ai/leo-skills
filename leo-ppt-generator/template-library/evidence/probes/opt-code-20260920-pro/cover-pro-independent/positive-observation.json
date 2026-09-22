@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive.png",
+    "sha256": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": true,
+    "no_overflow": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+  "fixture": {
+    "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-fixture.json",
+    "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-measurement.json",
+    "sha256": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-input.json",
+    "sha256": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d"
+  }
+}

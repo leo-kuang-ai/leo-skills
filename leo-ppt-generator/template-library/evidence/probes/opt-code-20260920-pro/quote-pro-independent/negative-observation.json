@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative.png",
+    "sha256": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": false,
+    "no_overflow": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+  "fixture": {
+    "path": "evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-fixture.json",
+    "sha256": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-measurement.json",
+    "sha256": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-input.json",
+    "sha256": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e"
+  }
+}

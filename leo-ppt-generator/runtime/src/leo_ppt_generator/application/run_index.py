@@ -26,11 +26,25 @@ MAX_BACKEND_CONTRACT_BYTES = 1024 * 1024
 
 
 class RevisionConflict(RuntimeError):
-    reason_code = "revision_conflict"
+    """并发/身份冲突；message 携带更细稳定码（run_identity_conflict 等）。
+
+    reason_code 优先透传 message——它本身就是 snake_case 稳定码；空 message
+    回落类默认，保持旧消费者按 revision_conflict 分支的能力。
+    """
+
+    _default_reason = "revision_conflict"
+
+    @property
+    def reason_code(self):
+        return str(self) or self._default_reason
 
 
 class IdempotencyConflict(RuntimeError):
-    reason_code = "idempotency_conflict"
+    _default_reason = "idempotency_conflict"
+
+    @property
+    def reason_code(self):
+        return str(self) or self._default_reason
 
 
 @dataclass(frozen=True)
@@ -283,7 +297,14 @@ class RunIndex:
         return RunCreation(owner, "created")
 
     def snapshot(self) -> dict[str, Any]:
-        return json.loads(self.path.read_text(encoding="utf-8"))
+        try:
+            return json.loads(self.path.read_text(encoding="utf-8"))
+        except FileNotFoundError as exc:
+            # run.json 缺失（run 未创建或目录误指）必须是稳定领域错误，
+            # 不能以裸 FileNotFoundError 冒出 CLI 边界变成 traceback。
+            from ..contracts import ContractError
+
+            raise ContractError(f"run_not_found: {self.run_dir}") from exc
 
     def register_input_generation(self, generation: str) -> dict[str, Any]:
         """只登记已提交代；pointer 后崩溃可重建索引，重复登记不增加 revision。"""

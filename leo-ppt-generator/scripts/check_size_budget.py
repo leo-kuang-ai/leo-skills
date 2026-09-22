@@ -80,8 +80,15 @@ def main() -> int:
     for slide in jobs.get("slides", []):
         if slide.get("status") != "recorded":
             continue
-        artifact = run / slide.get("artifact", "")
-        if not artifact.is_file():
+        # slide_jobs 的 artifact 是 image-deck 域相对路径（origin_image/…）；
+        # 兼容历史绝对/Run 根相对写法：按 run 根 → image-deck 域根依次解析。
+        raw_artifact = str(slide.get("artifact", ""))
+        artifact = next(
+            (candidate for candidate in (run / raw_artifact, run / "image-deck" / raw_artifact)
+             if raw_artifact and candidate.is_file()),
+            None,
+        )
+        if artifact is None:
             fails.append(f"{slide['slide_id']}: artifact_missing")
             continue
         try:

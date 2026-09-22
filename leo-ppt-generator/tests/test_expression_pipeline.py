@@ -286,3 +286,34 @@ class ComposeFrozenSelectionTests(unittest.TestCase):
         next(iter(legacy.values()))["binding_digest"] = "a" * 64
         with self.assertRaisesRegex(ValueError, "binding_schema_mismatch"):
             selection_digest(legacy)
+
+
+class DependencyClosureMergeTests(unittest.TestCase):
+    """冻结依赖闭包合并：一致收敛、跨收据同文件异哈希显式拒绝。"""
+
+    @staticmethod
+    def _checks(*deps_list):
+        return {"receipt_payloads": [
+            {"dependency_hashes": dict(deps or {})} for deps in deps_list]}
+
+    def test_empty_and_single_receipt(self):
+        from leo_ppt_generator.application.expression_pipeline import merge_dependency_hashes
+        self.assertEqual(merge_dependency_hashes({"receipt_payloads": []}), {})
+        self.assertEqual(merge_dependency_hashes(self._checks(None)), {})
+        self.assertEqual(
+            merge_dependency_hashes(self._checks({"a/notes.md": "1" * 64})),
+            {"a/notes.md": "1" * 64})
+
+    def test_consistent_hashes_across_receipts_merge(self):
+        from leo_ppt_generator.application.expression_pipeline import merge_dependency_hashes
+        merged = merge_dependency_hashes(
+            self._checks({"a": "1" * 64}, {"a": "1" * 64, "b": "2" * 64}))
+        self.assertEqual(merged, {"a": "1" * 64, "b": "2" * 64})
+
+    def test_conflicting_hash_for_same_file_is_rejected(self):
+        from leo_ppt_generator.application.expression_pipeline import merge_dependency_hashes
+        with self.assertRaises(ExpressionPipelineError) as ctx:
+            merge_dependency_hashes(
+                self._checks({"a": "1" * 64}, {"a": "3" * 64}))
+        self.assertEqual(ctx.exception.reason_code, "dependency_closure_conflict")
+        self.assertEqual(ctx.exception.phase, "freeze")

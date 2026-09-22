@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative.png",
+  "out_sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 697,
+  "rendered_at": "2026-09-20T05:52:51.299Z",
+  "renderer": "playwright-chromium@1.63.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:cover-pro",
+  "template_sha256": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+  "warnings": [],
+  "width": 2560
+}

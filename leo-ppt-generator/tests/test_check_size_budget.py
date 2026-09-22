@@ -77,6 +77,19 @@ class SizeBudgetTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("image_exceeds_budget", result.stdout)
 
+    def test_domain_relative_artifact_resolved_via_image_deck_root(self):
+        # image record 写入 slide_jobs 的 artifact 是 image-deck 域相对路径
+        # （origin_image/slide_XX.png），须按 run 根 → 域根依次解析，不得误报缺失。
+        run = _make_run(self.root, [("render:html", "chart", (2560, 1440))])
+        jobs_path = run / "image-deck" / "slide_jobs.json"
+        jobs = json.loads(jobs_path.read_text(encoding="utf-8"))
+        for slide in jobs["slides"]:
+            slide["artifact"] = slide["artifact"].removeprefix("image-deck/")
+        jobs_path.write_text(json.dumps(jobs), encoding="utf-8")
+        result = _check(run, {"canvas_ratio": "16 / 9", "render_lane_px": "2560x1440"})
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("checked=1", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

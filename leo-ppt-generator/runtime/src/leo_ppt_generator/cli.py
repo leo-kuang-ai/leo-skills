@@ -3939,7 +3939,11 @@ def main(argv: list[str] | None = None) -> int:
         # style_color_override_invalid); str(error) carries the per-input
         # detail and must not become the reason_code consumers match on.
         reason = getattr(error, "reason_code", None) or str(error) or "contract_error"
-        print(json.dumps(envelope("blocked", reason, next_action={"kind": "inspect_reason_code"}), ensure_ascii=False, sort_keys=True), file=sys.stderr)
+        detail = str(error)
+        # 兜底码（contract_error 等）必须携带原始 message 出 stderr，
+        # 否则 "input_outside_project" 这类领域码被吞掉，只能靠复现排查。
+        payload = {} if not detail or detail == reason else {"detail": detail}
+        print(json.dumps(envelope("blocked", reason, next_action={"kind": "inspect_reason_code"}, **payload), ensure_ascii=False, sort_keys=True), file=sys.stderr)
         return 2
 
 

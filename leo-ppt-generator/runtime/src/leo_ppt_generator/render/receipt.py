@@ -14,7 +14,9 @@
    （slides.json、backend-contract.json 等）。
 3. ``qa_reports``       QA 报告：``final/validation-summary.json``、
    ``final/failure-report.json``、``reports/*.json``（排除
-   ``timing.json``——每条命令都会追加的观测churn；排除收据自身）。
+   ``timing.json``——每条命令都会追加的观测churn；排除收据自身；
+   排除 ``delivery-preflight.json``——它是收据 receipt 门的聚合消费者，
+   计入指纹会形成「建收据 → 跑 preflight → 收据 stale」的有序性死结）。
 4. ``render_previews``  渲染预览：``reports/render-preview/**``、
    ``final/render-preview/**``。
 5. ``template_style_sources`` 模板样式源：``input/**`` 中
@@ -57,7 +59,9 @@ _STYLE_SOURCE_RE = re.compile(r"style|deck[-_]spec|theme", re.IGNORECASE)
 _PAGE_NUMBER_RE = re.compile(r"(\d+)")
 
 # reports/ 下的观测 churn 与收据自身：不进指纹，否则 verify 自污染。
-_REPORTS_EXCLUDED = {"timing.json", RECEIPT_RELATIVE_PATH.name}
+# delivery-preflight.json 聚合并核对 receipt 门本身，属于收据的下游
+# 消费者而非原始 QA 证据——纳入会制造 preflight↔收据的先后依赖死结。
+_REPORTS_EXCLUDED = {"timing.json", RECEIPT_RELATIVE_PATH.name, "delivery-preflight.json"}
 
 
 class ReceiptError(ValueError):

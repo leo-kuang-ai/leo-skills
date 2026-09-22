@@ -1,0 +1,59 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "asset_id": "builtin:layout:p1-01-cover-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p1-01-cover-layouts/layout.json": "b6365c4ac6a02dd5b85155548f0e49c2667c4d176207a2b17ad21eed626ed488",
+    "canonical/layouts/p1-01-cover-layouts/notes.md": "6f554bc9e1917b8714c9cf33e58b47a9e1a29c136d5fa9b530e8f50798ea2948",
+    "canonical/templates/cover-pro/page.html": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+    "canonical/templates/cover-pro/template.json": "35a0247fc3a75888459abce3749d101b75d9f471b9606823c848ea41931dcaa5"
+  },
+  "environment": {
+    "path": "evidence/probes/opt-code-20260920-pro/environment.json",
+    "sha256": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43"
+  },
+  "evidence_digest": "270389d999137ff8a403ccb076ef4ac34e0c46e823d57c687067d7a56db36fd7",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative.png",
+        "sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad"
+      },
+      "fixture": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-fixture.json",
+        "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+      },
+      "observation": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-observation.json",
+        "sha256": "de5d26f8aecb517dcc814cda1037794106c0b1328c3077ecab191ff54289e96d"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive.png",
+        "sha256": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d"
+      },
+      "fixture": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-fixture.json",
+        "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+      },
+      "observation": {
+        "path": "evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-observation.json",
+        "sha256": "f8c406635c2de3f405d7a035edcba2f0b7c85880710f67839d75aa3adc7c4063"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "baa954e989ecfb74a7c9f592732809051c867c0d5c60cb5c082b95a047cd3439/cover-pro-independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

@@ -13,8 +13,8 @@ from typing import Any
 
 from filelock import FileLock
 
-from ..storage import atomic_write_json, canonical_json_bytes, fsync_directory
-from ..qualification import read_evidence_bytes, file_reference
+from ..storage import atomic_write_json, atomic_write_bytes, canonical_json_bytes, fsync_directory
+from ..qualification import read_evidence_bytes, file_reference, verify_reference
 from ..content_projection import verify_binding_reference, verify_dual_binding_digests
 from ..layout_selection import allocate_deck
 
@@ -292,6 +292,20 @@ def _recover_payload(run_root, input_digest):
     return next(iter(found.values()), None)
 
 
+def merge_dependency_hashes(qualification_checks) -> dict[str, str]:
+    """合并绑定收据声明的依赖闭包 {相对路径: sha256}。
+
+    多收据对同一文件声明不同哈希属于资产闭包自相矛盾，冻结前显式拒绝
+    （dependency_closure_conflict），不静默取首个。
+    """
+    merged: dict[str, str] = {}
+    for receipt in qualification_checks.get("receipt_payloads", []):
+        for relative, sha in (receipt.get("dependency_hashes") or {}).items():
+            if merged.setdefault(relative, sha) != sha:
+                raise ExpressionPipelineError("dependency_closure_conflict", phase="freeze")
+    return merged
+
+
 def write_atomic_input_generation(run_root, payload, *, generation, resolver=None, checkpoint=None):
     """staging → immutable generation → current；相同输入重试不会重写或覆盖。"""
     if not isinstance(generation, str) or not re.fullmatch(r"[0-9a-f]{64}", generation) or generation != _digest(payload):
@@ -337,11 +351,32 @@ def write_atomic_input_generation(run_root, payload, *, generation, resolver=Non
             try:
                 for lane, bindings in payload["bindings"].items():
                     for pid, binding in bindings.items():
-                        freeze_qualification_evidence(binding["eligibility"]["checks"]["qualification"],
-                            source_root=resolver.resolve(binding["layout_id"])["trusted_root"],
-                            target_root=frozen.resolve(binding["layout_id"])["trusted_root"])
+                        qualification_checks = binding["eligibility"]["checks"]["qualification"]
+                        source_root = resolver.resolve(binding["layout_id"])["trusted_root"]
+                        target_root = frozen.resolve(binding["layout_id"])["trusted_root"]
+                        freeze_qualification_evidence(qualification_checks,
+                            source_root=source_root,
+                            target_root=target_root)
+                        # 依赖闭包（实体目录内的附属文件，如 layout notes.md）参与
+                        # 绑定重核，必须随快照冻结，否则冻结副本上重核必 stale。
+                        dependency_hashes = merge_dependency_hashes(qualification_checks)
+                        for relative, sha in sorted(dependency_hashes.items()):
+                            reference = {"path": relative, "sha256": sha}
+                            target = Path(target_root) / relative
+                            if any(p.is_symlink() for p in [target, *target.parents]):
+                                raise ExpressionPipelineError("evidence_path_invalid", phase="freeze")
+                            body = verify_reference(source_root, reference)
+                            if target.exists():
+                                verify_reference(target_root, reference)
+                            else:
+                                target.parent.mkdir(parents=True, exist_ok=True)
+                                atomic_write_bytes(target, body)
                         verify_effective_binding(binding, pages[pid], resolver=frozen,
                                                  frozen_design=payload["designs"][lane])
+            except ExpressionPipelineError:
+                # 领域错误（dependency_closure_conflict 等）已携带稳定码与
+                # phase，重包会折叠成 str(exc) 往返，直接冒出。
+                raise
             except (ValueError, KeyError, OSError) as exc:
                 raise ExpressionPipelineError(str(exc), phase="freeze") from exc
             checkpoint("after_evidence")

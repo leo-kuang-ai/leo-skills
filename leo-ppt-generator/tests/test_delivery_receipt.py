@@ -242,6 +242,18 @@ class DeterministicFingerprints(MiniRunTestCase):
         second = create_delivery_receipt(self.run_root)["receipt"]
         self.assertEqual(first["fingerprints"], second["fingerprints"])
 
+    def test_preflight_report_excluded_from_fingerprints_and_keeps_receipt_fresh(self):
+        # preflight 是 receipt 门的聚合消费者而非原始 QA 证据：不进指纹，
+        # 其后重写也不得使收据漂移（否则形成 preflight↔收据有序性死结）。
+        create_delivery_receipt(self.run_root)
+        preflight = self.run_root / "reports" / "delivery-preflight.json"
+        preflight.write_text('{"gates": {"delivery_receipt": "passed"}}', encoding="utf-8")
+        outcome = verify_delivery_receipt(self.run_root)
+        self.assertEqual(outcome["status"], "fresh")
+        preflight.write_text('{"gates": {"delivery_receipt": "passed"}, "rewritten": true}', encoding="utf-8")
+        outcome = verify_delivery_receipt(self.run_root)
+        self.assertEqual(outcome["status"], "fresh")
+
     def test_receipt_rejects_old_missing_and_mixed_binding_summary(self):
         from copy import deepcopy
         created = create_delivery_receipt(self.run_root)

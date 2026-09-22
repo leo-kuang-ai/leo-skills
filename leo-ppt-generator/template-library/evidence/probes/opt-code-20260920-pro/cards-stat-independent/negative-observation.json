@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative.png",
+    "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": false,
+    "no_overflow": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+  "fixture": {
+    "path": "evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-fixture.json",
+    "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-measurement.json",
+    "sha256": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-input.json",
+    "sha256": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e"
+  }
+}

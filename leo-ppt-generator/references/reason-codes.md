@@ -15,7 +15,9 @@
 | `backend_model_invalid` | model 为空或不是有效字符串 | 是 | 使用 registry 默认 model，或提供非空 model |
 | `unknown_route` | route 不在四条有限定义中 | 否 | 返回受支持 route，不注入任意步骤 |
 | `unknown_step` | step 不属于当前 route 的固定定义 | 否 | 重新读取机器协议和 route definition |
-| `revision_conflict` | `run.json` 或领域状态的 expected revision 已漂移 | 是 | 重新读取当前状态并做 reconciliation |
+| `revision_conflict` | `run.json` 或领域状态的 expected revision 已漂移；携带细码时（`run_identity_conflict`/`input_generation_conflict`）以细码为准 | 是 | 重新读取当前状态并做 reconciliation |
+| `run_not_found` | run 目录无 `run.json`（run 未创建或目录误指；config web 与 run status/diagnose 同码） | 否 | 核对 run 路径或先 `run create` |
+| `dependency_closure_conflict` | 冻结输入代时，多条资格收据对同一依赖文件声明不同哈希 | 否 | 修库内冲突收据（重跑探针取证）后重新 `generate --request` |
 | `generation_conflict`、`lease_invalid`、`lease_revoked`、`run_not_mutable` | worker lease 不属于当前 generation，或 run 已进入 terminal 状态 | 条件式 | 丢弃旧 worker 结果，重新 dispatch；completed/cancelled run 不接受新 mutation |
 | `idempotency_conflict` | 相同 operation id 绑定了不同 fingerprint | 是 | 查询原 operation；新请求使用新 id |
 | `unknown_contract_version` | PageArtifact/vendor contract 高于当前支持范围 | 条件式 | 使用兼容 runtime 或迁移 fixture |

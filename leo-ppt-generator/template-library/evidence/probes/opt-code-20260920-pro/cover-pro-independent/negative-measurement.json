@@ -1,0 +1,207 @@
+{
+  "artifact_sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+  "blocks": [
+    {
+      "box": [
+        952,
+        36,
+        232,
+        12
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        156.09375,
+        1088,
+        30.796875
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        194.890625,
+        1088,
+        65.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        316.390625,
+        1088,
+        37.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        460,
+        1088,
+        88
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        96,
+        615,
+        44,
+        28.59375
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        1103.15625,
+        615,
+        80.84375,
+        49
+      ],
+      "overflow": false
+    }
+  ],
+  "browser_version": "153.0.8010.12",
+  "data_sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+  "edges": [],
+  "kind": "render-measurement",
+  "schema_version": 1,
+  "source": "browser-dom",
+  "template_sha256": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+  "texts": [
+    {
+      "box": [
+        96,
+        155.09375,
+        88,
+        32
+      ],
+      "boxes": [
+        [
+          96,
+          155.09375,
+          88,
+          32
+        ]
+      ],
+      "color": "rgb(138, 109, 59)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 0,
+      "text": "资格探针"
+    },
+    {
+      "box": [
+        96,
+        189.890625,
+        276,
+        66
+      ],
+      "boxes": [
+        [
+          96,
+          189.890625,
+          276,
+          66
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 46,
+      "font_weight": "700",
+      "order": 1,
+      "text": "封面关系探针"
+    },
+    {
+      "box": [
+        96,
+        316.390625,
+        200,
+        36
+      ],
+      "boxes": [
+        [
+          96,
+          316.390625,
+          200,
+          36
+        ]
+      ],
+      "color": "rgb(93, 102, 114)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 2,
+      "text": "单页无向信息陈述"
+    },
+    {
+      "box": [
+        120,
+        485.25,
+        347.40625,
+        36
+      ],
+      "boxes": [
+        [
+          120,
+          485.25,
+          347.40625,
+          36
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 3,
+      "text": "四项能力：发现 → 组织 → 验证"
+    },
+    {
+      "box": [
+        96,
+        613,
+        44,
+        32
+      ],
+      "boxes": [
+        [
+          96,
+          613,
+          44,
+          32
+        ]
+      ],
+      "color": "rgb(93, 102, 114)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 4,
+      "text": "探针"
+    },
+    {
+      "box": [
+        1119.15625,
+        623,
+        48.84375,
+        32
+      ],
+      "boxes": [
+        [
+          1119.15625,
+          623,
+          48.84375,
+          32
+        ]
+      ],
+      "color": "rgb(255, 255, 255)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 5,
+      "text": "2026"
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ]
+}

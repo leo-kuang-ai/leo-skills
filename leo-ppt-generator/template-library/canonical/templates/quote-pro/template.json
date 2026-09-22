@@ -78,6 +78,11 @@
       "binding_kind": "structural"
     },
     {
+      "slot": "quote_em",
+      "selector": "[data-leo-block='quote-em']",
+      "binding_kind": "structural"
+    },
+    {
       "slot": "source",
       "selector": "[data-leo-block='source']",
       "binding_kind": "structural"

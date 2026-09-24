@@ -10,15 +10,12 @@
    relationship；旧 `.ppt` 一律先转 PDF。prepare 生成 deck manifest、page
    jobs、notes manifest、逐页 source、request 与 text hints。
 3. 读取 `manifest-schema.md` 与 `page-decision-tree.md`。
-4. 反复调用 `"$LEO_PPT" editable next <run> --json`。
-   恰好一页时，CLI 明确允许后由当前 Agent claim local；多页必须派发真实
-   worker。
-5. 每个 page worker 只写自己的 page 目录，并按
-   `prompts/page-worker.md` 产出 manifest、PPTX、preview、validation 与
-   result。
-6. 使用 `scripts/build-page-worker-prompt.py` 生成每页 prompt；真实派发后调用
-   `"$LEO_PPT" editable dispatch`。parent 在 worker 返回后调用
-   `"$LEO_PPT" editable record`；validation 未通过不得 record。
+4. 反复调用 `"$LEO_PPT" editable next <run> --json`，按冻结页序在当前本地进程
+   串行处理页面；不要求 worker、scheduler 或 lease。
+5. 每页只写自己的 page 目录，并按 `prompts/page-worker.md` 的页面合同产出
+   manifest、PPTX、preview、validation 与 result；该 prompt 也可作为本地执行清单。
+6. 页面验证通过后调用 `"$LEO_PPT" editable record`；维护/评测入口才使用
+   `editable dispatch` 记录历史 worker 协议。
 7. 全部目标页 recorded 后调用 `"$LEO_PPT" editable finalize <run>`，并由 manifest
    重新构建最终 deck。
 8. 核对页数、页序、notes、media relationship、asset hash、required text 和
@@ -27,8 +24,8 @@
    前景/背景对比、画布边界、图表数据/单位/标签/排序、对象级可编辑性。任何 error
    都阻止 record/finalize，不能用其他绿色项补偿。
 
-`manifest.json` 是对象级页面的构建权威；`PageArtifact` 只用于跨能力交接，
-不能替代 manifest。worker 失败后先诊断并改变条件，再 reset 和重新派发。
+`manifest.json` 是对象级页面的构建权威；`PageArtifact` 只用于页面构建交接，
+不能替代 manifest。本地失败后保留已完成页，修复输入或页面并从最近 checkpoint 恢复。
 
 ## 源风格主题提取（direct-editable「沿用源风格」）
 

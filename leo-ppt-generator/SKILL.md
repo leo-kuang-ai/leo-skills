@@ -5,6 +5,26 @@ description: 生成图片式 PowerPoint（PPTX）演示文稿：从文章、报�
 
 # Leo PPT Generator
 
+## 产品定位：单用户本地生成
+
+本 Skill 面向个人本地安装。用户在自己的电脑上输入文章、报告、笔记或大纲，Skill
+负责辅助规划、生成、渲染、检查并输出本地 PPTX、预览图和验证报告。
+
+默认运行模型是**单用户、单工作区、串行生成**：不存在云端服务、服务端共享、多租户、
+队列和并发 worker。一次生成只维护一个本地任务状态；失败后由同一入口恢复或重新生成。
+文件写入可以使用原子替换和崩溃清理，目的是保护本地文件完整性，不承担服务端并发协调。
+
+默认生产链只有：
+
+```text
+用户材料 → 内容与事实整理 → 页面表达规划 → 模板/容量预检
+→ HTML 或 image 生成 → 本地渲染检查 → PPTX 组装 → 本地交付物
+```
+
+Provider qualification、视觉回放、历史质量对比和模板迁移属于维护工具，只有用户明确
+要求维护、迁移或评测时才运行。Chromium 使用的 localhost HTTP 进程是本地临时实现，
+不属于云端或共享服务。
+
 **先按当前请求选工具，再执行任何检索。** `advise` 的硬约束是能力与副作用，而不是
 某个宿主的工具名称：允许使用宿主 Read/Grep，或等价的只读适配器访问下文允许的索引
 源；不得写文件、启动 runtime/Provider/CLI、联网、读取用户输入或完整 brief。
@@ -21,7 +41,7 @@ catalog 缺失或过期时从 canonical 只读重建运行时视图，并明确�
 `registry_source=canonical-rebuild`。归档树的 generated Markdown（负面语料等）仅在用户
 点名该材料时按具体文件读取。
 已知技能根路径时不需要任何目录定位。纯流程咨询直接回答，`execute` 才可运行 CLI。
-Gate 0/worker 的固定摘要脚本是下文明示的唯一例外。
+Gate 0 的固定摘要脚本是下文明示的唯一例外。
 
 **版式咨询的输出形态：** 尚未运行版式/容量预检且存在多个候选时，先说明推荐与未验证项，
 必要时附以下候选比较；选定布局的母版草案留到 execute 的母版审查环节。
@@ -36,16 +56,15 @@ recommendation: <推荐偏好及理由，待容量预检与母版确认>
 用户委托推荐时可直接给 recommendation；layout 仍保留 undecided，两个候选都保留。
 母版确认时一起裁决，不新增确认轮次。整页所有文本槽共享总预算，不把各组上限相加作为通过证明。
 
-通过一个入口完成图片式、全可编辑或 hybrid PPTX。顶层 Agent 拥有意图、确认、
-live host capability、worker 派发和交付判断；`leo-ppt` 只拥有确定性准备、状态、
-验证和组装。
+通过一个入口完成图片式、全可编辑或 hybrid PPTX。顶层 Agent 拥有意图、确认和交付
+判断；`leo-ppt` 只拥有确定性准备、单机状态、验证和组装。
 
 执行主线：①Gate 0 信任检查 → ②advise/execute 判定 → ③Route 四选一 →
 ④按需读取 references，前置低成本能力与预算检查 → ⑤内容与视觉审查（合同 → 大纲 →
 母版 → 视觉方向 → 样张；按下文协作方式决定是否等待，内部校验不省略）
 → ⑥生成与验证 → ⑦组装 → ⑧🔴 DELIVERY-GATE 交付闭环。各步骤规则见下文对应
-章节；主线路径之外的分支（材料缺失、worker 缺失、partial）按"不变边界"处理。
-普通状态回复结果先行，技术状态按需披露；机器字段与 Gate 0/worker 固定阻断兼容规则
+章节；主线路径之外的分支（材料缺失、partial）按"不变边界"处理。
+普通状态回复结果先行，技术状态按需披露；机器字段与 Gate 0 固定阻断兼容规则
 见「控制面响应合同」。
 
 ## Gate 0：Office 信任
@@ -85,11 +104,9 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
   完整 brief、不全量扫描库目录。
   该豁免允许宿主 Read/Grep 或能证明相同路径范围、无副作用的只读终端查询；边界以上文能力合同为准。
   据实回复快照中的风格名/别名命中/相近候选；不读 styles 目录其他文件、不读其他
-  reference。唯一的工具豁免是 `scripts/render-control-summary.py --fixed gate0` /
-  `--fixed worker-unavailable`：该模式不读取任何文件、无副作用，输出固定块不构成
-  执行动作，用户“不要执行任何操作”的表述不得据此改回手写。宿主确实无法运行脚本时
-  才手写固定块，并显式记录降级 `gate0_render: handwritten` 或
-  `worker_render: handwritten`。
+  reference。唯一的工具豁免是 `scripts/render-control-summary.py --fixed gate0`：该模式不读取任何
+  文件、无副作用，输出固定块不构成执行动作。宿主确实无法运行脚本时才手写固定块，并
+  显式记录降级 `gate0_render: handwritten`。
 - `execute`：用户明确要求制作、转换、升级、继续既有任务，且已授权进入执行流程。只有
   此模式才按“首次使用”和对应 Route 读取后续资源。
 - 同一请求包含咨询与明确执行指令时，按完整意图和已有授权判定。例如“比较后选合适的
@@ -129,8 +146,8 @@ next_action: 提供可信确认，或改用 PDF/逐页图片
 | `execute` Route 判断 | `references/input-routing.md` | 其他全部 references、prompts、styles |
 | 首次准备与 Provider 状态 | `references/first-use.md`、`references/backend-selection.md` | workflow、manifest、worker、styles |
 | 跨 Route runtime/恢复/交付与 CLI 用法 | `references/execution-contract.md`、`references/cli-helper.md`（在对应 Route 进入后） | reason-codes 直到已有 reason code |
-| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md`、`academic-vertical.md`（学术信号或用户点名「学术模式」时） | styles 直到风格已选；`slide-worker.md` 直到样张通过；`academic-figure-evidence.md` 直到进入母版制作且材料含图片证据/学术场景；`sources-manifest-schema.md` 直到 `image prepare --sources` 冻结与交付前 strict 校验；`rst-paging.md` 直到大纲制作且材料多段/结构复杂 |
-| `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 直到真实 worker 已确认 |
+| `generate` 执行 | `image-deck-workflow.md`、`deck-master.md`、`style-recommendation.md`、`backend-selection.md`、`visual-qa.md`、`academic-vertical.md`（学术信号或用户点名「学术模式」时） | styles 直到风格已选；`academic-figure-evidence.md` 直到进入母版制作且材料含图片证据/学术场景；`sources-manifest-schema.md` 直到 `image prepare --sources` 冻结与交付前 strict 校验；`rst-paging.md` 直到大纲制作且材料多段/结构复杂 |
+| `direct-editable` 执行 | `editable-workflow.md`、`manifest-schema.md`、`page-decision-tree.md` | `page-worker.md` 仅在维护/评测入口需要时读取 |
 | `upgrade-*` 执行 | 对应 editable references，加当前 baseline/selection 证据 | 未选中的 workflow 和全部 styles |
 
 generate 命中数据图表/表格/文字密集页时读 `references/render-contract.md`（render
@@ -161,16 +178,12 @@ reason code 需要解释或恢复时读取。执行前未命中的 references �
 
 普通用户回复先给当前结果、使用影响和唯一必要下一步；不强制展示五字段块或内部版本。
 用户明确要求仅 JSON 或其他固定格式时，只返回该结构，不追加解释、摘要或代码围栏；
-下述普通回复呈现偏好不覆盖用户指定格式。Office/worker 固定阻断按各自真实条件处理。
+下述普通回复呈现偏好不覆盖用户指定格式。Office 固定阻断按真实条件处理；本地单用户生成不因维护工具或 worker 能力缺失而阻断。
 CLI versioned JSON 与以下五字段机器摘要保持不变，用于运行证据、诊断或用户明确要求的技术状态：
 
 需要展示机器摘要时，将 CLI JSON 通过 `scripts/render-control-summary.py` 渲染；不得由
 Agent 手工改写字段。渲染器只输出五行摘要，不读取文件、不访问网络、不产生副作用；
-Gate 0 与 worker 缺失两类固定阻断块在宿主可运行脚本时同样必须经
-`--fixed gate0` / `--fixed worker-unavailable` 产生，不得手写改写。这两类固定阻断仍
-在解释前原样输出，适用于 `advise` 与 `execute`；普通状态不受 block-early 限制。
-仅宿主无法运行时允许手写，`gate0_render: handwritten` / `worker_render: handwritten`
-置于固定块之后。execute 开始后的首次状态汇报用一句话说明就绪度；若检测到自上次
+Gate 0 固定阻断在宿主可运行脚本时经 `--fixed gate0` 产生；本地生成不需要 worker 固定块。execute 开始后的首次状态汇报用一句话说明就绪度；若检测到自上次
 交付以来发生过更新，如实提示"首轮生成将重新验证服务"。
 
 ```text
@@ -187,14 +200,6 @@ next_action: <唯一下一步；无则 none>
 继续报告 `delivery_readiness`；只有 `accepted` 才能声称交付闭环。
 
 以下状态直接复用固定摘要，不要只用自然语言替代字段：
-
-```text
-route: generate
-status: blocked
-reason_code: worker_capability_unavailable
-execution_eligibility: blocked
-next_action: 提供可调用的 worker 能力后从逐页派发阶段恢复
-```
 
 ```text
 route: generate
@@ -344,33 +349,15 @@ PATH 猜测 CLI，不得在聊天中接收 secret，也不得把内部 runtime �
   纪律；`check_master_contract` ⑪⑫ WARN 判据为机器子集）。
 - **CLI 真值**：只依据 CLI 的 versioned JSON、状态、manifest、validation 和 artifact 推进；不手写
   领域状态，不直接 import `_vendor`，聊天声明不构成完成证据。
-- **真实派发**：多页任务必须核对用户授权、宿主能力、容量和真实派发；主 Agent 不模拟 scheduler。
-- **宿主能力表述**：宿主能力缺失只能用 CLI 结论或对应固定块的 `reason_code` 表述；不得枚举、点名或
-  诊断宿主的 Agent/子代理清单、注册表或目录来解释缺失原因，也不得据此提出改造
-  宿主的步骤建议。
-- **worker 缺失固定块**：多页 worker 缺失、未知或调用失败时，先原样输出下面五行，再结束本轮；不得先写
-  “当前无法生成”等自然语言，也不得由主 Agent 静默串行替代（宿主可运行脚本时以
-  `render-control-summary.py --fixed worker-unavailable` 输出；无法运行脚本时手写
-  并显式记录 `worker_render: handwritten`）：
-
-  ```text
-  route: generate
-  status: blocked
-  reason_code: worker_capability_unavailable
-  execution_eligibility: blocked
-  next_action: 提供可调用的 worker 能力后从逐页派发阶段恢复
-  ```
-
-  只有用户明确提供 worker 能力后才能离开该状态。恰好一页也必须由 CLI 返回
-  `single_unit_current_agent_allowed`。
+- **本地页执行**：多页任务在当前本地进程按冻结页序串行执行；不会创建 scheduler、并发
+  worker 或 lease。维护/评测入口如需复现历史 worker 协议，必须显式进入对应入口并单独披露。
 - **凭据边界**：凭据只由宿主或 allowlist reference 管理；不得读取私有认证文件、保存明文 secret，
   或把 token、完整环境和用户正文写入日志。
 - **Provider 三态**：`configured_unverified` 允许开始任务；只有 `not_configured`/`invalid` 才暂停
   图片节点并只给一个 `run_cli` Primary_Action；`unknown` 不得当作 `available`。
 - **验证分报告**：结构验证、provider、OCR、viewer、desktop、独立渲染和人工视觉证据分别报告；只有
   `delivery_readiness=accepted` 才能声称交付闭环。
-- **能力与成本前置**：长时间整理内容前，先核对当前宿主 worker 声明、所需能力与本地
-  Provider 配置，区分配置可用和真实生成已验证；不额外发起付费探针。按页数、样张与
+- **能力与成本前置**：长时间整理内容前，先核对本地 Provider 配置，区分配置可用和真实生成已验证；不额外发起付费探针。按页数、样张与
   重试假设给出初步费用区间和授权范围，未知价格如实说明；不能以未知作零费用或无限预算。
   首个收费动作前核对已有授权，未覆盖新增费用才询问；样张承担首张业务验证。逐页派发前
   用最终页计划更新本次 deck 的 token/成本预估区间并披露依据
@@ -400,7 +387,7 @@ PATH 猜测 CLI，不得在聊天中接收 secret，也不得把内部 runtime �
 | --- | --- | --- |
 | 读取、扫描、隔离、净化来源未知的 PPT/PPTX | Gate 0 固定阻断；"警告后继续/净化后继续"均无效 | Gate 0 |
 | 纯文档排版、单张配图/封面/图表素材、网页/表格微改 | 不属本 Skill，礼貌指路 | frontmatter 边界 |
-| 主 Agent 串行替代缺失的 worker | 固定块 `worker_capability_unavailable`，不得静默替代 | 不变边界 |
+| 为本地生成创建并发 worker/scheduler | 走当前进程串行页序；worker 合同仅属于维护入口 | 产品定位 |
 | 手写领域状态、直接 import `_vendor`、以聊天声明充当完成证据 | 只依据 CLI versioned JSON 推进 | 不变边界 |
 | 枚举/点名宿主子代理清单来解释能力缺失 | 用固定块 `reason_code` 表述，不诊断宿主 | 不变边界 |
 | 经聊天接收 secret 或写入日志/私有认证文件 | 凭据只经宿主或 allowlist reference | 不变边界 |
@@ -413,7 +400,7 @@ PATH 猜测 CLI，不得在聊天中接收 secret，也不得把内部 runtime �
 
 ## 执行导航
 
-进入具体 Route 后才读取对应 reference；跨 Route 的 runtime、项目、worker、恢复和
+进入具体 Route 后才读取对应 reference；跨 Route 的 runtime、项目、恢复和
 交付规则统一读取 [执行合同](references/execution-contract.md)。
 
 ### generate
@@ -429,8 +416,7 @@ PATH 猜测 CLI，不得在聊天中接收 secret，也不得把内部 runtime �
 选定后同一轮呈现
 风格反演三组判读——明确应延续的稳定视觉 / 需确认是否整套延续 / 偶然成立不锁死，
 以样张读回实证为准，反演结论随 spec 落盘），按需读取 [风格库](references/style-library.md)
-和 [slide worker prompt](prompts/slide-worker.md)。style/layout 必须由确定性模板生成；
-缺页、未完成状态或任一页 QA 失败都阻止组装。组装复验时逐页核对合同约定的版面
+style/layout 必须由确定性模板生成；缺页、未完成状态或任一页 QA 失败都阻止组装。组装复验时逐页核对合同约定的版面
 固定件（页码/页脚位置与字号一致），页内文本引用与实际页码核对存在。用户要求高保障
 档位时，启用 [视觉质检规范](references/visual-qa.md) 第六节多轮审查协议（镜头池轮换，
 连续两轮无 P1/P2 才收敛；台账记录，驳回须给依据；高保障档另可选 rubric 合成分与迭代硬预算,默认不启用）与交付双评审官可选档
@@ -442,8 +428,8 @@ PATH 猜测 CLI，不得在聊天中接收 secret，也不得把内部 runtime �
 [Manifest Schema](references/manifest-schema.md) 和
 [Page Decision Tree](references/page-decision-tree.md)。
 
-图片/PDF 可直接 prepare；PPT/PPTX 必须先通过可信确认与 preflight。真实 worker 可用
-后才读取 [page worker prompt](prompts/page-worker.md)。不得以整页截图叠少量文本冒充
+图片/PDF 可直接 prepare；PPT/PPTX 必须先通过可信确认与 preflight。维护入口需要逐页
+worker prompt 时再读取 [page worker prompt](prompts/page-worker.md)。不得以整页截图叠少量文本冒充
 对象级可编辑，也不得在真实 spawn 前记录 dispatch。
 
 editable 组装内核为双 builder 等价（`LEO_EDITABLE_BUILDER=pptx|legacy`，默认 legacy）：

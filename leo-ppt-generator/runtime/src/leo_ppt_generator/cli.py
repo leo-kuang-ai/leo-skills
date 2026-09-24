@@ -326,9 +326,9 @@ def doctor_report(route: str | None) -> dict[str, Any]:
             "status": "available" if provider_available else "missing",
             "reason_code": "credential_reference_available" if provider_available else "credential_reference_missing",
         },
-        "worker": {
-            "status": "host_check_required",
-            "reason_code": "worker_host_capability_unverified",
+        "execution": {
+            "status": "local_serial",
+            "reason_code": "single_user_local_execution",
         },
         "provider": {
             "status": "not_probed",
@@ -355,7 +355,6 @@ def doctor_report(route: str | None) -> dict[str, Any]:
             if config_error
             else [
                 "create_and_validate_backend_contract",
-                "verify_worker_capability",
                 "run_provider_smoke",
                 "record_manual_acceptance",
             ]
@@ -1026,17 +1025,11 @@ def _progress_from_run(run: dict[str, Any]) -> dict[str, Any]:
 
 
 def _worker_dispatch_action(page_count: int) -> dict[str, Any]:
-    maximum = load_runtime_config().values["max_concurrent_workers"]
     return {
-        "kind": "request_worker_dispatch",
+        "kind": "execute_page_serially",
         "payload": {
-            "dispatch_requirement": "multi_agent_required"
-            if page_count > 1
-            else "single_unit_current_agent_allowed",
             "page_count": page_count,
-            "estimated_duration_per_page_seconds": 180,
-            "suggested_max_concurrent": min(maximum, max(page_count, 1)),
-            "runtime_fallback": False,
+            "execution_mode": "local_serial",
         },
     }
 
@@ -1098,10 +1091,8 @@ def _next_action(run: dict[str, Any], *, worker_available: bool, page_count: int
         if position == len(route.steps) - 1:
             return {"kind": "none", "reason_code": "route_complete"}
         next_step = route.steps[position + 1]
-    if "dispatch" in next_step and page_count > 1 and not worker_available:
-        return {"kind": "blocked", "step": next_step, "reason_code": "worker_capability_unavailable"}
-    if "dispatch" in next_step and page_count == 1 and not worker_available:
-        return {"kind": "single_unit_current_agent_allowed", "step": next_step, "reason_code": "single_unit_current_agent_allowed"}
+    if "dispatch" in next_step:
+        return {"kind": "execute_step", "step": next_step, "reason_code": "local_serial_ready"}
     return {"kind": "execute_step", "step": next_step, "reason_code": "step_ready"}
 
 
@@ -1462,7 +1453,7 @@ def build_parser() -> argparse.ArgumentParser:
     render_ready_cmd.add_argument("--json", action="store_true")
     render_page_cmd = render_commands.add_parser("page", help="HTML 模板 → PNG 页产物")
     render_page_cmd.add_argument("--template", required=True,
-                                 help="template-library/canonical/templates/<id>/page.html 的模板 id")
+                                 help="current catalog 中登记的 HTML 模板 id")
     render_page_cmd.add_argument("--data", required=True, help="slide data JSON 路径")
     render_page_cmd.add_argument("--out", required=True, help="PNG 输出路径")
     render_page_cmd.add_argument("--size", default="2560x1440",

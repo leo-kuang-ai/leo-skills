@@ -59,9 +59,9 @@ class EditableStatusBlockedTest(unittest.TestCase):
     def test_mixed_pending_and_blocked_dispatch_suggests_pending_only(self):
         write_page_jobs(self.run, ["pending", "blocked"])
         report = self.adapter.status()
-        self.assertEqual(report["next_action"]["kind"], "request_worker_dispatch")
+        self.assertEqual(report["next_action"]["kind"], "execute_page_serially")
         self.assertEqual(report["next_action"]["payload"]["page_count"], 1,
-                         "派发建议只数 pending，blocked 页不得入列")
+                         "串行执行只数 pending，blocked 页不得入列")
 
     def test_failed_and_blocked_share_recovery_channel(self):
         write_page_jobs(self.run, ["failed", "blocked", "timeout"])

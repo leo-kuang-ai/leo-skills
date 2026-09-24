@@ -2753,3 +2753,5 @@ adheres to a loose semantic-versioning convention.
 - Add run-scoped task-local layout proposal validation and schema.
 - Wire task-local proposal validation into the expression pipeline and add regression coverage.
 - Expose the expression-first generation route through the CLI application imports.
+
+- leo-ppt-generator：按单用户本地产品定位收敛默认生产链为当前进程串行页执行；移除普通生成对 worker、scheduler、lease 和多代理派发的硬依赖，历史 worker 接口保留为显式维护/评测入口。(user-visible)

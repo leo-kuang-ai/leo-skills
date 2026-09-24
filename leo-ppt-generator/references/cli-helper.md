@@ -50,8 +50,8 @@ formula render-latex
 `page_request.json` 和文字 hints。在线 OCR 需要网络时，只上传当前转换任务所需页面，
 并按宿主规则取得授权；无 token 时使用离线几何检测，不能声称已识别文字内容。
 
-`run next` 的稳定阶段包括：单页本 Agent claim、多页 worker 派发、等待、配置 backend
-和 finalize。多页必须先由宿主真实创建 worker，不能用本地循环伪装派发。
+`run next` 的稳定阶段包括：按冻结页序在当前本地进程执行、配置 backend 和 finalize。
+生产路径不创建 worker、scheduler 或并发队列；历史 worker 派发命令仅供维护/评测入口使用。
 
 ## Worker Prompt 与状态
 
@@ -64,7 +64,7 @@ python "$SKILL_DIR/scripts/build-page-worker-prompt.py" <run> \
   --out <absolute-run-dir>/pages/page_001/worker-prompt.md
 ```
 
-真实 worker 创建成功后记录 dispatch：
+仅在维护/评测入口显式复现历史 worker 协议时记录 dispatch：
 
 ```bash
 "$LEO_PPT" upstream editable-ppt -- run dispatch <run> \

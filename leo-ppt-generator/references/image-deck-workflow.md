@@ -4,11 +4,11 @@
 
 执行中的确认与等待统一遵守 SKILL.md 的协作方式。委托执行下 Agent 完成可逆工件的
 内部审查并记录 `decision_source: user-delegated` 与依据；共创时按约定里程碑等待。
-视觉方向与样张是 🔶 SAMPLE-GATE 默认人工呈现点：内部质检通过后、逐页派发前必须
+视觉方向与样张是 🔶 SAMPLE-GATE 默认人工呈现点：内部质检通过后、按页生成前必须
 同轮呈用户认可，用户显式豁免呈现时记录豁免原话后按 user-delegated 继续（见步骤 6）。
-不得填写虚假的人工确认或跳过实际质量检查。最小目标和交付范围明确后，先核对低成本
-runtime/worker 能力、已有配置与费用范围，再投入完整母版；不自动增加付费探针，
-Provider 的真实可用性由首张业务样张验证。多页能力不足时保留已完成内容工件并说明阻塞。
+不得填写虚假的人工确认或跳过实际质量检查。最小目标和交付范围明确后，先核对本地
+Provider 配置与费用范围，再投入完整母版；不自动增加付费探针，Provider 的真实可用性
+由首张业务样张验证。页面按冻结页序串行生成，失败时保留已完成内容工件并说明原因。
 
 1. 冻结内容合同：主题、受众、使用场景、演讲时长、行动目标、页数、素材来源、
    必须出现的事实与不可杜撰项,以及两项叙事必填——**`one_thing`**(整套 deck 能压成
@@ -195,19 +195,17 @@ Provider 的真实可用性由首张业务样张验证。多页能力不足时�
    runtime 校验后把 manifest 冻结进 `<run>/input/sources-manifest.json`，其
    `contents_sha256` 并入 `prepare_fingerprint`；这一步创建唯一 `image-deck/slide_jobs.json` canonical
    state。vendor prompt 工具只能作为无状态能力被 bridge 调用，不直接拥有 run 真值。
-8. 多页时按 `prompts/slide-worker.md` 派发 worker（前提：样张门已过——用户认可或
-   显式豁免记录在案），并为每次执行使用顶层 run lease。
-   先派发已计划中与样张差异最大的页面，复核对应风险后再展开余页；这是生产顺序，
-   不默认新增页、图片调用或用户确认。实际 provider 验证和成本估算随业务样张更新。
-   派发前 `python3 scripts/check_worker_brief.py <deck 目录|slides.json>` 过 worker
-   简报四块完备阶梯（R-46，合同与豁免口径见执行合同 Worker 节）。
-9. worker 返回后调用顶层 `"$LEO_PPT" image record <run>`；image lane 使用冻结合同中的
+8. 样张门通过后按 `prompts/slide-worker.md` 的页面合同在当前进程逐页串行生成；不创建
+   worker、scheduler 或 run lease。先处理与样张差异最大的页面，复核对应风险后再继续余页；
+   这是生产顺序，不默认新增页、图片调用或用户确认。实际 Provider 验证和成本估算随业务
+   样张更新。维护/评测入口才运行 `scripts/check_worker_brief.py`。
+9. 每页生成后调用顶层 `"$LEO_PPT" image record <run>`；image lane 使用冻结合同中的
    Provider 名作为 `--backend`，同时传入该页的 `--provider-receipt`。CLI 从 `image`
    lane 读取绑定，重核 Provider、run、input generation、双层摘要和页图字节，
    provenance 随页记录原子写入。HTML lane 则使用 `--backend render:html` 和
    `--render-receipt`，两类收据不能混用，均在同一次页事务保存。image 的 OCR 门读取
    冻结内容包的必现文字，缺少可选来源清单或 overlay 标记不会豁免该门。失败保留在同一
-   canonical state。聊天回复不改变状态，取消后的迟到 lease 会被拒绝。
+   canonical state；聊天回复不改变状态。
 10. 对每页分别关闭文字准确性、可读性/对比度、遮挡/截断、required asset、
     图表数据/单位/标签/排序和样张风格继承；任一失败都阻止该页 accepted，其他检查
     通过不能补偿。视觉质检按 [`visual-qa.md`](visual-qa.md) 执行：worker 正向自查 →

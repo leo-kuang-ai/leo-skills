@@ -20,7 +20,6 @@ from .._vendor.editable_ppt.editppt.runtime import (
 # adapter 不导入 vendor 的领域状态模块。vendor 只作为无状态格式/构建工具；
 # 用户可见的 page_jobs.json 由本 adapter 唯一持有。
 from ..config import builder_selection
-from ..config.runtime_config import load_runtime_config
 from ..contracts import ContractError, PageArtifact
 from ..storage import (
     atomic_materialize,
@@ -81,8 +80,8 @@ class EditableAdapter:
     ) -> dict[str, Any]:
         if not sources or len(sources) > 100:
             raise ContractError("input_too_large" if len(sources) > 100 else "empty_deck")
-        if len(sources) > 1 and not worker_available:
-            return {"status": "blocked", "reason_code": "worker_capability_unavailable", "next_action": {"kind": "provide_worker_capability"}}
+        # 本地个人安装按页串行执行；保留参数仅为兼容旧调用方，不再把 worker
+        # 能力当作普通生成的准入条件。
         if page_numbers is not None and len(page_numbers) != len(sources):
             raise ContractError("page_selection_mismatch")
         numbers = page_numbers or list(range(1, len(sources) + 1))
@@ -246,24 +245,14 @@ class EditableAdapter:
             else:
                 counts["pending"] += 1
         if counts["pending"]:
-            maximum = load_runtime_config().values["max_concurrent_workers"]
             action = {
-                "kind": "request_worker_dispatch",
+                "kind": "execute_page_serially",
                 "payload": {
-                    "dispatch_requirement": "multi_agent_required"
-                    if counts["pending"] > 1
-                    else "single_unit_current_agent_allowed",
                     "page_count": counts["pending"],
-                    "estimated_duration_per_page_seconds": 180,
-                    "suggested_max_concurrent": min(maximum, counts["pending"]),
-                    "runtime_fallback": False,
+                    "execution_mode": "local_serial",
                 },
             }
-            reason = (
-                "single_unit_current_agent_allowed"
-                if len(jobs["pages"]) == 1
-                else "worker_dispatch_required"
-            )
+            reason = "local_serial_ready"
         elif counts["active"]:
             action = {"kind": "wait_completion", "payload": {"page_count": counts["active"]}}
             reason = "worker_completion_pending"

@@ -1,5 +1,7 @@
 # Backend 选择
 
+> 本文的 capability、历史 worker 和成本回放属于维护/评测工具。普通个人本地生成只需冻结一个本地 Provider 或确定性 render lane，并按页串行执行；不会创建并发 worker、scheduler 或共享服务。
+
 除内置四类 backend 外，图片渠道以 checked-in 目录注册（15 家：国内直连、国际服务
 与自定义中转分组，其中 Gemini/MiniMax/Ideogram 为原生协议渠道——执行面由原生
 适配器转换协议，配置与其他渠道一致）：条目见
@@ -60,7 +62,7 @@ reference，并立刻用同一 loader 自校验。`validate` 的合同通过与
 
 存放口径：contract 在项目 `<project-root>/contracts/` 下创建与验证（上文
 `./backend.json` 仅为示意输出路径）；run 冻结时复制一份到 `<run>/input/
-backend-contract.json`，worker 只读取该冻结副本。三个位置是同一 contract 的
+backend-contract.json`，本地页执行只读取该冻结副本；维护 worker 入口也必须读取同一副本。三个位置是同一 contract 的
 创建、冻结、消费三个时点，不是三份独立配置。
 
 生成结果示例：
@@ -100,7 +102,7 @@ backend-contract.json`，worker 只读取该冻结副本。三个位置是同一
 - **prompt 方言**：不同图片后端对长结构化 prompt 的服从度不同——按已选 backend
   生成方言变体（长清单型 backend 保结构化列表；指令敏感型 backend 收短句 +
   负面约束前置），样张阶段必须用"最典型难页"（承接样张合同）。
-- **token 计量**：worker 回报 `backend_tokens` → 父 Agent `image record --tokens`
+- **token 计量**：页面执行回报 `backend_tokens` → `image record --tokens`
   透传进 backend_stats；`backend report` 的 `tokens_total` 按 (backend, 页型)
   聚合（未回报记 not-recorded），支撑"密集数据页多轮重打"的成本与路线决策
   （如表格页持续高 token 低通过 → 默认改走 direct-editable）。
@@ -148,9 +150,9 @@ python3 scripts/estimate_run_cost.py --pages 12 --chart 2 \
 - **backend 枚举**：render 页 record 时 `--backend render:html|render:mermaid`
   （echarts P2 占位），`--render-receipt <产物>.render.json` 并入 provenance；
   `backend_tokens` 恒 `not-recorded`，token 聚合单独看待不混入图像成本。
-  render 页派发走 `prompts/render-worker.md`（与 slide-worker 平行）。
+  render 页按同一页面合同在本地串行执行；维护/评测入口才使用 `prompts/render-worker.md`。
 - **质检**：render 页与图像页同走 `references/visual-qa.md` 2.5 步像素闸门
-  （render-worker 单页自查 + 父 Agent 批量复跑）。
+  （本地单页自查 + 统一批量复跑）。
 
 ### 成本读数与口径分离（R-74 追加）
 

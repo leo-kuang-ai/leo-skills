@@ -1,32 +1,11 @@
 #!/usr/bin/env python3
-"""风格库 brief 结构 lint（风格系统优化计划 U7 / KTD5）。
+"""风格 brief 结构 lint：默认只消费所选库的 current catalog。
 
-单真值源：必需键与 HEX pattern 一律从
-``runtime/src/leo_ppt_generator/schemas/style-brief-v1.schema.json`` 派生
-（stdlib json 读取，零第三方依赖）；脚本只自实现 schema 表达不了的数量
-子集校验。分级：
+v2 brief 按同库 governance schema 校验；活动风格必须声明视觉特征和主题。
+历史 Markdown 检查仅供显式 --legacy-fixtures 使用，不代表当前执行库通过。
+历史 warning 白名单只缩不涨，--write-baseline --force 才能扩入。
 
-- **ERROR**：必需键缺失、canvas/typography 子键缺失、layout_patterns 为空、
-  JSON 块不可解析、白名单之外的 WARNING（含新增文件——新文件不得进白名单）、
-  顶层内置风格缺同名 ``.layouts.json`` 路由视图（layout-bank-v1 配对纪律；
-  范围仅 11 顶层内置，126 子目录参考风格不强制——渐进轴）、
-  negative_prompt / paired_illustration 校验（R-25 / R-68：11 顶层内置必填；
-  参考风格可选——带字段即校验形状，缺省不报错，同 layouts sidecar 渐进轴）、
-  家族合并校验（R-66 防回潮）：同一色板指纹（HEX 集合相等）的独立顶层
-  风格 >1 即 ERROR——同板场景须显式 ``variant_of`` 归属家族主风格，且
-  ``variants`` 列表与实际变体双向一致。
-- **WARNING**：color_palette 四角色的值内无任何 ``#RRGGBB`` 锚点；typography
-  无身份字体声明（缺具体字族关键词，通用设计规范 §一.6）。存量偏差登记于
-  ``scripts/style-lint-baseline.txt``（一行一条 ``相对路径#检查项``，文件头
-  注明 owner 与收敛纪律），修掉即从基线消失。
-
-用法::
-
-    python3 scripts/lint_style_briefs.py            # 默认 lint canonical v2 brief
-    python3 scripts/lint_style_briefs.py --legacy-fixtures  # 迁移输入/旧 fixture
-    python3 scripts/lint_style_briefs.py --write-baseline  # 重新生成基线白名单
-
-退出码：0 = ERROR 为 0；2 = 存在 ERROR。
+退出码：0 = 无错误；2 = 输入无效或检查失败。
 """
 
 from __future__ import annotations
@@ -42,12 +21,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 from leo_ppt_generator.styles import iter_brief_documents, parse_style_document, validate_style_metadata
-from leo_ppt_generator.asset_resolver import ASSET_ID_RE
+from leo_ppt_generator.asset_resolver import ASSET_ID_RE, AssetResolver, builtin_library_root
+from leo_ppt_generator.qualification import read_evidence_bytes
 
-CANONICAL_STYLES_ROOT = SKILL_DIR / Path("template-library/canonical/styles")
 LEGACY_STYLES_ROOT = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
 SCHEMA_PATH = SKILL_DIR / "runtime" / "src" / "leo_ppt_generator" / "schemas" / "style-brief-v1.schema.json"
-CANONICAL_SCHEMAS = SKILL_DIR / "template-library" / "governance" / "schemas"
 BASELINE_PATH = SCRIPT_DIR / "style-lint-baseline.txt"
 
 # R-68 插画配对词汇表（family 取自 ppt-master paired-rendering 家族 +
@@ -82,35 +60,43 @@ def _brief_files(styles_root: Path = LEGACY_STYLES_ROOT) -> list[Path]:
     return [path for path, _, _ in iter_brief_documents(styles_root)]
 
 
-def _canonical_brief_files(styles_root: Path = CANONICAL_STYLES_ROOT) -> list[Path]:
-    return sorted(path for path in styles_root.glob("*/brief.json") if path.is_file())
-
-
-def _load_canonical_validator():
+def _load_canonical_validator(library_root: Path):
     from jsonschema import Draft7Validator
     from referencing import Registry, Resource
 
     resources = []
-    for path in CANONICAL_SCHEMAS.glob("*.schema.json"):
-        document = json.loads(path.read_text(encoding="utf-8"))
+    schemas = library_root / "governance/schemas"
+    for path in sorted(schemas.glob("*.schema.json")):
+        document = json.loads(read_evidence_bytes(library_root, path.relative_to(library_root).as_posix()))
         if "$id" in document:
             resources.append((document["$id"], Resource.from_contents(document)))
-    schema = json.loads((CANONICAL_SCHEMAS / "style-brief-v2.schema.json").read_text(encoding="utf-8"))
+    schema = json.loads(read_evidence_bytes(library_root, "governance/schemas/style-brief-v2.schema.json"))
+    from jsonschema.exceptions import SchemaError
+    try:
+        Draft7Validator.check_schema(schema)
+    except SchemaError as exc:
+        raise ValueError(f"style_schema_invalid: {exc.message}") from exc
     return Draft7Validator(schema, registry=Registry().with_resources(resources))
 
 
-def _lint_canonical_one(path: Path, validator, *, rel_to: Path | None = None) -> tuple[list[str], list[str], dict | None]:
+def _lint_canonical_one(path: Path, validator, *, rel_to: Path | None = None, brief: dict | None = None) -> tuple[list[str], list[str], dict | None]:
     """Validate canonical shape from its owning schema plus active semantics."""
     rel = path.relative_to(rel_to or SKILL_DIR)
     try:
-        brief = json.loads(path.read_text(encoding="utf-8"))
+        if brief is None:
+            brief = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         return [f"brief_json_invalid: {rel} ({exc})"], [], None
     if not isinstance(brief, dict):
         return [f"brief_json_not_object: {rel}"], [], None
     errors: list[str] = []
     warnings: list[str] = []
-    for error in validator.iter_errors(brief):
+    from referencing.exceptions import Unresolvable
+    try:
+        schema_errors = list(validator.iter_errors(brief))
+    except Unresolvable as exc:
+        return [f"style_schema_reference_invalid: {rel}: {exc}"], [], brief
+    for error in schema_errors:
         field = ".".join(str(part) for part in error.path) or "$"
         errors.append(f"schema_invalid: {rel}.{field}: {error.message}")
     identity = ASSET_ID_RE.fullmatch(brief.get("asset_id", "")) if isinstance(brief.get("asset_id"), str) else None
@@ -396,34 +382,57 @@ def main(argv: list[str] | None = None) -> int:
         "--legacy-fixtures", action="store_true",
         help="显式检查 retired-styles-tree Markdown 迁移输入（不代表当前执行库）",
     )
+    parser.add_argument("--library-root", type=Path, help="明确被检查的 current 库")
     args = parser.parse_args(argv)
+    if args.library_root and (args.root or args.legacy_fixtures):
+        parser.error("--library-root 不能与 --root/--legacy-fixtures 混用")
 
     root = Path(args.root).resolve() if args.root else SKILL_DIR
-    canonical_root = root / Path("template-library/canonical/styles")
-    legacy_root = root / Path("template-library/reference/sources/retired-styles-tree/styles")
-    # --root 的仅旧树 fixture 兼容现有迁移单测；仓库默认入口始终 canonical。
-    legacy_mode = args.legacy_fixtures or (args.root is not None and not canonical_root.is_dir())
-    styles_root = legacy_root if legacy_mode else canonical_root
-    if not styles_root.is_dir():
-        print(f"ERROR: styles directory not found: {styles_root}", file=sys.stderr)
-        return 2
-
-    schema = _load_schema()
+    legacy_mode = args.legacy_fixtures
+    styles_root = root / "template-library/reference/sources/retired-styles-tree/styles"
+    library_root = Path(args.library_root).absolute() if args.library_root else (root / "template-library" if args.root else builtin_library_root())
+    schema = _load_schema() if legacy_mode else None
     validator = None
-    if not legacy_mode:
-        try:
-            validator = _load_canonical_validator()
-        except ImportError:
-            runtime_python = SKILL_DIR / "runtime" / ".venv" / "bin" / "python"
-            runtime_prefix = runtime_python.parent.parent.resolve()
-            if runtime_python.is_file() and Path(sys.prefix).resolve() != runtime_prefix:
-                return subprocess.run([str(runtime_python), str(Path(__file__).resolve()),
-                                       *(sys.argv[1:] if argv is None else argv)]).returncode
-            print("ERROR: canonical schema lint requires jsonschema; use the managed runtime Python", file=sys.stderr)
-            return 2
+    resolver = None
+    resolved_briefs = {}
+    pins = {}
+    try:
+        if legacy_mode:
+            if not styles_root.is_dir():
+                raise ValueError(f"styles directory not found: {styles_root}")
+            files = _brief_files(styles_root)
+        else:
+            read_evidence_bytes(library_root, "catalog/current.json")
+            resolver = AssetResolver(library=library_root, home=library_root / ".lint-no-user-home")
+            if resolver.user_root is not None or resolver.registry_source != "catalog":
+                raise ValueError("style_lint_current_library_required")
+            generation = resolver.generation
+            validator = _load_canonical_validator(library_root)
+            files = []
+            for entity in resolver.entities:
+                if entity["kind"] != "style":
+                    continue
+                resolved = resolver.resolve(entity["asset_id"])
+                pins[entity["asset_id"]] = resolver.fingerprint(entity["asset_id"])
+                path = Path(resolved["path"])
+                files.append(path)
+                resolved_briefs[path] = resolved["data"]
+            root = library_root
+        if not files:
+            raise ValueError("style_lint_empty")
+    except ImportError:
+        runtime_python = SKILL_DIR / "runtime" / ".venv" / "bin" / "python"
+        runtime_prefix = runtime_python.parent.parent.resolve()
+        if runtime_python.is_file() and Path(sys.prefix).resolve() != runtime_prefix:
+            return subprocess.run([str(runtime_python), str(Path(__file__).resolve()),
+                                   *(sys.argv[1:] if argv is None else argv)]).returncode
+        print("ERROR: schema lint requires jsonschema; use the managed runtime Python", file=sys.stderr)
+        return 2
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
     errors: list[str] = []
     warnings: list[str] = []
-    files = _brief_files(styles_root) if legacy_mode else _canonical_brief_files(styles_root)
     parsed: list[tuple[str, dict]] = []
     for path in files:
         if legacy_mode:
@@ -431,7 +440,7 @@ def main(argv: list[str] | None = None) -> int:
                 path, schema, is_builtin=path.parent == styles_root, rel_to=root
             )
         else:
-            e, w, brief = _lint_canonical_one(path, validator, rel_to=root)
+            e, w, brief = _lint_canonical_one(path, validator, rel_to=root, brief=resolved_briefs[path])
             if brief is not None and not e:
                 parsed.append((str(path.relative_to(root)), brief))
         errors.extend(e)
@@ -463,6 +472,17 @@ def main(argv: list[str] | None = None) -> int:
                 errors.append(
                     f"style_sidecar_missing: 内置风格 {path.name} 缺同名 .layouts.json"
                 )
+
+    if resolver is not None:
+        try:
+            if AssetResolver(library=library_root, home=library_root / ".lint-no-user-home").generation != generation:
+                errors.append("style_lint_generation_changed")
+            for entity in resolver.entities:
+                if entity["kind"] == "style":
+                    if resolver.fingerprint(entity["asset_id"]) != pins[entity["asset_id"]]:
+                        errors.append("style_lint_asset_changed:" + entity["asset_id"])
+        except (OSError, ValueError) as exc:
+            errors.append(f"style_lint_snapshot_invalid: {exc}")
 
     baseline = _load_baseline()
     if args.write_baseline:
@@ -501,7 +521,7 @@ def main(argv: list[str] | None = None) -> int:
     if unknown:
         errors.extend(f"warning_not_in_baseline: {w}" for w in unknown)
 
-    source_label = "retired-reference" if legacy_mode else "canonical"
+    source_label = "retired-reference" if legacy_mode else "current-catalog"
     print(f"source={source_label} briefs={len(files)} errors={len(errors)} warnings={len(warnings)} "
           f"(baseline={len(baseline)}, 未登记={len(unknown)})")
     for item in errors:

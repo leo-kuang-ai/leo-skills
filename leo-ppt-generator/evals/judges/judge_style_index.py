@@ -67,25 +67,23 @@ def tool_results(transcript):
 
 
 def index_path(path, directory=False):
-    """点名查询真值源白名单（U10 后新协议，与 SKILL.md 一致）。
-
-    允许：catalog/generations/<gen>/registry.json（点名查询唯一索引真值，
-    SKILL.md「风格库点名查询」条目）与 catalog/current.json（指针）；
-    归档树的 generated 摘要仍可读（历史证据）。旧 references/styles/
-    00_索引/_INDEX.md 已随旧树退役，不再是合法入口。
-    """
+    """点名查询只允许 catalog 指针与明确一代的 registry。"""
     path = str(path)
-    if any(part in {"..", "."} for part in path.split("/")) or any(c in path for c in "{}\\"):
+    if any(part in {"..", "."} for part in path.split("/")) or any(c in path for c in "{}\\*?[]\n\r"):
         return False
-    retired = "/template-library/reference/sources/retired-styles-tree/styles/generated"
+    prefix = r"(?:^|/)template-library/catalog"
     if directory:
-        return path.rstrip("/").endswith(retired)
-    if path.endswith("/template-library/catalog/current.json"):
-        return True
-    if "/template-library/catalog/generations/" in path and path.endswith("/registry.json"):
-        return True
-    return (retired + "/" in path
-            and path.endswith(".md"))
+        return re.search(prefix + r"(?:/generations/[A-Za-z0-9-]+)?$", path.rstrip("/")) is not None
+    return re.search(prefix + r"/(?:current\.json|generations/[A-Za-z0-9-]+/registry\.json)$", path) is not None
+
+
+def index_search_path(path, glob):
+    if index_path(path):
+        return not glob or glob == str(path).rsplit("/", 1)[-1]
+    if not index_path(path, directory=True):
+        return False
+    expected = "registry.json" if "/generations/" in str(path) else "current.json"
+    return glob == expected
 
 
 def index_shell_read(command):
@@ -93,9 +91,6 @@ def index_shell_read(command):
     command = command.replace("2>/dev/null", "")
     if re.search(r"[$\x60<>\n]", command):
         return None
-    # SKILL.md 认可的终端适配：leo-ppt style list（resolver 只读点名查询）
-    if re.fullmatch(r"leo-ppt style list( +-{2}[\w-]+| +[^\s\"']+)*", command.strip()):
-        return True
     try:
         lexer = shlex.shlex(command, posix=True, punctuation_chars="|&;")
         lexer.whitespace_split = True
@@ -118,6 +113,18 @@ def index_shell_read(command):
         return False
     if not tokens or any(token in {"&", "&&", "||"} for token in tokens):
         return None
+    # 先完成 shell 分词与操作符检查，再接受文档化的只读 CLI 参数。
+    if tokens[:3] == ["leo-ppt", "style", "list"]:
+        options = iter(tokens[3:])
+        for option in options:
+            if option == "--summary":
+                continue
+            if option not in {"--home", "--limit", "--offset", "--filter"}:
+                return None
+            value = next(options, None)
+            if value is None or value.startswith("--") or (option in {"--limit", "--offset"} and not value.isdigit()):
+                return None
+        return True
     if "|" in tokens:
         split = tokens.index("|")
         tail = tokens[split + 1:]
@@ -184,11 +191,10 @@ def advise_trace_errors(transcript):
         elif lower in {"grep", "search", "search_files"}:
             path = str(args.get("path", ""))
             glob = str(args.get("glob", ""))
-            if index_path(path) or "/template-library/catalog/" in path or (
-                    index_path(path, directory=True) and ".." not in glob.split("/") and glob.endswith(".md") and not any(c in glob for c in "{}\\")):
+            if index_search_path(path, glob):
                 has_index_source_read = True
             else:
-                errors.append("advise 搜索未限定索引范围（catalog/归档摘要）")
+                errors.append("advise 搜索未限定索引范围（catalog 指针或单代 registry）")
         elif lower in {"mcp__codegraph__codegraph_explore", "codegraph_explore"}:
             has_navigation = True
         elif lower in {"bash", "exec_command", "shell", "run_shell_command"}:
@@ -201,7 +207,7 @@ def advise_trace_errors(transcript):
         else:
             errors.append(f"advise 使用了无法证明只读范围的工具: {name}")
     if has_navigation and not has_index_source_read:
-        errors.append("CodeGraph 导航未回到索引 Markdown 事实")
+        errors.append("CodeGraph 导航未回到 catalog 索引事实")
     return errors
 
 

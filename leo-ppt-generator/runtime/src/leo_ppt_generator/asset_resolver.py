@@ -1,4 +1,4 @@
-"""asset_resolver/v1：模板库统一身份、路径、scope、依赖与修订解析（KTD6）。
+"""统一资产 resolver：模板库身份、路径、scope、依赖与修订解析（KTD6）。
 
 唯一方案 docs/plans/2026-09-08-001 §5–§6。职责边界：
   - 只做身份/路径/scope/依赖/revision 解析；
@@ -16,12 +16,13 @@ current）；current 缺失时可从 canonical 只读重建内存视图（execut
 from __future__ import annotations
 
 from contextlib import contextmanager, ExitStack
+from copy import deepcopy
 from functools import wraps
 import hashlib
 import json
 import os
 import re
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ASSET_ID_RE = re.compile(
     r"^(?P<scope>builtin|user):(?P<kind>style|theme|layout|template|recipe|component|axis|brand|preset|font|ornament):(?P<slug>[A-Za-z0-9\-\u4e00-\u9fff]+)$")
@@ -129,7 +130,7 @@ def _candidate_bundle_roots() -> list[Path]:
 def builtin_library_root() -> Path:
     """返回内置模板库根（含 template-library/library.json 的 bundle 根下的库目录）。
 
-    只认新库声明文件；找不到即 LibraryMissingError，不回退旧 references/styles 树。
+    只认 current catalog 声明文件；找不到即 LibraryMissingError，不回退退役的参考样式树。
     """
     for bundle_root in _candidate_bundle_roots():
         library = bundle_root / "template-library"
@@ -145,7 +146,9 @@ def user_library_root(home: Path | None = None) -> Path | None:
     if home is None:
         from .config.runtime_config import default_home
         home = default_home()
-    root = home / "template-library"
+    # 与用户库写入端共享可信 home 规范化，库内链接仍由 safe_path 拒绝。
+    from .user_library import user_library_root as resolve_user_library
+    root = resolve_user_library(home)
     return root if (root / "library.json").is_file() else None
 
 
@@ -229,6 +232,13 @@ def _scan_canonical(library: Path) -> list[dict]:
 
 def _declared_dependencies(data: dict) -> list[str]:
     deps: set[str] = set()
+
+    def binding_dependency(value: str, kind: str) -> None:
+        # 身份本身携带 kind；catalog、导入和运行时共用此声明解析，不能只检查引用存在。
+        if data.get("entity") == "style-brief" and (
+                not ASSET_ID_RE.fullmatch(value) or value.split(":", 2)[1] != kind):
+            raise ResolverError(f"dependency_kind_mismatch: {data.get('asset_id')} -> {value} expected {kind}")
+        deps.add(value)
     for key in ("dependencies", "layout_profiles"):
         value = data.get(key)
         if isinstance(value, list):
@@ -237,7 +247,7 @@ def _declared_dependencies(data: dict) -> list[str]:
     if isinstance(bindings, dict):
         theme = bindings.get("theme_default")
         if isinstance(theme, str):
-            deps.add(theme)
+            binding_dependency(theme, "theme")
         routes = bindings.get("layout_routes")
         if isinstance(routes, list):
             for route in routes:
@@ -245,7 +255,9 @@ def _declared_dependencies(data: dict) -> list[str]:
                     for key in ("preferred", "discouraged"):
                         values = route.get(key)
                         if isinstance(values, list):
-                            deps.update(v for v in values if isinstance(v, str))
+                            for value in values:
+                                if isinstance(value, str):
+                                    binding_dependency(value, "layout")
 
     ornaments = data.get("ornaments")
     if isinstance(ornaments, list):
@@ -276,6 +288,7 @@ class AssetResolver:
         from .library_migration import library_operation
         with library_operation(self.builtin_root):
             declaration = _validate_library_declaration(self.builtin_root)
+            self._root_scope = declaration.get("library_id", "builtin")
             if context is None and declaration.get("schema_version") == 2:
                 context = LibraryContext(self.builtin_root, user_root=user_library_root(home))
             self.context = context
@@ -285,6 +298,8 @@ class AssetResolver:
                 self.user_root = Path(self.user_root).absolute()
             self._require_available()
             self._entities: list[dict] | None = None
+            self._references: list[dict] | None = None
+            self._reference_pins: dict[str, dict] = {}
             self._by_id: dict[str, dict] | None = None
             self._registry_source: str | None = None
             self._generation: str | None = None
@@ -316,29 +331,93 @@ class AssetResolver:
             self._load()
         return list(self._entities)
 
+    @property
+    @_library_read
+    def references(self) -> list[dict]:
+        """参考资料独立于执行实体；只能供检索和正文读取。"""
+        if self._references is None:
+            self._load()
+        return deepcopy(self._references)
+
+    def _reference_bytes(self, entity):
+        """按 manifest 显式正文引用读取，拒绝目录逃逸、链接和字节漂移。"""
+        from .qualification import QualificationError, read_evidence_bytes
+        root = Path(entity["trusted_root"])
+        relative = entity["path"]
+        try:
+            manifest = read_evidence_bytes(root, relative)
+            data = json.loads(manifest)
+            body_ref = data.get("body_ref")
+            if (data.get("entity") != "axis-manifest" or data.get("asset_id") != entity["asset_id"]
+                    or data.get("kind") not in {"argument", "rendering", "infographic", "chart", "structure", "page-semantics"}
+                    or not isinstance(body_ref, str) or not body_ref or "\\" in body_ref
+                    or PurePosixPath(body_ref).is_absolute()
+                    or any(part in {"", ".", ".."} for part in body_ref.split("/"))):
+                raise ScopeViolationError("reference_body_invalid")
+            body_path = (PurePosixPath(relative).parent / body_ref).as_posix()
+            body = read_evidence_bytes(root, body_path)
+        except (QualificationError, OSError, ValueError) as exc:
+            if isinstance(exc, ResolverError):
+                raise
+            raise ResolverError("reference_asset_unreadable: " + entity["asset_id"]) from exc
+        if revision_of(data) != entity["revision"]:
+            raise StaleCatalogError("stale_catalog: reference manifest " + entity["asset_id"])
+        files = {relative: hashlib.sha256(manifest).hexdigest(), body_path: hashlib.sha256(body).hexdigest()}
+        expected = self._reference_pins.get(entity["asset_id"])
+        if expected is not None and files != expected:
+            raise StaleCatalogError("stale_catalog: reference bytes " + entity["asset_id"])
+        self._reference_pins[entity["asset_id"]] = files
+        return data, body
+
+    @_library_read
+    def read_reference_body(self, asset_id: str) -> str:
+        """读取同一 resolver 快照绑定的参考正文，不授予执行资格。"""
+        resolved = self.resolve(asset_id)
+        if resolved.get("catalog_status") != "reference-only":
+            raise ResolverError("reference_asset_required")
+        _, body = self._reference_bytes(self._by_id[asset_id])
+        try:
+            return body.decode("utf-8")
+        except UnicodeError as exc:
+            raise ResolverError("reference_body_encoding_invalid") from exc
+
     @_library_read
     def _load(self) -> None:
         self._require_available()
         if self.context is not None:
             from .template_catalog import LibraryContext, read_catalog
             registry = read_catalog(self.context)
-            combined = [{**row, "origin_scope": "builtin", "trusted_root": str(self.builtin_root)} for row in registry["entities"]]
+            combined = [{**row, "origin_scope": self._root_scope, "trusted_root": str(self.builtin_root)} for row in registry["entities"]]
+            references = [{**row, "origin_scope": self._root_scope, "trusted_root": str(self.builtin_root)} for row in registry["references"]]
+            scope_registries = [(self.builtin_root, registry)]
             if self.user_root is not None:
                 user = read_catalog(LibraryContext(self.user_root, mode=self.context.mode))
                 combined.extend({**row, "origin_scope": "user", "trusted_root": str(self.user_root)} for row in user["entities"])
-            for row in combined:
+                references.extend({**row, "origin_scope": "user", "trusted_root": str(self.user_root)} for row in user["references"])
+                scope_registries.append((self.user_root, user))
+            for row in combined + references:
                 if row["asset_id"].split(":")[0] != row["origin_scope"]:
                     raise ScopeViolationError("scope_violation: catalog scope 不符")
-            if len({row["asset_id"] for row in combined}) != len(combined):
+            if len({row["asset_id"] for row in combined + references}) != len(combined) + len(references):
                 raise DuplicateIdError("duplicate_id")
+            for row in references:
+                self._reference_bytes(row)
+            # catalog 验证之后到正文快照读取之间也可能有外部写入。
+            from .qualification import asset_generation
+            for root, catalog in scope_registries:
+                expected = catalog.get("asset_generation", catalog["catalog_generation"])
+                if asset_generation(root) != expected:
+                    raise StaleCatalogError("stale_catalog: reference snapshot changed")
             self._entities = combined
-            self._by_id = {row["asset_id"]: row for row in combined}
+            self._references = references
+            self._by_id = {row["asset_id"]: row for row in combined + references}
             self._generation = registry["catalog_generation"]
             self._registry_source = "diagnostic" if registry.get("diagnostic") else "catalog"
             return
         builtin_registry = _load_registry_from_catalog(self.builtin_root)
         self._generation = (builtin_registry or {}).get("generation")
         combined: list[dict] = []
+        references: list[dict] = []
         seen_ids: dict[str, dict] = {}
         for scope_root, scope in ((self.builtin_root, "builtin"), (self.user_root, "user")):
             if scope_root is None:
@@ -349,6 +428,33 @@ class AssetResolver:
                      "trusted_root": str(self.builtin_root)}
                     for entity in builtin_registry.get("entities", [])]
                 self._registry_source = "catalog"
+            elif scope == "user" and _validate_library_declaration(scope_root).get("schema_version") == 2:
+                # 过渡内置库可与新用户库共存；用户 scope 始终消费已验证的
+                # v2 catalog，不按旧目录扫描，也不改写用户资产。
+                from .template_catalog import LibraryContext, read_catalog
+                registry = read_catalog(LibraryContext(scope_root, mode="execution"))
+                entities = [
+                    {**entity, "origin_scope": scope, "trusted_root": str(scope_root)}
+                    for entity in registry["entities"]]
+                user_references = [{**reference, "origin_scope": scope,
+                                    "trusted_root": str(scope_root)}
+                                   for reference in registry["references"]]
+                # 参考资料同样有 catalog 身份；没有执行实体的用户库也不能冒充 builtin。
+                for reference in user_references:
+                    declared_scope = reference["asset_id"].split(":", 1)[0]
+                    if declared_scope != scope:
+                        raise ScopeViolationError(
+                            f"scope_violation: {reference['asset_id']} 声明 {declared_scope}，实际根为 {scope}")
+                references.extend(user_references)
+                all_records = [*combined, *entities, *references]
+                if len({row["asset_id"] for row in all_records}) != len(all_records):
+                    raise DuplicateIdError("duplicate_id")
+                for reference in references:
+                    self._reference_bytes(reference)
+                from .qualification import asset_generation
+                if asset_generation(scope_root) != registry["asset_generation"]:
+                    raise StaleCatalogError("stale_catalog: user reference snapshot changed")
+                self._registry_source = self._registry_source or "catalog"
             else:
                 entities = [
                     {**entity, "origin_scope": scope, "trusted_root": str(scope_root)}
@@ -372,10 +478,14 @@ class AssetResolver:
                 seen_ids[asset_id] = entity
                 combined.append(entity)
         self._entities = combined
-        self._by_id = {entity["asset_id"]: entity for entity in combined}
+        self._references = references + [{**row, "catalog_status": "reference-only"}
+                                         for row in combined if row["kind"] == "axis"]
+        self._by_id = {entity["asset_id"]: entity for entity in [*combined, *self._references]}
 
     def reload(self) -> None:
         self._entities = None
+        self._references = None
+        self._reference_pins = {}
         self._by_id = None
         self._registry_source = None
         self._generation = None
@@ -392,6 +502,9 @@ class AssetResolver:
     def fingerprint(self, asset_id: str) -> dict:
         """固定实际消费字节；模板除 manifest 外还覆盖整个同目录资源。"""
         entity = self.resolve(asset_id)
+        if entity.get("catalog_status") == "reference-only":
+            return {"asset_id": asset_id, "origin_scope": entity["origin_scope"],
+                    "revision": entity["revision"], "files": dict(self._reference_pins[asset_id])}
         root = Path(entity["trusted_root"]).resolve()
         manifest = Path(entity["path"])
         files = [manifest]
@@ -432,10 +545,13 @@ class AssetResolver:
                 for row in records:
                     if row["asset_id"].split(":")[0] != scope:
                         raise ScopeViolationError("scope_violation: snapshot identity")
+                    if row.get("kind") == "axis" or row.get("catalog_status") == "reference-only":
+                        raise ResolverError("reference_asset_not_executable")
                     entities.append({**row, "trusted_root": str(root), "origin_scope": scope})
             if len({row["asset_id"] for row in entities}) != len(entities):
                 raise DuplicateIdError("duplicate_id: snapshot")
             frozen._entities = entities
+            frozen._references = []
             frozen._by_id = {row["asset_id"]: row for row in entities}
             frozen._generation = body["catalog_generation"]
             frozen._registry_source = "catalog"
@@ -460,11 +576,15 @@ class AssetResolver:
         by_id = {}
         for pin in pins:
             identity = pin["asset_id"]
+            if self.resolve(identity).get("catalog_status") == "reference-only":
+                raise ResolverError("reference_asset_not_executable")
             if identity in by_id and by_id[identity] != pin:
                 raise StaleCatalogError(f"stale_catalog: 绑定资产冲突 {identity}")
             by_id[identity] = pin
         if not by_id:
             raise StaleCatalogError("stale_catalog: 不能冻结空资产集")
+        snapshot_v2 = self.context is not None or any(
+            self._by_id[identity].get("catalog_status") is not None for identity in by_id)
 
         def checked(root):
             frozen = self.from_snapshot(root)
@@ -507,7 +627,7 @@ class AssetResolver:
                     continue
                 directory = stage / ("builtin" if scope == "builtin" else "user/template-library")
                 directory.mkdir(parents=True, exist_ok=True)
-                if self.context is not None:
+                if snapshot_v2:
                     from .storage import atomic_write_json
                     atomic_write_json(directory / "library.json", {"kind": "template-library", "schema_version": 2,
                         "library_id": scope, "protocol": {"resolver": "asset_resolver/v2", "builder": "capability_manifest/template-registry/v2",
@@ -528,7 +648,7 @@ class AssetResolver:
                         entity.pop("origin_scope", None)
                     (registry_dir / "registry.json").write_text(json.dumps({"generation": generation, "entities": entities}))
                     (catalog / "current.json").write_text(json.dumps({"generation": generation}))
-            if self.context is not None:
+            if snapshot_v2:
                 from .qualification import digest
                 marker = {"schema_version": 2, "kind": "asset-snapshot", "catalog_generation": self.generation,
                           "scopes": scope_entities, "pins": list(by_id.values())}
@@ -567,7 +687,9 @@ class AssetResolver:
         # Apply scope/kind before name-vs-alias precedence. Otherwise a
         # same-name entity in another kind can shadow the requested alias and
         # be removed only after the winning entity is chosen.
-        candidates = self.entities
+        candidates = self.references if kind == "axis" else self.entities
+        if kind is None:
+            candidates = list({row["asset_id"]: row for row in [*candidates, *self.references]}.values())
         if scope != "any":
             wanted = {"builtin": "builtin", "user": "user"}[scope]
             candidates = [e for e in candidates if e["origin_scope"] == wanted]
@@ -613,6 +735,7 @@ class AssetResolver:
         entity = self._by_id.get(asset_id)
         if entity is None:
             raise AssetNotFoundError(f"asset_not_found: {asset_id}")
+        reference_only = entity.get("catalog_status") == "reference-only" or entity["kind"] == "axis"
         root = Path(entity["trusted_root"])
         require_available(root)
         path = root / entity["path"]
@@ -627,9 +750,12 @@ class AssetResolver:
             raise AssetNotFoundError(
                 f"asset_not_found: {entity['path']} 不可读") from exc
         revision = revision_of(data)
-        if revision != entity["revision"] and self.registry_source == "catalog":
+        if revision != entity["revision"] and (
+                self.registry_source == "catalog" or entity.get("catalog_status") is not None):
             raise StaleCatalogError(
                 f"stale_catalog: {asset_id} 内容与 registry revision 不一致")
+        if reference_only:
+            data, _ = self._reference_bytes(entity)
         return {
             "asset_id": asset_id,
             "kind": entity["kind"],
@@ -642,9 +768,10 @@ class AssetResolver:
             "aliases": entity.get("aliases", []),
             "lifecycle": entity.get("lifecycle", "draft"),
             "dependencies": entity.get("dependencies", []),
+            "catalog_status": "reference-only" if reference_only else entity.get("catalog_status"),
             "static_eligibility": {
-                "loadable": entity.get("lifecycle") in {"active", "draft"},
-                "execution_ready": entity.get("lifecycle") == "active",
+                "loadable": entity.get("lifecycle", "draft") in {"active", "draft"},
+                "execution_ready": not reference_only and entity.get("lifecycle") == "active",
             },
             "data": data,
         }

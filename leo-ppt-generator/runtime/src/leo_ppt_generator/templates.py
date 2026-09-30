@@ -32,11 +32,6 @@ from .asset_resolver import (
 )
 
 
-def _styles_root() -> Path:
-    """旧轴文档根：迁移归档树（retired-styles-tree）只读供 legacy 轴加载。"""
-    return builtin_library_root().parent / "template-library/reference/sources/retired-styles-tree/styles"
-
-
 class TemplateError(ValueError):
     reason_code = "template_store_error"
 
@@ -46,14 +41,13 @@ def _read_axis_body(group: str, name: str) -> str:
     try:
         resolver = AssetResolver()
         hits = [hit for hit in resolver.lookup(name, kind="axis")
-                if Path(hit["path"]).parts[-3] == group]
+                if resolver.resolve(hit["asset_id"])["data"].get("kind") == group]
         if not hits:
             # 兼容旧入口传入未带轴前缀的短名（如“漏斗图”“故事弧”），
             # 仍从 resolver 实体集合消歧，不再按物理目录嗅探。
             query = name.casefold()
-            hits = [hit for hit in resolver.entities
-                    if hit["asset_id"].split(":")[1] == "axis"
-                    and Path(hit["path"]).parts[-3] == group
+            hits = [hit for hit in resolver.references
+                    if resolver.resolve(hit["asset_id"])["data"].get("kind") == group
                     and query in str(hit.get("name", "")).casefold()]
     except ResolverError as exc:
         raise TemplateError(f"template_not_found: axes/{group}/{name} ({exc.reason_code})") from exc
@@ -65,15 +59,7 @@ def _read_axis_body(group: str, name: str) -> str:
     if not hits:
         raise TemplateError(f"template_not_found: axes/{group}/{name}")
     try:
-        resolved = resolver.resolve(hits[0]["asset_id"])
-        manifest_path = Path(resolved["path"]).resolve()
-        body_ref = resolved["data"].get("body_ref")
-        if not isinstance(body_ref, str) or not body_ref.strip():
-            raise TemplateError(f"template_unreadable: axes/{group}/{name} body_ref missing")
-        body_path = (manifest_path.parent / body_ref).resolve()
-        if not body_path.is_relative_to(manifest_path.parent) or not body_path.is_file():
-            raise TemplateError(f"template_unreadable: axes/{group}/{name} body_ref invalid")
-        return body_path.read_text(encoding="utf-8")
+        return resolver.read_reference_body(hits[0]["asset_id"])
     except (OSError, UnicodeError) as exc:
         raise TemplateError(f"template_unreadable: axes/{group}/{name}") from exc
 
@@ -143,10 +129,6 @@ def load_rendering(name: str) -> dict:
 _LAYOUT_RULE_FILES = ("00_", "01_常犯", "02_关键类清单")
 
 
-def _layouts_root() -> Path:
-    return builtin_library_root() / "canonical" / "layouts"
-
-
 def _notes_title(text: str) -> str:
     return text.splitlines()[0] if text else ""
 
@@ -173,41 +155,19 @@ def _parse_notes(title: str, text: str, fallback: dict | None = None) -> dict:
 
 
 def _notes_for_entity(resolved: dict) -> tuple[str, str] | None:
-    """定位已解析版式实体的 notes.md：同目录 sibling 优先，其次按
-    标题 P 码/名称匹配（layout.json 与 notes.md 分目录共存于新库）。"""
-    entity_dir = Path(resolved["path"]).parent
-    sibling = entity_dir / "notes.md"
-    if sibling.is_file():
-        try:
-            text = sibling.read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            return None
-        return _notes_title(text), text
-    aliases = [str(a).upper() for a in (resolved.get("aliases") or [])]
-    display = str(resolved.get("name") or "")
-    matches: list[tuple[str, str]] = []
-    for path in sorted(_layouts_root().glob("*/notes.md")):
-        try:
-            text = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            continue
-        title = _notes_title(text)
-        code = re.match(r"#\s*版式[:：]\s*(P\d+)\b", title)
-        if (code and code.group(1) in aliases) or (display and display in title):
-            matches.append((title, text))
-    if len(matches) == 1:
-        return matches[0]
-    return None
-
-
+    path = Path(resolved["path"]).parent / "notes.md"
+    if path.is_symlink() or not path.is_file(): return None
+    try: text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError): return None
+    return _notes_title(text), text
 def load_layout(name: str, *, home: Path | None = None) -> dict:
     """Load a page layout（新库协议：P 码/名称/ID 经 resolver，语义字段读
-    canonical/layouts/&lt;slug&gt;/notes.md，缺 notes 时回退 layout.json 几何面）。
+    current catalog 解析出的实体目录 sibling ``notes.md``；缺 notes 时只
+    使用已登记实体的 ``layout.json`` 结构字段，不扫描旧目录。
 
     身份解析委托 asset_resolver（kind=layout）：P 码别名精确命中，规则文档
-    （00_选版式P0原则等）不是版式实体，天然不命中。resolver 无命中时按旧
-    语义降级为 notes.md 标题扫描：P 码精确匹配（P1 绝不子串命中 P10-P19），
-    其余子串命中必须唯一，否则 layout_ambiguous 列出候选。
+    （00_选版式P0原则等）不是版式实体，天然不命中。resolver 无命中时
+    fail closed；未登记的 notes.md 不能冒充 layout entity。
     """
     try:
         resolver = AssetResolver(home=home)
@@ -239,41 +199,7 @@ def load_layout(name: str, *, home: Path | None = None) -> dict:
             "key_classes": "",
             "motion": "",
         }
-    # 旧语义降级：notes.md 标题扫描（P 码精确 / 子串唯一）。
-    exact: list[tuple[str, str]] = []
-    by_title: list[tuple[Path, str]] = []
-    for path in sorted(_layouts_root().glob("*/notes.md")):
-        try:
-            text = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            continue
-        title = _notes_title(text)
-        code = re.match(r"#\s*版式[:：]\s*(P\d+)\b", title)
-        if code and name.upper() == code.group(1):
-            exact.append((title, text))
-            continue
-        if name in title:
-            by_title.append((path, title))
-    if len(exact) == 1:
-        title, text = exact[0]
-    elif len(exact) > 1:
-        raise TemplateError(
-            f"layout_ambiguous: {name} -> "
-            + ", ".join(t.strip("# ").strip() for t, _ in exact)
-        )
-    elif len(by_title) == 1:
-        path = by_title[0][0]
-        text = path.read_text(encoding="utf-8")
-        title = _notes_title(text)
-    elif len(by_title) > 1:
-        raise TemplateError(
-            f"layout_ambiguous: {name} -> "
-            + ", ".join(t.strip("# ").strip() for _, t in by_title)
-        )
-    else:
-        raise TemplateError(f"layout_not_found: {name}")
-    return _parse_notes(title, text)
-
+    raise TemplateError(f"layout_not_found: {name}")
 
 def load_image_type(name: str) -> dict:
     """Load a canonical infographic axis into {positioning, skeleton}.
@@ -558,74 +484,17 @@ def _guardrail_block(palette: object) -> list[str]:
 
 # --- Brand identity axis (10_品牌身份 / ${LEO_PPT_HOME}/brands) ---------------
 
-_BRAND_SUBDIR = "10_品牌身份"
-
-
-def _brand_candidates(name: str, *, home: Path | None = None) -> list[Path]:
-    """品牌解析：新库 resolver（用户 overlay 优先）→ 兼容文件回退。
-
-    只有明确的 ``asset_not_found`` 才允许回退。陈旧 catalog、作用域违规、
-    重复 ID 或歧义等 resolver 错误必须原样阻断，避免使用旧品牌文件掩盖
-    canonical 资产漂移。
-    """
-
-    candidates: list[Path] = []
+def load_brand(name: str, *, home: Path | None = None) -> dict:
+    """只从 current catalog 的 brand 实体读取品牌，不回退旧 Markdown。"""
     try:
         resolved = AssetResolver(home=home).require(name, kind="brand")
-        return [Path(resolved["path"])]
-    except AssetNotFoundError:
-        pass
-    from .config.runtime_config import default_home
-
-    home_brands = (home or default_home()) / "brands" / f"{name}.md"
-    legacy = _styles_root() / _BRAND_SUBDIR / f"{name}.md"
-    return [home_brands, legacy]
-
-
-def load_brand(name: str, *, home: Path | None = None) -> dict:
-    """Load a brand-identity brief.
-
-    Resolution order honors the deck contract: 新库 brand 实体（用户 overlay
-    优先）→ 用户 MD（``${LEO_PPT_HOME}/brands/<name>.md``）→ 旧树归档 MD。
-    新库 brand.json 按结构化字段读取（colors/typography/tone/verification）；
-    MD 路径沿用字段式解析。Returns primary/accent HEX (empty string when
-    absent), typography, tone, and the verified_at provenance.
-    """
-    for path in _brand_candidates(name, home=home):
-        if not path.is_file():
-            continue
-        try:
-            text = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError) as exc:
-            raise TemplateError(f"brand_unreadable: {name}") from exc
-        if path.suffix == ".json":
-            try:
-                data = json.loads(text)
-            except ValueError as exc:
-                raise TemplateError(f"brand_unreadable: {name}") from exc
-            colors = data.get("colors") or {}
-            verification = data.get("verification") or {}
-            return {
-                "name": str(data.get("name") or name),
-                "primary": str(colors.get("primary") or ""),
-                "accent": str(colors.get("accent") or ""),
-                "typography": str(data.get("typography") or ""),
-                "tone": str(data.get("tone") or ""),
-                "verified_at": str(verification.get("verified_at") or ""),
-                "source": str(path),
-            }
-        hexes = _HEX_ANCHOR_RE.findall(text)
-        return {
-            "name": name,
-            "primary": hexes[0] if hexes else "",
-            "accent": hexes[1] if len(hexes) > 1 else "",
-            "typography": _field(text, "字体"),
-            "tone": _field(text, "语气"),
-            "verified_at": _field(text, "verified_at"),
-            "source": str(path),
-        }
-    raise TemplateError(f"brand_not_found: {name}")
-
+    except AssetNotFoundError as exc:
+        raise TemplateError(f"brand_not_found: {name}") from exc
+    try:
+        data = resolved["data"]; colors = data.get("colors") or {}; verification = data.get("verification") or {}
+        return {"name": str(data.get("name") or name), "primary": str(colors.get("primary") or ""), "accent": str(colors.get("accent") or ""), "typography": str(data.get("typography") or ""), "tone": str(data.get("tone") or ""), "verified_at": str(verification.get("verified_at") or ""), "source": str(resolved["path"])}
+    except (AttributeError, TypeError, OSError, UnicodeError) as exc:
+        raise TemplateError(f"brand_unreadable: {name}") from exc
 
 def _relative_luminance(hex_value: str) -> float:
     def chan(v: int) -> float:
@@ -883,13 +752,11 @@ def _canonical_axis_names(group: str, resolver: AssetResolver) -> list[str]:
     """Enumerate axis slugs from the same resolver snapshot as layouts."""
     prefix = f"{group}-"
     names: list[str] = []
-    for entity in resolver.entities:
-        if entity.get("kind") != "axis":
+    for entity in resolver.references:
+        resolved = resolver.resolve(entity["asset_id"])
+        if resolved["data"].get("kind") != group:
             continue
-        path = Path(str(entity.get("path", "")))
-        if len(path.parts) < 3 or path.parts[-3] != group:
-            continue
-        name = path.parent.name.removeprefix(prefix)
+        name = entity["asset_id"].rsplit(":", 1)[-1].removeprefix(prefix)
         if name:
             names.append(name)
     return sorted(set(names))

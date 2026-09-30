@@ -204,6 +204,344 @@ with library_operation(sys.argv[1]):
         self.assertEqual(len(result["roots"]), 11)
         self.assertEqual({row["classification"] for row in result["hits"]}, {"active-consumer", "plan-control"})
 
+    def test_closure_does_not_hide_readers_next_to_negative_test_words(self):
+        path = self.root / "leo-ppt-generator/tests/test_reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text("def test_legacy_reader():\n    value = 'references/styles/active.md'\n    assert value\n")
+        self.assertEqual(scan_consumer_closure(self.root)["active_legacy_hits"], 1)
+        path.write_text("def test_reader(self):\n    with self.assertRaises(ValueError):\n        load('references/styles/rejected.md')\n    load('references/styles/active.md')\n")
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual([row["classification"] for row in report["hits"]], ["test-fixture", "active-consumer"])
+
+    def test_closure_qa_profile_is_a_token_not_a_whole_line_exemption(self):
+        path = self.root / "leo-ppt-generator/runtime/src/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text("schema = load('qa-profile')\ngovernance = load('qa-profile')\nload('render-qa-profiles.json')\nload('render-qa-profile-v1.schema.json')\n")
+        self.assertEqual(scan_consumer_closure(self.root)["active_legacy_hits"], 2)
+
+    def test_closure_canonical_variable_joins_require_proven_canonical_root(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text("from pathlib import Path\nLIBRARY = Path('template-library')\nCANONICAL_ROOT = LIBRARY / 'canonical'\nSTYLES = CANONICAL_ROOT / 'styles'\nBRANDS = CANONICAL_ROOT.joinpath('brands')\nOTHER_ROOT = Path('other')\nOTHER = OTHER_ROOT / 'styles'\n")
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 2)
+        self.assertEqual({row["line"] for row in report["hits"]}, {4, 5})
+
+    def test_closure_detects_joinpath_multi_arg_and_variable_folder_paths(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "ROOT = Path('template-library')\n"
+            "kind = 'styles'\n"
+            "def read():\n"
+            "    return ROOT.joinpath('canonical', kind, 'example.json').read_text()\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertGreaterEqual(report["active_legacy_hits"], 1)
+
+    def test_closure_is_conservative_when_same_name_is_bound_in_multiple_functions(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "def builtin():\n"
+            "    root = Path('template-library')\n"
+            "    return root / 'canonical' / 'styles' / 'a.json'\n"
+            "def user():\n"
+            "    root = Path('other')\n"
+            "    return root / 'styles' / 'b.json'\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 0)
+        self.assertEqual({row["line"] for row in report["hits"]}, {4})
+
+    def test_closure_resolves_complete_paths_across_join_variables_and_string_add(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        expressions = (
+            "Path('template-library').joinpath('canonical', 'styles', 'demo.json')",
+            "Path('template-library/' + 'canonical/' + 'styles/demo.json')",
+            "root / kind / 'demo.json'",
+            "Path('template-library', 'canonical', kind, 'demo.json')",
+        )
+        for expression in expressions:
+            with self.subTest(expression=expression):
+                path.write_text("from pathlib import Path\nroot = Path('template-library') / 'canonical'\nkind = 'styles'\nvalue = " + expression + "\n")
+                report = scan_consumer_closure(self.root)
+                self.assertEqual(report["active_legacy_hits"], 1)
+                self.assertEqual(report["unclassified_hits"], 0)
+                self.assertEqual({row["line"] for row in report["hits"]}, {4})
+
+    def test_closure_requires_adjacent_canonical_and_legacy_folder_components(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('template-library')\n"
+            "kind = 'styles'\n"
+            "a = root / kind\n"
+            "b = root.joinpath('canonical', 'visual', kind)\n"
+            "c = Path('other').joinpath(kind)\n"
+            "d = Path('canonical-new') / kind\n"
+            "e = Path('canonical') / 'styleguide'\n"
+            "f = Path('canonical') / '/other' / kind\n"
+        )
+        self.assertEqual(scan_consumer_closure(self.root)["hits"], [])
+
+    def test_closure_dynamic_file_names_and_log_words_are_not_legacy_directories(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "def report(folder, name, count):\n"
+            "    file = folder / f'{name}.layouts.json'\n"
+            "    label = f'TOTAL: {count} templates' + ' complete'\n"
+            "    number = count + 1\n"
+            "    dynamic = str(count) + name\n"
+            "    return file, label, number, dynamic\n"
+        )
+        self.assertEqual(scan_consumer_closure(self.root)["hits"], [])
+
+    def test_closure_literal_loop_destinations_are_resolved_without_directory_guessing(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('canonical')\n"
+            "def current():\n"
+            "    for family, destination in [('a', 'visual/styles'), ('b', 'semantic/page-types')]:\n"
+            "        item = root / destination\n"
+            "def legacy():\n"
+            "    for family, destination in [('a', 'styles'), ('b', 'themes')]:\n"
+            "        item = root / destination\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 0)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('canonical')\n"
+            "for family, destination in [('a', 'visual/styles'), ('b', 'semantic/page-types')]:\n"
+            "    current = root / destination\n"
+        )
+        self.assertEqual(scan_consumer_closure(self.root)["hits"], [])
+
+    def test_closure_defaults_are_candidates_but_do_not_prove_all_callers_safe(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "def legacy(root=Path('canonical')):\n"
+            "    return root / 'styles'\n"
+            "def dynamic(root=Path('other')):\n"
+            "    return root / 'styles'\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 1)
+
+    def test_closure_literal_dictionary_items_and_sorted_destructuring_are_resolved(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        for table, wrapper, legacy in (
+            ("{'a': 'styles', 'b': 'visual/themes'}", "TABLE.items()", 1),
+            ("{'a': 'styles'}", "sorted(TABLE.items())", 1),
+            ("{'a': 'visual/styles', 'b': 'semantic/page-types'}", "sorted(TABLE.items())", 0),
+            ("{'a': 'unused'}", "{'a': 'themes'}.items()", 1),
+        ):
+            with self.subTest(table=table, wrapper=wrapper):
+                path.write_text("from pathlib import Path\nTABLE = " + table + "\n"
+                    "root = Path('canonical')\nfor kind, destination in " + wrapper + ":\n"
+                    "    current = root / destination\n")
+                report = scan_consumer_closure(self.root)
+                self.assertEqual(report["active_legacy_hits"], legacy)
+                self.assertEqual(report["unclassified_hits"], 0)
+
+    def test_closure_dictionary_mutation_escape_rebinding_and_shadowed_sorted_remain_unknown(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        for change in ("TABLE['a'] = dynamic\n", "TABLE.update(dynamic)\n", "alias = TABLE\n",
+                       "TABLE = dynamic\n", "sorted = replacement\n"):
+            with self.subTest(change=change):
+                path.write_text("from pathlib import Path\nTABLE = {'a': 'visual/styles'}\n" + change
+                    + "root = Path('canonical')\nfor kind, destination in sorted(TABLE.items()):\n"
+                    "    current = root / destination\n")
+                report = scan_consumer_closure(self.root)
+                self.assertEqual(report["active_legacy_hits"], 0)
+                self.assertEqual(report["unclassified_hits"], 1)
+        path.write_text("from pathlib import Path\nTABLE = " + repr({str(i): 'visual/styles' for i in range(65)})
+            + "\nfor kind, destination in TABLE.items():\n    current = Path('canonical') / destination\n")
+        self.assertEqual(scan_consumer_closure(self.root)["unclassified_hits"], 1)
+
+    def test_closure_imported_literal_uses_only_scanned_source_and_target_bytes(self):
+        from leo_ppt_generator.library_migration import _scan_consumer_closure
+        relative = "leo-ppt-generator/runtime/src/leo_ppt_generator/directory_contract.py"
+        owner = self.root / relative
+        owner.parent.mkdir(parents=True)
+        owner.write_text("TABLE = {'a': 'styles', 'b': 'visual/themes'}\nraise RuntimeError('must not execute')\n")
+        reader = self.root / "leo-ppt-generator/scripts/reader.py"
+        reader.parent.mkdir(parents=True)
+        reader.write_text("from pathlib import Path\n"
+            "from leo_ppt_generator.directory_contract import TABLE as FOLDERS\n"
+            "for kind, destination in sorted(FOLDERS.items()):\n    current = Path('canonical') / destination\n")
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 0)
+        replacement = b"TABLE = {'a': 'visual/styles', 'b': 'semantic/page-types'}\n"
+        self.assertEqual(_scan_consumer_closure(self.root, {relative: replacement})["hits"], [])
+        self.assertEqual(scan_consumer_closure(self.root)["active_legacy_hits"], 1)
+        reader.unlink()
+        relative_reader = owner.with_name("reader.py")
+        relative_reader.write_text("from pathlib import Path\nfrom .directory_contract import TABLE as FOLDERS\n"
+            "for kind, destination in FOLDERS.items():\n    current = Path('canonical') / destination\n")
+        self.assertEqual(scan_consumer_closure(self.root)["active_legacy_hits"], 1)
+
+    def test_closure_imported_dictionary_rejects_dynamic_mutable_or_missing_owner(self):
+        owner = self.root / "leo-ppt-generator/runtime/src/leo_ppt_generator/directory_contract.py"
+        owner.parent.mkdir(parents=True)
+        reader = self.root / "leo-ppt-generator/scripts/reader.py"
+        reader.parent.mkdir(parents=True)
+        reader.write_text("from pathlib import Path\nfrom leo_ppt_generator.directory_contract import TABLE\n"
+            "for kind, destination in TABLE.items():\n    current = Path('canonical') / destination\n")
+        for body in ("TABLE = dynamic\n", "TABLE = {'a': 'visual/styles'}\nTABLE = dynamic\n",
+                     "TABLE = {'a': 'visual/styles'}\nTABLE.update(dynamic)\n",
+                     "TABLE = {'a': 'visual/styles'}\nTABLE['a'] = dynamic\n",
+                     "TABLE = {'a': 'visual/styles'}\nalias = TABLE\n"):
+            with self.subTest(body=body):
+                owner.write_text(body)
+                report = scan_consumer_closure(self.root)
+                self.assertEqual(report["active_legacy_hits"], 0)
+                self.assertEqual(report["unclassified_hits"], 1)
+        owner.unlink()
+        reader.write_text("from pathlib import Path\nfrom leo_ppt_generator.asset_resolver import KIND_CANONICAL_DIR\n"
+            "for kind, destination in KIND_CANONICAL_DIR.items():\n    current = Path('canonical') / destination\n")
+        self.assertEqual(scan_consumer_closure(self.root)["unclassified_hits"], 1)
+
+    def test_closure_recognizes_home_brand_protocol_without_assuming_dynamic_roots(self):
+        path = self.root / "leo-ppt-generator/runtime/src/leo_ppt_generator/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text("from .config.runtime_config import default_home as configured_home\n"
+            "def read(home, name):\n    return (home or configured_home()) / 'brands' / f'{name}.md'\n"
+            "def dynamic(root, name):\n    return root / 'brands' / f'{name}.md'\n")
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 1)
+        self.assertEqual([row["disposition"] for row in report["hits"]], ["migrate", "classify-dynamic-path"])
+        path.write_text("from .config.runtime_config import default_home\ndefault_home = arbitrary\n"
+            "def read(name):\n    return default_home() / 'brands' / f'{name}.md'\n")
+        self.assertEqual(scan_consumer_closure(self.root)["unclassified_hits"], 1)
+
+    def test_closure_lexical_locals_do_not_borrow_another_functions_binding(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('template-library') / 'canonical'\n"
+            "kind = 'styles'\n"
+            "def legacy():\n"
+            "    return root / kind\n"
+            "def current():\n"
+            "    root = Path('other')\n"
+            "    return root / kind\n"
+            "def nested():\n"
+            "    root = Path('canonical') / 'visual'\n"
+            "    def read():\n"
+            "        return root / kind\n"
+            "    return read()\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 0)
+        self.assertEqual({row["line"] for row in report["hits"]}, {5})
+
+    def test_closure_dynamic_canonical_child_is_unclassified_and_cannot_pass_gate(self):
+        from leo_ppt_generator.library_migration import CLOSURE_ROOTS, CLOSURE_FILES, verify_consumer_closure
+        for relative in CLOSURE_ROOTS:
+            path = self.root / relative
+            if relative in CLOSURE_FILES:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("")
+            else:
+                path.mkdir(parents=True, exist_ok=True)
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('template-library') / 'canonical'\n"
+            "def read(kind):\n"
+            "    return root / kind\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 0)
+        self.assertEqual(report["unclassified_hits"], 1)
+        self.assertEqual(report["hits"][0]["disposition"], "classify-dynamic-path")
+        with self.assertRaisesRegex(MigrationError, "migration_consumer_closure_not_zero"):
+            verify_consumer_closure(self.root)
+
+    def test_closure_parameter_shadowing_does_not_borrow_safe_global_root(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('other')\n"
+            "def read(root):\n"
+            "    return root / 'styles'\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 0)
+        self.assertEqual(report["unclassified_hits"], 1)
+
+    def test_closure_global_and_nonlocal_rebinding_do_not_keep_a_safe_root(self):
+        path = self.root / "leo-ppt-generator/scripts/reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            "from pathlib import Path\n"
+            "root = Path('other')\n"
+            "def configure():\n"
+            "    global root\n"
+            "    root = Path('canonical')\n"
+            "def read():\n"
+            "    return root / 'styles'\n"
+            "def nested():\n"
+            "    root = Path('other')\n"
+            "    def configure():\n"
+            "        nonlocal root\n"
+            "        root = Path('canonical')\n"
+            "    return root / 'styles'\n"
+        )
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 2)
+        self.assertEqual(report["unclassified_hits"], 0)
+        self.assertEqual({row["line"] for row in report["hits"]}, {7, 13})
+
+    def test_closure_resolved_paths_keep_exact_negative_scope_and_migration_ownership(self):
+        source = (
+            "from pathlib import Path\n"
+            "root = Path('template-library') / 'canonical'\n"
+            "kind = 'styles'\n"
+            "def test_reader(self):\n"
+            "    with self.assertRaises(ValueError):\n"
+            "        load(root / kind)\n"
+            "    load(root / kind)\n"
+        )
+        path = self.root / "leo-ppt-generator/tests/test_reader.py"
+        path.parent.mkdir(parents=True)
+        path.write_text(source)
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 1)
+        self.assertEqual(report["unclassified_hits"], 0)
+        self.assertEqual([row["classification"] for row in report["hits"]], ["test-fixture", "active-consumer"])
+        path.unlink()
+        owner = self.root / "leo-ppt-generator/scripts/migrate_template_library.py"
+        owner.parent.mkdir(parents=True)
+        owner.write_text(source)
+        report = scan_consumer_closure(self.root)
+        self.assertEqual(report["active_legacy_hits"], 0)
+        self.assertEqual(report["unclassified_hits"], 0)
+        self.assertTrue(all(row["classification"] == "migration-input" for row in report["hits"]))
+
     def test_closure_gate_rejects_zero_hits_from_missing_or_wrong_type_roots(self):
         from leo_ppt_generator.library_migration import CLOSURE_ROOTS, CLOSURE_FILES, verify_consumer_closure
         with self.assertRaisesRegex(MigrationError, "migration_closure_roots_incomplete"):

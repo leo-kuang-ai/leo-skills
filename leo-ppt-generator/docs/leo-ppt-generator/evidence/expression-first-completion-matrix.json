@@ -1,41 +1,86 @@
 {
   "claim_levels": {
-    "independent_review": "not_run；仅串行单Agent检查，status=degraded / verdict=Not ready",
-    "mechanism": "partial",
-    "publication": "not_run；正式stage/publish/cleanup/convergence未闭环，本轮未commit/push/PR",
-    "real_provider": "not_run；首批6次付费调用范围待答复，本轮实际调用0；五关系10份输入仅为准备",
-    "real_runtime": "当前源码五关系HTML正反10张PNG；177文件源码/wheel/installed摘要一致；当前安装后7项regime/recipe测试退出0。上一轮44项安装态事务/catalog测试保留为历史，不外推当前安装态全量",
+    "mechanism": "passed for current source regression; consumer closure and publication remain partial",
+    "real_runtime": "当前源码五关系HTML正反10PNG已生成，69文件及5份receipt从当前owner/环境重核provisional；10PNG与上一轮字节一致。v2机制、画廊、真实复制/链接进程验证各见日志。",
+    "real_provider": "not_run；外网付费调用0，配置不代表真实导出",
     "real_task": "not_run",
+    "visual": "not_run；无正式U6-A/B、三册配对与用户差页",
     "user_benefit": "not_run",
-    "visual": "10张HTML同用例字节回归无变化；当前探针仍缺visual_review，正式U6-A/B、三册旧链配对及用户差页未运行"
+    "publication": "blocked；U7-A plan generated, stage requires pre-migration value receipt",
+    "independent_review": "partial；独立migration/reference/U5限定审阅，user-library为作者切换只读复核，完整分支独立审阅未完成"
   },
   "full_suite": {
-    "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+    "status": "passed",
     "exit_code": 0,
-    "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-    "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-    "source_stable": true,
+    "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
     "summary": {
       "errors": 0,
       "failures": 0,
       "issues": [],
-      "reported_seconds": 657.786,
+      "reported_seconds": 1107.933,
       "terminal_summary": "OK",
-      "tests": 2232
-    }
+      "tests": 2409
+    },
+    "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-22-final/full-suite.log",
+    "ordered_manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-22-final/verification.json",
+    "source_stable": true
   },
-  "generated_from": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+  "generated_from": "current source and continuation evidence 2026-09-22",
   "global_verification": {
+    "status": "passed",
     "exit_code": 0,
-    "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
-    "manifest_sha256": "aa5f4ff5c107d1228c06b3c22ed642636be44ff867d3c10e8067bbbe1d0953fc",
-    "process_session_id": 84773,
-    "scope": "表格 image recipe、结构容量门与安装态 regime 修复后完整有序终态",
+    "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-22-final/verification.json",
     "source_stable": true,
-    "status": "passed"
+    "completed_steps": [
+      {
+        "step": "compileall",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "schemas",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "regime-lint",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "layout-lint",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "template-lint",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "expression-consumers",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "migration",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "quality",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "step": "full-suite",
+        "status": "passed",
+        "exit_code": 0
+      }
+    ]
   },
   "goal_completion_eligible": false,
-  "goal_service_status": "blocked（当前工具实际状态；本轮未改变，未调用 complete）",
+  "goal_service_status": "null（当前无已设置goal；未调用complete）",
   "iteration_results": [
     {
       "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final/verification.json",
@@ -48,36 +93,33 @@
     {
       "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
       "status": "passed"
+    },
+    {
+      "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+      "status": "interrupted",
+      "exit_code": 130
+    },
+    {
+      "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v3/verification.json",
+      "status": "running",
+      "session_id": 61637
     }
   ],
-  "latest_development_at": "2026-09-16T08:23:46.755539+00:00",
+  "latest_development_at": "2026-09-24",
   "overall_status": "partial",
   "plan": "docs/plans/2026-09-11-004-feat-leo-ppt-expression-first-plan.md",
-  "review_followup": {
-    "independent_review": "not_run",
-    "known_fixes": [
-      "layout manifest随owner更新",
-      "bundle实体数与recipe解析同步",
-      "安装态regime路径与字节缓存修复"
-    ],
-    "limitations": [
-      "真实Provider/image、正式U6-A/B及用户收益尚未验证",
-      "正式消费者切换和高层迁移未闭环"
-    ],
-    "result": "degraded",
-    "review": "docs/leo-ppt-generator/evidence/table-recipe-inline-review-2026-09-16.json",
-    "verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json"
-  },
+  "review_followup": "current closure active_legacy_hits=281, unclassified_hits=0; required publication/provider/visual gaps remain",
   "schema_version": 1,
-  "scope_audit": "docs/leo-ppt-generator/evidence/table-recipe-scope-audit-2026-09-16.json",
+  "scope_audit": "docs/leo-ppt-generator/evidence/continuation-scope-audit-2026-09-21-final.json",
   "structured_closeout": {
     "claim_limitations": [
-      "项目原生有序验证及完整日志可核；未声称 spec-first formal closeout verified",
-      "真实 Provider、用户任务、正式视觉回放、消费者切换及正式迁移发布 required gaps 尚未关闭"
+      "当前源码完整有序验证与独立全量复跑均通过；不替代真实 Provider、视觉、用户任务或正式发布",
+      "U7-A 迁移计划已生成但缺预迁移价值收据，stage/publish/cleanup/convergence 未运行",
+      "consumer closure 仍为 active_legacy_hits=288、unclassified_hits=0"
     ],
     "evidence": "docs/leo-ppt-generator/evidence/maintenance-workflow-boundary-2026-09-16.json",
     "honest_closeout_verdict": "not_run",
-    "project_verification_manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+    "project_verification_manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json",
     "run_artifact_path": null,
     "run_artifact_reason_code": "target-repo-not-found / formal-root-outside-authorized-write-scope",
     "verification_run_summary_ref": null
@@ -86,9 +128,9 @@
     "U1": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/u1-regime-bundle-red-2026-09-16.log",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/table-recipe-inline-review-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/content_pack.py:compile_page_expression",
@@ -114,13 +156,13 @@
       "remaining_gap": [
         "U12 仅恢复历史字节并导出单页，尚无完整可比配对视觉基线；不追认改动前已冻结"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -145,64 +187,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_page_type_regime.py",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/regime-lint.log",
-          "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "regime-lint"
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -333,14 +318,83 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_page_type_regime.py",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/regime-lint.log",
+              "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "regime-lint"
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
     "U10": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/u2-image-prepared-inputs-v7-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-current-probes-table-recipe-v2-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/execution_pairing.py:derive_execution_pairings",
@@ -368,13 +422,13 @@
         "v2 catalog 与全部活动消费者闭合尚未完成",
         "真实 image lane 配对与输出证据仍未验证"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -398,72 +452,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -609,14 +598,92 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
     "U11": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/consumer-closure-table-recipe-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/table-recipe-inline-review-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/consumer-closure-final-source-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/library_migration.py:verify_migration",
@@ -646,7 +713,8 @@
         "scripts/style_pack.py:cmd_adopt",
         "scripts/capability_manifest.py",
         "tests/test_style_pack.py",
-        "runtime/src/leo_ppt_generator/page_intent.py:load_page_type_regime"
+        "runtime/src/leo_ppt_generator/page_intent.py:load_page_type_regime",
+        "runtime/src/leo_ppt_generator/library_migration.py"
       ],
       "implementation_evidence": [
         "正式 verified receipt 重核结构/真实 U6-A/价值门及 owner；maintenance、HEAD/dirty、逐文件 CAS、备份与 current-last journal 实现",
@@ -664,7 +732,8 @@
         "library_operation 使用库目录 fd 共享 flock，locked_publication 先取得独占 flock 再创建 maintenance；活跃消费者使发布返回 migration_maintenance_lock_busy，未写 marker 的独占锁窗口也拒绝消费者",
         "共享锁覆盖 route/pipeline/render、resolver/catalog、能力 manifest/probe、style save/import/adopt 和公开 final receipt 复核；只读库无需共享锁文件，异常与硬退出释放进程锁，持久 marker 不被误清理",
         "真实子进程争锁、只读库、os._exit(86)、marker 前窗口和无写入副作用测试通过；不能用这些文件级与入口级机制回归替代正式五阶段发布",
-        "regime 缓存命中前也持库共享锁；预热后 maintenance 拒绝已用真实临时库回归，正式全消费者publish仍需验证"
+        "regime 缓存命中前也持库共享锁；预热后 maintenance 拒绝已用真实临时库回归，正式全消费者publish仍需验证",
+        "目标证据验证调用目标runtime；真实临时v2 PNG/receipt机制迁移覆盖附件/target drift；正式publish仍未运行"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/u6-u13-contracts-2026-09-15.log",
@@ -694,13 +763,13 @@
         "已接入操作期共享锁并验证真实竞争；全部活动消费者在完成 U9 切换后的正式 publish 期间仍需端到端复核，当前 Darwin 证据不能外推其他平台",
         "正式 publication-ready、cleanup、delivery convergence 受缺 U6-A/image/consumer closure 证据阻塞；进程硬中断的高层恢复场景仍需补验"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -726,56 +795,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -889,20 +909,84 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
     "U12": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-live-probes-v2-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-html-byte-comparison-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/u2-current-final-source-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/quality_replay.py:verify_legacy_baseline",
         "runtime/src/leo_ppt_generator/quality_replay.py:freeze_legacy_baseline",
         "runtime/src/leo_ppt_generator/capability_probes.py:run_probes",
-        "template-library/evidence/oracles/relation-output-v1.json"
+        "template-library/evidence/oracles/relation-output-v1.json",
+        "runtime/src/leo_ppt_generator/quality_replay.py:_verify_historical_html_binding",
+        "runtime/src/leo_ppt_generator/quality_replay.py:_rebaseline_snapshot"
       ],
       "implementation_evidence": [
         "旧 ledger 891 项全部按 SHA-256 找回（当前/归档/Git）；缺失 legacy source 阻塞已实际解除",
@@ -911,7 +995,8 @@
         "当前五关系 HTML 正反探针全部真实重采并保持 provisional",
         "环境指纹与旧链封存共用执行源码成员规则，新增Swift OCR缺失负例；29项回归通过",
         "2026-09-16 重核工作树/归档及 Git blob：891/891 byte-exact、unresolved=0；缺 legacy source 已解除，完整三册视觉基线仍缺",
-        "本轮五关系HTML探针重新实际导出；10份PNG字节核对保留历史差异证据，不替代三册同环境旧链配对或用户差页"
+        "本轮五关系HTML探针重新实际导出；10份PNG字节核对保留历史差异证据，不替代三册同环境旧链配对或用户差页",
+        "历史绑定与原receipt/主题join；snapshot按source_roots逐历史路径和完整asset pin验证；历史image bridge不伪造双层binding"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/legacy-source-recovery-reverified-2026-09-15.json",
@@ -926,13 +1011,13 @@
         "尚无正式完整旧链 baseline manifest、3 册同环境配对视觉、真实 image baseline 与 R-85 留出集",
         "单页历史 fixture 导出不代表真实任务、用户差页或视觉收益；不能追认提前冻结"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -951,56 +1036,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/quality.log",
-          "log_sha256": "74f79cfa45e9e336e98bcca31b7f592a7ac7d6fa801d0ac8b9061f94260d916f",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "quality",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 20.428,
-            "terminal_summary": "OK",
-            "tests": 104
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -1114,6 +1150,66 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/quality.log",
+              "log_sha256": "74f79cfa45e9e336e98bcca31b7f592a7ac7d6fa801d0ac8b9061f94260d916f",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "quality",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 20.428,
+                "terminal_summary": "OK",
+                "tests": 104
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
@@ -1143,13 +1239,13 @@
         "U7-B 价值前置缺失，正式 stage 未运行；高层 stage 中断恢复/重试与正向 receipt 尚缺真实验证",
         "完整 U9 消费者改动与最终 target hashes 必须收口到同一 plan；不能把临时 converter 或目录复制当正式迁移"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -1168,56 +1264,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -1331,17 +1378,81 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
+      ],
+      "current_evidence": [
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ]
     },
     "U2": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-live-probes-v2-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-current-probes-table-recipe-v2-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-image-prepared-inputs-v7-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-html-byte-comparison-2026-09-16.json",
-        "template-library/evidence/probes/expression-first-output-v12-table-recipe/report.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/u2-current-final-source-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/qualification.py:verify_capability_evidence",
@@ -1366,7 +1477,10 @@
         "runtime/src/leo_ppt_generator/schemas/image-recipe-v1.schema.json",
         "template-library/governance/schemas/image-recipe-v1.schema.json",
         "tests/test_image_expression_adapter.py:TableImageRecipeTests",
-        "template-library/canonical/layouts/manifest.json"
+        "template-library/canonical/layouts/manifest.json",
+        "runtime/src/leo_ppt_generator/qualification.py:is_execution_source",
+        "runtime/src/leo_ppt_generator/qualification.py:environment_fingerprint",
+        "tests/test_qualification_evidence.py:test_production_precompile_and_explicit_selection_cannot_bypass_evidence"
       ],
       "implementation_evidence": [
         "独立 oracle 冻结；relation×lane、正反例/字节/依赖/环境/视觉与 Provider receipt 准入",
@@ -1383,7 +1497,9 @@
         "2026-09-16 渲染 owner 改变后旧收据被 evidence_environment_stale 拒绝；五关系重新实际导出正反 10 张 PNG，当前 verifier 均 provisional / visual_review_not_run，publication_admitted=false；总探针 exit 1，image blocked",
         "comparison/trend 已有正式 p25-spec-table recipe 和双向 layout 引用，rows/columns/rows.*.* 为封闭输入路径；结构与容量检查只消费 layout owner",
         "五关系正反共 10 份 image 输入已准备，owner gaps 为空；真实 Provider 与几何证据缺失，全部仍 unverified/blocked",
-        "当前 v12 五组 HTML 正反共10张 PNG 均 provisional，缺 visual_review；与前轮相同用例 PNG 10/10 字节一致，不推断视觉收益"
+        "当前 v12 五组 HTML 正反共10张 PNG 均 provisional，缺 visual_review；与前轮相同用例 PNG 10/10 字节一致，不推断视觉收益",
+        "Provider实现与openai/httpx版本进入环境指纹；新真实HTML五关系10张PNG附件逐字节重核，未覆盖外部活动receipt index",
+        "无 evidence 资格负例用真实 canonical 资产构建隔离 v2 catalog，经同一 resolver 运行生产 precompile 与 explicit selection；不依赖活动 evidence index"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/u2-current-probe-receipts-2026-09-15.json",
@@ -1414,13 +1530,13 @@
         "缺视觉裁决与 publication-qualified 能力；user/proposal scope、全部消费者和双 lane 最终集成仍需关闭",
         "正式U6-A capability晋升的真实正向链仍未运行；不可用负例/机制回归代替"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -1447,68 +1563,12 @@
       ],
       "verification": [
         {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+          "step": "qualification-isolated-library",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_qualification_evidence",
           "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_layout_grid.py",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/layout-lint.log",
-          "log_sha256": "62db6b6ce6733aa5d9517df07c0258f628636515a13c4cd6e87f1a7f64b9e1cd",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "layout-lint"
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_template_contract.py",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/template-lint.log",
-          "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "template-lint"
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
+          "log": "docs/leo-ppt-generator/evidence/qualification-isolated-library-2026-09-20.log",
+          "summary": "16 tests / 6.248s / OK",
+          "scope": "资格机制，不证明真实 Provider/视觉"
         }
       ],
       "verification_history": [
@@ -1658,14 +1718,91 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_layout_grid.py",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/layout-lint.log",
+              "log_sha256": "62db6b6ce6733aa5d9517df07c0258f628636515a13c4cd6e87f1a7f64b9e1cd",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "layout-lint"
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python scripts/lint_template_contract.py",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/template-lint.log",
+              "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "template-lint"
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
     "U3": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/table-recipe-inline-review-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/content_projection.py",
@@ -1695,13 +1832,13 @@
       "remaining_gap": [
         "真实双 lane 与最终 v2 catalog 集成仍待验证"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -1723,40 +1860,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -1835,6 +1939,50 @@
                 "reported_seconds": 671.684,
                 "terminal_summary": "OK",
                 "tests": 2226
+              }
+            }
+          ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
               }
             }
           ]
@@ -1876,13 +2024,13 @@
       "remaining_gap": [
         "真实image Provider导出、OCR准入与双lane端到端正向集成仍无证据"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -1905,40 +2053,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -2020,7 +2135,56 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
+      ],
+      "current_evidence": [
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ]
     },
     "U5": {
@@ -2033,26 +2197,30 @@
         "runtime/src/leo_ppt_generator/application/expression_pipeline.py:run_expression_pipeline",
         "runtime/src/leo_ppt_generator/render/page.py:render_page",
         "tests/test_task_local_expression_proposals.py:ProposalPipelineTests",
-        "references/authoring/task-local-proposal.md"
+        "references/authoring/task-local-proposal.md",
+        "tests/test_image_proposal_evidence.py",
+        "runtime/src/leo_ppt_generator/raster_oracle.py:replay_image_probe_input"
       ],
       "implementation_evidence": [
         "四种封闭 op 真实应用，类型/范围/anchor/slot/run/base/内容不变校验，三个候选上限与 curation 已实现",
         "共享池空时有限候选仅展开一次；overflow 不阻断其他候选；隔离复制到任务根，canonical/共享 catalog 字节不变",
         "每个 patch 真实 Chromium 正反 probe 独立取证；同 patch 不同内容证据分开；原始 profile/封闭 op/内容/主题在冻结后重放",
         "字段置换进入实际 slot_map 与目的槽容量；HTML 消费数值几何，不消费变量的模板拒绝；image recipe 明确携带槽位映射",
-        "curation 逐候选保存 gap/资格结果但不自动晋升"
+        "curation 逐候选保存 gap/资格结果但不自动晋升",
+        "image proposal依run/page/candidate/patch绑定，正反同patch；独立审阅另发现v2工作库和探针缓存自污染，正在修复R3/R4",
+        "R3/R4 已修复：v2 proposal 冻结 resolver envelope 与缓存输入/输出/环境/scope 全量复核；26 tests / exit 0，完整有序回归仍待终态。"
       ],
       "remaining_gap": [
         "真实 image proposal oracle/Provider 导出和视觉资格未验证",
         "HTML 仍仅 validation provisional，未证明真实用户任务与视觉收益"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -2075,40 +2243,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -2190,7 +2325,56 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
+      ],
+      "current_evidence": [
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ]
     },
     "U6": {
@@ -2205,7 +2389,11 @@
         "runtime/src/leo_ppt_generator/quality_metrics.py:deck_quality_for_run",
         "runtime/src/leo_ppt_generator/schemas/quality-replay-v1.schema.json",
         "references/quality-replay.md",
-        "runtime/src/leo_ppt_generator/quality_replay.py:capability_publication_files"
+        "runtime/src/leo_ppt_generator/quality_replay.py:capability_publication_files",
+        "runtime/src/leo_ppt_generator/quality_replay.py:execute_paired_rebaseline",
+        "runtime/src/leo_ppt_generator/quality_replay.py:validate_legacy_image_export",
+        "runtime/src/leo_ppt_generator/schemas/paired-rebaseline-v1.schema.json",
+        "runtime/src/leo_ppt_generator/schemas/legacy-image-export-v1.schema.json"
       ],
       "implementation_evidence": [
         "四通道从 committed input、实际投影/绑定/PNG/sidecar 派生，移除文件存在即 passed",
@@ -2214,7 +2402,8 @@
         "拒答持久化请求/源码/库/环境与日志，离线运行同一资格算法；run attachment 指向完整任务根证据",
         "用户收益读取绑定实际 before/after artifact 的观测，无记录或 fixture origin 保持 not_run；convergence 必须为正式迁移收据链",
         "正式U6-A晋升引用可冻结的完整库内附件树；自证循环、漏件、外借库和伪造passed均拒绝",
-        "拒答证据对任务内库保存相对路径，真实拒答在证据根移动后可重验，不依赖原根"
+        "拒答证据对任务内库保存相对路径，真实拒答在证据根移动后可重验，不依赖原根",
+        "HTML/image双侧重基线复用正式owner；历史单摘要仅桥接验证，不进入生产；原始HTTP/主题/源码/原请求必须join，精确合同SHA限制执行，真实缺证据blocked"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/u6-publication-freeze-2026-09-15.log"
@@ -2224,13 +2413,13 @@
         "image输出oracle已实现并做本机像素回归，但真实Provider/image与U6-A/B尚未完成，无法签发双lane/visual_validated",
         "用户收益无真实成对观测，保持 not_run；机制数据不代表用户收益"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
-        "current_ordered_run": "passed",
-        "exit_code": 0,
-        "required_gaps_closed": false,
+        "status": "partial",
+        "current_ordered_run": "failed",
+        "exit_code": 1,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         {
@@ -2253,56 +2442,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/quality.log",
-          "log_sha256": "74f79cfa45e9e336e98bcca31b7f592a7ac7d6fa801d0ac8b9061f94260d916f",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "quality",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 20.428,
-            "terminal_summary": "OK",
-            "tests": 104
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -2416,7 +2556,73 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_quality_replay tests.test_expression_quality_channels tests.test_quality_scorecard tests.test_quality_metrics tests.test_compute_impact tests.test_visual_measure_rules tests.test_visual_qa",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/quality.log",
+              "log_sha256": "74f79cfa45e9e336e98bcca31b7f592a7ac7d6fa801d0ac8b9061f94260d916f",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "quality",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 20.428,
+                "terminal_summary": "OK",
+                "tests": 104
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
+      ],
+      "current_evidence": [
+        "docs/leo-ppt-generator/evidence/continuation-review-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final/verification.json",
+        "docs/leo-ppt-generator/evidence/u2-current-final-source-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json"
       ]
     },
     "U7": {
@@ -2427,14 +2633,17 @@
         "runtime/src/leo_ppt_generator/library_migration.py:validate_plan_contract",
         "runtime/src/leo_ppt_generator/schemas/migration-plan-v2.schema.json",
         "scripts/migrate_template_library.py:main",
-        "runtime/src/leo_ppt_generator/library_migration.py:CLOSURE_FILES"
+        "runtime/src/leo_ppt_generator/library_migration.py:CLOSURE_FILES",
+        "runtime/src/leo_ppt_generator/library_migration.py:_python_closure_context"
       ],
       "implementation_evidence": [
         "正式唯一 migration-plan schema；source/dirty/type/mode/hash、closure、mapping、target hashes、delete allowlist、owner 与 plan digest 固定",
         "历史 2026-09-15：真实仓库 U7-A preview：5437 来源路径、4591 目标、846 删除候选；未修改 delivery；U7-A stage 拒绝且 shadow 未创建",
         "历史 2026-09-15：固定 10 roots 逐命中记录：未分类 0；活动旧引用 305，涉及 109 个文件；不是 U9 完成",
         "根CHANGELOG与十个消费者根进入固定closure及迁移来源/目标/CAS/convergence；cleanup不可删除CHANGELOG，兄弟技能排除",
-        "2026-09-16 实际 CLI preview exit 0：5841 来源、4995 目标、846 delete allowlist；gate=U7-A。缺价值门的 stage exit 2，shadow 未创建；后续文档变更使其仅可作当时基线，不能沿用 U7-B"
+        "2026-09-16 实际 CLI preview exit 0：5841 来源、4995 目标、846 delete allowlist；gate=U7-A。缺价值门的 stage exit 2，shadow 未创建；后续文档变更使其仅可作当时基线，不能沿用 U7-B",
+        "consumer-replacements/target-evidence内嵌字节与目标runtime复核；词法作用域路径扫描拒绝将动态未知算作零",
+        "closure AST 精确求值有限字面 dict.items/sorted/tuple，导入仅从本次source/target字节解析；旧home/brands显式分类，动态/突变仍fail closed。"
       ],
       "receipts": [
         ".migration-work/2026-09-15-current-preview/migration-plan.json",
@@ -2449,16 +2658,16 @@
         "docs/leo-ppt-generator/evidence/consumer-closure-table-recipe-2026-09-16.json"
       ],
       "remaining_gap": [
-        "缺预迁移价值收据，U7-B 未运行；当前 U7-A 计划只作当时合同基线，后续证据/文档变化不能沿用为执行快照",
-        "完整消费者变更必须在执行 mapping/target hashes 中冻结后才能 stage"
+        "migration_pre_value_gate_missing",
+        "stage/publish/cleanup 依赖同一 verified receipt"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
+        "status": "partial",
         "current_ordered_run": "passed",
         "exit_code": 0,
-        "required_gaps_closed": false,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -2479,52 +2688,12 @@
       ],
       "verification": [
         {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+          "step": "closure-dict-repair",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_migration_transaction tests.test_migration_phases.MigrationPhaseTests.test_catalog_owner_replacement_builds_and_verifies_with_real_target_runtime tests.test_migration_phases.MigrationPhaseTests.test_real_target_evidence_freezes_new_png_and_revalidates_in_target_runtime",
           "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
-          "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "schemas",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 23.466,
-            "terminal_summary": "OK",
-            "tests": 63
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
+          "log": "docs/leo-ppt-generator/evidence/closure-dict-repair-2026-09-20-after.log",
+          "summary": "53 tests / 35.071s / OK",
+          "scope": "scanner与真实目标runtime两条集成；不代表正式迁移"
         }
       ],
       "verification_history": [
@@ -2640,14 +2809,79 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_library_contracts tests.test_page_expression_contract tests.test_execution_pairing tests.test_image_expression_adapter tests.test_quality_replay tests.test_migration_phases",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/schemas.log",
+              "log_sha256": "7ac0b609832ddedcfe1ab68d3473a0cecce034851894d0750e90e47701981875",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "schemas",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 23.466,
+                "terminal_summary": "OK",
+                "tests": 63
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
+      ],
+      "current_evidence": [
+        "docs/leo-ppt-generator/evidence/migration-preview-2026-09-21.log",
+        ".migration-work/preview-2026-09-21/migration-plan.json",
+        "docs/leo-ppt-generator/evidence/migration-stage-2026-09-21.log"
       ]
     },
     "U8": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-wheel-v2-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json"
+        "/private/tmp/leo-v2-delivery-probe-20260921",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-21-final/migration.log"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/template_catalog.py:LibraryContext",
@@ -2665,7 +2899,9 @@
         "runtime/src/leo_ppt_generator/asset_resolver.py:_library_read",
         "runtime/src/leo_ppt_generator/template_catalog.py:scan_records",
         "tests/test_template_catalog_v2.py",
-        "tests/test_library_bundle.py:IsolatedInstallTest"
+        "tests/test_library_bundle.py:IsolatedInstallTest",
+        "runtime/src/leo_ppt_generator/asset_resolver.py:AssetResolver.read_reference_body",
+        "runtime/src/leo_ppt_generator/user_library.py:publish_user_library"
       ],
       "implementation_evidence": [
         "v2 位置合同、正式 schema、LibraryContext execution/diagnostic、asset→evidence→catalog 摘要链及不可变 generation 已实现",
@@ -2675,7 +2911,8 @@
         "历史 2026-09-15 wheel：177 个必需文件摘要一致，37 项安装后回归通过；由 2026-09-16 结果接续",
         "2026-09-16 当前源码 wheel 隔离构建/安装：177 个必需文件逐字节一致；44 项安装后目录互斥/事务/catalog 回归 exit 0，已核对加载模块来自 installed root",
         "catalog scan/build/read/publish 与 resolver 查询/解析/摘要/freeze 在完整操作期间持共享目录锁；显式 library/home 标准化为绝对根，真实相对路径双前缀红例已修复",
-        "当前 v2 测试转换/安装包含443个实体，复制和链接安装都实际解析新增 recipe；当前 delivery 仍为v1，不是正式stage或publish"
+        "当前 v2 测试转换/安装包含443个实体，复制和链接安装都实际解析新增 recipe；当前 delivery 仍为v1，不是正式stage或publish",
+        "reference-only资产与执行实体隔离，混合v1/v2用户reference身份scope拒绝冒充；用户库写入采用v2 CAS事务"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/u8-real-library-build-v3-2026-09-15.json",
@@ -2697,13 +2934,13 @@
         "当前 delivery 仍为 v1 library/catalog，旧默认 reader/builder 尚存，v2 尚非唯一活动协议",
         "正式 U13 staging 未准入；v2 publication-qualified pairing 与真实 image 证据尚未取得"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
+        "status": "partial",
         "current_ordered_run": "passed",
         "exit_code": 0,
-        "required_gaps_closed": false,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -2728,40 +2965,7 @@
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
         "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
       ],
-      "verification": [
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
-        },
-        {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
-          "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
-        }
-      ],
+      "verification": [],
       "verification_history": [
         {
           "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-15-journal-final/verification.json",
@@ -2843,14 +3047,58 @@
               }
             }
           ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
+              }
+            }
+          ]
         }
       ]
     },
     "U9": {
       "completion_eligible": false,
       "current_evidence": [
-        "docs/leo-ppt-generator/evidence/consumer-closure-table-recipe-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/consumer-closure-current-2026-09-21-rerun.json",
+        "docs/leo-ppt-generator/evidence/consumer-closure-verify-2026-09-21.log"
       ],
       "files": [
         "runtime/src/leo_ppt_generator/asset_resolver.py",
@@ -2866,7 +3114,23 @@
         "tests/test_dashi_integration_fixtures.py",
         "tests/test_library_bundle.py:IsolatedInstallTest",
         "runtime/src/leo_ppt_generator/page_intent.py:load_page_type_regime",
-        "tests/test_page_intent_routing.py"
+        "tests/test_page_intent_routing.py",
+        "runtime/src/leo_ppt_generator/styles.py:save_style",
+        "runtime/src/leo_ppt_generator/asset_resolver.py:_declared_dependencies",
+        "scripts/style_pack.py:cmd_import",
+        "scripts/style_pack.py:cmd_adopt",
+        "evals/judges/judge_style_index.py:index_path",
+        "evals/judges/judge_style_index.py:index_shell_read",
+        "tests/test_style_index_judge.py",
+        "runtime/src/leo_ppt_generator/render/chart.py:_governed_mapping",
+        "scripts/generate_style_gallery.py:_render_chart_worker",
+        "scripts/generate_style_gallery.py:_thumbnail_row",
+        "scripts/lint_style_briefs.py:main",
+        "scripts/lint_layout_grid.py:_lint_canonical_profiles",
+        "scripts/lint_template_contract.py:lint_one",
+        "scripts/lint_render_templates.py:main",
+        "scripts/draft_negative_prompts.py:run",
+        "runtime/src/leo_ppt_generator/templates.py:load_brand"
       ],
       "implementation_evidence": [
         "CLI 与 runtime 共享 bundle 根选择；显式 v2 resolver 的完整安装/模板入口/freshness 经过真实构建及导出",
@@ -2876,7 +3140,13 @@
         "旧输入字段/浏览器断言保留，缺表达时明确不具备生产资格；当前完整消费者切换仍未完成",
         "2026-09-16 重扫固定十个消费者 root 及 CHANGELOG：active_legacy_hits=287、unclassified_hits=0；消费者协议切换尚未完成",
         "真实 wheel 安装发现并修复源码父层级路径；通过正式 bundle 定位读取当前 v2 regime，当前 wheel 安装后7项回归通过",
-        "当前 closure 重扫覆盖全部固定根：active_legacy_hits=287、unclassified_hits=0；未将已分类误称已迁移"
+        "当前 closure 重扫覆盖全部固定根：active_legacy_hits=287、unclassified_hits=0；未将已分类误称已迁移",
+        "用户风格与包/采用同步发布v2 catalog，rollback保留外部drift；同resolver列表快照；保存检查依赖闭包，theme/layout绑定检查kind",
+        "点名索引评测仅认可catalog指针/单代registry或明确只读CLI，拒退役摘要、宽glob与shell串接。",
+        "bootstrap_user_library 的 asset_id_pattern 复用正式 ASSET_ID_RE，避免新v2库继续声明已退役kind或与可保存身份大小写不一致。",
+        "画廊不再读取旧MD，页/图表都转发明确resolver并重核generation；自定义中文/空格/括号输出路径使用相对URL。",
+        "真实复制/链接安装验证使用复制runtime、新进程、独立cwd、RuntimeManager规范化边界，并保留库内symlink拒绝；最终模块回归尚待终态。",
+        "2026-09-20续作：品牌移除旧目录回退；负面词工具切换current实体和v2事务；brief/layout/template/render lint切换current catalog，同库schema与严格失败边界。局部机制已回归，完整consumer closure仍未完成。"
       ],
       "receipts": [
         "docs/leo-ppt-generator/evidence/consumer-closure-2026-09-15.json",
@@ -2885,19 +3155,32 @@
         "docs/leo-ppt-generator/evidence/consumer-closure-journal-2026-09-15.json",
         "docs/leo-ppt-generator/evidence/consumer-closure-maintenance-2026-09-16.json",
         "docs/leo-ppt-generator/evidence/consumer-closure-table-recipe-2026-09-16.json",
-        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json"
+        "docs/leo-ppt-generator/evidence/u2-table-recipe-installed-wheel-v2-2026-09-16.json",
+        "docs/leo-ppt-generator/evidence/current-library-lints-2026-09-20-final-v2.log",
+        "docs/leo-ppt-generator/evidence/brand-current-library-2026-09-20-green.log",
+        "docs/leo-ppt-generator/evidence/negative-current-library-2026-09-20-final.log",
+        "docs/leo-ppt-generator/evidence/consumer-closure-current-lints-2026-09-20.json",
+        "docs/leo-ppt-generator/evidence/continuation-scope-audit-2026-09-20-current-lints.json",
+        "docs/leo-ppt-generator/evidence/expression-verification-2026-09-21-final/verification.json",
+        "docs/leo-ppt-generator/evidence/lint_style_governance-current-2026-09-21.log",
+        "docs/leo-ppt-generator/evidence/consumer-closure-current-2026-09-21.json",
+        "docs/leo-ppt-generator/evidence/continuation-scope-audit-2026-09-21-final.json",
+        "docs/leo-ppt-generator/evidence/test-templates-current-2026-09-21.log",
+        "docs/leo-ppt-generator/evidence/continuation-focused-2026-09-21.log"
       ],
       "remaining_gap": [
-        "当前扫描287处active旧引用；固定十个消费者根及CHANGELOG全部存在，unclassified_hits=0；须完成reader/fallback/alias/路径及fixture/eval切换",
-        "尚未取得staging/delivery active_legacy_hits=0"
+        "当前 closure 为 active_legacy_hits=240、unclassified_hits=0；活动消费者和正式 staging/delivery 零命中仍未完成",
+        "尚未取得staging/delivery active_legacy_hits=0",
+        "Provider无关开发仍包括lint/治理脚本resolver切换、负面词等writer事务、历史intake隔离与活动fixture/eval/文档逐owner替换。",
+        "当前 closure 为 active_legacy_hits=240、unclassified_hits=0；活动消费者和正式 staging/delivery 零命中仍未完成"
       ],
-      "required_full_verification": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "required_full_verification": null,
       "result": {
+        "status": "partial",
         "current_ordered_run": "passed",
         "exit_code": 0,
-        "required_gaps_closed": false,
         "source_stable": true,
-        "status": "partial"
+        "required_gaps_closed": false
       },
       "result_history": [
         "本轮最终验证待运行",
@@ -2918,52 +3201,44 @@
       ],
       "verification": [
         {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+          "step": "style-index-judge",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_style_index_judge",
           "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
-          "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "expression-consumers",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 211.659,
-            "terminal_summary": "OK",
-            "tests": 137
-          }
+          "log": "docs/leo-ppt-generator/evidence/style-index-judge-2026-09-20-green.log",
+          "summary": "28 tests / OK",
+          "scope": "评测准入机制"
         },
         {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+          "step": "gallery-v2-before-review-fixes",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_generate_style_gallery tests.test_template_catalog_v2",
           "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
-          "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "migration",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 53.672,
-            "terminal_summary": "OK",
-            "tests": 82
-          }
+          "log": "docs/leo-ppt-generator/evidence/gallery-v2-final-2026-09-20.log",
+          "summary": "50 tests / 175.669s / OK",
+          "scope": "独立review发现GALLERY-01/02后此结果不作最终覆盖"
         },
         {
-          "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+          "step": "user-library-identity-contract",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_user_style_v2 tests.test_style_pack",
           "exit_code": 0,
-          "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
-          "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
-          "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
-          "step": "full-suite",
-          "summary": {
-            "errors": 0,
-            "failures": 0,
-            "issues": [],
-            "reported_seconds": 657.786,
-            "terminal_summary": "OK",
-            "tests": 2232
-          }
+          "log": "docs/leo-ppt-generator/evidence/user-library-identity-contract-2026-09-20.log",
+          "summary": "41 tests / 46.762s / OK",
+          "scope": "用户库声明与真实保存导入回归"
+        },
+        {
+          "step": "bundle-isolated-install",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest -v tests.test_library_bundle",
+          "exit_code": 0,
+          "log": "docs/leo-ppt-generator/evidence/bundle-install-2026-09-20.log",
+          "summary": "8 tests / 74.444s / OK",
+          "scope": "真实复制runtime、真实bundle软链接、隔离cwd、新进程与CLI；不是正式安装发布"
+        },
+        {
+          "step": "gallery-chart-final",
+          "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_generate_style_gallery tests.test_template_catalog_v2 tests.render.test_chart tests.render.test_pro_templates",
+          "exit_code": 0,
+          "log": "docs/leo-ppt-generator/evidence/gallery-v2-final-2026-09-20-v2.log",
+          "summary": "74 tests / 296.194s / OK，无skip",
+          "scope": "真实SVG/PNG与默认及显式库消费者，不代表正式视觉收益"
         }
       ],
       "verification_history": [
@@ -3076,6 +3351,66 @@
                 "reported_seconds": 671.684,
                 "terminal_summary": "OK",
                 "tests": 2226
+              }
+            }
+          ]
+        },
+        {
+          "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+          "result": {
+            "current_ordered_run": "passed",
+            "exit_code": 0,
+            "required_gaps_closed": false,
+            "source_stable": true,
+            "status": "partial"
+          },
+          "verification": [
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_content_pack tests.test_content_projection tests.test_content_preview tests.test_binding_v2 tests.test_deck_layout_selection tests.test_expression_pipeline tests.test_deck_projection_view tests.test_task_local_expression_proposals tests.test_qualification_evidence tests.test_relation_oracle tests.test_raster_oracle",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/expression-consumers.log",
+              "log_sha256": "7152e9b05431b55061e00a752c7e67e17c678caff7cfe5638629feb028e2d956",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "expression-consumers",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 211.659,
+                "terminal_summary": "OK",
+                "tests": 137
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest tests.test_migration_phases tests.test_migration_transaction tests.test_template_catalog_v2 tests.test_library_catalog tests.test_library_bundle tests.test_style_aliases_migration",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/migration.log",
+              "log_sha256": "c60524ff092aa2fb358327a1ee717291594dde7006f879a5be5b8e64fc7a5dca",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "migration",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 53.672,
+                "terminal_summary": "OK",
+                "tests": 82
+              }
+            },
+            {
+              "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+              "exit_code": 0,
+              "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+              "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+              "scope": "当前源码完整有序验证；不替代真实 Provider、视觉或正式发布",
+              "step": "full-suite",
+              "summary": {
+                "errors": 0,
+                "failures": 0,
+                "issues": [],
+                "reported_seconds": 657.786,
+                "terminal_summary": "OK",
+                "tests": 2232
               }
             }
           ]
@@ -3195,5 +3530,129 @@
         "verification_run_summary_ref": null
       }
     }
-  ]
+  ],
+  "verification_runs_history": [
+    {
+      "generated_from": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+      "global_verification": {
+        "exit_code": 0,
+        "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/verification.json",
+        "manifest_sha256": "aa5f4ff5c107d1228c06b3c22ed642636be44ff867d3c10e8067bbbe1d0953fc",
+        "process_session_id": 84773,
+        "scope": "表格 image recipe、结构容量门与安装态 regime 修复后完整有序终态",
+        "source_stable": true,
+        "status": "passed"
+      },
+      "full_suite": {
+        "command": "PYTHONPATH=runtime/src /Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+        "exit_code": 0,
+        "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-16-table-recipe-final-v3/full-suite.log",
+        "log_sha256": "4768f3fc69430b8054b9f2d253f4404eb67ad93d7de16449badbdce61fa7774a",
+        "source_stable": true,
+        "summary": {
+          "errors": 0,
+          "failures": 0,
+          "issues": [],
+          "reported_seconds": 657.786,
+          "terminal_summary": "OK",
+          "tests": 2232
+        }
+      }
+    },
+    {
+      "global_verification": {
+        "status": "failed",
+        "exit_code": 1,
+        "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json",
+        "source_stable": true,
+        "process_session_id": 1389,
+        "completed_steps": [
+          {
+            "step": "compileall",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "schemas",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "regime-lint",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "layout-lint",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "template-lint",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "expression-consumers",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "migration",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "quality",
+            "status": "passed",
+            "exit_code": 0
+          },
+          {
+            "step": "full-suite",
+            "status": "failed",
+            "exit_code": 1
+          }
+        ]
+      },
+      "full_suite": {
+        "status": "failed",
+        "exit_code": 1,
+        "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+        "summary": {
+          "errors": 2,
+          "failures": 1,
+          "issues": [
+            {
+              "kind": "ERROR",
+              "label": "test_eight_templates_preserve_content_and_consume_theme_geometry (render.test_pro_templates.ProTemplateRenderingTests.test_eight_templates_preserve_content_and_consume_theme_geometry) (template='timeline-pro', theme='tech-dark-mode')"
+            },
+            {
+              "kind": "ERROR",
+              "label": "test_brand_missing_asset_keeps_compatibility_fallback (test_templates.BrandResolutionTests.test_brand_missing_asset_keeps_compatibility_fallback)"
+            },
+            {
+              "kind": "FAIL",
+              "label": "test_style_layouts_dangling_reference_rejected (test_layout_bank.LoadStyleLayoutsTests.test_style_layouts_dangling_reference_rejected)"
+            }
+          ],
+          "reported_seconds": 1014.175,
+          "terminal_summary": "FAILED (failures=1, errors=2)",
+          "tests": 2373
+        },
+        "log": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/full-suite.log",
+        "source_stable": true
+      }
+    },
+    {
+      "manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-21-final/verification.json",
+      "status": "passed",
+      "exit_code": 0,
+      "source_stable": true
+    }
+  ],
+  "current_consumer_closure": {
+    "path": "docs/leo-ppt-generator/evidence/consumer-closure-current-2026-09-24.json",
+    "active_legacy_hits": 240,
+    "unclassified_hits": 0
+  }
 }

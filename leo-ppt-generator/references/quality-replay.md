@@ -19,6 +19,55 @@ PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/run_quality_scorecard.py
 环境中的 renderer 源码摘要必须能由冻结文件重算；每张图须与真实模板及输入收据对应。
 `capture_mode` 必须明确为修改前捕获或事后从历史字节重建，后者不能声称提前冻结。
 
+环境指纹包含实际 image Provider 实现、`openai`/`httpx` SDK、renderer、adapter、
+浏览器和字体。Provider 或渲染源码改变后，旧 receipt 不能继续作为同环境证据。
+仅 oracle/OCR 观测器变化可以保留渲染可比性，比较结果仍记录双方 execution digest。
+
+历史 image 可用 `legacy-image-export-v1` 封存桥，固定旧源 revision、源码、材料、
+selection、冻结 prompt/request、Provider contract 和原始 HTTP receipt。它验证原图到
+归一化 PNG 的字节与像素，不要求历史链本来不存在的新双层 binding，也不授予新生产资格。
+缺原始请求/响应、冒用本地协议测试或将新 binding 填进历史记录均拒绝。
+
+renderer 已变化时，可以准备并执行双侧重基线：
+
+```sh
+PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/run_quality_scorecard.py <任务根> --prepare-paired-rebaseline <描述.json>
+PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/run_quality_scorecard.py <任务根> --paired-rebaseline-plan qa/paired-rebaseline-plan.json --execute-paired-rebaseline
+PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/run_quality_scorecard.py <任务根> --paired-rebaseline-plan qa/paired-rebaseline-plan.json
+```
+
+HTML 旧 `old_snapshot` 是 `root / files / source_roots` 描述；`source_roots` 明确指定
+任务根内的历史 `builtin` 与可选 `user` 库根，逐资产校验相同历史路径及 identity/pin。
+image 旧 `old_snapshot` 必须等于原 baseline 的 `legacy-image-export` receipt 引用；该归档
+必须另有 `theme_source` 字节引用，并登记在原 `source_snapshot` 中，selection 的 `theme`
+与其内容完全一致。没有原历史主题、prompt/request、HTTP 响应或 Provider contract 时保持 blocked。
+
+只有已获该任务 Provider 调用授权时才执行 image；命令必须另外明确每个冻结 contract
+**文件字节 SHA-256**（不是 JSON 对象 canonical digest）：
+
+```sh
+PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/run_quality_scorecard.py <任务根> \
+  --paired-rebaseline-plan qa/paired-rebaseline-plan.json --execute-paired-rebaseline \
+  --provider-contract-sha256 <计划所引用contract文件的SHA256>
+```
+
+多份 contract 重复提供参数，须精确覆盖计划，不能带重复或多余项。此参数约束执行范围，
+不代表工具替用户授予调用权限。仅核验不接受此参数且不调用 Provider。计划不得包含未列为
+case 的新侧页面或 lane；双侧 Provider contract 与实际主题必须一致。当前历史传输适配只
+支持与既有 export owner 相同的 `model/prompt/n=1/size=auto` 请求，其他历史请求保持 blocked，
+不会静默丢字段或改参数。旧侧只使用固定 prompt，传输 envelope 不授予旧链新的 recipe 或 binding。
+新侧继续走统一 generate 链。输出保留原始 HTTP 响应、Provider 原图、PNG 与原 receipt。
+已有通过收据只核验；receipt 已落盘而外层记录未落盘时可恢复；inflight 但无 receipt 时拒绝重发。
+任一侧失败不会自动重复另一次未知调用，输入、环境或产物漂移均拒绝通过。
+
+描述保留原 baseline，并逐 case 指定旧 selection/冻结资产、新 `PipelineRequest`、材料、
+lane 和两侧输出目录；准备过程计算执行 fingerprint，计划及源码封存不可覆盖。旧侧只能
+用已核验的历史 template/data/theme 再渲染；新侧调用真实 route。验证重新读取双方产物、
+来源、环境和 committed binding，不能通过手改 `passed` 放行。该收据只证明配对 runtime，
+不会生成视觉评分或用户收益；本地 HTTP 协议测试不能成为真实 Provider 重基线证据。
+原基线与 `reconstructed-historical` 身份始终保留；U6 引用重基线收据后仍执行全部 R-85
+及视觉门，并核对新侧产物和 binding 未换页。正式自包含晋升包还必须携带执行库。
+
 R-85 数据集的 `kind` 为 `r85-heldout`，固定 `owner`、`origin`、三个 families、十个 tasks
 及逐 case 的 deck/page/lane、材料、请求和任务根内 run 路径。每个 case 的 `expected` 为
 `solvable|unsolvable|insufficient`。30 格、至少 60 个独立页、6 册、每类至少 4 页均由记录

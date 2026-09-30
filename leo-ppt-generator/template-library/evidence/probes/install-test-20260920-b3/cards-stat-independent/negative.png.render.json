@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative.png",
+  "out_sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 706,
+  "rendered_at": "2026-09-20T02:52:48.832Z",
+  "renderer": "playwright-chromium@1.63.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:cards-stat",
+  "template_sha256": "0244be44ef7dba42325d1c5f6f5be75395261a49ff8fa0d1a771b9d0ccfaa3ed",
+  "warnings": [],
+  "width": 2560
+}

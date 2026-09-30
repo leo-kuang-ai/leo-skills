@@ -1,0 +1,34 @@
+{
+  "artifact": {
+    "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative.png",
+    "sha256": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09"
+  },
+  "checks": {
+    "aligned_cells": false,
+    "all_facts": true,
+    "all_required_text": false,
+    "complete_grid": false,
+    "focus_visible": true,
+    "no_overflow": false,
+    "reading_order": true,
+    "same_dimensions": true,
+    "unknown_preserved": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+  "fixture": {
+    "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-fixture.json",
+    "sha256": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-measurement.json",
+    "sha256": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "comparison",
+  "render_input": {
+    "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-input.json",
+    "sha256": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8"
+  }
+}

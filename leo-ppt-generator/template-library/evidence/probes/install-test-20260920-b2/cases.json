@@ -1,0 +1,216 @@
+{
+  "cases": [
+    {
+      "case_id": "cover-pro-independent",
+      "expected": {
+        "facts": [],
+        "focus": "封面关系探针",
+        "reading_order": [
+          "封面关系探针"
+        ],
+        "required_text": [
+          "封面关系探针",
+          "单页无向信息陈述",
+          "四项能力：发现 · 组织 · 验证 · 交付"
+        ],
+        "structure": {
+          "edges": [],
+          "items": [
+            "单页无向信息陈述"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:p1-01-cover-layouts",
+      "negative": {
+        "arch_hint": "四项能力：发现 → 组织 → 验证",
+        "footer_left": "探针",
+        "footer_right": "2026",
+        "kicker": "资格探针",
+        "subtitle": "单页无向信息陈述",
+        "title": "封面关系探针"
+      },
+      "positive": {
+        "arch_hint": "四项能力：发现 · 组织 · 验证 · 交付",
+        "footer_left": "探针",
+        "footer_right": "2026",
+        "kicker": "资格探针",
+        "subtitle": "单页无向信息陈述",
+        "title": "封面关系探针"
+      },
+      "relation": "independent"
+    },
+    {
+      "case_id": "duo-compare-comparison",
+      "expected": {
+        "facts": [],
+        "focus": "双轨对照探针",
+        "reading_order": [
+          "双轨对照探针"
+        ],
+        "required_text": [
+          "双轨对照探针",
+          "基线做法",
+          "候选做法",
+          "基线要点一：逐条登记",
+          "基线要点二：人工复核",
+          "候选要点一：自动汇总",
+          "候选要点二：机器复核",
+          "同口径对照"
+        ],
+        "structure": {
+          "cells": [
+            {
+              "dimension": "基线要点一：逐条登记",
+              "item": "基线做法",
+              "text": "基线要点一：逐条登记",
+              "unknown": false
+            },
+            {
+              "dimension": "基线要点一：逐条登记",
+              "item": "候选做法",
+              "text": "候选要点一：自动汇总",
+              "unknown": false
+            },
+            {
+              "dimension": "基线要点二：人工复核",
+              "item": "基线做法",
+              "text": "基线要点二：人工复核",
+              "unknown": false
+            },
+            {
+              "dimension": "基线要点二：人工复核",
+              "item": "候选做法",
+              "text": "候选要点二：机器复核",
+              "unknown": false
+            }
+          ],
+          "dimensions": [
+            "基线要点一：逐条登记",
+            "基线要点二：人工复核"
+          ],
+          "items": [
+            "基线做法",
+            "候选做法"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:p8-08-duo-compare-layouts",
+      "negative": {
+        "bottom": "同口径对照",
+        "kicker": "资格探针",
+        "sides": [
+          {
+            "label": "轨道甲",
+            "points": [
+              "基线要点一：逐条登记",
+              "基线要点二：人工复核"
+            ],
+            "title": "基线做法"
+          },
+          {
+            "label": "轨道乙",
+            "points": [
+              "候选要点一：自动汇总"
+            ],
+            "title": "候选做法"
+          }
+        ],
+        "title": "双轨对照探针"
+      },
+      "positive": {
+        "bottom": "同口径对照",
+        "kicker": "资格探针",
+        "sides": [
+          {
+            "label": "轨道甲",
+            "points": [
+              "基线要点一：逐条登记",
+              "基线要点二：人工复核"
+            ],
+            "title": "基线做法"
+          },
+          {
+            "label": "轨道乙",
+            "points": [
+              "候选要点一：自动汇总",
+              "候选要点二：机器复核"
+            ],
+            "title": "候选做法"
+          }
+        ],
+        "title": "双轨对照探针"
+      },
+      "relation": "comparison"
+    },
+    {
+      "case_id": "cards-stat-independent",
+      "expected": {
+        "facts": [],
+        "focus": "卡片清单探针",
+        "reading_order": [
+          "卡片清单探针"
+        ],
+        "required_text": [
+          "卡片清单探针",
+          "发现",
+          "列出候选能力",
+          "组织",
+          "按关系归组",
+          "验证",
+          "正反用例判定",
+          "三项能力并列"
+        ],
+        "structure": {
+          "edges": [],
+          "items": [
+            "列出候选能力",
+            "按关系归组",
+            "正反用例判定"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+      "negative": {
+        "bottom": "三项能力：发现 → 组织 → 验证",
+        "cards": [
+          {
+            "claim": "列出候选能力",
+            "label": "发现"
+          },
+          {
+            "claim": "按关系归组",
+            "label": "组织"
+          },
+          {
+            "claim": "正反用例判定",
+            "label": "验证"
+          }
+        ],
+        "kicker": "资格探针",
+        "title": "卡片清单探针"
+      },
+      "positive": {
+        "bottom": "三项能力并列",
+        "cards": [
+          {
+            "claim": "列出候选能力",
+            "label": "发现"
+          },
+          {
+            "claim": "按关系归组",
+            "label": "组织"
+          },
+          {
+            "claim": "正反用例判定",
+            "label": "验证"
+          }
+        ],
+        "kicker": "资格探针",
+        "title": "卡片清单探针"
+      },
+      "relation": "independent"
+    }
+  ],
+  "owner": "install-test-20260920",
+  "schema_version": 1
+}

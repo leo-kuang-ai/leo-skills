@@ -1,0 +1,25 @@
+{
+  "command": [
+    "runtime/.venv/bin/python",
+    "-m",
+    "unittest",
+    "tests.test_generate_style_gallery",
+    "tests.test_template_catalog_v2"
+  ],
+  "exit_code": 0,
+  "tests": 50,
+  "elapsed_seconds": 175.669,
+  "log": "docs/leo-ppt-generator/evidence/gallery-v2-final-2026-09-20.log",
+  "log_sha256": "ceb0a0f681565aa8b9739283fdca89bb3fba72c32908044e347039a991528b8d",
+  "source_hashes": {
+    "scripts/generate_style_gallery.py": "071dd74046bce0cabdfc4d316d8e9406e025553cf22910118049fe96428f3354",
+    "tests/test_generate_style_gallery.py": "501539f8cf4c6fce7cd2278be7ccfe3f43643c1ec9a493bc649554d4b40fdd54"
+  },
+  "limitation": "独立复核的图表库根和自定义Markdown路径仍待处理；此结果不证明U9整体完成",
+  "samples": {
+    "tracked_count": 265,
+    "differ_from_HEAD": [],
+    "pre_write_git_status": "clean"
+  },
+  "readme_unchanged": true
+}

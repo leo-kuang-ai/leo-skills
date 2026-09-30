@@ -20,11 +20,11 @@ PYTHON = ROOT / "runtime/.venv/bin/python"
 def source_snapshot():
     paths = subprocess.check_output(["git", "ls-files", "-c", "-o", "--exclude-standard", "-z"], cwd=ROOT).decode().split("\0")
     hashes = {}
-    prefixes = ("runtime/src/", "scripts/", "tests/", "evals/fixtures/", "template-library/canonical/",
+    prefixes = ("runtime/src/", "scripts/", "tests/", "evals/", "references/", "prompts/", "template-library/canonical/",
                 "template-library/governance/", "template-library/catalog/", "template-library/evidence/")
     for relative in sorted(set(paths)):
         path = ROOT / relative
-        if relative and (relative.startswith(prefixes) or relative == "template-library/library.json") and path.is_file():
+        if relative and (relative.startswith(prefixes) or relative in {"SKILL.md", "template-library/library.json"}) and path.is_file():
             hashes[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
     return {"head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
             "files": hashes}
@@ -42,8 +42,10 @@ def commands():
         ("template-lint", [python, "scripts/lint_template_contract.py"]),
         ("expression-consumers", tests("test_content_pack", "test_content_projection", "test_content_preview",
             "test_binding_v2", "test_deck_layout_selection", "test_expression_pipeline", "test_deck_projection_view",
-            "test_task_local_expression_proposals", "test_qualification_evidence", "test_relation_oracle", "test_raster_oracle")),
-        ("migration", tests("test_migration_phases", "test_migration_transaction", "test_template_catalog_v2", "test_library_catalog", "test_library_bundle", "test_style_aliases_migration")),
+            "test_task_local_expression_proposals", "test_image_proposal_evidence", "test_qualification_evidence",
+            "test_relation_oracle", "test_raster_oracle")),
+        ("migration", tests("test_migration_phases", "test_migration_transaction", "test_template_catalog_v2", "test_library_catalog", "test_library_bundle", "test_style_aliases_migration",
+                            "test_style_pack", "test_template_adoption", "test_user_style_v2", "test_style_scope_resolution", "test_style_selection_layout")),
         ("quality", tests("test_quality_replay", "test_expression_quality_channels", "test_quality_scorecard", "test_quality_metrics",
                            "test_compute_impact", "test_visual_measure_rules", "test_visual_qa")),
         ("full-suite", [python, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"]),

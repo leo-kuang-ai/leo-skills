@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+      "scripts/lint_style_briefs.py"
+    ],
+    "exit_code": 0,
+    "log": "docs/leo-ppt-generator/evidence/lint_style_briefs-current-2026-09-20.log"
+  },
+  {
+    "command": [
+      "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+      "scripts/lint_template_contract.py"
+    ],
+    "exit_code": 0,
+    "log": "docs/leo-ppt-generator/evidence/lint_template_contract-current-2026-09-20.log"
+  },
+  {
+    "command": [
+      "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+      "scripts/lint_render_templates.py"
+    ],
+    "exit_code": 0,
+    "log": "docs/leo-ppt-generator/evidence/lint_render_templates-current-2026-09-20.log"
+  }
+]

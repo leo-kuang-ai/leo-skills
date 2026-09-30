@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+from copy import deepcopy
 import io
 import json
 import math
@@ -22,14 +23,53 @@ class RasterOracleError(ValueError):
     pass
 
 
-def image_probe_input(recipe, fixture, relation):
-    """冻结 recipe 的探针输入；负例保留其错误数据，不注入 oracle 标准答案。"""
+def image_probe_input(recipe, fixture, relation, proposal=None):
+    """冻结 recipe 的探针输入；proposal 使用同一 patched profile 与槽位映射。"""
+    if proposal is not None:
+        if (proposal.get("lane") != "image" or not proposal.get("run_scope")
+                or not proposal.get("base_asset") or not proposal.get("proposal_digest")):
+            raise RasterOracleError("image_proposal_scope_invalid")
+        layout = {key: deepcopy(proposal["profile"][key])
+                  for key in ("canvas", "regions", "slots", "structure")
+                  if key in proposal["profile"]}
+        from .task_local_layout_proposals import image_proposal_scope
+        layout["slot_mapping"] = deepcopy(proposal["slot_mapping"])
+        layout["probe_scope"] = image_proposal_scope(proposal)
+    else:
+        layout = recipe["slot_map"]
     values = {"content": fixture["data"], "expression": {"relation": relation},
-              "theme": {}, "layout": recipe["slot_map"]}
+              "theme": deepcopy(proposal["theme"]) if proposal else {}, "layout": layout}
     return {"kind": "image-recipe-input", "canvas": recipe["canvas"], "recipe_id": recipe["asset_id"],
             "page_id": fixture["case_id"] + "-" + fixture["probe"],
             "prompt": recipe["prompt_skeleton"].format(**{k: json.dumps(v, ensure_ascii=False, sort_keys=True)
                                                           for k, v in values.items()})}
+
+
+def replay_image_probe_input(*, root, fixture, relation, dependencies):
+    """只消费冻结字节重放输入，不依赖活动 catalog，也不授予 Provider 资格。"""
+    recipes = [path for path in dependencies if path.endswith("/recipe.json")]
+    if len(recipes) != 1:
+        raise RasterOracleError("image_probe_recipe_dependency_invalid")
+    recipe = json.loads(verify_reference(root, {"path": recipes[0], "sha256": dependencies[recipes[0]]}))
+    proposal_refs = [path for path in dependencies
+                     if path.startswith("evidence/proposals/") and path.endswith("/proposal.json")]
+    proposal = None
+    if proposal_refs:
+        if len(proposal_refs) != 1:
+            raise RasterOracleError("image_proposal_evidence_scope_mismatch")
+        proposal = json.loads(verify_reference(root, {"path": proposal_refs[0], "sha256": dependencies[proposal_refs[0]]}))
+        from .task_local_layout_proposals import verify_image_proposal_snapshot, proposal_reference
+        layouts = [path for path in dependencies if path.endswith("/layout.json")]
+        if len(layouts) != 1 or proposal_refs[0] != proposal_reference(proposal):
+            raise RasterOracleError("image_proposal_evidence_scope_mismatch")
+        base = json.loads(verify_reference(root, {"path": layouts[0], "sha256": dependencies[layouts[0]]}))
+        verify_image_proposal_snapshot(proposal, base)
+        if (base.get("image_recipe") != recipe.get("asset_id")
+                or proposal["content"]["expression"]["relation"]["kind"] != relation):
+            raise RasterOracleError("image_proposal_evidence_scope_mismatch")
+        from .image_deck.recipe import validate_recipe
+        validate_recipe(recipe, proposal["profile"])
+    return image_probe_input(recipe, fixture, relation, proposal=proposal), proposal
 
 
 def verify_image_probe_source(*, root, fixture, relation, artifact, render_input, provider_reference, dependencies):
@@ -46,15 +86,16 @@ def verify_image_probe_source(*, root, fixture, relation, artifact, render_input
     if artifact != {"path": (Path(provider_reference["path"]).parent / reference["path"]).as_posix(),
                     "sha256": reference["sha256"]}:
         raise RasterOracleError("image_provider_artifact_mismatch")
-    recipes = [path for path in dependencies if path.endswith("/recipe.json")]
-    if len(recipes) != 1:
-        raise RasterOracleError("image_probe_recipe_dependency_invalid")
-    recipe = json.loads(verify_reference(root, {"path": recipes[0], "sha256": dependencies[recipes[0]]}))
-    expected = image_probe_input(recipe, fixture, relation)
+    expected, proposal = replay_image_probe_input(root=root, fixture=fixture, relation=relation, dependencies=dependencies)
+    if proposal is not None:
+        from .task_local_layout_proposals import verify_proposal_image_reference
+        verify_proposal_image_reference(proposal, provider_reference)
+        if provider.get("run_id") != proposal["run_scope"]:
+            raise RasterOracleError("image_proposal_provider_scope_mismatch")
     actual = json.loads(verify_reference(root, render_input))
     request = json.loads(verify_reference(provider_root, provider["request"]))
     if (actual != expected or request.get("prompt") != expected["prompt"]
-            or provider.get("page_id") != expected["page_id"] or provider.get("recipe_id") != recipe["asset_id"]):
+            or provider.get("page_id") != expected["page_id"] or provider.get("recipe_id") != expected["recipe_id"]):
         raise RasterOracleError("image_probe_input_mismatch")
     return provider
 
@@ -135,7 +176,7 @@ def evaluate_raster_output(expected, image_bytes, review, *, relation, oracle, e
     validate_expectation(expected, relation)
     fields = {"schema_version", "kind", "artifact_sha256", "expectation_digest", "oracle_digest",
               "environment_sha256", "reviewer", "method", "observations", "edges", "blocks", "complete"}
-    if (not isinstance(review, dict) or set(review) != fields or review["schema_version"] != 1
+    if (not isinstance(review, dict) or set(review) not in (fields, fields | {"proposal_sha256"}) or review["schema_version"] != 1
             or review["kind"] != "raster-geometry-observation" or review["complete"] is not True
             or review["method"] not in {"human", "model"}
             or not isinstance(review["reviewer"], str) or not review["reviewer"].strip()
@@ -147,6 +188,10 @@ def evaluate_raster_output(expected, image_bytes, review, *, relation, oracle, e
             or review["expectation_digest"] != digest(expected) or review["oracle_digest"] != digest(oracle)
             or review["environment_sha256"] != environment_sha256):
         raise RasterOracleError("image_geometry_observation_stale")
+    if "proposal_sha256" in review:
+        import re
+        if not isinstance(review["proposal_sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", review["proposal_sha256"]):
+            raise RasterOracleError("image_proposal_observation_invalid")
 
     def vector(value, size):
         if (not isinstance(value, list) or len(value) != size
@@ -169,6 +214,8 @@ def evaluate_raster_output(expected, image_bytes, review, *, relation, oracle, e
         if block["box"][2] <= 0 or block["box"][3] <= 0:
             raise RasterOracleError("image_geometry_observation_invalid")
     measured = measure_raster(image_bytes)
+    if "proposal_sha256" in review:
+        measured["proposal_sha256"] = review["proposal_sha256"]
     if not measured["texts"] or any(text["confidence"] < 0.8 for text in measured["texts"]):
         raise RasterOracleError("image_ocr_low_confidence")
     measurement = {"schema_version": 1, "kind": "render-measurement", "source": "raster-ocr-reviewed",

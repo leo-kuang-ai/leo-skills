@@ -1,4 +1,7 @@
-# 模板库五阶段迁移
+# 模板库五阶段迁移（维护工具）
+
+本文件描述维护者主动执行的离线迁移，不属于个人用户的普通 PPT 生成链。单用户本地
+生成不会自动 preview/stage/publish/cleanup，也不会因为没有迁移 receipt 而阻断生成。
 
 从技能目录使用项目 Python。delivery 是包含 `leo-ppt-generator/` 的 Git 根；
 工作目录放在包内被忽略的 `.migration-work/<批次>/`。不直接改 catalog generation 文件。
@@ -16,11 +19,29 @@ PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/migrate_template_library
 同批次计划唯一且不可覆盖；源、dirty、映射、目标摘要或 owner 发生变化后，重新建立前置证据及计划。
 
 `migration-plan-v2.schema.json` 是正式计划合同。映射只允许 `copy`、库声明 `normalize`、
-catalog `derived`；记录全部来源状态、目标 hash、固定 consumer closure roots 和精确删除清单。
+catalog `derived`、消费者 `replace` 和目标运行证据 `evidence`；记录全部来源状态、目标 hash、
+固定 consumer closure roots 和精确删除清单。
 未知字段、越界路径、链接、非法 mode 和来源不匹配均拒绝。
 固定范围是十个消费者根加根 `CHANGELOG.md`。变更记录参与来源、目标、CAS 和最终
 逐文件收敛；其中的历史路径仅作 provenance，不视为运行消费者。cleanup 不允许删除它，
 也不允许用此例外纳入兄弟技能。
+
+消费者源码切换通过 `preview --consumer-replacements <文件>` 输入。同一证据根下的
+`migration-consumer-replacements` 清单逐项提供包内路径、写前 type/hash/mode 和目标
+base64 字节/hash/mode。只接受已经存在的消费者文件；未知字段、重复路径、源码漂移、
+事务 owner 自替换均拒绝。计划冻结替换字节和替换后的 closure，stage 不再临时决定改什么。
+catalog/resolver 发生变化时，preview 在临时目标源码树内启动子进程构建 catalog；verify
+也导入该目标 runtime，避免以 delivery 的旧策略误验新 generation。
+
+`preview --target-evidence <文件>` 接收目标 runtime 已产生的证据，包含非空
+`required_assets`、`asset_generation` 和逐文件状态/目标字节。PNG 等二进制附件按原始字节
+冻结，必须包含活动 `evidence/capability-receipts.json`。目标 runtime 重核每份 receipt 的
+owner、依赖、环境和真实附件；清单资产集合必须与活动 receipt 集合相等，不能以空数组跳过。
+manifest 摘要、mapping、target hashes 和派生 registry 的 asset generation 彼此绑定；
+没有消费者源码替换时也执行同一证据检查。该机制不生成或提升 Provider/视觉资格。
+
+closure 扫描按逐命中源码记录处理；只有明确的迁移 owner、历史文档声明及 AST 可证明的
+拒绝分支/负例范围才可保留。注释中的 `legacy`、邻近断言或名称含 `ROOT` 都不能隐藏活动引用。
 
 stage 创建独立 worktree，并用持久 journal 记录每个文件的写前状态。重试只接受本批次写入的
 准确状态；shadow 中的新外部修改不能被覆盖。stage 不修改 delivery，也不自动取得发布资格。

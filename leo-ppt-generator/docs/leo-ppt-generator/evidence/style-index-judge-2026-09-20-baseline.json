@@ -1,0 +1,17 @@
+{
+  "kind": "u9-style-index-judge-baseline",
+  "owner": "pack_transaction",
+  "status": "",
+  "files": {
+    "evals/judges/judge_style_index.py": {
+      "sha256": "79a902c51a1d8d3746d77efc30cebf6cf99390f041ffcd09bc919b63dd7ad5f4",
+      "prior_dirty": false,
+      "owner": "pack_transaction current delegated U9 unit"
+    },
+    "tests/test_style_index_judge.py": {
+      "sha256": "ae61fcba2a57d4396955040bc72a6ff992f9c885df8c09e9df0dbcad30c8423f",
+      "prior_dirty": false,
+      "owner": "pack_transaction current delegated U9 unit"
+    }
+  }
+}

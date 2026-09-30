@@ -1,0 +1,375 @@
+{
+  "cases": [
+    {
+      "case_id": "independent",
+      "expected": {
+        "facts": [],
+        "focus": "三项工作分别推进",
+        "reading_order": [
+          "统一口径",
+          "收集证据",
+          "复核结果"
+        ],
+        "required_text": [
+          "三项工作分别推进",
+          "统一口径",
+          "收集证据",
+          "复核结果"
+        ],
+        "structure": {
+          "edges": [],
+          "items": [
+            "统一口径",
+            "收集证据",
+            "复核结果"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:body-basic",
+      "negative": {
+        "bullets": [
+          "统一口径",
+          "统一口径 → 收集证据",
+          "复核结果"
+        ],
+        "title": "三项工作分别推进"
+      },
+      "positive": {
+        "bullets": [
+          "统一口径",
+          "收集证据",
+          "复核结果"
+        ],
+        "title": "三项工作分别推进"
+      },
+      "relation": "independent"
+    },
+    {
+      "case_id": "comparison",
+      "expected": {
+        "facts": [
+          "6小时",
+          "2小时",
+          "7月",
+          "8月",
+          "12项"
+        ],
+        "focus": "同口径比较处理效率",
+        "reading_order": [
+          "旧流程",
+          "新流程"
+        ],
+        "required_text": [
+          "同口径比较处理效率",
+          "维度",
+          "旧流程",
+          "新流程",
+          "时长",
+          "期间",
+          "样本",
+          "待核对"
+        ],
+        "structure": {
+          "cells": [
+            {
+              "dimension": "时长",
+              "item": "旧流程",
+              "text": "6小时",
+              "unknown": false
+            },
+            {
+              "dimension": "时长",
+              "item": "新流程",
+              "text": "2小时",
+              "unknown": false
+            },
+            {
+              "dimension": "期间",
+              "item": "旧流程",
+              "text": "7月",
+              "unknown": false
+            },
+            {
+              "dimension": "期间",
+              "item": "新流程",
+              "text": "8月",
+              "unknown": false
+            },
+            {
+              "dimension": "样本",
+              "item": "旧流程",
+              "text": "12项",
+              "unknown": false
+            },
+            {
+              "dimension": "样本",
+              "item": "新流程",
+              "text": "待核对",
+              "unknown": true
+            }
+          ],
+          "dimensions": [
+            "时长",
+            "期间",
+            "样本"
+          ],
+          "items": [
+            "旧流程",
+            "新流程"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:p25-spec-table",
+      "negative": {
+        "columns": [
+          "维度",
+          "旧流程",
+          "新流程"
+        ],
+        "rows": [
+          [
+            "时长",
+            "6小时",
+            "待核对"
+          ],
+          [
+            "期间",
+            "7月",
+            "8月"
+          ],
+          [
+            "样本",
+            "12项",
+            "2小时"
+          ]
+        ],
+        "title": "同口径比较处理效率"
+      },
+      "positive": {
+        "columns": [
+          "维度",
+          "旧流程",
+          "新流程"
+        ],
+        "rows": [
+          [
+            "时长",
+            "6小时",
+            "2小时"
+          ],
+          [
+            "期间",
+            "7月",
+            "8月"
+          ],
+          [
+            "样本",
+            "12项",
+            "待核对"
+          ]
+        ],
+        "title": "同口径比较处理效率"
+      },
+      "relation": "comparison"
+    },
+    {
+      "case_id": "trend",
+      "expected": {
+        "facts": [
+          "6",
+          "4",
+          "2"
+        ],
+        "focus": "2026Q3 处理时长下降",
+        "reading_order": [
+          "2026-07",
+          "2026-08",
+          "2026-09"
+        ],
+        "required_text": [
+          "2026Q3 处理时长下降",
+          "小时",
+          "同口径"
+        ],
+        "structure": {
+          "baseline": null,
+          "period": "2026Q3",
+          "samples": [
+            {
+              "time": "2026-07",
+              "value": "6"
+            },
+            {
+              "time": "2026-08",
+              "value": "4"
+            },
+            {
+              "time": "2026-09",
+              "value": "2"
+            }
+          ],
+          "unit": "小时"
+        }
+      },
+      "layout_id": "builtin:layout:p25-spec-table",
+      "negative": {
+        "columns": [
+          "期间",
+          "小时",
+          "口径"
+        ],
+        "rows": [
+          [
+            "2026-09",
+            "2",
+            "同口径"
+          ],
+          [
+            "2026-08",
+            "4",
+            "同口径"
+          ],
+          [
+            "2026-07",
+            "6",
+            "同口径"
+          ]
+        ],
+        "title": "2026Q3 处理时长下降"
+      },
+      "positive": {
+        "columns": [
+          "期间",
+          "小时",
+          "口径"
+        ],
+        "rows": [
+          [
+            "2026-07",
+            "6",
+            "同口径"
+          ],
+          [
+            "2026-08",
+            "4",
+            "同口径"
+          ],
+          [
+            "2026-09",
+            "2",
+            "同口径"
+          ]
+        ],
+        "title": "2026Q3 处理时长下降"
+      },
+      "relation": "trend"
+    },
+    {
+      "case_id": "process",
+      "expected": {
+        "facts": [],
+        "focus": "确认范围后再验证",
+        "reading_order": [
+          "范围确认",
+          "试点验证"
+        ],
+        "required_text": [
+          "确认范围后再验证",
+          "按依赖推进",
+          "保留验收记录",
+          "范围确认",
+          "试点验证"
+        ],
+        "structure": {
+          "edges": [
+            {
+              "from": "范围确认",
+              "to": "试点验证"
+            }
+          ],
+          "nodes": [
+            "范围确认",
+            "试点验证"
+          ],
+          "parallel": []
+        }
+      },
+      "layout_id": "builtin:layout:body-basic",
+      "negative": {
+        "bullets": [
+          "按依赖推进",
+          "保留验收记录"
+        ],
+        "chart_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"220\" viewBox=\"0 0 1000 220\"><defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#334155\"/></marker></defs><text x=\"80\" y=\"100\" font-size=\"30\" fill=\"#111827\">范围确认</text><text x=\"450\" y=\"100\" font-size=\"30\" fill=\"#111827\">试点验证</text></svg>",
+        "title": "确认范围后再验证"
+      },
+      "positive": {
+        "bullets": [
+          "按依赖推进",
+          "保留验收记录"
+        ],
+        "chart_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"220\" viewBox=\"0 0 1000 220\"><defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#334155\"/></marker></defs><text x=\"80\" y=\"100\" font-size=\"30\" fill=\"#111827\">范围确认</text><text x=\"450\" y=\"100\" font-size=\"30\" fill=\"#111827\">试点验证</text><line x1=\"210\" y1=\"90\" x2=\"440\" y2=\"90\" stroke=\"#334155\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/></svg>",
+        "title": "确认范围后再验证"
+      },
+      "relation": "process"
+    },
+    {
+      "case_id": "causal",
+      "expected": {
+        "facts": [],
+        "focus": "流程改造可能缩短时长",
+        "reading_order": [
+          "流程改造",
+          "时长下降"
+        ],
+        "required_text": [
+          "流程改造可能缩短时长",
+          "机制：减少重复录入",
+          "来源：试点台账",
+          "相关性尚不能证明因果",
+          "流程改造",
+          "时长下降"
+        ],
+        "structure": {
+          "edges": [
+            {
+              "from": "流程改造",
+              "meaning": "减少重复录入",
+              "support": "试点台账",
+              "to": "时长下降"
+            }
+          ],
+          "nodes": [
+            "流程改造",
+            "时长下降"
+          ],
+          "uncertainty": [
+            "相关性尚不能证明因果"
+          ]
+        }
+      },
+      "layout_id": "builtin:layout:body-basic",
+      "negative": {
+        "bullets": [
+          "机制：减少重复录入",
+          "来源：试点台账",
+          "确定由流程改造导致"
+        ],
+        "chart_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"220\" viewBox=\"0 0 1000 220\"><defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#334155\"/></marker></defs><text x=\"80\" y=\"100\" font-size=\"30\" fill=\"#111827\">流程改造</text><text x=\"450\" y=\"100\" font-size=\"30\" fill=\"#111827\">时长下降</text><line x1=\"210\" y1=\"90\" x2=\"440\" y2=\"90\" stroke=\"#334155\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/></svg>",
+        "title": "流程改造可能缩短时长"
+      },
+      "positive": {
+        "bullets": [
+          "机制：减少重复录入",
+          "来源：试点台账",
+          "相关性尚不能证明因果"
+        ],
+        "chart_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"220\" viewBox=\"0 0 1000 220\"><defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#334155\"/></marker></defs><text x=\"80\" y=\"100\" font-size=\"30\" fill=\"#111827\">流程改造</text><text x=\"450\" y=\"100\" font-size=\"30\" fill=\"#111827\">时长下降</text><line x1=\"210\" y1=\"90\" x2=\"440\" y2=\"90\" stroke=\"#334155\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/></svg>",
+        "title": "流程改造可能缩短时长"
+      },
+      "relation": "causal"
+    }
+  ],
+  "owner": "004-U12-product-contract",
+  "schema_version": 1
+}

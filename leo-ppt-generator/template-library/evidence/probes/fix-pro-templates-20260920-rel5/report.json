@@ -1,0 +1,423 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "environment": {
+    "path": "evidence/probes/fix-pro-templates-20260920-rel5/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/capability-receipts.json",
+      "sha256": "b77824c660e675f83947b05a35129b3b0e9493d98b073aa5a9b02f48016744bf"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/cases.json",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-fixture.json",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-input.json",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-measurement.json",
+      "sha256": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-observation.json",
+      "sha256": "b2d285610bddab0c5f45f3f4a6c1c10a24c9099fd38cca7ec5176ef58debe6e3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/negative.png.render.json",
+      "sha256": "507d2756911426c1bbeb9f3201cd30c589941487573628653b40b2e390df1dbd"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-fixture.json",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-input.json",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-measurement.json",
+      "sha256": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-observation.json",
+      "sha256": "5881b90d6a896b9175d92e0e13edd2d74139632c9ba200d7262a58e83e988a32"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/positive.png.render.json",
+      "sha256": "7b31bade488f6c8b25159c5553689e48544701c4bf35f228a6c139421405e227"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/receipt.json",
+      "sha256": "cd2fae962a16532c4884681f7114d0415e3c4ad0d4b0d0e4e83260d08e3d1cc1"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-fixture.json",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-input.json",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-measurement.json",
+      "sha256": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-observation.json",
+      "sha256": "fdd1b728b393f74a04de66d5e6c9cf85ca406452e0abf0af29f37585c73108f6"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative.png.render.json",
+      "sha256": "c45f1d2b4097af0ff6cb7ad2859bb35b7e4c8c2ca72f2e4131252ad753ffad0d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-fixture.json",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-input.json",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-measurement.json",
+      "sha256": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-observation.json",
+      "sha256": "8a27951901cad01f69c808cd372a9b958c4370da2eae030751be2fdbe6b0de58"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive.png.render.json",
+      "sha256": "b48dc7ccb8a2dee52679f3fe0903c47c31e0977b592bbbebe9f5795beaf13da3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/receipt.json",
+      "sha256": "b6531cef6e49ee4364d87de1dab09073611501841f51f2341d0a04a7797a191a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/environment.json",
+      "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-fixture.json",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-input.json",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-measurement.json",
+      "sha256": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-observation.json",
+      "sha256": "a00bdd0b617e7bab170a5203a4455b8528538eb10584c70055d08bc17fd64728"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/negative.png.render.json",
+      "sha256": "f1d8f00bb706b77db6b9b889c239046f3c6272b56e3e6a05c420515c0a866f97"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-fixture.json",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-input.json",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-measurement.json",
+      "sha256": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-observation.json",
+      "sha256": "33ff5048c9b17eafe4cf744fb4a3bdb0a5cd58e7df5494ec432a2c173c92d011"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/positive.png.render.json",
+      "sha256": "7d699725e38b1c4a3f877007d1ec40632e06ba3f6666449019a27b52e2e43e9c"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/receipt.json",
+      "sha256": "0d76d22c121b6ec5340a6c332091dad2e124c1c5286cf7ee5cb6b0c29ad3f513"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-fixture.json",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-input.json",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-measurement.json",
+      "sha256": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-observation.json",
+      "sha256": "bb1eef3b2a1ba69a63bd59452e343e347fe01af306ca3a0cb7faf2bc60c6d3de"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative.png.render.json",
+      "sha256": "80a5c78a022509f679454b29592da47eaa27abb693262c1a2f5a9a680f5ec50e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-fixture.json",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-input.json",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-measurement.json",
+      "sha256": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-observation.json",
+      "sha256": "16a04871fbcc454995009ef497331022d59d64cc5ac2f0149030fbba15c4f744"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive.png.render.json",
+      "sha256": "1dcfa8a5bd961ef7b94d9f39657f999a8018612bdecaba2a4610e99fa7a0243a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/receipt.json",
+      "sha256": "8030b43b58e89af64082d122d29d4315d10e3fce73b7e9f20a51d41f509d1cfc"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-fixture.json",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-input.json",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-measurement.json",
+      "sha256": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-observation.json",
+      "sha256": "8bafb7234560d27a24c37a3ab6c06b7f43cb42bb1cce5d89c576d7aa4892e988"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/negative.png.render.json",
+      "sha256": "894b7a1d8ecb32bbf9cbac463a9af41447303debc2cd8089c290bdc74907efec"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-fixture.json",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-input.json",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-measurement.json",
+      "sha256": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-observation.json",
+      "sha256": "53be9cf47831170bd224fc6002a9c79213d544d8ed2030371bb62aba03111d81"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/positive.png.render.json",
+      "sha256": "5beb9796165696cb120ba1e2ff73cd2f21e72c16743e106b817ef4cc1a18ff9b"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/receipt.json",
+      "sha256": "aff0d7a87dbe749b9e731479365e7b0fc931227e9e19aeaa2bc17089e71ca346"
+    }
+  ],
+  "input_digest": "bcc8eb639f1862ba1bcea4c5a5d7d516e9d84327c23dce33e5106acf04f4448b",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/independent/receipt.json",
+        "sha256": "0d76d22c121b6ec5340a6c332091dad2e124c1c5286cf7ee5cb6b0c29ad3f513"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/comparison/receipt.json",
+        "sha256": "b6531cef6e49ee4364d87de1dab09073611501841f51f2341d0a04a7797a191a"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/trend/receipt.json",
+        "sha256": "aff0d7a87dbe749b9e731479365e7b0fc931227e9e19aeaa2bc17089e71ca346"
+      },
+      "relation": "trend",
+      "status": "passed"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/receipt.json",
+        "sha256": "8030b43b58e89af64082d122d29d4315d10e3fce73b7e9f20a51d41f509d1cfc"
+      },
+      "relation": "process",
+      "status": "passed"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/causal/receipt.json",
+        "sha256": "cd2fae962a16532c4884681f7114d0415e3c4ad0d4b0d0e4e83260d08e3d1cc1"
+      },
+      "relation": "causal",
+      "status": "passed"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

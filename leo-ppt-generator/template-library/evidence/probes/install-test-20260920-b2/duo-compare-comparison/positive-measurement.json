@@ -1,0 +1,339 @@
+{
+  "artifact_sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+  "blocks": [
+    {
+      "box": [
+        64,
+        40,
+        1152,
+        30.796875
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        64,
+        78.796875,
+        1152,
+        57.5
+      ],
+      "overflow": true
+    },
+    {
+      "box": [
+        64,
+        180,
+        548,
+        420
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        64,
+        288.5,
+        548,
+        119
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        64,
+        288.5,
+        548,
+        53.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        64,
+        354,
+        548,
+        53.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        668,
+        288.5,
+        548,
+        119
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        668,
+        288.5,
+        548,
+        53.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        668,
+        354,
+        548,
+        53.5
+      ],
+      "overflow": false
+    },
+    {
+      "box": [
+        64,
+        626,
+        1152,
+        60
+      ],
+      "overflow": false
+    }
+  ],
+  "browser_version": "153.0.8010.12",
+  "data_sha256": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+  "edges": [],
+  "kind": "render-measurement",
+  "schema_version": 1,
+  "source": "browser-dom",
+  "template_sha256": "71d50e61dc87b0247910357aa6c8db39fa79523f2cc94e28bb815e3dd4aa9967",
+  "texts": [
+    {
+      "box": [
+        64,
+        39,
+        88,
+        32
+      ],
+      "boxes": [
+        [
+          64,
+          39,
+          88,
+          32
+        ]
+      ],
+      "color": "rgb(138, 109, 59)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 0,
+      "text": "资格探针"
+    },
+    {
+      "box": [
+        64,
+        73.796875,
+        276,
+        66
+      ],
+      "boxes": [
+        [
+          64,
+          73.796875,
+          276,
+          66
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 46,
+      "font_weight": "700",
+      "order": 1,
+      "text": "双轨对照探针"
+    },
+    {
+      "box": [
+        83,
+        191,
+        66,
+        32
+      ],
+      "boxes": [
+        [
+          83,
+          191,
+          66,
+          32
+        ]
+      ],
+      "color": "rgb(255, 255, 255)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 2,
+      "text": "轨道甲"
+    },
+    {
+      "box": [
+        83,
+        224,
+        100,
+        36
+      ],
+      "boxes": [
+        [
+          83,
+          224,
+          100,
+          36
+        ]
+      ],
+      "color": "rgb(255, 255, 255)",
+      "font_size": 25,
+      "font_weight": "700",
+      "order": 3,
+      "text": "基线做法"
+    },
+    {
+      "box": [
+        83,
+        296.5,
+        250,
+        36
+      ],
+      "boxes": [
+        [
+          83,
+          296.5,
+          250,
+          36
+        ]
+      ],
+      "color": "rgb(38, 40, 43)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 4,
+      "text": "基线要点一：逐条登记"
+    },
+    {
+      "box": [
+        83,
+        362,
+        250,
+        36
+      ],
+      "boxes": [
+        [
+          83,
+          362,
+          250,
+          36
+        ]
+      ],
+      "color": "rgb(38, 40, 43)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 5,
+      "text": "基线要点二：人工复核"
+    },
+    {
+      "box": [
+        687,
+        191,
+        66,
+        32
+      ],
+      "boxes": [
+        [
+          687,
+          191,
+          66,
+          32
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 22,
+      "font_weight": "400",
+      "order": 6,
+      "text": "轨道乙"
+    },
+    {
+      "box": [
+        687,
+        224,
+        100,
+        36
+      ],
+      "boxes": [
+        [
+          687,
+          224,
+          100,
+          36
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 25,
+      "font_weight": "700",
+      "order": 7,
+      "text": "候选做法"
+    },
+    {
+      "box": [
+        687,
+        296.5,
+        250,
+        36
+      ],
+      "boxes": [
+        [
+          687,
+          296.5,
+          250,
+          36
+        ]
+      ],
+      "color": "rgb(38, 40, 43)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 8,
+      "text": "候选要点一：自动汇总"
+    },
+    {
+      "box": [
+        687,
+        362,
+        250,
+        36
+      ],
+      "boxes": [
+        [
+          687,
+          362,
+          250,
+          36
+        ]
+      ],
+      "color": "rgb(38, 40, 43)",
+      "font_size": 25,
+      "font_weight": "400",
+      "order": 9,
+      "text": "候选要点二：机器复核"
+    },
+    {
+      "box": [
+        64,
+        637.75,
+        125,
+        36
+      ],
+      "boxes": [
+        [
+          64,
+          637.75,
+          125,
+          36
+        ]
+      ],
+      "color": "rgb(49, 67, 92)",
+      "font_size": 25,
+      "font_weight": "700",
+      "order": 10,
+      "text": "同口径对照"
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ]
+}

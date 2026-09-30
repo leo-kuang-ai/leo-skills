@@ -1,0 +1,14 @@
+[
+  {
+    "target_scope": "outside",
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "{\"reason_code\": null, \"detail\": \"evidence_file_unavailable: canonical/visual/styles/finance-navy/brief.json\"}\n"
+  },
+  {
+    "target_scope": "inside",
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "{\"reason_code\": null, \"detail\": \"evidence_file_unavailable: canonical/visual/styles/finance-navy/brief.json\"}\n"
+  }
+]

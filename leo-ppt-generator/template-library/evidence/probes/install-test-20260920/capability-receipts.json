@@ -1,0 +1,299 @@
+{
+  "receipts": [
+    {
+      "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+      "asset_id": "builtin:layout:body-basic",
+      "dependency_hashes": {
+        "canonical/layouts/body-basic/layout.json": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
+        "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+        "canonical/templates/body-basic/page.html": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+        "canonical/templates/body-basic/template.json": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+      },
+      "environment": {
+        "path": "evidence/probes/install-test-20260920/environment.json",
+        "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+      },
+      "evidence_digest": "ee9eb1ebeac0d9583474540a9d0da7dd19eb9da8d70676b751bd0b6c2a2b53d7",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/independent/negative.png",
+            "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/independent/negative-fixture.json",
+            "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/independent/negative-observation.json",
+            "sha256": "8dfde1853fe575b0721c1e85cdad1e8bfd68e86d3b9d08a1f4ddddab10eb350a"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/independent/positive.png",
+            "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/independent/positive-fixture.json",
+            "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/independent/positive-observation.json",
+            "sha256": "4d1f45551f4253453f29aed51141cb5f500b85031f14abb010f1a25111e3ee44"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "611c7fb28fbb0a9f99678ad8f67718ae4ea818a5e1c24a9daac7ac2f178d54e8/independent",
+      "relation": "independent",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+      "asset_id": "builtin:layout:p25-spec-table",
+      "dependency_hashes": {
+        "canonical/layouts/p25-spec-table/layout.json": "0adb49302a99a8a90484fc7853ef7c9e724d82730c79390cdf346ca188e7fe43",
+        "canonical/layouts/p25-spec-table/notes.md": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2",
+        "canonical/templates/spec-table/page.html": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+        "canonical/templates/spec-table/template.json": "eec309ab46687888bc803b008fdfa103c1feaf6d6ad4efc4358ade853052bef3"
+      },
+      "environment": {
+        "path": "evidence/probes/install-test-20260920/environment.json",
+        "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+      },
+      "evidence_digest": "6bf0beab285f40fd42a083e2762aaf75dcfe240bdd1162fe2e3442faf4ddcd16",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/comparison/negative.png",
+            "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/comparison/negative-fixture.json",
+            "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/comparison/negative-observation.json",
+            "sha256": "f76814ed1732894b8cb9f433c34b2ed19a9f2328a4a5c2f89f9272f9723bcaeb"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/comparison/positive.png",
+            "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/comparison/positive-fixture.json",
+            "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/comparison/positive-observation.json",
+            "sha256": "a8e5dcab4583d2a79bf626af8fdefc464e6123d68e01d2a907d1b6fc2763316e"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "611c7fb28fbb0a9f99678ad8f67718ae4ea818a5e1c24a9daac7ac2f178d54e8/comparison",
+      "relation": "comparison",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+      "asset_id": "builtin:layout:p25-spec-table",
+      "dependency_hashes": {
+        "canonical/layouts/p25-spec-table/layout.json": "0adb49302a99a8a90484fc7853ef7c9e724d82730c79390cdf346ca188e7fe43",
+        "canonical/layouts/p25-spec-table/notes.md": "9a3fc8ee62ed23d98d9b643ccc95d77ac64abd5e75d2176c795c48fdd6f193a2",
+        "canonical/templates/spec-table/page.html": "a3605bda65935b2854b987e2369d57a36f014d5b01756120df053da0dc0104c7",
+        "canonical/templates/spec-table/template.json": "eec309ab46687888bc803b008fdfa103c1feaf6d6ad4efc4358ade853052bef3"
+      },
+      "environment": {
+        "path": "evidence/probes/install-test-20260920/environment.json",
+        "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+      },
+      "evidence_digest": "1b1a553f6f8fbbf4af985052be84fe8dffc225c829f99c56e592bbc2fa363879",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/trend/negative.png",
+            "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/trend/negative-fixture.json",
+            "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/trend/negative-observation.json",
+            "sha256": "99cf218a7cb1f6a5ea447b2db02138b05588c6c5692069c983412616f2086b70"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/trend/positive.png",
+            "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/trend/positive-fixture.json",
+            "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/trend/positive-observation.json",
+            "sha256": "5325c379ca4413308ce9b64eea9df52153080591e945770eb690a32f9785348f"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "611c7fb28fbb0a9f99678ad8f67718ae4ea818a5e1c24a9daac7ac2f178d54e8/trend",
+      "relation": "trend",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+      "asset_id": "builtin:layout:body-basic",
+      "dependency_hashes": {
+        "canonical/layouts/body-basic/layout.json": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
+        "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+        "canonical/templates/body-basic/page.html": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+        "canonical/templates/body-basic/template.json": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+      },
+      "environment": {
+        "path": "evidence/probes/install-test-20260920/environment.json",
+        "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+      },
+      "evidence_digest": "1ea46dafac35a80cf2098e7a6c4da640beae110fc28da7f68f58cd687d67cdf8",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/process/negative.png",
+            "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/process/negative-fixture.json",
+            "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/process/negative-observation.json",
+            "sha256": "c820e0af14faac62cce40c273894719e150ba77d6a14ec78d4d85b95e266fa61"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/process/positive.png",
+            "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/process/positive-fixture.json",
+            "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/process/positive-observation.json",
+            "sha256": "f384c2679c52a017c3da9734eeccf9ff7d993995405bc5394f7bf61a8d32277f"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "611c7fb28fbb0a9f99678ad8f67718ae4ea818a5e1c24a9daac7ac2f178d54e8/process",
+      "relation": "process",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+      "asset_id": "builtin:layout:body-basic",
+      "dependency_hashes": {
+        "canonical/layouts/body-basic/layout.json": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
+        "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+        "canonical/templates/body-basic/page.html": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+        "canonical/templates/body-basic/template.json": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+      },
+      "environment": {
+        "path": "evidence/probes/install-test-20260920/environment.json",
+        "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+      },
+      "evidence_digest": "fd5e1199b2c306b9af6e4e2b86b76f773c090752696da4869861bfc1f5636585",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/causal/negative.png",
+            "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/causal/negative-fixture.json",
+            "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/causal/negative-observation.json",
+            "sha256": "d3aa599eafc8daefc310965f50d2f33af64053f78a8efee154f7211ca938e30b"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/install-test-20260920/causal/positive.png",
+            "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+          },
+          "fixture": {
+            "path": "evidence/probes/install-test-20260920/causal/positive-fixture.json",
+            "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+          },
+          "observation": {
+            "path": "evidence/probes/install-test-20260920/causal/positive-observation.json",
+            "sha256": "1c346f8393744801f92829b66079862fb2de6f6263211730a05b29851d8c28f2"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "611c7fb28fbb0a9f99678ad8f67718ae4ea818a5e1c24a9daac7ac2f178d54e8/causal",
+      "relation": "causal",
+      "schema_version": 1,
+      "visual_review": null
+    }
+  ]
+}

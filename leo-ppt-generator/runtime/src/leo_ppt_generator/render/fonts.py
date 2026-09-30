@@ -109,7 +109,7 @@ class RenderAssetServer:
                  allowed: set[str] | None = None, resolver=None) -> None:
         font_roots = [*(extra_font_dirs or []), fonts_dir()]
         existing = [root for root in font_roots if root.is_dir()] or [fonts_dir()]
-        template_root = (resolver.builtin_root / "canonical/templates" if resolver else templates_dir())
+        template_root = templates_dir(resolver=resolver)
         handler = _handler({"/": template_root, "fonts": existing}, allowed=allowed, resolver=resolver)
         self._httpd = HTTPServer(("127.0.0.1", 0), handler)
         self._httpd.daemon_threads = True

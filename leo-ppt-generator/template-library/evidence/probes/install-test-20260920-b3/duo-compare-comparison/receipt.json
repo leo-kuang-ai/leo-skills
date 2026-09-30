@@ -1,0 +1,59 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p8-08-duo-compare-layouts/layout.json": "4276d89ec7cc9f14ab83c915941673f6eb5b5e7df54e99ef6abcc66c35f246e5",
+    "canonical/layouts/p8-08-duo-compare-layouts/notes.md": "e2e5eddbb98ea8fbdc8d5e83b08e15055095ea3f15d35ce54161d6a7419a2a2e",
+    "canonical/templates/compare-pro/page.html": "71d50e61dc87b0247910357aa6c8db39fa79523f2cc94e28bb815e3dd4aa9967",
+    "canonical/templates/compare-pro/template.json": "c664ea18eccb3fb2f006c53285fc11f0f65bdc4f3f6e829b29701c0bbf73818d"
+  },
+  "environment": {
+    "path": "evidence/probes/install-test-20260920-b3/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "evidence_digest": "b8d965c625240117a145d52740120aa5cf954e14a34fe6608765371f2fa9003f",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative.png",
+        "sha256": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-fixture.json",
+        "sha256": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-observation.json",
+        "sha256": "5040462e24857518922271c7cb6de7eb8dda0739edaa9cfd9ed292146719806b"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive.png",
+        "sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-fixture.json",
+        "sha256": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-observation.json",
+        "sha256": "acde7931ac6b3abcd31353a011e9d2b1fefaf930a9cd33a0492396a8ce7183bc"
+      },
+      "status": "failed"
+    }
+  },
+  "receipt_id": "95d0264ade0a7dca38512da732af4e5b2ea7df3309c88e15adb7da445b688a7e/duo-compare-comparison",
+  "relation": "comparison",
+  "schema_version": 1,
+  "visual_review": null
+}

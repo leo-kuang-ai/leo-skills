@@ -1,0 +1,59 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "asset_id": "builtin:layout:p1-01-cover-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p1-01-cover-layouts/layout.json": "b6365c4ac6a02dd5b85155548f0e49c2667c4d176207a2b17ad21eed626ed488",
+    "canonical/layouts/p1-01-cover-layouts/notes.md": "6f554bc9e1917b8714c9cf33e58b47a9e1a29c136d5fa9b530e8f50798ea2948",
+    "canonical/templates/cover-pro/page.html": "3f1b6a8c8a0e15d641dc16048503c37db876327c2a42cb4046c44859aa15372b",
+    "canonical/templates/cover-pro/template.json": "35a0247fc3a75888459abce3749d101b75d9f471b9606823c848ea41931dcaa5"
+  },
+  "environment": {
+    "path": "evidence/probes/install-test-20260920-b2/environment.json",
+    "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+  },
+  "evidence_digest": "e3ccb8b7b4876e01f54a8bafe83812d1d4e5390f70bd52c0c72501f315978da1",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png",
+        "sha256": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-fixture.json",
+        "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-observation.json",
+        "sha256": "3f223f39850994ea401f1023ab65cc9747fe697a39c2b745deddcd5e990afa4a"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive.png",
+        "sha256": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-fixture.json",
+        "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-observation.json",
+        "sha256": "4b114aa797e729bc069f7f15d17def3a2d48503d91933bd4adb2978643aafb9a"
+      },
+      "status": "failed"
+    }
+  },
+  "receipt_id": "112dc9a405c6257a7c4ea6c7cf190b8351a708c6a00b4a34389b514527bec886/cover-pro-independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

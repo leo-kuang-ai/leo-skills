@@ -1,0 +1,59 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p16-16-multi-card-brief-layouts/layout.json": "ed60b6fa63fea5954d9fe1c517f8269c19b54845e5c778fba2d0ae3faff5e691",
+    "canonical/layouts/p16-16-multi-card-brief-layouts/notes.md": "9c84a19b2cc5703565a3b720480503ef13909dae51696ec1a732a7aa82ff38e2",
+    "canonical/templates/cards-stat/page.html": "0244be44ef7dba42325d1c5f6f5be75395261a49ff8fa0d1a771b9d0ccfaa3ed",
+    "canonical/templates/cards-stat/template.json": "abfb9fae7741a092d80b3549be7559c17d07c38a87d7a552b863f807a5829005"
+  },
+  "environment": {
+    "path": "evidence/probes/install-test-20260920-b2/environment.json",
+    "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+  },
+  "evidence_digest": "242fcc9ddbc7ba385454d49f03e6c483f9250883477fa240848d94e4161d65cf",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative.png",
+        "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-fixture.json",
+        "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-observation.json",
+        "sha256": "aa6c33a75864c50c1b6553c117b2cbf88e2bc2bc122b20a36920d9733a9c388c"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive.png",
+        "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+      },
+      "fixture": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-fixture.json",
+        "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+      },
+      "observation": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-observation.json",
+        "sha256": "42a8530c80543747cd34f46c53ab7dba33c55b6218ce925eda97573b7b2834ef"
+      },
+      "status": "failed"
+    }
+  },
+  "receipt_id": "112dc9a405c6257a7c4ea6c7cf190b8351a708c6a00b4a34389b514527bec886/cards-stat-independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

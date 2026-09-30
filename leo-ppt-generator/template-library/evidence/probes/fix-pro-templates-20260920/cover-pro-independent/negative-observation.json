@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png",
+    "sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": false,
+    "no_overflow": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+  "fixture": {
+    "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-fixture.json",
+    "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-measurement.json",
+    "sha256": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-input.json",
+    "sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d"
+  }
+}

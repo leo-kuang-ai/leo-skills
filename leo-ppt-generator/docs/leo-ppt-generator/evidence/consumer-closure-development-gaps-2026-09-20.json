@@ -1,0 +1,110 @@
+{
+  "kind": "consumer-closure-development-audit",
+  "status": "partial",
+  "source_report": "docs/leo-ppt-generator/evidence/consumer-closure-2026-09-20.json",
+  "snapshot_only": {
+    "active_legacy_hits": 319,
+    "unclassified_hits": 10,
+    "active_consumer_rows": 329,
+    "distinct_owners": 107
+  },
+  "note": "旧扫描数仅用于去重审计；不是当前最终closure，也不是319个缺陷。",
+  "independent_development": [
+    {
+      "group": "governance-lint",
+      "files": [
+        "scripts/lint_style_briefs.py",
+        "scripts/lint_layout_grid.py",
+        "scripts/lint_style_governance.py",
+        "scripts/lint_template_contract.py",
+        "scripts/lint_render_templates.py"
+      ],
+      "gap": "默认旧根与缺目录漏验；改明确resolver枚举，旧协议审计须显式。"
+    },
+    {
+      "group": "authoring-writers",
+      "files": [
+        "scripts/draft_negative_prompts.py",
+        "scripts/style_hard_rules.py",
+        "scripts/audit_style_families.py",
+        "scripts/generate_capacity_draft.py"
+      ],
+      "gap": "默认读写退役MD/静态家族；须resolver/taxonomy与真实CAS/catalog写事务。"
+    },
+    {
+      "group": "historical-intake",
+      "files": [
+        "scripts/intake_beautiful_html.py",
+        "scripts/intake_codex_xiaobei.py",
+        "scripts/intake_gpt_image2.py",
+        "scripts/intake_landppt.py",
+        "scripts/intake_ohmy.py",
+        "scripts/intake_slidesgrab_officecli.py",
+        "scripts/intake_yixue_kimi.py",
+        "scripts/migrate_style_aliases.py"
+      ],
+      "gap": "旧写入口须明确隔离重放，禁止默认写delivery provenance。"
+    },
+    {
+      "group": "installation",
+      "files": [
+        "tests/test_library_bundle.py"
+      ],
+      "gap": "链接安装测试需要真实链接与独立cwd入口验证，直接context临时副本不足。"
+    },
+    {
+      "group": "remaining-consumer-replacements",
+      "gap": "测试/eval/活动文档逐owner迁移；不得改历史baseline或仅全局替换凑零。"
+    }
+  ],
+  "migration_coupled": [
+    {
+      "files": [
+        "runtime/src/leo_ppt_generator/asset_resolver.py",
+        "scripts/capability_manifest.py"
+      ],
+      "gap": "v1运行分支须在同plan目标replacement移除；v2 rollback语义仍需开发。"
+    },
+    {
+      "files": [
+        "runtime/src/leo_ppt_generator/templates.py",
+        "runtime/src/leo_ppt_generator/render/assets.py",
+        "runtime/src/leo_ppt_generator/render/fonts.py"
+      ],
+      "gap": "旧brand/notes fallback、渲染资源root需正式切换。"
+    }
+  ],
+  "completed_bounded_slice": {
+    "files": [
+      "evals/judges/judge_style_index.py",
+      "tests/test_style_index_judge.py"
+    ],
+    "verification": "style-index-judge-2026-09-20-result.json",
+    "tests": 28,
+    "exit_code": 0
+  },
+  "provider_dependency": "上述开发无需真实Provider；不得被Provider阻塞掩盖。",
+  "frozen_source_closure": {
+    "report": "docs/leo-ppt-generator/evidence/consumer-closure-final-source-2026-09-20.json",
+    "active_legacy_hits": 316,
+    "unclassified_hits": 0
+  },
+  "installation_development": "已补真实链接、新进程、独立cwd与CLI，8 tests/exit0；当前完整有序验证running",
+  "negative_prompt_current_debt": {
+    "resolver_styles": 320,
+    "all_have_at_least_three_negative_constraints": true,
+    "consequence": "默认应零候选，不批量改资产；工具仍须删除retired reader/writer"
+  },
+  "legacy_intake_test_safety": {
+    "checked_targets": 36,
+    "markdown_targets": 32,
+    "pptx_targets": 4,
+    "dirty": false,
+    "ignored": false,
+    "symlink": false,
+    "regenerated_bytes_equal": true,
+    "readonly_check_exit_code": 0,
+    "target_manifest_digest": "89027dc48b5a55c779c000a69f8cda6e9cd5e537a125e2ffaf0785ab191d6611",
+    "remaining": "后续迁为显式隔离输出"
+  }
+}

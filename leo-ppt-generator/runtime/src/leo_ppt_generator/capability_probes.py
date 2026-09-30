@@ -16,16 +16,67 @@ from leo_ppt_generator.render.page import RenderSession, render_page
 from leo_ppt_generator.storage import atomic_write_json
 
 
-def image_probe_inputs(*, library_root, cases):
+def _probe_resolver(root, proposal):
+    if proposal is not None:
+        from .task_local_layout_proposals import proposal_workspace_resolver
+        return proposal_workspace_resolver(root, run_scope=proposal["run_scope"])
+    return AssetResolver(library=root)
+
+
+def _probe_input_files(root, output):
+    """固定本次输出之外的全部输入；其他 evidence 或 catalog 漂移仍需拒绝。"""
+    files = {}
+    for path in sorted(root.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("probe_input_symlink")
+        if path.is_file() and not path.is_relative_to(root / output):
+            relative = path.relative_to(root).as_posix()
+            files[relative] = file_reference(root, relative)["sha256"]
+    return files
+
+
+def _cached_probe_report(root, relative, identity):
+    report = json.loads(read_evidence_bytes(root, (relative / "report.json").as_posix()))
+    if (not isinstance(report, dict) or not isinstance(report.get("input_files"), dict)
+            or report.get("report_digest") != digest({key: value for key, value in report.items() if key != "report_digest"})):
+        raise ValueError("probe_cache_schema_mismatch")
+    if report["input_digest"] != identity:
+        raise ValueError("probe_input_conflict")
+    if _probe_input_files(root, relative) != report["input_files"]:
+        raise ValueError("probe_input_files_changed")
+    expected = {}
+    for reference in report["files"]:
+        if reference["path"] in expected:
+            raise ValueError("probe_cache_file_set_mismatch")
+        verify_reference(root, reference)
+        expected[reference["path"]] = reference["sha256"]
+    actual = {path.relative_to(root).as_posix(): file_reference(root, path.relative_to(root).as_posix())["sha256"]
+              for path in sorted((root / relative).rglob("*"))
+              if path.is_file() and path != root / relative / "report.json"}
+    own = {path: sha for path, sha in expected.items() if PurePosixPath(path).is_relative_to(relative)}
+    if actual != own:
+        raise ValueError("probe_cache_file_set_mismatch")
+    return report
+
+
+def image_probe_inputs(*, library_root, cases, proposal=None):
     """生成待授权调用的真实 recipe 输入；不调用 Provider，不授予资格。"""
     from .library_migration import library_operation
     with library_operation(library_root):
         from .raster_oracle import image_probe_input
-        resolver = AssetResolver(library=Path(library_root).resolve(strict=True))
+        resolver = _probe_resolver(Path(library_root).resolve(strict=True), proposal)
+        if proposal is not None:
+            from .task_local_layout_proposals import verify_image_proposal_workspace
+            verify_image_proposal_workspace(proposal, resolver)
+            if proposal.get("lane") != "image":
+                raise ValueError("proposal_probe_scope_mismatch")
         result = []
         for case in cases["cases"]:
+            if proposal is not None and (case["layout_id"] != proposal["base_asset"]
+                    or case["relation"] != proposal["content"]["expression"]["relation"]["kind"]):
+                raise ValueError("proposal_probe_scope_mismatch")
             layout = resolver.resolve(case["layout_id"])
-            contract, _ = layout_capability_contract(layout, resolver=resolver, lane="image")
+            contract, _ = layout_capability_contract(layout, resolver=resolver, lane="image", proposal=proposal)
             gaps = contract["gaps"].get("image", [])
             if case["relation"] not in contract["relations"]:
                 gaps = [*gaps, "relation_not_declared"]
@@ -36,13 +87,13 @@ def image_probe_inputs(*, library_root, cases):
             for name in ("positive", "negative"):
                 fixture = {"expected": case["expected"], "data": case[name], "case_id": case["case_id"], "probe": name}
                 result.append({"case_id": case["case_id"], "probe": name, "status": "not_run",
-                               "input": image_probe_input(recipe, fixture, case["relation"])})
+                               "input": image_probe_input(recipe, fixture, case["relation"], proposal=proposal)})
         return result
 
 
-def _run_image_case(*, case, layout, resolver, evidence, root, write, identity, generation, oracle, oracle_ref, env_ref):
+def _run_image_case(*, case, layout, resolver, evidence, root, write, identity, generation, oracle, oracle_ref, env_ref, proposal=None):
     from .raster_oracle import evaluate_raster_output, image_probe_input, verify_image_probe_source
-    contract, dependencies = layout_capability_contract(layout, resolver=resolver, lane="image")
+    contract, dependencies = layout_capability_contract(layout, resolver=resolver, lane="image", proposal=proposal)
     owner_gaps = contract["gaps"].get("image", [])
     if "image" not in contract["lanes"]:
         owner_gaps = [*owner_gaps, "image_lane_unsupported"]
@@ -65,15 +116,22 @@ def _run_image_case(*, case, layout, resolver, evidence, root, write, identity, 
             if set(supplied) != {"provider_receipt", "raster_review"}:
                 raise ValueError("image_probe_evidence_invalid")
             provider_ref, review_ref = supplied["provider_receipt"], supplied["raster_review"]
+            if proposal is not None:
+                from .task_local_layout_proposals import verify_proposal_image_reference
+                verify_proposal_image_reference(proposal, provider_ref)
+                verify_proposal_image_reference(proposal, review_ref)
             provider = json.loads(verify_reference(root, provider_ref))
             artifact = {**provider["artifact"], "path": (PurePosixPath(provider_ref["path"]).parent / provider["artifact"]["path"]).as_posix()}
             fixture_data = {"expected": case["expected"], "data": case[name], "case_id": case["case_id"], "probe": name}
             fixture = write(prefix + "-fixture.json", fixture_data)
-            data = write(prefix + "-input.json", image_probe_input(recipe, fixture_data, case["relation"]))
+            data = write(prefix + "-input.json", image_probe_input(recipe, fixture_data, case["relation"], proposal=proposal))
             verify_image_probe_source(root=root, fixture=fixture_data, relation=case["relation"], artifact=artifact,
                                       render_input=data, provider_reference=provider_ref, dependencies=dependencies)
+            review = json.loads(verify_reference(root, review_ref))
+            if proposal is not None and review.get("proposal_sha256") != digest(proposal):
+                raise ValueError("image_proposal_observation_mismatch")
             evaluated = evaluate_raster_output(case["expected"], verify_reference(root, artifact),
-                json.loads(verify_reference(root, review_ref)), relation=case["relation"], oracle=oracle,
+                review, relation=case["relation"], oracle=oracle,
                 environment_sha256=env_ref["sha256"])
             measurement = write(prefix + "-measurement.json", evaluated["measurement"])
             checks = evaluated["checks"]
@@ -128,23 +186,31 @@ def run_probes(*, library_root, cases, output, proposal=None, image_evidence=Non
             validate_expectation(case["expected"], case["relation"])
         if not ids:
             raise ValueError("probe_cases_empty")
-        if proposal is not None and image_evidence:
-            raise ValueError("proposal_probe_scope_mismatch")
         generation, environment = asset_generation(root), environment_fingerprint()
         if image_evidence is not None and (not isinstance(image_evidence, dict) or not set(image_evidence).issubset(ids)):
             raise ValueError("image_probe_evidence_scope_invalid")
         identity = digest({"cases": cases, "asset_generation": generation, "environment": environment,
                            "proposal": proposal, "image_evidence": image_evidence})
+        resolver = None
+        if proposal is not None:
+            from .task_local_layout_proposals import proposal_probe_output
+            if output != proposal_probe_output(proposal):
+                raise ValueError("proposal_probe_scope_mismatch")
+            resolver = _probe_resolver(root, proposal)
+            resolver.entities
+            if proposal["lane"] == "image":
+                from .task_local_layout_proposals import verify_image_proposal_workspace
+                verify_image_proposal_workspace(proposal, resolver)
+                if any(case["layout_id"] != proposal["base_asset"] or case["relation"] != proposal["content"]["expression"]["relation"]["kind"] for case in cases["cases"]):
+                    raise ValueError("proposal_probe_scope_mismatch")
+            elif image_evidence:
+                raise ValueError("proposal_probe_scope_mismatch")
         if directory.exists():
-            report = json.loads(read_evidence_bytes(root, (relative / "report.json").as_posix()))
-            if report["input_digest"] != identity:
-                raise ValueError("probe_input_conflict")
-            for reference in report["files"]:
-                verify_reference(root, reference)
-            return report
-        # 先固定现有 catalog；探针自身追加 evidence 后当前代应变 stale，不能边写边重新发现。
-        resolver = AssetResolver(library=root)
+            return _cached_probe_report(root, relative, identity)
+        # 活动 catalog 只在首次运行前验证；私有 proposal 使用已验证的执行快照。
+        resolver = resolver or _probe_resolver(root, proposal)
         resolver.entities
+        input_files = _probe_input_files(root, relative)
         directory.mkdir(parents=True)
 
         def write(name, value):
@@ -156,9 +222,18 @@ def run_probes(*, library_root, cases, output, proposal=None, image_evidence=Non
         env_ref = write("environment.json", environment)
         oracle_ref = {**file_reference(root, ORACLE_PATH), "owner": oracle["owner"], "version": oracle["version"]}
         results, receipts = [], []
-        with RenderSession() as session:
+        from contextlib import nullcontext
+        with (nullcontext() if proposal is not None and proposal["lane"] == "image" else RenderSession()) as session:
             for case in cases["cases"]:
                 layout = resolver.resolve(case["layout_id"])
+                if proposal is not None and proposal["lane"] == "image":
+                    image_row, image_receipt = _run_image_case(case=case, layout=layout, resolver=resolver,
+                        evidence=(image_evidence or {}).get(case["case_id"]), root=root, write=write, identity=identity,
+                        generation=generation, oracle=oracle, oracle_ref=oracle_ref, env_ref=env_ref, proposal=proposal)
+                    results.append(image_row)
+                    if image_receipt is not None:
+                        receipts.append(image_receipt)
+                    continue
                 if proposal is not None and (proposal["base_asset"] != case["layout_id"] or proposal["lane"] != "render:html"):
                     raise ValueError("proposal_probe_scope_mismatch")
                 contract, dependencies = layout_capability_contract(layout, resolver=resolver, lane="render:html", proposal=proposal)
@@ -212,7 +287,8 @@ def run_probes(*, library_root, cases, output, proposal=None, image_evidence=Non
                 results.append(image_row)
                 if image_receipt is not None:
                     receipts.append(image_receipt)
-        if generation != asset_generation(root) or environment != environment_fingerprint():
+        if (generation != asset_generation(root) or environment != environment_fingerprint()
+                or input_files != _probe_input_files(root, relative)):
             raise ValueError("probe_inputs_changed_during_run")
         write("capability-receipts.json", {"receipts": receipts})
         files = {p.relative_to(root).as_posix(): file_reference(root, p.relative_to(root).as_posix())
@@ -220,9 +296,11 @@ def run_probes(*, library_root, cases, output, proposal=None, image_evidence=Non
         for reference in evidence_closure(root, receipts):
             files[reference["path"]] = reference
         report = {"schema_version": 1, "kind": "relation-probe-report", "input_digest": identity,
+            "input_files": input_files,
             "asset_generation": generation, "oracle": oracle_ref, "environment": env_ref, "results": results,
             "files": [files[p] for p in sorted(files)], "publication_ready": False,
             "status": "failed" if any(r["status"] == "failed" for r in results) else
                       "blocked" if any(r["status"] == "blocked" for r in results) else "passed"}
+        report["report_digest"] = digest(report)
         write("report.json", report)
         return report

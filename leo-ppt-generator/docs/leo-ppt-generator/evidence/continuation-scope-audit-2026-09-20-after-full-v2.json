@@ -1,0 +1,3513 @@
+{
+  "kind": "continuation-protected-scope-audit",
+  "captured_at": "2026-09-20T07:47:24.644514+00:00",
+  "baseline": "docs/leo-ppt-generator/evidence/continuation-2026-09-20-verification-repair-ownership.json",
+  "protected_paths": [
+    {
+      "path": "docs/README.md",
+      "owner": "external-protected",
+      "expected": "d65fed28a01e370a56950c04b5af9fd68ced63a299035b71711add13f7879386",
+      "actual": "d65fed28a01e370a56950c04b5af9fd68ced63a299035b71711add13f7879386",
+      "unchanged": true
+    },
+    {
+      "path": "docs/leo-ppt-generator/architecture/flow.md",
+      "owner": "external-protected",
+      "expected": "f44b4f2a34d3fe0d1a5f002e9bccd0a228606dc0574323ee1747bf8d74fcde99",
+      "actual": "f44b4f2a34d3fe0d1a5f002e9bccd0a228606dc0574323ee1747bf8d74fcde99",
+      "unchanged": true
+    },
+    {
+      "path": "docs/leo-ppt-generator/execution-workflow.md",
+      "owner": "external-protected",
+      "expected": "7d16e29768deb1ec78cc00765775e327f294294fb240c246143329383aefbbc7",
+      "actual": "7d16e29768deb1ec78cc00765775e327f294294fb240c246143329383aefbbc7",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/expression_pipeline.py",
+      "owner": "external-protected",
+      "expected": "918ede8d9c7c94db48db738628a4cf616814dd8af1533a1a6ea18faa0a1e42e6",
+      "actual": "918ede8d9c7c94db48db738628a4cf616814dd8af1533a1a6ea18faa0a1e42e6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/application/run_index.py",
+      "owner": "external-protected",
+      "expected": "a6f78c1b849c3e4dd3b485e765cc25870680b80d7498973dd52f5d6b2f007cc6",
+      "actual": "a6f78c1b849c3e4dd3b485e765cc25870680b80d7498973dd52f5d6b2f007cc6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/cli.py",
+      "owner": "external-unattributed-protected",
+      "expected": "87e1d110aae5026d6bec28dfedca4d578facc3e707714d61bc5c442ffb1bc175",
+      "actual": "87e1d110aae5026d6bec28dfedca4d578facc3e707714d61bc5c442ffb1bc175",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/render/receipt.py",
+      "owner": "external-unattributed-protected",
+      "expected": "2d0396c2f9d4427353babef26e6df2527be8b37a68af6596cb552e8b738883d1",
+      "actual": "2d0396c2f9d4427353babef26e6df2527be8b37a68af6596cb552e8b738883d1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/scripts/check_size_budget.py",
+      "owner": "external-unattributed-protected",
+      "expected": "7c52b1e6e992d60d885f40467e8f89cba0f83afafb13a46670121c447f85187d",
+      "actual": "7c52b1e6e992d60d885f40467e8f89cba0f83afafb13a46670121c447f85187d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/cards-stat/page.html",
+      "owner": "external-protected",
+      "expected": "f919ae16de3a4e8bd36985460764a8ba217b0fa5f7366aacbd1047013c78f731",
+      "actual": "f919ae16de3a4e8bd36985460764a8ba217b0fa5f7366aacbd1047013c78f731",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/chain-flow/page.html",
+      "owner": "external-protected",
+      "expected": "dfe78991c3f8519773fc17633cb24b310ee100e9e1fef19709e2c032f480793a",
+      "actual": "dfe78991c3f8519773fc17633cb24b310ee100e9e1fef19709e2c032f480793a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/compare-pro/page.html",
+      "owner": "external-protected",
+      "expected": "2fecb9c56814e5c2c44469cc572c30a278560ec67ab8a797f0fb1e758b05090f",
+      "actual": "2fecb9c56814e5c2c44469cc572c30a278560ec67ab8a797f0fb1e758b05090f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/cover-pro/page.html",
+      "owner": "external-protected",
+      "expected": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+      "actual": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/kpi-stat/page.html",
+      "owner": "external-protected",
+      "expected": "d369be539c6adaede7ba16e2492f510f8e944cf3bddcf12f1838931be418fa81",
+      "actual": "d369be539c6adaede7ba16e2492f510f8e944cf3bddcf12f1838931be418fa81",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/quote-pro/page.html",
+      "owner": "external-protected",
+      "expected": "fd84c359df23abc5e43b419cdb5754ccbc00bb98d596d0f49da750e87fb120e4",
+      "actual": "fd84c359df23abc5e43b419cdb5754ccbc00bb98d596d0f49da750e87fb120e4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/quote-pro/template.json",
+      "owner": "external-protected",
+      "expected": "26925050e8df309d887ced434ccecf777f4be419a3ce4154f159d43a398d34fe",
+      "actual": "26925050e8df309d887ced434ccecf777f4be419a3ce4154f159d43a398d34fe",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/table-pro/page.html",
+      "owner": "external-protected",
+      "expected": "05dbd72ebf4098f013ba1d646c278868bfa5c2049ef6713843811114fa543b45",
+      "actual": "05dbd72ebf4098f013ba1d646c278868bfa5c2049ef6713843811114fa543b45",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/canonical/templates/timeline-pro/page.html",
+      "owner": "external-protected",
+      "expected": "e0a350afe10b1d1dd343477cf6f0e33c708e4f26f3cef19dd84a08bfe639b28a",
+      "actual": "e0a350afe10b1d1dd343477cf6f0e33c708e4f26f3cef19dd84a08bfe639b28a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/catalog/current.json",
+      "owner": "external-protected",
+      "expected": "81dac3532539ab11f92be9bb60967f014914f37b8e5796490748e1be35c453e1",
+      "actual": "81dac3532539ab11f92be9bb60967f014914f37b8e5796490748e1be35c453e1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "cfc5300cec7c174b9fcd5e82ebe3517b544328ab1779493f1caa455942b96627",
+      "actual": "cfc5300cec7c174b9fcd5e82ebe3517b544328ab1779493f1caa455942b96627",
+      "unchanged": true
+    },
+    {
+      "path": ".codex/hooks.json.graphify-bak",
+      "owner": "external-protected",
+      "expected": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "actual": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "owner": "external-protected",
+      "expected": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "actual": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "owner": "external-protected",
+      "expected": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "actual": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "owner": "external-protected",
+      "expected": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "actual": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "unchanged": true
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "owner": "external-protected",
+      "expected": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "actual": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/catalog/generations/c564ec360f7ee33815bd894754195449/build-manifest.json",
+      "owner": "external-protected",
+      "expected": "c5e06b7aaaf0bb7e356b717ec1c31ce80fd561147e06c6bfada50c752575d72c",
+      "actual": "c5e06b7aaaf0bb7e356b717ec1c31ce80fd561147e06c6bfada50c752575d72c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/catalog/generations/c564ec360f7ee33815bd894754195449/registry.json",
+      "owner": "external-protected",
+      "expected": "dca97a8f1895c768dfafac657408153a38ee5321df0c926094e5c137c9c6358a",
+      "actual": "dca97a8f1895c768dfafac657408153a38ee5321df0c926094e5c137c9c6358a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "b77824c660e675f83947b05a35129b3b0e9493d98b073aa5a9b02f48016744bf",
+      "actual": "b77824c660e675f83947b05a35129b3b0e9493d98b073aa5a9b02f48016744bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/cases.json",
+      "owner": "external-protected",
+      "expected": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "actual": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "actual": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "actual": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "actual": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "b2d285610bddab0c5f45f3f4a6c1c10a24c9099fd38cca7ec5176ef58debe6e3",
+      "actual": "b2d285610bddab0c5f45f3f4a6c1c10a24c9099fd38cca7ec5176ef58debe6e3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative.png",
+      "owner": "external-protected",
+      "expected": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "actual": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "507d2756911426c1bbeb9f3201cd30c589941487573628653b40b2e390df1dbd",
+      "actual": "507d2756911426c1bbeb9f3201cd30c589941487573628653b40b2e390df1dbd",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "actual": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-input.json",
+      "owner": "external-protected",
+      "expected": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "actual": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "actual": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "5881b90d6a896b9175d92e0e13edd2d74139632c9ba200d7262a58e83e988a32",
+      "actual": "5881b90d6a896b9175d92e0e13edd2d74139632c9ba200d7262a58e83e988a32",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive.png",
+      "owner": "external-protected",
+      "expected": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "actual": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "7b31bade488f6c8b25159c5553689e48544701c4bf35f228a6c139421405e227",
+      "actual": "7b31bade488f6c8b25159c5553689e48544701c4bf35f228a6c139421405e227",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/causal/receipt.json",
+      "owner": "external-protected",
+      "expected": "cd2fae962a16532c4884681f7114d0415e3c4ad0d4b0d0e4e83260d08e3d1cc1",
+      "actual": "cd2fae962a16532c4884681f7114d0415e3c4ad0d4b0d0e4e83260d08e3d1cc1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "actual": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "actual": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "actual": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "fdd1b728b393f74a04de66d5e6c9cf85ca406452e0abf0af29f37585c73108f6",
+      "actual": "fdd1b728b393f74a04de66d5e6c9cf85ca406452e0abf0af29f37585c73108f6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "actual": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "c45f1d2b4097af0ff6cb7ad2859bb35b7e4c8c2ca72f2e4131252ad753ffad0d",
+      "actual": "c45f1d2b4097af0ff6cb7ad2859bb35b7e4c8c2ca72f2e4131252ad753ffad0d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "actual": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "actual": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "actual": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "8a27951901cad01f69c808cd372a9b958c4370da2eae030751be2fdbe6b0de58",
+      "actual": "8a27951901cad01f69c808cd372a9b958c4370da2eae030751be2fdbe6b0de58",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "actual": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "b48dc7ccb8a2dee52679f3fe0903c47c31e0977b592bbbebe9f5795beaf13da3",
+      "actual": "b48dc7ccb8a2dee52679f3fe0903c47c31e0977b592bbbebe9f5795beaf13da3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "b6531cef6e49ee4364d87de1dab09073611501841f51f2341d0a04a7797a191a",
+      "actual": "b6531cef6e49ee4364d87de1dab09073611501841f51f2341d0a04a7797a191a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/environment.json",
+      "owner": "external-protected",
+      "expected": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "actual": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "actual": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "actual": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "actual": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "a00bdd0b617e7bab170a5203a4455b8528538eb10584c70055d08bc17fd64728",
+      "actual": "a00bdd0b617e7bab170a5203a4455b8528538eb10584c70055d08bc17fd64728",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative.png",
+      "owner": "external-protected",
+      "expected": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "actual": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "f1d8f00bb706b77db6b9b889c239046f3c6272b56e3e6a05c420515c0a866f97",
+      "actual": "f1d8f00bb706b77db6b9b889c239046f3c6272b56e3e6a05c420515c0a866f97",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "actual": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "actual": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "actual": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "33ff5048c9b17eafe4cf744fb4a3bdb0a5cd58e7df5494ec432a2c173c92d011",
+      "actual": "33ff5048c9b17eafe4cf744fb4a3bdb0a5cd58e7df5494ec432a2c173c92d011",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive.png",
+      "owner": "external-protected",
+      "expected": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "actual": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "7d699725e38b1c4a3f877007d1ec40632e06ba3f6666449019a27b52e2e43e9c",
+      "actual": "7d699725e38b1c4a3f877007d1ec40632e06ba3f6666449019a27b52e2e43e9c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "0d76d22c121b6ec5340a6c332091dad2e124c1c5286cf7ee5cb6b0c29ad3f513",
+      "actual": "0d76d22c121b6ec5340a6c332091dad2e124c1c5286cf7ee5cb6b0c29ad3f513",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "actual": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "actual": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "actual": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "bb1eef3b2a1ba69a63bd59452e343e347fe01af306ca3a0cb7faf2bc60c6d3de",
+      "actual": "bb1eef3b2a1ba69a63bd59452e343e347fe01af306ca3a0cb7faf2bc60c6d3de",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative.png",
+      "owner": "external-protected",
+      "expected": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "actual": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "80a5c78a022509f679454b29592da47eaa27abb693262c1a2f5a9a680f5ec50e",
+      "actual": "80a5c78a022509f679454b29592da47eaa27abb693262c1a2f5a9a680f5ec50e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "actual": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive-input.json",
+      "owner": "external-protected",
+      "expected": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "actual": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "actual": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "16a04871fbcc454995009ef497331022d59d64cc5ac2f0149030fbba15c4f744",
+      "actual": "16a04871fbcc454995009ef497331022d59d64cc5ac2f0149030fbba15c4f744",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive.png",
+      "owner": "external-protected",
+      "expected": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "actual": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "1dcfa8a5bd961ef7b94d9f39657f999a8018612bdecaba2a4610e99fa7a0243a",
+      "actual": "1dcfa8a5bd961ef7b94d9f39657f999a8018612bdecaba2a4610e99fa7a0243a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/process/receipt.json",
+      "owner": "external-protected",
+      "expected": "8030b43b58e89af64082d122d29d4315d10e3fce73b7e9f20a51d41f509d1cfc",
+      "actual": "8030b43b58e89af64082d122d29d4315d10e3fce73b7e9f20a51d41f509d1cfc",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/report.json",
+      "owner": "external-protected",
+      "expected": "7fd396ff277d550ac3413b044c77928abed6e0a313a63c77190d8f7644341a90",
+      "actual": "7fd396ff277d550ac3413b044c77928abed6e0a313a63c77190d8f7644341a90",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "actual": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-input.json",
+      "owner": "external-protected",
+      "expected": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "actual": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "actual": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "8bafb7234560d27a24c37a3ab6c06b7f43cb42bb1cce5d89c576d7aa4892e988",
+      "actual": "8bafb7234560d27a24c37a3ab6c06b7f43cb42bb1cce5d89c576d7aa4892e988",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative.png",
+      "owner": "external-protected",
+      "expected": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "actual": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "894b7a1d8ecb32bbf9cbac463a9af41447303debc2cd8089c290bdc74907efec",
+      "actual": "894b7a1d8ecb32bbf9cbac463a9af41447303debc2cd8089c290bdc74907efec",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "actual": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-input.json",
+      "owner": "external-protected",
+      "expected": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "actual": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "actual": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "53be9cf47831170bd224fc6002a9c79213d544d8ed2030371bb62aba03111d81",
+      "actual": "53be9cf47831170bd224fc6002a9c79213d544d8ed2030371bb62aba03111d81",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive.png",
+      "owner": "external-protected",
+      "expected": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "actual": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "5beb9796165696cb120ba1e2ff73cd2f21e72c16743e106b817ef4cc1a18ff9b",
+      "actual": "5beb9796165696cb120ba1e2ff73cd2f21e72c16743e106b817ef4cc1a18ff9b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920-rel5/trend/receipt.json",
+      "owner": "external-protected",
+      "expected": "aff0d7a87dbe749b9e731479365e7b0fc931227e9e19aeaa2bc17089e71ca346",
+      "actual": "aff0d7a87dbe749b9e731479365e7b0fc931227e9e19aeaa2bc17089e71ca346",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "c28874b1c3a593332c4605bd63fd2ce8b1001647d268b950688346f8d2cbb731",
+      "actual": "c28874b1c3a593332c4605bd63fd2ce8b1001647d268b950688346f8d2cbb731",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "actual": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "actual": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243",
+      "actual": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "ce3888f352934ce5b1d4920aa7ee66af75f21a6e5b467e2aa493a4f7e9fe8b18",
+      "actual": "ce3888f352934ce5b1d4920aa7ee66af75f21a6e5b467e2aa493a4f7e9fe8b18",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "actual": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "6dda7e05508ae82883e649de84cc6acd125a398086a3c10b94d75a6c7256b34b",
+      "actual": "6dda7e05508ae82883e649de84cc6acd125a398086a3c10b94d75a6c7256b34b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "actual": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "actual": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "b12cde0318acb2d78842e114c166c3bc444fb74d6cf18d3b004f16bae4058cd8",
+      "actual": "b12cde0318acb2d78842e114c166c3bc444fb74d6cf18d3b004f16bae4058cd8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "feb270bc42f96f7d3592a90b5a6479ed4646f9f4da194bea210c543d4e665f1e",
+      "actual": "feb270bc42f96f7d3592a90b5a6479ed4646f9f4da194bea210c543d4e665f1e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "actual": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "8d0d2aec67435720a17d62feac314d7dacbff47db58a0d27d88a11a1ed6c26d7",
+      "actual": "8d0d2aec67435720a17d62feac314d7dacbff47db58a0d27d88a11a1ed6c26d7",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cards-stat-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "2a0efb7496184671c7ef37ea5969627656866741d43cfda7e6be0d2cbd8eddf0",
+      "actual": "2a0efb7496184671c7ef37ea5969627656866741d43cfda7e6be0d2cbd8eddf0",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cases.json",
+      "owner": "external-protected",
+      "expected": "8ccc21eb664fcbd8ddac63b99e789efd9a47a53a960cd1cfcfb3c9ecb4c47537",
+      "actual": "8ccc21eb664fcbd8ddac63b99e789efd9a47a53a960cd1cfcfb3c9ecb4c47537",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "actual": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "actual": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00",
+      "actual": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "4c10247266a2bfd9a5ca71585cc516ea1e25d5f70bcd3454877c6bd42fd6116d",
+      "actual": "4c10247266a2bfd9a5ca71585cc516ea1e25d5f70bcd3454877c6bd42fd6116d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+      "actual": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "bc90dcf9091180f7a404af77fe474c8b555de3baab05a82dc2c8d945c6b0be75",
+      "actual": "bc90dcf9091180f7a404af77fe474c8b555de3baab05a82dc2c8d945c6b0be75",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "actual": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "actual": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39",
+      "actual": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "e07a21bf9dba35a34fa66ab4c6cb11a363ac8228c8feebf82641bd081732b472",
+      "actual": "e07a21bf9dba35a34fa66ab4c6cb11a363ac8228c8feebf82641bd081732b472",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d",
+      "actual": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "2f8b703013c2a32572f743981795661b514d6f082ff4ba87b27176d8cb00939e",
+      "actual": "2f8b703013c2a32572f743981795661b514d6f082ff4ba87b27176d8cb00939e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/cover-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "aa91cc61d6c9f53deef9fd0ca4766275d6ab09724abb4424aca22a621c4eca9c",
+      "actual": "aa91cc61d6c9f53deef9fd0ca4766275d6ab09724abb4424aca22a621c4eca9c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "actual": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "actual": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "f1cc24d3a8a2c6e67e49f1e5530798663cf751711401ddf6c1d9a9feab64c044",
+      "actual": "f1cc24d3a8a2c6e67e49f1e5530798663cf751711401ddf6c1d9a9feab64c044",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "7c212bc8d75b4e037061fcaa6bcb479b810fe9d8ec245b8dc60da1f0b34509a5",
+      "actual": "7c212bc8d75b4e037061fcaa6bcb479b810fe9d8ec245b8dc60da1f0b34509a5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "actual": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "79d5e87007337b46380163401a7bfb248767754fc6cf20436d2e72c71a18dff6",
+      "actual": "79d5e87007337b46380163401a7bfb248767754fc6cf20436d2e72c71a18dff6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "actual": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "actual": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "1a1fbf1c53f59fb0489998a22840ca48ef579209ec54921b248e910552e279c2",
+      "actual": "1a1fbf1c53f59fb0489998a22840ca48ef579209ec54921b248e910552e279c2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "f96d7cab6cec7f697d65ce2b0bad1c54b2a256401358f791f299d9d84813a8b1",
+      "actual": "f96d7cab6cec7f697d65ce2b0bad1c54b2a256401358f791f299d9d84813a8b1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "actual": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "0df01a37d3b8be3d3f870259e01b613753f2f628499946184c9d7a34762c1bc2",
+      "actual": "0df01a37d3b8be3d3f870259e01b613753f2f628499946184c9d7a34762c1bc2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "c7117ca46083c4ae786f9a5f6cebb83630450d2a554d3aa47b9c11a7c6a85b8e",
+      "actual": "c7117ca46083c4ae786f9a5f6cebb83630450d2a554d3aa47b9c11a7c6a85b8e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/environment.json",
+      "owner": "external-protected",
+      "expected": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "actual": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39",
+      "actual": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e",
+      "actual": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698",
+      "actual": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "4a23f8a10f6e3286fe34c991ea591b2b34f62ff87351db608a3233475aa8caf4",
+      "actual": "4a23f8a10f6e3286fe34c991ea591b2b34f62ff87351db608a3233475aa8caf4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856",
+      "actual": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "7c8c0dfc24e946a20f71ec19cd20f0397cc7ecf6ec1b88d707f7739aa3ec1dad",
+      "actual": "7c8c0dfc24e946a20f71ec19cd20f0397cc7ecf6ec1b88d707f7739aa3ec1dad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025",
+      "actual": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15",
+      "actual": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940",
+      "actual": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "e759e162a8925b2fa8c7d744138e9e467cd7354f3491c14209a58e53d4f7ab02",
+      "actual": "e759e162a8925b2fa8c7d744138e9e467cd7354f3491c14209a58e53d4f7ab02",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16",
+      "actual": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "fa29944c9fcf090ec932396285bccbc537aa0704d87940c6c3668946e94ebff3",
+      "actual": "fa29944c9fcf090ec932396285bccbc537aa0704d87940c6c3668946e94ebff3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "3e006075a73a27f46554639e7cbeb1e2d6791887a73a222744e0a502df067745",
+      "actual": "3e006075a73a27f46554639e7cbeb1e2d6791887a73a222744e0a502df067745",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/report.json",
+      "owner": "external-protected",
+      "expected": "7a0f8e2728291c104d720ff16e7687120209ddfca2f196d4c8d8cf7cf5f129e5",
+      "actual": "7a0f8e2728291c104d720ff16e7687120209ddfca2f196d4c8d8cf7cf5f129e5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "10d4a70ed502f6ba7eb2402dee8207a0f6c2112e78ecf889fa970ab7e91dc2fb",
+      "actual": "10d4a70ed502f6ba7eb2402dee8207a0f6c2112e78ecf889fa970ab7e91dc2fb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "actual": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "actual": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "64bf6a29ff38fa5105c819b076758f0653f101d426c9ecb3e75ebf8563a66256",
+      "actual": "64bf6a29ff38fa5105c819b076758f0653f101d426c9ecb3e75ebf8563a66256",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "aa6c33a75864c50c1b6553c117b2cbf88e2bc2bc122b20a36920d9733a9c388c",
+      "actual": "aa6c33a75864c50c1b6553c117b2cbf88e2bc2bc122b20a36920d9733a9c388c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "actual": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "f87ce0d8f2ad5488fd1ebb87e71378b6278d4695d0116688a17da5b4af981741",
+      "actual": "f87ce0d8f2ad5488fd1ebb87e71378b6278d4695d0116688a17da5b4af981741",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "actual": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "actual": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd",
+      "actual": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "42a8530c80543747cd34f46c53ab7dba33c55b6218ce925eda97573b7b2834ef",
+      "actual": "42a8530c80543747cd34f46c53ab7dba33c55b6218ce925eda97573b7b2834ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "actual": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "171f612919df578a978aee2c42216eb2562551ab2706baa51b3de504a250257b",
+      "actual": "171f612919df578a978aee2c42216eb2562551ab2706baa51b3de504a250257b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cards-stat-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "3bdea6632e6584700f378b79ab81061c59264d96c35596290599498a8fc45a48",
+      "actual": "3bdea6632e6584700f378b79ab81061c59264d96c35596290599498a8fc45a48",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cases.json",
+      "owner": "external-protected",
+      "expected": "cf122a1caf9bc68c8838f05b004041ea9c54ecec45456e334b3b2bd47e6cb012",
+      "actual": "cf122a1caf9bc68c8838f05b004041ea9c54ecec45456e334b3b2bd47e6cb012",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "actual": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "actual": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d",
+      "actual": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "3f223f39850994ea401f1023ab65cc9747fe697a39c2b745deddcd5e990afa4a",
+      "actual": "3f223f39850994ea401f1023ab65cc9747fe697a39c2b745deddcd5e990afa4a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead",
+      "actual": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "de9c06faa0fa5962b2f2940dac716e4e3a908c8fc7b76d14d84b3200a3416825",
+      "actual": "de9c06faa0fa5962b2f2940dac716e4e3a908c8fc7b76d14d84b3200a3416825",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "actual": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "actual": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "0e1341d360ebf31c5e83cd8321f2584395290050782fae7d3024c359baa8a04e",
+      "actual": "0e1341d360ebf31c5e83cd8321f2584395290050782fae7d3024c359baa8a04e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "4b114aa797e729bc069f7f15d17def3a2d48503d91933bd4adb2978643aafb9a",
+      "actual": "4b114aa797e729bc069f7f15d17def3a2d48503d91933bd4adb2978643aafb9a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9",
+      "actual": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "2edcfd55cb36cb27726d098f3b87593878a3b8163d85770695f792bed4293fab",
+      "actual": "2edcfd55cb36cb27726d098f3b87593878a3b8163d85770695f792bed4293fab",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/cover-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "589c53ee8f61a65a1118a6642c43c39c11fb277619396c2c74bc17917c395a94",
+      "actual": "589c53ee8f61a65a1118a6642c43c39c11fb277619396c2c74bc17917c395a94",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "actual": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "actual": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e",
+      "actual": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "51d23f984840a1bd8e46fc303e7514e71e8ebd1fa1c8d9fea13e7bd2fc32e7ea",
+      "actual": "51d23f984840a1bd8e46fc303e7514e71e8ebd1fa1c8d9fea13e7bd2fc32e7ea",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "actual": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "034bb43a4b7450d03b95f2ff1c811992e2fd871f55559552402681e67e13c011",
+      "actual": "034bb43a4b7450d03b95f2ff1c811992e2fd871f55559552402681e67e13c011",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "actual": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "actual": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c2ad0ba87b25e177a9191aace93edb5ef6aa46f04da77f0f9b03252cca7da003",
+      "actual": "c2ad0ba87b25e177a9191aace93edb5ef6aa46f04da77f0f9b03252cca7da003",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "b40b664a9a08a6b2dd054327c4d28e6c8ba91168bf0be789de206e004bfbd24a",
+      "actual": "b40b664a9a08a6b2dd054327c4d28e6c8ba91168bf0be789de206e004bfbd24a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "actual": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "472f0eacecbacd568688badbaf90b8e27686fab27c711eb60b9ad2b999a12113",
+      "actual": "472f0eacecbacd568688badbaf90b8e27686fab27c711eb60b9ad2b999a12113",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/duo-compare-comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "ab1139ab015c8b17694612fe1875e410cf0e4bc5b4ef2f1f725c17b39d21d496",
+      "actual": "ab1139ab015c8b17694612fe1875e410cf0e4bc5b4ef2f1f725c17b39d21d496",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/environment.json",
+      "owner": "external-protected",
+      "expected": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+      "actual": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b2/report.json",
+      "owner": "external-protected",
+      "expected": "c56f66cf3f64c0c5bbdcd56f37cdf3aa8d9a06051d7ed0498d9743db4f72e9c9",
+      "actual": "c56f66cf3f64c0c5bbdcd56f37cdf3aa8d9a06051d7ed0498d9743db4f72e9c9",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "1710d03407974e23726461ffa4203faeb2065757975fc77871b56cb932b640f8",
+      "actual": "1710d03407974e23726461ffa4203faeb2065757975fc77871b56cb932b640f8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "actual": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "actual": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "64bf6a29ff38fa5105c819b076758f0653f101d426c9ecb3e75ebf8563a66256",
+      "actual": "64bf6a29ff38fa5105c819b076758f0653f101d426c9ecb3e75ebf8563a66256",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "eecbbf0ed5d3ea0046f72a4985ad04450c82e9962388be85ef1ae8c0943efed6",
+      "actual": "eecbbf0ed5d3ea0046f72a4985ad04450c82e9962388be85ef1ae8c0943efed6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "actual": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "b91af430fce9817094af506749b00197074ace3716d16b52d7b36adf65329472",
+      "actual": "b91af430fce9817094af506749b00197074ace3716d16b52d7b36adf65329472",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "actual": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "actual": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd",
+      "actual": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "a316862902acc0ee468e6b26603f65d306cec367be57ccc841689e484a6ed7df",
+      "actual": "a316862902acc0ee468e6b26603f65d306cec367be57ccc841689e484a6ed7df",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "actual": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "6a0ea1a302544fa2fe6fe4da2541fbb5506a34fc1377356e3ae4c4ef04bd98b0",
+      "actual": "6a0ea1a302544fa2fe6fe4da2541fbb5506a34fc1377356e3ae4c4ef04bd98b0",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cards-stat-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "27ba26940fd715d425a20a2a6bc2ea6981f001e5fde01dbfcb4372f145831311",
+      "actual": "27ba26940fd715d425a20a2a6bc2ea6981f001e5fde01dbfcb4372f145831311",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cases.json",
+      "owner": "external-protected",
+      "expected": "cf122a1caf9bc68c8838f05b004041ea9c54ecec45456e334b3b2bd47e6cb012",
+      "actual": "cf122a1caf9bc68c8838f05b004041ea9c54ecec45456e334b3b2bd47e6cb012",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "actual": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "actual": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d",
+      "actual": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "9c1d6b31e1d96f1adce0068365c097f8bf07c3e28ec1b3083de56b79ecc4ffe5",
+      "actual": "9c1d6b31e1d96f1adce0068365c097f8bf07c3e28ec1b3083de56b79ecc4ffe5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead",
+      "actual": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "22ec856766c32199fae80e0e5e429ac1008867a127baf2184a5274972a5a80eb",
+      "actual": "22ec856766c32199fae80e0e5e429ac1008867a127baf2184a5274972a5a80eb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "actual": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "actual": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "0e1341d360ebf31c5e83cd8321f2584395290050782fae7d3024c359baa8a04e",
+      "actual": "0e1341d360ebf31c5e83cd8321f2584395290050782fae7d3024c359baa8a04e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "f9cc22dcae4bb574ecaf9e56f6bd06e335084a0bdffdd99ffff8b2315f4685c1",
+      "actual": "f9cc22dcae4bb574ecaf9e56f6bd06e335084a0bdffdd99ffff8b2315f4685c1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9",
+      "actual": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "90c9ba5f200a8fed765a97727bc338210aed3cb8310392b0814be100617bf28a",
+      "actual": "90c9ba5f200a8fed765a97727bc338210aed3cb8310392b0814be100617bf28a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/cover-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "538e0d0df89d235626470e3e116e907d8afbf12523ae7bf1483d89aec789b373",
+      "actual": "538e0d0df89d235626470e3e116e907d8afbf12523ae7bf1483d89aec789b373",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "actual": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "actual": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e",
+      "actual": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "5040462e24857518922271c7cb6de7eb8dda0739edaa9cfd9ed292146719806b",
+      "actual": "5040462e24857518922271c7cb6de7eb8dda0739edaa9cfd9ed292146719806b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "actual": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "105b8929c4dcc46d331693d09ccf87850b1e3d772ffb3c3b015bd31d2a9cc69d",
+      "actual": "105b8929c4dcc46d331693d09ccf87850b1e3d772ffb3c3b015bd31d2a9cc69d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "actual": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "actual": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c2ad0ba87b25e177a9191aace93edb5ef6aa46f04da77f0f9b03252cca7da003",
+      "actual": "c2ad0ba87b25e177a9191aace93edb5ef6aa46f04da77f0f9b03252cca7da003",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "acde7931ac6b3abcd31353a011e9d2b1fefaf930a9cd33a0492396a8ce7183bc",
+      "actual": "acde7931ac6b3abcd31353a011e9d2b1fefaf930a9cd33a0492396a8ce7183bc",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "actual": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "9b7bff92fae67980c344ada2a1f9ca01f2c59f44b6bf9b49d2392eaafd98dd0a",
+      "actual": "9b7bff92fae67980c344ada2a1f9ca01f2c59f44b6bf9b49d2392eaafd98dd0a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/duo-compare-comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "36b714411cff14167d6628f3c5858e3ca0e7cc371e6d632ea4ecf96c5e020408",
+      "actual": "36b714411cff14167d6628f3c5858e3ca0e7cc371e6d632ea4ecf96c5e020408",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/environment.json",
+      "owner": "external-protected",
+      "expected": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "actual": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-b3/report.json",
+      "owner": "external-protected",
+      "expected": "d280e3fbbdd29a2b9edae8916af4f9222b226e78b5bd8ef828ecc649a4594be8",
+      "actual": "d280e3fbbdd29a2b9edae8916af4f9222b226e78b5bd8ef828ecc649a4594be8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "a78bb949c6492a81c4e303e52c97144c1d18c7bf0c32f34ac3875bb54bef52fb",
+      "actual": "a78bb949c6492a81c4e303e52c97144c1d18c7bf0c32f34ac3875bb54bef52fb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/cases.json",
+      "owner": "external-protected",
+      "expected": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "actual": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "actual": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "actual": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "actual": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "c8f8ec64fa0f71f2ab7d098e1fcebd121be3f21b333aa51931d5ade4b2ddc385",
+      "actual": "c8f8ec64fa0f71f2ab7d098e1fcebd121be3f21b333aa51931d5ade4b2ddc385",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative.png",
+      "owner": "external-protected",
+      "expected": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "actual": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "8be93271834c39a183a546cfb48b67eed7d2f73c9165071b10d0877955e7cf65",
+      "actual": "8be93271834c39a183a546cfb48b67eed7d2f73c9165071b10d0877955e7cf65",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "actual": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive-input.json",
+      "owner": "external-protected",
+      "expected": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "actual": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "actual": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "2131513340496f14370279b3806171297f3e5877c7e70dbb1e7a765779a6292d",
+      "actual": "2131513340496f14370279b3806171297f3e5877c7e70dbb1e7a765779a6292d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive.png",
+      "owner": "external-protected",
+      "expected": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "actual": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "b716242bfed3a8a72dc470504ded2e50191120fc943fdef97b5d7c8d7a45b555",
+      "actual": "b716242bfed3a8a72dc470504ded2e50191120fc943fdef97b5d7c8d7a45b555",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/causal/receipt.json",
+      "owner": "external-protected",
+      "expected": "6397236348a8706a9f98d077bdd7891667a3de50bfce47aee98c0b4b5205eea2",
+      "actual": "6397236348a8706a9f98d077bdd7891667a3de50bfce47aee98c0b4b5205eea2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "actual": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "actual": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "actual": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "bcf9e3bdd02d7c0c96aecb320431cee7ce3856043c592d972c7f0ca17ed28300",
+      "actual": "bcf9e3bdd02d7c0c96aecb320431cee7ce3856043c592d972c7f0ca17ed28300",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "actual": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "56a4d21930d90816d2ad7ba40a0da3b331278b04af363f5f68a5eedff0f4f201",
+      "actual": "56a4d21930d90816d2ad7ba40a0da3b331278b04af363f5f68a5eedff0f4f201",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "actual": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "actual": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "actual": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "ffa62a13bc94b5b161aa61158670f088ae9063d568299f81d7b90529e1a17cd8",
+      "actual": "ffa62a13bc94b5b161aa61158670f088ae9063d568299f81d7b90529e1a17cd8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "actual": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "84d7901c953b5f8c32d931ab4e88ace1ee159e8e8fa1a415ede9a6dd23e93f3a",
+      "actual": "84d7901c953b5f8c32d931ab4e88ace1ee159e8e8fa1a415ede9a6dd23e93f3a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "cefe5833a8ec3eeb8ac84a53ec2ab354772d620712c88df1228642c29fe39a09",
+      "actual": "cefe5833a8ec3eeb8ac84a53ec2ab354772d620712c88df1228642c29fe39a09",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/environment.json",
+      "owner": "external-protected",
+      "expected": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "actual": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "actual": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "actual": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "actual": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "c3cfe2e3b0ecd3ca6a8c3d1b9c6689a87a08113b6fce66ff142a0226beb2e538",
+      "actual": "c3cfe2e3b0ecd3ca6a8c3d1b9c6689a87a08113b6fce66ff142a0226beb2e538",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative.png",
+      "owner": "external-protected",
+      "expected": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "actual": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "3043df4916bbf1bc7d1293ce99e5c8446e492fd482328c1acae2060361e46197",
+      "actual": "3043df4916bbf1bc7d1293ce99e5c8446e492fd482328c1acae2060361e46197",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "actual": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "actual": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "actual": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "ed42651c69d943f044b684a6807016515d275ff5abbee22a8eb995077d077454",
+      "actual": "ed42651c69d943f044b684a6807016515d275ff5abbee22a8eb995077d077454",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive.png",
+      "owner": "external-protected",
+      "expected": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "actual": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "9d8abecfc24684e16a0953c22f95fdc7dbbb3a1fad618cc6cd1d0080c6ab43df",
+      "actual": "9d8abecfc24684e16a0953c22f95fdc7dbbb3a1fad618cc6cd1d0080c6ab43df",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "f2f6a363a5329d615c4b2463a5b7fec67e40c2958d1ae380bab7be0af238c4bf",
+      "actual": "f2f6a363a5329d615c4b2463a5b7fec67e40c2958d1ae380bab7be0af238c4bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "actual": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "actual": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "actual": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "e5872d21164772b8f42b3662067fd90ac2d03820938fe79b93fece4d7f4a902a",
+      "actual": "e5872d21164772b8f42b3662067fd90ac2d03820938fe79b93fece4d7f4a902a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative.png",
+      "owner": "external-protected",
+      "expected": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "actual": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "669a5db4c1e5828d309bb717e3bd831d1d2852e36e6cc6be9100a3376940089f",
+      "actual": "669a5db4c1e5828d309bb717e3bd831d1d2852e36e6cc6be9100a3376940089f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "actual": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive-input.json",
+      "owner": "external-protected",
+      "expected": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "actual": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "actual": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "3f268c2f1107355f5a5fb8ee641f0d75a8c46a174438fa01922726ef676a7664",
+      "actual": "3f268c2f1107355f5a5fb8ee641f0d75a8c46a174438fa01922726ef676a7664",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive.png",
+      "owner": "external-protected",
+      "expected": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "actual": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "75556809ffcaa2bf1be00f89dfab7cbaf65c5ef9ee32ea749336a298925d045a",
+      "actual": "75556809ffcaa2bf1be00f89dfab7cbaf65c5ef9ee32ea749336a298925d045a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/process/receipt.json",
+      "owner": "external-protected",
+      "expected": "2855b73d420807319c263ffdfbfa665d3683bc354aabe865d2dc3cea00b8a492",
+      "actual": "2855b73d420807319c263ffdfbfa665d3683bc354aabe865d2dc3cea00b8a492",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/report.json",
+      "owner": "external-protected",
+      "expected": "8e4e24637e98b100b12e73e7ca72c8b54d5d5baba91f685a27a28e3592e97fb7",
+      "actual": "8e4e24637e98b100b12e73e7ca72c8b54d5d5baba91f685a27a28e3592e97fb7",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "actual": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative-input.json",
+      "owner": "external-protected",
+      "expected": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "actual": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "actual": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "8094d07c7f7ba4130483700db04f1dac10bb5a5a462f84dfea4de2b2fd01e340",
+      "actual": "8094d07c7f7ba4130483700db04f1dac10bb5a5a462f84dfea4de2b2fd01e340",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative.png",
+      "owner": "external-protected",
+      "expected": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "actual": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "342bd604ac95b2eb09cc662393532d9ed64ceb52eab92bcb17b49f440b32422e",
+      "actual": "342bd604ac95b2eb09cc662393532d9ed64ceb52eab92bcb17b49f440b32422e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "actual": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive-input.json",
+      "owner": "external-protected",
+      "expected": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "actual": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "actual": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "ddf908cb5543e30ba05db5d629ee0e988a092c5bd94dd40ef9e138d115271e36",
+      "actual": "ddf908cb5543e30ba05db5d629ee0e988a092c5bd94dd40ef9e138d115271e36",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive.png",
+      "owner": "external-protected",
+      "expected": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "actual": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "df8cc2b9d6f93af0c78f95c94d584552436ba3c8c971789e007bc6d7bc8f31a2",
+      "actual": "df8cc2b9d6f93af0c78f95c94d584552436ba3c8c971789e007bc6d7bc8f31a2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920-r2/trend/receipt.json",
+      "owner": "external-protected",
+      "expected": "23848e8a7eb5e44ea2c07227beaafb2bfcda342a3fa65250e5fbfc6ad6ee7be0",
+      "actual": "23848e8a7eb5e44ea2c07227beaafb2bfcda342a3fa65250e5fbfc6ad6ee7be0",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "ac9ec1990198a44f5b3502c6ac31c06ec8be8cd559a79d85a1c130d74a053348",
+      "actual": "ac9ec1990198a44f5b3502c6ac31c06ec8be8cd559a79d85a1c130d74a053348",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/cases.json",
+      "owner": "external-protected",
+      "expected": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "actual": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "actual": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "actual": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "actual": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "d3aa599eafc8daefc310965f50d2f33af64053f78a8efee154f7211ca938e30b",
+      "actual": "d3aa599eafc8daefc310965f50d2f33af64053f78a8efee154f7211ca938e30b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative.png",
+      "owner": "external-protected",
+      "expected": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "actual": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "3ba72e2d0065fc8ad8a93240d46d8c271d440c128ebaaff3bbbe69da7f5f2855",
+      "actual": "3ba72e2d0065fc8ad8a93240d46d8c271d440c128ebaaff3bbbe69da7f5f2855",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "actual": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive-input.json",
+      "owner": "external-protected",
+      "expected": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "actual": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "actual": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "1c346f8393744801f92829b66079862fb2de6f6263211730a05b29851d8c28f2",
+      "actual": "1c346f8393744801f92829b66079862fb2de6f6263211730a05b29851d8c28f2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive.png",
+      "owner": "external-protected",
+      "expected": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "actual": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "471a8410ce1026e508102ea4c8a9d038f5b2480c2d847e5c17839562cb90126c",
+      "actual": "471a8410ce1026e508102ea4c8a9d038f5b2480c2d847e5c17839562cb90126c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/causal/receipt.json",
+      "owner": "external-protected",
+      "expected": "f089489f9466033f811113c37eec1cdf86b0f741e92fdeebfabb0426f7201f30",
+      "actual": "f089489f9466033f811113c37eec1cdf86b0f741e92fdeebfabb0426f7201f30",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "actual": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "actual": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "actual": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "f76814ed1732894b8cb9f433c34b2ed19a9f2328a4a5c2f89f9272f9723bcaeb",
+      "actual": "f76814ed1732894b8cb9f433c34b2ed19a9f2328a4a5c2f89f9272f9723bcaeb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "actual": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "f7a8e3cc9ca5dbdfdc1fa2f234a8c578aba57f995b154c7c609eaefdcfe6608b",
+      "actual": "f7a8e3cc9ca5dbdfdc1fa2f234a8c578aba57f995b154c7c609eaefdcfe6608b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "actual": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "actual": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "actual": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "a8e5dcab4583d2a79bf626af8fdefc464e6123d68e01d2a907d1b6fc2763316e",
+      "actual": "a8e5dcab4583d2a79bf626af8fdefc464e6123d68e01d2a907d1b6fc2763316e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "actual": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "716647b9a1fcc3bb3e2293e0c0c529f8d954bbe54937adadacca60047cde85f3",
+      "actual": "716647b9a1fcc3bb3e2293e0c0c529f8d954bbe54937adadacca60047cde85f3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "3a0db55c9de3200933518c9b4650e4e5211e4104a7cf7360a1602f034a5aa3cf",
+      "actual": "3a0db55c9de3200933518c9b4650e4e5211e4104a7cf7360a1602f034a5aa3cf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/environment.json",
+      "owner": "external-protected",
+      "expected": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+      "actual": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "actual": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "actual": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "actual": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "8dfde1853fe575b0721c1e85cdad1e8bfd68e86d3b9d08a1f4ddddab10eb350a",
+      "actual": "8dfde1853fe575b0721c1e85cdad1e8bfd68e86d3b9d08a1f4ddddab10eb350a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative.png",
+      "owner": "external-protected",
+      "expected": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "actual": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "c962bc7eea6928d343cabbeea6b173de89aded37319847c7fd8dd9169c4a734f",
+      "actual": "c962bc7eea6928d343cabbeea6b173de89aded37319847c7fd8dd9169c4a734f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "actual": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "actual": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "actual": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "4d1f45551f4253453f29aed51141cb5f500b85031f14abb010f1a25111e3ee44",
+      "actual": "4d1f45551f4253453f29aed51141cb5f500b85031f14abb010f1a25111e3ee44",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive.png",
+      "owner": "external-protected",
+      "expected": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "actual": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "0cc4631146680d398786e5f546bf9b5ccc8d60439be426b3184caf18e7a4380d",
+      "actual": "0cc4631146680d398786e5f546bf9b5ccc8d60439be426b3184caf18e7a4380d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "0883aca2cb1707a97ecbfa4215b953409f3800968de8db76275df6102db7ebed",
+      "actual": "0883aca2cb1707a97ecbfa4215b953409f3800968de8db76275df6102db7ebed",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "actual": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "actual": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "actual": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "c820e0af14faac62cce40c273894719e150ba77d6a14ec78d4d85b95e266fa61",
+      "actual": "c820e0af14faac62cce40c273894719e150ba77d6a14ec78d4d85b95e266fa61",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative.png",
+      "owner": "external-protected",
+      "expected": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "actual": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "27ab845ed9b3da3dabd51d682e32608c4d26e4c369150cb3bdbe3cc045f34643",
+      "actual": "27ab845ed9b3da3dabd51d682e32608c4d26e4c369150cb3bdbe3cc045f34643",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "actual": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive-input.json",
+      "owner": "external-protected",
+      "expected": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "actual": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "actual": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "f384c2679c52a017c3da9734eeccf9ff7d993995405bc5394f7bf61a8d32277f",
+      "actual": "f384c2679c52a017c3da9734eeccf9ff7d993995405bc5394f7bf61a8d32277f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive.png",
+      "owner": "external-protected",
+      "expected": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "actual": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "05c90ff1c7e5e6e437b30c77db4c7033ca3912cffb2131c08f6135520ebcb06e",
+      "actual": "05c90ff1c7e5e6e437b30c77db4c7033ca3912cffb2131c08f6135520ebcb06e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/process/receipt.json",
+      "owner": "external-protected",
+      "expected": "51825854f15ef42fcec0ea4713f179c6662513639bbc3419271a2fc26e89e2be",
+      "actual": "51825854f15ef42fcec0ea4713f179c6662513639bbc3419271a2fc26e89e2be",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/report.json",
+      "owner": "external-protected",
+      "expected": "5925a0d6dea437b7311ef506330356402cf7b9b53f1fc24092c2d50672a1e7d3",
+      "actual": "5925a0d6dea437b7311ef506330356402cf7b9b53f1fc24092c2d50672a1e7d3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "actual": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative-input.json",
+      "owner": "external-protected",
+      "expected": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "actual": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "actual": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "99cf218a7cb1f6a5ea447b2db02138b05588c6c5692069c983412616f2086b70",
+      "actual": "99cf218a7cb1f6a5ea447b2db02138b05588c6c5692069c983412616f2086b70",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative.png",
+      "owner": "external-protected",
+      "expected": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "actual": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "8503956ddab88dac80b1149924c6b35905ed6306decae829628afb138639e61f",
+      "actual": "8503956ddab88dac80b1149924c6b35905ed6306decae829628afb138639e61f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "actual": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive-input.json",
+      "owner": "external-protected",
+      "expected": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "actual": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "actual": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "5325c379ca4413308ce9b64eea9df52153080591e945770eb690a32f9785348f",
+      "actual": "5325c379ca4413308ce9b64eea9df52153080591e945770eb690a32f9785348f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive.png",
+      "owner": "external-protected",
+      "expected": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "actual": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "817e0f1f6833c1edc9ce2be428a72123d74109ce9b54870363f8341507d0098f",
+      "actual": "817e0f1f6833c1edc9ce2be428a72123d74109ce9b54870363f8341507d0098f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/install-test-20260920/trend/receipt.json",
+      "owner": "external-protected",
+      "expected": "0aea89283826c33c7f21004131d9f468f2beb7fa076d8e5d49e1a7d6ca48ab2f",
+      "actual": "0aea89283826c33c7f21004131d9f468f2beb7fa076d8e5d49e1a7d6ca48ab2f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "3a021cb3d43da80e031ef41f1f0971de3edf29f77e31371dc1249d3d8ce7a0fe",
+      "actual": "3a021cb3d43da80e031ef41f1f0971de3edf29f77e31371dc1249d3d8ce7a0fe",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "actual": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "actual": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243",
+      "actual": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "55e903d822bcb5d7fff90fc041d3f6b824bfc05fcf857e911b1b76d8448ca1af",
+      "actual": "55e903d822bcb5d7fff90fc041d3f6b824bfc05fcf857e911b1b76d8448ca1af",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "actual": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "ad79de507233c71673d92a2c25165a518233c7de9492b9125036c89660dfbee2",
+      "actual": "ad79de507233c71673d92a2c25165a518233c7de9492b9125036c89660dfbee2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "actual": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "actual": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "b12cde0318acb2d78842e114c166c3bc444fb74d6cf18d3b004f16bae4058cd8",
+      "actual": "b12cde0318acb2d78842e114c166c3bc444fb74d6cf18d3b004f16bae4058cd8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "dcf2e5d215b026f5c3c5645e9f0ee4f7c163d32e5cda11b6341e8b1194841d12",
+      "actual": "dcf2e5d215b026f5c3c5645e9f0ee4f7c163d32e5cda11b6341e8b1194841d12",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "actual": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "7d9256acf3f8d8e85144580280d69ec0e814960a8bd8bfd66fa39259fc314435",
+      "actual": "7d9256acf3f8d8e85144580280d69ec0e814960a8bd8bfd66fa39259fc314435",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cards-stat-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "4f269dd2c1d52a5f2263fa09392da54803205e25b1ecae3c383e16574f6e1183",
+      "actual": "4f269dd2c1d52a5f2263fa09392da54803205e25b1ecae3c383e16574f6e1183",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cases.json",
+      "owner": "external-protected",
+      "expected": "8ccc21eb664fcbd8ddac63b99e789efd9a47a53a960cd1cfcfb3c9ecb4c47537",
+      "actual": "8ccc21eb664fcbd8ddac63b99e789efd9a47a53a960cd1cfcfb3c9ecb4c47537",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "actual": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "actual": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00",
+      "actual": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "de5d26f8aecb517dcc814cda1037794106c0b1328c3077ecab191ff54289e96d",
+      "actual": "de5d26f8aecb517dcc814cda1037794106c0b1328c3077ecab191ff54289e96d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+      "actual": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "ccfedff8d7080b8309ed7d1a1ad74fd5dae87844376362550ad4ea0a54173bf9",
+      "actual": "ccfedff8d7080b8309ed7d1a1ad74fd5dae87844376362550ad4ea0a54173bf9",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "actual": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "actual": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39",
+      "actual": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "f8c406635c2de3f405d7a035edcba2f0b7c85880710f67839d75aa3adc7c4063",
+      "actual": "f8c406635c2de3f405d7a035edcba2f0b7c85880710f67839d75aa3adc7c4063",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d",
+      "actual": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "2780ebed2c5e2ad4d40a29eefcfd6cb82e1693c288d93d7a87ed5b7352cd1ed0",
+      "actual": "2780ebed2c5e2ad4d40a29eefcfd6cb82e1693c288d93d7a87ed5b7352cd1ed0",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/cover-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "84514c4468daeb35fb246ebd27b4c4cbfe1bad6b50e18498264a311aee830038",
+      "actual": "84514c4468daeb35fb246ebd27b4c4cbfe1bad6b50e18498264a311aee830038",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "actual": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "actual": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "f1cc24d3a8a2c6e67e49f1e5530798663cf751711401ddf6c1d9a9feab64c044",
+      "actual": "f1cc24d3a8a2c6e67e49f1e5530798663cf751711401ddf6c1d9a9feab64c044",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "55e3e7aa9dff4eedee2068667517766fb02c08c92c2ef6d3988896beb1c17439",
+      "actual": "55e3e7aa9dff4eedee2068667517766fb02c08c92c2ef6d3988896beb1c17439",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "actual": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "f0ed70acaff160b77838275b92126fbe9a62e5b2f3fedd415f7b8875e8dd6ea6",
+      "actual": "f0ed70acaff160b77838275b92126fbe9a62e5b2f3fedd415f7b8875e8dd6ea6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "actual": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "actual": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "1a1fbf1c53f59fb0489998a22840ca48ef579209ec54921b248e910552e279c2",
+      "actual": "1a1fbf1c53f59fb0489998a22840ca48ef579209ec54921b248e910552e279c2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "cc37b731e59b4b47f941460a40225cfe05d5ab17d381d29d8f3a6c566de48927",
+      "actual": "cc37b731e59b4b47f941460a40225cfe05d5ab17d381d29d8f3a6c566de48927",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "actual": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "196700368f2df95173a36861f4936f19a6f11dbd0c83c262d26023c324677c94",
+      "actual": "196700368f2df95173a36861f4936f19a6f11dbd0c83c262d26023c324677c94",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/duo-compare-comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "ab9376dc8d7fe29c6bd65136aaef55e34dfddfb80573b6e560db8ce6dda168ef",
+      "actual": "ab9376dc8d7fe29c6bd65136aaef55e34dfddfb80573b6e560db8ce6dda168ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/environment.json",
+      "owner": "external-protected",
+      "expected": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+      "actual": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39",
+      "actual": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e",
+      "actual": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698",
+      "actual": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "b89a4d8a436e6d136e5eb11cc07071ad791bddaadba4caf8854cc7563f4c4471",
+      "actual": "b89a4d8a436e6d136e5eb11cc07071ad791bddaadba4caf8854cc7563f4c4471",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative.png",
+      "owner": "external-protected",
+      "expected": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856",
+      "actual": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "39a2895a3ba969377c1437da6ca642849ab265a9d994646d100f42014d552180",
+      "actual": "39a2895a3ba969377c1437da6ca642849ab265a9d994646d100f42014d552180",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025",
+      "actual": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15",
+      "actual": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940",
+      "actual": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "a474afece52984b4a7f921b5c2280f21e700d47a2a07f408f6dc190244695097",
+      "actual": "a474afece52984b4a7f921b5c2280f21e700d47a2a07f408f6dc190244695097",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive.png",
+      "owner": "external-protected",
+      "expected": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16",
+      "actual": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "514e83ba56610be6930b4af2103bdbfe9ab01b4471e13bd58a09f705781cb7fa",
+      "actual": "514e83ba56610be6930b4af2103bdbfe9ab01b4471e13bd58a09f705781cb7fa",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/quote-pro-independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "630e8d9bc43e10b4c52b63e21c4aea6479c7c130c316efb7b7907e38dc4f60bc",
+      "actual": "630e8d9bc43e10b4c52b63e21c4aea6479c7c130c316efb7b7907e38dc4f60bc",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-pro/report.json",
+      "owner": "external-protected",
+      "expected": "59aab1296609b74de77d5310c2833c0ad3d611e7e65d021f8bf1863110f8ce23",
+      "actual": "59aab1296609b74de77d5310c2833c0ad3d611e7e65d021f8bf1863110f8ce23",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/capability-receipts.json",
+      "owner": "external-protected",
+      "expected": "f60a56a072bd3b98a91c1bd428104ab94477d91ae9b7d082cb161d77c06aaf93",
+      "actual": "f60a56a072bd3b98a91c1bd428104ab94477d91ae9b7d082cb161d77c06aaf93",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/cases.json",
+      "owner": "external-protected",
+      "expected": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "actual": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "actual": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "actual": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "actual": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "62881480b8f3660fd69f361f3db3b3b4ccde62a92c059c9423a1da83f7fe4000",
+      "actual": "62881480b8f3660fd69f361f3db3b3b4ccde62a92c059c9423a1da83f7fe4000",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative.png",
+      "owner": "external-protected",
+      "expected": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "actual": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "ca5fbc71d35d8f876861779f96ba62f1c899a1c2437d8accbf7987aeeab801e5",
+      "actual": "ca5fbc71d35d8f876861779f96ba62f1c899a1c2437d8accbf7987aeeab801e5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "actual": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive-input.json",
+      "owner": "external-protected",
+      "expected": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "actual": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "actual": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "16d8edfe55cb89142dc79840b13a9a8029648fd12c6e1b0e568375e745434e4d",
+      "actual": "16d8edfe55cb89142dc79840b13a9a8029648fd12c6e1b0e568375e745434e4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive.png",
+      "owner": "external-protected",
+      "expected": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "actual": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "3bd37bfdb1222cfbedf723959c2522b96c1bfd65c6e57e00ad36c34dcc3b17fc",
+      "actual": "3bd37bfdb1222cfbedf723959c2522b96c1bfd65c6e57e00ad36c34dcc3b17fc",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/causal/receipt.json",
+      "owner": "external-protected",
+      "expected": "fef21a609de0e548a7f768f70f57289e0037800d8a218ec9284b90475b6153d4",
+      "actual": "fef21a609de0e548a7f768f70f57289e0037800d8a218ec9284b90475b6153d4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "actual": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative-input.json",
+      "owner": "external-protected",
+      "expected": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "actual": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "actual": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "4c62bc2ba10503ee5804ce1b5a672d603a6fe6f8be950a43ce12267c0d277718",
+      "actual": "4c62bc2ba10503ee5804ce1b5a672d603a6fe6f8be950a43ce12267c0d277718",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative.png",
+      "owner": "external-protected",
+      "expected": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "actual": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "d965b3978f15b7bc7e1be083bfc3757a4ff5e45915e9807d5b22dc2977419c30",
+      "actual": "d965b3978f15b7bc7e1be083bfc3757a4ff5e45915e9807d5b22dc2977419c30",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "actual": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive-input.json",
+      "owner": "external-protected",
+      "expected": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "actual": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "actual": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "6fc5c5be2fe9a021f063a7d46ad3ec91e7be7d62a384228dc5b31d3fc016f351",
+      "actual": "6fc5c5be2fe9a021f063a7d46ad3ec91e7be7d62a384228dc5b31d3fc016f351",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive.png",
+      "owner": "external-protected",
+      "expected": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "actual": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "b33ba11202d328cd3f9b1d1868808593756fa9b998e2b05f20e6bcaa626d8fab",
+      "actual": "b33ba11202d328cd3f9b1d1868808593756fa9b998e2b05f20e6bcaa626d8fab",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/comparison/receipt.json",
+      "owner": "external-protected",
+      "expected": "024b53ecd26871b18babb3e3887f47444a609624ada62369de45f849714aa736",
+      "actual": "024b53ecd26871b18babb3e3887f47444a609624ada62369de45f849714aa736",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/environment.json",
+      "owner": "external-protected",
+      "expected": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+      "actual": "71e3b998dc120c27b13a8e929ada11dce92a7782881a24d76d8d1e5bf60f7d43",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "actual": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative-input.json",
+      "owner": "external-protected",
+      "expected": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "actual": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "actual": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "776076611c65020afd7aa4b883213605c106910100977776803045edfb0c6cc1",
+      "actual": "776076611c65020afd7aa4b883213605c106910100977776803045edfb0c6cc1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative.png",
+      "owner": "external-protected",
+      "expected": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "actual": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "d0d657c85708e419fc541015ae90985687e7bc3872dbbdfe1e664428f936b0af",
+      "actual": "d0d657c85708e419fc541015ae90985687e7bc3872dbbdfe1e664428f936b0af",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "actual": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive-input.json",
+      "owner": "external-protected",
+      "expected": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "actual": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "actual": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "cc8b3813fb636572111e8869219d19cef1d1dd31cde83897a8c92a56cfbbf17c",
+      "actual": "cc8b3813fb636572111e8869219d19cef1d1dd31cde83897a8c92a56cfbbf17c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive.png",
+      "owner": "external-protected",
+      "expected": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "actual": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "c3f5fde59db0d6ebc07b1454d6047f83612570205633b49595506ce59b0d6a3c",
+      "actual": "c3f5fde59db0d6ebc07b1454d6047f83612570205633b49595506ce59b0d6a3c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/independent/receipt.json",
+      "owner": "external-protected",
+      "expected": "0cc2f62157448e4463948b2204b5619848adfd450beeb94e5f9ba8f7619852bc",
+      "actual": "0cc2f62157448e4463948b2204b5619848adfd450beeb94e5f9ba8f7619852bc",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "actual": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative-input.json",
+      "owner": "external-protected",
+      "expected": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "actual": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "actual": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "dc4c49bb0367bb6326bac3b859f7d17c984339643dd6cdaae4151854bb120310",
+      "actual": "dc4c49bb0367bb6326bac3b859f7d17c984339643dd6cdaae4151854bb120310",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative.png",
+      "owner": "external-protected",
+      "expected": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "actual": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "6f3283fe2e9efd49ff4dff33c6165f75b035af345701a7cd35563db74a6e71c6",
+      "actual": "6f3283fe2e9efd49ff4dff33c6165f75b035af345701a7cd35563db74a6e71c6",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "actual": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive-input.json",
+      "owner": "external-protected",
+      "expected": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "actual": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "actual": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "3bb2c579ebe748865a850a0d6005b3eb772d3c3afb781728ee7a7a982d112d5b",
+      "actual": "3bb2c579ebe748865a850a0d6005b3eb772d3c3afb781728ee7a7a982d112d5b",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive.png",
+      "owner": "external-protected",
+      "expected": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "actual": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "af5d21e0953d2607cbab9398f41b88657a69a4a916915c47efc7be5600f3f9fa",
+      "actual": "af5d21e0953d2607cbab9398f41b88657a69a4a916915c47efc7be5600f3f9fa",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/process/receipt.json",
+      "owner": "external-protected",
+      "expected": "d8c907d958d6e7646787d1b01fb7b2fe2b0a5f42d30bf5e70611f01bb47b8c8f",
+      "actual": "d8c907d958d6e7646787d1b01fb7b2fe2b0a5f42d30bf5e70611f01bb47b8c8f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/report.json",
+      "owner": "external-protected",
+      "expected": "92f175e48d39030d670fa5a2a22fb06ddb23ddc83d23231d3508ec99269e31a7",
+      "actual": "92f175e48d39030d670fa5a2a22fb06ddb23ddc83d23231d3508ec99269e31a7",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative-fixture.json",
+      "owner": "external-protected",
+      "expected": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "actual": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative-input.json",
+      "owner": "external-protected",
+      "expected": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "actual": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative-measurement.json",
+      "owner": "external-protected",
+      "expected": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "actual": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative-observation.json",
+      "owner": "external-protected",
+      "expected": "08cdb6afdf62718450eb674c3db615a4b009741bbc8cdb94438528965ef5cb9d",
+      "actual": "08cdb6afdf62718450eb674c3db615a4b009741bbc8cdb94438528965ef5cb9d",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative.png",
+      "owner": "external-protected",
+      "expected": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "actual": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/negative.png.render.json",
+      "owner": "external-protected",
+      "expected": "550830928223f7a0a30f4517e1dabf032888c7ae6066dfc867d2c61547decd0a",
+      "actual": "550830928223f7a0a30f4517e1dabf032888c7ae6066dfc867d2c61547decd0a",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive-fixture.json",
+      "owner": "external-protected",
+      "expected": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "actual": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive-input.json",
+      "owner": "external-protected",
+      "expected": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "actual": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive-measurement.json",
+      "owner": "external-protected",
+      "expected": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "actual": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive-observation.json",
+      "owner": "external-protected",
+      "expected": "81e352d8dda0ddcfc76d9474dc75be02d92e5f8e6a6a5824169f2962a46d9d38",
+      "actual": "81e352d8dda0ddcfc76d9474dc75be02d92e5f8e6a6a5824169f2962a46d9d38",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive.png",
+      "owner": "external-protected",
+      "expected": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "actual": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/positive.png.render.json",
+      "owner": "external-protected",
+      "expected": "f2354935e33cef17515dad11c07f1c332d23312681c651438a32a24098bcc81c",
+      "actual": "f2354935e33cef17515dad11c07f1c332d23312681c651438a32a24098bcc81c",
+      "unchanged": true
+    },
+    {
+      "path": "leo-ppt-generator/template-library/evidence/probes/opt-code-20260920-rel5/trend/receipt.json",
+      "owner": "external-protected",
+      "expected": "9dd4dd849027ebba1d369b2466ff97269603561d2934c6111e24b352b5ab96f5",
+      "actual": "9dd4dd849027ebba1d369b2466ff97269603561d2934c6111e24b352b5ab96f5",
+      "unchanged": true
+    }
+  ],
+  "protected_drift": [],
+  "samples_tracked": 265,
+  "samples_differs_from_head": [],
+  "commit_created_this_continuation": false,
+  "push_executed_this_continuation": false,
+  "pr_created": false
+}

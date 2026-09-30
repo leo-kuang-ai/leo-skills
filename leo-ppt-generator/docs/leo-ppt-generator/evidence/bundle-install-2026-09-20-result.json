@@ -1,0 +1,36 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest -v tests.test_library_bundle",
+  "exit_code": 0,
+  "duration_seconds": 74.537,
+  "log": "docs/leo-ppt-generator/evidence/bundle-install-2026-09-20.log",
+  "source_sha256_before": "a8e61e6282d34250216e7bb9b95452f268bf30f7600ff1bcbb73231d58744a96",
+  "source_sha256_after": "a8e61e6282d34250216e7bb9b95452f268bf30f7600ff1bcbb73231d58744a96",
+  "claim_ceiling": "隔离复制与链接安装的本地 runtime/CLI 验证；不代表 Provider、视觉或完整 U8 发布验证",
+  "checks": [
+    {
+      "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m compileall -q tests/test_library_bundle.py",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- tests/test_library_bundle.py",
+      "exit_code": 0
+    }
+  ],
+  "log_sha256": "c24c65b5f8b9aff263759a6709f121e8f3d1bf1b0aea318cc923e16b95ef62aa",
+  "runtime_mutation": false,
+  "commit_created": false,
+  "coverage": [
+    "复制 runtime/assets 的独立 cwd 子进程",
+    "真实 bundle symlink 经 RuntimeManager 规范化",
+    "resolver identity/path/hash/generation 对照",
+    "独立 CLI style load 和 library-check",
+    "内外目标 canonical symlink 精确拒绝",
+    "原设计 fresh/stale 恢复及 catalog 篡改/断写回归"
+  ],
+  "not_run": [
+    "依赖联网安装",
+    "真实 Provider",
+    "视觉结果",
+    "整体 U8 发布验证"
+  ]
+}

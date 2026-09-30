@@ -14,6 +14,178 @@ from leo_ppt_generator.template_catalog import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def make_reference_bundle(root, *, scope="builtin"):
+    """把当前真实轴正文放到改名后的 v2 owner 目录，避免目录猜测通过测试。"""
+    from leo_ppt_generator.asset_resolver import ASSET_ID_RE
+    library = Path(root).resolve() / "template-library"
+    library.mkdir(parents=True)
+    shutil.copytree(ROOT / "template-library/governance", library / "governance")
+    (library / "library.json").write_text(json.dumps({
+        "schema_version": 2, "kind": "template-library", "library_id": scope,
+        "protocol": {"resolver": "asset_resolver/v2",
+                     "builder": "capability_manifest/template-registry/v2",
+                     "asset_id_pattern": ASSET_ID_RE.pattern},
+    }))
+    resolver = AssetResolver(library=ROOT / "template-library", home=Path(root) / "unused-home")
+    for family, slug, destination in (
+        ("argument", "故事弧", "semantic/argument-modes"),
+        ("rendering", "手绘笔记", "executable/renderers/guides"),
+        ("infographic", "漏斗图", "semantic/guides/infographic"),
+    ):
+        source = resolver.resolve(f"builtin:axis:{family}-{slug}")
+        target = library / "canonical" / destination / ("relocated-" + family)
+        shutil.copytree(Path(source["path"]).parent, target)
+        data = source["data"]
+        data["asset_id"] = f"{scope}:axis:{family}-{slug}"
+        (target / "manifest.json").write_text(json.dumps(data, ensure_ascii=False))
+    publish_catalog(library, build_catalog(library))
+    return library
+
+
+class ReferenceCatalogV2Tests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        self.library = make_reference_bundle(self.root)
+        self.resolver = AssetResolver(context=LibraryContext(self.library))
+        self.identity = "builtin:axis:argument-故事弧"
+
+    def test_references_resolve_without_entering_execution_entities(self):
+        self.assertEqual(self.resolver.entities, [])
+        self.assertEqual(len(self.resolver.references), 3)
+        hit = self.resolver.lookup(self.identity, kind="axis")[0]
+        resolved = self.resolver.resolve(hit["asset_id"])
+        self.assertEqual(resolved["data"]["kind"], "argument")
+        self.assertEqual(resolved["catalog_status"], "reference-only")
+        self.assertFalse(resolved["static_eligibility"]["execution_ready"])
+        detached = self.resolver.references
+        detached[0]["path"] = "not-a-reference"
+        self.assertNotEqual(self.resolver.references[0]["path"], "not-a-reference")
+        self.assertTrue(self.resolver.read_reference_body(self.identity))
+        pin = self.resolver.fingerprint(self.identity)
+        self.assertEqual(len(pin["files"]), 2)
+        with self.assertRaisesRegex(ValueError, "reference_asset_not_executable"):
+            self.resolver.freeze_assets(self.root / "frozen", [pin])
+        self.assertFalse((self.root / "frozen").exists())
+        self.assertFalse(build_catalog(self.library)["views/execution-pairings.json"]["candidates"])
+
+    def test_reference_scope_and_user_overlay_use_distinct_records(self):
+        user = make_reference_bundle(self.root / "user", scope="user")
+        direct_user = AssetResolver(context=LibraryContext(user))
+        self.assertEqual(direct_user.resolve("user:axis:argument-故事弧")["origin_scope"], "user")
+        resolver = AssetResolver(context=LibraryContext(self.library, user_root=user))
+        self.assertEqual(len(resolver.references), 6)
+        name = "论证模式：故事弧"
+        self.assertEqual(resolver.require(name, kind="axis")["origin_scope"], "user")
+        self.assertEqual(resolver.require(name, kind="axis", scope="builtin")["origin_scope"], "builtin")
+        self.assertEqual(resolver.entities, [])
+
+    def test_legacy_builtin_uses_v2_user_catalog_and_freezes_both_scopes(self):
+        from scripts.capability_manifest import build_template_registry, publish_template_registry
+        builtin = self.root / "legacy-builtin"
+        shutil.copytree(ROOT / "tests/fixtures/minimal-template-library", builtin)
+        publish_template_registry(build_template_registry(builtin), builtin)
+        home = self.root / "mixed-user"
+        user = make_reference_bundle(home, scope="user")
+        style = json.loads((builtin / "canonical/styles/minimal-clean/brief.json").read_text())
+        style["asset_id"] = "user:style:minimal-clean"
+        style["bindings"] = {}
+        owner = user / "canonical/visual/styles/relocated-user-style"
+        owner.mkdir(parents=True)
+        (owner / "brief.json").write_text(json.dumps(style))
+        publish_catalog(user, build_catalog(user))
+        resolver = AssetResolver(library=builtin, home=home)
+        self.assertEqual(resolver.require(style["name"], kind="style")["origin_scope"], "user")
+        self.assertEqual(resolver.require("user:axis:argument-故事弧", kind="axis")["origin_scope"], "user")
+        self.assertEqual(len(resolver.references), 3)
+        self.assertFalse(any(row["kind"] == "axis" for row in resolver.entities))
+        identities = ["builtin:style:minimal-clean", "user:style:minimal-clean"]
+        pins = [resolver.fingerprint(identity) for identity in identities]
+        frozen = resolver.freeze_assets(self.root / "mixed-frozen", pins)
+        shutil.rmtree(builtin)
+        shutil.rmtree(user)
+        self.assertEqual([frozen.fingerprint(identity) for identity in identities], pins)
+
+    def test_legacy_builtin_rejects_user_reference_that_claims_builtin_scope(self):
+        from leo_ppt_generator.asset_resolver import ScopeViolationError
+        from scripts.capability_manifest import build_template_registry, publish_template_registry
+        builtin = self.root / "legacy-builtin-reference-scope"
+        shutil.copytree(ROOT / "tests/fixtures/minimal-template-library", builtin)
+        publish_template_registry(build_template_registry(builtin), builtin)
+        home = self.root / "mixed-reference-scope"
+        make_reference_bundle(home, scope="builtin")
+        with self.assertRaisesRegex(ScopeViolationError, "scope_violation"):
+            AssetResolver(library=builtin, home=home).resolve("builtin:axis:argument-故事弧")
+
+    def test_v2_user_stale_manifest_is_rejected_with_unindexed_builtin(self):
+        from leo_ppt_generator.asset_resolver import StaleCatalogError
+        builtin = self.root / "unindexed-builtin"
+        shutil.copytree(ROOT / "tests/fixtures/minimal-template-library", builtin)
+        home = self.root / "stale-user"
+        user = make_reference_bundle(home, scope="user")
+        resolver = AssetResolver(library=builtin, home=home)
+        resolved = resolver.resolve("user:axis:argument-故事弧")
+        manifest = Path(resolved["path"])
+        value = json.loads(manifest.read_text())
+        value["name"] = "被外部修改"
+        manifest.write_text(json.dumps(value))
+        with self.assertRaisesRegex(StaleCatalogError, "stale_catalog"):
+            resolver.resolve("user:axis:argument-故事弧")
+
+    def test_warmed_reference_reads_reject_body_drift_and_missing_body(self):
+        from leo_ppt_generator.asset_resolver import ResolverError
+        resolved = self.resolver.resolve(self.identity)
+        body = Path(resolved["path"]).with_name("body.md")
+        body.write_text("外部修改正文")
+        with self.assertRaisesRegex(ResolverError, "stale_catalog"):
+            self.resolver.read_reference_body(self.identity)
+        body.unlink()
+        with self.assertRaises(ResolverError):
+            self.resolver.resolve(self.identity)
+
+    def test_warmed_reference_reads_reject_body_symlink(self):
+        from leo_ppt_generator.asset_resolver import ResolverError
+        resolved = self.resolver.resolve(self.identity)
+        body = Path(resolved["path"]).with_name("body.md")
+        saved = self.root / "saved-body.md"
+        body.rename(saved)
+        body.symlink_to(saved)
+        with self.assertRaises(ResolverError):
+            self.resolver.read_reference_body(self.identity)
+
+    def test_reference_owner_rejects_escaped_body_even_in_diagnostic_mode(self):
+        from leo_ppt_generator.asset_resolver import ScopeViolationError
+        path = self.library / "canonical/semantic/argument-modes/relocated-argument/manifest.json"
+        data = json.loads(path.read_text())
+        data["body_ref"] = "../relocated-argument/body.md"
+        path.write_text(json.dumps(data))
+        resolver = AssetResolver(context=LibraryContext(self.library, mode="diagnostic"))
+        with self.assertRaisesRegex(ScopeViolationError, "reference_body_invalid"):
+            resolver.read_reference_body(self.identity)
+
+    def test_reference_manifest_drift_cannot_reuse_a_warmed_snapshot(self):
+        from leo_ppt_generator.asset_resolver import StaleCatalogError
+        resolved = self.resolver.resolve(self.identity)
+        path = Path(resolved["path"])
+        data = json.loads(path.read_text())
+        data["kind"] = "infographic"
+        path.write_text(json.dumps(data))
+        with self.assertRaisesRegex(StaleCatalogError, "stale_catalog"):
+            self.resolver.read_reference_body(self.identity)
+
+    def test_warmed_reference_api_observes_maintenance(self):
+        from leo_ppt_generator.library_migration import MigrationError
+        self.assertTrue(self.resolver.read_reference_body(self.identity))
+        (self.library / ".maintenance.json").write_text('{"plan_digest":"test"}')
+        for call in (lambda: self.resolver.references,
+                     lambda: self.resolver.lookup(self.identity, kind="axis"),
+                     lambda: self.resolver.resolve(self.identity),
+                     lambda: self.resolver.read_reference_body(self.identity)):
+            with self.assertRaisesRegex(MigrationError, "library_in_maintenance"):
+                call()
+
+
 class TemplateCatalogV2Tests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()

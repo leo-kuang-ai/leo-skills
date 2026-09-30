@@ -6,10 +6,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 SKILL = Path(__file__).resolve().parents[1]
-TEMPLATES = SKILL / "template-library/canonical/templates"
-LAYOUTS = SKILL / "template-library/canonical/layouts"
-SCHEMA = SKILL / "template-library/governance/schemas/template-v1.schema.json"
-ASSET_RE = re.compile(r"^(builtin|user):([a-z-]+):([A-Za-z0-9\-\u4e00-\u9fff]+)$")
+sys.path.insert(0, str(SKILL / "runtime/src"))
+from leo_ppt_generator.asset_resolver import AssetResolver, ASSET_ID_RE, builtin_library_root
+from leo_ppt_generator.qualification import read_evidence_bytes
+ASSET_RE = ASSET_ID_RE
 SELECTOR_RE = re.compile(r"\[data-leo-block\s*=\s*([\'\"])([^\'\"]+)\1\]")
 
 
@@ -24,25 +24,28 @@ class _AnchorParser(HTMLParser):
                 self.anchors.add(value)
 
 
-def _schema_errors(data: dict) -> list[str]:
+def _schema_errors(data: dict, schema: Path | None = None) -> list[str]:
+    schema = schema or builtin_library_root() / "governance/schemas/template-v1.schema.json"
     try:
         from jsonschema import Draft7Validator
         from referencing import Registry, Resource
         resources = []
-        for p in SCHEMA.parent.glob("*.schema.json"):
-            doc = json.loads(p.read_text(encoding="utf-8"))
+        for p in schema.parent.glob("*.schema.json"):
+            doc = json.loads(read_evidence_bytes(schema.parents[2], p.relative_to(schema.parents[2]).as_posix()))
             if "$id" in doc:
                 resources.append((doc["$id"], Resource.from_contents(doc)))
-        validator = Draft7Validator(json.loads(SCHEMA.read_text(encoding="utf-8")), registry=Registry().with_resources(resources))
+        validator = Draft7Validator(json.loads(read_evidence_bytes(schema.parents[2], schema.relative_to(schema.parents[2]).as_posix())), registry=Registry().with_resources(resources))
         return [e.message for e in validator.iter_errors(data)]
     except Exception as exc:
         return [f"schema validator unavailable: {exc}"]
 
 
-def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
+def lint_one(directory: Path, known_layouts: dict[str, dict], *, schema: Path | None = None, expected_id: str | None = None) -> list[str]:
     slug = directory.name
     errors: list[str] = []
     manifest_path, html_path = directory / "template.json", directory / "page.html"
+    if any(p.is_symlink() for p in (manifest_path, html_path, directory, *directory.parents)):
+        return [f"{slug}: symlink rejected"]
     if not manifest_path.is_file():
         return [f"{slug}: missing template.json"]
     if not html_path.is_file():
@@ -51,9 +54,13 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
         data = json.loads(manifest_path.read_text(encoding="utf-8"))
     except Exception as exc:
         return [f"{slug}: invalid template.json: {exc}"]
-    errors += [f"{slug}: schema: {e}" for e in _schema_errors(data)]
-    expected_id = f"builtin:template:{slug}"
-    if data.get("asset_id") != expected_id:
+    errors += [f"{slug}: schema: {e}" for e in _schema_errors(data, schema)]
+    if errors:
+        return errors
+    identity = data.get("asset_id", "")
+    if not ASSET_RE.fullmatch(identity) or identity.split(":")[1] != "template":
+        errors.append(f"{slug}: invalid template identity")
+    if expected_id is not None and identity != expected_id:
         errors.append(f"{slug}: asset_id must be {expected_id}")
     html = html_path.read_text(encoding="utf-8")
     parser = _AnchorParser()
@@ -92,7 +99,7 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
         if not m:
             errors.append(f"{slug}: invalid asset reference {ref!r}")
             continue
-        kind = m.group(2)
+        kind = ref.split(":", 2)[1]
         if kind != "layout":
             errors.append(f"{slug}: template dependency must reference layout, got {ref}")
         if ref not in known_layouts:
@@ -138,28 +145,46 @@ def lint_one(directory: Path, known_layouts: dict[str, dict]) -> list[str]:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--templates-dir", default=str(TEMPLATES))
+    parser.add_argument("--library-root", type=Path, help="明确被检查的 current 库")
+    parser.add_argument("--templates-dir", type=Path, help="显式目录审计；schema/layout 来自所选库")
     args = parser.parse_args(argv)
-    layouts = {}
-    for path in LAYOUTS.glob("*/layout.json"):
-        try:
-            d = json.loads(path.read_text(encoding="utf-8"))
-            layouts[d.get("asset_id")] = d
-        except Exception:
-            continue
-    dirs = sorted(p for p in Path(args.templates_dir).iterdir() if p.is_dir())
-    if not dirs:
-        print(f"ERROR: 未找到模板目录于 {args.templates_dir}", file=sys.stderr); return 1
-    total = 0; errors = []
-    for directory in dirs:
-        if directory.name.startswith(".") or not (directory / "template.json").exists() and not (directory / "page.html").exists(): continue
-        total += 1
-        found = lint_one(directory, layouts)
-        if found: errors.extend(found); print(f"{directory.name}: ERROR")
-        else: print(f"{directory.name}: OK")
-        for item in found: print(f"  [XX] {item}")
-    print(f"TOTAL: {total} templates, ERROR={len(errors)}")
-    return 1 if errors else 0
+    root = Path(args.library_root or builtin_library_root()).absolute()
+    try:
+        read_evidence_bytes(root, "catalog/current.json")
+        resolver = AssetResolver(library=root, home=root / ".lint-no-user-home")
+        if resolver.user_root is not None or resolver.registry_source != "catalog":
+            raise ValueError("template_lint_current_library_required")
+        generation = resolver.generation
+        layouts = {row["asset_id"]: resolver.resolve(row["asset_id"])["data"]
+                   for row in resolver.entities if row["kind"] == "layout"}
+        if args.templates_dir is not None:
+            directories = [(p, None) for p in sorted(args.templates_dir.iterdir())
+                           if not p.name.startswith(".") and not (p.name == "README.md" and p.is_file() and not p.is_symlink())]
+        else:
+            directories = []
+            for row in resolver.entities:
+                if row["kind"] != "template":
+                    continue
+                resolved = resolver.resolve(row["asset_id"])
+                resolver.fingerprint(row["asset_id"])
+                directories.append((Path(resolved["path"]).parent, row["asset_id"]))
+        if not directories:
+            raise ValueError("template_lint_empty")
+        schema = root / "governance/schemas/template-v1.schema.json"
+        errors = []
+        for directory, identity in directories:
+            found = lint_one(directory, layouts, schema=schema, expected_id=identity)
+            errors.extend(found)
+            print(f"{directory.name}: {'ERROR' if found else 'OK'}")
+            for item in found:
+                print("  [XX] " + item)
+        if AssetResolver(library=root, home=root / ".lint-no-user-home").generation != generation:
+            raise ValueError("template_lint_generation_changed")
+        print(f"TOTAL: {len(directories)} templates, ERROR={len(errors)}")
+        return 1 if errors else 0
+    except (OSError, ValueError) as exc:
+        print("ERROR: " + str(exc), file=sys.stderr)
+        return 1
 
 if __name__ == "__main__":
     raise SystemExit(main())

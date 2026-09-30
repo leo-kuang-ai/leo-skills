@@ -2,7 +2,7 @@
 """style_pack v2：新库风格包导出/导入（U8，方案 §7.3/【F2】）。
 
 数据/代码分离：
-  - 数据实体（brief/theme JSON）导入用户库 canonical；
+  - 数据实体（brief JSON）导入 v2 用户库 canonical/visual/styles；
   - 可执行内容（page.html/JS/CSS/SVG 活动内容）默认进入用户库
     reference/candidates 隔离区：可浏览、静态检查、转换，不能自动出样；
   - 采用为可执行模板须在用户库 governance/trust/ 落 executable-adoption-v1
@@ -19,8 +19,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
@@ -32,6 +33,11 @@ EXECUTABLE_SUFFIXES = {".html", ".js", ".css", ".svg", ".mjs"}
 
 def _user_library(home: Path | None) -> Path:
     return (home or default_home()) / "template-library"
+
+
+def _import_library(home: Path | None) -> Path:
+    from leo_ppt_generator.user_library import user_library_root
+    return user_library_root(home or default_home())
 
 
 def _write_json(path: Path, data) -> None:
@@ -57,75 +63,206 @@ def cmd_export(name: str, out_dir: Path) -> int:
     return 0
 
 
-def cmd_import(pack_dir: Path, home: Path | None) -> int:
-    manifest_path = pack_dir / "manifest.json"
-    if not manifest_path.is_file():
-        print("usage: 包缺 manifest.json", file=sys.stderr)
-        return 2
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("kind") != "leo-style-pack" or manifest.get("schema_version") != 2:
-        print("usage: 非 v2 风格包", file=sys.stderr)
-        return 2
-    # F2：包内自报信任/内置身份一律无效。
+def _pack_json(body):
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("pack_duplicate_json_key")
+            result[key] = value
+        return result
+    return json.loads(body, object_pairs_hook=unique)
+
+
+def _pack_relative(value):
+    if (not isinstance(value, str) or not value or "\\" in value
+            or PurePosixPath(value).is_absolute()
+            or any(part in {"", ".", ".."} for part in value.split("/"))):
+        raise ValueError("pack_path_invalid")
+    return value
+
+
+def _verified_pack(pack_dir):
+    from leo_ppt_generator.asset_resolver import ASSET_ID_RE
+    from leo_ppt_generator.qualification import read_evidence_bytes
+    if pack_dir.is_symlink():
+        raise ValueError("pack_path_invalid")
+    pack_dir = pack_dir.resolve(strict=True)
+    manifest_bytes = read_evidence_bytes(pack_dir, "manifest.json")
+    manifest = _pack_json(manifest_bytes)
+    if not isinstance(manifest, dict) or manifest.get("kind") != "leo-style-pack" or manifest.get("schema_version") != 2:
+        raise ValueError("非 v2 风格包")
     if manifest.get("trusted") or str(manifest.get("asset_id", "")).startswith("builtin:"):
-        print("usage: 包内信任声明无效（pack_trusted_claim_invalid）；"
-              "builtin 身份不可由导入包冒充", file=sys.stderr)
-        return 2
-    library = _user_library(home)
-    from leo_ppt_generator.library_migration import library_operation
-    library.mkdir(parents=True, exist_ok=True)
-    with library_operation(library):
-        for name, expected in sorted((manifest.get("files") or {}).items()):
-            source = pack_dir / name
-            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
-                print(f"usage: 文件缺失或 hash 不符：{name}", file=sys.stderr)
-                return 2
-            if source.suffix.lower() in EXECUTABLE_SUFFIXES:
-                target = library / "reference" / "candidates" / manifest["name"] / name
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(source.read_bytes())
-                print(json.dumps({"quarantined": name,
-                                  "to": str(target.relative_to(library)),
-                                  "reason": "executable_content_default_isolated"}, ensure_ascii=False))
-                continue
-            brief = json.loads(source.read_text(encoding="utf-8"))
-            slug = str(brief.get("asset_id", "")).split(":", 2)[-1] or manifest["name"]
-            brief["asset_id"] = f"user:style:{slug}"
+        raise ValueError("包内信任声明无效（pack_trusted_claim_invalid）；builtin 身份不可由导入包冒充")
+    identity = manifest.get("asset_id")
+    if (not isinstance(identity, str) or not ASSET_ID_RE.fullmatch(identity)
+            or not identity.startswith("user:style:")):
+        raise ValueError("pack_identity_invalid")
+    title = _pack_relative(manifest.get("name"))
+    if "/" in title or len(title) > 80:
+        raise ValueError("pack_name_invalid")
+    files = manifest.get("files")
+    if not isinstance(files, dict) or not files:
+        raise ValueError("pack_files_empty")
+    contents = {}
+    for name, expected in sorted(files.items()):
+        _pack_relative(name)
+        if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+            raise ValueError("pack_hash_invalid")
+        body = read_evidence_bytes(pack_dir, name)
+        if hashlib.sha256(body).hexdigest() != expected:
+            raise ValueError("文件缺失或 hash 不符：" + name)
+        contents[name] = body
+    return manifest, contents, hashlib.sha256(manifest_bytes).hexdigest()
+
+
+def _prepared_import(pack_dir, home, *, pack=None, allow_existing=False):
+    """读取并校验整个包后才规划写入；包名、实体身份与源路径分别检查。"""
+    from jsonschema import Draft7Validator
+    from referencing import Registry, Resource
+    from leo_ppt_generator.asset_resolver import AssetResolver, _declared_dependencies, builtin_library_root
+    manifest, contents, _ = pack or _verified_pack(pack_dir)
+    identity, title = manifest["asset_id"], manifest["name"]
+    governance = builtin_library_root() / "governance/schemas"
+    resources = [json.loads(path.read_text()) for path in governance.glob("*.schema.json")]
+    registry = Registry().with_resources((value["$id"], Resource.from_contents(value)) for value in resources if "$id" in value)
+    schema = json.loads((governance / "style-brief-v2.schema.json").read_text())
+    writes, messages, records = {}, [], {}
+    primary = None
+    for name, body in contents.items():
+        if Path(name).suffix.lower() in EXECUTABLE_SUFFIXES:
+            target = "reference/candidates/" + title + "/" + name
+            messages.append({"quarantined": name, "to": target, "reason": "executable_content_default_isolated"})
+        else:
+            brief = _pack_json(body)
+            errors = list(Draft7Validator(schema, registry=registry).iter_errors(brief))
+            if errors or not brief["asset_id"].startswith("user:style:"):
+                raise ValueError("pack_entity_invalid:" + name)
+            asset_id = brief["asset_id"]
+            if asset_id in records:
+                raise ValueError("pack_duplicate_identity:" + asset_id)
+            records[asset_id] = brief
+            if asset_id == identity:
+                primary = brief
             brief.setdefault("source", {})["origin"] = "user-imported"
-            _write_json(library / "canonical" / "styles" / slug / "brief.json", brief)
-            print(json.dumps({"imported": brief["asset_id"]}, ensure_ascii=False))
+            slug = asset_id.split(":", 2)[-1]
+            target = "canonical/visual/styles/" + slug + "/brief.json"
+            body = (json.dumps(brief, ensure_ascii=False, indent=2) + "\n").encode()
+            messages.append({"imported": asset_id})
+        if target in writes:
+            raise ValueError("pack_target_collision")
+        writes[target] = body
+    if identity not in records:
+        raise ValueError("pack_primary_entity_missing")
+    if (primary is None or primary.get("name") != manifest.get("name")
+            or primary.get("lifecycle") != manifest.get("lifecycle")):
+        raise ValueError("pack_manifest_entity_mismatch")
+    resolver = AssetResolver(home=home)
+    for asset_id, brief in records.items():
+        if not allow_existing and resolver.lookup(asset_id, kind="style", scope="user"):
+            raise ValueError("pack_identity_conflict:" + asset_id)
+        for dependency in _declared_dependencies(brief):
+            if dependency not in records:
+                resolver.resolve_dependencies(dependency)
+    visiting, visited = set(), set()
+    def walk(asset_id):
+        if asset_id in visiting:
+            raise ValueError("pack_dependency_cycle")
+        if asset_id in visited:
+            return
+        visiting.add(asset_id)
+        for dependency in _declared_dependencies(records[asset_id]):
+            if dependency in records:
+                walk(dependency)
+        visiting.remove(asset_id)
+        visited.add(asset_id)
+    for asset_id in records:
+        walk(asset_id)
+    return writes, messages
+
+
+def _check_candidate_scope(root, allowed):
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise ValueError("采用候选软链接被拒绝")
+        if path.is_file() and path.suffix.lower() in EXECUTABLE_SUFFIXES and path.relative_to(root).as_posix() not in allowed:
+            raise ValueError("采用候选越界:" + path.relative_to(root).as_posix())
+
+
+def cmd_import(pack_dir: Path, home: Path | None) -> int:
+    from leo_ppt_generator.user_library import user_library_writer, bootstrap_user_library, publish_user_library
+    try:
+        library = _import_library(home)
+        # 包预验在创建 home 前进行；锁内再次读取，避免预验与执行之间发生漂移。
+        _prepared_import(pack_dir, library.parent)
+        with user_library_writer(library):
+            bootstrap = bootstrap_user_library(library)
+            writes, messages = _prepared_import(pack_dir, library.parent)
+            publish_user_library(library, {**bootstrap, **writes})
+        for message in messages:
+            print(json.dumps(message, ensure_ascii=False))
         return 0
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        print("usage: " + str(exc), file=sys.stderr)
+        return 2
 
 
 def cmd_adopt(pack_dir: Path, reviewed_by: str, basis: str, home: Path | None) -> int:
-    library = _user_library(home)
-    adoption_dir = library / "governance" / "trust"
-    candidates = library / "reference" / "candidates"
-    if not candidates.is_dir():
-        print("usage: 隔离区为空，先 import", file=sys.stderr)
+    from leo_ppt_generator.library_migration import safe_path, file_state
+    from leo_ppt_generator.user_library import user_library_writer, bootstrap_user_library, publish_user_library, json_bytes
+    from leo_ppt_generator.qualification import read_evidence_bytes
+    if not isinstance(reviewed_by, str) or len(reviewed_by.strip()) < 2:
+        print("usage: review_reviewer_invalid", file=sys.stderr)
         return 2
-    from leo_ppt_generator.library_migration import library_operation
-    with library_operation(library):
-        code_digests: dict[str, str] = {}
-        for path in sorted(candidates.rglob("*")):
-            if path.is_file() and path.suffix.lower() in EXECUTABLE_SUFFIXES:
-                code_digests[path.relative_to(candidates).as_posix()] = \
-                    hashlib.sha256(path.read_bytes()).hexdigest()
-        if not code_digests:
-            print("usage: 无可执行内容可采用", file=sys.stderr)
-            return 2
-        adoption = {
-            "kind": "executable-adoption", "schema_version": 1,
-            "adoption_id": f"adopt-{hashlib.sha256(json.dumps(code_digests, sort_keys=True).encode()).hexdigest()[:12]}",
-            "template_asset_id": pack_dir.name, "scope": "user",
-            "code_digests": code_digests,
-            "review": {"reviewed_by": reviewed_by, "basis": basis},
-            "adopted_from": str(pack_dir),
-        }
-        _write_json(adoption_dir / f"{adoption['adoption_id']}.json", adoption)
-        print(json.dumps({"adopted": adoption["adoption_id"],
-                          "bound_files": len(code_digests)}, ensure_ascii=False))
+    if not isinstance(basis, str) or len(basis.strip()) < 8:
+        print("usage: review_basis_invalid", file=sys.stderr)
+        return 2
+    try:
+        library = _import_library(home)
+        with user_library_writer(library):
+            if bootstrap_user_library(library):
+                raise ValueError("采用候选范围缺失")
+            manifest, contents, manifest_sha256 = _verified_pack(pack_dir)
+            data_writes, _ = _prepared_import(pack_dir, library.parent,
+                pack=(manifest, contents, manifest_sha256), allow_existing=True)
+            guards = {}
+            for relative, body in data_writes.items():
+                actual = read_evidence_bytes(library, relative)
+                if actual != body:
+                    raise ValueError("采用候选摘要漂移:" + relative)
+                guards[relative] = hashlib.sha256(actual).hexdigest()
+            title = manifest["name"]
+            expected = {name: body for name, body in contents.items() if Path(name).suffix.lower() in EXECUTABLE_SUFFIXES}
+            if not expected:
+                raise ValueError("无可执行内容可采用")
+            candidate_root = safe_path(library, "reference/candidates/" + title)
+            if not candidate_root.is_dir():
+                raise ValueError("采用候选范围缺失")
+            code_digests = {}
+            for relative, body in expected.items():
+                actual = read_evidence_bytes(candidate_root, relative)
+                if actual != body:
+                    raise ValueError("采用候选摘要漂移:" + relative)
+                code_digests[title + "/" + relative] = hashlib.sha256(actual).hexdigest()
+            _check_candidate_scope(candidate_root, expected)
+            adoption = {
+                "kind": "executable-adoption", "schema_version": 1,
+                "adoption_id": "adopt-" + hashlib.sha256(json.dumps(code_digests, sort_keys=True).encode()).hexdigest()[:12],
+                "template_asset_id": manifest["asset_id"], "scope": "user", "code_digests": code_digests,
+                "review": {"reviewed_by": reviewed_by, "basis": basis},
+                "adopted_from": "manifest_sha256:" + manifest_sha256,
+            }
+            relative = "governance/trust/" + adoption["adoption_id"] + ".json"
+            idempotent = file_state(library, relative)["type"] != "absent"
+            if idempotent and _pack_json(read_evidence_bytes(library, relative)) != adoption:
+                raise ValueError("adoption_identity_conflict")
+            publish_user_library(library, {} if idempotent else {relative: json_bytes(adoption)},
+                                 guards=guards, validator=lambda: _check_candidate_scope(candidate_root, expected))
+            print(json.dumps({"adopted": adoption["adoption_id"], "bound_files": len(code_digests), "idempotent": idempotent}, ensure_ascii=False))
         return 0
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        print("usage: " + str(exc), file=sys.stderr)
+        return 2
 
 
 def main(argv: list[str] | None = None) -> int:

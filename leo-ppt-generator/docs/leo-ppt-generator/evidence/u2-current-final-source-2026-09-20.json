@@ -1,0 +1,224 @@
+{
+  "kind": "current-probe-reverification",
+  "report": {
+    "path": "evidence/probes/expression-first-final-source-2026-09-20/report.json",
+    "sha256": "701c0237c9d4b2f8df13f676cf79c75a1f897f629979a3ed3dfb66faed2c5725"
+  },
+  "probe_command": "PYTHONPATH=runtime/src runtime/.venv/bin/python scripts/probe_relation_capabilities.py --library-root template-library --cases evals/fixtures/expression-first-relation-probes.json --out evidence/probes/expression-first-final-source-2026-09-20",
+  "probe_exit_code": 1,
+  "process_session_id": 4773,
+  "files_verified": 69,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-final-source-2026-09-20/independent/receipt.json",
+        "sha256": "8b210b24f3dae2ecb646c59b5de4b639b699ddd071cce65e4bf18f4f4bc8341d"
+      },
+      "relation": "independent",
+      "status": "passed",
+      "reverified": {
+        "status": "provisional",
+        "gaps": [
+          "visual_review_not_run"
+        ]
+      }
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-final-source-2026-09-20/comparison/receipt.json",
+        "sha256": "37e10586b5161c953e9cda777ac89bac23127caebee19263c954a61b713e99d3"
+      },
+      "relation": "comparison",
+      "status": "passed",
+      "reverified": {
+        "status": "provisional",
+        "gaps": [
+          "visual_review_not_run"
+        ]
+      }
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-final-source-2026-09-20/trend/receipt.json",
+        "sha256": "40b0c3a506817de78f99d975588b68f6baf19e26a997edbdca54739ef104d416"
+      },
+      "relation": "trend",
+      "status": "passed",
+      "reverified": {
+        "status": "provisional",
+        "gaps": [
+          "visual_review_not_run"
+        ]
+      }
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-final-source-2026-09-20/process/receipt.json",
+        "sha256": "53dcccfff1a83414af25203a32df6434699fecf691605de6d6d5864d2b8def9e"
+      },
+      "relation": "process",
+      "status": "passed",
+      "reverified": {
+        "status": "provisional",
+        "gaps": [
+          "visual_review_not_run"
+        ]
+      }
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/expression-first-final-source-2026-09-20/causal/receipt.json",
+        "sha256": "a8d19a689cc54a28deb7f639aff3a9cf5e1898c86be63a1b23d9152d89c26a2f"
+      },
+      "relation": "causal",
+      "status": "passed",
+      "reverified": {
+        "status": "provisional",
+        "gaps": [
+          "visual_review_not_run"
+        ]
+      }
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "actual_png_comparison": [
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5",
+      "same_bytes_as_previous": true
+    },
+    {
+      "path": "evidence/probes/expression-first-final-source-2026-09-20/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1",
+      "same_bytes_as_previous": true
+    }
+  ],
+  "provider_calls": 0,
+  "publication_qualified": 0,
+  "claim_limit": "当前源码真实HTML正反10PNG；image blocked；不签发正式视觉或发布资格",
+  "reverification_source": "当前canonical owner/asset_generation/environment重新派生，非receipt自证"
+}

@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import re
 import time
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -59,16 +60,21 @@ XYCHART_VARIABLE_MAP = {
 DEFAULT_THEME_WARNING = "chart_theme_missing_using_mermaid_defaults"
 
 
-def _governed_mapping() -> dict[str, dict[str, str]]:
+def _governed_mapping(*, resolver=None) -> dict[str, dict[str, str]]:
     """治理区逐方言映射（chart-theme-mapping.json）；缺失即配置错误。"""
     from ..asset_resolver import builtin_library_root
+    from ..qualification import read_evidence_bytes
 
-    path = builtin_library_root() / "governance" / "rules" / "chart-theme-mapping.json"
-    if not path.is_file():
-        raise RenderError("chart_theme_mapping_missing",
-                          f"governance mapping absent: {path}")
-    mapping = json.loads(path.read_text(encoding="utf-8"))
-    return mapping.get("dialects") or {}
+    root = resolver.builtin_root if resolver is not None else builtin_library_root()
+    with resolver.library_session() if resolver is not None else nullcontext():
+        try:
+            mapping = json.loads(read_evidence_bytes(root, "governance/rules/chart-theme-mapping.json"))
+            if not isinstance(mapping, dict) or not isinstance(mapping.get("dialects"), dict):
+                raise ValueError("invalid chart mapping dialects")
+        except (OSError, ValueError) as exc:
+            raise RenderError("chart_theme_mapping_missing",
+                              f"governance mapping unavailable: {root}") from exc
+    return mapping["dialects"]
 
 
 def _flatten_theme(theme: dict[str, Any]) -> dict[str, Any]:
@@ -134,7 +140,7 @@ def load_chart_code(
     raise RenderError("render_data_invalid", "one of --source/--code-file is required")
 
 
-def build_theme_variables(theme: dict[str, Any] | None) -> tuple[dict[str, Any], list[str]]:
+def build_theme_variables(theme: dict[str, Any] | None, *, resolver=None) -> tuple[dict[str, Any], list[str]]:
     """deck colors 锚 → mermaid themeVariables；缺省时 WARN + mermaid 默认。"""
 
     warnings: list[str] = []
@@ -143,7 +149,7 @@ def build_theme_variables(theme: dict[str, Any] | None) -> tuple[dict[str, Any],
         return {}, warnings
     is_effective_theme = isinstance(theme.get("colors"), dict)
     theme = _flatten_theme(theme)
-    governed = _governed_mapping()
+    governed = _governed_mapping(resolver=resolver)
     resolved: dict[str, Any] = {}
     for mermaid_key, anchor_keys in THEME_VARIABLE_MAP.items():
         for anchor in anchor_keys:
@@ -351,6 +357,7 @@ def render_chart(
     font_family: str = "Noto Sans SC",
     chart_options: dict[str, Any] | None = None,
     timeout_ms: int = 30_000,
+    resolver=None,
 ) -> dict[str, Any]:
     """``render chart`` 主入口：抽块/读文件 → SVG 落盘 + provenance sidecar。"""
 
@@ -366,7 +373,7 @@ def render_chart(
             raise RenderError("render_data_invalid", f"theme file invalid: {exc}") from exc
 
     code, warnings = load_chart_code(source=source, code_file=code_file)
-    theme_variables, theme_warnings = build_theme_variables(theme)
+    theme_variables, theme_warnings = build_theme_variables(theme, resolver=resolver)
     warnings.extend(theme_warnings)
 
     started = time.monotonic()

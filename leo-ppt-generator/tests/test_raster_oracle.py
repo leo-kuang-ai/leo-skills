@@ -71,6 +71,19 @@ class RasterOracleTests(unittest.TestCase):
                 with self.assertRaises(RasterOracleError):
                     self.evaluate(review=review)
 
+    def test_proposal_hash_is_preserved_without_replacing_pixel_ocr(self):
+        review = self.review()
+        review["proposal_sha256"] = "b" * 64
+        result = self.evaluate(review=review)
+        self.assertEqual(result["measurement"]["proposal_sha256"], review["proposal_sha256"])
+        pixel_measurement = {key: value for key, value in result["measurement"].items() if key != "proposal_sha256"}
+        self.assertEqual(pixel_measurement, measure_raster(self.images["positive"]))
+        self.assertTrue(all(result["checks"].values()))
+        for value in (None, "", "b" * 63, "B" * 64, "x" * 64, {"passed": True}):
+            review["proposal_sha256"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(RasterOracleError, "image_proposal_observation_invalid"):
+                self.evaluate(review=review)
+
     def test_blank_image_is_not_qualified_and_html_measurement_cannot_replace_pixels(self):
         with self.assertRaisesRegex(RasterOracleError, "image_geometry_observation_required"):
             evaluate_raster_output(self.case["expected"], self.images["positive"], {"source": "browser-dom"},

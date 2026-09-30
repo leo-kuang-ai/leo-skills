@@ -1,0 +1,59 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p16-16-multi-card-brief-layouts/layout.json": "ed60b6fa63fea5954d9fe1c517f8269c19b54845e5c778fba2d0ae3faff5e691",
+    "canonical/layouts/p16-16-multi-card-brief-layouts/notes.md": "9c84a19b2cc5703565a3b720480503ef13909dae51696ec1a732a7aa82ff38e2",
+    "canonical/templates/cards-stat/page.html": "f919ae16de3a4e8bd36985460764a8ba217b0fa5f7366aacbd1047013c78f731",
+    "canonical/templates/cards-stat/template.json": "abfb9fae7741a092d80b3549be7559c17d07c38a87d7a552b863f807a5829005"
+  },
+  "environment": {
+    "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "evidence_digest": "17eaed17a5444fbaea0a54b3602b1eb272533b5d3f071cf9a56a6aa9ce7050b3",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png",
+        "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-fixture.json",
+        "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-observation.json",
+        "sha256": "ce3888f352934ce5b1d4920aa7ee66af75f21a6e5b467e2aa493a4f7e9fe8b18"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png",
+        "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-fixture.json",
+        "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-observation.json",
+        "sha256": "feb270bc42f96f7d3592a90b5a6479ed4646f9f4da194bea210c543d4e665f1e"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/cards-stat-independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

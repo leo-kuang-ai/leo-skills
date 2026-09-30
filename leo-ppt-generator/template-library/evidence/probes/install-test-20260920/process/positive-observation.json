@@ -1,0 +1,33 @@
+{
+  "artifact": {
+    "path": "evidence/probes/install-test-20260920/process/positive.png",
+    "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "dependency_edges": true,
+    "focus_visible": true,
+    "no_overflow": true,
+    "nodes_visible": true,
+    "parallel_branches": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+  "fixture": {
+    "path": "evidence/probes/install-test-20260920/process/positive-fixture.json",
+    "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/install-test-20260920/process/positive-measurement.json",
+    "sha256": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "process",
+  "render_input": {
+    "path": "evidence/probes/install-test-20260920/process/positive-input.json",
+    "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+  }
+}

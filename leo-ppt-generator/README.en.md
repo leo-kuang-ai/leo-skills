@@ -44,6 +44,25 @@ a paste-into-chat install guide for hosts without a CLI are documented in the
 [Chinese README](README.md#安装). First run self-bootstraps the managed
 runtime; never paste API keys into the chat.
 
+## Usage
+
+After installing, drive the skill from the agent chat with materials plus
+goals:
+
+> Use `leo-ppt-generator` to turn this quarterly review into a 12-page deck
+> for management; confirm the outline and the sample first.
+
+The `generate` route takes `.md`/`.txt` materials (audio/video needs your own
+timestamped transcript; image assets are provenance-checked, failing ones never
+enter a page) and walks a fixed sequence: contract → outline → page master →
+style → **sample (SAMPLE-GATE — the one default human checkpoint, before any
+paid full-deck generation)** → per-page dispatch with staged retries and QA →
+assembly → DELIVERY-GATE (sha256 receipt + human acceptance; only
+`delivery_readiness: accepted` closes delivery — `completed` alone does not).
+Page counts mean the finished total by default; delegation mode completes
+intermediate artifacts autonomously with recorded decision provenance. Full
+guide: [Chinese README](README.md#使用方式).
+
 ## Security boundaries
 
 - Office files of unknown or unconfirmed origin are rejected with

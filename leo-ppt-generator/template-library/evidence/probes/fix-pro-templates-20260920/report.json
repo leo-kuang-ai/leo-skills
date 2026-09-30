@@ -1,0 +1,354 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "environment": {
+    "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/capability-receipts.json",
+      "sha256": "c28874b1c3a593332c4605bd63fd2ce8b1001647d268b950688346f8d2cbb731"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-fixture.json",
+      "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-input.json",
+      "sha256": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-measurement.json",
+      "sha256": "7c624fda6778becdc360a4797cab6839d8b7e0965978c9847023c83161dfc243"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-observation.json",
+      "sha256": "ce3888f352934ce5b1d4920aa7ee66af75f21a6e5b467e2aa493a4f7e9fe8b18"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png",
+      "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png.render.json",
+      "sha256": "6dda7e05508ae82883e649de84cc6acd125a398086a3c10b94d75a6c7256b34b"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-fixture.json",
+      "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-input.json",
+      "sha256": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-measurement.json",
+      "sha256": "b12cde0318acb2d78842e114c166c3bc444fb74d6cf18d3b004f16bae4058cd8"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-observation.json",
+      "sha256": "feb270bc42f96f7d3592a90b5a6479ed4646f9f4da194bea210c543d4e665f1e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png",
+      "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png.render.json",
+      "sha256": "8d0d2aec67435720a17d62feac314d7dacbff47db58a0d27d88a11a1ed6c26d7"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/receipt.json",
+      "sha256": "2a0efb7496184671c7ef37ea5969627656866741d43cfda7e6be0d2cbd8eddf0"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cases.json",
+      "sha256": "8ccc21eb664fcbd8ddac63b99e789efd9a47a53a960cd1cfcfb3c9ecb4c47537"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-fixture.json",
+      "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-input.json",
+      "sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-measurement.json",
+      "sha256": "36c333e9b8f68de8d27a5823872fce94054beaa4827b9daaa023db6915398b00"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-observation.json",
+      "sha256": "4c10247266a2bfd9a5ca71585cc516ea1e25d5f70bcd3454877c6bd42fd6116d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png",
+      "sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png.render.json",
+      "sha256": "bc90dcf9091180f7a404af77fe474c8b555de3baab05a82dc2c8d945c6b0be75"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-fixture.json",
+      "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-input.json",
+      "sha256": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-measurement.json",
+      "sha256": "e29821a956d84601c314014133bebc8390d788527260a0fd5b268175b0b68f39"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-observation.json",
+      "sha256": "e07a21bf9dba35a34fa66ab4c6cb11a363ac8228c8feebf82641bd081732b472"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive.png",
+      "sha256": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive.png.render.json",
+      "sha256": "2f8b703013c2a32572f743981795661b514d6f082ff4ba87b27176d8cb00939e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/receipt.json",
+      "sha256": "aa91cc61d6c9f53deef9fd0ca4766275d6ab09724abb4424aca22a621c4eca9c"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-fixture.json",
+      "sha256": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-input.json",
+      "sha256": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-measurement.json",
+      "sha256": "f1cc24d3a8a2c6e67e49f1e5530798663cf751711401ddf6c1d9a9feab64c044"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-observation.json",
+      "sha256": "7c212bc8d75b4e037061fcaa6bcb479b810fe9d8ec245b8dc60da1f0b34509a5"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative.png",
+      "sha256": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative.png.render.json",
+      "sha256": "79d5e87007337b46380163401a7bfb248767754fc6cf20436d2e72c71a18dff6"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-fixture.json",
+      "sha256": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-input.json",
+      "sha256": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-measurement.json",
+      "sha256": "1a1fbf1c53f59fb0489998a22840ca48ef579209ec54921b248e910552e279c2"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-observation.json",
+      "sha256": "f96d7cab6cec7f697d65ce2b0bad1c54b2a256401358f791f299d9d84813a8b1"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png",
+      "sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png.render.json",
+      "sha256": "0df01a37d3b8be3d3f870259e01b613753f2f628499946184c9d7a34762c1bc2"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/receipt.json",
+      "sha256": "c7117ca46083c4ae786f9a5f6cebb83630450d2a554d3aa47b9c11a7c6a85b8e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+      "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-fixture.json",
+      "sha256": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-input.json",
+      "sha256": "9d2366bd8edff6e180e14e2c6ddbf5864d7b55249a1d82014389f5df105ec51e"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-measurement.json",
+      "sha256": "19c7b2b31004865f6aa6125a039c023a0776e6230c5cc8ab3a86481663d26698"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-observation.json",
+      "sha256": "4a23f8a10f6e3286fe34c991ea591b2b34f62ff87351db608a3233475aa8caf4"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png",
+      "sha256": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png.render.json",
+      "sha256": "7c8c0dfc24e946a20f71ec19cd20f0397cc7ecf6ec1b88d707f7739aa3ec1dad"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-fixture.json",
+      "sha256": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-input.json",
+      "sha256": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-measurement.json",
+      "sha256": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-observation.json",
+      "sha256": "e759e162a8925b2fa8c7d744138e9e467cd7354f3491c14209a58e53d4f7ab02"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+      "sha256": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png.render.json",
+      "sha256": "fa29944c9fcf090ec932396285bccbc537aa0704d87940c6c3668946e94ebff3"
+    },
+    {
+      "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/receipt.json",
+      "sha256": "3e006075a73a27f46554639e7cbeb1e2d6791887a73a222744e0a502df067745"
+    }
+  ],
+  "input_digest": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "cover-pro-independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/receipt.json",
+        "sha256": "aa91cc61d6c9f53deef9fd0ca4766275d6ab09724abb4424aca22a621c4eca9c"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "cover-pro-independent",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "duo-compare-comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/receipt.json",
+        "sha256": "c7117ca46083c4ae786f9a5f6cebb83630450d2a554d3aa47b9c11a7c6a85b8e"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "duo-compare-comparison",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "cards-stat-independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/receipt.json",
+        "sha256": "2a0efb7496184671c7ef37ea5969627656866741d43cfda7e6be0d2cbd8eddf0"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "cards-stat-independent",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "quote-pro-independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/receipt.json",
+        "sha256": "3e006075a73a27f46554639e7cbeb1e2d6791887a73a222744e0a502df067745"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "quote-pro-independent",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

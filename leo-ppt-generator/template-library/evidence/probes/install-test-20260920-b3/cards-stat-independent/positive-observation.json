@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/install-test-20260920-b3/cards-stat-independent/positive.png",
+    "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": true,
+    "no_overflow": false,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+  "fixture": {
+    "path": "evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-fixture.json",
+    "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-measurement.json",
+    "sha256": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/install-test-20260920-b3/cards-stat-independent/positive-input.json",
+    "sha256": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca"
+  }
+}

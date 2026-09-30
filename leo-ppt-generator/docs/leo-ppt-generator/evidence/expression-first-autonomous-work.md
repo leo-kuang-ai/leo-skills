@@ -5,7 +5,7 @@
 `expression-first-resume-baseline.json`。5 个宿主缓存文件属于外部既有改动，保留且不提交。
 仅写 `leo-ppt-generator/`，根 `CHANGELOG.md` 为用户明确指定的例外。串行执行；不修改 generated mirrors。
 
-当前状态以本文件末尾的 2026-09-16 恢复记录和 `expression-first-completion-matrix.json` 为准。
+当前状态以本文件末尾的 2026-09-20 恢复记录和 `expression-first-completion-matrix.json` 为准。
 早期轮次的缺口与测试数是历史快照，不能继续作为当前实现状态。
 
 ## 执行顺序与验收
@@ -26,7 +26,7 @@
 | 11 | 全量交付审计 | 依次运行 compileall、schema、lint、表达/运行/提案、迁移、quality、全量 unittest | 每条命令/退出码/日志/manifest；U1–U13 completion matrix 无占位 gap |
 
 本会话已授权本地提交，独立单元独立 commit；提交不表示开发或验证全部通过。
-没有 push/PR 授权，保持本地。历史混合提交不重写。
+用户后续已授权推送；未授权创建 PR。仅提交本任务 owner 的已验证独立单元，历史混合提交不重写。
 
 ## 已确认的修正
 
@@ -127,3 +127,17 @@ U6-A、预迁移价值门未通过时不实际发布/清理 delivery，但继续
 - closure新扫描 `consumer-closure-table-recipe-2026-09-16.json`：active_legacy_hits=287、unclassified_hits=0，全部固定根存在。本轮未开始正式U7-B/U13或publish/cleanup/convergence。
 - 串行检查 `table-recipe-inline-review-2026-09-16.json` 为degraded / Not ready；11个文件摘要与当前内容相等，不冒称独立review。formal helper边界保持上轮记录，未写范围外.spec-first。
 - 完成矩阵JSON/Markdown已同步当前逐行文件、符号、命令/退出码、receipts/logs和required gaps；全部U1–U13仍partial。真实Provider、U6-A/B/R-85、三册配对视觉、用户差页与完整迁移发布仍未完成。本轮未commit/push/PR、未调用goal complete。
+
+## 2026-09-20 恢复、补足工具与验证
+
+- 修改前基线与逐 dirty owner：`continuation-2026-09-20-resumed-ownership.json`，HEAD `489472050219b601d60e8d40bfa5ef8d30344950`。模板、生产 pipeline/run_index、CLI/收据/size-budget、活动 evidence index、catalog 及根 docs 存在外部改动，禁止纳入本任务提交；CHANGELOG 仅更新本任务条目。
+- 用户风格保存/包导入/采用共用 v2 原子事务、逐文件 CAS、外部漂移保护和读写路径规范化。复核发现保存依赖未闭合与 theme/layout 引用类型错误；已观察负例退出 1 后修正共享声明 owner 和事务 verifier。`user-library-dependency-final-2026-09-20.log`：87 tests / 121.382s / exit 0（session 70340）。作者转只读角色的复核不冒充完全独立审查。
+- 真实当前 HTML 五关系各正反一张共 10 PNG，69 个附件重核；`u2-current-resume-2026-09-20.json` 全部 HTML provisional，五 image blocked、Provider calls=0。探针命令 exit 1 是双 lane 缺证据的阻断，不是整体通过；未写外部活动 receipt index。
+- migration 目标源码/二进制 evidence payload、目标 runtime 验证和 v2 reference-only 读取已补齐。路径 closure 改为词法作用域受限解析；无法解析的动态根保留未分类，历史 287/0 结果不再代表当前树。
+- 历史 image 封存桥、HTML 双侧重基线和 image 双侧执行工具继续收口；真实历史主题/原始 HTTP/PNG 缺失仍 blocked，环境必须同 fingerprint。机制、本地协议测试和真实外网 Provider 证据分别记账。
+- 本轮完整有序验证尚待所有实现 owner 冻结后运行；9/16 的 2232 tests 只保留为历史。最终终态将写入 completion matrix，不能用当前 focused 结果替代。
+- goal 工具当前返回 null；本轮未创建、未暂停、未标 complete。U1–U13 保持 partial，真实任务/R-85/视觉/用户收益、正式 v2 切换及 publish/cleanup/convergence required gaps 仍未关闭。
+
+### 2026-09-20 验证失败修复续作
+
+最新有序验证在 schema 2 errors 与表达消费者 1 failure 后由主线主动中断，监督进程退出 130，migration 子进程终止并 wait；full-suite 未运行，旧 2232 项全绿不能外推本轮。无 evidence 负例改为真实隔离 v2 库，16 tests / exit 0；closure 有限字面路径与本次 source/target 导入求值修复，53 tests / exit 0，包含原两条目标 runtime 集成失败。独立 gallery 清理和 eval judge 消费者切换进入验证。Provider 调用 0；正式 migration/value/visual/publish gates 保持未完成。详见 completion matrix 与本轮日志。

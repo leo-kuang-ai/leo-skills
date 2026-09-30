@@ -1,0 +1,104 @@
+{
+  "command": [
+    "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+    "-m",
+    "unittest",
+    "tests.test_generate_style_gallery",
+    "tests.test_template_catalog_v2",
+    "tests.render.test_chart",
+    "tests.render.test_pro_templates"
+  ],
+  "environment": {
+    "PYTHONPATH": "runtime/src"
+  },
+  "cwd": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator",
+  "exit_code": 0,
+  "elapsed_seconds": 296.9445538750151,
+  "log": "docs/leo-ppt-generator/evidence/gallery-v2-final-2026-09-20-v2.log",
+  "log_sha256": "d035a079cb118b4552916e3cab803f98095868f74a4dab9f56587661d47654f7",
+  "scope": "GALLERY-01 与 GALLERY-02 的授权修复；不代表 U9 或 U1–U13 整体完成",
+  "test_count": 74,
+  "unittest_seconds": 296.194,
+  "result": "passed",
+  "skipped": 0,
+  "files": [
+    {
+      "path": "scripts/generate_style_gallery.py",
+      "owner": "/root/baseline_review",
+      "baseline_status": "tracked_dirty_this_task",
+      "baseline_sha256": "071dd74046bce0cabdfc4d316d8e9406e025553cf22910118049fe96428f3354",
+      "final_sha256": "50ba1dfaf1ac1cd9db8a923626dd723486e557f6d353602c74577e9002007bfe"
+    },
+    {
+      "path": "tests/test_generate_style_gallery.py",
+      "owner": "/root/baseline_review",
+      "baseline_status": "tracked_dirty_this_task",
+      "baseline_sha256": "501539f8cf4c6fce7cd2278be7ccfe3f43643c1ec9a493bc649554d4b40fdd54",
+      "final_sha256": "ce095a544bcdedc434f23460f4b006cf7e5f3c5e77aa9bcd404b01eb53130985"
+    },
+    {
+      "path": "runtime/src/leo_ppt_generator/render/chart.py",
+      "owner": "/root/baseline_review",
+      "baseline_status": "tracked_clean",
+      "baseline_sha256": "12134332d5d3a53f68dbe445450797af2d7b88a23022699d397063160c092111",
+      "final_sha256": "0ce83a6761114746c1a47adf4bb0c3585816cecd7cffe6141b4182159b86a6ba"
+    },
+    {
+      "path": "tests/render/test_chart.py",
+      "owner": "/root/baseline_review",
+      "baseline_status": "tracked_clean",
+      "baseline_sha256": "8a250f2548d7abcb0edafad08255167978c53e5eac75389bf4ab0958a32130f6",
+      "final_sha256": "881458afef3e14bb1b4dc43324d4e0fe268707661fed530d0bdae25feef980b0"
+    }
+  ],
+  "findings": [
+    {
+      "id": "GALLERY-01",
+      "status": "complete",
+      "implementation": [
+        "render.chart._governed_mapping(resolver=...)",
+        "render.chart.build_theme_variables(resolver=...)",
+        "render.chart.render_chart(resolver=...)",
+        "generate_style_gallery._render_chart_worker"
+      ],
+      "evidence": "真实隔离 v2 库设置 accent 映射，实际 SVG 的四根柱颜色与同库主题一致；generation 漂移、缺失和 symlink 映射被拒绝。"
+    },
+    {
+      "id": "GALLERY-02",
+      "status": "complete",
+      "implementation": [
+        "generate_style_gallery._thumbnail_row",
+        "generate_style_gallery.render(gallery_path=...)"
+      ],
+      "evidence": "CLI 在含中文、空格、括号的不同 gallery/thumbs 目录真实渲染 builtin 和 Dracula；6 个链接均定位 1280×720 PNG。"
+    }
+  ],
+  "red_before_implementation": {
+    "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_generate_style_gallery.CanonicalContextTest.test_explicit_library_mapping_controls_real_chart_palette tests.test_generate_style_gallery.CanonicalContextTest.test_custom_gallery_and_thumbnail_paths_link_real_builtin_and_family_images",
+    "exit_code": 1,
+    "test_count": 2,
+    "failures": 3,
+    "log": "docs/leo-ppt-generator/evidence/gallery-v2-red-2026-09-20-v2.log",
+    "observation": "实际 SVG #2563EB 与显式映射 #B45309 不一致；builtin/family 自定义路径链接断开。"
+  },
+  "focused": {
+    "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_generate_style_gallery.CanonicalContextTest tests.render.test_chart.ThemeVariableMapping",
+    "exit_code": 0,
+    "test_count": 15,
+    "unittest_seconds": 57.163,
+    "log": "docs/leo-ppt-generator/evidence/gallery-v2-focused-2026-09-20-v2.log"
+  },
+  "preserved": {
+    "tracked_sample_files": 265,
+    "sample_byte_drift": [],
+    "README_matches_HEAD": true
+  },
+  "claim_limitations": [
+    "仅本地真实 HTML/SVG/PNG 与模块回归；没有真实 Provider/image、R-85、用户视觉回放或发布声明。",
+    "样板哈希一致只证明确定性，不代表视觉质量验收。",
+    "根 CHANGELOG、统一 verification-run-summary/honest-closeout、全量有序验证及 lifecycle/landing 由主线统一处理；本子任务未写该范围。"
+  ],
+  "standalone_shipping_skipped": true,
+  "commit_authorization": "missing",
+  "landing_authorization": "missing"
+}

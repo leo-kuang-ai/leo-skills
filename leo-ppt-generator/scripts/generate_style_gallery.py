@@ -1,48 +1,12 @@
 #!/usr/bin/env python3
-"""Generate the browsable style gallery (samples/style-gallery.md) and the
-builtin styles' golden sample thumbnails (R-26 / R-65).
+"""从明确的 canonical 库生成风格画廊与金样板。
 
-Reads executable styles and axes through the canonical template-library
-resolver.  The resolver fixes the catalog generation for the whole run, so the
-gallery cannot silently drift to a retired markdown tree.  Tests may pass an
-explicit temporary legacy root to exercise migration fixtures.
-
-金样板用于预览与编译回归，不代表审美验收。已绑定风格从 canonical theme
-计算有效主题，同时传给图表和页面；无主题绑定的历史家族样本仅展示兼容预览。
-for each golden style three pages are rendered through the M1 render lane
-CLI (``render page`` / ``render chart``) with fixed sample data derived
-deterministically from the brief itself (style name, best_for excerpt,
-layout patterns, palette HEX anchors). Golden styles = the 11 top-level
-builtin briefs + one representative per S5 intake family (R-65 extends
-golden coverage to every deterministic-render style family). Artifacts
-under ``samples/style-gallery/<风格名>/``:
-
-- ``slide-cover.json`` / ``slide-content.json`` / ``slide-chart.json`` —
-  deterministic render inputs (always written; double as the degraded-mode
-  regression baseline when no browser is available);
-- ``chart.mmd`` / ``theme.json`` — fixed chart dialect source and the
-  deck-color anchors mapped from the brief palette;
-- ``thumb-cover.png`` / ``thumb-content.png`` / ``thumb-chart.png`` —
-  1280x720 golden thumbnails rendered by the managed runtime.
-
-Modes:
-
-- default: rebuild ``samples/style-gallery.md`` (embeds thumbnails for the
-  styles whose three PNGs exist);
-- ``--render-golden``: (re)write golden inputs and thumbnails, then rebuild
-  the gallery;
-- ``--check``: verify the committed gallery markdown **and** run the golden
-  regression (R-65): re-render into a temp dir and compare sha256 against
-  the committed thumbnails; drift exits 1. When the render backend is
-  unavailable the regression degrades to byte-comparing the deterministic
-  golden inputs (reported as WARN, never silently skipped).
-
-Determinism contract: same runtime, same chromium, same fonts → identical
-PNG bytes across runs (verified on the managed runtime); SVG chart output is
-bit-deterministic by the render lane contract.
-
-Exit codes: 0 = written or up to date; 1 = --check found drift; 2 = IO or
-render error.
+同次操作固定 resolver generation；风格、主题、页模板和字体均由同一库解析。
+页面通过托管解释器转发给 render.page owner，图表复用 render chart。
+默认写 samples/style-gallery.md；--library-root、--gallery、--thumbs-root 可显式隔离。
+--render-golden 生成三页 1280×720 PNG 及确定性输入；--check 重渲染比较摘要。
+后端缺失时明确退化为输入字节对比，不能作为视觉通过。
+退出码：0 为生成或核验通过，1 为漂移，2 为输入或渲染错误。
 """
 
 from __future__ import annotations
@@ -51,27 +15,20 @@ import argparse
 import hashlib
 import json
 import os
-import re
-import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import quote
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SKILL_DIR / "runtime" / "src"))
 from leo_ppt_generator.asset_resolver import AssetResolver, ResolverError
-from leo_ppt_generator.styles import parse_style_document
 from leo_ppt_generator.render.theme import compute_effective_theme
 
 LIBRARY_DIR = SKILL_DIR / "template-library"
-STYLES_DIR = LIBRARY_DIR / "canonical" / "styles"
 GALLERY = SKILL_DIR / "samples" / "style-gallery.md"
 THUMBS_ROOT = SKILL_DIR / "samples" / "style-gallery"
-SCENARIO_HEADER = "**适用场景"
-JSON_BLOCK_RE = re.compile(r"```json\n(.*?)\n```", re.S)
-HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}")
-
 # Fixed golden chart (sample data identical for every style; the palette is
 # what differentiates styles — deck color anchors land in the SVG verbatim).
 # Single series on purpose: plotColorPalette maps one primary anchor, a
@@ -101,14 +58,6 @@ FAMILY_REPRESENTATIVES: "list[tuple[str, str, str]]" = [
     ("印象派油画", "星月夜风", "梵高、莫奈的笔触、光影与强色彩张力"),
 ]
 
-# Visibility guard thresholds (perceived luminance 0-255): the cover/body
-# templates use fixed dark ink on light paper and the chart lane falls back
-# to mermaid's light canvas, so a dark-family palette (terminal/night
-# themes are light-on-dark) must not land verbatim — see golden_inputs.
-BACKGROUND_LUM_FLOOR = 128
-ANCHOR_LUM_CEILING = 180
-
-
 def fail(message: str) -> None:
     print(f"ERROR: {message}", file=sys.stderr)
     raise SystemExit(2)
@@ -120,157 +69,69 @@ def warn(message: str) -> None:
 
 # ---------------------------------------------------------------- styles ---
 
-def _canonical_resolver() -> AssetResolver:
+def _canonical_resolver(library_root: Path | None = None) -> AssetResolver:
+    """只通过正式 resolver 读取明确的库根，不加载用户覆盖。"""
+    root = Path(library_root or LIBRARY_DIR).absolute()
     try:
-        # Supplying an explicit home keeps this standalone generator independent
-        # of optional runtime-config dependencies and prevents user overlays from
-        # changing the builtin gallery roster.
-        return AssetResolver(library=LIBRARY_DIR, home=SKILL_DIR / ".gallery-no-user-home")
-    except ResolverError as exc:
+        resolver = AssetResolver(library=root, home=root / ".gallery-no-user-home")
+        if resolver.user_root is not None:
+            raise ValueError("gallery_user_overlay_forbidden")
+        _ = resolver.generation
+        return resolver
+    except (ResolverError, ValueError) as exc:
         fail(f"canonical template library unavailable: {exc}")
     raise AssertionError("unreachable")
 
 
-def _is_legacy_fixture(styles_root: Path) -> bool:
-    return Path(styles_root).resolve() != STYLES_DIR.resolve()
+def _gallery_resolver(library_root=None, resolver=None):
+    if resolver is not None:
+        if library_root is not None and Path(library_root).absolute() != resolver.builtin_root:
+            raise ValueError("gallery_library_context_mismatch")
+        return resolver
+    return _canonical_resolver(library_root)
 
 
-def builtin_styles(styles_root: Path = STYLES_DIR) -> "list[tuple[str, list[str]]]":
-    """Return execution-ready builtin styles from the resolver snapshot."""
-    if not _is_legacy_fixture(styles_root):
-        resolver = _canonical_resolver()
-        entries: list[tuple[str, list[str]]] = []
-        for entity in resolver.entities:
-            if entity["kind"] != "style" or entity.get("lifecycle") != "active":
-                continue
-            data = resolver.resolve(entity["asset_id"])["data"]
-            taxonomy = data.get("taxonomy") or {}
-            scenarios = taxonomy.get("scenarios") or []
-            if not scenarios:
-                direction = (data.get("visual_language") or {}).get("direction")
-                if direction:
-                    scenarios = [direction]
-            entries.append((entity["name"], [str(item) for item in scenarios]))
-        return sorted(entries, key=lambda item: item[0])
-
-    entries: "list[tuple[str, list[str]]]" = []
-    for path in sorted(styles_root.glob("*.md")):
-        scenarios: list[str] = []
-        in_scenarios = False
-        try:
-            lines = path.read_text(encoding="utf-8").splitlines()
-        except OSError as exc:
-            fail(f"cannot read {path}: {exc}")
-        for raw in lines:
-            line = raw.strip()
-            if line.startswith(SCENARIO_HEADER):
-                in_scenarios = True
-                continue
-            if in_scenarios:
-                if line.startswith("- "):
-                    scenarios.append(line[2:].strip())
-                else:
-                    break
-        entries.append((path.stem, scenarios))
-    return entries
+def _assert_generation(resolver):
+    if _canonical_resolver(resolver.builtin_root).generation != resolver.generation:
+        raise ValueError("gallery_catalog_generation_changed")
 
 
-def axis_counts(styles_root: Path = STYLES_DIR) -> "list[tuple[str, int]]":
-    """Return canonical axis counts grouped by resolver directory family."""
-    if not _is_legacy_fixture(styles_root):
-        resolver = _canonical_resolver()
-        counts: dict[str, int] = {}
-        for entity in resolver.entities:
-            if entity["kind"] != "axis":
-                continue
-            parts = Path(entity["path"]).parts
-            group = parts[2] if len(parts) >= 4 else "ungrouped"
-            counts[group] = counts.get(group, 0) + 1
-        return [(f"{group}（axis）", counts[group]) for group in sorted(counts)]
-
-    entries: "list[tuple[str, int]]" = []
-    for directory in sorted(p for p in styles_root.iterdir() if p.is_dir()):
-        if directory.name in {"00_索引", "generated", "generated.previous"} or directory.name.startswith(".style-index-"):
+def builtin_styles(library_root=None, *, resolver=None) -> "list[tuple[str, list[str]]]":
+    resolver = _gallery_resolver(library_root, resolver)
+    entries = []
+    for entity in resolver.entities:
+        if entity["kind"] != "style" or entity.get("lifecycle") != "active":
             continue
-        count = len(list(directory.glob("*.md")))
-        label = directory.name.split("_", 1)[1] if "_" in directory.name else directory.name
-        entries.append((f"{label}（{directory.name.split('_')[0]}）", count))
-    return entries
+        data = resolver.resolve(entity["asset_id"])["data"]
+        scenarios = (data.get("taxonomy") or {}).get("scenarios") or []
+        if not scenarios:
+            direction = (data.get("visual_language") or {}).get("direction")
+            scenarios = [direction] if direction else []
+        entries.append((entity["name"], [str(item) for item in scenarios]))
+    return sorted(entries, key=lambda item: item[0])
 
 
-def _brief_path(name: str, styles_root: Path = STYLES_DIR) -> Path:
-    """Resolve a style name to its brief file: top-level builtin first, then
-    the family directory for S5 representatives, then a single-name search
-    across the sub-directory axes (explicit golden renders of later intake
-    batches, e.g. S5 gap briefs living under 01/02)."""
-    if not _is_legacy_fixture(styles_root):
-        resolver = _canonical_resolver()
-        try:
-            return Path(resolver.require(name, kind="style")["path"])
-        except ResolverError as exc:
-            fail(f"style {name!r} not found in canonical catalog: {exc}")
-
-    top_level = styles_root / f"{name}.md"
-    if top_level.is_file():
-        return top_level
-    for family, representative, _ in FAMILY_REPRESENTATIVES:
-        if representative == name:
-            return styles_root / "01_通用母版" / family / f"{name}.md"
-    matches = sorted(p for p in styles_root.glob(f"0[123]_*/*/{name}.md"))
-    if len(matches) == 1:
-        return matches[0]
-    return top_level  # canonical path for the failure message
+def axis_counts(library_root=None, *, resolver=None) -> "list[tuple[str, int]]":
+    """按 resolver 参考清单与 manifest family 统计轴，目录位置不定义语义。"""
+    resolver = _gallery_resolver(library_root, resolver)
+    counts: dict[str, int] = {}
+    for entity in resolver.references:
+        group = resolver.resolve(entity["asset_id"])["data"]["kind"]
+        counts[group] = counts.get(group, 0) + 1
+    return [(f"{group}（axis）", counts[group]) for group in sorted(counts)]
 
 
-def _brief_json(name: str, styles_root: Path = STYLES_DIR) -> dict:
-    if not _is_legacy_fixture(styles_root):
-        resolver = _canonical_resolver()
-        try:
-            return resolver.require(name, kind="style")["data"]
-        except ResolverError as exc:
-            fail(f"style {name!r} not found in canonical catalog: {exc}")
-
-    path = _brief_path(name, styles_root)
-    try:
-        text = path.read_text(encoding="utf-8")
-    except OSError as exc:
-        fail(f"cannot read {path}: {exc}")
-    parsed = parse_style_document(text)
-    if parsed["brief"] is None:
-        fail(f"no JSON brief block in {path}")
-    return parsed["brief"]
+def _brief_path(name, library_root=None, *, resolver=None) -> Path:
+    return Path(_gallery_resolver(library_root, resolver).require(name, kind="style")["path"])
 
 
-def _first_hex(*values: object) -> "str | None":
-    for value in values:
-        if isinstance(value, str):
-            found = HEX_RE.search(value)
-            if found:
-                return found.group(0)
-    return None
+def _brief_json(name, library_root=None, *, resolver=None) -> dict:
+    return _gallery_resolver(library_root, resolver).require(name, kind="style")["data"]
 
 
-def _luminance(hex_value: str) -> int:
-    """Perceived luminance 0-255 (deterministic; golden cover title and chart
-    title colors are fixed by the templates, so the page background must be
-    the lightest anchor to keep contrast)."""
-    r, g, b = (int(hex_value[i:i + 2], 16) for i in (1, 3, 5))
-    return round(0.299 * r + 0.587 * g + 0.114 * b)
-
-
-def _lightest_hex(*values: object) -> "str | None":
-    """Pick the highest-luminance HEX among the candidates (stable: first
-    occurrence wins ties). Falls back to None (template paper default)."""
-    best: "tuple[int, str] | None" = None
-    for value in values:
-        if not isinstance(value, str):
-            continue
-        for found in HEX_RE.finditer(value):
-            hex_value = found.group(0)
-            lum = _luminance(hex_value)
-            if best is None or lum > best[0]:
-                best = (lum, hex_value)
-    return best[1] if best else None
+def _representatives(resolver):
+    available = {row["name"] for row in resolver.entities if row["kind"] == "style"}
+    return [row for row in FAMILY_REPRESENTATIVES if row[1] in available]
 
 
 def _clip(text: str, limit: int) -> str:
@@ -280,97 +141,30 @@ def _clip(text: str, limit: int) -> str:
 
 # ---------------------------------------------------------- golden data ---
 
-def golden_style_names(styles_root: Path = STYLES_DIR) -> "list[str]":
-    """Golden baseline roster: active builtins + one S5 family representative
-    per intake family (R-65, 18 styles in the current catalog)."""
-    names = [name for name, _ in builtin_styles(styles_root)]
-    names += [representative for _, representative, _ in FAMILY_REPRESENTATIVES]
-    return names
+def golden_style_names(library_root=None, *, resolver=None) -> "list[str]":
+    resolver = _gallery_resolver(library_root, resolver)
+    names = [name for name, _ in builtin_styles(resolver=resolver)]
+    return list(dict.fromkeys(names + [row[1] for row in _representatives(resolver)]))
 
 
-def golden_inputs(name: str, styles_root: Path = STYLES_DIR) -> dict:
-    """Deterministic golden sample inputs derived from the brief itself.
-
-    Fixed sample data (kicker/bullets/chart numbers are constants; per-style
-    variation comes from style name, best_for, layout patterns and palette).
-    """
-    brief = _brief_json(name, styles_root)
-    legacy = brief.get("legacy_payload") or {}
-    palette = brief.get("color_palette") or legacy.get("color_palette", {})
-    canvas = brief.get("canvas") or legacy.get("canvas", {})
-    visual_language = brief.get("visual_language") or {}
-    best_for = _clip(str(
-        brief.get("best_for") or legacy.get("best_for")
-        or visual_language.get("direction") or name
-    ), 56)
-    patterns = [
-        _clip(str(item), 44)
-        for item in (
-            brief.get("layout_patterns") or legacy.get("layout_patterns")
-            or visual_language.get("features")
-            or visual_language.get("composition_discipline") or []
-        )[:4]
-    ] or ["problem-process-result-next steps"]
-
-    background = _lightest_hex(canvas.get("background"), palette.get("neutral"))
-    # Visibility guard: templates use fixed dark ink, so only a light enough
-    # anchor may become the page background. Dark-family palettes (terminal
-    # / night themes carry dark canvases, e.g. cream families carry a dark
-    # neutral ink instead) fall back to the template paper default.
-    if background is not None and _luminance(background) < BACKGROUND_LUM_FLOOR:
-        background = None
-    cover_data: dict = {
-        "kicker": "LEO 风格金样板",
-        "title": name,
-        "subtitle": best_for,
-        "footer_left": "leo-ppt-generator",
-        "footer_right": "golden sample",
-    }
-    if background:
-        cover_data["background_color"] = background
-    content_data = {
-        "title": f"{name} · 主题预览",
-        "bullets": patterns,
-        "page_no": "02",
-    }
-    chart_data = {
-        "title": f"{name} · 图表页",
-        "bullets": ["数据口径固定：季度交付吞吐示例"],
-        "page_no": "03",
-    }
-    theme: dict = {}
-    for anchor, role in (
-        ("primary", "primary"),
-        ("secondary", "secondary"),
-        ("accent", "accent"),
-    ):
-        hex_value = _first_hex(palette.get(role))
-        if hex_value is None:
-            continue
-        # Same guard for plot anchors: on the paper-default fallback a
-        # light-on-dark family anchor (near-white terminal foreground)
-        # would vanish on mermaid's light chart canvas.
-        if background is None and _luminance(hex_value) >= ANCHOR_LUM_CEILING:
-            continue
-        theme[anchor] = hex_value
-    if background:
-        theme["background"] = background
-        # xyChart title color follows background luminance (light page needs
-        # dark ink; fixed white would vanish on the lightest-anchor pick).
-        theme["on_primary"] = "#1F2430" if _luminance(background) >= 128 else "#FFFFFF"
-        theme["grid_line"] = "#E2E8F0"
+def golden_inputs(name, library_root=None, *, resolver=None) -> dict:
+    """输入只消费 canonical brief 和主题；金样板不代表视觉验收。"""
+    resolver = _gallery_resolver(library_root, resolver)
+    brief = _brief_json(name, resolver=resolver)
+    language = brief.get("visual_language") or {}
+    best_for = _clip(str(language.get("direction") or name), 56)
+    patterns = [_clip(str(item), 44) for item in
+                (language.get("features") or language.get("composition_discipline") or [])[:4]]
+    patterns = patterns or ["围绕一个论点组织支撑材料"]
     theme_id = (brief.get("bindings") or {}).get("theme_default")
-    if not _is_legacy_fixture(styles_root):
-        if not theme_id:
-            raise ValueError(f"画廊风格 {name} 缺少 canonical theme 绑定，不能回落空主题")
-        resolved = _canonical_resolver().require(theme_id, kind="theme")
-        theme = compute_effective_theme(resolved["data"])
-        # 页面颜色和字号只来自主题；避免旧 data.background_color 覆盖模式。
-        cover_data.pop("background_color", None)
+    if not theme_id:
+        raise ValueError(f"画廊风格 {name} 缺少 canonical theme 绑定")
+    theme = compute_effective_theme(resolver.require(theme_id, kind="theme")["data"])
     return {
-        "slide-cover.json": cover_data,
-        "slide-content.json": content_data,
-        "slide-chart.json": chart_data,
+        "slide-cover.json": {"kicker": "LEO 风格金样板", "title": name, "subtitle": best_for,
+                             "footer_left": "leo-ppt-generator", "footer_right": "golden sample"},
+        "slide-content.json": {"title": f"{name} · 主题预览", "bullets": patterns, "page_no": "02"},
+        "slide-chart.json": {"title": f"{name} · 图表页", "bullets": ["数据口径固定：季度交付吞吐示例"], "page_no": "03"},
         "chart.mmd": GOLDEN_CHART_MMD,
         "theme.json": theme,
     }
@@ -395,15 +189,17 @@ def runtime_python() -> "Path | None":
     return None
 
 
-def _run_render(args: "list[str]") -> "tuple[dict | None, bool]":
+def _run_render(args: "list[str]", *, page_request=None, chart_request=None) -> "tuple[dict | None, bool]":
     """Run one render-lane CLI call. Returns (envelope, degraded)."""
     python = runtime_python()
     if python is None:
         return None, True
-    result = subprocess.run(
-        [str(python), "-m", "leo_ppt_generator", *args],
-        capture_output=True, text=True, timeout=180,
-    )
+    request = page_request if page_request is not None else chart_request
+    worker = "--_render-page" if page_request is not None else "--_render-chart"
+    command = ([str(python), str(Path(__file__).resolve()), worker] if request is not None
+               else [str(python), "-m", "leo_ppt_generator", *args])
+    result = subprocess.run(command, input=json.dumps(request) if request is not None else None,
+                            capture_output=True, text=True, timeout=180)
     try:
         envelope = json.loads(result.stdout or result.stderr)
     except json.JSONDecodeError:
@@ -418,14 +214,15 @@ def _run_render(args: "list[str]") -> "tuple[dict | None, bool]":
     fail(f"render blocked ({reason}): {json.dumps(envelope.get('suggested_actions'), ensure_ascii=False)}")
 
 
-def render_chart_svg(mmd: Path, theme: Path, out: Path) -> "tuple[str | None, bool]":
-    """Render the fixed chart to SVG text via ``render chart``."""
-    envelope, degraded = _run_render([
-        "render", "chart",
-        "--code-file", str(mmd),
-        "--out", str(out),
-        "--theme-file", str(theme),
-    ])
+def render_chart_svg(mmd: Path, theme: Path, out: Path,
+                     *, library_root=None, resolver=None) -> "tuple[str | None, bool]":
+    """将固定图表与明确的库上下文转发给 chart owner。"""
+    resolver = _gallery_resolver(library_root, resolver)
+    envelope, degraded = _run_render([], chart_request={
+        "library_root": str(resolver.builtin_root), "generation": resolver.generation,
+        "code_file": str(mmd.absolute()), "out": str(out.absolute()),
+        "theme": str(theme.absolute()),
+    })
     if degraded:
         return None, True
     try:
@@ -435,17 +232,13 @@ def render_chart_svg(mmd: Path, theme: Path, out: Path) -> "tuple[str | None, bo
 
 
 def render_page(template_id: str, data: Path, out: Path,
-                *, theme: Path | None = None) -> "tuple[dict | None, bool]":
-    args = [
-        "render", "page",
-        "--template", template_id,
-        "--data", str(data),
-        "--out", str(out),
-        "--size", "1280x720",
-    ]
-    if theme is not None:
-        args += ["--theme-file", str(theme)]
-    envelope, degraded = _run_render(args)
+                *, theme: Path, library_root=None, resolver=None) -> "tuple[dict | None, bool]":
+    resolver = _gallery_resolver(library_root, resolver)
+    envelope, degraded = _run_render([], page_request={
+        "library_root": str(resolver.builtin_root), "generation": resolver.generation,
+        "template_id": template_id, "data": str(data.absolute()), "out": str(out.absolute()),
+        "theme": str(theme.absolute()),
+    })
     if not degraded:
         sidecar = out.with_name(out.name + ".render.json")
         if sidecar.is_file():
@@ -453,6 +246,40 @@ def render_page(template_id: str, data: Path, out: Path,
             # byte-deterministic, so it is not part of the committed assets.
             sidecar.unlink()
     return envelope, degraded
+
+
+def _render_page_worker(request):
+    """托管解释器只转发显式库上下文给现有 renderer，不另建渲染实现。"""
+    from leo_ppt_generator.render.page import render_page as render_owner
+    try:
+        resolver = _canonical_resolver(Path(request["library_root"]))
+        if resolver.generation != request["generation"]:
+            raise ValueError("gallery_catalog_generation_changed")
+        result = render_owner(request["template_id"], request["data"], request["out"], size=(1280, 720),
+                              theme_variables=json.loads(Path(request["theme"]).read_text()), resolver=resolver)
+        _assert_generation(resolver)
+        print(json.dumps({"status": "ready", "render": result}, ensure_ascii=False))
+        return 0
+    except (ValueError, OSError) as exc:
+        print(json.dumps({"status": "blocked", "reason_code": getattr(exc, "reason_code", str(exc))}, ensure_ascii=False))
+        return 2
+
+
+def _render_chart_worker(request):
+    """图表与页面使用同库 generation；不通过全局环境切换资产来源。"""
+    from leo_ppt_generator.render.chart import render_chart
+    try:
+        resolver = _canonical_resolver(Path(request["library_root"]))
+        if resolver.generation != request["generation"]:
+            raise ValueError("gallery_catalog_generation_changed")
+        result = render_chart(dialect="mermaid", code_file=request["code_file"], out=request["out"],
+                              theme_file=request["theme"], resolver=resolver)
+        _assert_generation(resolver)
+        print(json.dumps({"status": "ready", "render": result}, ensure_ascii=False))
+        return 0
+    except (ValueError, OSError) as exc:
+        print(json.dumps({"status": "blocked", "reason_code": getattr(exc, "reason_code", str(exc))}, ensure_ascii=False))
+        return 2
 
 
 def write_inputs(style_dir: Path, inputs: dict) -> None:
@@ -468,20 +295,22 @@ def write_inputs(style_dir: Path, inputs: dict) -> None:
 
 
 def render_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = None,
-                  styles_root: Path = STYLES_DIR) -> int:
+                  library_root=None, *, resolver=None) -> int:
     """Write golden inputs + thumbnails for every golden style (R-26/R-65)."""
-    names = styles or golden_style_names(styles_root)
+    resolver = _gallery_resolver(library_root, resolver)
+    _assert_generation(resolver)
+    names = styles or golden_style_names(resolver=resolver)
     degraded = False
     for name in names:
         style_dir = thumbs_root / name
-        inputs = golden_inputs(name, styles_root)
+        inputs = golden_inputs(name, resolver=resolver)
         write_inputs(style_dir, inputs)
         # chart inputs live in style_dir (deterministic baseline); the SVG and
         # its timestamped provenance sidecar are rendered into a temp dir so
         # only the embedded chart_svg lands in the committed baseline.
         with tempfile.TemporaryDirectory(prefix="leo-golden-chart-") as tmp:
             chart_svg, chart_degraded = render_chart_svg(
-                style_dir / "chart.mmd", style_dir / "theme.json", Path(tmp) / "chart.svg"
+                style_dir / "chart.mmd", style_dir / "theme.json", Path(tmp) / "chart.svg", resolver=resolver
             )
         degraded = degraded or chart_degraded
         for page in PAGES:
@@ -496,10 +325,11 @@ def render_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = 
                     json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
                     encoding="utf-8",
                 )
-            template = "cover-basic" if page == "cover" else "body-basic"
-            _, page_degraded = render_page(template, data, out, theme=style_dir / "theme.json")
+            template = "builtin:template:cover-basic" if page == "cover" else "builtin:template:body-basic"
+            _, page_degraded = render_page(template, data, out, theme=style_dir / "theme.json", resolver=resolver)
             degraded = degraded or page_degraded
         print(f"golden: {name} rendered" + (" (chart png skipped: backend missing)" if chart_svg is None else ""))
+    _assert_generation(resolver)
     if degraded:
         warn("render backend unavailable: golden thumbnails degraded to deterministic inputs only (R-65 check compares input shas)")
     return 0
@@ -512,7 +342,7 @@ def _sha256(path: Path) -> str:
 
 
 def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = None,
-                 styles_root: Path = STYLES_DIR) -> "tuple[int, bool]":
+                 library_root=None, *, resolver=None) -> "tuple[int, bool]":
     """R-65 golden regression: re-render into a temp dir and compare shas.
 
     Returns (drift_count, degraded). Committed thumbnails are compared by
@@ -521,14 +351,16 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
     ``slide-chart.json`` embeds the rendered chart_svg, so it is compared
     after chart assembly, not in the pure-input loop.
     """
-    names = styles or golden_style_names(styles_root)
+    resolver = _gallery_resolver(library_root, resolver)
+    _assert_generation(resolver)
+    names = styles or golden_style_names(resolver=resolver)
     drift = 0
     degraded = runtime_python() is None
     if degraded:
         warn("render backend unavailable: R-65 check degraded to golden-input byte compare")
     for name in names:
         committed_dir = thumbs_root / name
-        inputs = golden_inputs(name, styles_root)
+        inputs = golden_inputs(name, resolver=resolver)
         with tempfile.TemporaryDirectory(prefix="leo-golden-check-") as tmp:
             workdir = Path(tmp) / name
             write_inputs(workdir, inputs)
@@ -546,7 +378,7 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
             if degraded:
                 continue  # no backend: baseline is the deterministic inputs
             chart_svg, chart_degraded = render_chart_svg(
-                workdir / "chart.mmd", workdir / "theme.json", Path(tmp) / "chart.svg"
+                workdir / "chart.mmd", workdir / "theme.json", Path(tmp) / "chart.svg", resolver=resolver
             )
             degraded = degraded or chart_degraded
             if degraded:
@@ -577,8 +409,8 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
                     drift += 1
                     continue
                 fresh = workdir / f"thumb-{page}.png"
-                template = "cover-basic" if page == "cover" else "body-basic"
-                _, page_degraded = render_page(template, data, fresh, theme=workdir / "theme.json")
+                template = "builtin:template:cover-basic" if page == "cover" else "builtin:template:body-basic"
+                _, page_degraded = render_page(template, data, fresh, theme=workdir / "theme.json", resolver=resolver)
                 degraded = degraded or page_degraded
                 if page_degraded:
                     continue
@@ -589,6 +421,7 @@ def check_golden(thumbs_root: Path = THUMBS_ROOT, styles: "list[str] | None" = N
                         file=sys.stderr,
                     )
                     drift += 1
+    _assert_generation(resolver)
     return drift, degraded
 
 
@@ -598,9 +431,18 @@ def _thumbs_present(style_dir: Path) -> bool:
     return all((style_dir / f"thumb-{page}.png").is_file() for page in PAGES)
 
 
+def _thumbnail_row(name: str, thumbs_root: Path, gallery_path: Path) -> str:
+    cells = []
+    for page, label in zip(PAGES, ("封面", "内容", "图表")):
+        relative = os.path.relpath(thumbs_root / name / f"thumb-{page}.png", gallery_path.parent)
+        url = quote(Path(relative).as_posix(), safe="/")
+        cells.append(f"![{name} {label}金样板]({url})")
+    return "| " + " | ".join(cells) + " |"
+
+
 def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]",
            representatives: "list[tuple[str, str, str]] | None" = None,
-           thumbs_root: Path = THUMBS_ROOT) -> str:
+           thumbs_root: Path = THUMBS_ROOT, gallery_path: Path = GALLERY) -> str:
     if representatives is None:
         representatives = FAMILY_REPRESENTATIVES
     lines = [
@@ -639,10 +481,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
                 "",
                 "| 封面 | 内容 | 图表 |",
                 "| --- | --- | --- |",
-                "| ![{} 封面金样板](style-gallery/{}/thumb-cover.png) "
-                "| ![{} 内容金样板](style-gallery/{}/thumb-content.png) "
-                "| ![{} 图表金样板](style-gallery/{}/thumb-chart.png) |".format(
-                    name, name, name, name, name, name),
+                _thumbnail_row(name, thumbs_root, gallery_path),
             ]
 
     family_golden = [
@@ -656,9 +495,9 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
             "",
             f"> S5 进货的 {len(family_golden)} 个新风格家族各选 1 个代表",
             "> （色板最完整 / 最具家族气质），与内置风格同一渲染 lane 与",
-            "> `--check` 回归；暗底家族经可见性守护回退纸色底，",
-            "> 色板锚点仍逐字进图表 SVG。",
-            "> 这些历史家族尚无 canonical theme 绑定，兼容预览不能作为完整换肤或审美验收证据。",
+            "> `--check` 回归；各家族按 canonical theme 的明暗模式渲染，",
+            "> 图表和页面共同消费同一份主题。",
+            "> 预览不授予 draft 风格生产资格，也不代表审美验收通过。",
         ]
         for family, name, blurb, present in family_golden:
             if not present:
@@ -671,10 +510,7 @@ def render(builtins: "list[tuple[str, list[str]]]", axes: "list[tuple[str, int]]
                 "",
                 "| 封面 | 内容 | 图表 |",
                 "| --- | --- | --- |",
-                "| ![{} 封面金样板](style-gallery/{}/thumb-cover.png) "
-                "| ![{} 内容金样板](style-gallery/{}/thumb-content.png) "
-                "| ![{} 图表金样板](style-gallery/{}/thumb-chart.png) |".format(
-                    name, name, name, name, name, name),
+                _thumbnail_row(name, thumbs_root, gallery_path),
             ]
 
     lines += [
@@ -702,27 +538,37 @@ def main(argv: "list[str] | None" = None) -> int:
     parser.add_argument("--check", action="store_true", help="verify the gallery and golden samples are up to date instead of writing")
     parser.add_argument("--render-golden", action="store_true",
                         help="render golden sample thumbnails for active styles and family representatives (R-26/R-65) before writing the gallery")
+    parser.add_argument("--library-root", type=Path, default=LIBRARY_DIR, help="明确的 canonical 库根")
+    parser.add_argument("--gallery", type=Path, default=GALLERY, help="画廊 Markdown 输出路径")
+    parser.add_argument("--thumbs-root", type=Path, default=THUMBS_ROOT, help="金样板输出目录")
+    parser.add_argument("--_render-page", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--_render-chart", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
 
-    if not LIBRARY_DIR.is_dir():
-        fail(f"template library not found: {LIBRARY_DIR}")
+    if args._render_page:
+        return _render_page_worker(json.load(sys.stdin))
+    if args._render_chart:
+        return _render_chart_worker(json.load(sys.stdin))
+    resolver = _canonical_resolver(args.library_root)
 
     if args.render_golden:
-        render_golden()
+        render_golden(thumbs_root=args.thumbs_root, resolver=resolver)
 
-    builtins = builtin_styles()
-    content = render(builtins, axis_counts())
+    builtins = builtin_styles(resolver=resolver)
+    content = render(builtins, axis_counts(resolver=resolver), representatives=_representatives(resolver),
+                     thumbs_root=args.thumbs_root, gallery_path=args.gallery)
+    _assert_generation(resolver)
 
     if args.check:
         try:
-            current = GALLERY.read_text(encoding="utf-8")
+            current = args.gallery.read_text(encoding="utf-8")
         except OSError:
-            print(f"STALE: {GALLERY} missing; run without --check to generate", file=sys.stderr)
+            print(f"STALE: {args.gallery} missing; run without --check to generate", file=sys.stderr)
             return 1
         if current != content:
-            print(f"STALE: {GALLERY} differs from styles directory; regenerate", file=sys.stderr)
+            print(f"STALE: {args.gallery} differs from canonical catalog; regenerate", file=sys.stderr)
             return 1
-        drift, _degraded = check_golden()
+        drift, _degraded = check_golden(thumbs_root=args.thumbs_root, resolver=resolver)
         if drift:
             print(f"STALE: golden sample regression found {drift} drift(s); re-run --render-golden and review", file=sys.stderr)
             return 1
@@ -730,11 +576,11 @@ def main(argv: "list[str] | None" = None) -> int:
         return 0
 
     try:
-        GALLERY.parent.mkdir(parents=True, exist_ok=True)
-        GALLERY.write_text(content, encoding="utf-8")
+        args.gallery.parent.mkdir(parents=True, exist_ok=True)
+        args.gallery.write_text(content, encoding="utf-8")
     except OSError as exc:
-        fail(f"cannot write {GALLERY}: {exc}")
-    print(f"wrote {GALLERY}")
+        fail(f"cannot write {args.gallery}: {exc}")
+    print(f"wrote {args.gallery}")
     return 0
 
 

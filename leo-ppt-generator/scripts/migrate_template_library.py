@@ -21,6 +21,8 @@ def main(argv=None):
     preview.add_argument("--source-root", required=True, type=Path)
     preview.add_argument("--out-plan", required=True, type=Path)
     preview.add_argument("--prerequisite", type=Path, help="同一证据根内的真实预迁移价值收据；缺失仅生成 U7-A 计划")
+    preview.add_argument("--consumer-replacements", type=Path, help="同一证据根内的消费者替换输入；目标字节冻结进唯一计划")
+    preview.add_argument("--target-evidence", type=Path, help="同一证据根内已由目标 runtime 产生的目标 evidence 输入；字节冻结进唯一计划")
     stage = phases.add_parser("stage")
     stage.add_argument("--plan", required=True, type=Path)
     stage.add_argument("--staging-root", required=True, type=Path)
@@ -42,7 +44,10 @@ def main(argv=None):
         if args.phase == "preview":
             root = args.out_plan.absolute().parent
             reference = file_reference(root, args.prerequisite.absolute().relative_to(root).as_posix()) if args.prerequisite else None
-            result = preview_migration(args.source_root, args.out_plan, prerequisite=reference)
+            replacements = file_reference(root, args.consumer_replacements.absolute().relative_to(root).as_posix()) if args.consumer_replacements else None
+            target_evidence = file_reference(root, args.target_evidence.absolute().relative_to(root).as_posix()) if args.target_evidence else None
+            result = preview_migration(args.source_root, args.out_plan, prerequisite=reference,
+                                       consumer_replacements=replacements, target_evidence=target_evidence)
         elif args.phase == "stage":
             result = stage_migration(args.plan, args.staging_root)
         elif args.phase == "verify":

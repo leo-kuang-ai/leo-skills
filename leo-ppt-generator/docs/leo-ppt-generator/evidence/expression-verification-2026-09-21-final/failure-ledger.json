@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "source_stable": true,
+  "steps": [
+    {
+      "exit_code": 0,
+      "log": "compileall.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "step": "compileall",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "schemas.log",
+      "log_sha256": "f08f708c2fce21ed0fb9bf8d1f767dd5dd5fe9fd62682b8cafbae56fa2d3ea74",
+      "step": "schemas",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 128.54,
+        "terminal_summary": "OK",
+        "tests": 114
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "regime-lint.log",
+      "log_sha256": "42c35316f64af9560f1ba4800bb1eaa8316398995ca945703dddea7d73cf1f18",
+      "step": "regime-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "layout-lint.log",
+      "log_sha256": "5cf9b25f766a941a0ee8904109ff7c25f7a5223c20d182f9afd3b98451421295",
+      "step": "layout-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "template-lint.log",
+      "log_sha256": "43d9da7d8ee8afecf9e46224d9e5efc7af11d33f05020a7482c8125f243f649f",
+      "step": "template-lint",
+      "unittest": null
+    },
+    {
+      "exit_code": 0,
+      "log": "expression-consumers.log",
+      "log_sha256": "d80e4a3fa1e5fe139681920c106cca9077d6e2069465971632dd636eb3b6a1db",
+      "step": "expression-consumers",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 256.989,
+        "terminal_summary": "OK",
+        "tests": 153
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "migration.log",
+      "log_sha256": "ec79fab99c7280bb0c7159f1a4fb83990d2d82f2cc0da5531c2e2c86968f4a04",
+      "step": "migration",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 240.216,
+        "terminal_summary": "OK",
+        "tests": 188
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "quality.log",
+      "log_sha256": "e3beaf14172fb8666424a66c1101265738b840b2c22f192ddb7061f2cfc6cb10",
+      "step": "quality",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 101.043,
+        "terminal_summary": "OK",
+        "tests": 144
+      }
+    },
+    {
+      "exit_code": 0,
+      "log": "full-suite.log",
+      "log_sha256": "daa745856da13d7ca9ca8356eebf2c37a538202c0af307ffcb2274c0a424ce38",
+      "step": "full-suite",
+      "unittest": {
+        "errors": 0,
+        "failures": 0,
+        "issues": [],
+        "reported_seconds": 1093.734,
+        "terminal_summary": "OK",
+        "tests": 2400
+      }
+    }
+  ],
+  "verification": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/docs/leo-ppt-generator/evidence/expression-verification-2026-09-21-final/verification.json"
+}

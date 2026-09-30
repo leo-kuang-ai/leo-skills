@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png",
+    "sha256": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": false,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": false,
+    "no_overflow": false,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3",
+  "fixture": {
+    "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-fixture.json",
+    "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-measurement.json",
+    "sha256": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-input.json",
+    "sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d"
+  }
+}

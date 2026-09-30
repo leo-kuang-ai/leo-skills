@@ -66,11 +66,11 @@ class TemplateAdoptionTest(unittest.TestCase):
         result = _run("import", str(pack), home=self.home)
         self.assertEqual(result.returncode, 0, result.stderr)
         library = self.home / "template-library"
-        self.assertTrue((library / "canonical/styles/示例导入风/brief.json").is_file())
+        self.assertTrue((library / "canonical/visual/styles/示例导入风/brief.json").is_file())
         quarantined = library / "reference/candidates/示例导入风/page.html"
         self.assertTrue(quarantined.is_file(), "可执行内容必须默认隔离")
         # 导入的数据实体不得位于 canonical 的执行面。
-        self.assertFalse(list((library / "canonical/styles/示例导入风").glob("*.html")))
+        self.assertFalse(list((library / "canonical/visual/styles/示例导入风").glob("*.html")))
 
     def test_package_trusted_claim_is_invalid(self) -> None:
         pack = _make_pack(self.tmp, trusted_claim=True)

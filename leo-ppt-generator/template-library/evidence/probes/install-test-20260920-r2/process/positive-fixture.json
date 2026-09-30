@@ -1,0 +1,40 @@
+{
+  "case_id": "process",
+  "data": {
+    "bullets": [
+      "按依赖推进",
+      "保留验收记录"
+    ],
+    "chart_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"220\" viewBox=\"0 0 1000 220\"><defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#334155\"/></marker></defs><text x=\"80\" y=\"100\" font-size=\"30\" fill=\"#111827\">范围确认</text><text x=\"450\" y=\"100\" font-size=\"30\" fill=\"#111827\">试点验证</text><line x1=\"210\" y1=\"90\" x2=\"440\" y2=\"90\" stroke=\"#334155\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/></svg>",
+    "title": "确认范围后再验证"
+  },
+  "expected": {
+    "facts": [],
+    "focus": "确认范围后再验证",
+    "reading_order": [
+      "范围确认",
+      "试点验证"
+    ],
+    "required_text": [
+      "确认范围后再验证",
+      "按依赖推进",
+      "保留验收记录",
+      "范围确认",
+      "试点验证"
+    ],
+    "structure": {
+      "edges": [
+        {
+          "from": "范围确认",
+          "to": "试点验证"
+        }
+      ],
+      "nodes": [
+        "范围确认",
+        "试点验证"
+      ],
+      "parallel": []
+    }
+  },
+  "probe": "positive"
+}

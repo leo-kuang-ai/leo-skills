@@ -1,0 +1,10 @@
+{
+  "active_legacy_hits": 324,
+  "unclassified_hits": 0,
+  "unclassified": [],
+  "source_hashes": {
+    "runtime/src/leo_ppt_generator/library_migration.py": "7dbde7e7aed5d483e11d926b2a558432fe4fa7b98f3b6cd77057ae93af1484d9",
+    "tests/test_migration_transaction.py": "61a07a096abce97da3d42408d6adb77d10b1a3488e52b2cf4ab09610dd60d2d7",
+    "tests/test_migration_phases.py": "c2657c62b1e0c5ef5246df83f776e8219a8167477b8b95f54d74c6b5a6480426"
+  }
+}

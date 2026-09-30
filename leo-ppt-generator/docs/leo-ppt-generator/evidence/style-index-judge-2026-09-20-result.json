@@ -1,0 +1,36 @@
+{
+  "kind": "u9-style-index-judge-verification",
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_style_index_judge",
+  "exit_code": 0,
+  "log": "style-index-judge-2026-09-20-green.log",
+  "checks": [
+    {
+      "command": [
+        "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/runtime/.venv/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "evals/judges/judge_style_index.py",
+        "tests/test_style_index_judge.py"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "evals/judges/judge_style_index.py",
+        "tests/test_style_index_judge.py"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "source_hashes": {
+    "evals/judges/judge_style_index.py": "a3635290b963bd3ddf4fbef25487a01ec2c3ba34fc33c0686be94f724f15494b",
+    "tests/test_style_index_judge.py": "1d1e1cc4ae247b30744288c6a68fc3a5e181c8000a89ee070b30d3f242346754"
+  }
+}

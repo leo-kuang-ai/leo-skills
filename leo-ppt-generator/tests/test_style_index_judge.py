@@ -19,6 +19,38 @@ def trace(name, data):
 
 
 class JudgeTest(unittest.TestCase):
+    def test_current_repository_pointer_and_registry_are_valid_index_sources(self):
+        library = PATH.parents[2] / "template-library"
+        pointer = library / "catalog/current.json"
+        generation = json.loads(pointer.read_text())["generation"]
+        registry = library / "catalog/generations" / generation / "registry.json"
+        self.assertTrue(registry.is_file())
+        for path in (pointer, registry):
+            self.assertEqual(judge.advise_trace_errors(trace("Read", {"file_path": str(path)})), [])
+
+    def test_retired_summaries_never_authorize_current_index_queries(self):
+        root = "/skill/template-library/reference/sources/retired-styles-tree/styles/generated"
+        for name, args in (
+            ("Read", {"file_path": root + "/names-001.md"}),
+            ("Grep", {"path": root, "glob": "names-*.md", "pattern": "风格"}),
+            ("Bash", {"command": "grep -n 风格 " + root + "/names-*.md"}),
+        ):
+            with self.subTest(tool=name):
+                self.assertTrue(judge.advise_trace_errors(trace(name, args)))
+
+    def test_catalog_search_cannot_escape_or_broaden_its_registry_scope(self):
+        root = "/skill/template-library/catalog"
+        for path, glob in (
+            (root + "/../canonical/visual/styles", "*.json"),
+            (root, "**/*"),
+            (root, "*.json"),
+            (root + "/generations/g1", "*.json"),
+            (root + "/generations/g1", "../*.json"),
+            (root + "/generations/g1/views", "registry.json"),
+        ):
+            with self.subTest(path=path, glob=glob):
+                self.assertTrue(judge.advise_trace_errors(trace("Grep", {"path": path, "glob": glob, "pattern": "风格"})))
+
     def test_delegation_cannot_expand_to_future_unlimited_authority(self):
         script = PATH.parents[1] / "fixtures/scripts/judge_confirmation_gates.py"
         base = "收到委托，目前缺少产品说明材料，请提供正文。"
@@ -49,38 +81,49 @@ class JudgeTest(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
 
     def test_shell_scope_is_proven_for_every_operand(self):
-        root = "/skill/template-library/reference/sources/retired-styles-tree/styles/generated"
+        root = "/skill/template-library/catalog"
+        registry = root + "/generations/g1/registry.json"
         for command in (
-            f"cat {root}/catalog.json",
-            f"cat {root}/names-001.md /tmp/other.md",
+            f"cat {root}/unowned.json",
+            f"cat {registry} /tmp/other.md",
             f"cat {root}/../private.md",
-            f"cat {root}/{{catalog.json,names-001.md}}",
-            f"perl -e 'unlink @ARGV' {root}/names-001.md",
-            f"grep -f /tmp/patterns {root}/names-001.md",
-            f"cat {root}/names-001.md | tee /tmp/output",
-            f"cat {root}/names-001.md && touch /tmp/output",
-            f"cat {root}/names-001.md; cat /tmp/other.md",
-            f"cat {root}/names-001.md; touch /tmp/output",
+            f"cat {root}/{{current.json,unowned.json}}",
+            f"perl -e 'unlink @ARGV' {registry}",
+            f"grep -f /tmp/patterns {registry}",
+            f"cat {registry} | tee /tmp/output",
+            f"cat {registry} && touch /tmp/output",
+            f"cat {registry}; cat /tmp/other.md",
+            f"cat {registry}; touch /tmp/output",
+            f"cat {root}/generations/*/registry.json",
+            "leo-ppt style list --filter 风格; touch /tmp/output",
+            "leo-ppt style list --filter 风格 && touch /tmp/output",
+            "leo-ppt style list --unknown value",
         ):
             with self.subTest(command=command):
                 self.assertIsNone(judge.index_shell_read(command))
-        self.assertTrue(judge.index_shell_read(f'grep -niE "瑞士|Swiss" {root}/names-*.md | head -40'))
-        self.assertTrue(judge.index_shell_read(f'grep -l -E "地图|流光" {root}/names-*.md'))
-        self.assertTrue(judge.index_shell_read(f'grep -n "地图" {root}/names-001.md; grep -n "流光" {root}/names-*.md | head -20'))
-        self.assertEqual(judge.advise_trace_errors(trace("Read", {"file_path": f"{root}/facets/family-001.md"})), [])
+        self.assertTrue(judge.index_shell_read(f'grep -niE "瑞士|Swiss" {registry} | head -40'))
+        self.assertTrue(judge.index_shell_read(f'grep -l -E "地图|流光" {registry}'))
+        self.assertTrue(judge.index_shell_read(f'cat {root}/current.json; grep -n "流光" {registry} | head -20'))
+        self.assertTrue(judge.index_shell_read('leo-ppt style list --summary --filter "瑞士 风格" --limit 2'))
+        self.assertEqual(judge.advise_trace_errors(trace("Read", {"file_path": registry})), [])
         self.assertFalse(judge.index_shell_read(f"ls {root}/ 2>/dev/null | head -20"))
         navigation = trace("codegraph_explore", {}) + "\n" + trace("Bash", {"command": f"ls {root}/"})
         self.assertTrue(judge.advise_trace_errors(navigation))
         self.assertTrue(judge.advise_trace_errors(trace("Read", {"file_path": f"{root}/../private.md"})))
-        self.assertTrue(judge.advise_trace_errors(trace("Grep", {"path": root, "glob": "../*.md"})))
+        self.assertTrue(judge.advise_trace_errors(trace("Grep", {"path": root, "glob": "../*.json"})))
 
     def test_advise_trace_rejects_explorers_and_placeholder_shell(self):
         self.assertEqual(judge.advise_trace_errors(trace("Bash", {"command": "echo skip"})), [])
         self.assertTrue(judge.advise_trace_errors(trace("Read", {"file_path": "/skill/references/style-library.md"})))
-        navigation = trace("mcp__codegraph__codegraph_explore", {"query": "风格"}) + "\n" + trace("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"})
+        registry = "/skill/template-library/catalog/generations/g1/registry.json"
+        navigation = trace("mcp__codegraph__codegraph_explore", {"query": "风格"}) + "\n" + trace("Read", {"file_path": registry})
         self.assertEqual(judge.advise_trace_errors(navigation), [])
         self.assertTrue(judge.advise_trace_errors(trace("mcp__codegraph__codegraph_explore", {"query": "风格"})))
-        for name, arguments in (("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"}), ("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "glob": "names-*.md"}), ("Bash", {"command": "grep -n 风格 /skill/template-library/reference/sources/retired-styles-tree/styles/generated/names-001.md"})):
+        for name, arguments in (("Read", {"file_path": registry}),
+                                ("Grep", {"path": registry, "pattern": "风格"}),
+                                ("Grep", {"path": registry.rsplit("/", 1)[0], "glob": "registry.json"}),
+                                ("Grep", {"path": "/skill/template-library/catalog", "glob": "current.json"}),
+                                ("Bash", {"command": "grep -n 风格 " + registry})):
             self.assertEqual(judge.advise_trace_errors(trace(name, arguments)), [])
 
     def test_quoted_authorization_is_not_narrative_execution(self):
@@ -256,8 +299,7 @@ class JudgeTest(unittest.TestCase):
 
     def test_advise_negation_is_healthy(self):
         text = "Gruvbox暗风 与 终端命令行风，请选择。未读取所有模板，不运行脚本。"
-        # 新协议点名查询真值源：catalog registry（generated 归档摘要亦可，
-        # 但轨迹闸要求 registry 读取或 leo-ppt style list --filter 证据）
+        # 点名查询须读取 catalog registry 或 leo-ppt style list --filter。
         transcript = trace("Read", {"file_path": "/skill/template-library/catalog/generations/g1/registry.json"})
         self.assertEqual(judge.check("style-index-lookup", text, transcript), [])
 
@@ -265,11 +307,11 @@ class JudgeTest(unittest.TestCase):
         transcript = trace("Read", {"file_path": "/skill/template-library/reference/sources/retired-styles-tree/styles/清爽专业风.md"})
         self.assertTrue(judge.check("style-index-prompt-boundary", "not-run，需样张，未读取全文", transcript))
 
-    def test_generated_search_cannot_include_catalog(self):
+    def test_retired_search_is_rejected_even_with_narrow_glob(self):
         transcript = trace("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "pattern": "地图"})
         self.assertTrue(judge.check("style-index-prompt-boundary", "not-run，需样张", transcript))
         transcript = trace("Grep", {"path": "/skill/template-library/reference/sources/retired-styles-tree/styles/generated", "pattern": "地图", "glob": "*.md"})
-        self.assertEqual(judge.check("style-index-prompt-boundary", "not-run，需样张", transcript), [])
+        self.assertTrue(judge.check("style-index-prompt-boundary", "not-run，需样张", transcript))
 
     def test_capacity_requires_both_real_commands(self):
         text = "overflow，阻断"

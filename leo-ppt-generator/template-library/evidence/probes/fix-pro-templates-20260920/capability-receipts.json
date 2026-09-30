@@ -1,0 +1,240 @@
+{
+  "receipts": [
+    {
+      "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+      "asset_id": "builtin:layout:p1-01-cover-layouts",
+      "dependency_hashes": {
+        "canonical/layouts/p1-01-cover-layouts/layout.json": "b6365c4ac6a02dd5b85155548f0e49c2667c4d176207a2b17ad21eed626ed488",
+        "canonical/layouts/p1-01-cover-layouts/notes.md": "6f554bc9e1917b8714c9cf33e58b47a9e1a29c136d5fa9b530e8f50798ea2948",
+        "canonical/templates/cover-pro/page.html": "b114f517b03d1f94195dbb925d12ff4b3f4ef70ed59e4929fb67fbbb152c1ae6",
+        "canonical/templates/cover-pro/template.json": "35a0247fc3a75888459abce3749d101b75d9f471b9606823c848ea41931dcaa5"
+      },
+      "environment": {
+        "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+        "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+      },
+      "evidence_digest": "f690c656cc048383c2bdaee1680d918e4fa1a05fc56c8a121310c437554dab61",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative.png",
+            "sha256": "6bc1e6f86b0e8f4a0aef7401cc17fba32dcbb8b76ff5f153a6560cf6be8985ad"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-fixture.json",
+            "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/negative-observation.json",
+            "sha256": "4c10247266a2bfd9a5ca71585cc516ea1e25d5f70bcd3454877c6bd42fd6116d"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive.png",
+            "sha256": "caf9145e1796c8d535ba0cc3c2d0b96369848179cae59b0d2430241dfd493f0d"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-fixture.json",
+            "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cover-pro-independent/positive-observation.json",
+            "sha256": "e07a21bf9dba35a34fa66ab4c6cb11a363ac8228c8feebf82641bd081732b472"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/cover-pro-independent",
+      "relation": "independent",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+      "asset_id": "builtin:layout:p8-08-duo-compare-layouts",
+      "dependency_hashes": {
+        "canonical/layouts/p8-08-duo-compare-layouts/layout.json": "4276d89ec7cc9f14ab83c915941673f6eb5b5e7df54e99ef6abcc66c35f246e5",
+        "canonical/layouts/p8-08-duo-compare-layouts/notes.md": "e2e5eddbb98ea8fbdc8d5e83b08e15055095ea3f15d35ce54161d6a7419a2a2e",
+        "canonical/templates/compare-pro/page.html": "2fecb9c56814e5c2c44469cc572c30a278560ec67ab8a797f0fb1e758b05090f",
+        "canonical/templates/compare-pro/template.json": "c664ea18eccb3fb2f006c53285fc11f0f65bdc4f3f6e829b29701c0bbf73818d"
+      },
+      "environment": {
+        "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+        "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+      },
+      "evidence_digest": "63139e9164edcf2cb12f32609a3719f2cec9314deb7201204573febe1cfb86e0",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative.png",
+            "sha256": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-fixture.json",
+            "sha256": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/negative-observation.json",
+            "sha256": "7c212bc8d75b4e037061fcaa6bcb479b810fe9d8ec245b8dc60da1f0b34509a5"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png",
+            "sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-fixture.json",
+            "sha256": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive-observation.json",
+            "sha256": "f96d7cab6cec7f697d65ce2b0bad1c54b2a256401358f791f299d9d84813a8b1"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/duo-compare-comparison",
+      "relation": "comparison",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+      "asset_id": "builtin:layout:p16-16-multi-card-brief-layouts",
+      "dependency_hashes": {
+        "canonical/layouts/p16-16-multi-card-brief-layouts/layout.json": "ed60b6fa63fea5954d9fe1c517f8269c19b54845e5c778fba2d0ae3faff5e691",
+        "canonical/layouts/p16-16-multi-card-brief-layouts/notes.md": "9c84a19b2cc5703565a3b720480503ef13909dae51696ec1a732a7aa82ff38e2",
+        "canonical/templates/cards-stat/page.html": "f919ae16de3a4e8bd36985460764a8ba217b0fa5f7366aacbd1047013c78f731",
+        "canonical/templates/cards-stat/template.json": "abfb9fae7741a092d80b3549be7559c17d07c38a87d7a552b863f807a5829005"
+      },
+      "environment": {
+        "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+        "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+      },
+      "evidence_digest": "17eaed17a5444fbaea0a54b3602b1eb272533b5d3f071cf9a56a6aa9ce7050b3",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative.png",
+            "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-fixture.json",
+            "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/negative-observation.json",
+            "sha256": "ce3888f352934ce5b1d4920aa7ee66af75f21a6e5b467e2aa493a4f7e9fe8b18"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive.png",
+            "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-fixture.json",
+            "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/cards-stat-independent/positive-observation.json",
+            "sha256": "feb270bc42f96f7d3592a90b5a6479ed4646f9f4da194bea210c543d4e665f1e"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/cards-stat-independent",
+      "relation": "independent",
+      "schema_version": 1,
+      "visual_review": null
+    },
+    {
+      "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+      "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+      "dependency_hashes": {
+        "canonical/layouts/p9-09-closing-manifesto-layouts/layout.json": "4c1ccf7201ee7fbdbcd6ddce6356e847eae38d93322bd7874f0d32a70ae7afc1",
+        "canonical/layouts/p9-09-closing-manifesto-layouts/notes.md": "73ba9715b4a24df9389bf1d2304e3dd66545c1efc09f9a4bb25f18372862bb48",
+        "canonical/templates/quote-pro/page.html": "fd84c359df23abc5e43b419cdb5754ccbc00bb98d596d0f49da750e87fb120e4",
+        "canonical/templates/quote-pro/template.json": "26925050e8df309d887ced434ccecf777f4be419a3ce4154f159d43a398d34fe"
+      },
+      "environment": {
+        "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+        "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+      },
+      "evidence_digest": "84d1680aaaebf2eba94feda672817ac7e9ca47c5bf2a86d3013ff7d392a36257",
+      "kind": "capability-evidence",
+      "lane": "render:html",
+      "oracle": {
+        "owner": "004-U12-product-contract",
+        "path": "evidence/oracles/relation-output-v1.json",
+        "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+        "version": "relation-output-v1"
+      },
+      "probes": {
+        "negative": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png",
+            "sha256": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-fixture.json",
+            "sha256": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-observation.json",
+            "sha256": "4a23f8a10f6e3286fe34c991ea591b2b34f62ff87351db608a3233475aa8caf4"
+          },
+          "status": "passed"
+        },
+        "positive": {
+          "artifact": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+            "sha256": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16"
+          },
+          "fixture": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-fixture.json",
+            "sha256": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025"
+          },
+          "observation": {
+            "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-observation.json",
+            "sha256": "e759e162a8925b2fa8c7d744138e9e467cd7354f3491c14209a58e53d4f7ab02"
+          },
+          "status": "passed"
+        }
+      },
+      "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/quote-pro-independent",
+      "relation": "independent",
+      "schema_version": 1,
+      "visual_review": null
+    }
+  ]
+}

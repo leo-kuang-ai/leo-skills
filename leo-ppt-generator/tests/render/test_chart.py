@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import tempfile
+import json
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -54,6 +55,47 @@ class ExtractMermaidExampleBlock(unittest.TestCase):
 
 
 class ThemeVariableMapping(unittest.TestCase):
+    def test_explicit_resolver_uses_its_governed_mapping(self):
+        from leo_ppt_generator.asset_resolver import AssetResolver
+        from tests.test_template_catalog_v2 import make_reference_bundle
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            library = make_reference_bundle(root)
+            mapping_path = library / "governance/rules/chart-theme-mapping.json"
+            mapping = json.loads(mapping_path.read_text())
+            mapping["dialects"]["mermaid-xychart"]["xyChart"]["plotColorPalette"] = "accent"
+            mapping_path.write_text(json.dumps(mapping))
+            resolver = AssetResolver(library=library, home=root / "empty-home")
+            variables, _ = build_theme_variables(
+                {"colors": {"primary": "#123456", "accent": "#654321"}}, resolver=resolver)
+            self.assertEqual(variables["xyChart"]["plotColorPalette"], "#654321")
+
+    def test_explicit_mapping_missing_or_symlink_fails_closed(self):
+        from leo_ppt_generator.asset_resolver import AssetResolver
+        from tests.test_template_catalog_v2 import make_reference_bundle
+        for failure in ("missing", "file-symlink", "directory-symlink", "malformed"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                library = make_reference_bundle(root)
+                resolver = AssetResolver(library=library, home=root / "empty-home")
+                mapping = library / "governance/rules/chart-theme-mapping.json"
+                outside = root / "outside.json"
+                outside.write_bytes(mapping.read_bytes())
+                if failure == "directory-symlink":
+                    rules = mapping.parent
+                    external = root / "outside-rules"
+                    rules.rename(external)
+                    rules.symlink_to(external, target_is_directory=True)
+                else:
+                    mapping.unlink()
+                    if failure == "file-symlink":
+                        mapping.symlink_to(outside)
+                    elif failure == "malformed":
+                        mapping.write_text("[]")
+                with self.assertRaises(RenderError) as caught:
+                    build_theme_variables({"colors": {"primary": "#123456"}}, resolver=resolver)
+                self.assertEqual(caught.exception.reason_code, "chart_theme_mapping_missing")
+
     def test_effective_theme_maps_dark_chart_text_from_governed_roles(self):
         from leo_ppt_generator.asset_resolver import AssetResolver
         from leo_ppt_generator.render.theme import compute_effective_theme

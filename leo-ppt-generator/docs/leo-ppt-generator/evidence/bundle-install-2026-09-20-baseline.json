@@ -1,0 +1,10 @@
+{
+  "owner": "/root/pack_transaction",
+  "scope": [
+    "tests/test_library_bundle.py"
+  ],
+  "git_status": "",
+  "sha256": "b3f5f3712ec1ff4a89a57c6edbe336f1e73b896890281d7b8e8623ae91adbb30",
+  "existing_dirty_owner": null,
+  "allowed_changes": "仅此测试文件及本任务证据；runtime 由主 Agent 负责"
+}

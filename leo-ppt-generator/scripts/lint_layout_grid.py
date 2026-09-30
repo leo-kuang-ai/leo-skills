@@ -1,32 +1,9 @@
 #!/usr/bin/env python3
-"""Lint layout skeletons against the page-canon token scale.
+"""校验所选 current 库的版式几何、容量、附属 notes 与模板/风格引用。
 
-Checks every canonical layout profile and its sibling notes. The retired
-sidecar checks are available only through the explicit ``--legacy-sidecars``
-migration mode. Canonical layout profiles live under
-``template-library/canonical/layouts/*/layout.json`` and are the active
-machine-readable source.
-
-For canonical notes, checks every ``Nvw``/``Nvh`` value in
-``template-library/canonical/layouts/*/notes.md``:
-- ``min(Xvw, Yvh)`` dual-constraint ratio Y >= X * 1.6  -> error when violated
-- values must sit on the 0.4vw modulus -> warning (legacy = registered
-  exemption; files listed in EXEMPT_NEW_FILES must not add new off-grid values)
-
-Legacy layout-bank sidecar pairing checks (layout-bank-v1, B1):
-- Check A: every layout ``.md`` (rule docs excluded) must carry a parseable
-  same-stem ``.layouts.json`` whose ``layout_id`` matches the ``.md`` title
-  P-code -> missing / bad JSON / P-code mismatch = ERROR.
-- Check B: every top-level builtin style brief must carry a same-stem
-  ``.layouts.json``; every ``routing[].preferred/discouraged`` id must
-  resolve to one of the 36 layout sidecars -> dangling reference = ERROR.
-- Check C: every text slot must satisfy
-  ``max_chars == floor(chars_per_line * max_lines * 1.2)`` (TOLERANCE
-  identity, GordenPPTSkill calibration) -> drift = ERROR.
-
-Exit codes (CI-4): 0 = no errors (warnings/exemptions allowed);
-1 = canonical geometry/manifest errors, or legacy sidecar errors when that
-mode is explicitly requested.
+v2 附属字节由 current catalog 固定；v1 过渡库额外核验同目录 manifest。
+退役 Markdown/sidecar 仅在显式 --legacy-sidecars 下作为迁移输入检查。
+退出码：0 = 无错误；1 = 输入无效或检查失败。
 """
 
 from __future__ import annotations
@@ -41,13 +18,9 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parents[1]
 LEGACY_LAYOUT_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles") / "12_版式库"
 LEGACY_STYLES_DIR = SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
-# Compatibility aliases for callers that imported the old constants.
-LAYOUT_DIR = LEGACY_LAYOUT_DIR
-STYLES_DIR = LEGACY_STYLES_DIR
-CANONICAL_LAYOUTS_DIR = SKILL_DIR / Path("template-library/canonical/layouts")
-CANONICAL_TEMPLATES_DIR = SKILL_DIR / Path("template-library/canonical/templates")
-CANONICAL_STYLES_DIR = SKILL_DIR / Path("template-library/canonical/styles")
-CANONICAL_LAYOUT_MANIFEST = CANONICAL_LAYOUTS_DIR / "manifest.json"
+sys.path.insert(0, str(SKILL_DIR / "runtime/src"))
+from leo_ppt_generator.asset_resolver import AssetResolver, ASSET_ID_RE, builtin_library_root
+from leo_ppt_generator.qualification import read_evidence_bytes
 
 RULE_FILE_PREFIXES = ("00_", "01_常犯", "02_关键类")
 MODULUS = 0.4
@@ -69,7 +42,6 @@ _VALUE_RE = re.compile(r"(\d+(?:\.\d+)?)vw")
 _MIN_RE = re.compile(r"min\((\d+(?:\.\d+)?)vw,\s*(\d+(?:\.\d+)?)vh\)")
 _P_CODE_RE = re.compile(r"^#\s*版式[:：]\s*(P\d+)\b", re.M)
 _JSON_BLOCK_RE = re.compile(r"```json\n(.*?)\n```", re.S)
-_ASSET_ID_RE = re.compile(r"^builtin:template:[A-Za-z0-9\-\u4e00-\u9fff]+$")
 # ``agenda`` is present in the published P32 profile; keep it as the runtime
 # compatibility spelling while the governance schema is converged.
 _PAGE_ROLES = {"cover", "agenda", "section", "content", "data", "quote", "evidence", "closing"}
@@ -86,10 +58,10 @@ def _on_modulus(value: float) -> bool:
     return steps >= 1 and abs(steps * MODULUS - value) < 1e-9
 
 
-def _builtin_style_stems() -> list[str]:
+def _builtin_style_stems(styles_dir: Path) -> list[str]:
     """Top-level *.md carrying a parseable style brief (the 11 builtins)."""
     stems: list[str] = []
-    for path in sorted(STYLES_DIR.glob("*.md")):
+    for path in sorted(styles_dir.glob("*.md")):
         try:
             text = path.read_text(encoding="utf-8")
         except (OSError, UnicodeError):
@@ -105,16 +77,16 @@ def _builtin_style_stems() -> list[str]:
     return stems
 
 
-def _lint_sidecars(errors: list[str]) -> None:
+def _lint_sidecars(errors: list[str], *, layout_dir: Path, styles_dir: Path) -> None:
     """Checks A/B/C: sidecar pairing, dangling routing refs, capacity identity."""
     known_layout_ids: set[str] = set()
     layout_mds = [
-        p for p in sorted(LAYOUT_DIR.glob("*.md"))
+        p for p in sorted(layout_dir.glob("*.md"))
         if not p.stem.startswith(RULE_FILE_PREFIXES)
     ]
     # 检查 A：版式 .md 必须有同名 sidecar，且 layout_id 与标题 P 码一致。
     for md in layout_mds:
-        sidecar_path = LAYOUT_DIR / f"{md.stem}.layouts.json"
+        sidecar_path = layout_dir / f"{md.stem}.layouts.json"
         if not sidecar_path.is_file():
             errors.append(
                 f"sidecar_missing: {md.name} 缺同名 {md.stem}.layouts.json"
@@ -169,8 +141,8 @@ def _lint_sidecars(errors: list[str]) -> None:
                     f"max_chars={mx} != floor({cpl}×{lines}×1.2)={expected}"
                 )
     # 检查 B：内置风格薄路由视图存在 + 引用零悬空。
-    for stem in _builtin_style_stems():
-        sidecar_path = STYLES_DIR / f"{stem}.layouts.json"
+    for stem in _builtin_style_stems(styles_dir):
+        sidecar_path = styles_dir / f"{stem}.layouts.json"
         if not sidecar_path.is_file():
             errors.append(
                 f"style_sidecar_missing: 内置风格 {stem} 缺 {stem}.layouts.json"
@@ -190,25 +162,11 @@ def _lint_sidecars(errors: list[str]) -> None:
                 continue
             for key in ("preferred", "discouraged"):
                 for ref in rule.get(key, []) or []:
-                    if ref not in known_layout_ids:
+                    if not isinstance(ref, str) or ref not in known_layout_ids:
                         errors.append(
                             f"dangling_layout_ref: {sidecar_path.name} "
                             f"{key} 引用 {ref!r} 无法解析到版式库 sidecar"
                         )
-
-
-def _template_assets() -> set[str]:
-    """Return renderer template IDs from canonical manifests."""
-    assets: set[str] = set()
-    for path in sorted(CANONICAL_TEMPLATES_DIR.glob("*/template.json")):
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
-            continue
-        asset_id = data.get("asset_id") if isinstance(data, dict) else None
-        if isinstance(asset_id, str):
-            assets.add(asset_id)
-    return assets
 
 
 def _sha256(path: Path) -> str:
@@ -237,9 +195,9 @@ def _lint_canonical_profile(path: Path, errors: list[str], template_assets: set[
     if not isinstance(canvas, dict) or (canvas.get("width"), canvas.get("height"),
                                         canvas.get("units")) != (1280, 720, "logical-px"):
         errors.append(f"canonical_profile_invalid: {path} 画布必须为 1280×720 logical-px")
-    if data.get("page_role") not in _PAGE_ROLES:
+    if not isinstance(data.get("page_role"), str) or data["page_role"] not in _PAGE_ROLES:
         errors.append(f"canonical_profile_invalid: {path} page_role 非法")
-    if data.get("layout_type") not in _LAYOUT_TYPES:
+    if not isinstance(data.get("layout_type"), str) or data["layout_type"] not in _LAYOUT_TYPES:
         errors.append(f"canonical_profile_invalid: {path} layout_type 非法")
 
     slots = data.get("slots")
@@ -255,7 +213,7 @@ def _lint_canonical_profile(path: Path, errors: list[str], template_assets: set[
                                     or slot[key] < (0 if key == "count_min" else 1)):
                     errors.append(f"canonical_profile_invalid: {path}.{slot_name}.{key} 须为正整数")
             text_keys = ("chars_per_line", "max_lines", "max_chars")
-            if all(key in slot for key in text_keys):
+            if all(isinstance(slot.get(key), int) and not isinstance(slot[key], bool) and slot[key] > 0 for key in text_keys):
                 expected = math.floor(slot["chars_per_line"] * slot["max_lines"] * CAPACITY_TOLERANCE)
                 if slot["max_chars"] != expected:
                     errors.append(
@@ -271,7 +229,7 @@ def _lint_canonical_profile(path: Path, errors: list[str], template_assets: set[
             if not isinstance(binding, (str, type(None))):
                 errors.append(f"canonical_renderer_invalid: {path}.{lane} 绑定须为 string/null")
             elif lane == "render:html" and isinstance(binding, str):
-                if not _ASSET_ID_RE.fullmatch(binding):
+                if not ASSET_ID_RE.fullmatch(binding) or binding.split(":")[1] != "template":
                     errors.append(f"canonical_renderer_invalid: {path} render:html asset_id 非法 {binding!r}")
                 elif binding not in template_assets:
                     errors.append(f"canonical_renderer_missing: {path} 未找到模板 {binding}")
@@ -293,40 +251,40 @@ def _lint_canonical_profile(path: Path, errors: list[str], template_assets: set[
                     errors.append(f"canonical_region_invalid: {path}.{name} 越出画布")
 
 
-def _lint_canonical_profiles(errors: list[str]) -> None:
-    """Lint canonical profiles, colocated notes, and their digest manifest."""
-    template_assets = _template_assets()
-    profiles = sorted(CANONICAL_LAYOUTS_DIR.glob("*/layout.json"))
+def _lint_profile_files(errors: list[str], profiles: list[Path], template_assets: set[str],
+                        styles: list[Path], *, root: Path, manifest_path: Path | None = None) -> None:
+    """校验已经由 current 枚举的实体；v1 附属 manifest 仅作过渡字节校验。"""
     if not profiles:
-        errors.append(f"canonical_profile_missing: {CANONICAL_LAYOUTS_DIR} 没有 layout.json")
+        errors.append("canonical_profile_missing: current 库没有 layout 实体")
         return
-
+    layouts_root = profiles[0].parent.parent
     manifest_entries: dict[str, dict] = {}
-    try:
-        manifest = json.loads(CANONICAL_LAYOUT_MANIFEST.read_text(encoding="utf-8"))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-        errors.append(f"canonical_layout_manifest_invalid: {CANONICAL_LAYOUT_MANIFEST} ({exc})")
-        manifest = {}
-    if isinstance(manifest, dict):
-        if manifest.get("schema_version") != 1 or manifest.get("entity") != "layout-profile-manifest":
-            errors.append(f"canonical_layout_manifest_invalid: {CANONICAL_LAYOUT_MANIFEST} schema_version/entity 不符")
-        entries = manifest.get("entries")
-        if not isinstance(entries, list):
-            errors.append(f"canonical_layout_manifest_invalid: {CANONICAL_LAYOUT_MANIFEST} entries 须为数组")
-        else:
-            for entry in entries:
-                if not isinstance(entry, dict) or not isinstance(entry.get("profile"), str):
-                    errors.append(f"canonical_layout_manifest_invalid: {CANONICAL_LAYOUT_MANIFEST} entry 非法")
-                    continue
-                profile_key = entry["profile"]
-                if profile_key in manifest_entries:
-                    errors.append(f"canonical_layout_manifest_duplicate: {profile_key}")
-                manifest_entries[profile_key] = entry
+    if manifest_path is not None:
+        try:
+            manifest = json.loads(read_evidence_bytes(root, manifest_path.relative_to(root).as_posix()))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"canonical_layout_manifest_invalid: {manifest_path} ({exc})")
+            manifest = {}
+        if isinstance(manifest, dict):
+            if manifest.get("schema_version") != 1 or manifest.get("entity") != "layout-profile-manifest":
+                errors.append(f"canonical_layout_manifest_invalid: {manifest_path} schema_version/entity 不符")
+            entries = manifest.get("entries")
+            if not isinstance(entries, list):
+                errors.append(f"canonical_layout_manifest_invalid: {manifest_path} entries 须为数组")
+            else:
+                for entry in entries:
+                    if not isinstance(entry, dict) or not isinstance(entry.get("profile"), str):
+                        errors.append(f"canonical_layout_manifest_invalid: {manifest_path} entry 非法")
+                        continue
+                    profile_key = entry["profile"]
+                    if profile_key in manifest_entries:
+                        errors.append(f"canonical_layout_manifest_duplicate: {profile_key}")
+                    manifest_entries[profile_key] = entry
 
     known_layout_ids: set[str] = set()
     seen_profiles: set[str] = set()
     for path in profiles:
-        profile_key = path.relative_to(CANONICAL_LAYOUTS_DIR).as_posix()
+        profile_key = path.relative_to(layouts_root).as_posix()
         seen_profiles.add(profile_key)
         profile = None
         try:
@@ -340,25 +298,26 @@ def _lint_canonical_profiles(errors: list[str]) -> None:
         if not notes.is_file():
             errors.append(f"canonical_notes_missing: {notes}")
             continue
-        entry = manifest_entries.get(profile_key)
-        if entry is None:
-            errors.append(f"canonical_layout_manifest_missing: {profile_key}")
-        else:
-            expected_notes = notes.relative_to(CANONICAL_LAYOUTS_DIR).as_posix()
-            if entry.get("notes") != expected_notes:
-                errors.append(f"canonical_notes_owner_mismatch: {profile_key} notes={entry.get('notes')!r}")
-            if not isinstance(profile, dict) or entry.get("asset_id") != profile.get("asset_id"):
-                errors.append(f"canonical_layout_manifest_asset_mismatch: {profile_key}")
-            layout_sha = _sha256(path)
-            notes_sha = _sha256(notes)
-            if entry.get("layout_sha256") != layout_sha:
-                errors.append(f"canonical_layout_digest_mismatch: {profile_key} layout_sha256")
-            if entry.get("revision") != layout_sha[:16]:
-                errors.append(f"canonical_layout_revision_mismatch: {profile_key}")
-            if entry.get("notes_sha256") != notes_sha:
-                errors.append(f"canonical_notes_digest_mismatch: {profile_key}")
+        if manifest_path is not None:
+            entry = manifest_entries.get(profile_key)
+            if entry is None:
+                errors.append(f"canonical_layout_manifest_missing: {profile_key}")
+            else:
+                expected_notes = notes.relative_to(layouts_root).as_posix()
+                if entry.get("notes") != expected_notes:
+                    errors.append(f"canonical_notes_owner_mismatch: {profile_key} notes={entry.get('notes')!r}")
+                if not isinstance(profile, dict) or entry.get("asset_id") != profile.get("asset_id"):
+                    errors.append(f"canonical_layout_manifest_asset_mismatch: {profile_key}")
+                layout_sha = _sha256(path)
+                notes_sha = _sha256(notes)
+                if entry.get("layout_sha256") != layout_sha:
+                    errors.append(f"canonical_layout_digest_mismatch: {profile_key} layout_sha256")
+                if entry.get("revision") != layout_sha[:16]:
+                    errors.append(f"canonical_layout_revision_mismatch: {profile_key}")
+                if entry.get("notes_sha256") != notes_sha:
+                    errors.append(f"canonical_notes_digest_mismatch: {profile_key}")
         try:
-            text = notes.read_text(encoding="utf-8")
+            text = read_evidence_bytes(root, notes.relative_to(root).as_posix()).decode("utf-8")
         except (OSError, UnicodeDecodeError) as exc:
             errors.append(f"canonical_notes_invalid: {notes} ({exc})")
             continue
@@ -366,7 +325,7 @@ def _lint_canonical_profiles(errors: list[str]) -> None:
             x, y = float(match.group(1)), float(match.group(2))
             if y < x * MIN_RATIO:
                 errors.append(f"{notes.name}: min({x}vw,{y}vh) ratio {y/x:.2f} < {MIN_RATIO}")
-        if path.parent.name in _CANONICAL_LEGACY_EXEMPTIONS:
+        if isinstance(profile, dict) and profile.get("asset_id", "").split(":")[-1] in _CANONICAL_LEGACY_EXEMPTIONS:
             continue
         for match in _VALUE_RE.finditer(text):
             value = float(match.group(1))
@@ -375,13 +334,17 @@ def _lint_canonical_profiles(errors: list[str]) -> None:
     for profile_key in sorted(set(manifest_entries) - seen_profiles):
         errors.append(f"canonical_layout_manifest_orphan: {profile_key}")
     # Canonical style route bindings must point at canonical layout entities.
-    for path in sorted(CANONICAL_STYLES_DIR.glob("*/brief.json")):
+    for path in styles:
         try:
             brief = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             errors.append(f"canonical_style_invalid: {path} ({exc})")
             continue
-        routes = (brief.get("bindings") or {}).get("layout_routes") if isinstance(brief, dict) else None
+        bindings = brief.get("bindings") if isinstance(brief, dict) else None
+        if not isinstance(bindings, dict):
+            errors.append(f"canonical_route_invalid: {path} bindings 须为对象")
+            continue
+        routes = bindings.get("layout_routes")
         if not isinstance(routes, list):
             continue
         for route in routes:
@@ -393,13 +356,49 @@ def _lint_canonical_profiles(errors: list[str]) -> None:
                     errors.append(f"canonical_route_invalid: {path}.{key} 须为数组")
                     continue
                 for ref in refs:
-                    if ref not in known_layout_ids:
+                    if not isinstance(ref, str) or ref not in known_layout_ids:
                         errors.append(f"canonical_route_dangling: {path.name} {key} 引用 {ref!r}")
+
+
+def _lint_canonical_profiles(errors: list[str], library_root: Path | None = None) -> None:
+    root = Path(library_root or builtin_library_root()).absolute()
+    try:
+        read_evidence_bytes(root, "catalog/current.json")
+        resolver = AssetResolver(library=root, home=root / ".lint-no-user-home")
+        if resolver.user_root is not None or resolver.registry_source != "catalog":
+            raise ValueError("layout_lint_current_library_required")
+        generation = resolver.generation
+        profiles, styles, templates = [], [], set()
+        pins = {}
+        for row in resolver.entities:
+            if row["kind"] not in {"layout", "template", "style"}:
+                continue
+            entity = resolver.resolve(row["asset_id"])
+            pins[row["asset_id"]] = resolver.fingerprint(row["asset_id"])
+            if row["kind"] == "layout":
+                profiles.append(Path(entity["path"]))
+            elif row["kind"] == "style":
+                styles.append(Path(entity["path"]))
+            else:
+                templates.add(row["asset_id"])
+        declaration = json.loads(read_evidence_bytes(root, "library.json"))
+        manifest = profiles[0].parent.parent / "manifest.json" if profiles and declaration.get("schema_version") == 1 else None
+        _lint_profile_files(errors, profiles, templates, styles, root=root, manifest_path=manifest)
+        if AssetResolver(library=root, home=root / ".lint-no-user-home").generation != generation:
+            raise ValueError("layout_lint_generation_changed")
+        for identity, pin in pins.items():
+            if resolver.fingerprint(identity) != pin:
+                raise ValueError("layout_lint_asset_changed:" + identity)
+    except (OSError, ValueError) as exc:
+        errors.append(f"layout_lint_current_invalid: {exc}")
 
 
 def _lint_legacy_grid(errors: list[str], exemptions: list[str]) -> None:
     """Run the retired Markdown grid and sidecar checks on demand."""
 
+    if not LEGACY_LAYOUT_DIR.is_dir() or not list(LEGACY_LAYOUT_DIR.glob("*.layouts.json")):
+        errors.append("legacy_layout_inputs_missing")
+        return
     for path in sorted(LEGACY_LAYOUT_DIR.glob("*.md")):
         if path.stem.startswith(RULE_FILE_PREFIXES):
             continue
@@ -418,16 +417,19 @@ def _lint_legacy_grid(errors: list[str], exemptions: list[str]) -> None:
                     exemptions.append(entry)
                 else:
                     errors.append(entry + " [new file, no exemption]")
-    _lint_sidecars(errors)
+    _lint_sidecars(errors, layout_dir=LEGACY_LAYOUT_DIR, styles_dir=LEGACY_STYLES_DIR)
 
 
-def lint(*, include_legacy_sidecars: bool = False) -> int:
+def lint(*, include_legacy_sidecars: bool = False, library_root: Path | None = None) -> int:
     errors: list[str] = []
     exemptions: list[str] = []
-    _lint_canonical_profiles(errors)
+    if library_root is not None and include_legacy_sidecars:
+        print("ERROR: explicit library root cannot use repository legacy sidecars")
+        return 1
+    _lint_canonical_profiles(errors, library_root)
     if include_legacy_sidecars:
         _lint_legacy_grid(errors, exemptions)
-    print("== canonical layout lint (source=canonical) ==")
+    print("== canonical layout lint (source=current-catalog) ==")
     if errors:
         print("ERRORS:")
         for e in errors:
@@ -451,5 +453,6 @@ if __name__ == "__main__":
         "--legacy-sidecars", "--legacy-fixtures", dest="legacy_sidecars", action="store_true",
         help="显式加入 retired-styles-tree 的 Markdown/layouts.json 迁移检查",
     )
+    parser.add_argument("--library-root", type=Path, help="明确被检查的 current 库")
     args = parser.parse_args()
-    sys.exit(lint(include_legacy_sidecars=args.legacy_sidecars))
+    sys.exit(lint(include_legacy_sidecars=args.legacy_sidecars, library_root=args.library_root))

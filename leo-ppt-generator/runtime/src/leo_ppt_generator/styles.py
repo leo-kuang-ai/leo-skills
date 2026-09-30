@@ -14,7 +14,8 @@ import time
 from pathlib import Path
 
 from .asset_resolver import AssetResolver, ResolverError, revision_of
-from .storage import atomic_write_bytes, sha256_bytes
+from .storage import sha256_bytes
+from .template_catalog import CatalogError
 
 
 class StyleStoreError(ValueError):
@@ -113,12 +114,15 @@ def list_styles(*, home: Path | None = None) -> list[dict]:
 
 def list_styles_with_source(*, home: Path | None = None) -> dict:
     """用同一个 resolver 快照返回列表和来源，空列表也保留来源。"""
-    resolver = _resolver(home)
+    return _list_styles_from_resolver(_resolver(home))
+
+
+def _list_styles_from_resolver(resolver: AssetResolver) -> dict:
     by_name: dict[str, dict] = {}
     try:
         entities = resolver.entities
-    except ResolverError as exc:
-        if getattr(exc, "reason_code", "") == "stale_catalog":
+    except (ResolverError, CatalogError) as exc:
+        if exc.reason_code in {"stale_catalog", "catalog_invalid"}:
             raise StyleCatalogStale(str(exc)) from exc
         raise StyleStoreError(f"style_library_unavailable: {exc}") from exc
     for entity in entities:  # user 覆盖已在 resolver 内生效
@@ -140,10 +144,18 @@ def load_style(name: str, *, home: Path | None = None, enforce_scope: bool = Fal
     resolver = _resolver(home)
     try:
         resolved = resolver.require(name, kind="style")
-    except ResolverError as exc:
-        if getattr(exc, "reason_code", "") == "stale_catalog":
+    except (ResolverError, CatalogError) as exc:
+        # v2 固定的实体缺失也属于 catalog 过期，公开 API 保留统一错误语义。
+        if exc.reason_code in {"stale_catalog", "catalog_invalid"}:
             raise StyleCatalogStale(str(exc)) from exc
+        if isinstance(exc, CatalogError):
+            raise StyleStoreError(f"style_library_unavailable: {exc}") from exc
         raise StyleNotFound(f"style_not_found: {name} ({exc.reason_code})") from exc
+    return _loaded_style_document(resolved)
+
+
+def _loaded_style_document(resolved: dict) -> dict:
+    """把一次 resolver 解析转换为公开 style 文档；列表消费复用同一快照。"""
     brief = resolved["data"]
     # 兼容旧 content 消费者：重建旧形状 brief（legacy_payload 优先）。
     legacy = brief.get("legacy_payload") or {}
@@ -183,43 +195,21 @@ def _sanitize(content: str) -> str:
 
 
 def user_style_dir(*, home: Path | None = None) -> Path:
-    return (home or default_home()) / "template-library" / "canonical" / "styles"
-
-
-def _ensure_user_library(home: Path) -> None:
-    """确保用户库声明存在（resolver 只认 template-library/library.json）。
-
-    首次 save_style 时创建最小 user 声明；已存在则不动（用户可自定义 zones
-    描述）。缺声明时用户 overlay 对 resolver 完全不可见——那会让「保存成功
-    但加载回落内置」静默发生，违反用户同名覆盖合同。
-    """
-    library = home / "template-library"
-    declaration = library / "library.json"
-    if declaration.is_file():
-        return
-    library.mkdir(parents=True, exist_ok=True)
-    payload = {
-        "schema_version": 1,
-        "kind": "template-library",
-        "library_id": "user",
-        "name": "用户模板库",
-        "protocol": {"resolver": "asset_resolver/v1"},
-        "zones": {"canonical": "作者真值", "reference": "参考", "governance": "治理",
-                  "catalog": "自动生成", "evidence": "验证"},
-        "reserved_directory_names": ["generated", "generations", "staging", "revocations"],
-        "note": "由 save_style 首次保存时自动创建；用户风格保存在 canonical/styles/。",
-    }
-    atomic_write_bytes(declaration, json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8") + b"\n")
+    from .user_library import user_library_root
+    return user_library_root(home or default_home()) / "canonical/visual/styles"
 
 
 def user_style_path(name: str, *, home: Path | None = None) -> Path:
-    """新协议用户风格路径：${LEO_PPT_HOME}/template-library/canonical/styles/<slug>/brief.json。"""
+    """用户风格路径由 v2 visual 分区与实际保存身份一致派生。"""
     slug = _slugify(_validate_name(name))
     return user_style_dir(home=home) / slug / "brief.json"
 
 
 def _slugify(name: str) -> str:
-    return re.sub(r"[^\w\-\u4e00-\u9fff]+", "-", name.strip()).strip("-")
+    slug = re.sub(r"[^a-z0-9\-\u4e00-\u9fff]+", "-", name.strip().lower()).strip("-")
+    if not slug:
+        raise StyleStoreError("style_name_invalid")
+    return slug
 
 
 def save_style(
@@ -230,51 +220,54 @@ def save_style(
     overwrite: bool = False,
     rename: str | None = None,
 ) -> dict:
-    """保存用户风格：接受含 ```json brief 的内容（旧输入离线转换语义）或纯 JSON。"""
-    home = home or default_home()
-    from .library_migration import library_operation
-    library = home / "template-library"
-    library.mkdir(parents=True, exist_ok=True)
-    with library_operation(library):
-        _ensure_user_library(home)
-        target = user_style_path(rename or name, home=home)
-        if target.exists() and not overwrite:
-            raise StyleStoreError("style_name_conflict")
-        body = _sanitize(content)
-        parsed = parse_style_document(body)
-        brief = parsed["brief"]
-        if brief is None:
-            try:
-                brief = json.loads(body)
-            except ValueError as exc:
-                raise StyleStoreError("style_content_not_brief") from exc
-        brief_name = _validate_name(str(brief.get("style_name") or (rename or name)))
-        slug = _slugify(brief_name)
+    """保存纯 JSON 或显式转换的旧 brief；name/rename 是目标身份的唯一来源。"""
+    from .user_library import user_library_root, user_library_writer, bootstrap_user_library, publish_user_library
+    from .library_migration import file_state
+    target_name = _validate_name(rename if rename is not None else name)
+    slug = _slugify(target_name)
+    body = _sanitize(content)
+    parsed = parse_style_document(body)
+    brief = parsed["brief"]
+    if brief is None:
+        try:
+            brief = json.loads(body)
+        except ValueError as exc:
+            raise StyleStoreError("style_content_not_brief") from exc
+    if not isinstance(brief, dict):
+        raise StyleStoreError("style_content_not_brief")
+    identity = f"user:style:{slug}"
+    if brief.get("entity") == "style-brief" and brief.get("schema_version") == 2:
+        document = {**brief, "name": target_name, "asset_id": identity,
+                    "source": {**brief.get("source", {}), "origin": "user-imported"}}
+    else:
         document = {
-            "schema_version": 2,
-            "entity": "style-brief",
-            "asset_id": f"user:style:{slug}",
-            "name": brief_name,
-            "aliases": brief.get("aliases") or [],
-            "variant_of": None,
-            "lifecycle": "draft",
-            "source": {"origin": "user-imported"},
+            "schema_version": 2, "entity": "style-brief", "asset_id": identity,
+            "name": target_name, "aliases": brief.get("aliases") or [],
+            "variant_of": None, "lifecycle": "draft", "source": {"origin": "user-imported"},
             "taxonomy": {"families": ["未分类"]},
-            "visual_language": {"direction": (str(brief.get("visual_direction") or "imported-style-pending-review")[:400])},
-            "bindings": {},
-            "adaptation_gaps": ["theme_not_extracted", "user_import_pending_review"],
+            "visual_language": {"direction": str(brief.get("visual_direction") or "imported-style-pending-review")[:400]},
+            "bindings": {}, "adaptation_gaps": ["theme_not_extracted", "user_import_pending_review"],
             "content_review": {"reviewed": False, "disposition": "draft"},
-            "legacy_payload": {k: v for k, v in brief.items() if k not in {"style_name", "type"}},
+            "legacy_payload": {key: value for key, value in brief.items() if key not in {"style_name", "type"}},
         }
-        payload = json.dumps(document, ensure_ascii=False, indent=2).encode("utf-8")
-        atomic_write_bytes(target, payload)
-        return {
-            "name": brief_name,
-            "source": "user",
-            "path": str(target),
-            "sha256": hashlib.sha256(payload).hexdigest(),
-            "asset_id": document["asset_id"],
-        }
+    library = user_library_root(home or default_home())
+    relative = "canonical/visual/styles/" + slug + "/brief.json"
+    payload = json.dumps(document, ensure_ascii=False, indent=2).encode("utf-8")
+    with user_library_writer(library):
+        bootstrap = bootstrap_user_library(library)
+        if file_state(library, relative)["type"] != "absent" and not overwrite:
+            raise StyleStoreError("style_name_conflict")
+        # 返回前通过与加载端相同的 resolver 验证真实 identity 和发布后的 catalog。
+        def verify_saved():
+            resolver = AssetResolver(home=library.parent)
+            resolver.resolve_dependencies(identity)
+            resolved = resolver.resolve(identity)
+            if resolved["data"]["name"] != target_name or Path(resolved["path"]) != library / relative:
+                raise StyleStoreError("style_saved_identity_mismatch")
+        publish_user_library(library, {**bootstrap, relative: payload},
+                             overwrite={relative} if overwrite else set(), verifier=verify_saved)
+    return {"name": target_name, "source": "user", "path": str(library / relative),
+            "sha256": hashlib.sha256(payload).hexdigest(), "asset_id": identity}
 
 
 def style_display(brief: dict) -> dict:
@@ -300,7 +293,10 @@ def style_display(brief: dict) -> dict:
 
 
 def style_summary(name: str, *, home: Path | None = None) -> dict:
-    loaded = load_style(name, home=home, enforce_scope=True)
+    return _style_summary_from_loaded(load_style(name, home=home, enforce_scope=True))
+
+
+def _style_summary_from_loaded(loaded: dict) -> dict:
     brief = loaded["brief"]
     result = {
         "kind": "style-summary", "schema_version": 2,
@@ -312,7 +308,7 @@ def style_summary(name: str, *, home: Path | None = None) -> dict:
         "compatibility": {"legacy_callable": loaded["lifecycle"] in {"active", "draft"}},
         "verification": {key: {"status": "not-run", "evidence_ref": None, "digest": None}
                          for key in ("schema", "layout", "visual")},
-        "selection_fingerprint": selection_fingerprint(loaded, home=home),
+        "selection_fingerprint": selection_fingerprint(loaded),
     }
     if len(json.dumps(result, ensure_ascii=False).encode()) > 12 * 1024:
         raise StyleStoreError("style_summary_too_large")
@@ -325,14 +321,16 @@ def list_style_summaries(*, home: Path | None = None, needle: str = "", limit: i
     needle = needle.strip().casefold()
     items = []
     problems = []
-    listing = list_styles_with_source(home=home)
+    resolver = _resolver(home)
+    listing = _list_styles_from_resolver(resolver)
     entries = listing["styles"]
     for entry in entries:
         try:
-            summary = style_summary(entry["name"], home=home)
-        except StyleStoreError as exc:
+            resolved = resolver.require(entry["name"], kind="style")
+            summary = _style_summary_from_loaded(_loaded_style_document(resolved))
+        except (StyleStoreError, ResolverError, CatalogError) as exc:
             detail = str(exc)
-            nested_reason = "stale_catalog" if "stale_catalog" in detail else None
+            nested_reason = "stale_catalog" if getattr(exc, "reason_code", None) in {"stale_catalog", "catalog_invalid"} else None
             if nested_reason:
                 raise StyleCatalogStale(detail) from exc
             problems.append({

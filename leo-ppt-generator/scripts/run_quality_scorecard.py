@@ -62,17 +62,52 @@ def main(argv=None):
     parser.add_argument("--execute-replay", action="store_true", help="按计划调用真实 generate；未指定时只重新核验")
     parser.add_argument("--library-root", type=Path, help="真实回放显式使用的库根")
     parser.add_argument("--freeze-baseline", help="任务根内旧链导出描述；只封存已有真实字节")
+    parser.add_argument("--paired-rebaseline-plan", help="任务根内旧/新配对重基线计划；写入 qa/paired-rebaseline.json")
+    parser.add_argument("--prepare-paired-rebaseline", help="任务根内重基线描述；封存 qa/paired-rebaseline-plan.json，不执行导出")
+    parser.add_argument("--execute-paired-rebaseline", action="store_true", help="按冻结计划实际执行两侧；image 还需明确 Provider contract 范围")
+    parser.add_argument("--provider-contract-sha256", action="append", default=[],
+                        help="image 重基线允许调用的冻结 contract 文件 SHA-256；可重复，须精确覆盖计划")
     args = parser.parse_args(argv)
     try:
         root = Path(args.run).expanduser().resolve()
+        if args.execute_paired_rebaseline and not args.paired_rebaseline_plan:
+            raise MetricEventError("paired-rebaseline-plan required")
+        if args.provider_contract_sha256 and not (args.paired_rebaseline_plan and args.execute_paired_rebaseline):
+            raise MetricEventError("provider scope requires paired-rebaseline-plan and execute-paired-rebaseline")
+        if args.prepare_paired_rebaseline:
+            if args.freeze_baseline or args.replay_plan or args.paired_rebaseline_plan or args.execute_paired_rebaseline or args.execute_replay or args.library_root:
+                raise MetricEventError("rebaseline preparation is a separate operation")
+            from leo_ppt_generator.quality_replay import prepare_paired_rebaseline_plan
+            from leo_ppt_generator.qualification import file_reference
+            reference = prepare_paired_rebaseline_plan(root, file_reference(root, args.prepare_paired_rebaseline))
+            print(json.dumps({"plan": reference, "status": "prepared", "exports": "not_run"}, ensure_ascii=False))
+            return 0
         if args.freeze_baseline:
-            if args.replay_plan or args.execute_replay:
+            if args.replay_plan or args.execute_replay or args.paired_rebaseline_plan or args.execute_paired_rebaseline:
                 raise MetricEventError("baseline capture and replay are separate operations")
             from leo_ppt_generator.quality_replay import freeze_legacy_baseline
             from leo_ppt_generator.qualification import file_reference
             reference = freeze_legacy_baseline(root, file_reference(root, args.freeze_baseline), "qa/legacy-baseline.json")
             print(json.dumps({"baseline": reference}, ensure_ascii=False))
             return 0
+        if args.paired_rebaseline_plan:
+            if args.replay_plan or args.execute_replay or args.library_root:
+                raise MetricEventError("paired rebaseline and quality replay are separate operations")
+            from leo_ppt_generator.quality_replay import execute_paired_rebaseline
+            from leo_ppt_generator.qualification import file_reference
+            from leo_ppt_generator.storage import atomic_write_json
+            result = execute_paired_rebaseline(root, file_reference(root, args.paired_rebaseline_plan),
+                execute=args.execute_paired_rebaseline, provider_contracts=args.provider_contract_sha256)
+            output = ("qa/paired-rebaseline.json" if result["status"] == "passed"
+                      else "qa/rebaseline-blocked-" + result["receipt_digest"] + ".json")
+            target = root / output
+            if target.is_symlink() or target.parent.is_symlink():
+                raise MetricEventError("rebaseline output must not be a symlink")
+            from leo_ppt_generator.quality_replay import _immutable_replay_bytes
+            from leo_ppt_generator.storage import canonical_json_bytes
+            _immutable_replay_bytes(root, output, canonical_json_bytes(result))
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0 if result["status"] == "passed" else 1
         if args.replay_plan:
             from leo_ppt_generator.quality_replay import evaluate_quality_replay, attach_replay_receipt
             from leo_ppt_generator.qualification import file_reference
@@ -86,7 +121,7 @@ def main(argv=None):
             attach_replay_receipt(root, file_reference(root, "qa/visual-replay.json"))
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0 if result["status"] == "passed" else 1
-        if args.execute_replay or args.library_root:
+        if args.execute_replay or args.execute_paired_rebaseline or args.library_root:
             raise MetricEventError("replay-plan required")
         result = scorecard_for_run(root)
         payload = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"

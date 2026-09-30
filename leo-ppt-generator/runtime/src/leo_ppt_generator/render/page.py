@@ -274,7 +274,7 @@ def render_page(
         if not template_file.is_file():
             raise RenderError(
                 "render_template_not_found",
-                f"template '{template_id}' not found under template-library/canonical/templates/",
+                f"template '{template_id}' is not registered in the current catalog",
             )
 
         data_file = Path(data_path)

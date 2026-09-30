@@ -1,0 +1,8 @@
+{
+  "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest -v tests.test_library_bundle",
+  "exit_code": 1,
+  "duration_seconds": 73.64,
+  "log": "docs/leo-ppt-generator/evidence/bundle-install-2026-09-20.log",
+  "source_sha256": "e05dc4fc9167bc5158437725ad0c0e83a40fff024509f35020fda4eb9d48f428",
+  "claim_ceiling": "隔离复制与链接安装的本地 runtime/CLI 验证；不代表 Provider、视觉或完整 U8 发布验证"
+}

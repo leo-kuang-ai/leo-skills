@@ -1,0 +1,299 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "environment": {
+    "path": "evidence/probes/install-test-20260920-b2/environment.json",
+    "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/capability-receipts.json",
+      "sha256": "10d4a70ed502f6ba7eb2402dee8207a0f6c2112e78ecf889fa970ab7e91dc2fb"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-fixture.json",
+      "sha256": "e54b7dbb84b97aa003c7593e21dc2c4de00e661433d4ac67696b78d0b789397f"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-input.json",
+      "sha256": "3c320c11fb92c714afbc1418ec5fe29f4e1bd6be4936b68c67375c2566f1c25e"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-measurement.json",
+      "sha256": "64bf6a29ff38fa5105c819b076758f0653f101d426c9ecb3e75ebf8563a66256"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative-observation.json",
+      "sha256": "aa6c33a75864c50c1b6553c117b2cbf88e2bc2bc122b20a36920d9733a9c388c"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative.png",
+      "sha256": "8e78f53586ffda21626d59df2049cddf6165274698f1f0ba130370064d25bd9d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/negative.png.render.json",
+      "sha256": "f87ce0d8f2ad5488fd1ebb87e71378b6278d4695d0116688a17da5b4af981741"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-fixture.json",
+      "sha256": "3b040a8e4d63b389de73dba3cea761b77c5f62792ff57bd9c83371031a01c2bf"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-input.json",
+      "sha256": "1c5f265e37ea8af6765cc455013377aacc74572f2651a7bb5ec4290d9d710bca"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-measurement.json",
+      "sha256": "d5a0ec774afd4bf098300b794ad7ae165ace3b394ea91cfb22d6e32d718dfecd"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive-observation.json",
+      "sha256": "42a8530c80543747cd34f46c53ab7dba33c55b6218ce925eda97573b7b2834ef"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive.png",
+      "sha256": "c925e479f75153a879c737d89c45bf8942e609f4cd2a9f3936bac6f557e12e2a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/positive.png.render.json",
+      "sha256": "171f612919df578a978aee2c42216eb2562551ab2706baa51b3de504a250257b"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/receipt.json",
+      "sha256": "3bdea6632e6584700f378b79ab81061c59264d96c35596290599498a8fc45a48"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cases.json",
+      "sha256": "cf122a1caf9bc68c8838f05b004041ea9c54ecec45456e334b3b2bd47e6cb012"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-fixture.json",
+      "sha256": "578833426728901c08c751e9c080191f6981a8df86d632492bd60d359b2c2090"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-input.json",
+      "sha256": "ae564a3c96e6905d263bae8ddb596ffe73d664b3181babc6e6308ab205437c3d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-measurement.json",
+      "sha256": "cc6a1f0fb5b6a8aedeae45e3ab278316eaa225632f797a280989ff6369f14e4d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative-observation.json",
+      "sha256": "3f223f39850994ea401f1023ab65cc9747fe697a39c2b745deddcd5e990afa4a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png",
+      "sha256": "b83f7b6c72726bc90d2cb3db023635f4f87e4e3769a39db62c3c2f6e77405ead"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/negative.png.render.json",
+      "sha256": "de9c06faa0fa5962b2f2940dac716e4e3a908c8fc7b76d14d84b3200a3416825"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-fixture.json",
+      "sha256": "ffa1ff9c4685f9c1243f12ee861de32a0b3b1247b24dfc6d59ad52ae5dc39eb3"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-input.json",
+      "sha256": "f916167cf2010dad012405124e85e3516d1299e606e3146762258ee715aae75d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-measurement.json",
+      "sha256": "0e1341d360ebf31c5e83cd8321f2584395290050782fae7d3024c359baa8a04e"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive-observation.json",
+      "sha256": "4b114aa797e729bc069f7f15d17def3a2d48503d91933bd4adb2978643aafb9a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive.png",
+      "sha256": "bbdd170c87fdc8583f2345687616e64af1591e5f6cdc7c731e7037156ad975e9"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/positive.png.render.json",
+      "sha256": "2edcfd55cb36cb27726d098f3b87593878a3b8163d85770695f792bed4293fab"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/receipt.json",
+      "sha256": "589c53ee8f61a65a1118a6642c43c39c11fb277619396c2c74bc17917c395a94"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-fixture.json",
+      "sha256": "4964e8179a9db89db81103d1126a557a58ccc77e01d24839a000e12f7fb7f046"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-input.json",
+      "sha256": "a04b6a55eff879d2d0611165babf03f13402da29e12079bd063977b3a3c6a3e8"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-measurement.json",
+      "sha256": "da2e4d5af6477b48eb3408cfcc364f372e21418106eb42e41c46aca97a76e42e"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative-observation.json",
+      "sha256": "51d23f984840a1bd8e46fc303e7514e71e8ebd1fa1c8d9fea13e7bd2fc32e7ea"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative.png",
+      "sha256": "259ae1d0939d6f62cd6fa4f67fae3d77cf4db0049eddfac139f3a161b7f42e09"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/negative.png.render.json",
+      "sha256": "034bb43a4b7450d03b95f2ff1c811992e2fd871f55559552402681e67e13c011"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-fixture.json",
+      "sha256": "aee6eaecc58924b11c9d8a6566ee329979fdc742be2a339d4df1b412aaae638a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-input.json",
+      "sha256": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-measurement.json",
+      "sha256": "c2ad0ba87b25e177a9191aace93edb5ef6aa46f04da77f0f9b03252cca7da003"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive-observation.json",
+      "sha256": "b40b664a9a08a6b2dd054327c4d28e6c8ba91168bf0be789de206e004bfbd24a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive.png",
+      "sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/positive.png.render.json",
+      "sha256": "472f0eacecbacd568688badbaf90b8e27686fab27c711eb60b9ad2b999a12113"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/receipt.json",
+      "sha256": "ab1139ab015c8b17694612fe1875e410cf0e4bc5b4ef2f1f725c17b39d21d496"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-b2/environment.json",
+      "sha256": "7e3cee3c1be7556e8376214c98f5b10a342938d46276da2c76f66654df1b97b3"
+    }
+  ],
+  "input_digest": "112dc9a405c6257a7c4ea6c7cf190b8351a708c6a00b4a34389b514527bec886",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "cover-pro-independent",
+      "gaps": [
+        {
+          "failed_checks": [
+            "no_overflow"
+          ],
+          "negative_incorrectly_accepted": false,
+          "probe": "positive"
+        }
+      ],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "rejected",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-b2/cover-pro-independent/receipt.json",
+        "sha256": "589c53ee8f61a65a1118a6642c43c39c11fb277619396c2c74bc17917c395a94"
+      },
+      "relation": "independent",
+      "status": "failed"
+    },
+    {
+      "case_id": "cover-pro-independent",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "duo-compare-comparison",
+      "gaps": [
+        {
+          "failed_checks": [
+            "no_overflow"
+          ],
+          "negative_incorrectly_accepted": false,
+          "probe": "positive"
+        }
+      ],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "rejected",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-b2/duo-compare-comparison/receipt.json",
+        "sha256": "ab1139ab015c8b17694612fe1875e410cf0e4bc5b4ef2f1f725c17b39d21d496"
+      },
+      "relation": "comparison",
+      "status": "failed"
+    },
+    {
+      "case_id": "duo-compare-comparison",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "cards-stat-independent",
+      "gaps": [
+        {
+          "failed_checks": [
+            "no_overflow"
+          ],
+          "negative_incorrectly_accepted": false,
+          "probe": "positive"
+        }
+      ],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "rejected",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-b2/cards-stat-independent/receipt.json",
+        "sha256": "3bdea6632e6584700f378b79ab81061c59264d96c35596290599498a8fc45a48"
+      },
+      "relation": "independent",
+      "status": "failed"
+    },
+    {
+      "case_id": "cards-stat-independent",
+      "gaps": [
+        "image_recipe_missing"
+      ],
+      "lane": "image",
+      "owner_gaps": [
+        "image_recipe_missing"
+      ],
+      "qualification_status": "rejected",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "failed"
+}

@@ -18,5 +18,11 @@ input generation。渲染前从原始 profile 重放 op，不信任手写 effect
 HTML 消费实际数值几何与字段置换；image recipe 明确接收区域和槽位映射，真实 image
 资格与视觉仍单独取证。
 
+image proposal 的正反输入使用同一个冻结 patch 和 slot mapping，并绑定 run/page/candidate
+与 `proposal_sha256`。Provider 原图、归一化 PNG、OCR 和几何观测从该任务的
+`evidence/proposals/` 前缀导入；跨 run、跨 root、缺附件、hash 漂移或软链接均拒绝。
+`replay_image_probe_input` 从冻结 recipe/layout/proposal 重建请求，复核不依赖活动 catalog。
+缺真实 Provider 或图片几何观测时，返回具体 gap，不借用 HTML 的通过状态。
+
 `qa/proposal-curation-<lane>.json` 保留逐候选尝试与失败原因，不能据此自动晋升 canonical。
 人工修改约束需创建新的 run scope；不能用失败输出递归生成下一轮提案。

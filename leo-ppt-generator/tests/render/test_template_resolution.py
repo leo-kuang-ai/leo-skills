@@ -47,7 +47,7 @@ class TemplateResolutionTests(unittest.TestCase):
             resolved = {"path": str(directory / "template.json"),
                         "trusted_root": str(library), "data": {"lane": "render:html"}}
             with patch("leo_ppt_generator.asset_resolver.AssetResolver") as resolver, \
-                 patch("leo_ppt_generator.render.assets._canonical_template_dirs", return_value=[directory.parent]):
+                 patch("leo_ppt_generator.render.assets.templates_dir", return_value=directory.parent):
                 resolver.return_value.resolve.return_value = resolved
                 with self.assertRaises(ValueError):
                     template_path("test")

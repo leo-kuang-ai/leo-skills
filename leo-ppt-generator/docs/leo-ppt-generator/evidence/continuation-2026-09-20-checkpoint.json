@@ -1,0 +1,288 @@
+{
+  "kind": "continuation-ownership-checkpoint",
+  "captured_at": "2026-09-20T01:15:02.405622+00:00",
+  "head": "489472050219b601d60e8d40bfa5ef8d30344950",
+  "raw_status": " M CHANGELOG.md\u0000 M docs/README.md\u0000 M docs/leo-ppt-generator/architecture/flow.md\u0000 M docs/leo-ppt-generator/execution-workflow.md\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/asset_resolver.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/capability_probes.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/library_migration.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/quality_replay.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/raster_oracle.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/migration-plan-v2.schema.json\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/task_local_layout_proposals.py\u0000 M leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py\u0000 M leo-ppt-generator/scripts/generate_style_gallery.py\u0000 M leo-ppt-generator/scripts/migrate_template_library.py\u0000 M leo-ppt-generator/scripts/run_expression_verification.py\u0000 M leo-ppt-generator/scripts/style_pack.py\u0000 M leo-ppt-generator/tests/test_generate_style_gallery.py\u0000 M leo-ppt-generator/tests/test_migration_phases.py\u0000 M leo-ppt-generator/tests/test_quality_replay.py\u0000 M leo-ppt-generator/tests/test_raster_oracle.py\u0000 M leo-ppt-generator/tests/test_style_pack.py\u0000 M leo-ppt-generator/tests/test_template_adoption.py\u0000 M leo-ppt-generator/tests/test_template_catalog_v2.py\u0000 M leo-ppt-generator/tests/test_templates.py\u0000?? .codex/hooks.json.graphify-bak\u0000?? .spec-first/cache/mcp-warmup/codex/macos/context7.json\u0000?? .spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json\u0000?? .spec-first/cache/mcp-warmup/zcode/macos/context7.json\u0000?? .spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json\u0000?? leo-ppt-generator/docs/leo-ppt-generator/evidence/continuation-2026-09-18-autonomous-baseline.json\u0000?? leo-ppt-generator/tests/test_image_proposal_evidence.py\u0000",
+  "paths": [
+    {
+      "path": "CHANGELOG.md",
+      "status": " M",
+      "tracked": true,
+      "owner": "shared-task-and-external-changelog-preserve-hunks",
+      "type": "file",
+      "sha256": "617e734f445c78fed496f8191467e907c863c1d2cc14e8037a84e12ac005bdc1",
+      "mode": 420
+    },
+    {
+      "path": "docs/README.md",
+      "status": " M",
+      "tracked": true,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "d65fed28a01e370a56950c04b5af9fd68ced63a299035b71711add13f7879386",
+      "mode": 420
+    },
+    {
+      "path": "docs/leo-ppt-generator/architecture/flow.md",
+      "status": " M",
+      "tracked": true,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "f44b4f2a34d3fe0d1a5f002e9bccd0a228606dc0574323ee1747bf8d74fcde99",
+      "mode": 420
+    },
+    {
+      "path": "docs/leo-ppt-generator/execution-workflow.md",
+      "status": " M",
+      "tracked": true,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "7d16e29768deb1ec78cc00765775e327f294294fb240c246143329383aefbbc7",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/asset_resolver.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "d01e223cf6a34ee1dbf9f8d31678c7ffbfeba9df42cb44dd3c0d6f37aed8f126",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/capability_probes.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "62cb2a23d3f0f521851074332fb53af9f434c6ab55d9f00cba4b76977a66c938",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/library_migration.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "b52024cae0de90bc948fbd905743713ac10563e6b266ef4d7c5a54347216fa64",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/quality_replay.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "aae4c05f633a2ef16b0a4973ae539b16a1775cc3f94284530ceece49d1ba5f51",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/raster_oracle.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "961fdee3b908bc3f0550084cc0b9e252d935cfe5d40db929d4a696ff58902ecc",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/schemas/migration-plan-v2.schema.json",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "7df933412a87bb730beb630c83044c9ff76909b3ec0cd9676cc7e2fc66f9cb73",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/task_local_layout_proposals.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "ea7e6e339894c8844118337be4804fdc041b1ba0f678ca52ab0dd79cb5a40815",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/runtime/src/leo_ppt_generator/templates.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "eeeaa1aec1c2077b8b42a34279a1e912151bf36cc1cc2e55f33804a56823f5e9",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/scripts/generate_style_gallery.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "abd1c2ab2f393ba0bb3672e92a87a5e5779b2ed668ea910beef08d8516edd5d0",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/scripts/migrate_template_library.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "82bcec55642e4875137ef227b25eb2928e1d6dd7d87759c42ceede863de5035d",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/scripts/run_expression_verification.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "2cec6c21f3c278ff6a390f70009a29f230a3b077c8d697a07813cf70b4f69e34",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/scripts/style_pack.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "56ac2a508f7967aff422a59d3a3af32a38fe73d786278f4f7f2d6a1f31642c5e",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_generate_style_gallery.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "475ffd8ac1aeebb2e6b046e313a517914a2f9b46b9cb35b8701e1daa00cf14b8",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_migration_phases.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "34ee380483607764914c0f7a63cd9dadbe71a91b5bd2220967be375fed0658dd",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_quality_replay.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "b006ec090a3422d5c5532bbcc279d11cd971218e7dfdbabb50096869a4474375",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_raster_oracle.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "2848308bb3bbac73e2e18513d6e1586ce56429539259f1861dc238ebb760a564",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_style_pack.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "dd332bc12291261dd49451573445d0b7e02f24275b29ed199e7ba7b72acfe19c",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_template_adoption.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "b445863d714ff00792c20a61ceedca11dd85487a80493a3818b88a40dfd8834e",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_template_catalog_v2.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "ee6eba9f455fdbaeb9fb9d81db992f6ec65474da26f72315ab84de570c31a8a4",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_templates.py",
+      "status": " M",
+      "tracked": true,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "ce9e87aa3b88b7f01f4752ed425ee7ad6958a58f791f7f428c359425b2f851ca",
+      "mode": 420
+    },
+    {
+      "path": ".codex/hooks.json.graphify-bak",
+      "status": "??",
+      "tracked": false,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960",
+      "mode": 420
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2",
+      "mode": 384
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4",
+      "mode": 384
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d",
+      "mode": 384
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "external-pre-existing-protected",
+      "type": "file",
+      "sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95",
+      "mode": 384
+    },
+    {
+      "path": "leo-ppt-generator/docs/leo-ppt-generator/evidence/continuation-2026-09-18-autonomous-baseline.json",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "132f43d0085200ed57fc61dc723c3c3741ea794926ef3f1659dbe6ecd4e72d9b",
+      "mode": 420
+    },
+    {
+      "path": "leo-ppt-generator/tests/test_image_proposal_evidence.py",
+      "status": "??",
+      "tracked": false,
+      "owner": "expression-first-task-prior-and-current-continuation",
+      "type": "file",
+      "sha256": "c89d0b78f779c9f133139fa16765dc61ee09bd0d41810789a8393d8c55961c25",
+      "mode": 420
+    }
+  ],
+  "timing_limit": "本轮入口已先读取 git status；逐路径hash在style_pack第一段续修之后记录，不追认为修改前hash。2026-09-18修改前快照另存。"
+}

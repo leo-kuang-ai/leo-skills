@@ -105,14 +105,17 @@ def _fingerprint_file(path):
 def is_execution_source(relative):
     """环境指纹和旧链封存共用同一执行源码成员规则。"""
     return (relative in {"relation_oracle.py", "raster_oracle.py", "raster_text.swift", "image_deck/expression_adapter.py"}
-            or relative.endswith(".py") and relative.startswith(("render/", "providers/")))
+            or relative.endswith(".py") and relative.startswith((
+                "render/", "providers/", "_vendor/codex_ppt/image_providers/")))
 
 
 def environment_fingerprint():
     """不输出凭据、主目录或主机名；执行源码变化也使旧 receipt 失效。"""
     package = Path(__file__).parent
     versions = {}
-    for name in ("playwright", "Pillow", "python-pptx", "jsonschema"):
+    # Provider 的实际 HTTP 实现与 SDK 版本属于导出执行链，必须进入
+    # fingerprint；否则 provider/adapter 漂移后历史 receipt 仍会被误认作同环境。
+    for name in ("playwright", "Pillow", "python-pptx", "jsonschema", "openai", "httpx"):
         try:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:

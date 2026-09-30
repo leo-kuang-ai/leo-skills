@@ -28,7 +28,7 @@ class StyleScopeResolutionTest(unittest.TestCase):
         self.save()
 
     def user_brief_path(self) -> Path:
-        return (self.home / "template-library" / "canonical" / "styles"
+        return (self.home / "template-library" / "canonical" / "visual" / "styles"
                 / self.name / "brief.json")
 
     def save(self):
@@ -63,11 +63,11 @@ class StyleScopeResolutionTest(unittest.TestCase):
             templates.compose_style(self.name, home=self.home,
                                     expected_selection=original)
         self.user_brief_path().unlink()
-        with self.assertRaisesRegex(styles.StyleStoreError, "style_selection_changed"):
+        with self.assertRaises(styles.StyleCatalogStale):
             templates.compose_style(self.name, home=self.home,
                                     expected_selection=original)
 
-    def test_alias_query_works_without_generated_catalog(self):
+    def test_alias_query_uses_published_v2_catalog(self):
         self.brief["aliases"] = ["共有测试别名"]
         self.save()
         second = dict(self.brief, style_name="用户第二风格")

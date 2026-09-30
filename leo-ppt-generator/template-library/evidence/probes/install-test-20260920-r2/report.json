@@ -1,0 +1,423 @@
+{
+  "asset_generation": "4627c130098156d10a63fc3268e359597e7e6d8a615acac1dc430422f14677fc",
+  "environment": {
+    "path": "evidence/probes/install-test-20260920-r2/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "files": [
+    {
+      "path": "evidence/oracles/relation-output-v1.json",
+      "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/capability-receipts.json",
+      "sha256": "a78bb949c6492a81c4e303e52c97144c1d18c7bf0c32f34ac3875bb54bef52fb"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/cases.json",
+      "sha256": "08ca8bc87ba241efc9331fe0c0238d5bf9c86365ca0578e481b6c761f05b9599"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative-fixture.json",
+      "sha256": "6129338aeed50cea23126761a8a1fe5a454d951c376508224e9dc8211a8a556a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative-input.json",
+      "sha256": "1acd0f9acd671895869dd3cd55f9f5261bbc99bfe485043a51f1d2b335081e72"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative-measurement.json",
+      "sha256": "2a6aa00c82faab481c3d3eff0d150710e1de489690dd17b706b40df961fd039d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative-observation.json",
+      "sha256": "c8f8ec64fa0f71f2ab7d098e1fcebd121be3f21b333aa51931d5ade4b2ddc385"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative.png",
+      "sha256": "04858c794e908dd4e2d8e80458a0db14200d841649b28cd90a91eea710827f14"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/negative.png.render.json",
+      "sha256": "8be93271834c39a183a546cfb48b67eed7d2f73c9165071b10d0877955e7cf65"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive-fixture.json",
+      "sha256": "b60a10ec82163e3b05a183b96b49d939269b7295d8200d7df3b97bc2271920b1"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive-input.json",
+      "sha256": "ad039b74b996dc2c5f8b3eaa77f55ded56b77e2621307aef37b2f1c989cf005b"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive-measurement.json",
+      "sha256": "ac36d39af6e6a3cf1a5fc97575c591e1850bc3048886033ee0bdba65912b64f3"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive-observation.json",
+      "sha256": "2131513340496f14370279b3806171297f3e5877c7e70dbb1e7a765779a6292d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive.png",
+      "sha256": "ed400552535eb7789a15f2e1a51180a413b312581d182452fadb39a567637de5"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/positive.png.render.json",
+      "sha256": "b716242bfed3a8a72dc470504ded2e50191120fc943fdef97b5d7c8d7a45b555"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/causal/receipt.json",
+      "sha256": "6397236348a8706a9f98d077bdd7891667a3de50bfce47aee98c0b4b5205eea2"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative-fixture.json",
+      "sha256": "375b7f5b64cc522a6d083ebc54b7113d8ec3ba4b6d6fdfe8110ad8e3b8e65272"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative-input.json",
+      "sha256": "6a327b159ad02d56237c69b77da8d98fc01f29cf396f0de3ef0e1ade1def2a10"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative-measurement.json",
+      "sha256": "25cb0423156eac4f96d6080763532b654eff3e713411ea69f402a048ba7e6ec3"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative-observation.json",
+      "sha256": "bcf9e3bdd02d7c0c96aecb320431cee7ce3856043c592d972c7f0ca17ed28300"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative.png",
+      "sha256": "1d494407d549cad0a80d3f025ef8402f11a10f7aec61c43030e4325597c13282"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/negative.png.render.json",
+      "sha256": "56a4d21930d90816d2ad7ba40a0da3b331278b04af363f5f68a5eedff0f4f201"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive-fixture.json",
+      "sha256": "b72f484dc5869c3dd856c8d5641c892d8b851336de3fbb081a9e9bc123cf97ef"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive-input.json",
+      "sha256": "5c558d1e816b70320682f9dc9b1c615c912b722c253893035eb92cf0c9d14c07"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive-measurement.json",
+      "sha256": "c613675c53afaeee809b4edf42408bf7638bb65b12aec24f28cf91e61951f9e4"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive-observation.json",
+      "sha256": "ffa62a13bc94b5b161aa61158670f088ae9063d568299f81d7b90529e1a17cd8"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive.png",
+      "sha256": "0e64bd232811198202652e78d99e29b49e5fdad4137d0d308125fa98ae4f5755"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/positive.png.render.json",
+      "sha256": "84d7901c953b5f8c32d931ab4e88ace1ee159e8e8fa1a415ede9a6dd23e93f3a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/comparison/receipt.json",
+      "sha256": "cefe5833a8ec3eeb8ac84a53ec2ab354772d620712c88df1228642c29fe39a09"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/environment.json",
+      "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative-fixture.json",
+      "sha256": "43523ff8c8a8725b2e4a0e165d21975a50181ed54cab191bad11e7c7d510e159"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative-input.json",
+      "sha256": "ce7672f74ac39a5de0678f78a9b316b1d001dfcf7fa384bfed14e03e221d31f8"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative-measurement.json",
+      "sha256": "cbb6227f0d5dfb48fcbe5fd2a43b61a7b87071bc51b273e6db6c7aab1fb07a41"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative-observation.json",
+      "sha256": "c3cfe2e3b0ecd3ca6a8c3d1b9c6689a87a08113b6fce66ff142a0226beb2e538"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative.png",
+      "sha256": "7d7caf293d8720b0d7a7d3d0a1a6a8b4df303a150a9da20808d01ed442a86bc2"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/negative.png.render.json",
+      "sha256": "3043df4916bbf1bc7d1293ce99e5c8446e492fd482328c1acae2060361e46197"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive-fixture.json",
+      "sha256": "6cbb05c889599e5f2eb3a38251d589a50a29f8db816992107deffe05d35d4b52"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive-input.json",
+      "sha256": "e46f9dd330ab39bb6e4b1d017e85c22a3520e6b1e860cc1f4bdb1c1abef6a6ee"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive-measurement.json",
+      "sha256": "6b98029e0a882d49dca4ac62c93f13d560ff71d93d02ddfb7beaba4682544848"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive-observation.json",
+      "sha256": "ed42651c69d943f044b684a6807016515d275ff5abbee22a8eb995077d077454"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive.png",
+      "sha256": "f1b43f8a25ab135102269c44c6147aa13ddacda85cb0f8a799e01e125721bb4d"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/positive.png.render.json",
+      "sha256": "9d8abecfc24684e16a0953c22f95fdc7dbbb3a1fad618cc6cd1d0080c6ab43df"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/independent/receipt.json",
+      "sha256": "f2f6a363a5329d615c4b2463a5b7fec67e40c2958d1ae380bab7be0af238c4bf"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative-fixture.json",
+      "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative-input.json",
+      "sha256": "1e74fb657179ee280e841f0e1a0e95730460f40c32f38e39b67369712c43f768"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative-measurement.json",
+      "sha256": "70535038ba3cf652586b99972366f8c69ac8297dab9e26dbd5b9266dc9d726d8"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative-observation.json",
+      "sha256": "e5872d21164772b8f42b3662067fd90ac2d03820938fe79b93fece4d7f4a902a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative.png",
+      "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/negative.png.render.json",
+      "sha256": "669a5db4c1e5828d309bb717e3bd831d1d2852e36e6cc6be9100a3376940089f"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive-fixture.json",
+      "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive-input.json",
+      "sha256": "da245f8220808f9143a6f493e300ea0ba01145ffb8e3b59b52a582be236a6de8"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive-measurement.json",
+      "sha256": "8bb35068f0f87a397e11139fb8fae84ddad676cb70b9b45286d950f385d15cfb"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive-observation.json",
+      "sha256": "3f268c2f1107355f5a5fb8ee641f0d75a8c46a174438fa01922726ef676a7664"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive.png",
+      "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/positive.png.render.json",
+      "sha256": "75556809ffcaa2bf1be00f89dfab7cbaf65c5ef9ee32ea749336a298925d045a"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/process/receipt.json",
+      "sha256": "2855b73d420807319c263ffdfbfa665d3683bc354aabe865d2dc3cea00b8a492"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative-fixture.json",
+      "sha256": "cd118bd7e5a19f220e3775d5433bc5781f81a24e9db39bd7919834a4f55c5695"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative-input.json",
+      "sha256": "c161e9a4fafe6f0b9d4101ab971d38abe5ed7fce9ce00a6f75ba4a0fa01d2114"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative-measurement.json",
+      "sha256": "a2a516cbe932e3af555dce292685042821ea5b105c4848f22397643e9f05d50f"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative-observation.json",
+      "sha256": "8094d07c7f7ba4130483700db04f1dac10bb5a5a462f84dfea4de2b2fd01e340"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative.png",
+      "sha256": "fcccfe3a95b72c7b8c39cb53092a30b11b132328f5429acdce07d5886e5af4a5"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/negative.png.render.json",
+      "sha256": "342bd604ac95b2eb09cc662393532d9ed64ceb52eab92bcb17b49f440b32422e"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive-fixture.json",
+      "sha256": "c4b949bdb873f93dfe28026e559ce5eb762212a31e1d40e365ae2d38c9dda7ad"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive-input.json",
+      "sha256": "717a70e18bfbebe6cf006525446079a675355f2c4c9a92a2e4fe2d3f8db370b2"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive-measurement.json",
+      "sha256": "3499cde051c0deeda2d5a23192a5b4672393bc3dbbad743d60fd338f9275df9f"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive-observation.json",
+      "sha256": "ddf908cb5543e30ba05db5d629ee0e988a092c5bd94dd40ef9e138d115271e36"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive.png",
+      "sha256": "cdf67bab536d6858d8bef58e5eb26b65f7411c32f50dd4e136e57ccf755600f1"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/positive.png.render.json",
+      "sha256": "df8cc2b9d6f93af0c78f95c94d584552436ba3c8c971789e007bc6d7bc8f31a2"
+    },
+    {
+      "path": "evidence/probes/install-test-20260920-r2/trend/receipt.json",
+      "sha256": "23848e8a7eb5e44ea2c07227beaafb2bfcda342a3fa65250e5fbfc6ad6ee7be0"
+    }
+  ],
+  "input_digest": "1e2fa9523f18b15283e51cd1e09632a8140743e8f45bd25a6b300cc8db50f026",
+  "kind": "relation-probe-report",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "publication_ready": false,
+  "results": [
+    {
+      "case_id": "independent",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-r2/independent/receipt.json",
+        "sha256": "f2f6a363a5329d615c4b2463a5b7fec67e40c2958d1ae380bab7be0af238c4bf"
+      },
+      "relation": "independent",
+      "status": "passed"
+    },
+    {
+      "case_id": "independent",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "independent",
+      "status": "blocked"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-r2/comparison/receipt.json",
+        "sha256": "cefe5833a8ec3eeb8ac84a53ec2ab354772d620712c88df1228642c29fe39a09"
+      },
+      "relation": "comparison",
+      "status": "passed"
+    },
+    {
+      "case_id": "comparison",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "comparison",
+      "status": "blocked"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-r2/trend/receipt.json",
+        "sha256": "23848e8a7eb5e44ea2c07227beaafb2bfcda342a3fa65250e5fbfc6ad6ee7be0"
+      },
+      "relation": "trend",
+      "status": "passed"
+    },
+    {
+      "case_id": "trend",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "trend",
+      "status": "blocked"
+    },
+    {
+      "case_id": "process",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-r2/process/receipt.json",
+        "sha256": "2855b73d420807319c263ffdfbfa665d3683bc354aabe865d2dc3cea00b8a492"
+      },
+      "relation": "process",
+      "status": "passed"
+    },
+    {
+      "case_id": "process",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "process",
+      "status": "blocked"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [],
+      "lane": "render:html",
+      "owner_gaps": [],
+      "qualification_status": "provisional",
+      "receipt": {
+        "path": "evidence/probes/install-test-20260920-r2/causal/receipt.json",
+        "sha256": "6397236348a8706a9f98d077bdd7891667a3de50bfce47aee98c0b4b5205eea2"
+      },
+      "relation": "causal",
+      "status": "passed"
+    },
+    {
+      "case_id": "causal",
+      "gaps": [
+        "image_provider_and_geometry_evidence_required"
+      ],
+      "lane": "image",
+      "owner_gaps": [],
+      "qualification_status": "unverified",
+      "receipt": null,
+      "relation": "causal",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": 1,
+  "status": "blocked"
+}

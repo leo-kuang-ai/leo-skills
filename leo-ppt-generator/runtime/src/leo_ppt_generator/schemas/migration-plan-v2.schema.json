@@ -3,7 +3,7 @@
   "$id": "https://leo-ppt.invalid/schemas/migration-plan/v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "kind", "phase", "gate", "source_root", "base_revision", "dirty_snapshot", "source_snapshot", "closure", "mapping", "target_hashes", "delete_allowlist", "allowlist_digest", "prerequisite", "gaps", "owner_sha256", "plan_digest"],
+  "required": ["schema_version", "kind", "phase", "gate", "source_root", "base_revision", "dirty_snapshot", "source_snapshot", "closure", "target_closure", "target_closure_digest", "mapping", "target_hashes", "delete_allowlist", "allowlist_digest", "prerequisite", "gaps", "target_evidence", "target_evidence_digest", "owner_sha256", "plan_digest"],
   "properties": {
     "schema_version": {"const": 2},
     "kind": {"const": "template-library-migration-plan"},
@@ -24,6 +24,8 @@
         "active_legacy_hits": {"type": "integer", "minimum": 0}
       }
     },
+    "target_closure": {"$ref": "#/properties/closure"},
+    "target_closure_digest": {"$ref": "#/$defs/hash"},
     "mapping": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/mapping"}},
     "target_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/hash"}},
     "delete_allowlist": {"type": "array", "items": {
@@ -34,6 +36,8 @@
     "allowlist_digest": {"$ref": "#/$defs/hash"},
     "prerequisite": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/reference"}]},
     "gaps": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "target_evidence": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/target_evidence"}]},
+    "target_evidence_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
     "owner_sha256": {"$ref": "#/$defs/hash"},
     "plan_digest": {"$ref": "#/$defs/hash"}
   },
@@ -49,8 +53,42 @@
     "mapping": {
       "oneOf": [
         {"type": "object", "additionalProperties": false, "required": ["operation", "source", "sha256", "mode"], "properties": {"operation": {"enum": ["copy", "normalize"]}, "source": {"type": "string", "minLength": 1}, "source_relative_to_library": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}}},
-        {"type": "object", "additionalProperties": false, "required": ["operation", "payload", "sha256", "mode"], "properties": {"operation": {"const": "derived"}, "payload": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}}}
+        {"type": "object", "additionalProperties": false, "required": ["operation", "payload", "sha256", "mode"], "properties": {"operation": {"const": "derived"}, "payload": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}}},
+        {"type": "object", "additionalProperties": false, "required": ["operation", "source", "expected", "payload", "sha256", "mode"], "properties": {"operation": {"enum": ["replace", "evidence"]}, "source": {"type": "string", "minLength": 1}, "expected": {"$ref": "#/$defs/state"}, "payload": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}}}
       ]
+    },
+    "consumer_replacements": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "kind", "replacements"],
+      "properties": {
+        "schema_version": {"const": 1},
+        "kind": {"const": "migration-consumer-replacements"},
+        "replacements": {"type": "array", "minItems": 1, "items": {
+          "type": "object", "additionalProperties": false, "required": ["path", "expected", "target"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "expected": {"$ref": "#/$defs/state"},
+            "target": {"type": "object", "additionalProperties": false, "required": ["payload", "sha256", "mode"], "properties": {
+              "payload": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}
+            }}
+          }
+        }}
+      }
+    },
+    "target_evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "kind", "asset_generation", "files", "required_assets"],
+      "properties": {
+        "schema_version": {"const": 1}, "kind": {"const": "migration-target-evidence"},
+        "asset_generation": {"$ref": "#/$defs/hash"},
+        "required_assets": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(builtin|user|task):layout:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "uniqueItems": true},
+        "files": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false,
+          "required": ["path", "expected", "target"], "properties": {
+            "path": {"type": "string"}, "expected": {"$ref": "#/$defs/state"},
+            "target": {"type": "object", "additionalProperties": false, "required": ["payload", "sha256", "mode"],
+              "properties": {"payload": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "mode": {"type": "integer", "minimum": 0, "maximum": 511}}}
+          }}}
+      }
     },
     "hit": {
       "type": "object", "additionalProperties": false,

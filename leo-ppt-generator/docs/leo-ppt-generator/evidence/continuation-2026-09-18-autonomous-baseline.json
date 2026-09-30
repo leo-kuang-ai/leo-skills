@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-18T07:35:54.201364+00:00",
+  "target_repo": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator",
+  "git_root": "/Users/kuang/knowledge/leo-skills",
+  "head": "489472050219b601d60e8d40bfa5ef8d30344950",
+  "branch": "leo-2026-09-04-update-style-model",
+  "dirty_paths": [
+    {
+      "path": ".codex/hooks.json.graphify-bak",
+      "status": "??",
+      "owner": "pre-existing external/user; protected",
+      "type": "file",
+      "sha256": "2ea985a5ef49b7e89e898bb768c0680f1058eb2b97b5ff9f7d35c6dd2995a960"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+      "status": "??",
+      "owner": "pre-existing external/user; protected",
+      "type": "file",
+      "sha256": "5accda664d61e920b6e460436f15c300e25bbf4750795165725d12a238c369d2"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+      "status": "??",
+      "owner": "pre-existing external/user; protected",
+      "type": "file",
+      "sha256": "9452e6a7822a43c2e6f05f7c15d8ff99ab2ad60d570f22658a1196383e1354e4"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+      "status": "??",
+      "owner": "pre-existing external/user; protected",
+      "type": "file",
+      "sha256": "e8fe5961085b1e0cd4015515638241f61914e8bdcc3b461c112b98536c5c1d8d"
+    },
+    {
+      "path": ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json",
+      "status": "??",
+      "owner": "pre-existing external/user; protected",
+      "type": "file",
+      "sha256": "73fe8438e4fb491279627c46eee90aaacf70571c4420fdaa8b8a7de55d8f2a95"
+    }
+  ],
+  "tracked_dirty_paths": [],
+  "untracked_dirty_paths": [
+    ".codex/hooks.json.graphify-bak",
+    ".spec-first/cache/mcp-warmup/codex/macos/context7.json",
+    ".spec-first/cache/mcp-warmup/codex/macos/sequential-thinking.json",
+    ".spec-first/cache/mcp-warmup/zcode/macos/context7.json",
+    ".spec-first/cache/mcp-warmup/zcode/macos/sequential-thinking.json"
+  ],
+  "allowed_write_roots": [
+    "leo-ppt-generator/",
+    "CHANGELOG.md"
+  ],
+  "generated_mirrors": "do not modify",
+  "worker_authorization": "explicit user authorization",
+  "worker_isolation": "shared-directory; audit workers read-only",
+  "commit_push_authorization": "existing session authorization; no PR authorization",
+  "goal_completion_eligible": false
+}

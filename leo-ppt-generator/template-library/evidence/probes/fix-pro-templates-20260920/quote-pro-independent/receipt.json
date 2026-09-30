@@ -1,0 +1,59 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "asset_id": "builtin:layout:p9-09-closing-manifesto-layouts",
+  "dependency_hashes": {
+    "canonical/layouts/p9-09-closing-manifesto-layouts/layout.json": "4c1ccf7201ee7fbdbcd6ddce6356e847eae38d93322bd7874f0d32a70ae7afc1",
+    "canonical/layouts/p9-09-closing-manifesto-layouts/notes.md": "73ba9715b4a24df9389bf1d2304e3dd66545c1efc09f9a4bb25f18372862bb48",
+    "canonical/templates/quote-pro/page.html": "fd84c359df23abc5e43b419cdb5754ccbc00bb98d596d0f49da750e87fb120e4",
+    "canonical/templates/quote-pro/template.json": "26925050e8df309d887ced434ccecf777f4be419a3ce4154f159d43a398d34fe"
+  },
+  "environment": {
+    "path": "evidence/probes/fix-pro-templates-20260920/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "evidence_digest": "84d1680aaaebf2eba94feda672817ac7e9ca47c5bf2a86d3013ff7d392a36257",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative.png",
+        "sha256": "979eb3c5c98a762f28053bf31d8e1a2583fc44b1d8a354ce6ed060d3e70e8856"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-fixture.json",
+        "sha256": "90f309cfc902c2f884cb09832080fe6e146f18372d6dd378fd0ea4f022f90a39"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/negative-observation.json",
+        "sha256": "4a23f8a10f6e3286fe34c991ea591b2b34f62ff87351db608a3233475aa8caf4"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+        "sha256": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-fixture.json",
+        "sha256": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-observation.json",
+        "sha256": "e759e162a8925b2fa8c7d744138e9e467cd7354f3491c14209a58e53d4f7ab02"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "6d260a9560f89a0b69f0977932f65c89953e976948470dd0e8c798505be8c4c6/quote-pro-independent",
+  "relation": "independent",
+  "schema_version": 1,
+  "visual_review": null
+}

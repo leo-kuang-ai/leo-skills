@@ -1,0 +1,50 @@
+{
+  "kind": "continuation-regression-evidence-index",
+  "checks": [
+    {
+      "path": "docs/leo-ppt-generator/evidence/qualification-isolated-library-2026-09-20.log",
+      "sha256": "954a74085bdaa2eb380fdfe6f1e9d490c0d798d053440ddfc7755f5c153ff86d",
+      "exit_code": 0,
+      "summary": "16 tests / 6.248s",
+      "role": "bounded regression; full ordered verification remains separate"
+    },
+    {
+      "path": "docs/leo-ppt-generator/evidence/user-library-identity-contract-2026-09-20.log",
+      "sha256": "b15bf226e25aa15939979e16e20bd795e4f6bc6f5337218152071ea52e8bf7e8",
+      "exit_code": 0,
+      "summary": "41 tests / 46.762s",
+      "role": "bounded regression; full ordered verification remains separate"
+    },
+    {
+      "path": "docs/leo-ppt-generator/evidence/closure-dict-repair-2026-09-20-after.log",
+      "sha256": "61fe5512cd300174c9cc04224ad8527fa6d5615c2ff331d4337d32758c61dcbe",
+      "exit_code": 0,
+      "summary": "53 tests / 35.071s",
+      "role": "bounded regression; full ordered verification remains separate"
+    },
+    {
+      "path": "docs/leo-ppt-generator/evidence/gallery-v2-final-2026-09-20-v2.log",
+      "sha256": "d035a079cb118b4552916e3cab803f98095868f74a4dab9f56587661d47654f7",
+      "exit_code": 0,
+      "summary": "74 tests / 296.194s",
+      "role": "bounded regression; full ordered verification remains separate"
+    },
+    {
+      "path": "docs/leo-ppt-generator/evidence/bundle-install-2026-09-20.log",
+      "sha256": "c24c65b5f8b9aff263759a6709f121e8f3d1bf1b0aea318cc923e16b95ef62aa",
+      "exit_code": 0,
+      "summary": "8 tests / 74.444s",
+      "role": "bounded regression; full ordered verification remains separate"
+    },
+    {
+      "path": "docs/leo-ppt-generator/evidence/style-index-judge-2026-09-20-green.log",
+      "sha256": "1e93c1330dbb088569969e5399231dde3e97e601245733bce3cf3c884e89adb7",
+      "exit_code": 0,
+      "summary": "28 tests",
+      "role": "bounded regression; full ordered verification remains separate"
+    }
+  ],
+  "ordered_manifest": "docs/leo-ppt-generator/evidence/expression-verification-2026-09-20-final-v2/verification.json",
+  "overall_completion": "partial",
+  "provider_calls": 0
+}

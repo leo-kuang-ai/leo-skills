@@ -1,0 +1,206 @@
+{
+  "kind": "expression-continuation-review",
+  "base": "489472050219b601d60e8d40bfa5ef8d30344950",
+  "status": "partial",
+  "reviews": [
+    {
+      "reviewer": "/root/final_review",
+      "mode": "report-only then authorized bounded fixes",
+      "independent_before_fix": true,
+      "scope": [
+        "library_migration.py",
+        "asset_resolver.py",
+        "templates.py",
+        "generate_style_gallery.py"
+      ],
+      "findings": [
+        {
+          "id": "R1",
+          "priority": "P1",
+          "title": "consumer closure path construction漏扫",
+          "status": "fixed_pending_full_verification",
+          "owner": "/root/final_review",
+          "verification": {
+            "exit_code": 0,
+            "tests": 53,
+            "log": "docs/leo-ppt-generator/evidence/closure-dict-repair-2026-09-20-after.log"
+          }
+        },
+        {
+          "id": "R2",
+          "priority": "P2",
+          "title": "混合库reference-only用户资产可声明builtin scope",
+          "status": "fixed_pending_full_verification",
+          "files": [
+            "runtime/src/leo_ppt_generator/asset_resolver.py",
+            "tests/test_template_catalog_v2.py"
+          ]
+        }
+      ],
+      "limitations": [
+        "未覆盖完整分支；这是限定范围审阅"
+      ]
+    },
+    {
+      "reviewer": "/root/pack_transaction",
+      "mode": "read-only role after authoring",
+      "independent_before_fix": false,
+      "scope": [
+        "user_library.py",
+        "styles.py",
+        "scripts/style_pack.py"
+      ],
+      "findings": [
+        {
+          "id": "U9-PACK-01",
+          "priority": "P2",
+          "title": "save成功后依赖闭包仍不可解析",
+          "status": "fixed_pending_full_verification",
+          "red_log": "docs/leo-ppt-generator/evidence/user-library-dependency-red-2026-09-20.log",
+          "red_exit_code": 1,
+          "verification": {
+            "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_user_style_v2 tests.test_style_scope_resolution tests.test_style_selection_layout tests.test_style_pack tests.test_template_adoption tests.test_template_catalog_v2",
+            "exit_code": 0,
+            "tests": 87,
+            "seconds": 121.382,
+            "log": "docs/leo-ppt-generator/evidence/user-library-dependency-final-2026-09-20.log",
+            "process_session_id": 70340
+          }
+        },
+        {
+          "id": "U9-PACK-02",
+          "priority": "P2",
+          "title": "theme/layout绑定可引用style身份",
+          "status": "fixed_pending_full_verification",
+          "red_log": "docs/leo-ppt-generator/evidence/style-pack-kind-red-2026-09-20.log",
+          "red_exit_code": 1,
+          "verification": {
+            "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_user_style_v2 tests.test_style_scope_resolution tests.test_style_selection_layout tests.test_style_pack tests.test_template_adoption tests.test_template_catalog_v2",
+            "exit_code": 0,
+            "tests": 87,
+            "seconds": 121.382,
+            "log": "docs/leo-ppt-generator/evidence/user-library-dependency-final-2026-09-20.log",
+            "process_session_id": 70340
+          }
+        }
+      ],
+      "limitations": [
+        "作者切换角色复核，不作为完全独立审查",
+        "未执行进程硬杀、多进程竞争、断电实验"
+      ]
+    },
+    {
+      "reviewer": "/root/final_review",
+      "mode": "independent report then authorized bounded fixes",
+      "independent_before_fix": true,
+      "scope": [
+        "capability_probes.py",
+        "task_local_layout_proposals.py",
+        "tests/test_image_proposal_evidence.py"
+      ],
+      "findings": [
+        {
+          "id": "R3",
+          "priority": "P1",
+          "title": "v2 proposal evidence 写入使 workspace catalog 失效",
+          "status": "fixed_pending_full_verification",
+          "fix": "冻结 resolver snapshot envelope，重核 source_files/run/snapshot"
+        },
+        {
+          "id": "R4",
+          "priority": "P2",
+          "title": "v2 probe 同参缓存回读被自身 evidence 输出阻断",
+          "status": "fixed_pending_full_verification",
+          "fix": "缓存逐项重核输入/全部输出/report_digest/环境/scope，其余漂移仍拒绝"
+        }
+      ],
+      "verification": {
+        "command": "PYTHONPATH=runtime/src runtime/.venv/bin/python -m unittest tests.test_image_proposal_evidence tests.test_task_local_expression_proposals",
+        "exit_code": 0,
+        "tests": 26,
+        "seconds": 35.82,
+        "process_session_id": 98158
+      },
+      "limitations": [
+        "真实 Provider/image proposal 尚未执行；仅机制验证"
+      ]
+    },
+    {
+      "reviewer": "/root/final_review",
+      "mode": "report-only",
+      "independent_before_fix": true,
+      "scope": [
+        "scripts/generate_style_gallery.py",
+        "tests/test_generate_style_gallery.py"
+      ],
+      "findings": [
+        {
+          "id": "GALLERY-01",
+          "priority": "P2",
+          "title": "图表治理映射绕过显式库root/generation",
+          "status": "fixed_independently_reverified_pending_full_suite",
+          "evidence": "同一真实显式v2库，正常环境SVG成功；默认bundle切decoy后chart_theme_mapping_missing",
+          "session_id": 44896,
+          "reproduction_exit_code": 0,
+          "followup": {
+            "session_id": 45586,
+            "exit_code": 0,
+            "real_svg_sha256": "e9266d7bae2252d0e2b60b21f370ac98787815c92089d158d568cfe9f50d6a0e",
+            "default_bundle_changed_svg_identical": true,
+            "image_links_resolve": 3,
+            "scope": "两条原真实复现；不代替完整模块或全量测试"
+          }
+        },
+        {
+          "id": "GALLERY-02",
+          "priority": "P2",
+          "title": "自定义输出目录硬编码图片链接失效",
+          "status": "fixed_independently_reverified_pending_full_suite",
+          "evidence": "CLI退出0，三个Markdown图链接实际文件不存在；真实PNG在显式thumbs-root",
+          "session_id": 44896,
+          "reproduction_exit_code": 0,
+          "followup": {
+            "session_id": 45586,
+            "exit_code": 0,
+            "real_svg_sha256": "e9266d7bae2252d0e2b60b21f370ac98787815c92089d158d568cfe9f50d6a0e",
+            "default_bundle_changed_svg_identical": true,
+            "image_links_resolve": 3,
+            "scope": "两条原真实复现；不代替完整模块或全量测试"
+          }
+        }
+      ]
+    },
+    {
+      "reviewer": "/root/pack_transaction",
+      "mode": "report-only",
+      "scope": [
+        "scripts/lint_style_briefs.py:main",
+        "scripts/lint_layout_grid.py:_lint_canonical_profiles",
+        "scripts/lint_template_contract.py:lint_one",
+        "scripts/lint_render_templates.py:main"
+      ],
+      "findings": [
+        "malformed manifest异常逃逸",
+        "dangling symlink被过滤",
+        "render缺schema门",
+        "v1 schema链接越界",
+        "README误作模板",
+        "style schema异常逃逸",
+        "v1 layout字段类型异常",
+        "explicit库混用仓库legacy输入"
+      ],
+      "status": "fixed_pending_ordered_verification",
+      "independent_tests_run": false,
+      "main_agent_evidence": "docs/leo-ppt-generator/evidence/current-library-lints-2026-09-20-final-v2.log",
+      "limitation": "限定源码审阅，不是完整分支审阅"
+    }
+  ],
+  "main_review": [
+    "去除style_summary重复实现和未消费helper",
+    "用户库读写共用可信home规范化，不削弱catalog祖先symlink拒绝",
+    "异常仅捕获明确CatalogError/ResolverError",
+    "风格保存返回前在事务内验证完整依赖闭包；binding kind在共享声明解析owner校验"
+  ],
+  "full_branch_review": "not_run",
+  "goal_completion_eligible": false
+}

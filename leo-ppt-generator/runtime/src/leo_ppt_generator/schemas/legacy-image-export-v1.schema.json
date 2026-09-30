@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leo-ppt.invalid/schemas/legacy-image-export/v1",
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "source_revision",
+    "capture_mode",
+    "page_id",
+    "selection",
+    "material",
+    "provider_contract",
+    "receipt",
+    "export_digest",
+    "source_snapshot"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "legacy-image-export"
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "capture_mode": {
+      "enum": [
+        "captured-before-change",
+        "reconstructed-historical"
+      ]
+    },
+    "page_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection": {
+      "$ref": "#/$defs/reference"
+    },
+    "material": {
+      "$ref": "#/$defs/reference"
+    },
+    "provider_contract": {
+      "$ref": "#/$defs/reference"
+    },
+    "receipt": {
+      "$ref": "#/$defs/reference"
+    },
+    "export_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_snapshot": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "theme_source": {
+      "$ref": "#/$defs/reference"
+    }
+  }
+}

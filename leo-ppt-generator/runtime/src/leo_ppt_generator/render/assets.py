@@ -4,7 +4,7 @@
 ``LEO_PPT_BUNDLE``（技能包根）时优先；仓内开发回退到 ``parents[3]``
 相对布局。资产目录：
 
-- ``template-library/canonical/templates/``   HTML 页渲染模板（每模板 ``<slug>/page.html``）
+- 模板实体由 current catalog 提供，HTTP 根从已解析实体派生。
 - ``assets/render-fonts/``       离线字体（OFL，NOTICE 登记）
 - ``assets/render-vendor/``      浏览器端 vendored 运行时（mermaid 等，
   版本 pin 进包根 ``vendor-lock.json``）
@@ -50,18 +50,23 @@ def vendor_dir(*parts: str) -> Path:
     return render_assets_dir("render-vendor").joinpath(*parts)
 
 
-def templates_dir() -> Path:
-    """Canonical template root used as the HTTP server document root."""
-    from ..asset_resolver import builtin_library_root
-
-    return builtin_library_root() / "canonical" / "templates"
+def templates_dir(*, resolver=None) -> Path:
+    """从 current catalog 的模板实体派生 HTTP 文档根。"""
+    from ..asset_resolver import AssetResolver
+    resolver = resolver or AssetResolver()
+    roots = set()
+    for entity in resolver.entities:
+        if entity.get("kind") != "template":
+            continue
+        resolved = resolver.resolve(entity["asset_id"])
+        roots.add(Path(resolved["path"]).parent.parent)
+    if len(roots) != 1:
+        raise FileNotFoundError("render_template_root_unavailable")
+    return next(iter(roots))
 
 
 def template_path(template_id: str, *, resolver=None) -> Path:
-    """模板 id → page.html 路径；拒绝路径分隔符注入。
-
-    唯一真源：template-library/canonical/templates/<slug>/page.html。
-    """
+    """模板 id → page.html 路径；身份和路径均由 current catalog 解析。"""
     if not template_id or any(ch in template_id for ch in "/\\") or template_id.startswith("."):
         raise ValueError("invalid_template_id")
     # Layout profiles carry the canonical asset id (builtin:template:<slug>),
@@ -91,15 +96,6 @@ def template_path(template_id: str, *, resolver=None) -> Path:
     if not page.is_file():
         raise FileNotFoundError(f"render_template_not_found: {template_id}")
     return page
-
-
-def _canonical_template_dirs() -> list[Path]:
-    dirs: list[Path] = []
-    from ..asset_resolver import _candidate_bundle_roots
-
-    for bundle_root in _candidate_bundle_roots():
-        dirs.append(bundle_root / "template-library" / "canonical" / "templates")
-    return dirs
 
 
 def template_http_entry(name: str, *, resolver=None) -> Path | None:

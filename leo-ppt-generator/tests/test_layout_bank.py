@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -88,7 +89,7 @@ def _write_library(bundle: Path) -> None:
         "visual_language": {"direction": "test direction"},
         "bindings": {
             "capacity_factor": {"text": 1.0},
-            "layout_routes": [{"page_type": "cover", "preferred": ["P99"],
+            "layout_routes": [{"page_type": "cover", "preferred": ["builtin:layout:missing"],
                                "discouraged": []}],
         },
     }), encoding="utf-8")
@@ -114,7 +115,7 @@ class LoadStyleLayoutsTests(unittest.TestCase):
         self.assertIn("layout_bank_not_found", str(ctx.exception))
 
     def test_style_layouts_dangling_reference_rejected(self):
-        # 临时 template-library：路由引用 P99（不存在）→ 加载边界拒绝。
+        # 使用合法但不存在的身份，避免先被身份格式门拒绝而未覆盖悬空引用。
         with tempfile.TemporaryDirectory() as td:
             bundle = Path(td)
             _write_library(bundle)
@@ -137,6 +138,34 @@ class StyleListIsolationTests(unittest.TestCase):
         self.assertNotIn("KPI Tower", names)  # 版式名不是风格名
 
 
+class CurrentLayoutLintTests(unittest.TestCase):
+    def test_explicit_library_cannot_mix_repository_legacy_inputs(self):
+        import subprocess
+        import sys
+        result = subprocess.run([sys.executable, str(SKILL_DIR / "scripts/lint_layout_grid.py"),
+            "--library-root", str(SKILL_DIR / "template-library"), "--legacy-sidecars"],
+            capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn("cannot use repository legacy", result.stdout)
+
+    def test_full_v2_current_and_missing_pointer(self):
+        from leo_ppt_generator.library_migration import materialize_shadow_library
+        from leo_ppt_generator.template_catalog import build_catalog, publish_catalog
+        import subprocess
+        import sys
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve() / "library"
+            materialize_shadow_library(SKILL_DIR / "template-library", root)
+            publish_catalog(root, build_catalog(root))
+            command = [sys.executable, str(SKILL_DIR / "scripts/lint_layout_grid.py"), "--library-root", str(root)]
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            (root / "catalog/current.json").unlink()
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("current", result.stdout + result.stderr)
+
+
 class LintPairingTests(unittest.TestCase):
     """lint_layout_grid 检查 A/B/C 的负例（临时目录 + 常量替换）。"""
 
@@ -149,11 +178,9 @@ class LintPairingTests(unittest.TestCase):
         )
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        with mock.patch.object(mod, "LAYOUT_DIR", tmp / "12_版式库"), \
-                mock.patch.object(mod, "STYLES_DIR", tmp):
-            errors: list[str] = []
-            mod._lint_sidecars(errors)
-            return errors
+        errors: list[str] = []
+        mod._lint_sidecars(errors, layout_dir=tmp / "12_版式库", styles_dir=tmp)
+        return errors
 
     def _run_canonical_lint(self, tmp: Path) -> list[str]:
         import importlib
@@ -164,12 +191,12 @@ class LintPairingTests(unittest.TestCase):
         )
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        with mock.patch.object(mod, "CANONICAL_LAYOUTS_DIR", tmp / "canonical" / "layouts"), \
-                mock.patch.object(mod, "CANONICAL_TEMPLATES_DIR", tmp / "canonical" / "templates"), \
-                mock.patch.object(mod, "CANONICAL_LAYOUT_MANIFEST", tmp / "canonical" / "layouts" / "manifest.json"):
-            errors: list[str] = []
-            mod._lint_canonical_profiles(errors)
-            return errors
+        errors: list[str] = []
+        mod._lint_profile_files(errors,
+            sorted((tmp / "canonical/layouts").glob("*/layout.json")),
+            {"builtin:template:test-template"}, [], root=tmp,
+            manifest_path=tmp / "canonical/layouts/manifest.json")
+        return errors
 
     def _make_canonical_profile(self, tmp: Path, *, max_chars: int = 24,
                                 canvas: tuple[int, int] = (1280, 720)) -> None:
@@ -342,22 +369,19 @@ class LintPairingTests(unittest.TestCase):
             )
 
     def test_lint_style_briefs_errors_on_builtin_without_sidecar(self):
-        # 直接跑真实脚本：临时移走一份内置 sidecar（测试内借还）。
-        sidecar = (SKILL_DIR / Path("template-library/reference/sources/retired-styles-tree/styles")
-                   / "教学课件风.layouts.json")
-        backup = sidecar.read_bytes()
-        sidecar.unlink()
-        try:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            styles_root = root / "template-library/reference/sources/retired-styles-tree/styles"
+            shutil.copytree(SKILL_DIR / "template-library/reference/sources/retired-styles-tree/styles", styles_root)
+            (styles_root / "教学课件风.layouts.json").unlink()
             proc = subprocess.run(
                 [sys.executable,
                  str(SKILL_DIR / "scripts" / "lint_style_briefs.py"),
-                 "--legacy-fixtures"],
+                 "--legacy-fixtures", "--root", str(root)],
                 capture_output=True, text=True,
             )
             self.assertEqual(proc.returncode, 2)
             self.assertIn("style_sidecar_missing", proc.stdout)
-        finally:
-            sidecar.write_bytes(backup)
 
     def test_lint_layout_grid_baseline_exemptions_unchanged(self):
         proc = subprocess.run(

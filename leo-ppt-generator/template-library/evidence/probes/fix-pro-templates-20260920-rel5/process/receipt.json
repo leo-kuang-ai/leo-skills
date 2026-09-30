@@ -1,0 +1,59 @@
+{
+  "asset_generation": "f4685bba4757b341cc6d46c067f6f8f758c8a054ce84a51b406d7c2f3e95893f",
+  "asset_id": "builtin:layout:body-basic",
+  "dependency_hashes": {
+    "canonical/layouts/body-basic/layout.json": "49e56bb0ab443a9ba629245978c33814f02dd9ee9c448dc62ab81f9b43b32d7d",
+    "canonical/layouts/body-basic/notes.md": "ba948b2ec6ecf241a41675c9b32063fb0e7ec42098a795fc4017cfb883e32e09",
+    "canonical/templates/body-basic/page.html": "c4f44eaa064da328cc187d59aca932cb16e576cce65d533ab97ab0ed32acac17",
+    "canonical/templates/body-basic/template.json": "3feda979c71fcb66d7c99f5d92845e8bd59f591c38e242a10025355ebbff29e7"
+  },
+  "environment": {
+    "path": "evidence/probes/fix-pro-templates-20260920-rel5/environment.json",
+    "sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137"
+  },
+  "evidence_digest": "7e2bc5f83927e710a62afcc5619b226c7996d49c1813939a6b7ab6511ea5e36a",
+  "kind": "capability-evidence",
+  "lane": "render:html",
+  "oracle": {
+    "owner": "004-U12-product-contract",
+    "path": "evidence/oracles/relation-output-v1.json",
+    "sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+    "version": "relation-output-v1"
+  },
+  "probes": {
+    "negative": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative.png",
+        "sha256": "faf93d9f0c38139e461403b941482422c4238d8fd1bb298dfc8013221bb541ad"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-fixture.json",
+        "sha256": "0d6cf2d7bbcd586bd575a1c4f734d93c2e974a97cd0b2d01d4d1c3decef110b5"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/negative-observation.json",
+        "sha256": "bb1eef3b2a1ba69a63bd59452e343e347fe01af306ca3a0cb7faf2bc60c6d3de"
+      },
+      "status": "passed"
+    },
+    "positive": {
+      "artifact": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive.png",
+        "sha256": "0ef724a7f446eaadacfd73f428fe7f87b244716461a5dc686dcc9a3e40d89e60"
+      },
+      "fixture": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-fixture.json",
+        "sha256": "d5f1ef71679e1f9cc6dc3bf37470c9718584b83953d6a0c50f385a6abd1a2e20"
+      },
+      "observation": {
+        "path": "evidence/probes/fix-pro-templates-20260920-rel5/process/positive-observation.json",
+        "sha256": "16a04871fbcc454995009ef497331022d59d64cc5ac2f0149030fbba15c4f744"
+      },
+      "status": "passed"
+    }
+  },
+  "receipt_id": "bcc8eb639f1862ba1bcea4c5a5d7d516e9d84327c23dce33e5106acf04f4448b/process",
+  "relation": "process",
+  "schema_version": 1,
+  "visual_review": null
+}

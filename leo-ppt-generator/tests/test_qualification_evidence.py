@@ -241,20 +241,36 @@ class QualificationEvidenceTests(unittest.TestCase):
         self.assertTrue(list(validator.iter_errors(result)))
 
     def test_production_precompile_and_explicit_selection_cannot_bypass_evidence(self):
+        from leo_ppt_generator.asset_resolver import AssetResolver
         from leo_ppt_generator.content_pack import compile_content_pack
         from leo_ppt_generator.content_projection import precompile_binding
+        from leo_ppt_generator.library_migration import materialize_shadow_library
         from leo_ppt_generator.layout_selection import allocate_deck
+        from leo_ppt_generator.template_catalog import build_catalog, publish_catalog
         from leo_ppt_generator.templates import resolve_design_context
+        # 用真实资产构建无 evidence 的隔离库，避免活动收据漂移改变本用例前提。
+        source = self.root / "source-library"
+        source.mkdir()
+        original = ROOT / "template-library"
+        shutil.copyfile(original / "library.json", source / "library.json")
+        for subtree in ("canonical", "governance"):
+            shutil.copytree(original / subtree, source / subtree)
+        library = self.root / "isolated-library"
+        materialize_shadow_library(source, library)
+        publish_catalog(library, build_catalog(library))
+        resolver = AssetResolver(library=library, home=self.root / "unused-home")
         pack = compile_content_pack((ROOT / "references/authoring/page-expression-example.md").read_text(),
                                     master_path="references/authoring/page-expression-example.md")
-        context = resolve_design_context("清爽专业风")
+        context = resolve_design_context("清爽专业风", resolver=resolver)
         page = pack["pages"][1]
         layout = "builtin:layout:p8-08-duo-compare-layouts"
-        binding = precompile_binding(page, context, layout, content_digest=pack["content_digest"], numbers=pack["numbers"])
+        binding = precompile_binding(page, context, layout, content_digest=pack["content_digest"],
+                                     numbers=pack["numbers"], resolver=resolver)
         self.assertFalse(binding["eligibility"]["qualified"])
         self.assertEqual(binding["eligibility"]["checks"]["qualification"]["status"], "unverified")
         self.assertTrue(any("positive_negative_evidence_missing" in reason for reason in binding["eligibility"]["hard_failures"]))
         pack["pages"] = [page]
-        selection = allocate_deck(pack, context, candidates=[layout], explicit={page["page_id"]: layout})
+        selection = allocate_deck(pack, context, candidates=[layout],
+                                  explicit={page["page_id"]: layout}, resolver=resolver)
         self.assertEqual(selection["status"], "explicit_unqualified")
         self.assertFalse(selection["selection"])

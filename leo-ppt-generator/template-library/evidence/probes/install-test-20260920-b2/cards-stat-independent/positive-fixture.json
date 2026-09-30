@@ -1,0 +1,48 @@
+{
+  "case_id": "cards-stat-independent",
+  "data": {
+    "bottom": "三项能力并列",
+    "cards": [
+      {
+        "claim": "列出候选能力",
+        "label": "发现"
+      },
+      {
+        "claim": "按关系归组",
+        "label": "组织"
+      },
+      {
+        "claim": "正反用例判定",
+        "label": "验证"
+      }
+    ],
+    "kicker": "资格探针",
+    "title": "卡片清单探针"
+  },
+  "expected": {
+    "facts": [],
+    "focus": "卡片清单探针",
+    "reading_order": [
+      "卡片清单探针"
+    ],
+    "required_text": [
+      "卡片清单探针",
+      "发现",
+      "列出候选能力",
+      "组织",
+      "按关系归组",
+      "验证",
+      "正反用例判定",
+      "三项能力并列"
+    ],
+    "structure": {
+      "edges": [],
+      "items": [
+        "列出候选能力",
+        "按关系归组",
+        "正反用例判定"
+      ]
+    }
+  },
+  "probe": "positive"
+}

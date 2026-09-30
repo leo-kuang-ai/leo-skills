@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """lint_render_templates.py — E5 渲染模板合同 lint（gamma M1）。
 
-对 ``template-library/canonical/templates/*/page.html`` 执行 render:html 专属规则
+对显式 current 库的模板实体执行 render:html 专属规则
 （规则-渲染器映射见 ``assets/render-lint-rules.json`` 的 ``template.*`` 键；
 skip 集/映射改动走 style-lint-baseline.txt 式白名单登记纪律）：
 
@@ -29,7 +29,9 @@ import sys
 from pathlib import Path
 
 RULES_FILE = Path(__file__).resolve().parents[1] / "assets/render-lint-rules.json"
-TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "template-library/canonical/templates"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime/src"))
+from leo_ppt_generator.asset_resolver import AssetResolver, builtin_library_root
+from leo_ppt_generator.qualification import read_evidence_bytes
 
 TEMPLATE_RULES = (
     "template.ready_signal",
@@ -134,17 +136,51 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--renderer", default="render:html",
                         help="按页级 backend 来源过滤规则（缺省 render:html；"
                              "如 image-model 则全部 template.* 规则 skip 并披露）")
-    parser.add_argument("--templates-dir", default=str(TEMPLATES_DIR))
+    parser.add_argument("--library-root", type=Path, help="明确被检查的 current 库")
+    parser.add_argument("--templates-dir", type=Path, help="显式目录审计；检查 manifest/HTML 双向覆盖")
     args = parser.parse_args(argv)
 
-    rules = load_rules()
-    templates_dir = Path(args.templates_dir)
-    html_files = sorted(templates_dir.glob("*/page.html"))
-    if not html_files:
-        print(f"ERROR: 未找到模板于 {templates_dir}", file=sys.stderr)
+    root = Path(args.library_root or builtin_library_root()).absolute()
+    try:
+        rules = load_rules()
+        read_evidence_bytes(root, "catalog/current.json")
+        resolver = AssetResolver(library=root, home=root / ".lint-no-user-home")
+        if resolver.user_root is not None or resolver.registry_source != "catalog":
+            raise ValueError("template_lint_current_library_required")
+        generation = resolver.generation
+        if args.templates_dir is not None:
+            directories = [p for p in sorted(args.templates_dir.iterdir())
+                           if not p.name.startswith(".") and not (p.name == "README.md" and p.is_file() and not p.is_symlink())]
+        else:
+            directories = []
+            for row in resolver.entities:
+                if row["kind"] == "template":
+                    resolved = resolver.resolve(row["asset_id"])
+                    resolver.fingerprint(row["asset_id"])
+                    directories.append(Path(resolved["path"]).parent)
+        if not directories:
+            raise ValueError("template_lint_empty")
+        results = []
+        for directory in directories:
+            manifest, html = directory / "template.json", directory / "page.html"
+            if any(p.is_symlink() for p in (directory, *directory.parents, manifest, html)):
+                raise ValueError("template_lint_symlink_rejected")
+            if not manifest.is_file() or not html.is_file():
+                raise ValueError("template_lint_missing_pair:" + directory.name)
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            from lint_template_contract import _schema_errors
+            schema_errors = _schema_errors(data, root / "governance/schemas/template-v1.schema.json")
+            if schema_errors:
+                raise ValueError("template_lint_schema_invalid:" + directory.name + ":" + "; ".join(schema_errors))
+            if data.get("entity") != "render-template" or data.get("lane") != "render:html":
+                raise ValueError("template_lint_manifest_invalid:" + directory.name)
+            results.append(lint_template(html, args.renderer, rules))
+        if AssetResolver(library=root, home=root / ".lint-no-user-home").generation != generation:
+            raise ValueError("template_lint_generation_changed")
+    except (OSError, ValueError) as exc:
+        print("ERROR: " + str(exc), file=sys.stderr)
         return 1
 
-    results = [lint_template(path, args.renderer, rules) for path in html_files]
     error_count = sum(len(r["errors"]) for r in results)
     for result in results:
         status = "OK" if not result["errors"] else "ERROR"

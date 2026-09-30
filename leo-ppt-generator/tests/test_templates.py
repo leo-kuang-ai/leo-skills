@@ -25,7 +25,6 @@ if str(RUNTIME_SRC) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SRC))
 
 from leo_ppt_generator import templates  # noqa: E402
-from leo_ppt_generator.asset_resolver import AssetNotFoundError, StaleCatalogError  # noqa: E402
 
 
 def _write_notes(bundle: Path, slug: str, title: str, skeleton: str = "2×3 网格") -> Path:
@@ -80,39 +79,103 @@ class FieldParsingTests(unittest.TestCase):
 
 
 class BrandResolutionTests(unittest.TestCase):
-    def test_brand_stale_catalog_does_not_fallback_to_legacy_file(self):
-        with mock.patch.object(templates.AssetResolver, "require",
-                               side_effect=StaleCatalogError("stale_catalog")):
-            with self.assertRaises(StaleCatalogError):
-                templates._brand_candidates("anthropic")
+    def setUp(self):
+        from tests.test_template_catalog_v2 import make_reference_bundle
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.bundle = Path(temporary.name).resolve()
+        self.library = make_reference_bundle(self.bundle)
+        self.home = self.bundle / "user-home"
+        self.home.mkdir()
+        env = mock.patch.dict("os.environ", {"LEO_PPT_BUNDLE": str(self.bundle)})
+        env.start()
+        self.addCleanup(env.stop)
 
-    def test_brand_missing_asset_keeps_compatibility_fallback(self):
-        with mock.patch.object(templates.AssetResolver, "require",
-                               side_effect=AssetNotFoundError("asset_not_found")):
-            with mock.patch.object(templates, "_styles_root", return_value=Path("/legacy")):
-                candidates = templates._brand_candidates("anthropic", home=Path("/home"))
-        self.assertEqual(candidates, [Path("/home/brands/anthropic.md"),
-                                      Path("/legacy/10_品牌身份/anthropic.md")])
+    def add_brand(self, library, scope="builtin", primary="#123456"):
+        from leo_ppt_generator.template_catalog import build_catalog, publish_catalog
+        target = library / "canonical/visual/brands/anthropic/brand.json"
+        target.parent.mkdir(parents=True)
+        data = {"schema_version": 1, "entity": "brand-identity",
+                "asset_id": scope + ":brand:anthropic", "name": "anthropic",
+                "colors": {"primary": primary}, "typography": "Inter",
+                "tone": "克制", "verification": {"status": "unverified"}, "locked_roles": []}
+        target.write_text(json.dumps(data, ensure_ascii=False))
+        publish_catalog(library, build_catalog(library))
+        return target
+
+    def test_missing_brand_does_not_read_user_markdown(self):
+        with self.assertRaisesRegex(templates.TemplateError, "brand_not_found"):
+            legacy = self.home / "brands/anthropic.md"
+            legacy.parent.mkdir()
+            legacy.write_text("# anthropic\n主色 #123456\n")
+            templates.load_brand("anthropic", home=self.home)
+
+    def test_v2_brand_and_same_name_user_overlay(self):
+        from tests.test_template_catalog_v2 import make_reference_bundle
+        target = self.add_brand(self.library)
+        first = templates.load_brand("anthropic", home=self.home)
+        self.assertEqual(first["primary"], "#123456")
+        self.assertEqual(first["source"], str(target))
+        user_library = make_reference_bundle(self.home, scope="user")
+        user_target = self.add_brand(user_library, "user", "#654321")
+        result = templates.load_brand("anthropic", home=self.home)
+        self.assertEqual(result["primary"], "#654321")
+        self.assertEqual(result["source"], str(user_target))
+
+    def test_brand_asset_drift_and_missing_pointer_fail_closed(self):
+        target = self.add_brand(self.library)
+        original = target.read_bytes()
+        target.write_bytes(original.replace(b"#123456", b"#654321"))
+        with self.assertRaisesRegex(ValueError, "stale_catalog"):
+            templates.load_brand("anthropic", home=self.home)
+        target.write_bytes(original)
+        (self.library / "catalog/current.json").unlink()
+        with self.assertRaisesRegex(ValueError, "catalog_missing"):
+            templates.load_brand("anthropic", home=self.home)
+
+    def test_brand_home_and_canonical_symlinks_are_rejected(self):
+        target = self.add_brand(self.library)
+        linked_home = self.bundle / "linked-home"
+        linked_home.symlink_to(self.home, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, "user_library_home_symlink"):
+            templates.load_brand("anthropic", home=linked_home)
+        original = self.bundle / "outside-brand.json"
+        original.write_bytes(target.read_bytes())
+        target.unlink()
+        target.symlink_to(original)
+        with self.assertRaises(ValueError):
+            templates.load_brand("anthropic", home=self.home)
 
 
 class TemplateIndexTests(unittest.TestCase):
-    def test_list_templates_derives_axis_names_from_resolver_entities(self):
-        entities = [
-            {"kind": "axis", "path":
-             "canonical/axes/rendering/rendering-demo/manifest.json"},
-            {"kind": "axis", "path":
-             "canonical/axes/argument/argument-学术五拍/manifest.json"},
-            {"kind": "axis", "path":
-             "canonical/axes/infographic/infographic-漏斗图/manifest.json"},
-            {"kind": "layout", "name": "测试版式"},
-        ]
-        resolver = SimpleNamespace(entities=entities)
+    def test_list_templates_uses_reference_identity_and_manifest_family(self):
+        references = [{"asset_id": f"builtin:axis:{family}-{name}"}
+                      for family, name in (("rendering", "demo"), ("argument", "学术五拍"),
+                                           ("infographic", "漏斗图"))]
+        resolver = SimpleNamespace(entities=[{"kind": "layout", "name": "测试版式"}],
+            references=references,
+            resolve=lambda identity: {"data": {"kind": identity.rsplit(":", 1)[-1].split("-", 1)[0]}})
         with mock.patch.object(templates, "AssetResolver", return_value=resolver):
             result = templates.list_templates()
         self.assertEqual(result["renderings"], ["demo"])
         self.assertEqual(result["modes"], ["学术五拍"])
         self.assertEqual(result["image_types"], ["漏斗图"])
         self.assertEqual(result["layouts"], ["测试版式"])
+
+
+class V2AxisConsumerTests(unittest.TestCase):
+    def test_actual_v2_bundle_loads_all_axis_families_without_directory_inference(self):
+        from tests.test_template_catalog_v2 import make_reference_bundle
+        with tempfile.TemporaryDirectory() as temporary:
+            bundle = Path(temporary).resolve()
+            make_reference_bundle(bundle)
+            with mock.patch.dict("os.environ", {"LEO_PPT_BUNDLE": str(bundle)}):
+                self.assertTrue(templates.load_mode("故事弧")["skeleton"])
+                self.assertTrue(templates.load_rendering("手绘笔记")["paste_ready"])
+                self.assertTrue(templates.load_image_type("漏斗图")["skeleton"])
+                result = templates.list_templates()
+            self.assertEqual(result, {"renderings": ["手绘笔记"], "modes": ["故事弧"],
+                                      "image_types": ["漏斗图"], "layouts": []})
 
 
 class LayoutResolutionTests(unittest.TestCase):
@@ -131,19 +194,16 @@ class LayoutResolutionTests(unittest.TestCase):
         with _temp_library() as bundle:
             _write_notes(bundle, "p51-a", "P51 A Alpha")
             _write_notes(bundle, "p51-b", "P51 B Beta")
-            # 两个标题都含「P51」子串且均无 resolver 实体 → 歧义列出候选。
-            with self.assertRaises(templates.TemplateError) as ctx:
+            # 旧 notes 标题扫描已删除；无 current 实体统一失败。
+            with self.assertRaisesRegex(templates.TemplateError, "layout_not_found"):
                 templates.load_layout("P51")
-            msg = str(ctx.exception)
-            self.assertIn("P51 A Alpha", msg)
-            self.assertIn("P51 B Beta", msg)
 
     def test_compose_layout_raises_on_empty_skeleton(self):
         with _temp_library() as bundle:
             _write_notes(bundle, "p61-empty", "P61 Empty", "")
-            with self.assertRaises(templates.TemplateError) as ctx:
+            # 未注册的 notes 不能通过旧目录扫描冒充 layout entity。
+            with self.assertRaisesRegex(templates.TemplateError, "layout_not_found"):
                 templates.compose_layout("P61")
-        self.assertIn("layout_field_empty", str(ctx.exception))
 
     def test_resolver_name_hit_wins_over_title_substring(self):
         # 新库等价断言：resolver 名称命中优先于 notes 标题子串匹配。
@@ -229,11 +289,10 @@ class MaterializeCompositionTests(unittest.TestCase):
     def test_compose_layout_materialize_flag_adds_hint(self):
         with _temp_library() as bundle:
             _write_notes(bundle, "p81-grid", "P81 Grid", "2×3 网格 .cell-6")
-            plain = templates.compose_layout("P81")
-            materialized = templates.compose_layout("P81", materialize=True)
-        self.assertNotIn("composition_hint", plain)
-        self.assertIn("composition_hint", materialized)
-        self.assertNotIn(".cell-6", materialized["composition_hint"])
+            with self.assertRaisesRegex(templates.TemplateError, "layout_not_found"):
+                templates.compose_layout("P81")
+            with self.assertRaisesRegex(templates.TemplateError, "layout_not_found"):
+                templates.compose_layout("P81", materialize=True)
 
 
 class DeterminismGuardTests(unittest.TestCase):

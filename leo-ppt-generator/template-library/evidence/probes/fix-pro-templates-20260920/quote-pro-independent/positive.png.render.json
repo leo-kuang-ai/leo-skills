@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+  "out_sha256": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 704,
+  "rendered_at": "2026-09-20T05:29:42.372Z",
+  "renderer": "playwright-chromium@1.63.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:quote-pro",
+  "template_sha256": "fd84c359df23abc5e43b419cdb5754ccbc00bb98d596d0f49da750e87fb120e4",
+  "warnings": [],
+  "width": 2560
+}

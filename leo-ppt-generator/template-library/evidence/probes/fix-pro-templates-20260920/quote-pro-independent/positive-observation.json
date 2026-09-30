@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive.png",
+    "sha256": "e48519227a8fb6fd4f37b7bb573bb8a0a04a2a54b3534892ba94aaeda8868a16"
+  },
+  "checks": {
+    "all_facts": true,
+    "all_required_text": true,
+    "focus_visible": true,
+    "item_set": true,
+    "no_directed_edges": true,
+    "no_overflow": true,
+    "reading_order": true,
+    "within_canvas": true
+  },
+  "environment_sha256": "a1f4a668d9a585115c9bf8d33c1f42c725f9947975926401128d5e17c1808137",
+  "fixture": {
+    "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-fixture.json",
+    "sha256": "83013227fd8ff7a7f5f56d1996d6931b9a31f8cd01c037d65cab28bba5930025"
+  },
+  "lane": "render:html",
+  "measurement": {
+    "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-measurement.json",
+    "sha256": "fde5972b230b5da692d0556dd5ddb67d05782cc79da7c5cc02ccd7cc1f609940"
+  },
+  "oracle_sha256": "6532c718cc05f95695de599e43070f36c387974019a9b8875ea9e2df0ae90c1a",
+  "relation": "independent",
+  "render_input": {
+    "path": "evidence/probes/fix-pro-templates-20260920/quote-pro-independent/positive-input.json",
+    "sha256": "b3c9246073852cc46d9bc59fb59df12455a248f51835b43301bcf86e2960be15"
+  }
+}

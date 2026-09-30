@@ -66,10 +66,10 @@ mode / style_anchor）；08 轴以 `paste_ready` 段落与「线条·纹理·深
 
 ## 品牌 VI 注入（style render --brand）
 
-- `"$LEO_PPT" style render <风格> --brand <名称>`：解析顺序＝
-  `${LEO_PPT_HOME}/brands/<名称>.md`（用户企业 VI 优先）→
-  `template-library/canonical/brands/<slug>/brand.json`（内置预设，`--list-templates` 可查）；
-  用户兼容 MD 仍从 `${LEO_PPT_HOME}/brands/<名称>.md` 读取。
+- `"$LEO_PPT" style render <风格> --brand <名称>`：由当前库 resolver 解析
+  `brand` 实体，同名用户库品牌优先于内置品牌；v2 位置由
+  `asset-locations-v2` 的 `canonical/visual/brands/*/brand.json` 合同声明。
+  缺失、陈旧 catalog 或非法路径均拒绝，不读取历史 Markdown 品牌文件。
 - 合并优先序（合同）：用户品牌 HEX > 用户 colors > 风格默认；浅底正文对比度
   ≥4.5:1 硬校验，不达标报 `brand_contrast_insufficient` 并给最近合规建议色。
 - `--brand` 隐含开启风格锚附录（`--anchor` 可单独开启）：HEX/字族/渲染锚
@@ -78,8 +78,8 @@ mode / style_anchor）；08 轴以 `paste_ready` 段落与「线条·纹理·深
   向用户索取；`logo_monochrome`/`safe_area`/`min_size` 缺省自动处理（生成
   去色反白变体、按画布比例推导），`font_license_note` 缺省 not-recorded。
   logo 作为 required asset 逐页注入，组装复验核对位置/尺寸/变体逐页一致。
-- **用户 VI 保存**：复用 save_style 通道，保存到 `${LEO_PPT_HOME}/brands/`
-  （HEX/logo 引用/字体/语气），生成时优先读取。
+- **用户 VI 入库**：使用用户库 canonical `brand-identity` 实体并发布同代 catalog；
+  `save_style` 只保存风格，不能把它当作品牌保存接口。历史 Markdown 需显式迁移后使用。
 - 内置品牌预设 `verified_at` 多为"未核验"近似值：交付前必须向客户索取官方
   VI token 或按手册核验，未核验不得声称"符合品牌规范"。
 
@@ -139,13 +139,13 @@ mode / style_anchor）；08 轴以 `paste_ready` 段落与「线条·纹理·深
 
 ## 渐进治理债（登记在案，不阻塞）
 
-- **negative_prompt 渐进补齐**：约 126 份早期批参考 brief 的 negative_prompt 不足
-  3 条（lint 仅对顶层 11 套内置强制）。补齐节奏：该风格被点名命中或触发渲染修订时
-  顺手补至 3-5 条针对性负面词，不专项批量重写（避免无真实风险的模板化填充）。
-  辅助工具：`scripts/draft_negative_prompts.py` 从 brief 自身 avoid/constraints
-  确定性派生草案，并可叠加语料池取词（`--pool` 裸旗标用内置池
-  `../template-library/governance/authoring/index/负面语料参考池.md`，家族组按 brief 所在目录名匹配，通用组
-  全适用；dry-run 默认，--apply 需人工确认）。
+- **负面约束按需补齐**：以 current brief 的 `constraints.negative` 为准；
+  当前 320 个风格实体均已有至少 3 条，不沿用历史参考库欠账数。仅在真实风险
+  触发修订时补足，避免无依据的模板化填充。
+  `scripts/draft_negative_prompts.py --pool` 从当前 `visual_language` 的显式禁止句
+  派生草案，按 `taxonomy.families` 叠加同库治理池；默认 dry-run，`--limit` 生效。
+  `--apply --library-root <v2-library>` 通过既有 CAS 事务同步发布 brief 与 catalog，
+  拒绝跨库池、软链接与输入漂移，不隐式迁移 v1 库。
 - **别名冲突消歧**：约 40 组口语别名跨风格重复（如"国风"/"terminal"/"catppuccin"），
   消歧规则见 [`../template-library/governance/authoring/index/风格路由.md`](../template-library/governance/authoring/index/风格路由.md) 使用规则第 6 条；
   新增风格登记 aliases 时不得与既有别名撞车（lint family_duplicate 之外的人工检查项）。

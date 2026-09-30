@@ -6,7 +6,7 @@ import hashlib
 import json
 import math
 import re
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from .storage import canonical_json_bytes
 
@@ -214,6 +214,123 @@ def proposal_probe_output(proposal):
     return "evidence/probes/proposal-" + _digest(proposal)
 
 
+def image_proposal_scope(proposal):
+    """把内容、运行范围与完整 patched snapshot 一起固定到 image 请求。"""
+    return {key: proposal[key] for key in ("base_asset", "base_generation", "candidate_id", "proposal_digest", "run_scope", "lane")} | {
+        "proposal_sha256": _digest(proposal), "page_id": proposal["content"]["page_id"]}
+
+
+def verify_image_proposal_snapshot(proposal, base_profile):
+    """冻结后的 verifier 也从 base 与封闭操作重算，不能信任手写 profile。"""
+    if not isinstance(proposal, dict) or proposal.get("lane") != "image":
+        raise ProposalError("image_proposal_lane_mismatch")
+    rows = apply_task_local_proposal(proposal["document"], base_profile=base_profile,
+        base_generation=proposal["base_generation"], run_scope=proposal["run_scope"],
+        allowed_assets={base_profile["asset_id"]}, content=proposal["content"], theme=proposal["theme"],
+        collect_failures=True)
+    if next((row for row in rows if row["candidate_id"] == proposal["candidate_id"]), None) != proposal:
+        raise ProposalError("proposal_snapshot_changed")
+    return proposal
+
+
+def verify_image_proposal_workspace(proposal, resolver):
+    """只允许为已准备的当前任务私有库取证，生产冻结后使用 snapshot 重验。"""
+    from .qualification import read_evidence_bytes
+    base = resolver.resolve(proposal["base_asset"])
+    verify_image_proposal_snapshot(proposal, base["data"])
+    replay_bound_proposal(proposal, resolver=resolver, content=proposal["content"], theme=proposal["theme"])
+    _verify_proposal_workspace(resolver.builtin_root, run_scope=proposal["run_scope"])
+    if json.loads(read_evidence_bytes(base["trusted_root"], proposal_reference(proposal))) != proposal:
+        raise ProposalError("proposal_snapshot_changed")
+    return base
+
+
+def _workspace_files(root):
+    from .qualification import file_reference
+    rows = {}
+    for path in sorted(Path(root).rglob("*")):
+        if path.is_symlink():
+            raise ProposalError("proposal_path_outside_root")
+        if path.is_file():
+            relative = path.relative_to(root).as_posix()
+            rows[relative] = file_reference(root, relative)["sha256"]
+    return rows
+
+
+def _verify_proposal_workspace(library_root, *, run_scope):
+    from .qualification import read_evidence_bytes, verify_reference
+    library = Path(library_root).absolute()
+    if library.name == "builtin" and library.parent.name == "asset-snapshot":
+        root = library.parent.parent
+    elif library.name == "template-library" and library.parent.name == "user" and library.parent.parent.name == "asset-snapshot":
+        root = library.parent.parent.parent
+    else:
+        raise ProposalError("proposal_path_outside_root")
+    scope = json.loads(read_evidence_bytes(root, "scope.json"))
+    if (root.parent.name != ".proposal-work" or scope.get("run_scope") != run_scope
+            or scope.get("input_digest") != root.name):
+        raise ProposalError("proposal_run_scope_mismatch")
+    sources = scope.get("source_files")
+    if (not isinstance(sources, dict) or "builtin" not in sources
+            or set(sources) - {"builtin", "user/template-library"}):
+        raise ProposalError("proposal_workspace_stale")
+    for name, expected in sources.items():
+        actual = _workspace_files(root / "asset-snapshot" / name)
+        if (not isinstance(expected, dict) or any(actual.get(path) != sha for path, sha in expected.items())
+                or any(not path.startswith(("evidence/proposals/", "evidence/probes/proposal-"))
+                       for path in set(actual) - set(expected))):
+            raise ProposalError("proposal_workspace_stale")
+    reference = scope.get("resolver_snapshot")
+    if reference is not None:
+        if not isinstance(reference, dict) or reference.get("path") != "asset-snapshot/asset-snapshot.json":
+            raise ProposalError("proposal_resolver_snapshot_invalid")
+        verify_reference(root, reference)
+    elif json.loads(read_evidence_bytes(library, "library.json")).get("schema_version") == 2:
+        raise ProposalError("proposal_resolver_snapshot_missing")
+    return root
+
+
+def proposal_workspace_resolver(library_root, *, run_scope):
+    """只恢复已准备的执行快照；新增 proposal 证据不触发活动 catalog 重建。"""
+    from .asset_resolver import AssetResolver
+    root = _verify_proposal_workspace(library_root, run_scope=run_scope)
+    return AssetResolver.from_snapshot(root / "asset-snapshot")
+
+
+def proposal_image_evidence_path(proposal):
+    return (PurePosixPath(proposal_reference(proposal)).parent / "image" / "evidence.json").as_posix()
+
+
+def verify_proposal_image_reference(proposal, reference):
+    """同一 proposal 的附件不能借用其他任务、canonical 或目录外证据。"""
+    prefix = PurePosixPath(proposal_image_evidence_path(proposal)).parent.as_posix() + "/"
+    if (not isinstance(reference, dict) or set(reference) != {"path", "sha256"}
+            or not isinstance(reference["path"], str) or not reference["path"].startswith(prefix)
+            or any(part in {"", ".", ".."} for part in reference["path"].split("/"))
+            or "\\" in reference["path"]):
+        raise ProposalError("image_proposal_evidence_scope_mismatch")
+
+
+def load_proposal_image_evidence(proposal, *, root, cases):
+    from .qualification import read_evidence_bytes, verify_reference
+    document = json.loads(read_evidence_bytes(root, proposal_image_evidence_path(proposal)))
+    if (set(document) != {"schema_version", "kind", "scope", "cases"} or document["schema_version"] != 1
+            or document["kind"] != "image-proposal-evidence" or document["scope"] != image_proposal_scope(proposal)
+            or not isinstance(document["cases"], dict)
+            or set(document["cases"]) != {case["case_id"] for case in cases["cases"]}):
+        raise ProposalError("image_proposal_evidence_scope_mismatch")
+    for evidence in document["cases"].values():
+        if not isinstance(evidence, dict) or set(evidence) != {"positive", "negative"}:
+            raise ProposalError("image_probe_evidence_incomplete")
+        for supplied in evidence.values():
+            if not isinstance(supplied, dict) or set(supplied) != {"provider_receipt", "raster_review"}:
+                raise ProposalError("image_probe_evidence_invalid")
+            for reference in supplied.values():
+                verify_proposal_image_reference(proposal, reference)
+                verify_reference(root, reference)
+    return document["cases"]
+
+
 def prepare_proposal_workspace(resolver, *, run_root, run_scope, input_digest):
     """只在任务根隔离复制输入库；共享 catalog/资产和原证据从不被补写。"""
     import shutil
@@ -237,16 +354,7 @@ def prepare_proposal_workspace(resolver, *, run_root, run_scope, input_digest):
     parent.mkdir(parents=True, exist_ok=True)
     target = parent / input_digest
 
-    def snapshot_files(root):
-        rows = {}
-        for path in sorted(root.rglob("*")):
-            if path.is_symlink():
-                raise ProposalError("proposal_path_outside_root")
-            if path.is_file():
-                rows[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
-        return rows
-
-    source_files = {scope: snapshot_files(root) for scope, root in roots.items()}
+    source_files = {scope: _workspace_files(root) for scope, root in roots.items()}
     marker = {"run_scope": run_scope, "input_digest": input_digest, "source_files": source_files}
     lock = parent / (input_digest + ".lock")
     if lock.is_symlink():
@@ -255,26 +363,32 @@ def prepare_proposal_workspace(resolver, *, run_root, run_scope, input_digest):
         if target.is_symlink():
             raise ProposalError("proposal_path_outside_root")
         if target.exists():
-            if json.loads((target / "scope.json").read_text()) != marker:
+            from .qualification import read_evidence_bytes
+            existing = json.loads(read_evidence_bytes(target, "scope.json"))
+            if {key: value for key, value in existing.items() if key != "resolver_snapshot"} != marker:
                 raise ProposalError("proposal_workspace_stale")
-            for scope, files in source_files.items():
-                actual = snapshot_files(target / "asset-snapshot" / scope)
-                if any(actual.get(path) != expected for path, expected in files.items()):
-                    raise ProposalError("proposal_workspace_stale")
-                if any(not path.startswith(("evidence/proposals/", "evidence/probes/proposal-")) for path in set(actual) - set(files)):
-                    raise ProposalError("proposal_workspace_stale")
         else:
             with tempfile.TemporaryDirectory(prefix=".stage-", dir=parent) as temporary:
                 stage = Path(temporary)
                 for scope, root in roots.items():
                     destination = stage / "asset-snapshot" / scope
                     shutil.copytree(root, destination)
-                    if snapshot_files(destination) != source_files[scope] or snapshot_files(root) != source_files[scope]:
+                    if _workspace_files(destination) != source_files[scope] or _workspace_files(root) != source_files[scope]:
                         raise ProposalError("proposal_source_changed")
+                entities = resolver.entities
+                if resolver.context is not None or any(row.get("catalog_status") is not None for row in entities):
+                    from .qualification import file_reference
+                    with tempfile.TemporaryDirectory(prefix=".resolver-", dir=stage) as frozen:
+                        snapshot = Path(frozen) / "snapshot"
+                        resolver.freeze_assets(snapshot, [resolver.fingerprint(row["asset_id"]) for row in entities])
+                        shutil.copyfile(snapshot / "asset-snapshot.json", stage / "asset-snapshot/asset-snapshot.json")
+                    marker["resolver_snapshot"] = file_reference(stage, "asset-snapshot/asset-snapshot.json")
+                if any(_workspace_files(root) != source_files[scope] for scope, root in roots.items()):
+                    raise ProposalError("proposal_source_changed")
                 atomic_write_json(stage / "scope.json", marker)
                 stage.rename(target)
                 fsync_directory(parent)
-    return AssetResolver.from_snapshot(target / "asset-snapshot")
+    return proposal_workspace_resolver(target / "asset-snapshot/builtin", run_scope=run_scope)
 
 
 def proposal_candidate_factory(documents, *, resolver, run_scope, design_context, probe_cases=None, read_only=False):
@@ -320,11 +434,18 @@ def proposal_candidate_factory(documents, *, resolver, run_scope, design_context
                     atomic_write_json(root / path, row)
                 else:
                     raise ProposalError("proposal_snapshot_missing")
-                if probe_cases is not None and lane == "render:html" and not read_only:
+                if probe_cases is not None and not read_only:
                     from .capability_probes import run_probes
                     cases = {**probe_cases, "cases": [case for case in probe_cases.get("cases", [])
                         if case["layout_id"] == row["base_asset"] and case["relation"] == page["expression"]["relation"]["kind"]]}
-                    run_probes(library_root=root, cases=cases, output=proposal_probe_output(row), proposal=row)
+                    image_evidence = None
+                    if lane == "image":
+                        verify_image_proposal_workspace(row, resolver)
+                        if not (root / proposal_image_evidence_path(row)).exists():
+                            raise ProposalError("image_proposal_provider_and_geometry_evidence_required")
+                        image_evidence = load_proposal_image_evidence(row, root=root, cases=cases)
+                    run_probes(library_root=root, cases=cases, output=proposal_probe_output(row), proposal=row,
+                               image_evidence=image_evidence)
                 output.append(row)
             except (ValueError, OSError, KeyError) as exc:
                 output.append({"candidate_id": row["candidate_id"], "lane": lane, "status": "failed", "gap": str(exc)})

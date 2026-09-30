@@ -21,6 +21,14 @@ for _path in (str(RUNTIME_SRC), str(SCRIPTS_DIR)):
         sys.path.insert(0, _path)
 
 from tests.render.helpers import browser_test_case  # noqa: E402
+from leo_ppt_generator.asset_resolver import AssetResolver
+
+
+def _template_html(identity):
+    resolver = AssetResolver(home=SKILL_DIR / ".template-lint-no-user")
+    asset = resolver.require(identity, kind="template")
+    resolver.fingerprint(asset["asset_id"])
+    return Path(asset["path"]).with_name("page.html")
 
 NEW_TEMPLATES = ("spec-table", "timeline", "compare", "pull-quote", "frame-shot")
 
@@ -113,7 +121,7 @@ class NewTemplatesLintContract(unittest.TestCase):
 
         rules = lrt.load_rules()
         for template_id in NEW_TEMPLATES:
-            path = lrt.TEMPLATES_DIR / template_id / "page.html"
+            path = _template_html(template_id)
             self.assertTrue(path.is_file(), f"missing template: {path}")
             result = lrt.lint_template(path, "render:html", rules)
             self.assertEqual(
@@ -131,8 +139,7 @@ class NewTemplatesLintContract(unittest.TestCase):
             ("pull-quote", "quote"),
             ("frame-shot", "frame-shot-stage"),
         ):
-            text = (SKILL_DIR / "template-library" / "canonical" / "templates"
-                    / template_id / "page.html").read_text(encoding="utf-8")
+            text = _template_html(template_id).read_text(encoding="utf-8")
             self.assertIn(f'data-leo-block="{block}"', text)
 
 
@@ -140,12 +147,9 @@ class FrameShotContractTest(unittest.TestCase):
     """R-32 离线恒跑：frame-shot 六参数枚举面与正交纪律（guizang
     screenshot-treatment 移植合同的静态断言）。"""
 
-    FRAME_SHOT = (SKILL_DIR / "template-library" / "canonical" / "templates"
-                  / "frame-shot" / "page.html")
-
     @classmethod
     def setUpClass(cls):
-        cls.text = cls.FRAME_SHOT.read_text(encoding="utf-8")
+        cls.text = _template_html("frame-shot").read_text(encoding="utf-8")
 
     def test_orthographic_no_tilt_primitives(self):
         # 正交纪律：代码（CSS/JS，剥离注释后）不得出现透视/倾斜/旋转/3D

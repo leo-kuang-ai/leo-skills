@@ -3,6 +3,8 @@
 字段校验（内置必填、参考风格豁免、形状/枚举错误、真实库存全绿）+
 R-66 家族合并防回潮校验（同板顶层去重 / variant_of 归属 / variants 双向一致）。"""
 import re
+import shutil
+import json
 import subprocess
 import sys
 import tempfile
@@ -75,7 +77,7 @@ class FieldValidationTest(unittest.TestCase):
 
     def test_builtin_with_fields_passes_and_reference_exempt(self):
         root = _fixture(self.tmp, NEGATIVE_AND_PAIRED)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("briefs=2", result.stdout)
 
@@ -83,19 +85,19 @@ class FieldValidationTest(unittest.TestCase):
         root = _fixture(
             self.tmp,
             ',\n  "paired_illustration": {"family": "flat", "density": "core"}')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("negative_prompt_missing", result.stdout)
 
     def test_builtin_missing_paired_illustration_is_error(self):
         root = _fixture(self.tmp, ',\n  "negative_prompt": ["neon"]')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("paired_illustration_missing", result.stdout)
 
     def test_reference_without_fields_is_exempt(self):
         root = _fixture(self.tmp, NEGATIVE_AND_PAIRED, reference_extra="")
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_invalid_density_is_error(self):
@@ -103,7 +105,7 @@ class FieldValidationTest(unittest.TestCase):
             self.tmp,
             ',\n  "negative_prompt": ["neon"],\n'
             '  "paired_illustration": {"family": "flat", "density": "heavy"}')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("paired_illustration_invalid", result.stdout)
         self.assertIn("density", result.stdout)
@@ -113,7 +115,7 @@ class FieldValidationTest(unittest.TestCase):
             self.tmp,
             ',\n  "negative_prompt": ["neon"],\n'
             '  "paired_illustration": {"family": "pixel-noise", "density": "core"}')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("family", result.stdout)
 
@@ -122,7 +124,7 @@ class FieldValidationTest(unittest.TestCase):
             self.tmp,
             ',\n  "negative_prompt": [],\n'
             '  "paired_illustration": {"family": "flat", "density": "core"}')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("negative_prompt_invalid", result.stdout)
 
@@ -130,7 +132,7 @@ class FieldValidationTest(unittest.TestCase):
         root = _fixture(
             self.tmp, NEGATIVE_AND_PAIRED,
             reference_extra=',\n  "negative_prompt": "not-a-list"')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("negative_prompt_invalid", result.stdout)
 
@@ -164,7 +166,7 @@ class FamilyMergeLintTest(unittest.TestCase):
         root = self._root()
         self._write(root, "01_通用母版/甲/测试主风格风.md", "测试主风格风")
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风")
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("family_duplicate", result.stdout)
 
@@ -174,7 +176,7 @@ class FamilyMergeLintTest(unittest.TestCase):
                     extra=self.PRIMARY)
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=self.VARIANT)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_distinct_palettes_stay_independent(self):
@@ -182,14 +184,14 @@ class FamilyMergeLintTest(unittest.TestCase):
         self._write(root, "01_通用母版/甲/测试主风格风.md", "测试主风格风")
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     primary="#7C2D12")
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_variant_of_unknown_target_is_error(self):
         root = self._root()
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=self.VARIANT)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variant_target_missing", result.stdout)
 
@@ -199,7 +201,7 @@ class FamilyMergeLintTest(unittest.TestCase):
                     extra=',\n  "variant_of": "测试主风格风"')
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=',\n  "variant_of": "测试中间风"')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variant_chain", result.stdout)
 
@@ -210,7 +212,7 @@ class FamilyMergeLintTest(unittest.TestCase):
                     extra=',\n  "variants": ["别的变体风: 同板场景变体"]')
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=self.VARIANT)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variants_list_mismatch", result.stdout)
 
@@ -219,7 +221,7 @@ class FamilyMergeLintTest(unittest.TestCase):
         self._write(root, "01_通用母版/甲/测试主风格风.md", "测试主风格风")
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     primary="#7C2D12", extra=self.VARIANT)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variants_list_missing", result.stdout)
 
@@ -229,7 +231,7 @@ class FamilyMergeLintTest(unittest.TestCase):
                     extra=self.PRIMARY)
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=self.PRIMARY + self.VARIANT)
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variant_fields_conflict", result.stdout)
 
@@ -237,7 +239,7 @@ class FamilyMergeLintTest(unittest.TestCase):
         root = self._root()
         self._write(root, "01_通用母版/乙/测试变体风.md", "测试变体风",
                     extra=',\n  "variant_of": "  "')
-        result = _run(["--root", str(root)])
+        result = _run(["--legacy-fixtures", "--root", str(root)])
         self.assertEqual(result.returncode, 2)
         self.assertIn("variant_of_invalid", result.stdout)
 
@@ -257,6 +259,90 @@ class RealLibraryTest(unittest.TestCase):
         text = SAMPLE.read_text(encoding="utf-8")
         self.assertIn('"negative_prompt"', text)
         self.assertIn('"paired_illustration"', text)
+
+
+class CurrentLibraryTests(unittest.TestCase):
+    def test_legacy_tree_requires_explicit_opt_in(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = _fixture(Path(temporary).resolve(), NEGATIVE_AND_PAIRED)
+            result = _run(["--root", str(root)])
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("current", result.stdout + result.stderr)
+
+    def test_same_library_schema_is_authoritative(self):
+        from tests.expression_test_support import real_validation_inputs
+        _, resolver, _ = real_validation_inputs()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve() / "library"
+            shutil.copytree(resolver.builtin_root, root)
+            shutil.copytree(SKILL_DIR / "template-library/governance", root / "governance", dirs_exist_ok=True)
+            schema = root / "governance/schemas/style-brief-v2.schema.json"
+            data = json.loads(schema.read_text())
+            data["required"].append("required_by_selected_library")
+            schema.write_text(json.dumps(data))
+            result = _run(["--library-root", str(root)])
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("required_by_selected_library", result.stdout + result.stderr)
+
+    def test_invalid_or_unresolved_same_library_schema_fails_without_traceback(self):
+        from tests.expression_test_support import real_validation_inputs
+        _, resolver, _ = real_validation_inputs()
+        for mutation in ({"type": "not-a-schema-type"}, {"$ref": "urn:missing:style-schema"}):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve() / "library"
+                shutil.copytree(resolver.builtin_root, root)
+                shutil.copytree(SKILL_DIR / "template-library/governance", root / "governance", dirs_exist_ok=True)
+                schema = root / "governance/schemas/style-brief-v2.schema.json"
+                data = json.loads(schema.read_text())
+                data.update(mutation)
+                schema.write_text(json.dumps(data))
+                result = _run(["--library-root", str(root)])
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_asset_drift_and_schema_symlink_fail_closed(self):
+        from tests.expression_test_support import real_validation_inputs_v2
+        from leo_ppt_generator.asset_resolver import AssetResolver
+        _, resolver, _ = real_validation_inputs_v2()
+        for failure in ("asset_drift", "schema_symlink"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve() / "library"
+                shutil.copytree(resolver.builtin_root, root)
+                if failure == "asset_drift":
+                    current = AssetResolver(library=root, home=root / "empty")
+                    entity = next(row for row in current.entities if row["kind"] == "style")
+                    brief = Path(current.resolve(entity["asset_id"])["path"])
+                    brief.write_bytes(brief.read_bytes() + b"\n")
+                else:
+                    schema = root / "governance/schemas/style-brief-v2.schema.json"
+                    target = root.parent / "schema.json"
+                    schema.rename(target)
+                    schema.symlink_to(target)
+                result = _run(["--library-root", str(root)])
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_explicit_empty_legacy_tree_fails(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / "template-library/reference/sources/retired-styles-tree/styles").mkdir(parents=True)
+            result = _run(["--root", str(root), "--legacy-fixtures"])
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("style_lint_empty", result.stderr)
+
+    def test_v2_current_library_and_missing_pointer(self):
+        from tests.expression_test_support import real_validation_inputs_v2
+        _, resolver, _ = real_validation_inputs_v2()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve() / "library"
+            shutil.copytree(resolver.builtin_root, root)
+            result = _run(["--library-root", str(root)])
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertRegex(result.stdout, r"briefs=[1-9]")
+            (root / "catalog/current.json").unlink()
+            result = _run(["--library-root", str(root)])
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("current", result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

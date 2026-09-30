@@ -68,42 +68,12 @@
 外层必须是 `leo-ppt-machine/v1`；`result.returncode != 0`、未知协议、缺页、validation
 失败或 finalizer 失败都阻止推进。
 
-## Worker
+## 本地串行生成
 
-- 多页任务只在用户授权、宿主能力、容量和真实派发均成立后 dispatch；主 Agent 不模拟
-  scheduler，也不串行替代。
-- 每批 worker 派发前必须 `python3 scripts/check_worker_brief.py <deck 目录|slides.json>`
-  （在技能目录内执行）：required_text/style_lock/术语注入（术语表存在时）/数字登记行
-  （该页有行时）缺任一即 exit 1 阻断派发并给缺块+页清单（R-46）。
-- 恰好一页只有 CLI 返回 `single_unit_current_agent_allowed` 才能由当前 Agent 执行。
-- worker 只拥有一个 slide/page 目录，按各自 prompt 的返回合同报告自身 agent id、
-  page/slide id、产物绝对路径、backend used/provenance 与 validation/QA 证据；
-  失败的稳定 reason code 经 `blocker=<reason>`（slide）或 `validation.json`
-  （page）登记。
-- worker 不修改其他页面、顶层 run、最终 PPTX 或 Git；父 Agent 负责 record 和最终验证。
-- 派发指引（R-81 残留①）：并发上限读 runtime 配置 `max_concurrent_workers`
-  （缺省 5），不擅自超发；同 run 多 worker 共享 canonical 状态时，record 遇
-  `vendor_revision_conflict` 必须以**完整原命令**重跑（读取最新 revision 后
-  重新提交），不得本地重试部分参数或改写 operation 身份。
-- image sweep 与在途 worker 互斥：目标域存在 active 页时清扫拒绝复位
-  （`reset_blocked_by_inflight_workers`），且 image sweep 只作用 image 域，
-  不越界复位 editable（R-81 残留②）。
-
-### Worker 逐页三层容错协议
-
-1. **阶段分层重试（每页 ≤3 次）**：每页执行分为 `prompt 准备 → backend 执行 → QA`
-   三个阶段，各自独立计数；重试只补失败阶段，已成功的阶段不重跑。每页到达
-   accepted 的总尝试次数经 `image record --attempts` 如实回报并进入
-   backend_stats 路由统计。
-2. **全册完成后清扫（≤2 轮）**：全部页完成首轮 record 后，扫描 canonical
-   state 中非 rendered 的页，复位重派（复用 `run retry --from-failed-pages` 与
-   `Lifecycle.reset_failed_pages()` 既有机器）；清扫轮**只复位非 rendered 页**。
-   清扫 2 轮后仍失败的页 → 缺页拒绝组装（既有红线）：upgrade 路线走
-   partial-hybrid 确认，generate 路线向用户显式披露缺页，不静默放弃。
-3. **已 rendered 页无条件跳过**：重跑、恢复与清扫过程中，state 为 recorded 的
-   页不再派发（防重复计费与风格漂移）。
-4. **第 0 条（既有恢复纪律重申）**：重复失败前必须改变输入、配置、backend
-   或实现；同输入的原样重试不计入上述任何一层的预算。
+普通 Skill 请求在当前本地进程中按冻结页序串行执行。它不创建 worker、scheduler、lease、
+并发队列或共享 canonical 写入。页级 checkpoint、原子文件写入和失败恢复只服务于本地
+进程中断与半成品清理。历史 worker 合同不属于默认生产路径，只有维护/评测入口显式启用
+时才适用。
 
 ## 恢复
 

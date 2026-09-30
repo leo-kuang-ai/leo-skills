@@ -1,0 +1,80 @@
+{
+  "case_id": "duo-compare-comparison",
+  "data": {
+    "bottom": "同口径对照",
+    "kicker": "资格探针",
+    "sides": [
+      {
+        "label": "轨道甲",
+        "points": [
+          "基线要点一：逐条登记",
+          "基线要点二：人工复核"
+        ],
+        "title": "基线做法"
+      },
+      {
+        "label": "轨道乙",
+        "points": [
+          "候选要点一：自动汇总",
+          "候选要点二：机器复核"
+        ],
+        "title": "候选做法"
+      }
+    ],
+    "title": "双轨对照探针"
+  },
+  "expected": {
+    "facts": [],
+    "focus": "双轨对照探针",
+    "reading_order": [
+      "双轨对照探针"
+    ],
+    "required_text": [
+      "双轨对照探针",
+      "基线做法",
+      "候选做法",
+      "基线要点一：逐条登记",
+      "基线要点二：人工复核",
+      "候选要点一：自动汇总",
+      "候选要点二：机器复核",
+      "同口径对照"
+    ],
+    "structure": {
+      "cells": [
+        {
+          "dimension": "基线要点一：逐条登记",
+          "item": "基线做法",
+          "text": "基线要点一：逐条登记",
+          "unknown": false
+        },
+        {
+          "dimension": "基线要点一：逐条登记",
+          "item": "候选做法",
+          "text": "候选要点一：自动汇总",
+          "unknown": false
+        },
+        {
+          "dimension": "基线要点二：人工复核",
+          "item": "基线做法",
+          "text": "基线要点二：人工复核",
+          "unknown": false
+        },
+        {
+          "dimension": "基线要点二：人工复核",
+          "item": "候选做法",
+          "text": "候选要点二：机器复核",
+          "unknown": false
+        }
+      ],
+      "dimensions": [
+        "基线要点一：逐条登记",
+        "基线要点二：人工复核"
+      ],
+      "items": [
+        "基线做法",
+        "候选做法"
+      ]
+    }
+  },
+  "probe": "positive"
+}

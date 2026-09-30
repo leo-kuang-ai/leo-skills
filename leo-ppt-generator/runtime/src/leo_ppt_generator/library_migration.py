@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+import ast
 import hashlib
 import json
 import os
@@ -11,6 +12,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import shutil
 
 from .qualification import digest, file_reference, read_evidence_bytes, verify_reference
 from .storage import atomic_write_json, json_document_bytes
@@ -24,10 +26,20 @@ CLOSURE_ROOTS = ("leo-ppt-generator/runtime/src", "leo-ppt-generator/scripts", "
     "leo-ppt-generator/evals", "leo-ppt-generator/SKILL.md", "leo-ppt-generator/references",
     "leo-ppt-generator/prompts", "docs/plans", "docs/prd", "docs/leo-ppt-generator", "CHANGELOG.md")
 CLOSURE_FILES = {"leo-ppt-generator/SKILL.md", "CHANGELOG.md"}
+# 这些脚本只读取退役来源或生成迁移基线，不参与生产解析、候选选择或物化。
+# 逐文件登记，不能把整个 scripts/ 根目录豁免为 migration-only。
+MIGRATION_ONLY_CONSUMERS = {
+    "leo-ppt-generator/scripts/freeze_template_rebuild_baseline.py",
+    "leo-ppt-generator/scripts/generate_capacity_draft.py",
+    "leo-ppt-generator/scripts/migrate_style_aliases.py",
+    "leo-ppt-generator/scripts/audit_style_families.py",
+}
 LEGACY_SIGNATURES = (
     r"references/styles", r"canonical/(?:styles|themes|brands|fonts|ornaments|layouts|templates|components|axes|presets)(?=[/\s\"']|$)",
     r"[\"']canonical[\"']\s*/\s*[\"'](?:styles|themes|brands|fonts|ornaments|layouts|templates|components|axes|presets)[\"']",
-    r"(?:asset_resolver|template-registry|page-type-regime)[/-]v1", r"qa-profile", r"retired-styles-tree")
+    r"\$\{?LEO_PPT_HOME\}?/brands(?=[/\s\"']|$)",
+    r"(?:asset_resolver|template-registry|page-type-regime)[/-]v1",
+    r"(?<![A-Za-z0-9_-])qa-profile(?![A-Za-z0-9_-])", r"retired-styles-tree")
 LEGACY_FOLDERS = {"styles": "visual/styles", "themes": "visual/themes", "brands": "visual/brands",
     "fonts": "visual/fonts", "ornaments": "visual/ornaments", "layouts": "executable/layouts",
     "templates": "executable/templates", "components": "executable/components", "presets": "collections/presets"}
@@ -40,10 +52,394 @@ class MigrationError(ValueError):
     pass
 
 
+def _closure_literal_dictionary(tree, symbol):
+    """只读取唯一顶层字面表；重绑定、别名逃逸与方法写入均保持未知。"""
+    candidates = []
+    parents = {child: node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id == symbol:
+            parent = parents.get(node)
+            if isinstance(node.ctx, ast.Store):
+                if (not isinstance(parent, (ast.Assign, ast.AnnAssign))
+                        or parents.get(parent) is not tree
+                        or isinstance(parent, ast.Assign) and len(parent.targets) != 1):
+                    return None
+                candidates.append(parent.value)
+            elif isinstance(node.ctx, ast.Load):
+                call = parents.get(parent)
+                if (not isinstance(parent, ast.Attribute) or parent.attr != "items"
+                        or not isinstance(call, ast.Call) or call.func is not parent
+                        or call.args or call.keywords):
+                    return None
+            else:
+                return None
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == symbol:
+            return None
+        elif isinstance(node, ast.arg) and node.arg == symbol:
+            return None
+        elif isinstance(node, (ast.Import, ast.ImportFrom)) and any(
+                (alias.asname or alias.name.split(".")[0]) == symbol for alias in node.names):
+            return None
+    if len(candidates) != 1:
+        return None
+    value = candidates[0]
+    if (not isinstance(value, ast.Dict) or not 0 < len(value.keys) <= 64
+            or any(not isinstance(item, ast.Constant) or not isinstance(item.value, str)
+                   for item in [*value.keys, *value.values])):
+        return None
+    return value
+
+
+def _python_closure_context(body, *, imported_literal=None, module_name=None):
+    """只由 AST 证明拒绝范围与 canonical 根；命名、注释和相邻断言不授予豁免。"""
+    try:
+        tree = ast.parse(body)
+    except SyntaxError:
+        return [], [], []
+    lines = body.splitlines(keepends=True)
+    starts, total = [], 0
+    for line in lines:
+        starts.append(total)
+        total += len(line)
+
+    def span(node):
+        def offset(line, column):
+            return starts[line - 1] + len(lines[line - 1].encode("utf-8")[:column].decode("utf-8"))
+        return offset(node.lineno, node.col_offset), offset(node.end_lineno, node.end_col_offset)
+
+    def raises_call(node):
+        return (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                and (node.func.attr in {"assertRaises", "assertRaisesRegex"}
+                     or node.func.attr == "raises" and isinstance(node.func.value, ast.Name)
+                     and node.func.value.id == "pytest"))
+
+    negatives, rejections = [], []
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.With, ast.AsyncWith)) and any(raises_call(item.context_expr) for item in node.items):
+            negatives.append(span(node))
+        elif raises_call(node):
+            negatives.append(span(node))
+        if (isinstance(node, ast.If) and len(node.body) == 1 and isinstance(node.body[0], ast.Raise)
+                and isinstance(node.test, ast.Compare) and len(node.test.ops) == 1
+                and isinstance(node.test.ops[0], (ast.Eq, ast.In))
+                and isinstance(node.test.left, (ast.Name, ast.Attribute))
+                and isinstance(node.test.comparators[0], (ast.Constant, ast.Set, ast.Tuple, ast.List))
+                and not any(isinstance(value, ast.Call) for value in ast.walk(node.test))):
+            rejections.append(span(node.test))
+    # 各作用域分别收集绑定；保留分支候选，不以同名变量冲突换取零命中。
+    scopes, parents, contexts, imports = {}, {}, [], {}
+
+    def scope(parent=None, kind="module"):
+        context = {"parent": parent, "kind": kind, "definitions": {}, "global": set(), "nonlocal": set()}
+        contexts.append(context)
+        return context
+
+    def bind(context, target, value=None):
+        if isinstance(target, ast.Name):
+            context["definitions"].setdefault(target.id, []).append(value)
+        elif isinstance(target, (ast.Tuple, ast.List)):
+            values = value.elts if isinstance(value, (ast.Tuple, ast.List)) and len(value.elts) == len(target.elts) else [None] * len(target.elts)
+            for item, expression in zip(target.elts, values):
+                bind(context, item, expression)
+
+    def bind_iteration(context, target, iterable, positions=()):
+        if isinstance(target, ast.Name):
+            context["definitions"].setdefault(target.id, []).append((iterable, positions))
+        elif isinstance(target, (ast.Tuple, ast.List)):
+            for position, item in enumerate(target.elts):
+                bind_iteration(context, item, iterable, (*positions, (position, len(target.elts))))
+
+    def index(node, context, parent=None):
+        scopes[node], parents[node] = context, parent
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
+            if not isinstance(node, ast.Lambda):
+                context["definitions"].setdefault(node.name, []).append(None)
+            enclosing = context
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+                while enclosing["kind"] == "class":
+                    enclosing = enclosing["parent"]
+            child = scope(enclosing, "class" if isinstance(node, ast.ClassDef) else "function")
+            if hasattr(node, "args"):
+                args = node.args
+                for argument in [*args.posonlyargs, *args.args, *args.kwonlyargs, args.vararg, args.kwarg]:
+                    if argument is not None:
+                        child["definitions"][argument.arg] = [None]
+                positional = [*args.posonlyargs, *args.args]
+                defaults = list(zip(positional[len(positional) - len(args.defaults):], args.defaults))
+                defaults.extend(zip(args.kwonlyargs, args.kw_defaults))
+                for argument, default in defaults:
+                    if default is not None:
+                        child["definitions"][argument.arg].append(default)
+            for field, value in ast.iter_fields(node):
+                for item in value if isinstance(value, list) else [value]:
+                    if isinstance(item, ast.AST):
+                        index(item, child if field == "body" else context, node)
+            return
+        if isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+            child = scope(context, "comprehension")
+            for generator in node.generators:
+                bind(child, generator.target)
+            for item in ast.iter_child_nodes(node):
+                index(item, child, node)
+            return
+        if isinstance(node, ast.Global):
+            context["global"].update(node.names)
+        elif isinstance(node, ast.Nonlocal):
+            context["nonlocal"].update(node.names)
+        elif isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)):
+            for target in node.targets if isinstance(node, ast.Assign) else [node.target]:
+                bind(context, target, node.value)
+        elif isinstance(node, (ast.For, ast.AsyncFor)):
+            bind_iteration(context, node.target, node.iter)
+        elif isinstance(node, (ast.With, ast.AsyncWith)):
+            for item in node.items:
+                bind(context, item.optional_vars)
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                name = alias.asname or alias.name.split(".")[0]
+                value = imported_literal(node, alias.name) if imported_literal and isinstance(node, ast.ImportFrom) else None
+                context["definitions"].setdefault(name, []).append(value)
+                imports.setdefault((id(context), name), []).append(node)
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            context["definitions"].setdefault(node.name, []).append(None)
+        elif isinstance(node, ast.AugAssign):
+            bind(context, node.target)
+        for item in ast.iter_child_nodes(node):
+            index(item, context, node)
+
+    index(tree, scope())
+    # 闭包内的显式外层写入也进入外层候选集，不能沿用被修改前的安全根。
+    for context in contexts:
+        for name in context["global"] | context["nonlocal"]:
+            outer = context["parent"]
+            if outer is None:
+                continue
+            if name in context["global"]:
+                while outer["parent"] is not None:
+                    outer = outer["parent"]
+            else:
+                while outer is not None and name not in outer["definitions"]:
+                    outer = outer["parent"]
+            if outer is not None:
+                outer["definitions"].setdefault(name, []).extend(context["definitions"].get(name, []))
+    unknown = "\0"
+    folders = {*LEGACY_FOLDERS, "axes"}
+
+    def defining_context(node):
+        context = scopes[node]
+        if node.id in context["global"]:
+            while context["parent"] is not None:
+                context = context["parent"]
+        elif node.id in context["nonlocal"]:
+            context = context["parent"]
+        while context is not None and node.id not in context["definitions"]:
+            context = context["parent"]
+        return context
+
+    def literal_dictionaries(node, resolving):
+        if isinstance(node, ast.Dict):
+            if (0 < len(node.keys) <= 64 and all(isinstance(item, ast.Constant) and isinstance(item.value, str)
+                    for item in [*node.keys, *node.values])):
+                return [node]
+            return [None]
+        if not isinstance(node, ast.Name):
+            return [None]
+        context = defining_context(node)
+        key = (id(context), node.id)
+        if context is None or key in resolving or len(context["definitions"][node.id]) != 1:
+            return [None]
+        # 只有 .items() 读取可证明该表没有通过本模块别名或调用发生写入。
+        for reference in ast.walk(tree):
+            if not isinstance(reference, ast.Name) or reference.id != node.id or not isinstance(reference.ctx, ast.Load):
+                continue
+            if defining_context(reference) is not context:
+                continue
+            parent = parents.get(reference)
+            call = parents.get(parent)
+            if (not isinstance(parent, ast.Attribute) or parent.attr != "items"
+                    or not isinstance(call, ast.Call) or call.func is not parent or call.args or call.keywords):
+                return [None]
+        return literal_dictionaries(context["definitions"][node.id][0], resolving | {key})
+
+    def iteration_rows(node, resolving):
+        if isinstance(node, (ast.Tuple, ast.List)):
+            return node.elts if 0 < len(node.elts) <= 64 else [None]
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "sorted"
+                and len(node.args) == 1 and not node.keywords):
+            context = defining_context(node.func)
+            return iteration_rows(node.args[0], resolving) if context is None else [None]
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "items"
+                and not node.args and not node.keywords):
+            rows = []
+            for dictionary in literal_dictionaries(node.func.value, resolving):
+                if dictionary is None:
+                    rows.append(None)
+                else:
+                    rows.extend(ast.Tuple(elts=[key, value]) for key, value in zip(dictionary.keys, dictionary.values))
+            return rows
+        return [None]
+
+    def default_home_call(node):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and not node.args and not node.keywords):
+            return False
+        context = defining_context(node.func)
+        sources = imports.get((id(context), node.func.id), [])
+        if context is None or len(context["definitions"][node.func.id]) != 1 or len(sources) != 1:
+            return False
+        source = sources[0]
+        return (isinstance(source, ast.ImportFrom)
+                and ((source.level == 0 and source.module == "leo_ppt_generator.config.runtime_config")
+                     or (source.level == 1 and source.module == "config.runtime_config"
+                         and module_name and module_name.startswith("leo_ppt_generator.")))
+                and any(alias.name == "default_home" and (alias.asname or alias.name) == node.func.id for alias in source.names))
+
+    def path_call(node):
+        return isinstance(node, ast.Call) and (
+            isinstance(node.func, ast.Name) and node.func.id in {"Path", "PurePosixPath"}
+            or isinstance(node.func, ast.Attribute) and node.func.attr in {"Path", "PurePosixPath", "joinpath"})
+
+    def path_expression(node):
+        return path_call(node) or isinstance(node, ast.BinOp) and isinstance(node.op, (ast.Div, ast.Add))
+
+    def joined(left, right):
+        return right if right.startswith("/") else left.rstrip("/") + "/" + right
+
+    def values(node, resolving, uncertain):
+        if node is None:
+            return {unknown}
+        if isinstance(node, tuple):
+            iterable, positions = node
+            result = set()
+            for row in iteration_rows(iterable, resolving):
+                for position, length in positions:
+                    row = row.elts[position] if isinstance(row, (ast.Tuple, ast.List)) and len(row.elts) == length else None
+                result.update(values(row, resolving, uncertain))
+            return result or {unknown}
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return {node.value}
+        if isinstance(node, ast.Name):
+            context = defining_context(node)
+            key = (id(context), node.id)
+            if context is None or key in resolving:
+                return {unknown}
+            result = set()
+            for expression in context["definitions"][node.id]:
+                result.update(values(expression, resolving | {key}, uncertain))
+                if len(result) > 64:
+                    uncertain.append(True)
+                    return {unknown}
+            return result
+        if isinstance(node, ast.IfExp):
+            return values(node.body, resolving, uncertain) | values(node.orelse, resolving, uncertain)
+        if isinstance(node, ast.BoolOp):
+            return set().union(*(values(item, resolving, uncertain) for item in node.values))
+        if default_home_call(node):
+            return {"$LEO_PPT_HOME"}
+        if isinstance(node, ast.BinOp) and isinstance(node.op, (ast.Div, ast.Add)):
+            expressions = [node.left, node.right]
+            combine = joined if isinstance(node.op, ast.Div) else lambda a, b: a + b
+        elif path_call(node):
+            expressions = list(node.args)
+            if isinstance(node.func, ast.Attribute) and node.func.attr == "joinpath":
+                expressions.insert(0, node.func.value)
+            combine = joined
+        elif isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in {"resolve", "absolute"}:
+            return values(node.func.value, resolving, uncertain)
+        elif isinstance(node, ast.JoinedStr):
+            expressions = [item.value if isinstance(item, ast.FormattedValue) else item for item in node.values]
+            combine = lambda a, b: a + b
+        else:
+            return {unknown}
+        if not expressions:
+            return {unknown}
+        result = values(expressions[0], resolving, uncertain)
+        for expression in expressions[1:]:
+            right = values(expression, resolving, uncertain)
+            if len(result) * len(right) > 64:
+                uncertain.append(True)
+                return {unknown}
+            result = {combine(a, b) for a in result for b in right}
+        return result
+
+    def status(value):
+        parts = PurePosixPath(value).parts
+        if any(left == "$LEO_PPT_HOME" and right == "brands" for left, right in zip(parts, parts[1:])):
+            return "legacy"
+        if any(left == "canonical" and right in folders for left, right in zip(parts, parts[1:])):
+            return "legacy"
+        for position, part in enumerate(parts):
+            if part == "canonical" and position + 1 < len(parts) and unknown in parts[position + 1]:
+                return "unknown"
+            if part in folders and position and unknown in parts[position - 1]:
+                return "unknown"
+            if unknown in part and part.replace(unknown, ""):
+                pattern = re.escape(part).replace(re.escape(unknown), ".*")
+                if any(re.fullmatch(pattern, candidate) for candidate in {"canonical", *folders}):
+                    return "unknown"
+        return None
+
+    joins = []
+    for node in ast.walk(tree):
+        if not path_expression(node) or path_expression(parents.get(node)):
+            continue
+        uncertain = []
+        outcomes = {status(value) for value in values(node, frozenset(), uncertain)}
+        if "legacy" in outcomes or "unknown" in outcomes or uncertain:
+            start, end = span(node)
+            # 已有字面签名由同一个 scanner 记录，避免同一表达式重复计数。
+            if any(re.search(signature, body[start:end]) for signature in LEGACY_SIGNATURES):
+                continue
+            joins.append((start, body[start:end], "legacy" not in outcomes))
+    return negatives, rejections, joins
+
+
 def scan_consumer_closure(root):
     """固定 roots 的逐命中账本；旧迁移输入与历史证据不冒充活动消费者。"""
+    return _scan_consumer_closure(root)
+
+
+def _scan_consumer_closure(root, replacements=None):
     root = Path(root).absolute()
-    hits, roots = [], []
+    replacements = replacements or {}
+    hits, roots, source_trees = [], [], {}
+    runtime_prefix = "leo-ppt-generator/runtime/src/"
+
+    def module_name(path):
+        if not path.startswith(runtime_prefix) or not path.endswith(".py"):
+            return None
+        return path[len(runtime_prefix):-3].replace("/", ".").removesuffix(".__init__")
+
+    def imported_literal(importer, node, symbol):
+        # 只读本次扫描树中的单层模块；不 import，也不借用已安装运行时的常量。
+        module = node.module or ""
+        if node.level:
+            owner = module_name(importer)
+            if owner is None:
+                return None
+            package = owner.split(".") if importer.endswith("/__init__.py") else owner.split(".")[:-1]
+            if node.level > len(package):
+                return None
+            module = ".".join([*package[:len(package) - node.level + 1], *module.split(".")])
+        if (not module.startswith("leo_ppt_generator.")
+                or not all(part.isidentifier() for part in module.split(".")) or not symbol.isidentifier()):
+            return None
+        relative = runtime_prefix + module.replace(".", "/") + ".py"
+        source = safe_path(root, relative)
+        if relative not in replacements and (not source.is_file() or source.stat().st_size > 1024 * 1024):
+            return None
+        if relative not in source_trees:
+            raw = replacements[relative] if relative in replacements else read_evidence_bytes(root, relative, max_bytes=1024 * 1024)
+            if len(raw) > 1024 * 1024:
+                return None
+            try:
+                candidate = ast.parse(raw.decode("utf-8"))
+            except (SyntaxError, UnicodeError, RecursionError):
+                candidate = None
+            if candidate is not None and sum(1 for _ in ast.walk(candidate)) > 50000:
+                candidate = None
+            source_trees[relative] = candidate
+        tree = source_trees[relative]
+        return _closure_literal_dictionary(tree, symbol) if tree is not None else None
     migration_owners = {"leo-ppt-generator/scripts/migrate_template_library.py",
                         "leo-ppt-generator/runtime/src/leo_ppt_generator/library_migration.py"}
     for relative in CLOSURE_ROOTS:
@@ -56,9 +452,13 @@ def scan_consumer_closure(root):
             if not path.is_file() or path.suffix.lower() not in {".py", ".json", ".md", ".txt", ".yaml", ".yml", ".sh", ".js", ".html", ".toml"}:
                 continue
             name = path.relative_to(root).as_posix()
-            body = read_evidence_bytes(root, name).decode("utf-8")
+            body = (replacements[name] if name in replacements else read_evidence_bytes(root, name)).decode("utf-8")
             classification, disposition = "active-consumer", "migrate"
             if name in migration_owners:
+                classification, disposition = "migration-input", "retain-migration-only"
+            elif name in MIGRATION_ONLY_CONSUMERS or (
+                    name.startswith("leo-ppt-generator/scripts/intake_")
+                    and name.endswith(".py")):
                 classification, disposition = "migration-input", "retain-migration-only"
             elif name == "CHANGELOG.md":
                 classification, disposition = "provenance", "retain-changelog-history"
@@ -66,8 +466,6 @@ def scan_consumer_closure(root):
                 classification, disposition = "plan-control", "retain-control"
             elif "/evidence/" in name or "/reviews/" in name:
                 classification, disposition = "provenance", "retain-read-only"
-            elif name.startswith("leo-ppt-generator/tests/test_migration"):
-                classification, disposition = "test-fixture", "retain-negative-contract"
             elif name.startswith("docs/leo-ppt-generator/") and path.suffix == ".md":
                 # 只读历史记录仍进入逐命中账本；不能按旧日期把活动指引一概排除。
                 if (body.startswith("---\n") and re.search(r"(?m)^status: historical-reference$", body.split("\n---", 1)[0])):
@@ -82,14 +480,25 @@ def scan_consumer_closure(root):
                 elif (name == "docs/leo-ppt-generator/template-rebuild-verification.md"
                       and re.search(r"本登记截至 \d{4}-\d{2}-\d{2} 本实施批", body)):
                     classification, disposition = "provenance", "retain-bounded-verification-record"
-            for signature in LEGACY_SIGNATURES:
-                for match in re.finditer(signature, body):
-                    hits.append({"path": name, "line": body.count("\n", 0, match.start()) + 1,
-                        "signature": match.group(), "classification": classification,
-                        "owner": name, "disposition": disposition})
+            negatives, rejections, joins = _python_closure_context(body,
+                imported_literal=lambda node, symbol: imported_literal(name, node, symbol),
+                module_name=module_name(name)) if path.suffix == ".py" else ([], [], [])
+            matches = {(match.start(), match.group(), False) for signature in LEGACY_SIGNATURES for match in re.finditer(signature, body)}
+            matches.update(joins)
+            for offset, signature, unresolved in sorted(matches):
+                hit_classification, hit_disposition = classification, disposition
+                if unresolved and hit_disposition == "migrate":
+                    hit_disposition = "classify-dynamic-path"
+                if name.startswith("leo-ppt-generator/tests/") and any(start <= offset < end for start, end in negatives):
+                    hit_classification, hit_disposition = "test-fixture", "retain-negative-contract"
+                elif any(start <= offset < end for start, end in rejections):
+                    hit_disposition = "retain-explicit-rejection-contract"
+                hits.append({"path": name, "line": body.count("\n", 0, offset) + 1,
+                    "signature": signature, "classification": hit_classification,
+                    "owner": name, "disposition": hit_disposition})
     hits.sort(key=lambda row: (row["path"], row["line"], row["signature"]))
     return {"roots": roots, "signatures": list(LEGACY_SIGNATURES), "hits": hits,
-        "unclassified_hits": sum(not row["classification"] for row in hits),
+        "unclassified_hits": sum(not row["classification"] or row["disposition"] == "classify-dynamic-path" for row in hits),
         "active_legacy_hits": sum(row["disposition"] == "migrate" for row in hits)}
 
 
@@ -273,7 +682,274 @@ def verify_value_gate(root, reference):
     return value
 
 
-def preview_migration(source_root, out_plan, *, prerequisite=None):
+def _replacement_scope(path):
+    """仅替换当前授权包内的活动消费者；事务执行 owner 在同一批内保持不变。"""
+    allowed = path == "CHANGELOG.md" or any(
+        path == root if root in CLOSURE_FILES else path.startswith(root + "/")
+        for root in CLOSURE_ROOTS if root.startswith("leo-ppt-generator/")
+    )
+    if not allowed or Path(path).suffix.lower() not in {".py", ".json", ".md", ".txt", ".yaml", ".yml", ".sh", ".js", ".html", ".toml"}:
+        raise MigrationError("migration_consumer_replacement_scope_invalid:" + path)
+    prefix = "leo-ppt-generator/runtime/src/leo_ppt_generator/"
+    if path.startswith(prefix):
+        relative = path[len(prefix):]
+        if relative in {"library_migration.py", "schemas/migration-plan-v2.schema.json", "storage.py"}:
+            raise MigrationError("migration_transaction_owner_replacement_forbidden:" + path)
+
+
+def _replacement_bytes(row, *, require_text=True):
+    import base64
+    try:
+        body = base64.b64decode(row["payload"], validate=True)
+        if require_text:
+            body.decode("utf-8")
+    except (ValueError, UnicodeError, TypeError, KeyError) as exc:
+        raise MigrationError("migration_consumer_payload_invalid") from exc
+    if hashlib.sha256(body).hexdigest() != row["sha256"]:
+        raise MigrationError("migration_consumer_payload_hash_mismatch")
+    return body
+
+
+def _target_evidence_manifest(source, work, reference):
+    if reference is None:
+        return {}, None
+    document = load_document(work, reference)
+    from jsonschema import Draft202012Validator
+    schema = json.loads((Path(__file__).parent / "schemas/migration-plan-v2.schema.json").read_text())
+    validator = Draft202012Validator({"$ref": "#/$defs/target_evidence", "$defs": schema["$defs"]})
+    if next(validator.iter_errors(document), None) is not None:
+        raise MigrationError("migration_target_evidence_manifest_invalid")
+    result, seen = {}, set()
+    prefix = "leo-ppt-generator/template-library/evidence/"
+    for row in document["files"]:
+        if not isinstance(row, dict) or set(row) != {"path", "expected", "target"}:
+            raise MigrationError("migration_target_evidence_manifest_invalid")
+        path = row["path"]
+        safe_path(source, path)
+        if path in seen or not path.startswith(prefix):
+            raise MigrationError("migration_target_evidence_scope_invalid:" + str(path))
+        seen.add(path)
+        expected = row["expected"]
+        target = row["target"]
+        if (not isinstance(expected, dict) or set(expected) != {"type", "sha256", "mode"}
+                or expected["type"] not in {"file", "absent"}
+                or not isinstance(target, dict) or set(target) != {"payload", "sha256", "mode"}):
+            raise MigrationError("migration_target_evidence_manifest_invalid")
+        _replacement_bytes(target, require_text=False)
+        if file_state(source, path) != expected:
+            raise MigrationError("migration_target_evidence_source_drift:" + path)
+        result[path] = {"operation": "evidence", "source": path, "expected": expected, **target}
+    if prefix + "capability-receipts.json" not in result:
+        raise MigrationError("migration_target_evidence_active_index_missing")
+    return result, document
+
+
+def _apply_target_evidence(target, evidence):
+    for path, row in evidence.items():
+        relative = path[len("leo-ppt-generator/template-library/"):]
+        destination = safe_path(target, relative)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(_replacement_bytes(row, require_text=False))
+        destination.chmod(row["mode"])
+
+
+def _consumer_replacements(source, work, reference):
+    if reference is None:
+        return {}
+    from jsonschema import Draft202012Validator
+    schema = json.loads((Path(__file__).parent / "schemas/migration-plan-v2.schema.json").read_text())
+    document = load_document(work, reference)
+    validator = Draft202012Validator({"$ref": "#/$defs/consumer_replacements", "$defs": schema["$defs"]})
+    if next(validator.iter_errors(document), None) is not None:
+        raise MigrationError("migration_consumer_replacements_schema_mismatch")
+    result = {}
+    for row in document["replacements"]:
+        path = row["path"]
+        safe_path(source, path)
+        _replacement_scope(path)
+        if path in result:
+            raise MigrationError("migration_consumer_replacement_duplicate:" + path)
+        if row["expected"]["type"] != "file" or file_state(source, path) != row["expected"]:
+            raise MigrationError("migration_consumer_source_drift:" + path)
+        _replacement_bytes(row["target"])
+        result[path] = {"operation": "replace", "source": path, "expected": row["expected"], **row["target"]}
+    return result
+
+
+def _catalog_subprocess(package, action, *arguments):
+    """显式导入目标源码；stdout 只接受完整结果，不沿用宿主进程模块缓存。"""
+    package = Path(package).absolute()
+    code = """
+import hashlib, json, os, sys
+from pathlib import Path
+import leo_ppt_generator
+package = Path(os.environ['LEO_PPT_BUNDLE'])
+expected = package / 'runtime/src/leo_ppt_generator'
+if Path(leo_ppt_generator.__file__).resolve().parent != expected.resolve():
+    raise ValueError('migration_target_runtime_import_mismatch')
+from leo_ppt_generator.template_catalog import build_catalog, publish_catalog, read_catalog, scan_records, LibraryContext
+from leo_ppt_generator.library_migration import verify_catalog_files
+from leo_ppt_generator.qualification import environment_fingerprint
+library = package / 'template-library'
+if sys.argv[1] == 'build':
+    result = build_catalog(library)
+    # The isolated target must have a readable current pointer before evidence
+    # checks. This publication is confined to the temporary target tree.
+    publish_catalog(library, result)
+elif sys.argv[1] == 'inspect':
+    registry = read_catalog(LibraryContext(library))
+    pairings = json.loads((library / 'catalog/generations' / registry['catalog_generation'] / 'views/execution-pairings.json').read_text())
+    result = {'registry': registry, 'records': scan_records(library), 'pairings': pairings, 'catalog': verify_catalog_files(library)}
+elif sys.argv[1] == 'verify-files':
+    result = verify_catalog_files(library)
+elif sys.argv[1] == 'evidence-check':
+    from leo_ppt_generator.asset_resolver import AssetResolver
+    from leo_ppt_generator.qualification import asset_generation, layout_capability_contract, load_receipts, verify_capability_evidence, file_reference, RECEIPTS_PATH
+    resolver = AssetResolver(context=LibraryContext(library))
+    generation = asset_generation(library)
+    if generation != sys.argv[2]:
+        raise ValueError('migration_target_evidence_generation_mismatch')
+    receipts = load_receipts(library)
+    required = set(json.loads(sys.argv[3]))
+    seen = {row.get('asset_id') for row in receipts}
+    if not required or required != seen:
+        raise ValueError('migration_target_evidence_asset_scope_mismatch')
+    verified, identities = [], set()
+    environment = environment_fingerprint()
+    for receipt in receipts:
+        if receipt.get('receipt_id') in identities:
+            raise ValueError('migration_target_evidence_duplicate_receipt')
+        identities.add(receipt.get('receipt_id'))
+        layout = resolver.resolve(receipt['asset_id'])
+        contract, dependencies = layout_capability_contract(layout, resolver=resolver, lane=receipt['lane'])
+        if (receipt['lane'] not in contract['lanes'] or receipt['relation'] not in contract['relations']
+                or contract['gaps'].get(receipt['lane'])):
+            raise ValueError('migration_target_evidence_owner_contract_mismatch')
+        qualification = verify_capability_evidence(receipt, library_root=library, asset_generation=generation,
+            expected_dependencies=dependencies, environment=environment)
+        verified.append({'receipt_id': receipt['receipt_id'], 'evidence_digest': receipt['evidence_digest'],
+                         'qualification': qualification})
+    result = {'asset_generation': generation, 'active_index': file_reference(library, RECEIPTS_PATH),
+              'verified_receipts': sorted(verified, key=lambda row: row['receipt_id'])}
+elif sys.argv[1] == 'quality-replay':
+    from leo_ppt_generator.quality_replay import evaluate_quality_replay
+    result = evaluate_quality_replay(Path(sys.argv[2]), json.loads(sys.argv[3]))
+else:
+    raise ValueError('migration_target_catalog_action_invalid')
+owners = {name: hashlib.sha256((expected / name).read_bytes()).hexdigest() for name in
+          ('template_catalog.py', 'asset_resolver.py', 'qualification.py', 'execution_pairing.py')}
+print(json.dumps({'result': result, 'environment': environment_fingerprint(), 'owners': owners}, ensure_ascii=False, sort_keys=True))
+"""
+    environment = dict(os.environ, PYTHONPATH=str(package / "runtime/src"),
+                       LEO_PPT_BUNDLE=str(package), PYTHONDONTWRITEBYTECODE="1")
+    try:
+        process = subprocess.run([sys.executable, "-c", code, action, *arguments], cwd=package,
+                                 env=environment, capture_output=True, text=True, timeout=90)
+    except subprocess.TimeoutExpired as exc:
+        raise MigrationError("migration_target_catalog_timeout:" + action) from exc
+    if process.returncode != 0:
+        raise MigrationError("migration_target_catalog_" + action + "_failed:" + process.stderr[-1000:])
+    try:
+        document = json.loads(process.stdout)
+        if set(document) != {"result", "environment", "owners"}:
+            raise ValueError("fields")
+        root = package / "runtime/src/leo_ppt_generator"
+        if document["owners"] != {name: file_reference(root, name)["sha256"] for name in
+                ("template_catalog.py", "asset_resolver.py", "qualification.py", "execution_pairing.py")}:
+            raise ValueError("owners")
+    except (TypeError, ValueError, KeyError) as exc:
+        raise MigrationError("migration_target_catalog_output_invalid") from exc
+    return document
+
+
+def _uses_target_runtime(plan):
+    return bool(plan.get("target_evidence")) or any(row["operation"] == "replace" and path.startswith("leo-ppt-generator/runtime/src/leo_ppt_generator/")
+               for path, row in plan["mapping"].items())
+
+
+def _verify_target_evidence(plan, root):
+    manifest = plan.get("target_evidence")
+    if manifest is None:
+        return None
+    return _catalog_subprocess(Path(root) / "leo-ppt-generator", "evidence-check",
+        manifest["asset_generation"], json.dumps(manifest["required_assets"], ensure_ascii=False))
+
+
+def _migration_catalog_details(plan, root):
+    package = Path(root) / "leo-ppt-generator"
+    _verify_target_evidence(plan, root)
+    if _uses_target_runtime(plan):
+        return _catalog_subprocess(package, "inspect")["result"]
+    from .template_catalog import LibraryContext, read_catalog, scan_records
+    library = package / "template-library"
+    registry = read_catalog(LibraryContext(library))
+    prefix = "catalog/generations/" + registry["catalog_generation"] + "/"
+    return {"registry": registry, "records": scan_records(library),
+            "pairings": json.loads(read_evidence_bytes(library, prefix + "views/execution-pairings.json")),
+            "catalog": verify_catalog_files(library)}
+
+
+def _migration_catalog_files(plan, root):
+    package = Path(root) / "leo-ppt-generator"
+    _verify_target_evidence(plan, root)
+    if _uses_target_runtime(plan):
+        return _catalog_subprocess(package, "verify-files")["result"]
+    return verify_catalog_files(package / "template-library")
+
+
+def _migration_visual_replay(plan, staging, work, reference):
+    if _uses_target_runtime(plan):
+        return _catalog_subprocess(Path(staging) / "leo-ppt-generator", "quality-replay", str(work),
+                                   json.dumps(reference))["result"]
+    from .quality_replay import evaluate_quality_replay
+    return evaluate_quality_replay(work, reference)
+
+
+def _build_catalog_in_target_runtime(source, target_library, replacements, paths, evidence_manifest=None):
+    """在替换后的目标 runtime 子进程中派生 catalog；不信任 delivery 旧 owner。"""
+    package = Path(source) / "leo-ppt-generator"
+    if not (package / "runtime/src").is_dir() or not (package / "assets").is_dir():
+        raise MigrationError("migration_target_runtime_unavailable")
+    target_root = Path(tempfile.mkdtemp(prefix="leo-migration-target-runtime-")).resolve()
+    target_package = target_root / "leo-ppt-generator"
+    try:
+        for relative in sorted(paths):
+            if not relative.startswith(("leo-ppt-generator/runtime/src/", "leo-ppt-generator/assets/")):
+                continue
+            before = file_state(source, relative)
+            body = read_evidence_bytes(source, relative)
+            if file_state(source, relative) != before:
+                raise MigrationError("migration_source_drift:" + relative)
+            destination = safe_path(target_root, relative)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(body)
+            destination.chmod(before["mode"])
+        shutil.copytree(target_library, target_package / "template-library")
+        for path, row in replacements.items():
+            if not path.startswith("leo-ppt-generator/runtime/src/"):
+                continue
+            destination = safe_path(target_root, path)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(_replacement_bytes(row))
+            destination.chmod(row["mode"])
+        result = _catalog_subprocess(target_package, "build")
+        if evidence_manifest:
+            registry = result["result"]["registry.json"]
+            evidence = _catalog_subprocess(target_package, "evidence-check", registry["asset_generation"],
+                                            json.dumps(evidence_manifest["required_assets"], ensure_ascii=False))["result"]
+            if evidence["asset_generation"] != evidence_manifest["asset_generation"]:
+                raise MigrationError("migration_target_evidence_generation_mismatch")
+        from .qualification import environment_fingerprint
+        source_environment = environment_fingerprint()
+        if {key: value for key, value in result["environment"].items() if key != "execution_source_digest"} != {
+                key: value for key, value in source_environment.items() if key != "execution_source_digest"}:
+            raise MigrationError("migration_target_environment_mismatch")
+        return result["result"]
+    finally:
+        shutil.rmtree(target_root, ignore_errors=True)
+
+
+def preview_migration(source_root, out_plan, *, prerequisite=None, consumer_replacements=None, target_evidence=None):
     """只写唯一计划；临时转换用来计算真实目标 hash，不触碰 delivery。"""
     import base64
     from .template_catalog import build_catalog
@@ -284,19 +960,24 @@ def preview_migration(source_root, out_plan, *, prerequisite=None):
     if out.name != "migration-plan.json":
         raise MigrationError("migration_unique_plan_name_required")
     state = git_state(source)
+    replacements = _consumer_replacements(source, work, consumer_replacements)
+    evidence, evidence_manifest = _target_evidence_manifest(source, work, target_evidence)
     library = source / "leo-ppt-generator/template-library"
     paths = _migration_file_paths(source)
     descriptors = {}
     with tempfile.TemporaryDirectory(prefix="leo-migration-preview-") as temporary:
         target = Path(temporary).resolve() / "library"
         rows = materialize_shadow_library(library, target)
+        _apply_target_evidence(target, evidence)
         for row in rows:
             before, after = "leo-ppt-generator/template-library/" + row["source"], "leo-ppt-generator/template-library/" + row["target"]
             descriptors[after] = {"operation": "normalize" if row["source"] == "library.json" else "copy",
                 "source": before, "source_relative_to_library": row["source"], "sha256": row["target_state"]["sha256"],
                 "mode": row["target_state"]["mode"]}
             paths.add(before)
-        outputs = build_catalog(target)
+        outputs = (_build_catalog_in_target_runtime(source, target, {**replacements, **evidence}, paths, evidence_manifest)
+                   if evidence_manifest or any(path.startswith("leo-ppt-generator/runtime/src/leo_ppt_generator/") for path in replacements)
+                   else build_catalog(target))
         generation = outputs["registry.json"]["catalog_generation"]
         catalog = {"catalog/generations/" + generation + "/" + path: value for path, value in outputs.items()}
         catalog["catalog/current.json"] = {"kind": "template-catalog-pointer", "schema_version": 2, "generation": generation}
@@ -308,6 +989,10 @@ def preview_migration(source_root, out_plan, *, prerequisite=None):
         if not path.startswith("leo-ppt-generator/template-library/"):
             before = file_state(source, path)
             descriptors[path] = {"operation": "copy", "source": path, "sha256": before["sha256"], "mode": before["mode"]}
+    if set(replacements) - paths:
+        raise MigrationError("migration_consumer_source_not_in_snapshot")
+    descriptors.update(replacements)
+    descriptors.update(evidence)
     touched = paths | set(descriptors)
     snapshot = {path: file_state(source, path) for path in sorted(touched)}
     deletes = [{"path": path, "expected": snapshot[path], "after_publish": snapshot[path], "already_absent": "only-after-journaled-delete"}
@@ -317,12 +1002,27 @@ def preview_migration(source_root, out_plan, *, prerequisite=None):
         verify_value_gate(work, prerequisite)
         gap = None
     closure = scan_consumer_closure(source)
+    target_closure = _scan_consumer_closure(source, {path: _replacement_bytes(row) for path, row in replacements.items()})
     plan = {"schema_version": 2, "kind": PLAN_KIND, "phase": "preview", "gate": "U7-A" if gap else "U7-B",
         "source_root": str(source), "base_revision": state["head"], "dirty_snapshot": state["dirty"],
-        "source_snapshot": snapshot, "closure": closure, "mapping": descriptors,
+        "source_snapshot": snapshot, "closure": closure, "target_closure": target_closure,
+        "target_closure_digest": digest(target_closure), "mapping": descriptors,
         "target_hashes": {path: row["sha256"] for path, row in sorted(descriptors.items())},
         "delete_allowlist": deletes, "allowlist_digest": digest(deletes), "prerequisite": prerequisite,
-        "gaps": [gap] if gap else [], "owner_sha256": file_reference(Path(__file__).parent, Path(__file__).name)["sha256"]}
+        "gaps": [gap] if gap else [], "target_evidence": evidence_manifest,
+        "target_evidence_digest": digest(evidence_manifest) if evidence_manifest else None,
+        "owner_sha256": file_reference(Path(__file__).parent, Path(__file__).name)["sha256"]}
+    if evidence_manifest:
+        expected_generation = evidence_manifest["asset_generation"]
+        actual_generation = None
+        # 生成 registry 是目标资产代的唯一权威输入。
+        for path, row in descriptors.items():
+            if path.endswith("/registry.json") and row.get("operation") == "derived":
+                body = _target_bytes(plan, path)
+                actual_generation = json.loads(body)["asset_generation"]
+                break
+        if actual_generation != expected_generation:
+            raise MigrationError("migration_target_evidence_generation_mismatch")
     if git_state(source) != state or any(file_state(source, path) != before for path, before in snapshot.items()):
         raise MigrationError("migration_source_changed_during_preview")
     plan["plan_digest"] = digest(plan)
@@ -333,7 +1033,9 @@ def preview_migration(source_root, out_plan, *, prerequisite=None):
 def _target_bytes(plan, path):
     import base64
     row = plan["mapping"][path]
-    if row["operation"] == "derived":
+    if row["operation"] in {"replace", "evidence"}:
+        body = _replacement_bytes(row, require_text=row["operation"] == "replace")
+    elif row["operation"] == "derived":
         body = base64.b64decode(row["payload"], validate=True)
     elif row["operation"] in {"copy", "normalize"}:
         body = read_evidence_bytes(plan["source_root"], row["source"])
@@ -419,6 +1121,8 @@ def stage_migration(plan_path, staging_root, *, checkpoint=None):
         journal["journal_digest"] = digest({k: v for k, v in journal.items() if k != "journal_digest"})
         atomic_write_json(state_path, journal)
     _check_source(plan)
+    _verify_target_closure(plan, staging)
+    _verify_target_evidence(plan, staging)
     return _write_sealed(work / "stage-receipt.json", {"schema_version": 2, "kind": RECEIPT_KIND,
         "phase": "stage", "status": "passed", "plan": plan_ref, "plan_digest": plan["plan_digest"],
         "staging_root": str(staging), "staging_hashes": _staged_hashes(plan, staging),
@@ -430,6 +1134,13 @@ def _staged_hashes(plan, staging):
         if file_state(staging, row["path"])["type"] != "absent":
             raise MigrationError("migration_staging_legacy_file_remains:" + row["path"])
     return _converged_hashes(plan, staging)
+
+
+def _verify_target_closure(plan, root):
+    closure = scan_consumer_closure(root)
+    if closure != plan["target_closure"] or digest(closure) != plan["target_closure_digest"]:
+        raise MigrationError("migration_target_closure_mismatch")
+    return closure
 
 
 def _converged_hashes(plan, root):
@@ -451,8 +1162,6 @@ def _converged_hashes(plan, root):
 def verify_migration(plan_path, staging_root, out_receipt, *, visual_receipt=None):
     """结构验证与真实 U6-A 共同签发 publication-ready；缺一路保持 blocked。"""
     import uuid
-    from .template_catalog import LibraryContext, read_catalog, scan_records
-    from .quality_replay import evaluate_quality_replay
     work, staging = Path(plan_path).absolute().parent, Path(staging_root).absolute()
     output = Path(out_receipt).absolute()
     if output.parent != work:
@@ -482,22 +1191,28 @@ def verify_migration(plan_path, staging_root, out_receipt, *, visual_receipt=Non
         checks[name] = {"status": evidence["status"], "evidence": file_reference(work, path.relative_to(work).as_posix())}
         return evidence
 
+    catalog_details = None
+
+    def current_catalog():
+        nonlocal catalog_details
+        if catalog_details is None:
+            catalog_details = _migration_catalog_details(plan, staging)
+        return catalog_details
+
     library = staging / "leo-ppt-generator/template-library"
     check("asset-bytes", lambda: {"files": _staged_hashes(plan, staging)})
-    check("identity-reference", lambda: {"records": scan_records(library)})
-    check("v2-catalog", lambda: {"catalog_generation": read_catalog(LibraryContext(library))["catalog_generation"]})
+    check("identity-reference", lambda: {"records": current_catalog()["records"]})
+    check("v2-catalog", lambda: {"catalog_generation": current_catalog()["registry"]["catalog_generation"]})
 
     def probe():
-        registry = read_catalog(LibraryContext(library))
-        prefix = "catalog/generations/" + registry["catalog_generation"] + "/"
-        view = json.loads(read_evidence_bytes(library, prefix + "views/execution-pairings.json"))
+        view = current_catalog()["pairings"]
         if not view["candidates"] or {row["identity"]["lane"] for row in view["candidates"]} != {"render:html", "image"}:
             raise MigrationError("migration_real_probe_qualification_incomplete")
         return view
 
     check("probe", probe)
 
-    check("consumer-closure", lambda: verify_consumer_closure(staging))
+    check("consumer-closure", lambda: (_verify_target_closure(plan, staging), verify_consumer_closure(staging))[1])
 
     def bundle_check():
         package = staging / "leo-ppt-generator"
@@ -512,13 +1227,13 @@ def verify_migration(plan_path, staging_root, out_receipt, *, visual_receipt=Non
         return {"command": command, "exit_code": process.returncode, "log": file_reference(work, log.relative_to(work).as_posix())}
 
     check("bundle", bundle_check)
-    check("manifest-hashes", lambda: {"files": _staged_hashes(plan, staging), "catalog": verify_catalog_files(library)})
+    check("manifest-hashes", lambda: {"files": _staged_hashes(plan, staging), "catalog": _migration_catalog_files(plan, staging)})
     visual_status = "blocked"
     if visual_receipt is None:
         gaps.append("migration_u6a_receipt_missing")
     else:
         visual = sealed(load_document(work, visual_receipt), "receipt_digest")
-        live = evaluate_quality_replay(work, visual["plan"])
+        live = _migration_visual_replay(plan, staging, work, visual["plan"])
         if (visual == live and live["status"] == "passed" and live["phase"] == "U6-A" and live["publication_ready"]):
             visual_status = "passed"
         else:
@@ -532,8 +1247,6 @@ def verify_migration(plan_path, staging_root, out_receipt, *, visual_receipt=Non
 
 
 def _verified_for_publication(work, plan_ref, verified_ref):
-    from .quality_replay import evaluate_quality_replay
-    from .template_catalog import LibraryContext, read_catalog
     plan = validate_plan(load_document(work, plan_ref))
     if plan["owner_sha256"] != file_reference(Path(__file__).parent, Path(__file__).name)["sha256"]:
         raise MigrationError("migration_owner_changed")
@@ -557,9 +1270,10 @@ def _verified_for_publication(work, plan_ref, verified_ref):
     if receipt["staging_hashes"] != _staged_hashes(plan, staging):
         raise MigrationError("migration_verified_manifest_mismatch")
     verify_consumer_closure(staging)
-    read_catalog(LibraryContext(staging / "leo-ppt-generator/template-library"))
+    _verify_target_closure(plan, staging)
+    _migration_catalog_details(plan, staging)
     visual = sealed(load_document(work, receipt["visual_receipt"]), "receipt_digest")
-    live = evaluate_quality_replay(work, visual["plan"])
+    live = _migration_visual_replay(plan, staging, work, visual["plan"])
     if visual != live or live["status"] != "passed" or live["phase"] != "U6-A" or not live["publication_ready"]:
         raise MigrationError("migration_u6a_not_passed_or_stale")
     return plan, receipt
@@ -927,7 +1641,7 @@ def cleanup_migration(plan_path, publication_path, delivery_root, *, checkpoint=
             if actual != staging_hashes:
                 raise MigrationError("migration_final_hash_convergence_failed")
             closure = verify_consumer_closure(delivery)
-            verify_catalog_files(delivery / "leo-ppt-generator/template-library")
+            _migration_catalog_files(plan, delivery)
             _check_untouched(plan)
             journal["status"] = "passed"
             _write_journal(progress_path, journal)
@@ -1078,12 +1792,46 @@ def validate_plan_contract(plan):
         raise MigrationError("migration_source_root_invalid")
     if [row["path"] for row in plan["closure"]["roots"]] != list(CLOSURE_ROOTS):
         raise MigrationError("migration_closure_roots_mismatch")
+    if (plan["target_closure_digest"] != digest(plan["target_closure"])
+            or plan["target_closure"]["roots"] != plan["closure"]["roots"]
+            or plan["target_closure"]["signatures"] != plan["closure"]["signatures"]):
+        raise MigrationError("migration_target_closure_mismatch")
+    manifest = plan["target_evidence"]
+    expected_evidence = {row["path"]: {"operation": "evidence", "source": row["path"],
+                         "expected": row["expected"], **row["target"]}
+                         for row in manifest["files"]} if manifest else {}
+    actual_evidence = {path: row for path, row in plan["mapping"].items() if row["operation"] == "evidence"}
+    if (plan["target_evidence_digest"] != (digest(manifest) if manifest else None)
+            or actual_evidence != expected_evidence
+            or manifest and len(expected_evidence) != len(manifest["files"])
+            or manifest and "leo-ppt-generator/template-library/evidence/capability-receipts.json" not in expected_evidence):
+        raise MigrationError("migration_target_evidence_mapping_invalid")
+    if manifest:
+        registries = [json.loads(_target_bytes(plan, path)) for path, row in plan["mapping"].items()
+                      if path.endswith("/registry.json") and row["operation"] == "derived"]
+        if len(registries) != 1 or registries[0].get("asset_generation") != manifest["asset_generation"]:
+            raise MigrationError("migration_target_evidence_generation_mismatch")
     for path in plan["source_snapshot"]:
         safe_path(plan["source_root"], path)
         if not path.startswith("leo-ppt-generator/") and path != "CHANGELOG.md":
             raise MigrationError("migration_write_scope_invalid")
     for path, row in plan["mapping"].items():
-        if row["operation"] == "derived":
+        safe_path(plan["source_root"], path)
+        if row["sha256"] != plan["target_hashes"].get(path):
+            raise MigrationError("migration_mapping_hash_mismatch")
+        if row["operation"] == "evidence":
+            if (not path.startswith("leo-ppt-generator/template-library/evidence/")
+                    or row["source"] != path or row["expected"] != plan["source_snapshot"].get(path)
+                    or row["expected"]["type"] not in {"file", "absent"}):
+                raise MigrationError("migration_target_evidence_mapping_invalid")
+            _replacement_bytes(row, require_text=False)
+        elif row["operation"] == "replace":
+            _replacement_scope(path)
+            if (row["source"] != path or row["expected"].get("type") != "file"
+                    or row["expected"] != plan["source_snapshot"].get(path)):
+                raise MigrationError("migration_consumer_mapping_source_mismatch")
+            _replacement_bytes(row)
+        elif row["operation"] == "derived":
             if not path.startswith("leo-ppt-generator/template-library/catalog/"):
                 raise MigrationError("migration_derived_scope_invalid")
         else:
@@ -1234,10 +1982,11 @@ def _verify_final_state(root, reference, *, stage_receipt):
         if deleted[row["path"]].get("before") != row["expected"] or file_state(delivery, row["path"])["type"] != "absent":
             raise MigrationError("migration_cleanup_drift:" + row["path"])
     closure = verify_consumer_closure(delivery)
+    _verify_target_closure(plan, delivery)
     if final.get("closure") != closure:
         raise MigrationError("migration_final_consumer_closure_failed")
-    verify_catalog_files(delivery / "leo-ppt-generator/template-library")
-    verify_catalog_files(staging / "leo-ppt-generator/template-library")
+    _migration_catalog_files(plan, delivery)
+    _migration_catalog_files(plan, staging)
     return final
 
 

@@ -1,0 +1,21 @@
+{
+  "backend": "render:html",
+  "data_sha256": "367a21451ee58be7e5c720743f0bc8df66764c3dbdfe90f98bf547fe43a8bbba",
+  "device_scale_factor": 2,
+  "dialect": null,
+  "fonts_checked": [],
+  "height": 1440,
+  "kind": "render_provenance",
+  "out": "/Users/kuang/knowledge/leo-skills/leo-ppt-generator/template-library/evidence/probes/fix-pro-templates-20260920/duo-compare-comparison/positive.png",
+  "out_sha256": "f4bac03aadd1224102ddea1a3b39fbcd969289657b1d85fad008b505c6b14db2",
+  "overflow_check": "pass",
+  "ready_signal": "data-leo-ready",
+  "render_ms": 668,
+  "rendered_at": "2026-09-20T05:29:39.615Z",
+  "renderer": "playwright-chromium@1.63.0",
+  "schema_version": 1,
+  "template_id": "builtin:template:compare-pro",
+  "template_sha256": "2fecb9c56814e5c2c44469cc572c30a278560ec67ab8a797f0fb1e758b05090f",
+  "warnings": [],
+  "width": 2560
+}

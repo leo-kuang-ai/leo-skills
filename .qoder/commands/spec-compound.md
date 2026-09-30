@@ -29,7 +29,7 @@ Only capture reasoning that is not readily recoverable from final code, tests, o
 
 An existing learning that became materially inaccurate or incomplete qualifies because leaving it would mislead: update that learning instead of creating a duplicate.
 
-Document one non-trivial solved problem per run. Process distinct learnings in separate sequential runs with fresh grounding; do not batch drafts and stitch cross-references afterward. If nothing is solved and verified, write nothing and report why.
+Document one non-trivial solved problem per run. Process distinct learnings in separate sequential runs with fresh grounding; do not batch drafts and stitch cross-references afterward. If nothing is solved and verified, write nothing and report why, pointing the unsolved or unverified work to `spec-debug` (repairs) or `spec-work` (settled implementation) and returning to capture the learning only after it is solved and verified.
 
 A standalone request to bootstrap `CONCEPTS.md` belongs to `spec-compound-refresh`; exit this workflow after that handoff. This skill seeds only the learning's investigated area.
 

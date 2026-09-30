@@ -22,6 +22,7 @@ This command takes a work document (plan or specification) or a bare prompt desc
 - **Inputs:** settled implementation-ready code plan, validated task pack, explicit knowledge-work plan, or concrete bounded implementation prompt.
 - **Outputs:** scoped source changes, task/unit evidence, required review/residual posture, structured verification closeout, and an authorization-aware handoff. A task pack remains derived; its source plan owns scope/lifecycle.
 - **Hard exits:** unresolved target repo/dirty overlap/source owner, requirements-only or invalid unified metadata, task-pack/source-plan drift, scope-changing acceptance/architecture/provider/source-runtime discovery, failed required review/verification, or missing mutation/commit/landing authority for the requested exit.
+- **Enforcement provenance:** among the hard exits, only `failed required verification` is script-verified (closeout chain: `verification-run-summary` + `spec-first internal honest-closeout`); the rest are LLM-owned semantic exits enforced by this contract text, not runtime blocks.
 - **Ownership:** scripts prepare deterministic facts; LLMs judge semantic fit. Canonical source is modified; generated runtime mirrors are never source fixes. Local mutation, commit, landing, lifecycle, and durable evidence are separate exits.
 - **Consumers:** `spec-code-review`, caller-owned LFG/goal flows, commit/PR/release workflows, `spec-compound`, and human reviewers.
 
@@ -106,7 +107,7 @@ Standalone only; Return-to-Caller skips this phase. When all Phase 2 tasks are c
 
 1. **Review** — Invoke the `spec-code-review` skill (invocation command in `.opencode/skills/spec-work/references/review-findings-followup.md` § Fallback). Use `mode:agent` in orchestrated workflows; pass `plan:<path>` when you have a plan, `base:<ref>` when the merge base is known, and `depth:full` when a deep/thorough review was explicitly requested.
 2. **Apply fixes** — Load `.opencode/skills/spec-work/references/review-findings-followup.md`. Filter eligibility on JSON only and batch by file. Use authorized fix workers or inline fallback; the orchestrator integrates and tests. Commit only with `commit_authorization: authorized`.
-3. **Residual Work Gate** — Only after followup; unresolved actionable findings go through the gate in `shipping-workflow.md` (autonomous sessions continue in-scope repairs and record blocked residuals — headless mode never auto-accepts risk; interactive sessions ask only decisions not covered by existing authorization).
+3. **Residual Work Gate** — Only after followup; unresolved actionable findings go through the gate in `shipping-workflow.md` (autonomous sessions continue in-scope repairs and record blocked residuals — headless mode never auto-accepts risk; treat a session as headless whenever no interactive input channel is confirmed, defaulting to headless when uncertain; interactive sessions ask only decisions not covered by existing authorization).
 
 ## Return-to-Caller Mode
 

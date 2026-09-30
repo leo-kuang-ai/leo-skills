@@ -28,6 +28,7 @@ Reviews code changes against intent, tests, standards, and risk lenses. When rev
 - When feedback is needed on any code changes
 - Can be invoked standalone
 - Can run inside larger workflows; use `mode:agent` when the caller needs JSON instead of markdown tables
+- Route out instead of starting a review when the input is feedback already left on a PR (`spec-resolve-pr-feedback`) or a request to diagnose or fix a known failure (`spec-debug`)
 
 ## Scenario Capability
 
@@ -42,8 +43,8 @@ Overrides: high-risk
 
 Read each reference before executing its step; the entry summary does not replace the procedure. All paths use the same run identity and resolved scope.
 
-1. First read `.opencode/skills/spec-code-review/references/modes-and-output.md`, parse arguments, and freeze mode, mutation, commit, and dispatch policy. `mode:agent` is always report-only.
-2. At Stage 1 read `.opencode/skills/spec-code-review/references/scope.md` to resolve the diff, task attribution, and local scope snapshot. Missing dispatch authorization or capability selects its inline fallback with explicit degraded coverage and required-gate limitations.
+1. First read `.opencode/skills/spec-code-review/references/modes-and-output.md`, parse arguments, and freeze mode, mutation, commit, and dispatch policy. `mode:agent` is always report-only. Route out before reviewing: PR review feedback goes to `spec-resolve-pr-feedback`; diagnose/fix requests for a known failure go to `spec-debug`.
+2. At Stage 1 read `.opencode/skills/spec-code-review/references/scope.md` to resolve the diff, task attribution, and local scope snapshot. Missing dispatch authorization or capability selects its inline fallback with explicit degraded coverage and required-gate limitations. 普通本地空 diff 按该引用的条件提前返回 skipped；未知范围或计划/任务完成度审查不能走此分支。
 3. At Stage 2 read `.opencode/skills/spec-code-review/references/intent-and-plan.md` to establish intent and the current plan/task completeness scope.
 4. When dispatch is authorized, at Stage 3 read `.opencode/skills/spec-code-review/references/persona-catalog.md` and `.opencode/skills/spec-code-review/references/select-and-route.md` to select the roster, standards, and risk paths. Peer admission remains subject to the actual receipts, egress authorization, and provider limits in `.opencode/skills/spec-code-review/references/cross-model-review.md`.
 5. At Stage 4 read `.opencode/skills/spec-code-review/references/dispatch-reviewers.md`, load the selected prompt assets, and dispatch within available capacity. Collect every started reviewer's result before merging; a pending return is not an empty finding set.
@@ -60,7 +61,7 @@ Same review pipeline for default and `mode:agent`:
 
 - **Report-only by default; never land.** Never push, open PRs, or file tickets in any mode. Ordinary default review and every `mode:agent` run report findings only. Stage 5c runs solely for default mode with `mutation_policy: apply-fixes`; commit remains a separate authorization gate.
 - **Agent mode never mutates.** In **`mode:agent`** it never mutates the tree, regardless of adjacent apply/fix wording.
-- **No blocking prompts.** Never use `AskUserQuestion`, `request_user_input`, or other blocking question tools. Infer intent, plan, and scope from explicit tokens, git state, PR metadata, and conversation. Note uncertainty in Coverage or the verdict — do not stop to ask.
+- **No blocking prompts.** Never use host blocking-question primitives (`AskUserQuestion`, `request_user_input`, or similar tools). Infer intent, plan, and scope from explicit tokens, git state, PR metadata, and conversation. Note uncertainty in Coverage or the verdict — do not stop to ask.
 - **Explicit mutations only.** Never run `gh pr checkout`, `git checkout`, `git switch`, or similar branch-switch commands. Passing a PR number, URL, or branch name selects **review scope**, not permission to mutate the working tree. To review local uncommitted work on a feature branch, check out that branch yourself (or stay on it) and pass `base:` or no target.
 - **Smart defaults.** Untracked files: review tracked changes only and list excluded paths in Coverage. Plan: use `plan:` when passed; otherwise discover conservatively from PR body or branch keywords. Weak advisory P2/P3 from testing/maintainability alone: demote to `testing_gaps` / `residual_risks` per Stage 5.
 - **Report outcomes, not machinery.** What you show the user is about the review: what's being examined (the PR/branch), which coverage is included and the one-line reason for each conditional lens, the independent cross-model pass and which model runs it, and the findings. Keep the skill's internals out of user-facing text — model-tier assignments, raw scope-mode codenames (`local-aligned`/`pr-remote`), staging the diff to disk, loading persona files, parallel-dispatch bookkeeping, and step-by-step narration of your own setup. Name what the user would recognize (a PR number, a reviewer's concern, a peer model), not the plumbing. This governs *what* you surface and suppress; it does not script the wording — use your own voice.

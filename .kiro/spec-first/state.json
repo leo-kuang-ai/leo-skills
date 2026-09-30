@@ -1,8 +1,9 @@
 {
-  "manifestVersion": "1.15.1",
+  "manifestVersion": "1.15.3",
   "platform": "kiro",
   "commands": [],
   "skills": [
+    "autoresearch",
     "spec-commit",
     "spec-commit-push-pr",
     "spec-explain",

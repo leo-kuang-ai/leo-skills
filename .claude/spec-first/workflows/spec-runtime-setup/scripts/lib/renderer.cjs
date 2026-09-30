@@ -296,9 +296,13 @@ function renderHumanSummary(
 
 function deriveExecutionSummary({ toolFacts, summary, manifest }) {
   const itemActionRequired = (toolFacts.items || []).some((item) => item.result === 'action-required');
-  const providerActionRequired = (toolFacts.provider_readiness || []).some((provider) => (
-    ['degraded', 'failed', 'blocked'].includes(provider.readiness_status)
-  ));
+  const providerActionRequired = (toolFacts.provider_readiness || []).some((provider) => {
+    const hookStatus = provider.steady_state && provider.steady_state.hook_status;
+    // 外部/不可接管 hook 是可选稳态能力，不得覆盖已通过的核心 Provider readiness。
+    if (provider.provider === 'graphify'
+      && ['blocked', 'verified-external', 'skipped'].includes(hookStatus)) return false;
+    return ['degraded', 'failed', 'blocked'].includes(provider.readiness_status);
+  });
   const actionRequired = summary.baseline_ready !== true
     || summary.host_runtime_ready !== true
     || ['stale', 'missing'].includes(manifest.status)

@@ -1,6 +1,6 @@
 ---
 name: spec-compound-refresh
-description: Refresh docs/solutions learnings against the current codebase. Use when auditing stale, overlapping, superseded, or drifted learnings; avoid general refactor, debugging, or code review unless docs/solutions is explicit.
+description: Refresh docs/solutions learnings and bootstrap or maintain CONCEPTS.md vocabulary against the current codebase. Use when auditing stale, overlapping, superseded, or drifted learnings, or when asked to bootstrap or cross-document maintain CONCEPTS.md; avoid general refactor, debugging, or code review unless docs/solutions is explicit.
 argument-hint: "[optional: scope hint — directory, filename, module, or keyword] [mode:non-interactive]"
 metadata:
   internal: true
@@ -138,7 +138,7 @@ Only one flow runs per candidate; the reference contains the per-action criteria
 
 ## Phase 4.5: Vocabulary Capture
 
-Read `references/concepts-vocabulary.md` unconditionally after per-document actions. It owns qualifying terms, scoped seeding, reconciliation, scrub rules, and silent vocabulary edits.
+完成逐文档操作后，读取 `references/concepts-vocabulary.md` 的通用词汇规则，再读取 `references/vocabulary-refresh.md` 的本轮聚合、候选发布与报告流程。
 
 ## Phase 4.75: Validate And Publish
 

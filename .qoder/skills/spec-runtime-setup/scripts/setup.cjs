@@ -7,6 +7,7 @@ const { parseEntrypointOptions, helpResult } = require('./lib/args.cjs');
 const { isAbsolutePath } = require('./lib/path-safety.cjs');
 const {
   buildActionPlan,
+  planExecutionAdvice,
 } = require('./lib/mode-policy.cjs');
 const {
   isBaselineBlocking,
@@ -67,6 +68,7 @@ const {
 } = require('./lib/workspace-graph-lifecycle-lease.cjs');
 const {
   dependencyFor,
+  providerOwnsInstallation,
   interpolateArgs,
   probeHelper,
   probeRegistry,
@@ -141,7 +143,7 @@ function runSetup(input = {}) {
     };
   }
 
-  const mutationNeedsHost = ['verify', 'only', 'graphify-refresh', 'host-config-repair', 'workspace-graph-build'].includes(actionPlan.mode);
+  const mutationNeedsHost = ['bare', 'verify', 'only', 'graphify-refresh', 'host-config-repair', 'workspace-graph-build'].includes(actionPlan.mode);
   const runner = input.runner || runCommandSync;
   const candidates = advisoryHostCandidates({ env, runner });
   const internalWorkspaceRefresh = isInternalWorkspaceGraphRefreshInvocation({ actionPlan, env });
@@ -202,6 +204,10 @@ function runSetup(input = {}) {
     if (actionPlan.args.workspaceGraphStatus) {
       return runWorkspaceGraphStatusSetup(context);
     }
+    // 父目录 bare/check 仅诊断；不得因子仓缺投射阻断只读路径。
+    if (target.mode === 'workspace-all-repos' && ['bare', 'check'].includes(actionPlan.mode)) {
+      return runParentWorkspaceDiagnostic(context);
+    }
     const runtimeProjectionSelection = requiresRuntimeProjectionPreflight(actionPlan)
       ? resolveRuntimeProjectionTargets(context)
       : null;
@@ -222,10 +228,6 @@ function runSetup(input = {}) {
       }
       if (!['bare', 'check'].includes(actionPlan.mode)) {
         return runWorkspaceBatch(context, { runSingleTarget });
-      }
-      // bare/check on a requirement parent: dual-path diagnostic (not single-repo facts).
-      if (actionPlan.mode === 'bare' || actionPlan.mode === 'check') {
-        return runParentWorkspaceDiagnostic(context);
       }
     }
     return runSingleTarget(context, target.target_root || cwd);
@@ -538,7 +540,7 @@ function runSingleTarget(context, repoRoot) {
   const { actionPlan } = context;
   if (actionPlan.mode === 'project-config') return runProjectConfig(context, repoRoot);
   if (actionPlan.mode === 'plan') return runPlan(context, repoRoot);
-  if (actionPlan.mode === 'bare' || actionPlan.mode === 'check') return runDiagnostic(context, repoRoot);
+  if (actionPlan.mode === 'check') return runDiagnostic(context, repoRoot);
   return runVerificationOrMutation(context, repoRoot);
 }
 
@@ -599,7 +601,7 @@ function runPlan(context, repoRoot) {
       ? '修复被阻止的 Provider 目标或路径，然后重新运行 plan。'
       : hostConfigBlock
         ? hostConfigBlock.next_action || '修复 Host 配置冲突，然后重新运行 plan。'
-      : '审查计划中的 mutation，然后使用相同选择且不带 --plan 重新运行。',
+      : planExecutionAdvice(context.actionPlan),
   });
   return {
     exit_code: blockedEntry ? 2 : 0,
@@ -617,13 +619,20 @@ function buildInstallPreviewActions(context, repoRoot, providerPlans) {
     if (entry.setup_required === true && !context.actionPlan.selected_ids.includes(entry.id)) continue;
     if (entry.required === false && !context.actionPlan.selected_ids.includes(entry.id)) continue;
     const installation = resolveInstallation(entry, context.platform);
-    if (installation && installation.command) {
+    if (installation && installation.command && !providerOwnsInstallation(context.effectiveRegistry, entry.id)) {
       const args = interpolateArgs(installation.args || [], dependencyFor(context, entry.dependency_ref));
       actions.push({
         kind: installation.kind === 'warmup' ? 'warmup-tool' : 'install-tool',
         tool: entry.id,
         command: installation.command,
         args,
+        ...(installation.kind === 'warmup' && entry.resolved_dependency ? {
+          archive_verification: {
+            command: 'npm', args: ['pack', '--ignore-scripts', '--json', `${entry.resolved_dependency.package}@${entry.resolved_dependency.version}`],
+            expected_integrity: entry.resolved_dependency.integrity,
+            execution_scope: 'verified-local-archive',
+          },
+        } : {}),
         planned: !context.host
           || !warmupCacheHit(context, repoRoot, entry, installation.command, args),
       });
@@ -709,21 +718,9 @@ function buildInstallPreviewActions(context, repoRoot, providerPlans) {
   return actions;
 }
 
+// 单一实现抽取至 lib/host-config-repair-command.cjs(lane finding DR-015)。
 function hostConfigRepairCommand(context) {
-  const args = ['spec-runtime-setup'];
-  if (context.actionPlan.selected_ids.length > 0) {
-    args.push('--only', context.actionPlan.selected_ids.join(','));
-  }
-  if (context.actionPlan.mode === 'graphify-refresh' || context.actionPlan.args.refresh) args.push('--refresh');
-  if (context.actionPlan.args.repo) args.push('--repo', context.actionPlan.args.repo);
-  if (context.actionPlan.args.folder) args.push('--folder', context.actionPlan.args.folder);
-  if (context.actionPlan.args.allRepos) args.push('--all-repos');
-  if (context.actionPlan.args.userScope) args.push('--user-scope');
-  if (context.actionPlan.args.requirementWorkspace) {
-    args.push('--requirement-workspace', context.actionPlan.args.requirementWorkspace);
-  }
-  args.push('--repair-host-config');
-  return args.join(' ');
+  return require('./lib/host-config-repair-command.cjs').hostConfigRepairCommand(context);
 }
 
 function previewSafety(context) {

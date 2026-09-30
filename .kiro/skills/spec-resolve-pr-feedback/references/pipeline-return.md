@@ -23,6 +23,8 @@ limitations and return control to the caller.
 
 ## Return Contract
 
+Populate `residuals` with the exact typed objects from [evaluation-rubric.md](evaluation-rubric.md), retaining all owned source IDs/kinds, the complete decision_context, and every open thread URL. Continue independent authorized work; return `partial` when decisions remain. Neither a reply acknowledgment nor a count/PR link substitutes for the decision payload. Leave every covered thread open, and return before any remote write.
+
 ```json
 {
   "status": "complete | partial | blocked",
@@ -46,3 +48,7 @@ caller-authorized local change, and passed required verification. Failed,
 not-run, stale-head, incomplete pagination, or missing-source evidence cannot
 be upgraded to a successful fix. The outer caller owns final verification,
 fingerprinting, commit, push, durable handoff, and another watch snapshot.
+
+If implementation became blocked after writing, retain the actual modified paths
+and failed/not-run checks in a `needs-human` fix entry and the typed residual.
+Do not replace a remaining local diff with an empty `changed_files` array.

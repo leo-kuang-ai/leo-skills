@@ -57,11 +57,6 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
     return blockedPlan(args.errors[0].reason_code, args);
   }
 
-  // Bare setup converges the registry-declared baseline. Existing safety
-  // gates still reject unsafe paths and higher-precedence conflicts.
-  const bareInvocation = argv.length === 0;
-  if (bareInvocation) args.repairHostConfig = true;
-
   if (args.repo && args.folder) return blockedPlan('repo-and-folder', args);
   if (args.repo && args.allRepos) return blockedPlan('repo-and-all-repos', args);
   if (args.folder && args.allRepos) return blockedPlan('folder-and-all-repos', args);
@@ -139,6 +134,8 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
 
   let mode = selectedModes[0] || 'bare';
   if (args.refresh && !args.plan) mode = 'graphify-refresh';
+  // 范围参数只选择目标；默认模式仍收敛基线，显式模式保留各自权限。
+  const bareInvocation = mode === 'bare';
   if (['plan', 'verify'].includes(mode) && args.only.length === 0 && !args.requirementWorkspace) {
     args.installationOnly = true;
   }
@@ -165,6 +162,11 @@ function buildActionPlan({ argv = [], knownIds = [], defaultIds = [] } = {}) {
   };
 }
 
+function planExecutionAdvice(actionPlan) {
+  const scope = actionPlan.args.installationOnly ? '--installation-only' : `--only ${actionPlan.selected_ids.join(',')}`;
+  return `审查计划后移除 --plan，显式使用 ${scope}，并保留原 target、scope、selection、repair 和 refresh 选项；不得扩大已授权范围。`;
+}
+
 function hasWorkspaceProviders(ids) {
   return ids.length === 2 && ids.includes('codegraph') && ids.includes('graphify');
 }
@@ -185,4 +187,5 @@ function blockedPlan(reasonCode, args, extra = {}) {
 
 module.exports = {
   buildActionPlan,
+  planExecutionAdvice,
 };

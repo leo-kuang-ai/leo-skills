@@ -65,11 +65,11 @@ Read [Task Pack Review Lens](.qoder/skills/spec-doc-review/references/task-pack-
 
 ### Subagent Template
 
-@./.qoder/skills/spec-doc-review/references/subagent-template.md
+准备已授权的 reviewer dispatch 时读取 [Subagent Template](.qoder/skills/spec-doc-review/references/subagent-template.md)；inline 审查不因模板存在而分派。
 
 ### Findings Schema
 
-@./.qoder/skills/spec-doc-review/references/findings-schema.json
+构造或校验 findings envelope 前读取 [Findings Schema](.qoder/skills/spec-doc-review/references/findings-schema.json)。
 
 Selected reviewer prompt assets live under `.qoder/skills/spec-doc-review/references/personas/`. Read only the prompt files selected for the current review.
 

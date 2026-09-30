@@ -19,7 +19,7 @@ commit_authorization: authorized | missing
 branch_mutation_authorization: authorized | missing
 ```
 
-`workflow invocation does not authorize commit`; tool permission, a dirty tree, a branch name, or successful verification are execution facts, not authority. Explicit commit authorization does not imply branch mutation authorization. When commit authorization is missing, stop before branch mutation, staging, or commit and return `commit_authorization_missing`. When a checkout or new branch is needed but branch authority is missing, stop before that Git mutation and return `branch_mutation_authorization_missing` or obtain approval for the exact branch action.
+`workflow invocation does not authorize commit`; tool permission, a dirty tree, a branch name, or successful verification are execution facts, not authority. Explicit commit authorization does not imply branch mutation authorization. When any commit intent is expressed while commit authorization is missing, stop before branch mutation, staging, or commit and return `commit_authorization_missing`. When a checkout or new branch is needed but branch authority is missing, stop before that Git mutation and return `branch_mutation_authorization_missing` or obtain approval for the exact branch action. A pure status question about uncommitted changes (no commit intent expressed) does not trigger this gate: answer the query directly, mutate nothing, and do not stage or commit.
 
 This helper owns commit composition and the authorized commit checkpoint only. It does not own push, PR creation/update, plan lifecycle, or unrelated dirty paths. If branch creation would be required, obtain explicit approval for that concrete branch mutation before creating it.
 
@@ -59,7 +59,7 @@ If both fail, fall back to `main`.
 
 If the git status from the context above shows a clean working tree (no staged, modified, or untracked files), report that there is nothing to commit and stop.
 
-If the current branch from the context above is empty, the repository is in detached HEAD state. Explain that a branch is required if the user wants this work attached to a branch. When `branch_mutation_authorization: missing`, ask whether to create the exact proposed feature branch now and do not run checkout first. Use the platform's blocking question tool: `AskUserQuestion` in Claude Code (call `ToolSearch` with `select:AskUserQuestion` first if its schema isn't loaded) or `request_user_input` in Codex. Fall back to presenting options in chat only when no blocking tool exists in the harness or the call errors (e.g., Codex edit modes) — not because a schema load is required. Never silently skip the question.
+If the current branch from the context above is empty, the repository is in detached HEAD state. Explain that a branch is required if the user wants this work attached to a branch. When `branch_mutation_authorization: missing`, ask whether to create the exact proposed feature branch now and do not run checkout first. Use the platform's blocking question tool: the host's blocking question tool already in the current tool list, matched by capability (if a matching tool is listed but unloaded, load it through the host's tool-discovery primitive). Fall back to presenting options in chat only when no such tool is in the list or a real question call errors. Never silently skip the question.
 
 - If the user authorizes the displayed branch creation, set `branch_mutation_authorization: authorized`, derive the name from the change content, create it with `git checkout -b <branch-name>`, then run `git branch --show-current` again and use that result as the current branch name for the rest of the workflow.
 - If the user declines, continue with the detached HEAD commit.
@@ -112,9 +112,11 @@ type(scope): subject line here
 Optional body explaining why this change was made,
 not just what changed.
 EOF
-git add file1 file2 file3
-git commit -F "$COMMIT_MSG"
+git add -- file1 file2 file3
+git commit -F "$COMMIT_MSG" -- file1 file2 file3
 ```
+
+提交前核对 owned paths 与已暂存内容。显式路径提交保留其他文件的暂存状态，但会提交这些路径的工作树内容，不保留文件内的 hunk 选择。若同一文件混有其他任务或用户修改，必须使用调用方已验证的 hunk/index 隔离方案，或停止该组提交。不得 reset/stash 用户暂存区；遵循 `skills/spec-commit-push-pr/references/commit-and-push.md` 的同一边界。
 
 ### Step 5: Confirm
 

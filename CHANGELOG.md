@@ -8,6 +8,7 @@ adheres to a loose semantic-versioning convention.
 ## [Unreleased]
 
 ### Changed
+- **leo-ppt-generator：内容感知版式推荐**：版式排序现在消费冻结页面表达（关系、阅读任务、焦点和阅读顺序）及按完整执行身份隔离的 binding 文字容量摘要；接近的候选和表达待确认项标记 `undecided`，同章同阅读任务的普通内容页允许复用结构。策略版本更新为 `3`，冻结 binding reader 同步接受新策略及历史 v2 selection；缺容量声明保持中性，硬资格、显式选择、双 lane 物化与人工图片审核职责保持不变。(user-visible)
 - **leo-ppt-generator：明确单用户本地产品边界并收敛默认路径**：Skill 现在以个人本地安装、单工作区、串行生成 PPT 为产品定位；默认链路聚焦内容表达、模板/容量预检、本地渲染和 PPTX 交付。云端服务、多租户、服务端共享、并发 worker、历史迁移、Provider qualification 和视觉回放不再作为普通生成前置门槛；迁移与评测保留为用户明确触发的维护工具。(user-visible)
 - **leo-ppt-generator：为迁移输入建立逐文件消费者归属**：consumer closure 明确登记基线冻结、容量草案、风格别名迁移、风格审计及 `intake_*.py` 为只读迁移输入；仍保留活动 runtime、lint、生产脚本和测试的旧协议命中，避免目录级豁免掩盖未迁移消费者。(user-visible)
 - **leo-ppt-generator：继续收敛活动渲染与解析消费者**：runtime resolver、CLI、页面渲染错误和交付收据文档统一改用 current catalog 语义，移除活动路径对旧模板物理目录的描述；行为仍由 catalog 解析结果和既有错误门控制，未改变 v1 delivery 的实际协议版本。同步保留 v2 切换、Provider 和正式发布的未决状态。(user-visible)

@@ -23,6 +23,7 @@ for entry in (str(RUNTIME_SRC), str(PKG_ROOT)):
 from leo_ppt_generator.cli import build_parser, dispatch  # noqa: E402
 from leo_ppt_generator.contracts import ContractError  # noqa: E402
 from leo_ppt_generator.application.run_index import projection_view  # noqa: E402
+from leo_ppt_generator.layout_selection import SELECTION_POLICY_VERSION  # noqa: E402
 from leo_ppt_generator.render.receipt import (  # noqa: E402
     create_delivery_receipt,
     verify_delivery_receipt,
@@ -47,7 +48,7 @@ class DeckProjectionViewTests(unittest.TestCase):
         self.assertEqual([p["page_id"] for p in view["pages"]],
                          [p["page_id"] for p in self.pack["pages"]])
         self.assertEqual(view["pages"][0]["layout_id"], "builtin:layout:body-basic")
-        self.assertEqual(view["selection_policy"], "2")
+        self.assertEqual(view["selection_policy"], SELECTION_POLICY_VERSION)
         self.assertNotIn("binding_digest", view["pages"][0])
         self.assertEqual(view, projection_view(self.run_root))
 
@@ -56,6 +57,26 @@ class DeckProjectionViewTests(unittest.TestCase):
         view = projection_view(self.run_root)
         self.assertEqual(view["status"], "invalid")
         self.assertEqual(view["reason_code"], "input_pointer_missing")
+
+    def test_binding_reader_accepts_current_and_historical_policy_only(self):
+        from copy import deepcopy
+        from tests.test_expression_pipeline import transaction_inputs
+        from leo_ppt_generator.application.expression_pipeline import write_atomic_input_generation, _digest
+        from leo_ppt_generator.content_projection import load_run_binding, ProjectionError
+        payload, resolver, _, _ = transaction_inputs()
+        page_id = payload["pack"]["pages"][0]["page_id"]
+        for version in ("2", SELECTION_POLICY_VERSION, "999"):
+            with self.subTest(version=version):
+                value = deepcopy(payload)
+                value["lane_selections"]["render:html"]["policy_version"] = version
+                target = Path(self._tmp.name).resolve() / ("policy-" + version)
+                write_atomic_input_generation(target, value, generation=_digest(value),
+                                              resolver=resolver)
+                if version == "999":
+                    with self.assertRaisesRegex(ProjectionError, "effective_binding_selection_invalid"):
+                        load_run_binding(target, page_id)
+                else:
+                    self.assertEqual(load_run_binding(target, page_id)["binding"]["page_id"], page_id)
 
     def test_loose_files_do_not_override_frozen_selection(self):
         (self.run_root / "input/layout-selection.json").write_text('{"selection":{}}')

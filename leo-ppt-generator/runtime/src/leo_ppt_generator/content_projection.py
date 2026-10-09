@@ -203,6 +203,7 @@ def load_run_binding(run_path: str | Path, page_identity: str | int, *, backend:
     from .content_pack import verify_content_pack
 
     from .application.expression_pipeline import load_committed_input
+    from .layout_selection import SELECTION_POLICY_VERSION
     committed = load_committed_input(run_path)
     root = committed["root"]
     selections = committed["payload"]["lane_selections"]
@@ -212,7 +213,8 @@ def load_run_binding(run_path: str | Path, page_identity: str | int, *, backend:
     if backend not in selections:
         raise ProjectionError("materialization_binding_lane_unsupported")
     selection = selections[backend]
-    if str(selection.get("policy_version")) != "2" or selection.get("status") != "complete":
+    if (str(selection.get("policy_version")) not in {"2", SELECTION_POLICY_VERSION}
+            or selection.get("status") != "complete"):
         raise ProjectionError("effective_binding_selection_invalid")
     pack = json.loads((root / "page-content-pack.json").read_text(encoding="utf-8"))
     verify_content_pack(pack)

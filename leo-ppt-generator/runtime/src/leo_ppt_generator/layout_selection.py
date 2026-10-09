@@ -21,13 +21,15 @@ import json
 from pathlib import Path
 from .asset_resolver import AssetResolver, ResolverError
 from .content_projection import page_types_for_role
-from .page_intent import analyze_page_intent, semantic_layout_adjustment
+from .page_intent import (analyze_page_intent, load_page_type_regime,
+                          semantic_layout_adjustment)
 from .render.layout import capacity_level
 
 W_ROLE, W_CAPACITY, W_RHYTHM = 0.45, 0.40, 0.15
 CONFIDENCE_FLOOR = 0.5
+SCORE_MARGIN_FLOOR = 0.05
 
-SELECTION_POLICY_VERSION = "2"
+SELECTION_POLICY_VERSION = "3"
 DEFAULT_SEARCH_BUDGET = 20_000
 UNKNOWN_FINGERPRINT = "unknown"
 
@@ -150,10 +152,16 @@ def qualified_pool(
                 proposal_attempts.append({"candidate_id": proposal["candidate_id"], "status": "failed",
                                           "gap": binding["eligibility"]["hard_failures"]})
     signals = page_rank_signals(pack_page)
+    signals["binding_text_capacity"] = {
+        entry["identity_digest"]: (
+            entry["binding"].get("eligibility", {}).get("checks", {}).get("text_capacity", {}))
+        for entry in pool
+    }
     bank = {}
     for entry in pool:
         profile = resolver.resolve(entry["layout_id"])["data"]
-        bank[entry["layout_id"]] = {
+        bank[entry["identity_digest"]] = {
+            "ranking_layout_id": entry["layout_id"],
             "asset_id": entry["layout_id"], "aliases": profile.get("aliases", []),
             "page_type": profile.get("page_role", "content"),
             "content_capacity": profile.get("slots") or {},
@@ -166,8 +174,10 @@ def qualified_pool(
     pool = [{**entry, "ranking": candidate}
             for candidate in ranked["candidates"]
             for entry in sorted(pool, key=lambda row: row["identity_digest"])
-            if entry["layout_id"] == candidate["layout"]]
-    return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"], "proposal_attempts": proposal_attempts}
+            if entry["identity_digest"] == candidate["candidate_key"]]
+    return {"qualified": pool, "excluded": excluded, "intent": ranked["intent"],
+            "ranking": {key: ranked[key] for key in ("confidence", "score_margin", "decision", "decision_reasons")},
+            "proposal_attempts": proposal_attempts}
 
 
 def _canonical_layouts() -> dict[str, dict]:
@@ -178,12 +188,35 @@ def _canonical_layouts() -> dict[str, dict]:
 def page_rank_signals(page: dict) -> dict:
     """把完整页表达转为与轻量入口可比较的统计分量，不授予生产资格。"""
     points = [item["text"] for item in page.get("items", []) if item.get("kind") == "point"]
+    expression = page.get("expression") if isinstance(page.get("expression"), dict) else {}
+    relation = expression.get("relation") if isinstance(expression.get("relation"), dict) else {}
+    relation_kind = relation.get("kind") if isinstance(relation.get("kind"), str) else None
+    semantic_structure = page.get("semantic_structure")
+    # 明确的 reading task 可消歧；缺任务时仅采用 regime 的唯一关系映射。
+    if semantic_structure in (None, "", "undecided") and relation_kind:
+        regime = load_page_type_regime()
+        mapped_types = [page_type for page_type, spec in regime["page_types"].items()
+                        if spec.get("relation_kind") == relation_kind]
+        task = expression.get("reading_task")
+        if (task in mapped_types and regime.get("reading_task_relations", {}).get(task) == relation_kind):
+            semantic_structure = task
+        elif len(mapped_types) == 1:
+            semantic_structure = mapped_types[0]
+    reading_order = expression.get("reading_order")
+    expression_evidence = {
+        "relation_kind": relation_kind,
+        "reading_task": expression.get("reading_task"),
+        "focus": expression.get("focus"),
+        "reading_order_count": len(reading_order) if isinstance(reading_order, list) else None,
+    }
     return {"page": page.get("number"), "page_role": page.get("narrative_role") or "",
             "claim": page.get("claim"), "points": len(points), "est_chars": sum(map(len, points)),
             "data_points": sum(i.get("kind") == "number-ref" for i in page.get("items", [])),
             "image_sources": sum(i.get("kind") == "figure" for i in page.get("items", [])),
-            "structures": page.get("structures", {}), "semantic_structure": page.get("semantic_structure"),
-            "confidence": page.get("confidence"), "argument_role": page.get("argument_role")}
+            "structures": page.get("structures", {}), "semantic_structure": semantic_structure,
+            "confidence": page.get("confidence"), "argument_role": page.get("argument_role"),
+            "expression_uncertainty": expression.get("uncertainty") or [],
+            "expression_evidence": expression_evidence}
 
 
 def _no_reuse_limit(profile: dict) -> tuple[bool, int]:
@@ -251,6 +284,13 @@ def allocate_deck(
                 "reasons": [e["hard_failures"] for e in page_pool["excluded"][:5]],
                 "proposal_attempts": page_pool["proposal_attempts"],
             }
+        elif page_pool["ranking"]["decision"] == "undecided":
+            page_status[pid] = {
+                "status": "recommendation_undecided",
+                "reason": "推荐尚不能自动裁决，保留人工选择信号",
+                "score_margin": page_pool["ranking"]["score_margin"],
+                "decision_reasons": page_pool["ranking"]["decision_reasons"],
+            }
 
     if any(s["status"] == "no_candidates" for s in page_status.values()):
         return _selection_result(pack, pools, {}, page_status, "no_candidates")
@@ -258,6 +298,7 @@ def allocate_deck(
     # 确定性有界搜索：硬约束 = 显式选择 + 禁复用/最大次数；其余页按排序键
     # 贪心 + 回溯（预算内）。相邻重复与结构族频率作为排序惩罚参与选择。
     order = [p["page_id"] for p in pages]
+    pages_by_id = {page["page_id"]: page for page in pages}
     profiles: dict[str, dict] = {}
     for pool in pools.values():
         for entry in pool["qualified"]:
@@ -276,12 +317,15 @@ def allocate_deck(
         # 相邻重复与结构族频率惩罚：重排（稳定键保持确定性）。
         prev = selection.get(_prev_pid(order, pid))
         prev_layout = prev["layout_id"] if prev else None
+        repeated_task = _same_reading_context(
+            pages_by_id.get(_prev_pid(order, pid)), pages_by_id[pid])
 
         def penalty(entry: dict) -> tuple:
             layout_id = entry["layout_id"]
             family = structure_family(profiles[layout_id])
-            adjacent = 1 if layout_id == prev_layout else 0
-            family_freq = family_counts.get(family, 0) if family != UNKNOWN_FINGERPRINT else 0
+            adjacent = 1 if layout_id == prev_layout and not repeated_task else 0
+            family_freq = (family_counts.get(family, 0)
+                           if family != UNKNOWN_FINGERPRINT and not repeated_task else 0)
             rank = entry["ranking"]
             return (-rank["raw_score"] + adjacent * 0.06 + family_freq * 0.015,
                     -rank["semantic_score"])
@@ -335,12 +379,34 @@ def allocate_deck(
         return _selection_result(pack, pools, selection, page_status, status)
 
     for pid, entry in selection.items():
+        if _same_reading_context(pages_by_id.get(_prev_pid(order, pid)), pages_by_id[pid]):
+            page_status.setdefault(pid, {}).update(rhythm_context="continuous-reading-task")
         local_top = pools[pid]["qualified"][0]["layout_id"]
         if entry["layout_id"] != local_top:
             page_status.setdefault(pid, {}).update(
                 local_top=local_top, selected=entry["layout_id"],
                 adjustment_reason="explicit-choice" if pid in explicit else "global-reuse-or-rhythm")
     return _selection_result(pack, pools, selection, page_status, "complete")
+
+
+def _same_reading_context(previous: dict | None, page: dict) -> bool:
+    """仅明确同章、同阅读任务的普通内容页减免节奏惩罚。"""
+    if not previous or not page.get("chapter_id") or previous.get("chapter_id") != page["chapter_id"]:
+        return False
+    if previous.get("narrative_role") != page.get("narrative_role"):
+        return False
+    allowed = page_types_for_role(page.get("narrative_role"))
+    if not allowed or set(allowed) - {"content", "data"}:
+        return False
+    if page.get("argument_role") == "论点" or previous.get("argument_role") == "论点":
+        return False
+    left, right = previous.get("expression") or {}, page.get("expression") or {}
+    return (page.get("semantic_structure") not in (None, "undecided")
+            and previous.get("semantic_structure") == page.get("semantic_structure")
+            and bool(right.get("reading_task"))
+            and left.get("reading_task") == right.get("reading_task")
+            and left.get("relation", {}).get("kind") == right.get("relation", {}).get("kind")
+            and not left.get("uncertainty") and not right.get("uncertainty"))
 
 
 def _prev_pid(order: list[str], pid: str) -> str | None:
@@ -498,6 +564,37 @@ def _capacity_fit(
     return containment * coverage, reasons
 
 
+def _binding_capacity_fit(page: dict, layout_id: str) -> tuple[float | None, list[str]]:
+    """读取预编译 binding 的逐槽容量摘要，缺失时保持中性。
+
+    这里不重算槽位映射或把软容量变成第二个资格门；硬溢出已由
+    ``precompile_binding`` 排除。排序只用其已冻结的 ``used/limit/level``。
+    """
+    by_layout = page.get("binding_text_capacity")
+    slots = by_layout.get(layout_id) if isinstance(by_layout, dict) else None
+    if not isinstance(slots, dict) or not slots:
+        return None, []
+    observations = []
+    for name, entry in sorted(slots.items()):
+        if not isinstance(entry, dict):
+            continue
+        used, limit, level = entry.get("used"), entry.get("limit"), entry.get("level")
+        if not isinstance(used, (int, float)) or not isinstance(limit, (int, float)) or limit <= 0:
+            continue
+        ratio = used / limit
+        observations.append((str(name), used, limit, str(level or capacity_level(used, limit)), ratio))
+    if not observations:
+        return None, []
+    tightest = max(observations, key=lambda row: row[4])
+    if any(level == "overflow" for _, _, _, level, _ in observations):
+        return 0.0, [f"逐槽容量硬超: {tightest[0]} {tightest[1]:.0f}/{tightest[2]:.0f}"]
+    if any(level == "over" for _, _, _, level, _ in observations):
+        return 0.35, [f"逐槽容量偏紧: {tightest[0]} {tightest[1]:.0f}/{tightest[2]:.0f}"]
+    # 已经落在槽位中仍应反映接近上限的差别，但不得把正常内容大幅降权。
+    fit = max(0.75, 1.0 - max(0.0, tightest[4] - 0.75) * 0.4)
+    return fit, [f"逐槽容量余量: {tightest[0]} {tightest[1]:.0f}/{tightest[2]:.0f}"]
+
+
 def _rhythm(page: dict, layout_id: str, layout: dict) -> tuple[float, list[str]]:
     """节奏分（∈ [0, 1]）：已用 -0.4，与上一页同版式再 -0.4。"""
     score = 1.0
@@ -515,12 +612,13 @@ def _rhythm(page: dict, layout_id: str, layout: dict) -> tuple[float, list[str]]
 
 def rank_page(page: dict, bank: dict[str, dict], factor: float,
                adjust: dict[str, float], backend: str | None = None, *, hard_qualified=False) -> dict:
-    known_ids = set(bank)
+    known_ids = {layout.get("ranking_layout_id", key) for key, layout in bank.items()}
     intent = analyze_page_intent(page)
     candidates: list[dict] = []
     used = set(page.get("already_used") or [])
-    for layout_id in sorted(bank):
-        layout = bank[layout_id]
+    for candidate_key in sorted(bank):
+        layout = bank[candidate_key]
+        layout_id = layout.get("ranking_layout_id", candidate_key)
         if backend and not layout.get("renderer_support", {}).get(backend):
             continue
         # 节奏硬排除：强视觉版式已用即出局（与 check_layout_reuse 同口径）。
@@ -536,6 +634,12 @@ def rank_page(page: dict, bank: dict[str, dict], factor: float,
             if not hard_qualified:
                 continue
             capacity_fit = 0.0
+        binding_capacity_fit, binding_capacity_reasons = _binding_capacity_fit(page, candidate_key)
+        if binding_capacity_fit is not None:
+            # 硬资格后使用实际槽位读数，避免总量估算盖过已完成的绑定；
+            # 轻量调用仍保留总量预筛，缺少 binding 的输入保持原行为。
+            capacity_fit = (binding_capacity_fit if hard_qualified
+                            else capacity_fit * 0.6 + binding_capacity_fit * 0.4)
         rhythm, rhythm_reasons = _rhythm(page, layout_id, layout)
         semantic_id = _compact_id({"aliases": layout.get("aliases", []), "asset_id": layout_id})
         routing = adjust.get(layout_id, adjust.get(semantic_id, 0.0))
@@ -546,7 +650,20 @@ def rank_page(page: dict, bank: dict[str, dict], factor: float,
         )
         raw_score = score
         score = max(0.0, min(1.0, score))
-        reasons = [role_reason, *cap_reasons, *rhythm_reasons]
+        reasons = [role_reason, *cap_reasons, *binding_capacity_reasons, *rhythm_reasons]
+        evidence = page.get("expression_evidence")
+        if isinstance(evidence, dict) and any(value is not None for value in evidence.values()):
+            details = []
+            if evidence.get("relation_kind"):
+                details.append("relation=" + str(evidence["relation_kind"]))
+            if evidence.get("reading_task"):
+                details.append("task=" + str(evidence["reading_task"]))
+            if evidence.get("focus"):
+                details.append("focus=" + str(evidence["focus"]))
+            if evidence.get("reading_order_count") is not None:
+                details.append("order=" + str(evidence["reading_order_count"]))
+            if details:
+                reasons.append("冻结表达: " + ", ".join(details))
         if routing:
             reasons.append(
                 f"风格路由 {'+' if routing > 0 else ''}{routing:.1f}"
@@ -559,26 +676,43 @@ def rank_page(page: dict, bank: dict[str, dict], factor: float,
                 "score": round(score, 2),
                 "semantic_score": round(semantic, 2),
                 "raw_score": round(raw_score, 6),
+                "_raw_score": raw_score,
                 "reasons": reasons,
                 "renderer_support": layout.get("renderer_support", {}),
             }
         )
+        if candidate_key != layout_id:
+            candidates[-1]["candidate_key"] = candidate_key
     # score 在历史合同中封顶 1.0；同分时用语义层级稳定打破并列，避免
     # 一个“容量刚好”的通用模板遮住内容形态的首选/回退版式。
-    candidates.sort(key=lambda c: (-c["raw_score"], -c["semantic_score"], c["layout"]))
+    candidates.sort(key=lambda c: (-c["_raw_score"], -c["semantic_score"], c["layout"], c.get("candidate_key", "")))
     top = candidates
     confidence = top[0]["score"] if top else 0.0
+    score_margin = (top[0]["_raw_score"] - top[1]["_raw_score"]
+                    if len(top) > 1 else None)
+    decision_reasons = []
+    if confidence < CONFIDENCE_FLOOR:
+        decision_reasons.append("首选绝对分未达到自动选择阈值")
+    if intent["decision"] != "auto":
+        decision_reasons.append("页面语义尚未达到自动判定置信度")
+    if page.get("expression_uncertainty"):
+        decision_reasons.append("冻结表达仍有待确认项，需人工裁决")
+    if score_margin is not None and score_margin < SCORE_MARGIN_FLOOR:
+        decision_reasons.append("前两候选分差不足，需人工裁决")
     # 禁编造 id：防御断言——输出 id 必须全部来自枚举集。
     for cand in top:
         if cand["layout"] not in known_ids:
             raise LayoutSelectionError("fabricated_layout_id")
+        cand.pop("_raw_score", None)
     return {
         "page": page.get("page"),
         "candidates": top,
         "confidence": round(confidence, 2),
+        "score_margin": round(score_margin, 6) if score_margin is not None else None,
         "intent": intent,
         # 语义层低置信时即使容量分数较高也保留人工裁决出口。
-        "decision": "auto" if confidence >= CONFIDENCE_FLOOR and intent["decision"] == "auto" else "undecided",
+        "decision_reasons": decision_reasons,
+        "decision": "auto" if not decision_reasons else "undecided",
     }
 
 
